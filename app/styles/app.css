@@ -1,0 +1,10 @@
+/* component: entry-tile */
+/* line 3, sass/_component_entry-tile.scss */
+.entry-tile h2 {
+  color: #fdc400;
+}
+
+/* line 4, sass/app.scss */
+body {
+  background-color: #333;
+}
