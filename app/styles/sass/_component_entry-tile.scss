@@ -1,6 +1,16 @@
 /* component: entry-tile */
 .entry-tile {
-	h2 {
-		color: $yellow_dvb;
+
+	width: 15em;
+	height: 10em;
+
+	background-color: $gray80;
+	padding: .5em;
+	margin: 0 1em 1em 0;
+	float: left;
+
+	h3 {
+		font-weight: normal;
+		margin: 0;
 	}
 }

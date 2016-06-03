@@ -2,12 +2,17 @@
 body {
   background-color: #333;
   color: #f2f2f2;
+  font-family: sans-serif;
 }
 
-/* component: entry-tile */
-/* line 3, sass/_component_entry-tile.scss */
-.entry-tile h2 {
-  color: #fdc400;
+/* line 8, sass/_basic.scss */
+a {
+  color: white;
+  text-decoration: none;
+}
+/* line 12, sass/_basic.scss */
+a:hover {
+  text-decoration: underline;
 }
 
 /* line 1, sass/_user-context.scss */
@@ -15,4 +20,29 @@ body {
   background-color: #666666;
   width: 10vw;
   height: 10vh;
+}
+
+/* line 1, sass/_navigation.scss */
+navigation {
+  position: fixed;
+  top: 0;
+  right: 0;
+  text-align: right;
+  padding: .5em;
+}
+
+/* component: entry-tile */
+/* line 2, sass/_component_entry-tile.scss */
+.entry-tile {
+  width: 15em;
+  height: 10em;
+  background-color: #666666;
+  padding: .5em;
+  margin: 0 1em 1em 0;
+  float: left;
+}
+/* line 12, sass/_component_entry-tile.scss */
+.entry-tile h3 {
+  font-weight: normal;
+  margin: 0;
 }
