@@ -1,7 +1,9 @@
-<h2>{{title}}</h2>
+<section id="todo-list">
+	<h2>{{title}}</h2>
 
 	{{#each todos as |entry|}}
 		{{entry-tile entryitem=entry}}
 	{{/each}}
 
+</section>
 {{yield}}
