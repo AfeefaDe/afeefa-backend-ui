@@ -1,10 +1,18 @@
+/* line 1, sass/_basic.scss */
+body {
+  background-color: #333;
+  color: #f2f2f2;
+}
+
 /* component: entry-tile */
 /* line 3, sass/_component_entry-tile.scss */
 .entry-tile h2 {
   color: #fdc400;
 }
 
-/* line 4, sass/app.scss */
-body {
-  background-color: #333;
+/* line 1, sass/_user-context.scss */
+#user-context {
+  background-color: #666666;
+  width: 10vw;
+  height: 10vh;
 }
