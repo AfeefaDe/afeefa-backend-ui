@@ -2,15 +2,22 @@
 .entry-tile {
 
 	width: 15em;
-	height: 10em;
 
-	background-color: $gray80;
+	@include transition(background-color 250ms);
+	background-color: $gray90;
 	padding: .5em;
 	margin: 0 1em 1em 0;
-	float: left;
+
+	&:hover {
+		background-color: $gray80;
+	}
 
 	h3 {
 		font-weight: normal;
 		margin: 0;
+	}
+
+	article {
+		/*background-color: black;*/
 	}
 }

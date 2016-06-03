@@ -31,18 +31,42 @@ navigation {
   padding: .5em;
 }
 
+/* line 3, sass/_todo-list.scss */
+#todo-list .todo-list-items {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: center;
+  justify-content: center;
+  /*@include align-items(center);*/
+  /*@include align-content(center);*/
+}
+
 /* component: entry-tile */
 /* line 2, sass/_component_entry-tile.scss */
 .entry-tile {
   width: 15em;
-  height: 10em;
-  background-color: #666666;
+  -moz-transition: background-color 250ms;
+  -o-transition: background-color 250ms;
+  -webkit-transition: background-color 250ms;
+  transition: background-color 250ms;
+  background-color: #444444;
   padding: .5em;
   margin: 0 1em 1em 0;
-  float: left;
 }
-/* line 12, sass/_component_entry-tile.scss */
+/* line 11, sass/_component_entry-tile.scss */
+.entry-tile:hover {
+  background-color: #666666;
+}
+/* line 15, sass/_component_entry-tile.scss */
 .entry-tile h3 {
   font-weight: normal;
   margin: 0;
+}
+/* line 20, sass/_component_entry-tile.scss */
+.entry-tile article {
+  /*background-color: black;*/
 }
