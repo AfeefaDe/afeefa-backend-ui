@@ -18,7 +18,28 @@ export default Ember.Route.extend({
 			{
 				title: 'Stadtfest',
 				content: 'Not much.'
+			},
+			{
+				title: 'Interaction Leipzig e.V.',
+				content: '2 neue Events.'
+			},
+			{
+				title: 'CABANA Migrationsberatung',
+				content: '3 neue Anfragen und 1 neues Event'
 			}
 		];
-	}
+	},
+
+	didInsertElement : function(){
+    var that = this;
+    Ember.run.next(function(){
+		var pattern = new Trianglify({
+	        width: window.innerWidth,
+	        height: window.innerHeight
+	    });
+	    alert('hallo');
+	    document.body.appendChild(pattern.canvas());
+        // that.$('.navbar').affix({offset: -1000});
+    });
+  }
 });
