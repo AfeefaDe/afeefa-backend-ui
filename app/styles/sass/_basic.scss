@@ -1,4 +1,15 @@
 body {
 	background-color: #333;
 	color: $white;
+
+	font-family: sans-serif;
+}
+
+a {
+	color: white;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
 }
