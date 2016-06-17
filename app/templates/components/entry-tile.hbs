@@ -1,5 +1,13 @@
-<div class="entry-tile">
-	<h2>{{entryitem}}</h2>
+<div class="entry-tile" {{action 'loadItem' entryItem}} {{action 'loadOptionsMenu' entryItem on="contextMenu"}}>
+	<div class="image">
+		<img src="http://lorempixel.com/400/200/people" />
+		<h3 class="title">
+			{{entryItem.title}}
+		</h3>
+	</div>
+	<article>
+		{{entryItem.content}}
+	</article>
 </div>
 
 {{yield}}
