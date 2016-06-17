@@ -1,5 +1,10 @@
 #user-context {
+	padding: .2em;
+	display: inline-block;
+	
 	background-color: $gray80;
-	width: 10vw;
-	height: 10vh;
+
+	p {
+		margin: 0;
+	}
 }

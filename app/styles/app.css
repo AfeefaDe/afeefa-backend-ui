@@ -1,48 +1,137 @@
+@charset "UTF-8";
+/**
+ * @license
+ * MyFonts Webfont Build ID 2821335, 2014-06-01T08:08:57-0400
+ * 
+ * The fonts listed in this notice are subject to the End User License
+ * Agreement(s) entered into by the website owner. All other parties are 
+ * explicitly restricted from using the Licensed Webfonts(s).
+ * 
+ * You may obtain a valid license at the URLs below.
+ * 
+ * Webfont: Miso by M├Ñrten Nettelbladt
+ * URL: http://www.myfonts.com/fonts/martennettelbladt/miso/regular/
+ * 
+ * Webfont: Miso Bold by M├Ñrten Nettelbladt
+ * URL: http://www.myfonts.com/fonts/martennettelbladt/miso/bold/
+ * 
+ * Webfont: Miso Light by M├Ñrten Nettelbladt
+ * URL: http://www.myfonts.com/fonts/martennettelbladt/miso/light/
+ * 
+ * 
+ * License: http://www.myfonts.com/viewlicense?type=web&buildid=2821335
+ * Licensed pageviews: 20,000
+ * Webfonts copyright: Copyright (c) M&#x00E5;rten Nettelbladt, 2006. All rights reserved.
+ * 
+ * ┬® 2014 MyFonts Inc
+*/
+/* @import must be at top of file, otherwise CSS will not work */
+@import url("//hello.myfonts.net/count/2b0cd7");
+@import url("//hello.myfonts.net/count/2b1279");
+/*@font-face {font-family: 'LolitaMedium';src: url('webfonts/lolita/2B1279_0_0.eot');src: url('webfonts/lolita/2B1279_0_0.eot?#iefix') format('embedded-opentype'),url('webfonts/lolita/2B1279_0_0.woff') format('woff'),url('webfonts/lolita/2B1279_0_0.ttf') format('truetype');}*/
+/*@font-face {font-family: 'Miso';src: url('webfonts/2B0CD7_0_0.eot');src: url('webfonts/2B0CD7_0_0.eot?#iefix') format('embedded-opentype'),url('webfonts/2B0CD7_0_0.woff') format('woff'),url('webfonts/2B0CD7_0_0.ttf') format('truetype');}*/
+/*@font-face {font-family: 'Miso-Bold';src: url('webfonts/2B0CD7_1_0.eot');src: url('webfonts/2B0CD7_1_0.eot?#iefix') format('embedded-opentype'),url('webfonts/2B0CD7_1_0.woff') format('woff'),url('webfonts/2B0CD7_1_0.ttf') format('truetype');}*/
+/*@font-face {font-family: 'Miso-Light';src: url('webfonts/2B0CD7_2_0.eot');src: url('webfonts/2B0CD7_2_0.eot?#iefix') format('embedded-opentype'),url('webfonts/2B0CD7_2_0.woff') format('woff'),url('webfonts/2B0CD7_2_0.ttf') format('truetype');}*/
 /* line 1, sass/_basic.scss */
 body {
+  margin: 0;
   background-color: #333;
+  /*background-image: url("img/polygones.svg");*/
+  /*@include background-size(cover);*/
+  /*@include filter(grayscale(100%));*/
+  font-family: 'Roboto light', sans-serif !important;
   color: #f2f2f2;
-  font-family: sans-serif;
 }
 
-/* line 8, sass/_basic.scss */
+/* line 12, sass/_basic.scss */
 a {
   color: white;
   text-decoration: none;
 }
-/* line 12, sass/_basic.scss */
+/* line 16, sass/_basic.scss */
 a:hover {
   text-decoration: underline;
 }
 
 /* line 1, sass/_user-context.scss */
 #user-context {
+  padding: .2em;
+  display: inline-block;
   background-color: #666666;
-  width: 10vw;
-  height: 10vh;
+}
+/* line 7, sass/_user-context.scss */
+#user-context p {
+  margin: 0;
 }
 
 /* line 1, sass/_navigation.scss */
 navigation {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   text-align: right;
   padding: .5em;
 }
 
+/* line 3, sass/_todo-list.scss */
+#todo-list .todo-list-items {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: center;
+  justify-content: center;
+  /*@include align-items(center);*/
+  /*@include align-content(center);*/
+}
+
 /* component: entry-tile */
 /* line 2, sass/_component_entry-tile.scss */
 .entry-tile {
   width: 15em;
-  height: 10em;
-  background-color: #666666;
-  padding: .5em;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-transition: opacity 250ms;
+  -o-transition: opacity 250ms;
+  -webkit-transition: opacity 250ms;
+  transition: opacity 250ms;
+  background-color: #444444;
   margin: 0 1em 1em 0;
-  float: left;
+  cursor: pointer;
+  opacity: .6;
 }
-/* line 12, sass/_component_entry-tile.scss */
-.entry-tile h3 {
-  font-weight: normal;
+/* line 14, sass/_component_entry-tile.scss */
+.entry-tile:hover {
+  opacity: 1;
+  -moz-box-shadow: 0 0 10px #222;
+  -webkit-box-shadow: 0 0 10px #222;
+  box-shadow: 0 0 10px #222;
+}
+/* line 19, sass/_component_entry-tile.scss */
+.entry-tile .image {
+  position: relative;
+}
+/* line 22, sass/_component_entry-tile.scss */
+.entry-tile .image img {
+  width: 100%;
+}
+/* line 26, sass/_component_entry-tile.scss */
+.entry-tile .image h3 {
+  position: absolute;
+  bottom: 0;
   margin: 0;
+  padding: .2em .5em;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-weight: normal;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+/* line 38, sass/_component_entry-tile.scss */
+.entry-tile article {
+  color: #999999;
+  padding: .5em;
 }
