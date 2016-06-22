@@ -1,0 +1,15 @@
+<div id="login-canvas">
+  <div id="login">
+    <img src="/assets/images/afeefa_light.svg" alt="Afeefa Logo with white background">
+    <form {{action 'authenticate' on='submit'}}>
+      {{input id='identification' placeholder='Name' value=identification}}
+      <br>
+      {{input id='password' placeholder='Password' type='password' value=password}}
+      <br>
+      <button type="submit">Login</button>
+      {{#if errorMessage}}
+        <p>{{errorMessage}}</p>
+      {{/if}}
+    </form>
+  </div>
+</div>
