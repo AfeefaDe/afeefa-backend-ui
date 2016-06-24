@@ -156,7 +156,7 @@ navigation {
   width: 12em;
   flex: none;
   color: #DDDDDD;
-  background-color: #999999;
+  background-color: #f2f2f2;
 }
 
 /* line 22, sass/_login.scss */
@@ -168,46 +168,36 @@ img {
 
 /* line 28, sass/_login.scss */
 input[type=text], input[type=password] {
+  font-size: 12px;
   margin: 5px;
   padding: 0 10px;
   width: 240px;
   height: 34px;
-  color: #404040;
+  color: #333333;
   background: white;
   border: 0px solid;
 }
-/* line 37, sass/_login.scss */
+/* line 38, sass/_login.scss */
 input[type=text]:focus, input[type=password]:focus {
   border-color: #085272;
-  outline-color: #dceefc;
+  outline-color: #DDDDDD;
   outline-offset: 0;
 }
 
-/* line 44, sass/_login.scss */
+/* line 45, sass/_login.scss */
 button[type=submit] {
   float: right;
   margin: 10px 12px 0 0;
   padding: 0 18px;
   height: 29px;
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 400;
   color: #f2f2f2;
   background: #085272;
-  border: 1px solid;
-  border-color: #b4ccce #b3c0c8 #9eb9c2;
+  border: 0;
   outline: 0;
-  -moz-box-sizing: content-box;
-  -webkit-box-sizing: content-box;
-  box-sizing: content-box;
-  -moz-box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
-  -webkit-box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
-  box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
 }
-/* line 59, sass/_login.scss */
+/* line 57, sass/_login.scss */
 button[type=submit]:active {
-  background: #cde5ef;
-  border-color: #9eb9c2 #b3c0c8 #b4ccce;
-  -moz-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
-  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+  background: #318B86;
 }
