@@ -9,6 +9,8 @@ http_fonts_path = "fonts"
 images_dir = "../img"
 javascripts_dir = "../js"
 
+add_import_path "../../node_modules/ember-paper/app/styles";
+
 # You can select your preferred output style here (can be overridden via the command line):
 # output_style = :expanded or :nested or :compact or :compressed
 
