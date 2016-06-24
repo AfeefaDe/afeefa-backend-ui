@@ -11759,7 +11759,7 @@ md-backdrop.md-opaque.md-default-theme.ng-leave.md-opaque.md-default-theme.ng-le
 /* line 1, sass/_basic.scss */
 body {
   margin: 0;
-  background-color: #000;
+  background-color: #333;
   /*background-image: url("img/polygones.svg");*/
   /*@include background-size(cover);*/
   /*@include filter(grayscale(100%));*/
