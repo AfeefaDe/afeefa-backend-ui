@@ -1,5 +1,42 @@
 <h1>Experimental playground</h1>
 
-{{paper-button raised=true label="Blockless version"}}
+{{paper-input flex=30 label="Name des Projekts" value=name onChange=(action (mut name))}}
+
+{{paper-input textarea=true block=true label="Beschreibung" maxlength=150 passThru=(hash rows=5)
+   value=desc onChange=(action (mut desc))}}
+
+{{#paper-checkbox value=value1 onChange=(action (mut value1))}}
+   für Kinder geeignet
+{{/paper-checkbox}}
+
+{{#paper-checkbox value=value1 onChange=(action (mut value1))}}
+   Unterstützer gesucht
+{{/paper-checkbox}}
+
+{{#paper-checkbox value=value1 onChange=(action (mut value1))}}
+   WLAN verfügbar
+{{/paper-checkbox}}
+
+{{#paper-checkbox value=value1 onChange=(action (mut value1))}}
+   geschützter Raum
+{{/paper-checkbox}}
+
+{{paper-button raised=true label="Speichern"}}
+
+{{#paper-card}}
+  {{#paper-card-title}}
+    {{#paper-card-title-text}}
+      <h2>{{name}}</h2>
+      <p>{{desc}}</p>
+    {{/paper-card-title-text}}
+    {{#paper-card-title-media}}
+      <img class="md-media-lg" src="http://lorempixel.com/400/200/people">
+  {{/paper-card-title-media}}
+  {{/paper-card-title}}
+  <div class="md-actions" layout="row" layout-align="end center">
+    {{#paper-button}}Anrufen{{/paper-button}}
+    {{#paper-button}}Nachrichte senden{{/paper-button}}
+  </div>
+{{/paper-card}}
 
 {{outlet}}
