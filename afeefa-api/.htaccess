@@ -1,3 +1,0 @@
-Options +FollowSymLinks
-RewriteEngine on
-RewriteRule (.*) http://localhost:3000/$1 [R=301,L]
