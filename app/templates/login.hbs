@@ -2,11 +2,12 @@
   <div id="login">
     <img src="/assets/images/afeefa_light.svg" alt="Afeefa Logo with white background">
     <form {{action 'authenticate' on='submit'}}>
-      {{input id='identification' placeholder='Name' value=identification}}
+      {{paper-input label="Name" value=name}}
       <br>
-      {{input id='password' placeholder='Password' type='password' value=password}}
+      {{paper-input label="Password" type="password"}}
+
       <br>
-      <button type="submit">Login</button>
+         {{#paper-button raised=true action="loginButton"}}Login{{/paper-button}}
       {{#if errorMessage}}
         <p>{{errorMessage}}</p>
       {{/if}}

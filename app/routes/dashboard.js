@@ -35,10 +35,11 @@ export default Ember.Route.extend({
 	// },
 
 	model() {
-    	return this.store.findAll('orga');
+    	//return this.store.findAll('orga');
+			return null;
   	},
 
-	didInsertElement : function(){
+	/*didInsertElement : function(){
     var that = this;
     Ember.run.next(function(){
 		var pattern = new Trianglify({
@@ -49,5 +50,5 @@ export default Ember.Route.extend({
 	    document.body.appendChild(pattern.canvas());
         // that.$('.navbar').affix({offset: -1000});
     });
-  }
+  }*/
 });

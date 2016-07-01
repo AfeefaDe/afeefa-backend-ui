@@ -10,51 +10,20 @@
   justify-content: center;
   flex-direction: column;
   margin-top:1em;
-  max-width: 50%;
-  font-size:2em;
-  height:16em;
-  width:12em;
+  padding:2em 1em;
+  /*height:16em;
+  width:12em;*/
+  min-width:24em;
   flex:none;
   color: $gray20;
   background-color: $white;
+  input {
+    width:16em;
+  }
 }
 
 img {
   width:33%;
   align-self: center;
   margin-bottom:10px;
-}
-
-input[type=text], input[type=password] {
-  font-size: 12px;
-  margin: 5px;
-  padding: 0 10px;
-  width: 240px;
-  height: 34px;
-  color: $black;
-  background: white;
-  border: 0px solid;
-
-  &:focus {
-    border-color: $blue_dark;
-    outline-color: $gray20;
-    outline-offset: 0;
-  }
-}
-
-button[type=submit] {
-  float:right;
-  margin:10px 12px 0 0;
-  padding: 0 18px;
-  height: 29px;
-  font-size: 14px;
-  font-weight: 400;
-  color: $white;
-  background: $blue_dark;
-  border: 0;
-  outline: 0;
-
-  &:active {
-    background: $turquoise;
-  }
 }

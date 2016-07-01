@@ -11735,13 +11735,13 @@ md-backdrop.md-opaque.md-default-theme.ng-leave.md-opaque.md-default-theme.ng-le
  * 
  * You may obtain a valid license at the URLs below.
  * 
- * Webfont: Miso by M├Ñrten Nettelbladt
+ * Webfont: Miso by Mårten Nettelbladt
  * URL: http://www.myfonts.com/fonts/martennettelbladt/miso/regular/
  * 
- * Webfont: Miso Bold by M├Ñrten Nettelbladt
+ * Webfont: Miso Bold by Mårten Nettelbladt
  * URL: http://www.myfonts.com/fonts/martennettelbladt/miso/bold/
  * 
- * Webfont: Miso Light by M├Ñrten Nettelbladt
+ * Webfont: Miso Light by Mårten Nettelbladt
  * URL: http://www.myfonts.com/fonts/martennettelbladt/miso/light/
  * 
  * 
@@ -11749,7 +11749,7 @@ md-backdrop.md-opaque.md-default-theme.ng-leave.md-opaque.md-default-theme.ng-le
  * Licensed pageviews: 20,000
  * Webfonts copyright: Copyright (c) M&#x00E5;rten Nettelbladt, 2006. All rights reserved.
  * 
- * ┬® 2014 MyFonts Inc
+ * © 2014 MyFonts Inc
 */
 /* @import must be at top of file, otherwise CSS will not work */
 /*@font-face {font-family: 'LolitaMedium';src: url('webfonts/lolita/2B1279_0_0.eot');src: url('webfonts/lolita/2B1279_0_0.eot?#iefix') format('embedded-opentype'),url('webfonts/lolita/2B1279_0_0.woff') format('woff'),url('webfonts/lolita/2B1279_0_0.ttf') format('truetype');}*/
@@ -11874,54 +11874,22 @@ navigation {
   justify-content: center;
   flex-direction: column;
   margin-top: 1em;
-  max-width: 50%;
-  font-size: 2em;
-  height: 16em;
-  width: 12em;
+  padding: 2em 1em;
+  /*height:16em;
+  width:12em;*/
+  min-width: 24em;
   flex: none;
   color: #DDDDDD;
   background-color: #f2f2f2;
 }
+/* line 20, sass/_login.scss */
+#login input {
+  width: 16em;
+}
 
-/* line 22, sass/_login.scss */
+/* line 25, sass/_login.scss */
 img {
   width: 33%;
   align-self: center;
   margin-bottom: 10px;
-}
-
-/* line 28, sass/_login.scss */
-input[type=text], input[type=password] {
-  font-size: 12px;
-  margin: 5px;
-  padding: 0 10px;
-  width: 240px;
-  height: 34px;
-  color: #333333;
-  background: white;
-  border: 0px solid;
-}
-/* line 38, sass/_login.scss */
-input[type=text]:focus, input[type=password]:focus {
-  border-color: #085272;
-  outline-color: #DDDDDD;
-  outline-offset: 0;
-}
-
-/* line 45, sass/_login.scss */
-button[type=submit] {
-  float: right;
-  margin: 10px 12px 0 0;
-  padding: 0 18px;
-  height: 29px;
-  font-size: 14px;
-  font-weight: 400;
-  color: #f2f2f2;
-  background: #085272;
-  border: 0;
-  outline: 0;
-}
-/* line 57, sass/_login.scss */
-button[type=submit]:active {
-  background: #318B86;
 }
