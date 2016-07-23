@@ -1,10 +1,14 @@
 import Ember from 'ember';
 
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+//import SessionService from 'ember-simple-auth/services/session';
 
-export default Ember.Route.extend(AuthenticatedRouteMixin);
+//export default Ember.Route.extend(AuthenticatedRouteMixin);
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(AuthenticatedRouteMixin, {
+	//session: Ember.inject.service('session'),
+//	session: Ember.inject.service(),
+
 	// model() {
 	// 	return [
 	// 		{
@@ -35,9 +39,14 @@ export default Ember.Route.extend({
 	// },
 
 	model() {
-    	//return this.store.findAll('orga');
-			return null;
-  	},
+		return this.store.findAll('orga');
+	},
+
+	actions: {
+		logout() {
+			this.get('session').invalidate();
+		}
+	}
 
 	/*didInsertElement : function(){
     var that = this;

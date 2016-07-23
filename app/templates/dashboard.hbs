@@ -1,3 +1,8 @@
 {{todo-list title="Things to do" todos=model}}
 
+{{#if session.isAuthenticated}}
+  {{#paper-button raised=true action="logout"}}Logout{{/paper-button}}
+{{else}}
+  {{#link-to 'login'}}Login{{/link-to}}
+{{/if}}
 {{outlet}}
