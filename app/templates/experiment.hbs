@@ -1,5 +1,9 @@
 <h1>Experimental playground</h1>
 
+Orgas of User#{{session.currentUser}}
+{{#each model.orgas as |orga|}}
+    <li>Hello, {{orga.title}}!</li>
+  {{/each}}
 {{paper-button raised=true label="Blockless version"}}
 
 {{outlet}}

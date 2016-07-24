@@ -6,7 +6,7 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 //export default Ember.Route.extend(AuthenticatedRouteMixin);
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
-	//session: Ember.inject.service('session'),
+	session: Ember.inject.service('session'),
 //	session: Ember.inject.service(),
 
 	// model() {
@@ -39,7 +39,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 	// },
 
 	model() {
-		return this.store.findAll('orga');
+		//console.log(this.get('session.data.authenticated.id'));
+		//console.log(this.get('session.currentUser'));
+		return this.store.findRecord('user', this.get('session.currentUser'));
 	},
 
 	actions: {

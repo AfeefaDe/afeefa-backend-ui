@@ -32,10 +32,9 @@ export default DeviseAuthenticator.extend({
           expiry: xhr.getResponseHeader('expiry'),
           tokenType: xhr.getResponseHeader('token-type'),
           uid: xhr.getResponseHeader('uid'),
-          client: xhr.getResponseHeader('client')
+          client: xhr.getResponseHeader('client'),
+          id: xhr.responseJSON.data.id
         };
-        console.log(result);
-
         run(null, resolve, result);
       }, function(xhr) {
         run(null, reject, xhr.responseJSON || xhr.responseText);
