@@ -2,9 +2,9 @@
 .entry-tile {
 
 	width: 15em;
-	@include box-sizing(border-box);
+	box-sizing: border-box;
 
-	@include transition(opacity 250ms);
+	transition: opacity 250ms;
 	background-color: $gray90;
 	margin: 0 1em 1em 0;
 
@@ -13,7 +13,7 @@
 
 	&:hover {
 		opacity: 1;
-		@include box-shadow(0 0 10px #222);
+		box-shadow: 0 0 10px #222;
 	}
 
 	.image {
@@ -28,7 +28,7 @@
 			bottom: 0;
 			margin: 0;
 			padding: .2em .5em;
-			@include box-sizing(border-box);
+			box-sizing: border-box;
 			
 			font-weight: normal;
 			background-color: $black_alpha;
