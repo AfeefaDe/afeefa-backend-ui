@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 import ESASession from "ember-simple-auth/services/session";
 
@@ -12,7 +13,7 @@ export default ESASession.extend({
 
   currentUser: Ember.computed('isAuthenticated', function() {
     if (this.get('isAuthenticated')) {
-      return this.get('data.authenticated.id')
+      return this.get('data.authenticated.id');
     }
   })
 });

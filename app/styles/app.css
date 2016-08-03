@@ -11893,3 +11893,8 @@ img {
   align-self: center;
   margin-bottom: 10px;
 }
+
+/* line 31, sass/_login.scss */
+.errorMsg {
+  color: #a21c15;
+}

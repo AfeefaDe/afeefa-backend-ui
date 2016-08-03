@@ -20,7 +20,6 @@ export default DeviseAuthenticator.extend({
   authenticate(identification, password) {
     return new RSVP.Promise((resolve, reject) => {
       const { identificationAttributeName } = this.getProperties('identificationAttributeName');
-      console.log(identificationAttributeName);
       const data         = { password };
       data[identificationAttributeName] = identification;
 
