@@ -1,10 +1,14 @@
 import Ember from 'ember';
 
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+//import SessionService from 'ember-simple-auth/services/session';
 
-export default Ember.Route.extend(AuthenticatedRouteMixin);
+//export default Ember.Route.extend(AuthenticatedRouteMixin);
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(AuthenticatedRouteMixin, {
+	session: Ember.inject.service('session'),
+//	session: Ember.inject.service(),
+
 	// model() {
 	// 	return [
 	// 		{
@@ -35,10 +39,18 @@ export default Ember.Route.extend({
 	// },
 
 	model() {
-    	return this.store.findAll('orga');
-  	},
+		//console.log(this.get('session.data.authenticated.id'));
+		//console.log(this.get('session.currentUser'));
+		return this.store.findRecord('user', this.get('session.currentUser'));
+	},
 
-	didInsertElement : function(){
+	actions: {
+		logout() {
+			this.get('session').invalidate();
+		}
+	}
+
+	/*didInsertElement : function(){
     var that = this;
     Ember.run.next(function(){
 		var pattern = new Trianglify({
@@ -49,5 +61,5 @@ export default Ember.Route.extend({
 	    document.body.appendChild(pattern.canvas());
         // that.$('.navbar').affix({offset: -1000});
     });
-  }
+  }*/
 });

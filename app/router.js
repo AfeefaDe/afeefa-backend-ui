@@ -9,6 +9,7 @@ Router.map(function() {
   this.route('dashboard');
   this.route('pingpong');
   this.route('login');
+  this.route('logout');
   this.route('experiment');
 });
 

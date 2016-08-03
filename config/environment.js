@@ -43,6 +43,11 @@ module.exports = function(environment) {
 
   }
 
+  ENV['ember-simple-auth'] = {
+  routeAfterAuthentication: 'dashboard',
+  routeIfAlreadyAuthenticated: 'dashboard'
+}
+
   ENV.contentSecurityPolicy = {
   'default-src': "'none'",
   'script-src': "'self'",
@@ -51,6 +56,6 @@ module.exports = function(environment) {
   'img-src': "'self' data:",
   'media-src': "'self'"
 }
-  
+
   return ENV;
 };
