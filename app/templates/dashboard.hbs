@@ -1,9 +1,6 @@
-{{todo-list title="Things to do" todos=model.orgas}}
+{{user-context user=model}}
 
-{{#if session.isAuthenticated}}
-  logged in as id: {{session.currentUser}}
-  {{#paper-button raised=true action="logout"}}Logout{{/paper-button}}
-{{else}}
-  {{#link-to 'login'}}Login{{/link-to}}
-{{/if}}
+{{todo-list title="Things to do" todos=model.orgas}}
+{{#link-to "new" (query-params type="orga")}}New Orga{{/link-to}}
+{{#link-to "new" (query-params type="user")}}New User{{/link-to}}
 {{outlet}}

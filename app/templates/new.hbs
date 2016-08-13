@@ -1,0 +1,10 @@
+{{user-context user=model}}
+
+<h2>Create new {{outputType}}</h2>
+{{#if isOrga}}
+	{{component "new-orga-form" onDataReady=(action "create")}}
+{{else}}
+	{{component "new-user-form" onDataReady=(action "create")}}
+{{/if}}
+<!-- switch component depeding on type: new-event-form; new-user-form.... -->
+{{outlet}}
