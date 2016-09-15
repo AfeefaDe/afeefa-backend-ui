@@ -1,7 +1,15 @@
 <form {{action 'saveOrga' on='submit'}}>
-    {{paper-input label="Title" value=orga.title}}
-    <br>
-    {{paper-input label="Description" value=orga.description}}
-    <br>
-    {{#paper-button raised=true}}Save{{/paper-button}}
+
+      <div class="input-field">
+        {{input value=orga.title id="title" type="text" class="validate"}}
+        <label for="title">Title</label>
+      </div>
+
+      <div class="input-field">
+        {{input value=orga.description id="description" type="text" class="validate"}}
+        <label for="description">Description</label>
+      </div>
+
+      <button class="btn waves-effect waves-light" type="submit">Save</button>
+
 </form>
