@@ -10,7 +10,7 @@ Router.map(function() {
   this.route('pingpong');
   this.route('login');
   this.route('logout');
-  this.route('new');
+  this.route('new', { path: '/new/:type' });
   this.route('orgas');
   this.route('orga', { path: '/orgas/:orga_id' });
   this.route('editorga', { path: '/orgas/edit/:orga_id' });
