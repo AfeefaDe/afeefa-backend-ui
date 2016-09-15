@@ -13,6 +13,7 @@ export default DS.JSONAPISerializer.extend({
     json["data"]["attributes"] = attributes;
     //example: remove relationship from json:
     delete json["data"]["relationships"];
+    console.log("[custom orga serializer] serialized JSON: ", json);
     return json;
 }
 });
