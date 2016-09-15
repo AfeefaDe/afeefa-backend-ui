@@ -6,7 +6,10 @@ module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
     // Add options here
     sassOptions: {
-      extension: 'scss'
+      extension: 'scss',
+      includePaths: [
+        'bower_components/materialize/sass'
+      ]
     }
   });
 
@@ -22,6 +25,17 @@ module.exports = function(defaults) {
   // modules that you would like to import into your application
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
+
+  app.import('bower_components/materialize/dist/js/materialize.min.js');
+  // app.import('bower_components/materialize/fonts');
+  // app.import('bower_components/materialize/fonts/', {
+  //   destDir: 'fonts'
+  // });
+
+  // var materializeFonts = pickFiles('bower_components/materialize/fonts', {
+  //   srcDir: '/',
+  //   destDir: '/fonts'
+  // });
 
   return app.toTree();
 };

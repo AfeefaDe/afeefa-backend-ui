@@ -1,7 +1,10 @@
-@import 'ember-paper';
+/*@import 'ember-paper';*/
+
+/* asset defined in ember-cli-build.js */
+@import 'materialize';
 
 @import 'colors';
-@import 'fonts';
+/*@import 'fonts';*/
 @import 'basic';
 @import 'user-context';
 @import 'navigation';
