@@ -3,4 +3,5 @@
 {{#each model.orgas as |orga|}}
 	<h4>{{orga.title}}</h4>
 	<p>{{orga.description}}</p>
+  {{#link-to "orga" orga.id}}Anzeigen{{/link-to}}
 {{/each}}

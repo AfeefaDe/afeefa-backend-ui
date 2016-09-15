@@ -1,0 +1,7 @@
+<form {{action 'saveOrga' on='submit'}}>
+    {{paper-input label="Title" value=orga.title}}
+    <br>
+    {{paper-input label="Description" value=orga.description}}
+    <br>
+    {{#paper-button raised=true}}Save{{/paper-button}}
+</form>

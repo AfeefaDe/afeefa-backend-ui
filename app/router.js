@@ -12,7 +12,8 @@ Router.map(function() {
   this.route('logout');
   this.route('new');
   this.route('orgas');
-  this.route('orga',{ path: '/orgas/:orga_id' });
+  this.route('orga', { path: '/orgas/:orga_id' });
+  this.route('editorga', { path: '/orgas/edit/:orga_id' });
 });
 
 export default Router;
