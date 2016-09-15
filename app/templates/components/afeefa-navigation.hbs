@@ -1,6 +1,9 @@
 <navigation>
-	<a href="/dashboard">Dashboard</a>
-	<a href="/experiment">Experiment</a>
-	<a href="/login">Login</a>
+  {{#link-to 'dashboard'}}Dashboard{{/link-to}}
+  {{#if session.isAuthenticated}}
+    <a {{action 'invalidateSession'}}>Logout</a>
+  {{else}}
+    {{#link-to 'login'}}Login{{/link-to}}
+  {{/if}}
 </navigation>
 {{yield}}

@@ -1,15 +1,18 @@
 <div class="entry-tile" {{action 'loadItem' entryItem}} {{action 'loadOptionsMenu' entryItem on="contextMenu"}}>
 	<div class="image">
-		<img src="http://lorempixel.com/400/200/people" />
 		<h3 class="title">
 			{{entryItem.title}}
 		</h3>
 	</div>
 	<article>
 		<p>
-			Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
+			{{entryItem.description}}
 		</p>
 	</article>
+	Users:
+	{{#each entryItem.users as |user|}}
+	    <li>Hello, {{user.email}}!</li>
+	  {{/each}}
 </div>
 
 {{yield}}

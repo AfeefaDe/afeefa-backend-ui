@@ -6,10 +6,14 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('dashboard');
+  this.route('dashboard', function() {});
   this.route('pingpong');
   this.route('login');
-  this.route('experiment');
+  this.route('logout');
+  this.route('new');
+  this.route('orgas');
+  this.route('orga', { path: '/orgas/:orga_id' });
+  this.route('editorga', { path: '/orgas/edit/:orga_id' });
 });
 
 export default Router;

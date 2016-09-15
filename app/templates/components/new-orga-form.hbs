@@ -1,0 +1,13 @@
+<div id="login-canvas">
+  <div id="login">
+    <form {{action 'save' on='submit'}}>
+      {{paper-input label="Title" value=title}}
+      <br>
+      {{paper-input label="Description" value=description}}
+      <br>
+      {{#paper-button raised=true}}Save{{/paper-button}}
+    </form>
+</div>
+</div>
+
+{{yield}}

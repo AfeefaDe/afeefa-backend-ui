@@ -1,7 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-
 	actions: {
 		loadItem: function(entryItem) {
 		  alert("load view to work on " + entryItem.title);
