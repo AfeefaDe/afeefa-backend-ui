@@ -21,7 +21,7 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
 
     var id = snapshot.id;
     var url = this.buildURL(type.modelName, id, snapshot, 'updateRecord');
-    console.log('Update Record with URL: ', url);
+    console.log('Update Record with URL: [PATCH]', url);
     console.log('Update Record with Data: ', data);
     return this.ajax(url, 'PATCH', { data: data });
   }
