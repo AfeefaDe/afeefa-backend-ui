@@ -4,5 +4,8 @@
 <p>{{model.description}}</p>
 {{#link-to "editorga" model.id}}Bearbeiten{{/link-to}}
 <button {{action 'delete'}}>Löschen</button>
+{{#if errorMessage}}
+  <p class="errorMsg">{{errorMessage}}</p>
+{{/if}}
 
 
