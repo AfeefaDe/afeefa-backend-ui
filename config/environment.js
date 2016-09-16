@@ -24,8 +24,8 @@ module.exports = function(environment) {
 
   if (environment === 'development') {
     //ENV.APP.LOG_RESOLVER = true;
-    ENV.APP.LOG_TRANSITIONS = true;
-    ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
+    ENV.APP.LOG_TRANSITIONS = false;
+    ENV.APP.LOG_TRANSITIONS_INTERNAL = false;
     ENV.APP.LOG_VIEW_LOOKUPS = true;
   }
 
@@ -46,18 +46,18 @@ module.exports = function(environment) {
   }
 
   ENV['ember-simple-auth'] = {
-  routeAfterAuthentication: 'dashboard',
-  routeIfAlreadyAuthenticated: 'dashboard'
-}
+    routeAfterAuthentication: 'dashboard',
+    routeIfAlreadyAuthenticated: 'dashboard'
+  }
 
   ENV.contentSecurityPolicy = {
-  'default-src': "'none'",
-  'script-src': "'self'",
-  'font-src': "'self' http://fonts.gstatic.com",
-  'connect-src': "'self'",
-  'img-src': "'self' data:",
-  'media-src': "'self'"
-}
+    'default-src': "'none'",
+    'script-src': "'self'",
+    'font-src': "'self' http://fonts.gstatic.com",
+    'connect-src': "'self'",
+    'img-src': "'self' data:",
+    'media-src': "'self'"
+  }
 
   return ENV;
 };
