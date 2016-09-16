@@ -1,7 +1,20 @@
 {{outlet}}
 
-{{#each model.orgas as |orga|}}
-	<h4>{{orga.title}}</h4>
-	<p>{{orga.description}}</p>
-  {{#link-to "orga" orga.id}}Anzeigen{{/link-to}}
-{{/each}}
+<div class="row">
+  {{#each model.orgas as |orga|}}
+    <div class="col s12 m6">
+      <div class="card">
+        <div class="card-content black-text">
+          <span class="card-title">{{orga.title}}</span>
+          <p>{{orga.description}} Eine Beispielbeschreibung</p>
+        </div>
+        <div class="card-action">
+            {{#link-to "orga" orga.id}}Anzeigen{{/link-to}}
+            {{#link-to "editorga" orga.id}}Bearbeiten{{/link-to}}
+        </div>
+      </div>
+    </div>
+  {{/each}}
+</div>
+
+

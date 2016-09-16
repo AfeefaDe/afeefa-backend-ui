@@ -1,6 +1,46 @@
 {{user-context user=model}}
 
-{{#link-to "new" "orga"}}New Orga{{/link-to}}
-{{#link-to "orgas"}}Alle Orgas{{/link-to}}
+<div class="row">
+    <div class="col s12 m6">
+      <div class="card">
+        <div class="card-content black-text">
+          <span class="card-title">TODO (12) [in progress]</span>
+          <p>Zu erledigende Aufgaben</p>
+        </div>
+        <div class="card-action">
+            {{#link-to "orgas"}}Example action{{/link-to}}
+        </div>
+      </div>
+    </div>
+    <div class="col s12 m6">
+      <div class="card">
+        <div class="card-content black-text">
+          <span class="card-title">Organisationen ({{model.orgas.length}})</span>
+          <p>Alle erstellten Organisationen</p>
+        </div>
+        <div class="card-action">
+            {{#link-to "orgas"}}Alle Orgas{{/link-to}}
+            {{#link-to "new" "orga"}}Neue Orga{{/link-to}}
+        </div>
+      </div>
+    </div>
+    <div class="col s12 m6">
+      <div class="card">
+        <div class="card-content black-text">
+          <span class="card-title">Events [in progress]</span>
+          <p>Alle erstellen Events</p>
+        </div>
+        <div class="card-action">
+            {{#link-to "orgas"}}Example action{{/link-to}}
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+
 
 {{outlet}}
