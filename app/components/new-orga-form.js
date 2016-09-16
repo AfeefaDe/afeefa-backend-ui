@@ -9,7 +9,6 @@ export default Ember.Component.extend(formValidatorMixin , {
 	actions: {
 		save: function() {
       let validated = this.validateForm(['title', 'description']);
-      console.log(validated);
       if(validated) {
         var orga = this.get('store').createRecord('orga', {
           title: this.get('title'),
