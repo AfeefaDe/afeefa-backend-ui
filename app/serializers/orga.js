@@ -12,7 +12,7 @@ export default DS.JSONAPISerializer.extend({
 
     json["data"]["attributes"] = attributes;
     //example: remove relationship from json:
-    delete json["data"]["relationships"];
+    //delete json["data"]["relationships"];
     console.log("[custom orga serializer] serialized JSON: ", json);
     return json;
   },
@@ -22,6 +22,7 @@ export default DS.JSONAPISerializer.extend({
     return json;
   },
   payloadKeyFromModelName(modelName) {
+    //return singular model name: 'orga'
     return modelName;
   }
 });

@@ -13,7 +13,16 @@
         {{input value=description id="description" type="text" class="validate"}}
         <label for="description">Description</label>
       </div>
-      <button class="btn waves-effect waves-light" type="submit">Save</button>
+      <div style="margin-top: 1em; color: black;">
+        <label>Übergeordnete Orga</label>
+        <select class="browser-default" onchange={{action "selectParent" value="target.value"}}>
+          <option value="" disabled selected>Choose your option</option>
+          {{#each orgas as |orga|}}
+            <option value="{{orga.id}}">{{orga.title}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Save</button>
     </form>
   </div>
 </div>

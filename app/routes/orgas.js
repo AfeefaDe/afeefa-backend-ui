@@ -10,5 +10,5 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       instances: this.store.findRecord('user', this.get('session.currentUser')),
       attributes: ['description', 'status', 'subOrgas']
     });
-	},
+	}
 });
