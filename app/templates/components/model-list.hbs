@@ -5,9 +5,9 @@
     <li>
       <h4>{{instance.title}}</h4>
       <div class="attributes">
-        <p>Show:
+        <p>Attributes:
           {{#each attributes as |attribute|}}
-          <i>{{attribute}},</i>
+            <i>{{get instance attribute}},</i>
           {{/each}}
         </p>
       </div>
