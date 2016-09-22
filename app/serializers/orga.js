@@ -21,5 +21,7 @@ export default DS.JSONAPISerializer.extend({
     console.log("Normalized", json);
     return json;
   },
-
+  payloadKeyFromModelName(modelName) {
+    return modelName;
+  }
 });
