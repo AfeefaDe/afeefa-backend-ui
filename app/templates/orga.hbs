@@ -4,8 +4,7 @@
     <div class="col s12 m8 push-m2">
       <div class="card">
         <div class="card-content black-text">
-          <span class="card-title">{{model.title}}</span>
-          <p>{{model.description}} Eine Beispielbeschreibung</p>
+          {{model-detail model}}
         </div>
         <div class="card-action">
             {{#link-to "editorga" model.id}}Bearbeiten{{/link-to}}
