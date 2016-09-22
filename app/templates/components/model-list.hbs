@@ -1,0 +1,18 @@
+{{yield}}
+
+<ul>
+  {{#each instances as |instance|}}
+    <li>
+      <h4>{{instance.title}}</h4>
+      <div class="attributes">
+        <p>Show:
+          {{#each attributes as |attribute|}}
+          <i>{{attribute}},</i>
+          {{/each}}
+        </p>
+      </div>
+      <a href="#!">Show single item</a>
+      <hr>
+    </li>
+  {{/each}}
+</ul>

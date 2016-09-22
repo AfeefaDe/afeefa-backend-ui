@@ -21,7 +21,13 @@ Router.map(function() {
   this.route('orga', { path: '/orgas/:orga_id' });
   this.route('editorga', { path: '/orgas/:orga_id/edit' });
   this.route('neworga', { path: '/orgas/new' });
-
+  /*
+   * Event Routes
+   */
+  this.route('events');
+  this.route('event', { path: '/events/:event_id'});
+  this.route('editevent', { path: '/events/:event_id/edit'});
+  this.route('newevent', { path: '/events/new'});
 });
 
 export default Router;
