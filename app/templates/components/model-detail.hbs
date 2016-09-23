@@ -1,2 +1,7 @@
 {{yield}}
 
+
+<h4>{{model.title}}</h4>
+{{#each attr as |attribute|}}
+  <p><b>{{attribute}}: </b>{{get model attribute}}</p>
+{{/each}}
