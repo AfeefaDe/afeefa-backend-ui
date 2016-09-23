@@ -16,11 +16,6 @@ export default DS.JSONAPISerializer.extend({
     console.log("[custom orga serializer] serialized JSON: ", json);
     return json;
   },
-  normalize(params) {
-    let json = this._super(...arguments);
-    console.log("Normalized", json);
-    return json;
-  },
   payloadKeyFromModelName(modelName) {
     //return singular model name: 'orga'
     return modelName;

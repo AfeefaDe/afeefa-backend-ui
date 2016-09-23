@@ -1,4 +1,7 @@
 <navigation>
+  <section id="user-context" style="float:left;">
+    <p>{{user.forename}} {{user.surname}}</p>
+  </section>
   {{#link-to 'protected.dashboard'}}Dashboard{{/link-to}}
   {{#if session.isAuthenticated}}
     <a {{action 'invalidateSession'}}>Logout</a>
