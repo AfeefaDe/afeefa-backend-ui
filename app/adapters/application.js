@@ -9,7 +9,11 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
    */
   buildURL: function(modelName, id, snapshot, requestType, query) {
     let url = this._super(...arguments);
-    console.log("[adapter] buildURL: "+url);
+    console.log("make API request to: "+url);
     return url;
+  },
+  handleResponse: function(status, headers, payload, requestData) {
+    if(headers && headers['access-token']) console.log("Response sent new access-token: ", headers['access-token']);
+    return this._super(...arguments);
   }
 });

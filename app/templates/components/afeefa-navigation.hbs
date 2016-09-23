@@ -1,5 +1,5 @@
 <navigation>
-  {{#link-to 'dashboard'}}Dashboard{{/link-to}}
+  {{#link-to 'protected.dashboard'}}Dashboard{{/link-to}}
   {{#if session.isAuthenticated}}
     <a {{action 'invalidateSession'}}>Logout</a>
   {{else}}

@@ -1,5 +1,4 @@
-{{user-context user=model}}
-
+{{outlet}}
 <div class="row">
     <div class="col s12 m6">
       <div class="card">
@@ -8,7 +7,7 @@
           <p>Zu erledigende Aufgaben</p>
         </div>
         <div class="card-action">
-            {{#link-to "todos"}}Alle Todos{{/link-to}}
+            {{#link-to "protected.todos"}}Alle Todos{{/link-to}}
         </div>
       </div>
     </div>
@@ -19,8 +18,8 @@
           <p>Alle erstellten Organisationen</p>
         </div>
         <div class="card-action">
-            {{#link-to "orgas"}}Alle Orgas{{/link-to}}
-            {{#link-to "neworga"}}Neue Orga{{/link-to}}
+            {{#link-to "protected.orgas"}}Alle Orgas{{/link-to}}
+            {{#link-to "protected.neworga"}}Neue Orga{{/link-to}}
         </div>
       </div>
     </div>
@@ -31,17 +30,9 @@
           <p>Alle erstellen Events</p>
         </div>
         <div class="card-action">
-            {{#link-to "events"}}Alle Events{{/link-to}}
-            {{#link-to "newevent"}}Neues Event{{/link-to}}
+            {{#link-to "protected.events"}}Alle Events{{/link-to}}
+            {{#link-to "protected.newevent"}}Neues Event{{/link-to}}
         </div>
       </div>
     </div>
 </div>
-
-
-
-
-
-
-
-{{outlet}}
