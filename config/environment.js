@@ -26,7 +26,7 @@ module.exports = function(environment) {
     //ENV.APP.LOG_RESOLVER = true;
     ENV.APP.LOG_TRANSITIONS = false;
     ENV.APP.LOG_TRANSITIONS_INTERNAL = false;
-    ENV.APP.LOG_VIEW_LOOKUPS = true;
+    ENV.APP.LOG_VIEW_LOOKUPS = false;
   }
 
   if (environment === 'test') {
@@ -46,8 +46,9 @@ module.exports = function(environment) {
   }
 
   ENV['ember-simple-auth'] = {
-    routeAfterAuthentication: 'protected.dashboard',
-    routeIfAlreadyAuthenticated: 'protected.dashboard'
+    routeAfterAuthentication: 'protected',
+    routeIfAlreadyAuthenticated: 'protected',
+    authenticationRoute: 'login'
   }
 
   ENV.contentSecurityPolicy = {

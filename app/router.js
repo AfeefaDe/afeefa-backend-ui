@@ -9,12 +9,11 @@ Router.map(function() {
   /*
    * Main Routes
    */
-  this.route('dashboard', {path: '/'});
   this.route('login');
   this.route('logout');
 
-  this.route('protected', function() {
-    this.route('dashboard');
+  this.route('protected', {path: '/'}, function() {
+    this.route('dashboard', {path: '/'});
     this.route('search');
     this.route('todos');
     /*

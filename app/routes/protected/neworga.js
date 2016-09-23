@@ -3,6 +3,6 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
   model() {
-    return this.store.findRecord('user', this.get('session.currentUser'))
+    return this.store.findRecord('user', this.get('session.currentUser'));
   },
 });
