@@ -24,5 +24,17 @@ export default DS.JSONAPISerializer.extend({
   payloadKeyFromModelName(modelName) {
     //return singular model name: 'orga'
     return modelName;
+  },
+  keyForRelationship: function(key, relationship, method) {
+    //return camelized keys for relationships
+    return Ember.String.camelize(key);
+  },
+  keyForAttribute: function(key, relationship, method) {
+    //return camelized keys for attributes
+    return Ember.String.camelize(key);
+  },
+  keyForLink: function(key, relationship, method) {
+    //return camelized keys for links
+    return Ember.String.camelize(key);
   }
 });
