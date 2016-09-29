@@ -1,24 +1,24 @@
-<div id="login-canvas">
-  <div id="login">
-    <img src="/assets/images/afeefa_light.svg" alt="Afeefa Logo with white background">
-    <!-- {{#if errorMessage}}
-      <p class="errorMsg">{{errorMessage}}</p>
-    {{/if}} -->
-    <form {{action 'authenticate' on='submit'}}>
-      
-      <div class="input-field">
-        {{input value=email id="email" type="email" class="validate"}}
-        <label for="email">Email</label>
-      </div>
+<div id="login">
+  <img src="/assets/images/afeefa_light.svg" alt="Afeefa Logo with white background">
+  <!-- {{#if errorMessage}}
+    <p class="errorMsg">{{errorMessage}}</p>
+  {{/if}} -->
+  <form {{action 'authenticate' on='submit'}}>
+    
+    <div class="input-field">
+      {{input value=email id="email" type="email" class="validate"}}
+      <label for="email">Email</label>
+    </div>
 
-      <div class="input-field">
-        {{input value=password id="password" type="password" class="validate"}}
-        <label for="password">Password</label>
-      </div>
+    <div class="input-field">
+      {{input value=password id="password" type="password" class="validate"}}
+      <label for="password">Password</label>
+    </div>
 
-      <button class="btn waves-effect waves-light" type="submit">Login
+    <div class="submit-btn-container">
+      <button class="btn waves-effect waves-light z-depth-1" type="submit">Login
         <i class="material-icons left">lock</i>
       </button>
-    </form>
-  </div>
+    </div>
+  </form>
 </div>

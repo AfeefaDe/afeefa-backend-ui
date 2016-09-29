@@ -1,20 +1,11 @@
 body {
 	margin: 0;
 	
-	background-color: $black;
-	/*background-image: url("img/polygones.svg");*/
-	/*@include background-size(cover);*/
-	/*@include filter(grayscale(100%));*/
-	/*font-family: 'Roboto', sans-serif !important;*/
-	/*font-weight: 200;*/
-	color: $white;
+	background-color: $white;
+	color: $black;
 }
 
-/*a {
-	color: white;
-	text-decoration: none;
-
-	&:hover {
-		text-decoration: underline;
-	}
-}*/
+/* sets padding for every view; set "padding: 0" in the view, if not needed */
+.ember-view > div {
+  padding:2em 1em;
+}
