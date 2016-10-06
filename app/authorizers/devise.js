@@ -15,7 +15,6 @@ export default Devise.extend({
     const userTokenType      = data['tokenType'];
     const userClient         = data['client'];
     const userExpire         = data['expiry'];
-
     if (!Ember.isEmpty(userToken) && !Ember.isEmpty(userIdentification)) {
       header('access-token', userToken);
       header('token-type', userTokenType);
