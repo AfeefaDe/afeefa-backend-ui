@@ -13,7 +13,8 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
     return url;
   },
   handleResponse: function(status, headers, payload, requestData) {
-    if(headers && headers['access-token']) console.log("Response sent new access-token: ", headers['access-token']);
+    if(headers && headers['access-token']) console.log("Response from Request: "+requestData.url+" access-token: ", headers['access-token']);
+    else console.log("Response from Request: "+requestData.url+" without token: ", headers);
     return this._super(...arguments);
   }
 });
