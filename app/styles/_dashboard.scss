@@ -1,0 +1,17 @@
+#dashboard {
+	position: relative;
+	z-index: 0;
+
+	.row .col.s12 {
+		padding: 0;
+	}
+
+		.row .col.m6 {
+		padding: inherit;
+	}
+
+
+	h2 {
+		font-size: 1.5em;
+	}
+}
