@@ -14,6 +14,7 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
     return url;
   },
   handleResponse: function(status, headers, payload, requestData) {
+    console.log("[raw response]: ", payload);
     //new token from API is present: update session
     if(headers && headers['access-token']) {
       this.get('session').set('data.authenticated.accessToken', headers['access-token']);
