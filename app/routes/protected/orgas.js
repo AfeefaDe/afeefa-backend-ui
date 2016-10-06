@@ -1,13 +1,12 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
 
-import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-
-export default Ember.Route.extend(AuthenticatedRouteMixin, {
+export default Ember.Route.extend({
 	model() {
     //returns model when all promises are resolved
+    let parentModel = this.modelFor("protected");
     return RSVP.hash({
-      instances: this.store.findRecord('user', this.get('session.currentUser')),
+      instances: parentModel.user,
       attributes: ['description', 'status', 'subOrgas']
     });
 	}

@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-export default Ember.Route.extend(AuthenticatedRouteMixin,{
+export default Ember.Route.extend({
 	model(params) {
 		//@question better to make this a subroute of /orgas and simply filter the model
     return this.get('store').findRecord('orga', params.orga_id);
