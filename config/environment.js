@@ -46,9 +46,8 @@ module.exports = function(environment) {
   }
 
   ENV['ember-simple-auth'] = {
-    routeAfterAuthentication: 'protected',
-    routeIfAlreadyAuthenticated: 'protected',
-    authenticationRoute: 'login'
+    routeAfterAuthentication: 'protected.dashboard',
+    routeIfAlreadyAuthenticated: 'protected.dashboard'
   }
 
   ENV.contentSecurityPolicy = {
