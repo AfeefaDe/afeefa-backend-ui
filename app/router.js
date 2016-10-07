@@ -30,6 +30,11 @@ Router.map(function() {
     this.route('event', { path: '/events/:event_id'});
     this.route('editevent', { path: '/events/:event_id/edit'});
     this.route('newevent', { path: '/events/new'});
+
+    /*
+    * User Routes
+    */
+    this.route('user', { path: '/user/:user_id'});
   });
 });
 
