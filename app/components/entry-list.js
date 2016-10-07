@@ -10,7 +10,6 @@ export default Ember.Component.extend({
       let id = instance.id;
       //determine the instance type (currently supported: orga, event)
       let type = instance.constructor.modelName;
-      console.log(type)
       this.get('router').transitionTo('protected.'+type, id);
     }
   }
