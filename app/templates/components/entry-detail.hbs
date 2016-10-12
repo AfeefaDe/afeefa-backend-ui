@@ -4,11 +4,13 @@
 <h4>{{model.title}}</h4>
 {{#each attr as |attribute|}}
   <p>
+  {{#if (get model attribute.name)}}
     <b>{{attribute.name}}: </b>
     {{#if (eq attribute.type "date")}}
       {{format-date (get model attribute.name)}}
     {{else}}
       {{get model attribute.name}}
     {{/if}}
+  {{/if}}
   </p>
 {{/each}}
