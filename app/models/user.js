@@ -1,10 +1,8 @@
-import Model from 'ember-data/model';
-import attr from 'ember-data/attr';
-import { belongsTo, hasMany } from 'ember-data/relationships';
+import DS from 'ember-data';
 
-export default Model.extend({
-  forename: attr('string'),
-  surname: attr('string'),
-  email: attr('string'),
-  orgas: hasMany('orga', { async: true })
+export default DS.Model.extend({
+  forename: DS.attr('string'),
+  surname: DS.attr('string'),
+  email: DS.attr('string'),
+  orgas: DS.hasMany('orga', { async: true })
 });

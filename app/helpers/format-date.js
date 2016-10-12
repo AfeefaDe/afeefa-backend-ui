@@ -1,5 +1,4 @@
 import Ember from 'ember';
-let timeagoInstance = new timeago();
 
 /*
  * handlebar helper to output date using timeago.js
@@ -7,6 +6,7 @@ let timeagoInstance = new timeago();
 export function formatDate(params) {
   if(params && params[0]) {
     let date = params[0];
+    let timeagoInstance = new timeago();
     return timeagoInstance.format(date);
   }
   else return params;

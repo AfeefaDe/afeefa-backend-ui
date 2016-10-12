@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import JSONAPIAdapter from 'ember-data/adapters/json-api';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
@@ -8,12 +9,12 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
   /*
    * Debug helper: print URL for every API requst running through this adapter
    */
-  buildURL: function(modelName, id, snapshot, requestType, query) {
+  buildURL: function() {
     let url = this._super(...arguments);
     console.log("make API request to: "+url);
     return url;
   },
-  handleResponse: function(status, headers, payload, requestData) {
+  handleResponse: function(status, headers) {
     //new token from API is present: update session
     if(headers && headers['access-token']) {
       this.get('session').set('data.authenticated.accessToken', headers['access-token']);

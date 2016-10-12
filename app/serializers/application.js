@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.JSONAPISerializer.extend({
@@ -20,15 +21,15 @@ export default DS.JSONAPISerializer.extend({
     //return singular model name: 'orga', 'event'
     return modelName;
   },
-  keyForRelationship: function(key, relationship, method) {
+  keyForRelationship: function(key) {
     //return underscore keys for relationships
     return Ember.String.underscore(key);
   },
-  keyForAttribute: function(key, relationship, method) {
+  keyForAttribute: function(key) {
     //return underscore keys for attributes
     return Ember.String.underscore(key);
   },
-  keyForLink: function(key, relationship, method) {
+  keyForLink: function(key) {
     //return underscore keys for links
     return Ember.String.underscore(key);
   }
