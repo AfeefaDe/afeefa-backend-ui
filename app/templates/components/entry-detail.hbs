@@ -3,5 +3,12 @@
 
 <h4>{{model.title}}</h4>
 {{#each attr as |attribute|}}
-  <p><b>{{attribute}}: </b>{{get model attribute}}</p>
+  <p>
+    <b>{{attribute.name}}: </b>
+    {{#if (eq attribute.type "date")}}
+      {{format-date (get model attribute.name)}}
+    {{else}}
+      {{get model attribute.name}}
+    {{/if}}
+  </p>
 {{/each}}

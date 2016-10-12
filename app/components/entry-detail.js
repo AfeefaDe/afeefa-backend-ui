@@ -2,8 +2,12 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   attr: Ember.computed('model', function() {
-    var model = this.get('model');
-    var attributes = Object.keys(model.toJSON())
+    let model = this.get('model');
+    var attributes = [];
+    model.eachAttribute(function(name, meta) {
+      let entry = {name: name, type: meta.type};
+      attributes.push(entry);
+    });
     return attributes;
   })
 });
