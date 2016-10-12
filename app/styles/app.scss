@@ -6,8 +6,8 @@
 @import 'colors';
 /*@import 'fonts';*/
 @import 'basic';
-@import 'user-context';
-@import 'navigation';
+@import 'components/afeefa-navigation';
 @import 'todo-list';
-@import 'component_entry-tile';
+@import 'components/entry-tile';
 @import 'login';
+@import 'dashboard';

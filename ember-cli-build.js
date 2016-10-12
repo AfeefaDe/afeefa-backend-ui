@@ -27,6 +27,7 @@ module.exports = function(defaults) {
   // along with the exports of each module as its value.
 
   app.import('bower_components/materialize/dist/js/materialize.min.js');
+  app.import('bower_components/timeago.js/dist/timeago.min.js');
   // app.import('bower_components/materialize/fonts');
   // app.import('bower_components/materialize/fonts/', {
   //   destDir: 'fonts'

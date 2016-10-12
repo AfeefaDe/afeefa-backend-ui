@@ -1,31 +1,30 @@
-#login-canvas {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 #login {
+  padding:2em 1em;
+  margin: 0 auto;
+
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-top:1em;
-  padding:2em 1em;
-  /*height:16em;
-  width:12em;*/
-  min-width:24em;
   flex:none;
-  color: $gray20;
   background-color: $white;
-  input {
-    width:16em;
-  }
+  max-width:30em;
 }
 
 img {
   width:33%;
-  align-self: center;
-  margin-bottom:10px;
+  max-height:50%;
+  margin-bottom:2em;
+}
+
+form {
+  width: 100%;
+  max-width:30em;
+
+  .submit-btn-container {
+    margin-top: 2em;
+    text-align: center
+  }
 }
 
 .errorMsg {

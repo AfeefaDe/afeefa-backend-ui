@@ -1,7 +1,7 @@
 {{yield}}
 
 <ul>
-  {{#each instances as |instance|}}
+  {{#each (limit-array instances limit) as |instance|}}
     <li>
       <h4>{{instance.title}}</h4>
       <div class="attributes">
