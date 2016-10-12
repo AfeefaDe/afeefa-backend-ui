@@ -7,6 +7,7 @@
     "ember-qunit-notifications": "0.1.0",
     "hammer.js": "^2.0.8",
     "matchMedia": "0.2.0",
-    "materialize": "^0.97.7"
+    "materialize": "^0.97.7",
+    "timeago.js": "^2.0.2"
   }
 }
