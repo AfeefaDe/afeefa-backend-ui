@@ -25,7 +25,6 @@ export default DS.JSONAPISerializer.extend({
     return Ember.String.underscore(key);
   },
   keyForAttribute: function(key, relationship, method) {
-    console.log(`Convert key: ${key} to ${Ember.String.underscore(key)}`);
     //return underscore keys for attributes
     return Ember.String.underscore(key);
   },

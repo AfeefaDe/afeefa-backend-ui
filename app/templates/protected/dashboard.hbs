@@ -48,7 +48,7 @@
           <div class="card-content black-text">
             <span class="card-title">Organisationen ({{model.user.orgas.length}})</span>
             <p>Alle erstellten Organisationen</p>
-            {{entry-list instances=model.user.orgas}}
+            {{entry-list instances=model.user.orgas limit=5}}
           </div>
           <div class="card-action">
               {{#link-to "protected.orgas"}}Alle Orgas{{/link-to}}
@@ -61,7 +61,7 @@
           <div class="card-content black-text">
             <span class="card-title">Events ({{model.events.length}})</span>
             <p>Alle erstellen Events</p>
-            {{entry-list instances=model.events}}
+            {{entry-list instances=model.events limit=5}}
           </div>
           <div class="card-action">
               {{#link-to "protected.events"}}Alle Events{{/link-to}}
