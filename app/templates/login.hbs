@@ -1,24 +1,29 @@
-<div id="login">
-  <img src="/assets/images/afeefa_light.svg" alt="Afeefa Logo with white background">
-  <!-- {{#if errorMessage}}
-    <p class="errorMsg">{{errorMessage}}</p>
-  {{/if}} -->
-  <form {{action 'authenticate' on='submit'}}>
-    
-    <div class="input-field">
-      {{input value=email id="email" type="email" class="validate"}}
-      <label for="email">Email</label>
+<div class="login">
+  <div class="row">
+    <div class="col s12 m8 push-m2">
+        <img class="login__logo" src="/assets/images/afeefa_light.svg" alt="Afeefa Logo with white background">
+        <div class="mainCard">
+          <div class="mainCard__header">
+            <h2 class="mainCard__headerTitle">Login to Backend</h2>
+          </div>
+          <div>
+            <form {{action 'authenticate' on='submit'}}>
+              <div class="input-field">
+                {{input value=email id="email" type="email" class="validate"}}
+                <label for="email">Email</label>
+              </div>
+              <div class="input-field">
+                {{input value=password id="password" type="password" class="validate"}}
+                <label for="password">Password</label>
+              </div>
+              <div class="submit-btn-container">
+                <button class="btn waves-effect waves-light z-depth-1" type="submit">Login
+                  <i class="material-icons left">lock</i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="input-field">
-      {{input value=password id="password" type="password" class="validate"}}
-      <label for="password">Password</label>
-    </div>
-
-    <div class="submit-btn-container">
-      <button class="btn waves-effect waves-light z-depth-1" type="submit">Login
-        <i class="material-icons left">lock</i>
-      </button>
-    </div>
-  </form>
 </div>

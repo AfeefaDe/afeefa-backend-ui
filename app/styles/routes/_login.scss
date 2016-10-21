@@ -1,32 +1,7 @@
-#login {
-  padding:2em 1em;
-  margin: 0 auto;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  flex:none;
-  background-color: $white;
-  max-width:30em;
-}
-
-img {
-  width:33%;
-  max-height:50%;
-  margin-bottom:2em;
-}
-
-form {
-  width: 100%;
-  max-width:30em;
-
-  .submit-btn-container {
-    margin-top: 2em;
-    text-align: center
+.login {
+  &__logo {
+    height: 40vh;
+    display: block;
+    margin: 3em auto;
   }
-}
-
-.errorMsg {
-  color: $red;
 }
