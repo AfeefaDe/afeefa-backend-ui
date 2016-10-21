@@ -11,11 +11,26 @@ body {
 .cursor {
   cursor: pointer;
 }
+.text-center {
+  text-align: center;
+}
+
+/*overwrite default materialize grid behavior*/
+@media screen and (max-width: $break-small) {
+  .row .col.s12 {
+    padding: 0;
+  }
+}
+
 
 .afeefaCard {
   $height: 24px;
   background-color: white;
-  margin: 1em;
+  margin-top: 2em;
+  @media screen and (max-width: $break-small) {
+    margin-left: 0;
+    margin-right: 0;
+  }
   /*top level divs*/
   > div {
     padding: 1em;
