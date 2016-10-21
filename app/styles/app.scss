@@ -1,13 +1,16 @@
-/*@import 'ember-paper';*/
+/* Main scss file */
 
 /* asset defined in ember-cli-build.js */
 @import 'materialize';
 
+/* basics */
 @import 'colors';
-/*@import 'fonts';*/
 @import 'basic';
+@import 'fonts';
+
+/* components */
 @import 'components/afeefa-navigation';
-@import 'todo-list';
-@import 'components/entry-tile';
+
+/* pages */
 @import 'login';
 @import 'dashboard';
