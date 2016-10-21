@@ -11,9 +11,6 @@ body {
 .cursor {
   cursor: pointer;
 }
-.text-center {
-  text-align: center;
-}
 
 /*overwrite default materialize grid behavior*/
 @media screen and (max-width: $break-small) {
@@ -22,6 +19,14 @@ body {
   }
 }
 
+.searchCard {
+  text-align: center;
+  font-size: 1.2em;
+  margin-top: 2em;
+  @media screen and (max-width: $break-small) {
+    margin-top: 1em;
+  }
+}
 
 .afeefaCard {
   $height: 24px;
@@ -30,6 +35,7 @@ body {
   @media screen and (max-width: $break-small) {
     margin-left: 0;
     margin-right: 0;
+    margin-top: 1em;
   }
   /*top level divs*/
   > div {
@@ -40,6 +46,10 @@ body {
     color: $white;
     display: flex;
     align-items: center;
+    a {
+      color: inherit;
+      cursor: pointer;
+    }
   }
   &__headerTitle {
     flex-grow: 2;

@@ -1,19 +1,14 @@
 <div id="dashboard">
   <div class="row">
       <div class="col s12 m6">
-        <div class="afeefaCard">
-          <div class="afeefaCard__header">
-            <h2 class="afeefaCard__headerTitle">Suche</h2>
-          </div>
-          <div class="text-center">
-            {{#link-to "protected.search"}}<i class="material-icons">search</i>{{/link-to}}
-          </div>
+        <div class="searchCard">
+          {{#link-to "protected.search"}}<i class="material-icons">search</i>{{/link-to}}
         </div>
       </div>
       <div class="col s12 m6">
         <div class="afeefaCard">
           <div class="afeefaCard__header">
-            <h2 class="afeefaCard__headerTitle">Todos</h2>
+            <h2 class="afeefaCard__headerTitle">{{#link-to "protected.todos"}}Todos{{/link-to}}</h2>
             <a href="#" class="afeefaCard__headerAction"><i class="material-icons">notifications</i></a>
           </div>
           <div>
@@ -25,7 +20,7 @@
       <div class="col s12 m6">
         <div class="afeefaCard">
           <div class="afeefaCard__header">
-            <h2 class="afeefaCard__headerTitle">Organisationen ({{model.user.orgas.length}})</h2>
+            <h2 class="afeefaCard__headerTitle">{{#link-to "protected.orgas"}}Organisationen ({{model.user.orgas.length}}){{/link-to}}</h2>
             {{#link-to "protected.neworga" class="afeefaCard__headerAction"}}<i class="material-icons">add</i>{{/link-to}}
           </div>
           <div>
