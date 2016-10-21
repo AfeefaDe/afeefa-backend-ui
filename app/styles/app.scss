@@ -11,5 +11,7 @@
 /* components */
 @import 'components/afeefa-navigation';
 @import 'components/_entry-list';
+
 /* pages */
-@import 'login';
+@import 'routes/login';
+@import 'routes/dashboard';

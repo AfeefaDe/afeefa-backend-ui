@@ -19,16 +19,7 @@ body {
   }
 }
 
-.searchCard {
-  text-align: center;
-  font-size: 1.2em;
-  margin-top: 2em;
-  @media screen and (max-width: $break-small) {
-    margin-top: 1em;
-  }
-}
-
-.afeefaCard {
+.mainCard {
   $height: 24px;
   background-color: white;
   margin-top: 2em;

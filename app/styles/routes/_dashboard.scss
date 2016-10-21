@@ -1,0 +1,11 @@
+/*
+ card with search icon; acting similar to mainCard
+*/
+.searchCard {
+  text-align: center;
+  font-size: 1.2em;
+  margin-top: 2em;
+  @media screen and (max-width: $break-small) {
+    margin-top: 1em;
+  }
+}
