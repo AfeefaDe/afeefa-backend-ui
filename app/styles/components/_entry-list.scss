@@ -1,0 +1,40 @@
+.entryList {
+  padding-left: 0;
+  list-style: none;
+  li {
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    border-bottom: 2px solid $gray20;
+    &:last-child {
+      border-style: none;
+    }
+  }
+  &__nav {
+    cursor: pointer;
+    color: inherit;
+    display: flex;
+    align-items: flex-end;
+    .icon {
+
+    }
+    .title {
+      flex-grow: 2;
+      font-size: 1.4em;
+      margin-bottom: 0.2em;
+      margin-top: 0;
+      font-weight: 500;
+    }
+  }
+  &__attributes {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 1em;
+    color: $gray80;
+    .item {
+      margin: 0 2.5em 0 0;
+    }
+    .meta {
+      margin-right: 0.3em;
+    }
+  }
+}

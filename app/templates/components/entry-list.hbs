@@ -1,18 +1,24 @@
 {{yield}}
 
-<ul>
+<ul class="entryList">
   {{#each (limit-array instances limit) as |instance|}}
     <li>
-      <h4>{{instance.title}}</h4>
-      <div class="attributes">
-        <p>Attributes:
-          {{#each attributes as |attribute|}}
-            <i>{{get instance attribute}},</i>
-          {{/each}}
-        </p>
-      </div>
-      <a {{action 'navigateToSingle' instance}} class="cursor">Show single item</a>
-      <hr>
+      <a {{action 'navigateToSingle' instance}} class="entryList__nav">
+        <h4 class="title">{{instance.title}}</h4>
+        <span class="icon"><i class="material-icons">navigate_next</i></span>
+      </a>
+      <!--@todo-->
+      {{#if false}}
+        <div class="entryList__attributes">
+            {{#each attributes as |attribute|}}
+              <i>{{get instance attribute}},</i>
+            {{/each}}
+        </div>
+       {{/if}}
+        <div class="entryList__attributes">
+          <p class="item"><span class="meta">Date:</span>2 days ago</p>
+          <p class="item"><span class="meta">Status:</span>Kann geändert werden</p>
+        </div>
     </li>
   {{/each}}
 </ul>

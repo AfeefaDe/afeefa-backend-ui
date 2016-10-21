@@ -1,71 +1,39 @@
 <div id="dashboard">
+  {{#link-to "protected.search"}}Suche{{/link-to}}
   <div class="row">
       <div class="col s12 m6">
-        {{#link-to "protected.search"}}Suche{{/link-to}}
-
-        <!-- TODOS LIST start -->
-        <h2>Todos</h2>
-        <ul class="collection">
-          <li class="collection-item avatar">
-            <img src="http://loremflickr.com/100/100/colorful" alt="" class="circle">
-            <span class="title">Title</span>
-            <p>First Line <br>
-               Second Line
-            </p>
-            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-          </li>
-          <li class="collection-item avatar">
-            <i class="material-icons circle">folder</i>
-            <span class="title">Title</span>
-            <p>First Line <br>
-               Second Line
-            </p>
-            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-          </li>
-          <li class="collection-item avatar">
-            <i class="material-icons circle green">insert_chart</i>
-            <span class="title">Title</span>
-            <p>First Line <br>
-               Second Line
-            </p>
-            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-          </li>
-          <li class="collection-item avatar">
-            <i class="material-icons circle red">play_arrow</i>
-            <span class="title">Title</span>
-            <p>First Line <br>
-               Second Line
-            </p>
-            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-          </li>
-        </ul>
-        {{#link-to "protected.todos"}}Alle Todos{{/link-to}}
-        <!-- TODOS LIST end -->
-
-      </div>
-      <div class="col s12 m6">
-        <div class="card">
-          <div class="card-content black-text">
-            <span class="card-title">Organisationen ({{model.user.orgas.length}})</span>
-            <p>Alle erstellten Organisationen</p>
-            {{entry-list instances=model.user.orgas limit=5}}
+        <div class="afeefaCard">
+          <div class="afeefaCard__header">
+            <h2 class="afeefaCard__headerTitle">Todos</h2>
+            <a href="#" class="afeefaCard__headerAction"><i class="material-icons">notifications</i></a>
           </div>
-          <div class="card-action">
-              {{#link-to "protected.orgas"}}Alle Orgas{{/link-to}}
-              {{#link-to "protected.neworga"}}Neue Orga{{/link-to}}
+          <div>
+            {{entry-list instances=model.user.orgas limit=5 attributes=model.attributes}}
+            {{#link-to "protected.todos"}}Alle Todos...{{/link-to}}
           </div>
         </div>
       </div>
       <div class="col s12 m6">
-        <div class="card">
-          <div class="card-content black-text">
-            <span class="card-title">Events ({{model.events.length}})</span>
-            <p>Alle erstellen Events</p>
-            {{entry-list instances=model.events limit=5}}
+        <div class="afeefaCard">
+          <div class="afeefaCard__header">
+            <h2 class="afeefaCard__headerTitle">Organisationen ({{model.user.orgas.length}})</h2>
+            {{#link-to "protected.neworga" class="afeefaCard__headerAction"}}<i class="material-icons">add</i>{{/link-to}}
           </div>
-          <div class="card-action">
-              {{#link-to "protected.events"}}Alle Events{{/link-to}}
-              {{#link-to "protected.newevent"}}Neues Event{{/link-to}}
+          <div>
+            {{entry-list instances=model.user.orgas limit=5 attributes=model.attributes}}
+            {{#link-to "protected.orgas"}}Alle Orgas...{{/link-to}}
+          </div>
+        </div>
+      </div>
+      <div class="col s12 m6">
+        <div class="afeefaCard">
+          <div class="afeefaCard__header">
+            <h2 class="afeefaCard__headerTitle">Events ({{model.events.length}})</h2>
+            {{#link-to "protected.newevent" class="afeefaCard__headerAction"}}<i class="material-icons">add</i>{{/link-to}}
+          </div>
+          <div>
+              {{entry-list instances=model.events limit=5}}
+              {{#link-to "protected.events"}}Alle Events...{{/link-to}}
           </div>
         </div>
       </div>

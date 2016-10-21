@@ -11,3 +11,29 @@ body {
 .cursor {
   cursor: pointer;
 }
+
+.afeefaCard {
+  $height: 24px;
+  background-color: white;
+  margin: 1em;
+  /*top level divs*/
+  > div {
+    padding: 1em;
+  }
+  &__header {
+    background-color: $black_alpha;
+    color: $white;
+    display: flex;
+    align-items: center;
+  }
+  &__headerTitle {
+    flex-grow: 2;
+    line-height: $height;
+    font-size: 1.2em;
+    margin: 0;
+  }
+  &__headerAction {
+    color: inherit;
+    max-height: $height;
+  }
+}
