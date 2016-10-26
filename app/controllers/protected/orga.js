@@ -1,8 +1,19 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  errorMessage: false,
+  store: Ember.inject.service(),
   actions: {
+    /*
+     * change of orga status
+     */
+    setStatus: function(newStatus) {
+      console.log("@todo: save new status:", newStatus);
+    }
+  }
+
+/* diabled
+  actions: {
+
     delete: function() {
       let orga = this.get('model');
       orga.destroyRecord().then(() => {
@@ -12,5 +23,6 @@ export default Ember.Controller.extend({
         this.set('errorMessage', err.message);
       });
     }
-  }
+
+  }*/
 });

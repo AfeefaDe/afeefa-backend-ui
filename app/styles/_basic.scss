@@ -42,6 +42,10 @@ body {
       cursor: pointer;
     }
   }
+  &__headerLight {
+    background-color: white;
+    color: $black;
+  }
   &__headerTitle {
     flex-grow: 2;
     line-height: $height;

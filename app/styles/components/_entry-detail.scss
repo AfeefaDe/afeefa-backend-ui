@@ -1,0 +1,21 @@
+.entryDetail {
+  margin: 0;
+  padding: 0;
+  li {
+    list-style: none;
+    display: block;
+    margin-bottom: 0.6em;
+    display: flex;
+    align-items: center;
+  }
+  &__meta {
+    color: $gray50;
+    margin-right: 0.4em;
+    /*@todo: better solution: #138*/
+    text-transform: capitalize;
+  }
+  &__inlineInput {
+    flex-grow: 2;
+    width: auto;
+  }
+}

@@ -2,9 +2,32 @@
 
 <div class="row">
   <div class="col s12 m8 push-m2">
-    <div class="card">
-      <div class="card-content black-text">
-        {{entry-detail model=model}}
+    <div class="mainCard">
+      <div class="mainCard__header mainCard__headerLight">
+        <h2 class="mainCard__headerTitle">Daten</h2>
+        {{#link-to "protected.editorga" model.id class="mainCard__headerAction"}}<i class="material-icons">mode_edit</i>{{/link-to}}
+      </div>
+      <div>
+        {{#entry-detail model=model}}
+          <li>
+            <span class="entryDetail__meta">Status ändern (@todo):</span>
+            <select class="browser-default entryDetail__inlineInput" onchange={{action "setStatus" value="target.value"}}>
+              <option value="1">Veröffentlicht</option>
+              <option value="2">In Review</option>
+              <option value="3">Disabled</option>
+            </select>
+          </li>
+        {{/entry-detail}}
+        <p><b>Untergeordnete Orgas:</b></p>
+        <b><red>@todo: get suborgas</red></b>
+        <!--{{entry-list instances=model.suborgas}}-->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+Not in prototyp:
 
         <p><b>users:</b>
           <ul>
@@ -16,11 +39,4 @@
             {{/each}}
           </ul>
         </p>
-        <div class="card-action">
-          {{#link-to "protected.editorga" model.id}}Bearbeiten{{/link-to}}
-          <a {{action 'delete'}}>Löschen</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+-->
