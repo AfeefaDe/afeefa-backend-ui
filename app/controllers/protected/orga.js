@@ -10,19 +10,4 @@ export default Ember.Controller.extend({
       console.log("@todo: save new status:", newStatus);
     }
   }
-
-/* diabled
-  actions: {
-
-    delete: function() {
-      let orga = this.get('model');
-      orga.destroyRecord().then(() => {
-        //@todo: transistion to /orgas
-        console.log("Success");
-      }, (err) => {
-        this.set('errorMessage', err.message);
-      });
-    }
-
-  }*/
 });
