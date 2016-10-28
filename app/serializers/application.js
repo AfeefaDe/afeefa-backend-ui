@@ -23,8 +23,9 @@ export default DS.JSONAPISerializer.extend({
     return result;
   },
   payloadKeyFromModelName(modelName) {
-    //return singular model name: 'orga', 'event'
-    return modelName;
+    //return plural model name: 'orga', 'event'
+    let result = this._super(...arguments);
+    return result;
   },
   keyForRelationship: function(key) {
     //return underscore keys for relationships
