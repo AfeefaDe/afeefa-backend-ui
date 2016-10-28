@@ -2,9 +2,11 @@ import Ember from 'ember';
 /*
  * mixins with function validateForm
  */
-import formValidatorMixin from '../mixins/form-validator';
+import FormValidatorMixin from '../mixins/form-validator';
+import RouteHelper from '../mixins/route-helper';
 
-export default Ember.Component.extend(formValidatorMixin , {
+
+export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
   store: Ember.inject.service(),
   parentOrgaId: null,
 	actions: {
