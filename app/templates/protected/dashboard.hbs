@@ -9,10 +9,10 @@
         <div class="mainCard">
           <div class="mainCard__header">
             <h2 class="mainCard__headerTitle">{{#link-to "protected.todos"}}Todos{{/link-to}}</h2>
-            <a href="#" class="mainCard__headerAction"><i class="material-icons">notifications</i></a>
+            <a href="#" class="mainCard__headerAction" {{action "test"}}><i class="material-icons">notifications</i></a>
           </div>
           <div>
-            {{entry-list instances=model.user.orgas limit=5 attributes=model.attributes}}
+            {{entry-list instances=model.todos limit=5 attributes=model.attributes}}
             {{#link-to "protected.todos"}}Alle Todos...{{/link-to}}
           </div>
         </div>
