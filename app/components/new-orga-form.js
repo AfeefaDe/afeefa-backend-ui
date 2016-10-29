@@ -43,13 +43,13 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
             parentOrga: this.get('parentOrga'),
             category: this.get('categoryInstance'),
             state: this.get('state'),
-            contactInfo: this.get('contactInfoInstance'),
-            location: this.get('locationInstance'),
-            annotation: this.get('annotationInstance')
           });
+          orga.get('contactInfos').addObject(this.get('contactInfoInstance'));
+          orga.get('locations').addObject(this.get('locationInstance'));
+          orga.get('annotations').addObject(this.get('annotationInstance'));
           orga.save();
         }
-      })
+      });
 		},
     /*
      * Input type select setting theit values

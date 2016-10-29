@@ -10,7 +10,7 @@ export default DS.Model.extend({
   parentOrga:     DS.belongsTo('orga', {inverse: 'subOrgas'}),
   subOrgas:       DS.hasMany('orga', {inverse: 'parentOrga'}),
   category:       DS.attr('string'),
-  contactInfo:    DS.belongsTo('contact-info'),
-  annotation:     DS.belongsTo('annotation'),
-  location:       DS.belongsTo('location'),
+  contactInfos:   DS.hasMany('contact-info'),
+  annotations:    DS.hasMany('annotation'),
+  locations:      DS.hasMany('location'),
 });
