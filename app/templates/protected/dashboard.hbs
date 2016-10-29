@@ -12,7 +12,6 @@
             <a href="#" class="mainCard__headerAction" {{action "test"}}><i class="material-icons">notifications</i></a>
           </div>
           <div>
-            {{entry-list instances=model.todos limit=5 attributes=model.attributes}}
             {{#link-to "protected.todos"}}Alle Todos...{{/link-to}}
           </div>
         </div>

@@ -5,9 +5,8 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 export default Ember.Route.extend(AuthenticatedRouteMixin,{
   model() {
     return RSVP.hash({
-      user: this.store.findRecord('user', this.get('session.currentUser')),
-      events: this.store.findAll('event'),
-      todos: this.store.findAll('todo')
+      user:   this.store.findRecord('user', this.get('session.currentUser')),
+      events: this.store.findAll('event')
     });
   }
 });
