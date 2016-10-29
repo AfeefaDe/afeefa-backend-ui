@@ -22,8 +22,8 @@ export default DS.JSONAPISerializer.extend({
   },
   payloadKeyFromModelName(modelName) {
     //return plural model name: 'orga', 'event'
-    let result = this._super(...arguments);
-    return result;
+    let underscore = Ember.String.underscore(modelName);
+    return Ember.String.pluralize(underscore);
   },
   keyForRelationship: function(key) {
     //return underscore keys for relationships
