@@ -11,13 +11,17 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
   parentOrga: null,
   locationInstance: null,
   state: 'active',
+  annotationInstance: null,
   contactInfoInstance: null,
   didReceiveAttrs() {
     this._super(...arguments);
+    const store = this.get('store');
     //init empty contactInfo instance
-    this.set('contactInfoInstance', this.get('store').createRecord('contactInfo'));
+    this.set('contactInfoInstance', store.createRecord('contactInfo'));
     //init empty localtion instance
-    this.set('locationInstance', this.get('store').createRecord('location'));
+    this.set('locationInstance', store.createRecord('location'));
+    //init empty annotation instance
+    this.set('annotationInstance', store.createRecord('annotation'));
   },
 	actions: {
 		save: function() {
@@ -31,8 +35,10 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
           category: this.get('categoryInstance'),
           state: this.get('state')
         });
+        //add hasMany models to new orga
         orga.get('contactInfos').pushObject(this.get('contactInfoInstance'));
         orga.get('locations').pushObject(this.get('locationInstance'));
+        orga.get('annotations').pushObject(this.get('annotationInstance'));
         orga.save();
       }
 		},
@@ -43,15 +49,10 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
       let parentOrga = this.get('store').peekRecord('orga', parentOrgaId);
       this.set('parentOrga', parentOrga);
     },
-    selectCategory: function(categoryId) {
-      if(categoryId === -1) this.set('category', '');
-      else this.set('category', this.get('categories')[categoryId]);
-    },
     selectState: function(stateId) {
       this.set('state', this.get('states')[stateId]);
     }
 	},
-  categories: ['community', 'welcome_ini', 'sport'],
   states: ['active', 'inactive']
 });
 
