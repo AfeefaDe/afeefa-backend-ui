@@ -5,11 +5,7 @@ export default Ember.Controller.extend({
   session: Ember.inject.service('session'),
   actions: {
     test: function() {
-       let contact = this.get('store').createRecord('contactInfo');
-       contact.set('mail', 'friedrich@weise.io');
-       contact.set('phone', 'friedrich@weise.io');
-       contact.set('contactPerson', 'friedrich@weise.io');
-       contact.save();
+      //UI Tests shortcut
     }
   }
 });

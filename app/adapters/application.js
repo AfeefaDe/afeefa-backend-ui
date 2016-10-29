@@ -15,9 +15,7 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
     return url;
   },
   pathForType(modelName) {
-    //dasherize URL
     let underscore = Ember.String.underscore(modelName);
-    console.log("Convert "+modelName+" to: "+Ember.String.pluralize(underscore));
     return Ember.String.pluralize(underscore);
   },
   urlForRequest(params) {

@@ -4,7 +4,6 @@ export default DS.Model.extend({
   title:          DS.attr('string'),
   state:          DS.attr('string'),
   description:    DS.attr('string', {defaultValue: 'Description...'}),
-  users:          DS.hasMany('user', { async: true }),
   createdAt:      DS.attr('date'),
   updatedAt:      DS.attr('date'),
   stateChangedAt: DS.attr('date'),
