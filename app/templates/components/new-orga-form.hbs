@@ -28,12 +28,7 @@
 
           <div style="margin-top: 1em; color: black;">
             <label>Kategorie</label>
-            <select class="browser-default" onchange={{action "selectCategory" value="target.value"}}>
-              <option value="-1" selected>Keine Kategorie</option>
-              {{#each categories as |category index|}}
-                <option value="{{index}}">{{category}}</option>
-              {{/each}}
-            </select>
+            {{categories-form instance=categoryInstance}}
           </div>
 
           <div style="margin-top: 1em; color: black;">

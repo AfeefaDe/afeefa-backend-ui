@@ -9,7 +9,6 @@ import RouteHelper from '../mixins/route-helper';
 export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
   store: Ember.inject.service(),
   parentOrga: null,
-  category: null,
   locationInstance: null,
   state: 'active',
   contactInfoInstance: null,
@@ -29,7 +28,7 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
           title: this.get('title'),
           description: this.get('description'),
           parentOrga: this.get('parentOrga'),
-          category: this.get('category'),
+          category: this.get('categoryInstance'),
           state: this.get('state')
         });
         orga.get('contactInfos').pushObject(this.get('contactInfoInstance'));
