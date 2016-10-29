@@ -6,6 +6,7 @@ export default Ember.Component.extend({
     saveOrga: function() {
       this.get('orga').save();
     },
+    /*
     delete: function() {
       let orga = this.get('orga');
       orga.destroyRecord().then(() => {
@@ -14,6 +15,6 @@ export default Ember.Component.extend({
       }, (err) => {
         console.log("@todo handle error: ", err);
       });
-    }
+    }*/
   }
 });

@@ -19,11 +19,11 @@
       <div class="col s12 m6">
         <div class="mainCard">
           <div class="mainCard__header">
-            <h2 class="mainCard__headerTitle">{{#link-to "protected.orgas"}}Organisationen ({{model.user.orgas.length}}){{/link-to}}</h2>
+            <h2 class="mainCard__headerTitle">{{#link-to "protected.orgas"}}Organisationen ({{model.orgas.length}}){{/link-to}}</h2>
             {{#link-to "protected.neworga" class="mainCard__headerAction"}}<i class="material-icons">add</i>{{/link-to}}
           </div>
           <div>
-            {{entry-list instances=model.user.orgas limit=5 attributes=model.attributes}}
+            {{entry-list instances=model.orgas limit=5 attributes=model.attributes}}
             {{#link-to "protected.orgas"}}Alle Orgas...{{/link-to}}
           </div>
         </div>

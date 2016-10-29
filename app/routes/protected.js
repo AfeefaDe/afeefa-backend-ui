@@ -6,7 +6,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin,{
   model() {
     return RSVP.hash({
       user:   this.store.findRecord('user', this.get('session.currentUser')),
-      events: this.store.findAll('event')
+      events: this.store.findAll('event'),
+      orgas: this.store.findAll('orga')
     });
   }
 });

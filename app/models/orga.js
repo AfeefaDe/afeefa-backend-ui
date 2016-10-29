@@ -4,8 +4,8 @@ export default DS.Model.extend({
   title:          DS.attr('string'),
   description:    DS.attr('string', {defaultValue: 'Description...'}),
   users:          DS.hasMany('user', { async: true }),
-  created_at:     DS.attr('date'),
-  updated_at:     DS.attr('date'),
-  parentOrga:    DS.belongsTo('orga'),
-  children_orga:  DS.hasMany('orga', {inverse: 'parentOrga'})
+  createdAt:      DS.attr('date'),
+  updatedAt:      DS.attr('date'),
+  parentOrga:     DS.belongsTo('orga'),
+  subOrgas:       DS.hasMany('orga', {inverse: 'parentOrga', async: true})
 });

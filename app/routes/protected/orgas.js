@@ -6,7 +6,7 @@ export default Ember.Route.extend({
     //returns model when all promises are resolved
     let parentModel = this.modelFor("protected");
     return RSVP.hash({
-      instances: parentModel.user,
+      orgas: parentModel.orgas,
       attributes: ['description', 'status', 'subOrgas']
     });
 	}

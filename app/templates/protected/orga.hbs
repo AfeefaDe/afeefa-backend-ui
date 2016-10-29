@@ -18,9 +18,12 @@
             </select>
           </li>
         {{/entry-detail}}
-        <p><b>Untergeordnete Orgas:</b></p>
-        <b><red>@todo: get suborgas</red></b>
-        <!--{{entry-list instances=model.suborgas}}-->
+        <h2>Untergeordnete Orgas:</h2>
+        {{#if model.subOrgas}}
+          {{entry-list instances=model.subOrgas}}
+        {{else}}
+          Es existieren keine Orgas
+        {{/if}}
       </div>
     </div>
   </div>

@@ -5,9 +5,10 @@
     <div class="mainCard">
       <div class="mainCard__header">
         <h2 class="mainCard__headerTitle">Alle Organisationen</h2>
+        {{#link-to "protected.neworga" class="mainCard__headerAction"}}<i class="material-icons">add</i>{{/link-to}}
       </div>
       <div>
-        {{entry-list instances=model.instances.orgas attributes=model.attributes}}
+        {{entry-list instances=model.orgas attributes=model.attributes}}
       </div>
     </div>
   </div>
