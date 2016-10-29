@@ -6,15 +6,13 @@ export default Ember.Component.extend({
     saveOrga: function() {
       this.get('orga').save();
     },
-    /*
-    delete: function() {
-      let orga = this.get('orga');
-      orga.destroyRecord().then(() => {
-        //@todo: transistion to /orgas; error handling
-        console.log("Success");
-      }, (err) => {
-        console.log("@todo handle error: ", err);
-      });
-    }*/
-  }
+    setCategory: function(newCategoryId) {
+      let newCategory;
+      if(newCategoryId === -1) newCategory = "";
+      else newCategory = this.get('categories')[newCategoryId];
+      console.log("Save new CategoryId: ", newCategoryId);
+      this.get('orga').set('category', newCategory);
+    }
+  },
+  categories: ['community', 'welcome_ini', 'sport']
 });

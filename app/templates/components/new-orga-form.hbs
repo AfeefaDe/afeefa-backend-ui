@@ -26,6 +26,26 @@
               {{/each}}
             </select>
           </div>
+
+          <div style="margin-top: 1em; color: black;">
+            <label>Kategorie</label>
+            <select class="browser-default" onchange={{action "selectCategory" value="target.value"}}>
+              <option value="-1" selected>Keine Kategorie</option>
+              {{#each categories as |category index|}}
+                <option value="{{index}}">{{category}}</option>
+              {{/each}}
+            </select>
+          </div>
+
+          <div style="margin-top: 1em; color: black;">
+            <label>State</label>
+            <select class="browser-default" onchange={{action "selectState" value="target.value"}}>
+              {{#each states as |state index|}}
+                <option value="{{index}}">{{state}}</option>
+              {{/each}}
+            </select>
+          </div>
+
           <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Save</button>
         </form>
       </div>

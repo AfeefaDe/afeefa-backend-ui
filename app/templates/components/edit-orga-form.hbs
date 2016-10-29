@@ -10,5 +10,19 @@
         <label for="description" class="active">Description</label>
       </div>
 
+      <div class="input-field">
+        <select class="browser-default" onchange={{action "setCategory" value="target.value"}}>
+          <option value="-1">Keine Kategorie</option>
+          {{#each categories as |category index|}}
+            {{#if (eq orga.category category)}}
+              <option selected value="{{index}}">{{category}}</option>
+            {{else}}
+              <option value="{{index}}">{{category}}</option>
+            {{/if}}
+          {{/each}}
+        </select>
+        <label for="description" class="active">Category</label>
+      </div>
+
       <button class="btn waves-effect waves-light" type="submit">Save</button>
 </form>

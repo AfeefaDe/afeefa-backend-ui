@@ -9,6 +9,8 @@ import RouteHelper from '../mixins/route-helper';
 export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
   store: Ember.inject.service(),
   parentOrgaId: null,
+  category: null,
+  state: null,
 	actions: {
 		save: function() {
       let validated = this.validateForm(['title', 'description']);
@@ -18,7 +20,9 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
         var orga = store.createRecord('orga', {
           title: this.get('title'),
           description: this.get('description'),
-          parentOrga: parentOrga
+          parentOrga: parentOrga,
+          category: this.get('category'),
+          state: this.get('state')
         });
         orga.save();
       }
@@ -28,7 +32,16 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
      */
     selectParent: function(parentOrgaId) {
       this.set('parentOrgaId', parentOrgaId);
+    },
+    selectCategory: function(categoryId) {
+      if(categoryId === -1) this.set('category', '');
+      else this.set('category', this.get('categories')[categoryId]);
+    },
+    selectState: function(stateId) {
+      this.set('state', this.get('states')[stateId]);
     }
-	}
+	},
+  categories: ['community', 'welcome_ini', 'sport'],
+  states: ['active', 'inactive']
 });
 
