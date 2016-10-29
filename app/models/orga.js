@@ -9,5 +9,8 @@ export default DS.Model.extend({
   updatedAt:      DS.attr('date'),
   parentOrga:     DS.belongsTo('orga'),
   subOrgas:       DS.hasMany('orga', {inverse: 'parentOrga', async: true}),
-  category:       DS.attr('string')
+  category:       DS.attr('string'),
+  contactInfos:   DS.hasMany('contactInfos'),
+  annotations:    DS.hasMany('annotations'),
+  locations:      DS.hasMany('location')
 });
