@@ -33,12 +33,11 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
           description: this.get('description'),
           parentOrga: this.get('parentOrga'),
           category: this.get('categoryInstance'),
-          state: this.get('state')
+          state: this.get('state'),
+          contactInfo: this.get('contactInfoInstance'),
+          location: this.get('locationInstance'),
+          annotation: this.get('annotationInstance')
         });
-        //add hasMany models to new orga
-        orga.get('contactInfos').pushObject(this.get('contactInfoInstance'));
-        orga.get('locations').pushObject(this.get('locationInstance'));
-        orga.get('annotations').pushObject(this.get('annotationInstance'));
         orga.save();
       }
 		},

@@ -10,9 +10,25 @@
         <label for="description" class="active">Description</label>
       </div>
 
-      <div class="input-field">
-        {{categories-form selectedCategory=orga.category onChange=(action "setCategory")}}
-        <label for="description" class="active">Category</label>
+      <div style="margin-top: 1em; color: black;">
+        <label>Kategorie</label>
+        {{categories-form instance=orga.category selectedCategory=orga.category}}
+      </div>
+
+      <h2>Kontaktinformationen</h2>
+      <div style="margin-top: 1em; color: black;">
+          {{contact-info-form instance=orga.contactInfo}}
+      </div>
+
+      <h2>Ort</h2>
+      <div style="margin-top: 1em; color: black;">
+        {{location-form instance=orga.location}}
+      </div>
+
+      <h2>Anmerkungen</h2>
+       <div class="input-field">
+        {{input value=orga.annotation.title id="annotation" type="text" class="validate"}}
+        <label for="annotation">Annotation</label>
       </div>
 
       <button class="btn waves-effect waves-light" type="submit">Save</button>
