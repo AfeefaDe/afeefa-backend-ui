@@ -4,12 +4,11 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 
 export default Ember.Route.extend(AuthenticatedRouteMixin,{
   model() {
-    let categories = ['community', 'welcome_ini', 'sport'];
     return RSVP.hash({
       user:   this.store.findRecord('user', this.get('session.currentUser')),
       events: this.store.findAll('event'),
       orgas: this.store.findAll('orga'),
-      categories: categories
+      todo: this.store.findRecord('todo', 1)
     });
   }
 });

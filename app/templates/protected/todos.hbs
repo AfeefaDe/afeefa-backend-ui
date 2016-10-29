@@ -1,3 +1,15 @@
 {{outlet}}
 
-<h2>Todos</h2>
+<div class="row">
+  <div class="col s12 m8 push-m2">
+    <div class="mainCard">
+      <div class="mainCard__header">
+        <h2 class="mainCard__headerTitle">{{#link-to "protected.todos"}}Todos {{add model.todo.orgas.length model.todo.events.length}}{{/link-to}}</h2>
+      </div>
+      <div>
+        {{entry-list instances=model.todo.orgas  attributes=model.attributes}}
+        {{entry-list instances=model.todo.events  attributes=model.attributes}}
+      </div>
+    </div>
+  </div>
+</div>
