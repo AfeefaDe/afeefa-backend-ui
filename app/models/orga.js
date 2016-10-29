@@ -7,10 +7,11 @@ export default DS.Model.extend({
   users:          DS.hasMany('user', { async: true }),
   createdAt:      DS.attr('date'),
   updatedAt:      DS.attr('date'),
-  parentOrga:     DS.belongsTo('orga'),
-  subOrgas:       DS.hasMany('orga', {inverse: 'parentOrga', async: true}),
+  stateChangedAt: DS.attr('date'),
+  parentOrga:     DS.belongsTo('orga', {inverse: 'subOrgas'}),
+  subOrgas:       DS.hasMany('orga', {inverse: 'parentOrga'}),
   category:       DS.attr('string'),
   contactInfo:    DS.belongsTo('contact-info'),
   annotation:     DS.belongsTo('annotation'),
-  location:       DS.belongsTo('location')
+  location:       DS.belongsTo('location'),
 });

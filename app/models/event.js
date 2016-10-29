@@ -6,6 +6,7 @@ export default DS.Model.extend({
   description:  DS.attr('string'),
   created_at:   DS.attr('date'),
   updated_at:   DS.attr('date'),
+  stateChangedAt: DS.attr('date'),
   parent_id:    DS.belongsTo('orga'),
   category:     DS.attr('string')
 });

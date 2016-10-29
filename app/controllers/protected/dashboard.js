@@ -1,14 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  store: Ember.inject.service(),
   session: Ember.inject.service('session'),
   actions: {
     test: function() {
-      this.store.findRecord('todo', 1).then((todo) => {
-        todo.get('events').then((orgas) => {
-          console.log(orgas.length);
-        });
-      });
+       let contact = this.get('store').createRecord('contactInfo');
+       contact.set('mail', 'friedrich@weise.io');
+       contact.save();
     }
   }
 });

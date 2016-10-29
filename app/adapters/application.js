@@ -15,8 +15,14 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
     return url;
   },
   pathForType(modelName) {
-    let underscore = Ember.String.underscore(modelName);
-    return Ember.String.pluralize(underscore);
+    //dasherize URL
+    let dasherize = Ember.String.dasherize(modelName);
+    return Ember.String.pluralize(dasherize);
+  },
+  urlForRequest(params) {
+    let url = this._super(...arguments);
+    console.log("urlForRequest: "+url);
+    return url;
   },
   handleResponse: function(status, headers) {
     //new token from API is present: update session
