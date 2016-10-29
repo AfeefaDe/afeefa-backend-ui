@@ -20,7 +20,6 @@
           <div style="margin-top: 1em; color: black;">
             <label>Übergeordnete Orga</label>
             <select class="browser-default" onchange={{action "selectParent" value="target.value"}}>
-              <option value="" disabled selected>Choose your option</option>
               {{#each orgas as |orga|}}
                 <option value="{{orga.id}}">{{orga.title}}</option>
               {{/each}}
@@ -44,6 +43,15 @@
                 <option value="{{index}}">{{state}}</option>
               {{/each}}
             </select>
+          </div>
+          <h2>Kontaktinformationen</h2>
+          <div style="margin-top: 1em; color: black;">
+            {{contact-info-form instance=contactInfoInstance}}
+          </div>
+
+          <h2>Ort</h2>
+          <div style="margin-top: 1em; color: black;">
+            {{location-form instance=locationInstance}}
           </div>
 
           <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Save</button>

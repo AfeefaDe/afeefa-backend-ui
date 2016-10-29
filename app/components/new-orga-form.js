@@ -8,30 +8,41 @@ import RouteHelper from '../mixins/route-helper';
 
 export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
   store: Ember.inject.service(),
-  parentOrgaId: null,
+  parentOrga: null,
   category: null,
-  state: null,
+  locationInstance: null,
+  state: 'active',
+  contactInfoInstance: null,
+  didReceiveAttrs() {
+    this._super(...arguments);
+    //init empty contactInfo instance
+    this.set('contactInfoInstance', this.get('store').createRecord('contactInfo'));
+    //init empty localtion instance
+    this.set('locationInstance', this.get('store').createRecord('location'));
+  },
 	actions: {
 		save: function() {
       let validated = this.validateForm(['title', 'description']);
       let store = this.get('store');
-      let parentOrga = store.peekRecord('orga', this.get('parentOrgaId'));
       if(validated) {
         var orga = store.createRecord('orga', {
           title: this.get('title'),
           description: this.get('description'),
-          parentOrga: parentOrga,
+          parentOrga: this.get('parentOrga'),
           category: this.get('category'),
           state: this.get('state')
         });
+        orga.get('contactInfos').pushObject(this.get('contactInfoInstance'));
+        orga.get('locations').pushObject(this.get('locationInstance'));
         orga.save();
       }
 		},
     /*
-     * set parent orga id from input select
+     * Input type select setting theit values
      */
     selectParent: function(parentOrgaId) {
-      this.set('parentOrgaId', parentOrgaId);
+      let parentOrga = this.get('store').peekRecord('orga', parentOrgaId);
+      this.set('parentOrga', parentOrga);
     },
     selectCategory: function(categoryId) {
       if(categoryId === -1) this.set('category', '');
