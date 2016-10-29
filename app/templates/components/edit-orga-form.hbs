@@ -17,18 +17,24 @@
 
       <h2>Kontaktinformationen</h2>
       <div style="margin-top: 1em; color: black;">
-          {{contact-info-form instance=orga.contactInfo}}
+      {{#each orga.contactInfos as |contactInfo|}}
+          {{contact-info-form instance=contactInfo}}
+      {{/each}}
       </div>
 
       <h2>Ort</h2>
       <div style="margin-top: 1em; color: black;">
-        {{location-form instance=orga.location}}
+      {{#each orga.locations as |location|}}
+          {{location-form instance=location}}
+      {{/each}}
       </div>
 
       <h2>Anmerkungen</h2>
-       <div class="input-field">
-        {{input value=orga.annotation.title id="annotation" type="text" class="validate"}}
-        <label for="annotation">Annotation</label>
+        <div class="input-field">
+          {{#each orga.annotation as |annotation index|}}
+            {{input value=annotation.title id="annotation{{index}}" type="text" class="validate"}}
+            <label for="annotation{{index}}">Annotation {{index}}</label>
+          {{/each}}
       </div>
 
       <button class="btn waves-effect waves-light" type="submit">Save</button>
