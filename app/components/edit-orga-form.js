@@ -1,17 +1,34 @@
 import Ember from 'ember';
+import RSVP from 'rsvp';
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
   orga: null,
   actions: {
     saveOrga: function() {
-      this.get('orga').save();
-    },
-    /*
-     * gets called by categories-form onChange:
-     */
-    setCategory: function(newCategory) {
-      this.get('orga').set('category', newCategory);
+      const orga = this.get('orga');
+      const orgaSave = orga.save().then((savedOrga)=> {
+        console.log("saved orga");
+      });
+      const annotations = orga.get('annotations').then((annotation) => {
+        annotation.save();
+      });
+      const contactInfos = orga.get('contactInfos').then((contactInfo) => {
+        contactInfo.save();
+      });
+      const locations = orga.get('locations').then((location) => {
+        location.save();
+      });
+      const diff = RSVP.hash({
+        orgaSave,
+        annotations,
+        contactInfos,
+        locations,
+      });
+      diff.then((success)=>{
+        history.back();
+      });
     }
   }
 });
+
