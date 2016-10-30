@@ -1,6 +1,7 @@
 import DS from 'ember-data';
+import entry from './entry';
 
-export default DS.Model.extend({
+export default entry.extend({
   title:          DS.attr('string'),
   state:          DS.attr('string'),
   description:    DS.attr('string', {defaultValue: 'Description...'}),

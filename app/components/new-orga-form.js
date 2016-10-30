@@ -33,17 +33,21 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
 	actions: {
 		save: function() {
       let store = this.get('store');
-      const saveMeta = RSVP.hash({
-        contact: this.get('contactInfoInstance').save(),
-        location: this.get('locationInstance').save(),
-        annotation: this.get('annotationInstance').save()
-      });
-      saveMeta.then((hash) => {
-        let orga = this.get('newOrgaInstance');
-        orga.get('contactInfos').addObject(this.get('contactInfoInstance'));
-        orga.get('locations').addObject(this.get('locationInstance'));
-        orga.get('annotations').addObject(this.get('annotationInstance'));
-        orga.save();
+
+      let orga = this.get('newOrgaInstance');
+      orga.save().then((savedOrga)=> {
+        /*set contactable*/
+        this.get('contactInfoInstance').set('contactable', savedOrga);
+        this.get('locationInstance').set('locatable', savedOrga);
+        this.get('annotationInstance').set('annotatable', savedOrga);
+        const saveMeta = RSVP.hash({
+          contact: this.get('contactInfoInstance').save(),
+          location: this.get('locationInstance').save(),
+          annotation: this.get('annotationInstance').save()
+        });
+        saveMeta.then((hash) => {
+          console.log("Saved meta models");
+        });
       });
 		},
     /*

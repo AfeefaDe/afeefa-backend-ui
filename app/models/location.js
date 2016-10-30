@@ -13,5 +13,6 @@ export default DS.Model.extend({
   country:    DS.attr('string'),
   displayed:  DS.attr('boolean'),
   createdAt:  DS.attr('date'),
-  updatedAt:  DS.attr('date')
+  updatedAt:  DS.attr('date'),
+  locatable:  DS.belongsTo('entry', {polymorphic: true})
 });
