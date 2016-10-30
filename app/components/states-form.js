@@ -1,17 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  possibleStates: ['active', 'inactive'],
-  instance: 'active',
-  selectedState: 'active',
-  actions: {
-    selectState: function(stateId) {
-      let newState;
-      if(stateId && this.get('possibleStates')[stateId]) newState = this.get('possibleStates')[stateId];
-      else newState = 'active';
-      this.set('instance', newState);
-      //when provided we call the onChange function in the parent
-      if(this.get('onChange')) this.get('onChange')(newState);
-    }
-  }
+  instance: null,
+  instanceBool: false,
+  didReceiveAttrs() {
+    //set init state
+    if(this.get('instanceBool')===true) this.set('instance', 'activate');
+    if(this.get('instanceBool')===false) this.set('instance', 'deactivate');
+  },
+  valueChanged: Ember.observer('instanceBool', function() {
+    //value changed
+    if(this.get('instanceBool')===true) this.set('instance', 'activate');
+    if(this.get('instanceBool')===false) this.set('instance', 'deactivate');
+  })
 });

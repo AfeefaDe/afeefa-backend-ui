@@ -4,6 +4,7 @@ import entry from './entry';
 export default entry.extend({
   title:          DS.attr('string'),
   state:          DS.attr('string'),
+  stateTransition:DS.attr('string'),
   description:    DS.attr('string', {defaultValue: 'Description...'}),
   createdAt:      DS.attr('date'),
   updatedAt:      DS.attr('date'),
