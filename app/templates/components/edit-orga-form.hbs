@@ -31,7 +31,7 @@
 
       <h2>Anmerkungen</h2>
         <div class="input-field">
-          {{#each orga.annotation as |annotation index|}}
+          {{#each orga.annotations as |annotation index|}}
             {{input value=annotation.title id="annotation{{index}}" type="text" class="validate"}}
             <label for="annotation{{index}}">Annotation {{index}}</label>
           {{/each}}

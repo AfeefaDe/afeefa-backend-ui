@@ -19,8 +19,6 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
     const store = this.get('store');
     //init empty orga instance and set default values
     const orgaInstance = store.createRecord('orga');
-    //set default state
-    orgaInstance.set('state', 'active');
     //set default valus
     this.set('newOrgaInstance', orgaInstance);
     //init empty contactInfo instance
@@ -46,7 +44,7 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
           annotation: this.get('annotationInstance').save()
         });
         saveMeta.then((hash) => {
-          console.log("Saved meta models");
+          history.back();
         });
       });
 		},
