@@ -4,7 +4,6 @@
       <li>
       <span class="entryDetail__meta">{{attribute.name}}:</span>
       <span>
-      Type{{attribute.type}}
         {{#if (eq attribute.type "date")}}
           {{format-date (get model attribute.name)}}
         {{else}}
@@ -14,13 +13,39 @@
       </li>
     {{/if}}
   {{/each}}
+    {{#if model.locations}}
+      <h2>Location</h2>
+      <li>
+      {{#each model.locations as |location|}}
+        {{entry-detail model=location}}
+      {{/each}}
+      </li>
+    {{/if}}
+    {{#if model.contactInfos}}
+      <h2>Contact Info</h2>
+      <li>
+      {{#each model.contactInfos as |contactInfo|}}
+        {{entry-detail model=contactInfo}}
+      {{/each}}
+      </li>
+    {{/if}}
+
+    {{#if model.annotations}}
+      <h2>Annotations</h2>
+      <li>
+      {{#each model.annotations as |annotation|}}
+        {{entry-detail model=annotation}}
+      {{/each}}
+      </li>
+    {{/if}}
+    {{#if model.state}}
     <li>
     <span class="entryDetail__meta">Status ändern:</span>
       {{states-form
         instance=newOrgaInstance.stateTransition
         selectedState=model.state
         onChange=(action "setNewStateTransistion")}}
-  </li>
+    </li>
+    {{/if}}
   {{yield}}
 </ul>
-
