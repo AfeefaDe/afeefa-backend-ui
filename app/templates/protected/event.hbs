@@ -10,7 +10,9 @@
       <div>
         {{entry-detail model=model}}
         <h2>Veranstalter: (@todo)</h2>
-        {{entry-list-item instance=model.orga}}
+        <ul class="entryList">
+          {{entry-list-item instance=model.orga}}
+        </ul>
       </div>
     </div>
   </div>

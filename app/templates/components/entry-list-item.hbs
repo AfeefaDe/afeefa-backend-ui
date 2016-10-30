@@ -14,7 +14,6 @@
         </div>
        {{/if}}
         <div class="entryList__attributes">
-          <p class="item"><span class="meta">Status:</span>{{instance.state}}</p>
           {{#if instance.annotations}}
             {{#each instance.annotations as |annoation|}}
               <p class="item"><span class="meta">Annotation:</span>{{annoation.title}}</p>
@@ -22,6 +21,7 @@
           {{else}}
               <p class="item"><span class="meta">Category:</span>{{instance.category}}</p>
           {{/if}}
+          <p class="item"><span class="meta">Status:</span>{{instance.state}}</p>
         </div>
     </li>
 {{/if}}
