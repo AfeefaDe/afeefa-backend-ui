@@ -1,44 +1,7 @@
 {{yield}}
 
 <ul class="entryList">
-  {{#if isSingle}}
-    <li>
-      <a {{action 'navigateToSingle' instances}} class="entryList__nav">
-        <h4 class="title">{{instances.title}}</h4>
-        <span class="icon"><i class="material-icons">navigate_next</i></span>
-      </a>
-      <div class="entryList__attributes">
-          <p class="item"><span class="meta">Date:</span>2 days ago</p>
-          <p class="item"><span class="meta">Category:</span>{{instances.category}}</p>
-      </div>
-    </li>
-  {{else}}
     {{#each (limit-array instances limit) as |instance|}}
-    {{#if (eq instance.title "ROOT-ORGA")}}{{else}}
-    <li>
-      <a {{action 'navigateToSingle' instance}} class="entryList__nav">
-        <h4 class="title">{{instance.title}}</h4>
-        <span class="icon"><i class="material-icons">navigate_next</i></span>
-      </a>
-      <!--@todo-->
-      {{#if false}}
-        <div class="entryList__attributes">
-            {{#each attributes as |attribute|}}
-              <i>{{get instance attribute}},</i>
-            {{/each}}
-        </div>
-       {{/if}}
-        <div class="entryList__attributes">
-          <p class="item"><span class="meta">Status:</span>{{instance.state}}</p>
-          {{#if instance.annotations}}
-            {{#each instance.annotations as |annoation|}}
-              <p class="item"><span class="meta">Annotation:</span>{{annoation.title}}</p>
-            {{/each}}
-          {{else}}
-              <p class="item"><span class="meta">Category:</span>{{instance.category}}</p>
-          {{/if}}
-        </div>
-    </li>
-  {{/if}}{{/each}}
-  {{/if}}
+      {{entry-list-item instance=instance}}
+    {{/each}}
 </ul>
