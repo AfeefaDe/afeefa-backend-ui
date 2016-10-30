@@ -17,6 +17,7 @@
             {{input value=newOrgaInstance.description id="description" type="text" class="validate"}}
             <label for="description">Description</label>
           </div>
+
           <div style="margin-top: 1em; color: black;">
             <label>Übergeordnete Orga</label>
             <select class="browser-default" onchange={{action "selectParent" value="target.value"}}>
@@ -33,12 +34,9 @@
 
           <div style="margin-top: 1em; color: black;">
             <label>State</label>
-            <select class="browser-default" onchange={{action "selectState" value="target.value"}}>
-              {{#each states as |state index|}}
-                <option value="{{index}}">{{state}}</option>
-              {{/each}}
-            </select>
+            {{states-form instance=newOrgaInstance.state}}
           </div>
+
           <h2>Kontaktinformationen</h2>
           <div style="margin-top: 1em; color: black;">
             {{contact-info-form instance=contactInfoInstance}}

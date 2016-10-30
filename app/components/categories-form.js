@@ -1,6 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  possibleCategories: ['community', 'welcome_ini', 'sport'],
+  instance: '',
+  selectedCategory: false,
   actions: {
     selectCategory: function(categoryId) {
       let newCategory;
@@ -10,8 +13,5 @@ export default Ember.Component.extend({
       //when provided we call the onChange function in the parent
       if(this.get('onChange')) this.get('onChange')(newCategory);
     }
-  },
-  selectedCategory: false,
-  instance: '',
-  possibleCategories: ['community', 'welcome_ini', 'sport'],
+  }
 });

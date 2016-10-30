@@ -19,8 +19,9 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
     const store = this.get('store');
     //init empty orga instance and set default values
     const orgaInstance = store.createRecord('orga');
-    //set default valus
+    //set default state
     orgaInstance.set('state', 'active');
+    //set default valus
     this.set('newOrgaInstance', orgaInstance);
     //init empty contactInfo instance
     this.set('contactInfoInstance', store.createRecord('contactInfo'));
@@ -32,7 +33,6 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
 	actions: {
 		save: function() {
       let store = this.get('store');
-
       const saveMeta = RSVP.hash({
         contact: this.get('contactInfoInstance').save(),
         location: this.get('locationInstance').save(),
@@ -52,15 +52,7 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
     selectParent: function(parentOrgaId) {
       let parentOrga = this.get('store').peekRecord('orga', parentOrgaId);
       this.get('newOrgaInstance').set('parentOrga', parentOrga);
-    },
-    /*
-     * Input type select for setting state
-     */
-    selectState: function(stateId) {
-      let state = this.get('states')[stateId];
-      this.get('newOrgaInstance').set('state', state);
     }
-	},
-  states: ['active', 'inactive']
+	}
 });
 

@@ -1,0 +1,10 @@
+{{yield}}
+<select class="browser-default" onchange={{action "selectState" value="target.value"}}>
+  {{#each possibleStates as |state index|}}
+    {{#if (eq selectedState state)}}
+      <option selected value="{{index}}">{{state}}</option>
+    {{else}}
+      <option value="{{index}}">{{state}}</option>
+    {{/if}}
+  {{/each}}
+</select>
