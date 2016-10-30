@@ -8,12 +8,11 @@
       <div class="col s12 m6">
         <div class="mainCard">
           <div class="mainCard__header">
-            <h2 class="mainCard__headerTitle">{{#link-to "protected.todos"}}Todos ({{add model.todo.orgas.length model.todo.events.length}}){{/link-to}}</h2>
+            <h2 class="mainCard__headerTitle">{{#link-to "protected.todos"}}Todos ({{model.todos.length}}){{/link-to}}</h2>
             <a href="#" class="mainCard__headerAction" {{action "test"}}><i class="material-icons">notifications</i></a>
           </div>
           <div>
-            {{entry-list instances=model.todo.orgas limit=2 attributes=model.attributes}}
-            {{entry-list instances=model.todo.events limit=2 attributes=model.attributes}}
+            {{entry-list instances=model.todos limit=5 attributes=model.attributes}}
             {{#link-to "protected.todos"}}Alle Todos...{{/link-to}}
           </div>
         </div>
