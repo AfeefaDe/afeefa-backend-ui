@@ -10,14 +10,18 @@ import RouteHelper from '../mixins/route-helper';
 
 export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
   store: Ember.inject.service(),
-  parentOrga: null,
   locationInstance: null,
-  state: 'active',
   annotationInstance: null,
   contactInfoInstance: null,
+  newOrgaInstance: null,
   didReceiveAttrs() {
     this._super(...arguments);
     const store = this.get('store');
+    //init empty orga instance and set default values
+    const orgaInstance = store.createRecord('orga');
+    //set default valus
+    orgaInstance.set('state', 'active');
+    this.set('newOrgaInstance', orgaInstance);
     //init empty contactInfo instance
     this.set('contactInfoInstance', store.createRecord('contactInfo'));
     //init empty localtion instance
@@ -27,7 +31,6 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
   },
 	actions: {
 		save: function() {
-      let validated = this.validateForm(['title', 'description']);
       let store = this.get('store');
 
       const saveMeta = RSVP.hash({
@@ -36,30 +39,26 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
         annotation: this.get('annotationInstance').save()
       });
       saveMeta.then((hash) => {
-        if(validated) {
-          var orga = store.createRecord('orga', {
-            title: this.get('title'),
-            description: this.get('description'),
-            parentOrga: this.get('parentOrga'),
-            category: this.get('categoryInstance'),
-            state: this.get('state'),
-          });
-          orga.get('contactInfos').addObject(this.get('contactInfoInstance'));
-          orga.get('locations').addObject(this.get('locationInstance'));
-          orga.get('annotations').addObject(this.get('annotationInstance'));
-          orga.save();
-        }
+        let orga = this.get('newOrgaInstance');
+        orga.get('contactInfos').addObject(this.get('contactInfoInstance'));
+        orga.get('locations').addObject(this.get('locationInstance'));
+        orga.get('annotations').addObject(this.get('annotationInstance'));
+        orga.save();
       });
 		},
     /*
-     * Input type select setting theit values
+     * Input type select for setting parent orga
      */
     selectParent: function(parentOrgaId) {
       let parentOrga = this.get('store').peekRecord('orga', parentOrgaId);
-      this.set('parentOrga', parentOrga);
+      this.get('newOrgaInstance').set('parentOrga', parentOrga);
     },
+    /*
+     * Input type select for setting state
+     */
     selectState: function(stateId) {
-      this.set('state', this.get('states')[stateId]);
+      let state = this.get('states')[stateId];
+      this.get('newOrgaInstance').set('state', state);
     }
 	},
   states: ['active', 'inactive']

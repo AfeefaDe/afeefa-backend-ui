@@ -10,11 +10,11 @@
       <div>
         <form {{action 'save' on='submit'}}>
           <div class="input-field">
-            {{input value=title id="title" type="text" class="validate"}}
+            {{input value=newOrgaInstance.title id="title" type="text" class="validate"}}
             <label for="title">Titel</label>
           </div>
           <div class="input-field">
-            {{input value=description id="description" type="text" class="validate"}}
+            {{input value=newOrgaInstance.description id="description" type="text" class="validate"}}
             <label for="description">Description</label>
           </div>
           <div style="margin-top: 1em; color: black;">
@@ -28,7 +28,7 @@
 
           <div style="margin-top: 1em; color: black;">
             <label>Kategorie</label>
-            {{categories-form instance=categoryInstance}}
+            {{categories-form instance=newOrgaInstance.category}}
           </div>
 
           <div style="margin-top: 1em; color: black;">
