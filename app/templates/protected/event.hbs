@@ -9,6 +9,15 @@
       </div>
       <div>
         {{entry-detail model=model}}
+        <h2>Veranstalter:</h2>
+        @todo: {{model.orga.name}}
+        <!--
+        {{#if model.orga}}
+          {{entry-list instances=model.orga isSingle="true"}}
+        {{else}}
+          Es existieren keine Orgas
+        {{/if}}
+        -->
       </div>
     </div>
   </div>
