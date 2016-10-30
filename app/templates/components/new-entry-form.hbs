@@ -1,1 +1,54 @@
-{{yield}}
+{{outlet}}
+
+<div class="row">
+  <div class="col s12 m8 push-m2">
+    <div class="mainCard">
+      <div class="mainCard__header mainCard__headerLight">
+        <h2 class="mainCard__headerTitle">Create New {{entryType}}</h2>
+        <a href="#" {{ action 'goBack' }} class="mainCard__headerAction"><i class="material-icons">cancel</i></a>
+      </div>
+      <div>
+        <form {{action 'save' on='submit'}}>
+          <div class="input-field">
+            {{input value=newEntryInstance.title id="title" type="text" class="validate"}}
+            <label for="title">Titel</label>
+          </div>
+          <div class="input-field">
+            {{input value=newEntryInstance.description id="description" type="text" class="validate"}}
+            <label for="description">Description</label>
+          </div>
+
+          {{yield}}
+
+          <div style="margin-top: 1em; color: black;">
+            <label>Kategorie</label>
+            {{categories-form instance=newEntryInstance.category}}
+          </div>
+
+          <h2>Kontaktinformationen</h2>
+          <div style="margin-top: 1em; color: black;">
+            {{contact-info-form instance=contactInfoInstance}}
+          </div>
+
+          <h2>Ort</h2>
+          <div style="margin-top: 1em; color: black;">
+            {{location-form instance=locationInstance}}
+          </div>
+
+          <h2>Anmerkungen</h2>
+           <div class="input-field">
+            {{input value=annotationInstance.title id="annotation" type="text" class="validate"}}
+            <label for="annotation">Annotation</label>
+          </div>
+
+          <div style="margin-top: 1em; color: black;">
+            <label>State</label>
+            {{states-form instance=newEntryInstance.stateTransition}}
+          </div>
+
+          <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
