@@ -4,6 +4,7 @@
       <li>
       <span class="entryDetail__meta">{{attribute.name}}:</span>
       <span>
+      Type{{attribute.type}}
         {{#if (eq attribute.type "date")}}
           {{format-date (get model attribute.name)}}
         {{else}}
@@ -15,15 +16,10 @@
   {{/each}}
     <li>
     <span class="entryDetail__meta">Status ändern:</span>
-    <select class="browser-default entryDetail__inlineInput" onchange={{action "setStatus" value="target.value"}}>
-      {{#each states as |state index|}}
-        {{#if (eq state (get model "state"))}}
-          <option selected value="{{index}}">{{state}}</option>
-        {{else}}
-          <option value="{{index}}">{{state}}</option>
-        {{/if}}
-      {{/each}}
-    </select>
+      {{states-form
+        instance=newOrgaInstance.stateTransition
+        selectedState=model.state
+        onChange=(action "setNewStateTransistion")}}
   </li>
   {{yield}}
 </ul>
