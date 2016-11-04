@@ -49,7 +49,7 @@ module.exports = function(environment) {
     routeIfAlreadyAuthenticated: 'protected.dashboard',
   }
   if (environment === 'production') {
-    ENV.APP.API_HOST = 'http://dev-api.afeefa.de';
+    ENV.APP.API_HOST = 'http://backend.afeefa.de';
   }
 
   ENV.contentSecurityPolicy = {
