@@ -46,13 +46,13 @@
             {{#link-to "protected.newevent" class="mainCard__headerAction"}}<i class="material-icons">add</i>{{/link-to}}
           </div>
           <div>
-              {{entry-list instances=model.events limit=model.listLimit}}
-              {{#unless model.events}}
-                <p>Keine Events</p>
-              {{/unless}}
-              {{#if (gt model.events.length  model.listLimit)}}
-                {{#link-to "protected.events"}}Alle Events...{{/link-to}}
-              {{/if}}
+            {{entry-list instances=model.events limit=model.listLimit}}
+            {{#unless model.events}}
+              <p>Keine Events</p>
+            {{/unless}}
+            {{#if (gt model.events.length  model.listLimit)}}
+              {{#link-to "protected.events"}}Alle Events...{{/link-to}}
+            {{/if}}
           </div>
         </div>
       </div>

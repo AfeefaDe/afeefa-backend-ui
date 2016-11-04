@@ -22,7 +22,6 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
   },
   urlForRequest(params) {
     let url = this._super(...arguments);
-    console.log("urlForRequest: "+url);
     return url;
   },
   handleResponse: function(status, headers) {

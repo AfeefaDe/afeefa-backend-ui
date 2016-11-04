@@ -7,10 +7,10 @@ export default Ember.Component.extend({
      * @param  {[EmberDS Instance]} instance
      */
     navigateToSingle: function(instance) {
-      let id = instance.id;
-      //determine the instance type (currently supported: orga, event)
-      let type = instance.constructor.modelName;
-      this.get('router').transitionTo('protected.'+type, id);
+      let id = instance.get('id');
+      let type = instance.get('modelName');
+      if(id && type) this.get('router').transitionTo('protected.'+type, id);
+      else throw 'Invalid transistion type or id - Cancel transition';
     }
   }
 });

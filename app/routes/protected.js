@@ -9,6 +9,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin,{
       events: this.store.findAll('event', {include: 'annotations'}),
       orgas: this.store.findAll('orga', {include: 'annotations'}),
       todos: this.store.query('entry', {filter: {todo: 'all'}}),
+      /*limit entry lists on dashboard*/
       listLimit: 5
     });
   }
