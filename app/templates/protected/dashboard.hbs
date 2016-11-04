@@ -12,7 +12,7 @@
             <a href="https://media.giphy.com/media/l3V0ALLDW0Bo1adjO/giphy.gif" class="mainCard__headerAction"><i class="material-icons">notifications</i></a>
           </div>
           <div>
-            {{entry-list instances=model.todos limit=model.listLimit attributes=model.attributes}}
+            {{entry-list instances=model.todos limit=model.listLimit}}
             {{#unless model.todos}}
               <p>Keine Todos</p>
             {{/unless}}
@@ -29,7 +29,7 @@
             {{#link-to "protected.neworga" class="mainCard__headerAction"}}<i class="material-icons">add</i>{{/link-to}}
           </div>
           <div>
-            {{entry-list instances=model.orgas limit=model.listLimit attributes=model.attributes}}
+            {{entry-list instances=model.orgas limit=model.listLimit}}
             {{#unless model.orgas}}
               <p>Keine Orgas</p>
             {{/unless}}
