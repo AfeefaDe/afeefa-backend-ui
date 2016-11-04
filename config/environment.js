@@ -17,6 +17,7 @@ module.exports = function(environment) {
     },
 
     APP: {
+      API_HOST: 'http://localhost:4200'
       // Here you can pass flags/options to your application instance
       // when it is created
     }
@@ -42,7 +43,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-
+    ENV.APP.API_HOST = 'https://dev-api.afeefa.de/';
   }
 
   ENV['ember-simple-auth'] = {
