@@ -8,7 +8,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin,{
       user:   this.store.findRecord('user', this.get('session.currentUser')),
       events: this.store.findAll('event', {include: 'annotations'}),
       orgas: this.store.findAll('orga', {include: 'annotations'}),
-      todos: this.store.query('entry', {filter: {todo: ''}})
+      todos: this.store.query('entry', {filter: {todo: 'all'}}),
+      listLimit: 5
     });
   }
 });
