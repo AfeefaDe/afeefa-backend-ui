@@ -3,22 +3,22 @@ import RSVP from 'rsvp';
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
-  orga: null,
+  event: null,
   actions: {
-    saveOrga: function() {
-      const orga = this.get('orga');
-      const orgaSave = orga.save();
-      const annotations = orga.get('annotations').then((annotation) => {
+    saveEvent: function() {
+      const event = this.get('event');
+      const eventSave = event.save();
+      const annotations = event.get('annotations').then((annotation) => {
         annotation.save();
       });
-      const contactInfos = orga.get('contactInfos').then((contactInfo) => {
+      const contactInfos = event.get('contactInfos').then((contactInfo) => {
         contactInfo.save();
       });
-      const locations = orga.get('locations').then((location) => {
+      const locations = event.get('locations').then((location) => {
         location.save();
       });
       const diff = RSVP.hash({
-        orgaSave,
+        eventSave,
         annotations,
         contactInfos,
         locations,

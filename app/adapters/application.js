@@ -1,10 +1,12 @@
 import Ember from 'ember';
+import ENV from 'afeefa-backend-ui/config/environment';
 import JSONAPIAdapter from 'ember-data/adapters/json-api';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
 export default JSONAPIAdapter.extend(DataAdapterMixin, {
   session: Ember.inject.service('session'),
 	namespace: 'api/v1',
+  host: ENV.APP.API_HOST,
 	authorizer: 'authorizer:devise',
   /*
    * Debug helper: print URL for every API requst running through this adapter
@@ -20,7 +22,6 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
   },
   urlForRequest(params) {
     let url = this._super(...arguments);
-    console.log("urlForRequest: "+url);
     return url;
   },
   handleResponse: function(status, headers) {

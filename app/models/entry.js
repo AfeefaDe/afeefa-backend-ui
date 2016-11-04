@@ -11,5 +11,8 @@ export default DS.Model.extend({
   category:         DS.attr('string'),
   contactInfos:     DS.hasMany('contact-info'),
   annotations:      DS.hasMany('annotation'),
-  locations:        DS.hasMany('location')
+  locations:        DS.hasMany('location'),
+  //using an alias for the modelName allows us to access the modelName in proxied objects from belongsTo relationships
+  //used to navigate toSingle in entry-list-item.js
+  modelName: Ember.computed.alias('constructor.modelName')
 });

@@ -1,11 +1,10 @@
 import DeviseAuthenticator from 'ember-simple-auth/authenticators/devise';
 import Ember from 'ember';
-
+import ENV from 'afeefa-backend-ui/config/environment';
 const { RSVP, isEmpty, run } = Ember;
 
 export default DeviseAuthenticator.extend({
-  serverTokenEndpoint: '/api/v1/users/sign_in',
-
+  serverTokenEndpoint: ENV.APP.API_HOST+'/api/v1/users/sign_in',
   restore(data){
     return new RSVP.Promise((resolve, reject) => {
       if (!isEmpty(data.accessToken) && !isEmpty(data.expiry) &&
@@ -16,7 +15,6 @@ export default DeviseAuthenticator.extend({
       }
     });
   },
-
   authenticate(identification, password) {
     return new RSVP.Promise((resolve, reject) => {
       const { identificationAttributeName } = this.getProperties('identificationAttributeName');

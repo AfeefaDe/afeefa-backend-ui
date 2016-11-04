@@ -5,7 +5,6 @@ import Devise from 'ember-simple-auth/authorizers/devise';
 export default Devise.extend({
   tokenAttributeName: 'accessToken',
   identificationAttributeName: 'uid',
-
   authorize(data, header) {
     // probably unnecessary
     // this._super(data, header);
