@@ -9,17 +9,15 @@ import RouteHelper from '../mixins/route-helper';
 
 
 export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
-  didReceiveAttrs() {
-    this._super(...arguments);
-
-  },
+  store: Ember.inject.service(),
 	actions: {
     /*
      * Input type select for setting parent orga
      */
     selectParent: function(parentOrgaId) {
       let parentOrga = this.get('store').peekRecord('orga', parentOrgaId);
-      this.get('newOrgaInstance').set('parentOrga', parentOrga);
+      if(this.get('setAttribute')) this.get('setAttribute')('parentOrga', parentOrga);
+      else throw "No action passed down";
     }
 	}
 });

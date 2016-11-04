@@ -19,6 +19,8 @@
           </div>
 
           {{yield}}
+          {{component "new-orga-form" orgas=orgas setAttribute=(action "setAttribute")}}
+
 
           <div style="margin-top: 1em; color: black;">
             <label>Kategorie</label>
@@ -39,11 +41,6 @@
            <div class="input-field">
             {{input value=annotationInstance.title id="annotation" type="text" class="validate"}}
             <label for="annotation">Annotation</label>
-          </div>
-
-          <div style="margin-top: 1em; color: black;">
-            <label>State</label>
-            {{states-form instance=newEntryInstance.stateTransition}}
           </div>
 
           <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Save</button>

@@ -50,6 +50,9 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
           history.back();
         });
       });
+    },
+    setAttribute: function(key, value) {
+      console.log("Set in paren",key, value);
     }
   }
 });
