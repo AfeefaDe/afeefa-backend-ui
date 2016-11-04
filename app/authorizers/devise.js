@@ -5,8 +5,8 @@ import Devise from 'ember-simple-auth/authorizers/devise';
 export default Devise.extend({
   tokenAttributeName: 'accessToken',
   identificationAttributeName: 'uid',
-
   authorize(data, header) {
+    console.log("Authorize Devise");
     // probably unnecessary
     // this._super(data, header);
     const { tokenAttributeName, identificationAttributeName } = this.getProperties('tokenAttributeName', 'identificationAttributeName');

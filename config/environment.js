@@ -17,7 +17,7 @@ module.exports = function(environment) {
     },
 
     APP: {
-      API_HOST: 'http://localhost:4200'
+      API_HOST: '',
       // Here you can pass flags/options to your application instance
       // when it is created
     }
@@ -42,13 +42,14 @@ module.exports = function(environment) {
     ENV.APP.rootElement = '#ember-testing';
   }
 
-  if (environment === 'production') {
-    ENV.APP.API_HOST = 'https://dev-api.afeefa.de/';
-  }
+
 
   ENV['ember-simple-auth'] = {
     routeAfterAuthentication: 'protected.dashboard',
-    routeIfAlreadyAuthenticated: 'protected.dashboard'
+    routeIfAlreadyAuthenticated: 'protected.dashboard',
+  }
+  if (environment === 'production') {
+    ENV.APP.API_HOST = 'http://dev-api.afeefa.de';
   }
 
   ENV.contentSecurityPolicy = {
