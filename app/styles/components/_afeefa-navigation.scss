@@ -3,10 +3,12 @@ navigation {
 	padding: 1em;
 	background-color: $black_alpha;
 	color: $white;
-	height: 3.5em;
+  /*defined in _variables.scss*/
+	height: $header-height;
 	position: relative;
 	z-index: 100;
-
+  position: fixed;
+  width: 100%;
 	h1#navigation-title {
 		display: inline-block;
 		font-size: 1em;
@@ -20,7 +22,7 @@ navigation {
 		top: 0.8em;
 		right: 1em;
 		cursor: pointer;
-		
+
 		i { font-size: 2em; }
 	}
 

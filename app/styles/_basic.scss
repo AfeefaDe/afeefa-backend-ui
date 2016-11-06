@@ -8,6 +8,11 @@ body {
   box-sizing: border-box;
 }
 
+/*spacing for fixed header*/
+.content {
+  padding-top: $header-height;
+}
+
 .cursor {
   cursor: pointer;
 }
