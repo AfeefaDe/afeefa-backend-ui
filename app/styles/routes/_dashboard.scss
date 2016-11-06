@@ -8,4 +8,7 @@
   @media screen and (max-width: $break-small) {
     margin-top: 1em;
   }
+  a {
+    color: inherit;
+  }
 }
