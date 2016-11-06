@@ -1,0 +1,41 @@
+<form {{action 'saveEvent' on='submit'}}>
+
+      <div class="input-field">
+        {{input value=event.title id="title" type="text" class="validate"}}
+        <label for="title" class="active">Title</label>
+      </div>
+
+      <div class="input-field">
+        {{input value=event.description id="description" type="text" class="validate"}}
+        <label for="description" class="active">Description</label>
+      </div>
+
+      <div style="margin-top: 1em; color: black;">
+        <label>Kategorie</label>
+        {{categories-form instance=event.category selectedCategory=event.category}}
+      </div>
+
+      <h2>Kontaktinformationen</h2>
+      <div style="margin-top: 1em; color: black;">
+      {{#each event.contactInfos as |contactInfo|}}
+          {{contact-info-form instance=contactInfo}}
+      {{/each}}
+      </div>
+
+      <h2>Ort</h2>
+      <div style="margin-top: 1em; color: black;">
+      {{#each event.locations as |location|}}
+          {{location-form instance=location}}
+      {{/each}}
+      </div>
+
+      <h2>Anmerkungen</h2>
+        <div class="input-field">
+          {{#each event.annotations as |annotation index|}}
+            {{input value=annotation.title id="annotation{{index}}" type="text" class="validate"}}
+            <label for="annotation{{index}}">Annotation {{index}}</label>
+          {{/each}}
+      </div>
+
+      <button class="btn waves-effect waves-light" type="submit">Save</button>
+</form>

@@ -1,1 +1,26 @@
+<navigation>
+  <h1 id="navigation-title">
+  	{{title}}
+  </h1>
+  
+  <div {{action 'toggleMenu' instance}} id="btn-sandwich">
+		<i class="material-icons">menu</i>
+  </div>
+  
+{{#if menuVisible}}
+  <div id="menu">
+	  	{{#link-to 'protected.dashboard'}}Dashboard{{/link-to}}
+	  
+	  {{#if session.isAuthenticated}}
+	    <section id="user-context">
+		    <p><i class="material-icons">account_circle</i> {{user.forename}} {{user.surname}}</p>
+		  </section>
+	    <a {{action 'invalidateSession'}}>Logout</a>
+	  {{else}}
+	    {{#link-to 'login'}}Login{{/link-to}}
+	  {{/if}}
+  </div>
+{{/if}}
+
+</navigation>
 {{yield}}

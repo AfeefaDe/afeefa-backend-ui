@@ -1,0 +1,16 @@
+{{yield}}
+<select class="browser-default" onchange={{action "selectCategory" value="target.value"}}>
+  {{#if selectedCategory}}
+    <option value="-1">Keine Kategorie</option>
+  {{else}}
+    <option value="-1" selected>Keine Kategorie</option>
+  {{/if}}
+
+  {{#each possibleCategories as |category index|}}
+    {{#if (eq selectedCategory category)}}
+      <option selected value="{{index}}">{{category}}</option>
+    {{else}}
+      <option value="{{index}}">{{category}}</option>
+    {{/if}}
+  {{/each}}
+</select>

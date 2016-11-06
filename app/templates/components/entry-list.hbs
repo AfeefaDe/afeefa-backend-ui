@@ -1,0 +1,7 @@
+{{yield}}
+
+<ul class="entryList">
+    {{#each (limit-array instances limit) as |instance|}}
+      {{entry-list-item instance=instance}}
+    {{/each}}
+</ul>

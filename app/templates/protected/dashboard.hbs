@@ -1,0 +1,61 @@
+<div id="dashboard">
+  <div class="row">
+      <div class="col s12 m6">
+        <div class="searchCard">
+          {{#link-to "protected.search"}}<i class="material-icons">search</i>{{/link-to}}
+        </div>
+      </div>
+      <div class="col s12 m6">
+        <div class="mainCard">
+          <div class="mainCard__header">
+            <h2 class="mainCard__headerTitle">{{#link-to "protected.todos"}}Todos ({{model.todos.length}}){{/link-to}}</h2>
+            <a href="https://media.giphy.com/media/l3V0ALLDW0Bo1adjO/giphy.gif" class="mainCard__headerAction"><i class="material-icons">notifications</i></a>
+          </div>
+          <div>
+            {{entry-list instances=model.todos limit=model.listLimit}}
+            {{#unless model.todos}}
+              <p>Keine Todos</p>
+            {{/unless}}
+            {{#if (gt model.todos.length  model.listLimit)}}
+              {{#link-to "protected.todos"}}Alle Todos...{{/link-to}}
+            {{/if}}
+          </div>
+        </div>
+      </div>
+      <div class="col s12 m6">
+        <div class="mainCard">
+          <div class="mainCard__header">
+            <h2 class="mainCard__headerTitle">{{#link-to "protected.orgas"}}Organisationen ({{model.orgas.length}}){{/link-to}}</h2>
+            {{#link-to "protected.neworga" class="mainCard__headerAction"}}<i class="material-icons">add</i>{{/link-to}}
+          </div>
+          <div>
+            {{entry-list instances=model.orgas limit=model.listLimit}}
+            {{#unless model.orgas}}
+              <p>Keine Orgas</p>
+            {{/unless}}
+            {{#if (gt model.orgas.length  model.listLimit)}}
+              {{#link-to "protected.orgas"}}Alle Orgas...{{/link-to}}
+            {{/if}}
+          </div>
+        </div>
+      </div>
+      <div class="col s12 m6">
+        <div class="mainCard">
+          <div class="mainCard__header">
+            <h2 class="mainCard__headerTitle">{{#link-to "protected.events"}}Events ({{model.events.length}}){{/link-to}}</h2>
+            {{#link-to "protected.newevent" class="mainCard__headerAction"}}<i class="material-icons">add</i>{{/link-to}}
+          </div>
+          <div>
+            {{entry-list instances=model.events limit=model.listLimit}}
+            {{#unless model.events}}
+              <p>Keine Events</p>
+            {{/unless}}
+            {{#if (gt model.events.length  model.listLimit)}}
+              {{#link-to "protected.events"}}Alle Events...{{/link-to}}
+            {{/if}}
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+{{outlet}}
