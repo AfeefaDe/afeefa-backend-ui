@@ -1,14 +1,14 @@
 {{yield}}
 
 <div class="input-field">
+  <label for="mail" class="{{if instance.mail "active" }}">E-Mail</label>
   {{input value=instance.mail id="mail" type="email" class="validate"}}
-  <label for="mail">E-Mail</label>
 </div>
 <div class="input-field">
+  <label for="phone" class="{{if instance.phone "active" }}">Phone</label>
   {{input value=instance.phone id="phone" type="text" class="validate"}}
-  <label for="phone">Phone</label>
 </div>
 <div class="input-field">
+  <label for="contactPerson" class="{{if instance.contactPerson "active" }}">Contact Person</label>
   {{input value=instance.contactPerson id="contactPerson" type="text" class="validate"}}
-  <label for="contactPerson">Contact Person</label>
 </div>
