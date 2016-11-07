@@ -10,6 +10,11 @@
         <label for="description" class="active">Description</label>
       </div>
 
+      <div class="input-field">
+        <label for="date">Datum</label>
+        {{input value=event.date id="date" type="date"}}
+      </div>
+
       <div style="margin-top: 1em; color: black;">
         <label>Kategorie</label>
         {{categories-form instance=event.category selectedCategory=event.category}}

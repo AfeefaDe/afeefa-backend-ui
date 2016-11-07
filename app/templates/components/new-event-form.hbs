@@ -13,9 +13,15 @@
             {{input value=newEventInstance.title id="title" type="text" class="validate"}}
             <label for="title">Titel</label>
           </div>
+
           <div class="input-field">
-            {{input value=newEventInstance.description id="description" type="text" class="validate"}}
-            <label for="description">Description</label>
+           {{input value=newEventInstance.description id="description" type="text" class="validate"}}
+           <label for="description" class="active">Description</label>
+          </div>
+
+          <div class="input-field">
+            <label for="date">Datum</label>
+            {{input value=newEventInstance.date id="date" type="date"}}
           </div>
 
           <div style="margin-top: 1em; color: black;">
