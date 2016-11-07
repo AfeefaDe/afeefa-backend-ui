@@ -1,22 +1,22 @@
 <form {{action 'saveEvent' on='submit'}}>
 
       <div class="input-field">
-        {{input value=event.title id="title" type="text" class="validate"}}
         <label for="title" class="active">Title</label>
+        {{input value=event.title id="title" type="text" class="validate"}}
       </div>
 
       <div class="input-field">
-        {{input value=event.description id="description" type="text" class="validate"}}
         <label for="description" class="active">Description</label>
+        {{input value=event.description id="description" type="text" class="validate"}}
       </div>
 
       <div class="input-field">
-        <label for="date">Datum</label>
+        <label for="date" class="active">Datum</label>
         {{input value=event.date id="date" type="date"}}
       </div>
 
       <div style="margin-top: 1em; color: black;">
-        <label>Kategorie</label>
+        <label class="active">Kategorie</label>
         {{categories-form instance=event.category selectedCategory=event.category}}
       </div>
 
@@ -37,8 +37,8 @@
       <h2>Anmerkungen</h2>
         <div class="input-field">
           {{#each event.annotations as |annotation index|}}
+            <label for="annotation{{index}}" class="active">Annotation {{index}}</label>
             {{input value=annotation.title id="annotation{{index}}" type="text" class="validate"}}
-            <label for="annotation{{index}}">Annotation {{index}}</label>
           {{/each}}
       </div>
 

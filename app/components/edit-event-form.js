@@ -4,6 +4,18 @@ import RSVP from 'rsvp';
 export default Ember.Component.extend({
   store: Ember.inject.service(),
   event: null,
+  didReceiveAttrs() {
+    this._super(...arguments);
+    /*
+     * workaround to cut off time from date object and pass it into input[type="date"]
+     * not proud at all :(
+     */
+    const date = this.get('event.date');
+    if(date && date.getYear()) {
+      const dateString = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+      this.set('event.date', dateString);
+    }
+  },
   actions: {
     saveEvent: function() {
       const event = this.get('event');
