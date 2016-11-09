@@ -1,12 +1,12 @@
 <form {{action 'saveOrga' on='submit'}}>
 
       <div class="input-field">
-        <label for="title" class="active">Title</label>
+        <label for="title" class="active">Titel</label>
         {{input value=orga.title id="title" type="text" class="validate"}}
       </div>
 
       <div class="input-field">
-        <label for="description" class="active">Description</label>
+        <label for="description" class="active">Beschreibung</label>
         {{input value=orga.description id="description" type="text" class="validate"}}
       </div>
 
@@ -32,10 +32,10 @@
       <h2>Anmerkungen</h2>
         <div class="input-field">
           {{#each orga.annotations as |annotation index|}}
-            <label for="annotation{{index}}" class="active">Annotation {{index}}</label>
+            <label for="annotation{{index}}" class="active">Anmerkung {{index}}</label>
             {{input value=annotation.title id="annotation{{index}}" type="text" class="validate"}}
           {{/each}}
       </div>
 
-      <button class="btn waves-effect waves-light" type="submit">Save</button>
+      <button class="btn waves-effect waves-light" type="submit">Speichern</button>
 </form>

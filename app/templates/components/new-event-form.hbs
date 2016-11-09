@@ -4,8 +4,8 @@
   <div class="col s12 m8 push-m2">
     <div class="mainCard">
       <div class="mainCard__header mainCard__headerLight">
-        <h2 class="mainCard__headerTitle">Create New Event</h2>
-        <a href="#" {{ action 'goBack' }} class="mainCard__headerAction"><i class="material-icons">cancel</i></a>
+        <h2 class="mainCard__headerTitle">Neues Event anlegen</h2>
+        <a href="#" {{ action 'goBack' }} class="mainCard__headerAction"><i class="material-icons">abbrechen</i></a>
       </div>
       <div>
         <form {{action 'save' on='submit'}}>
@@ -16,7 +16,7 @@
 
           <div class="input-field">
            {{input value=newEventInstance.description id="description" type="text" class="validate"}}
-           <label for="description" class="active">Description</label>
+           <label for="description" class="active">Beschreibung</label>
           </div>
 
           <div class="input-field">
@@ -39,7 +39,7 @@
           </div>
 
           <div style="margin-top: 1em; color: black;">
-            <label>State</label>
+            <label>Status</label>
             {{states-form instance=newEventInstance.stateTransition}}
           </div>
 
@@ -56,10 +56,10 @@
           <h2>Anmerkungen</h2>
            <div class="input-field">
             {{input value=annotationInstance.title id="annotation" type="text" class="validate"}}
-            <label for="annotation">Annotation</label>
+            <label for="annotation">Anmerkung</label>
           </div>
 
-          <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Save</button>
+          <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Speichern</button>
         </form>
       </div>
     </div>

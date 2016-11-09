@@ -16,7 +16,7 @@
     {{/if}}
   {{/each}}
     {{#if model.locations}}
-      <h2>Location</h2>
+      <h2>Ort</h2>
       <li>
       {{#each model.locations as |location|}}
         {{entry-detail model=location}}
@@ -24,7 +24,7 @@
       </li>
     {{/if}}
     {{#if model.contactInfos}}
-      <h2>Contact Info</h2>
+      <h2>Kontaktinformation</h2>
       <li>
       {{#each model.contactInfos as |contactInfo|}}
         {{entry-detail model=contactInfo}}
@@ -33,7 +33,7 @@
     {{/if}}
 
     {{#if model.annotations}}
-      <h2>Annotations</h2>
+      <h2>Anmerkung</h2>
       <li>
       {{#each model.annotations as |annotation|}}
         {{entry-detail model=annotation}}
