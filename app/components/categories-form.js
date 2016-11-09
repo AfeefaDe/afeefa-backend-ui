@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  possibleCategories: ['community', 'welcome_ini', 'sport'],
+  possibleCategories: ['jobs', 'donation', 'leisure', 'language', 'community', 'general', 'medic', 'consultation'],
   instance: '',
   selectedCategory: false,
   actions: {
