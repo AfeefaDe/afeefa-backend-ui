@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  saving: false,
   attr: Ember.computed('model', function() {
     let model = this.get('model');
     var attributes = [];
@@ -15,11 +16,17 @@ export default Ember.Component.extend({
      * change of entry status
      */
     setNewStateTransistion: function(newStateTransistion) {
-      //get current model instance
-      let ownInstance = this.get('model');
-      //change status and save
-      ownInstance.set('stateTransition', newStateTransistion);
-      ownInstance.save();
+      if(this.get('saving')===false) {
+        this.set('saving', true);
+        //get current model instance
+        let ownInstance = this.get('model');
+        //change status and save
+        ownInstance.set('stateTransition', newStateTransistion);
+        ownInstance.save().then(()=> {
+          console.log("Saved");
+          this.set('saving', false);
+        });
+      }
     }
   }
 });
