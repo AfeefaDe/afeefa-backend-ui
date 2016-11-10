@@ -24,12 +24,13 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
     let url = this._super(...arguments);
     return url;
   },
-  handleResponse: function(status, headers) {
+  handleResponse: function(status, headers, payload, requestData) {
     //new token from API is present: update session
-    if(headers && headers['access-token']) {
+    if(headers && headers['access-token'] && headers['expiry'] && headers['client']) {
       this.get('session').set('data.authenticated.accessToken', headers['access-token']);
       this.get('session').set('data.authenticated.expiry', headers['expiry']);
       this.get('session').set('data.authenticated.client', headers['client']);
+      this.get('session').set('data.foo', 'bar'); //Hack from: https://github.com/simplabs/ember-simple-auth/issues/926
     }
     return this._super(...arguments);
   }
