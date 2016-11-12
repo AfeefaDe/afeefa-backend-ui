@@ -6,7 +6,8 @@ export default Ember.Component.extend({
     let model = this.get('model');
     var attributes = [];
     model.eachAttribute(function(name, meta) {
-      let entry = {name: name, type: meta.type};
+      let entry = {name: name, type: meta.type, hide: false};
+      if(meta.options.hideInDetailView) entry.hide = true;
       attributes.push(entry);
     });
     return attributes;
@@ -23,7 +24,6 @@ export default Ember.Component.extend({
         //change status and save
         ownInstance.set('stateTransition', newStateTransistion);
         ownInstance.save().then(()=> {
-          console.log("Saved");
           this.set('saving', false);
         });
       }

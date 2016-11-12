@@ -1,53 +1,56 @@
 <ul class="entryDetail">
   {{#each attr as |attribute|}}
     {{#if (get model attribute.name)}}
-      <li>
-      <span class="entryDetail__meta">{{attribute.name}}:</span>
-      <span>
-        {{#if (eq attribute.type "date")}}
-          {{format-date (get model attribute.name)}}
-        {{else if (eq attribute.name "mail")}}
-          <a href="mailto:{{get model attribute.name}}">{{get model attribute.name}}</a>
-        {{else}}
-          {{get model attribute.name}}
-        {{/if}}
-      </span>
-      </li>
+      {{#unless attribute.hide}}
+        <li>
+        <span class="entryDetail__meta">{{attribute.name}}:</span>
+        <span>
+          {{#if (eq attribute.type "date")}}
+            {{format-date (get model attribute.name)}}
+          {{else if (eq attribute.name "mail")}}
+            <a href="mailto:{{get model attribute.name}}">{{get model attribute.name}}</a>
+          {{else}}
+            {{get model attribute.name}}
+          {{/if}}
+        </span>
+        </li>
+      {{/unless}}
     {{/if}}
   {{/each}}
-    {{#if model.locations}}
-      <h2>Ort</h2>
-      <li>
-      {{#each model.locations as |location|}}
-        {{entry-detail model=location}}
-      {{/each}}
-      </li>
-    {{/if}}
-    {{#if model.contactInfos}}
-      <h2>Kontaktinformation</h2>
-      <li>
-      {{#each model.contactInfos as |contactInfo|}}
-        {{entry-detail model=contactInfo}}
-      {{/each}}
-      </li>
-    {{/if}}
 
-    {{#if model.annotations}}
-      <h2>Anmerkung</h2>
-      <li>
-      {{#each model.annotations as |annotation|}}
-        {{entry-detail model=annotation}}
-      {{/each}}
-      </li>
-    {{/if}}
-    {{#if model.state}}
+  {{#if model.locations}}
+    <h2>Ort</h2>
     <li>
-    <span class="entryDetail__meta">Status ändern:</span>
-      {{states-form
-        instance=newOrgaInstance.stateTransition
-        selectedState=model.state
-        onChange=(action "setNewStateTransistion")}}
+    {{#each model.locations as |location|}}
+      {{entry-detail model=location}}
+    {{/each}}
     </li>
-    {{/if}}
+  {{/if}}
+  {{#if model.contactInfos}}
+    <h2>Kontaktinformation</h2>
+    <li>
+    {{#each model.contactInfos as |contactInfo|}}
+      {{entry-detail model=contactInfo}}
+    {{/each}}
+    </li>
+  {{/if}}
+
+  {{#if model.annotations}}
+    <h2>Anmerkung</h2>
+    <li>
+    {{#each model.annotations as |annotation|}}
+      {{entry-detail model=annotation}}
+    {{/each}}
+    </li>
+  {{/if}}
+  {{#if model.state}}
+  <li>
+  <span class="entryDetail__meta">Status ändern:</span>
+    {{states-form
+      instance=newOrgaInstance.stateTransition
+      selectedState=model.state
+      onChange=(action "setNewStateTransistion")}}
+  </li>
+  {{/if}}
   {{yield}}
 </ul>
