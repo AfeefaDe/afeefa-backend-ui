@@ -5,7 +5,7 @@
     <div class="mainCard">
       <div class="mainCard__header mainCard__headerLight">
         <h2 class="mainCard__headerTitle">Neues Event anlegen</h2>
-        <a href="#" {{ action 'goBack' }} class="mainCard__headerAction"><i class="material-icons">abbrechen</i></a>
+        <a href="#" {{ action 'goBack' }} class="mainCard__headerAction"><i class="material-icons">chancel</i></a>
       </div>
       <div>
         <form {{action 'save' on='submit'}}>
@@ -27,6 +27,7 @@
           <div style="margin-top: 1em; color: black;">
             <label>Übergeordnete Orga</label>
             <select class="browser-default" onchange={{action "selectParent" value="target.value"}}>
+              <option value="-1">Keine übergeordnete Orga</option>
               {{#each orgas as |orga|}}
                 <option value="{{orga.id}}">{{orga.title}}</option>
               {{/each}}
