@@ -10,7 +10,22 @@
         {{input value=event.description id="description" type="text" class="validate"}}
       </div>
 
-      <div class="input-field">
+      <div style="margin-top: 1em; color: black;">
+        <label>Übergeordnete Orga</label>
+        <select class="browser-default" onchange={{action "selectParent" value="target.value"}}>
+          <option value="-1">Keine übergeordnete Orga</option>
+          {{#each orgas as |possibleParentOrga|}}
+              {{#if (eq possibleParentOrga.id event.orga.id)}}
+                <option value="{{possibleParentOrga.id}}" selected>{{possibleParentOrga.title}}</option>
+              {{else}}
+                <option value="{{possibleParentOrga.id}}">{{possibleParentOrga.title}}</option>
+              {{/if}}
+          {{/each}}
+        </select>
+      </div>
+
+
+      <div class="input-field" style="margin-top: 1em; color: black;">
         <label for="date" class="active">Datum</label>
         {{input value=event.date id="date" type="date"}}
       </div>

@@ -14,12 +14,12 @@
         <label>Übergeordnete Orga</label>
         <select class="browser-default" onchange={{action "selectParent" value="target.value"}}>
           <option value="-1">Keine übergeordnete Orga</option>
-          {{#each orgas as |possibleParenOrga|}}
-            {{#unless (eq possibleParenOrga.id orga.id)}}
-              {{#if (eq possibleParenOrga.id orga.parentOrga.id)}}
-                <option value="{{possibleParenOrga.id}}" selected>{{possibleParenOrga.title}}</option>
+          {{#each orgas as |possibleParentOrga|}}
+            {{#unless (eq possibleParentOrga.id orga.id)}}
+              {{#if (eq possibleParentOrga.id orga.parentOrga.id)}}
+                <option value="{{possibleParentOrga.id}}" selected>{{possibleParentOrga.title}}</option>
               {{else}}
-                <option value="{{possibleParenOrga.id}}">{{possibleParenOrga.title}}</option>
+                <option value="{{possibleParentOrga.id}}">{{possibleParentOrga.title}}</option>
               {{/if}}
             {{/unless}}
           {{/each}}

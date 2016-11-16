@@ -38,6 +38,18 @@ export default Ember.Component.extend({
       diff.then((success)=>{
         history.back();
       });
+    },
+    /*
+     * Input type select for setting parent orga
+     */
+    selectParent: function(parentOrgaID) {
+      if(parentOrgaID === -1) {
+        this.set('event.orga', null);
+      }
+      else {
+        let parentOrga = this.get('store').peekRecord('orga', parentOrgaID);
+        this.set('event.orga', parentOrga);
+      }
     }
   }
 });

@@ -8,7 +8,7 @@
         <a href="#" {{ action 'goBack' }} class="mainCard__headerAction"><i class="material-icons">cancel</i></a>
       </div>
       <div>
-        {{component "edit-event-form" event=model.event}}
+        {{component "edit-event-form" event=model.event orgas=model.orgas}}
       </div>
     </div>
   </div>
