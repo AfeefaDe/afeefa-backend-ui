@@ -1,9 +1,11 @@
 import Ember from 'ember';
+import RSVP from 'rsvp';
 
 export default Ember.Route.extend({
   model(params) {
-  //@question better to make this a subroute of /orgas and simply filter the model
-  console.log("Edit id: ", params.event_id);
-    return this.get('store').findRecord('event', params.event_id);
+    return RSVP.hash({
+      event: this.store.peekRecord('event', params.event_id),
+      orgas: this.store.peekAll('orga')
+    });
   },
 });
