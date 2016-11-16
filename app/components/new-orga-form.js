@@ -53,11 +53,11 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
      */
     selectParent: function(parentOrgaID) {
       if(parentOrgaID === -1) {
-        this.set('newEventInstance.orga', null);
+        this.set('newOrgaInstance.parentOrga', null);
       }
       else {
         let parentOrga = this.get('store').peekRecord('orga', parentOrgaID);
-        this.set('newEventInstance.orga', parentOrga);
+        this.set('newOrgaInstance.parentOrga', parentOrga);
       }
     }
 	}
