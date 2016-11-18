@@ -28,6 +28,14 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
     //init empty annotation instance
     this.set('annotationInstance', store.createRecord('annotation'));
   },
+  handleError: function(reason) {
+    if(reason.errors) {
+      for (var singleError of reason.errors) {
+        const singleErrorString = `Error saving orga (HTTP: ${singleError.status}): <br>${singleError.detail}`;
+        Materialize.toast(singleErrorString, 1000000);
+      }
+    }
+  },
 	actions: {
 		save: function() {
       let store = this.get('store');
@@ -46,7 +54,7 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
         saveMeta.then((hash) => {
           history.back();
         });
-      });
+      }, this.handleError);
 		},
     /*
      * Input type select for setting parent orga
@@ -63,3 +71,9 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
 	}
 });
 
+/*
+(err)=> {
+
+        }
+      }
+ */
