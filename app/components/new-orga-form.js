@@ -70,10 +70,3 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
     }
 	}
 });
-
-/*
-(err)=> {
-
-        }
-      }
- */
