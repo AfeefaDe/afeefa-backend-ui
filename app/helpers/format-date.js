@@ -6,6 +6,7 @@ import Ember from 'ember';
 export function formatDate(params) {
   if(params && params[0]) {
     let date = params[0];
+    /*jshint newcap: false */
     let timeagoInstance = new timeago();
     return timeagoInstance.format(date);
   }

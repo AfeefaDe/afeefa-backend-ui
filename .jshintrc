@@ -1,5 +1,7 @@
 {
   "predef": [
+    "Materialize",
+    "timeago",
     "document",
     "window",
     "-Promise"

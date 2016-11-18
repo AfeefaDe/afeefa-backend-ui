@@ -23,7 +23,7 @@ export default Ember.Component.extend({
         contactInfos,
         locations,
       });
-      diff.then((success)=>{
+      diff.then(()=>{
         history.back();
       });
     },
@@ -41,4 +41,3 @@ export default Ember.Component.extend({
     }
   }
 });
-

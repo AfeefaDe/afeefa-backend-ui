@@ -38,8 +38,6 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
   },
 	actions: {
 		save: function() {
-      let store = this.get('store');
-
       let orga = this.get('newOrgaInstance');
       orga.save().then((savedOrga)=> {
         /*set contactable*/
@@ -51,7 +49,7 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
           location: this.get('locationInstance').save(),
           annotation: this.get('annotationInstance').save()
         });
-        saveMeta.then((hash) => {
+        saveMeta.then(() => {
           history.back();
         });
       }, this.handleError);
