@@ -1,14 +1,10 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
 
-/*
- * mixins with function validateForm
- */
-import FormValidatorMixin from '../mixins/form-validator';
 import RouteHelper from '../mixins/route-helper';
 
 
-export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
+export default Ember.Component.extend(RouteHelper, {
   store: Ember.inject.service(),
   locationInstance: null,
   annotationInstance: null,

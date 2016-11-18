@@ -4,11 +4,11 @@ import RSVP from 'rsvp';
 /*
  * mixins with function validateForm
  */
-import FormValidatorMixin from '../mixins/form-validator';
+import ErrorHandler from '../mixins/error-handler';
 import RouteHelper from '../mixins/route-helper';
 
 
-export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
+export default Ember.Component.extend(ErrorHandler, RouteHelper, {
   store: Ember.inject.service(),
   locationInstance: null,
   annotationInstance: null,
@@ -28,15 +28,17 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
     //init empty annotation instance
     this.set('annotationInstance', store.createRecord('annotation'));
   },
-  handleError: function(reason) {
-    if(reason.errors) {
-      for (var singleError of reason.errors) {
-        const singleErrorString = `Error saving orga (HTTP: ${singleError.status}): <br>${singleError.detail}`;
-        Materialize.toast(singleErrorString, 1000000);
-      }
-    }
+  /*
+   * delete orga instance if it hasn't been persisted
+   */
+  willDestroyElement()  {
+    const orgaIsDirty = this.get('newOrgaInstance.hasDirtyAttributes');
+    if(orgaIsDirty) this.get('newOrgaInstance').deleteRecord();
   },
 	actions: {
+    /*
+     * Save Orga with meta models
+     */
 		save: function() {
       let orga = this.get('newOrgaInstance');
       orga.save().then((savedOrga)=> {
@@ -51,7 +53,7 @@ export default Ember.Component.extend(FormValidatorMixin, RouteHelper, {
         });
         saveMeta.then(() => {
           history.back();
-        });
+        }, this.handleError);
       }, this.handleError);
 		},
     /*
