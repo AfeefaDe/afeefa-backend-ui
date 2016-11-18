@@ -1,16 +1,16 @@
 <form {{action 'saveEvent' on='submit'}}>
 
-      <div class="input-field">
+      <div class="inputField__spacing input-field">
         <label for="title" class="active">Titel</label>
         {{input value=event.title id="title" type="text" class="validate"}}
       </div>
 
-      <div class="input-field">
+      <div class="inputField__spacing input-field">
         <label for="description" class="active">Beschreibung</label>
         {{input value=event.description id="description" type="text" class="validate"}}
       </div>
 
-      <div style="margin-top: 1em; color: black;">
+      <div class="inputField__spacing">
         <label>Übergeordnete Orga</label>
         <select class="browser-default" onchange={{action "selectParent" value="target.value"}}>
           <option value="-1">Keine übergeordnete Orga</option>
@@ -25,32 +25,32 @@
       </div>
 
 
-      <div class="input-field" style="margin-top: 1em; color: black;">
+      <div class="inputField__spacing inputField__spacing input-field">
         <label for="date" class="active">Datum</label>
         {{input value=event.date id="date" type="date"}}
       </div>
 
-      <div style="margin-top: 1em; color: black;">
+      <div class="inputField__spacing">
         <label class="active">Kategorie</label>
         {{categories-form instance=event.category selectedCategory=event.category}}
       </div>
 
       <h2>Kontaktinformationen</h2>
-      <div style="margin-top: 1em; color: black;">
+      <div class="inputField__spacing">
       {{#each event.contactInfos as |contactInfo|}}
           {{contact-info-form instance=contactInfo}}
       {{/each}}
       </div>
 
       <h2>Ort</h2>
-      <div style="margin-top: 1em; color: black;">
+      <div class="inputField__spacing">
       {{#each event.locations as |location|}}
           {{location-form instance=location}}
       {{/each}}
       </div>
 
       <h2>Anmerkungen</h2>
-        <div class="input-field">
+        <div class="inputField__spacing input-field">
           {{#each event.annotations as |annotation index|}}
             <label for="annotation{{index}}" class="active">Anmerkung {{index}}</label>
             {{input value=annotation.title id="annotation{{index}}" type="text" class="validate"}}

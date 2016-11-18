@@ -9,16 +9,16 @@
       </div>
       <div>
         <form {{action 'save' on='submit'}}>
-          <div class="input-field">
+          <div class="inputField__spacing input-field">
             {{input value=newOrgaInstance.title id="title" type="text" class="validate"}}
             <label for="title">Titel</label>
           </div>
-          <div class="input-field">
+          <div class="inputField__spacing input-field">
             {{input value=newOrgaInstance.description id="description" type="text" class="validate"}}
             <label for="description">Beschreibung</label>
           </div>
 
-          <div style="margin-top: 1em; color: black;">
+          <div class="inputField__spacing">
             <label>Übergeordnete Orga</label>
             <select class="browser-default" onchange={{action "selectParent" value="target.value"}}>
               <option value="-1">Keine übergeordnete Orga</option>
@@ -26,30 +26,30 @@
               <option value="{{orga.id}}">{{orga.title}}</option>
               {{/each}}
             </select>
-          </div>
+            </div>
 
-          <div style="margin-top: 1em; color: black;">
+          <div class="inputField__spacing">
             <label>Kategorie</label>
             {{categories-form instance=newOrgaInstance.category}}
           </div>
 
-          <div style="margin-top: 1em; color: black;">
+          <div class="inputField__spacing">
             <label>Status</label>
             {{states-form instance=newOrgaInstance.stateTransition}}
           </div>
 
           <h2>Kontaktinformationen</h2>
-          <div style="margin-top: 1em; color: black;">
+          <div class="inputField__spacing">
             {{contact-info-form instance=contactInfoInstance}}
           </div>
 
           <h2>Ort</h2>
-          <div style="margin-top: 1em; color: black;">
+          <div class="inputField__spacing">
             {{location-form instance=locationInstance}}
           </div>
 
           <h2>Anmerkungen</h2>
-           <div class="input-field">
+           <div class="inputField__spacing input-field">
             {{input value=annotationInstance.title id="annotation" type="text" class="validate"}}
             <label for="annotation">Anmerkung</label>
           </div>
