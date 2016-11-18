@@ -23,6 +23,13 @@ export default Ember.Component.extend(RouteHelper, {
     //init empty annotation instance
     this.set('annotationInstance', store.createRecord('annotation'));
   },
+  /*
+   * delete orga instance if it hasn't been persisted
+   */
+  willDestroyElement()  {
+    const eventIsDirty = this.get('newEventInstance.hasDirtyAttributes');
+    if(eventIsDirty) this.get('newEventInstance').deleteRecord();
+  },
   actions: {
     save: function() {
       let event = this.get('newEventInstance');
