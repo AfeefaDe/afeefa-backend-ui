@@ -14,7 +14,7 @@ export default DS.JSONAPISerializer.extend({
     //delete json["data"]["relationships"];
     return json;
   },
-  normalizeResponse (store, primaryModelClass, payload, id, requestType) {
+  normalizeResponse () {
     //console.log("normalize Response "+primaryModelClass+": ", payload);
     let result = this._super(...arguments);
     return result;

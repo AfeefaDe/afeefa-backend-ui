@@ -20,11 +20,11 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
     let underscore = Ember.String.underscore(modelName);
     return Ember.String.pluralize(underscore);
   },
-  urlForRequest(params) {
+  urlForRequest() {
     let url = this._super(...arguments);
     return url;
   },
-  handleResponse: function(status, headers, payload, requestData) {
+  handleResponse: function(status, headers) {
     //new token from API is present: update session
     if(headers && headers['access-token'] && headers['expiry'] && headers['client']) {
       this.get('session').set('data.authenticated.accessToken', headers['access-token']);

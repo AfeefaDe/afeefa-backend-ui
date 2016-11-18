@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import App from './app';
 
 Ember.Application.initializer({
   name: 'load-services',

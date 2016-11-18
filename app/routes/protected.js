@@ -14,7 +14,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     });
   },
   actions: {
-    willTransition(transition) {
+    willTransition() {
       //publish to global event bus
       this.EventBus.publish('willTransition');
     }
