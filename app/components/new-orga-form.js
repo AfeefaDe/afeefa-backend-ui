@@ -10,31 +10,6 @@ import RouteHelper from '../mixins/route-helper';
 
 export default Ember.Component.extend(ErrorHandler, RouteHelper, {
   store: Ember.inject.service(),
-  locationInstance: null,
-  annotationInstance: null,
-  contactInfoInstance: null,
-  newOrgaInstance: null,
-  didReceiveAttrs() {
-    this._super(...arguments);
-    const store = this.get('store');
-    //init empty orga instance and set default values
-    const orgaInstance = store.createRecord('orga');
-    //set default valus
-    this.set('newOrgaInstance', orgaInstance);
-    //init empty contactInfo instance
-    this.set('contactInfoInstance', store.createRecord('contactInfo'));
-    //init empty localtion instance
-    this.set('locationInstance', store.createRecord('location'));
-    //init empty annotation instance
-    this.set('annotationInstance', store.createRecord('annotation'));
-  },
-  /*
-   * delete orga instance if it hasn't been persisted
-   */
-  willDestroyElement()  {
-    const orgaIsDirty = this.get('newOrgaInstance.hasDirtyAttributes');
-    if(orgaIsDirty) this.get('newOrgaInstance').deleteRecord();
-  },
 	actions: {
     /*
      * Save Orga with meta models

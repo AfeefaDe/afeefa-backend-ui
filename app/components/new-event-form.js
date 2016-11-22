@@ -6,30 +6,6 @@ import RouteHelper from '../mixins/route-helper';
 
 export default Ember.Component.extend(RouteHelper, {
   store: Ember.inject.service(),
-  locationInstance: null,
-  annotationInstance: null,
-  contactInfoInstance: null,
-  newEventInstance: null,
-  didReceiveAttrs() {
-    this._super(...arguments);
-    const store = this.get('store');
-    //init empty event instance and set default values
-    const eventInstance = store.createRecord('event');
-    this.set('newEventInstance', eventInstance);
-    //init empty contactInfo instance
-    this.set('contactInfoInstance', store.createRecord('contactInfo'));
-    //init empty localtion instance
-    this.set('locationInstance', store.createRecord('location'));
-    //init empty annotation instance
-    this.set('annotationInstance', store.createRecord('annotation'));
-  },
-  /*
-   * delete event instance if it hasn't been persisted
-   */
-  willDestroyElement()  {
-    const eventIsDirty = this.get('newEventInstance.hasDirtyAttributes');
-    if(eventIsDirty) this.get('newEventInstance').deleteRecord();
-  },
   actions: {
     save: function() {
       let event = this.get('newEventInstance');
