@@ -28,20 +28,20 @@
 
       <div class="inputField__spacing">
         <label class="active">Kategorie</label>
-        {{categories-form instance=orga.category selectedCategory=orga.category}}
+        {{forms/categories-form instance=orga.category selectedCategory=orga.category}}
       </div>
 
       <h2>Kontaktinformationen</h2>
       <div class="inputField__spacing">
       {{#each orga.contactInfos as |contactInfo|}}
-          {{contact-info-form instance=contactInfo}}
+          {{forms/contact-info-form instance=contactInfo}} instance=contactInfo}}
       {{/each}}
       </div>
 
       <h2>Ort</h2>
       <div class="inputField__spacing">
       {{#each orga.locations as |location|}}
-          {{location-form instance=location}}
+          {{forms/location-form instance=location}}
       {{/each}}
       </div>
 

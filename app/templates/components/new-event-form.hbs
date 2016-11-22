@@ -36,22 +36,22 @@
 
           <div class="inputField__spacing">
             <label>Kategorie</label>
-            {{categories-form instance=newEventInstance.category}}
+            {{forms/categories-form instance=newEventInstance.category}}
           </div>
 
           <div class="inputField__spacing">
             <label>Status</label>
-            {{states-form instance=newEventInstance.stateTransition}}
+            {{forms/states-form instance=newEventInstance.stateTransition}}
           </div>
 
           <h2>Kontaktinformationen</h2>
           <div class="inputField__spacing">
-            {{contact-info-form instance=contactInfoInstance}}
+            {{forms/contact-info-form instance=contactInfo}} instance=contactInfoInstance}}
           </div>
 
           <h2>Ort</h2>
           <div class="inputField__spacing">
-            {{location-form instance=locationInstance}}
+            {{forms/location-form instance=locationInstance}}
           </div>
 
           <h2>Anmerkungen</h2>

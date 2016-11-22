@@ -46,7 +46,7 @@
   {{#if model.state}}
   <li>
   <span class="entryDetail__meta">Status ändern:</span>
-    {{states-form
+    {{forms/states-form
       instance=newOrgaInstance.stateTransition
       selectedState=model.state
       onChange=(action "setNewStateTransistion")}}

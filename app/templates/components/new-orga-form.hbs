@@ -30,22 +30,22 @@
 
           <div class="inputField__spacing">
             <label>Kategorie</label>
-            {{categories-form instance=newOrgaInstance.category}}
+            {{forms/categories-form instance=newOrgaInstance.category}}
           </div>
 
           <div class="inputField__spacing">
             <label>Status</label>
-            {{states-form instance=newOrgaInstance.stateTransition}}
+            {{forms/states-form instance=newOrgaInstance.stateTransition}}
           </div>
 
           <h2>Kontaktinformationen</h2>
           <div class="inputField__spacing">
-            {{contact-info-form instance=contactInfoInstance}}
+            {{forms/contact-info-form instance=contactInfo}} instance=contactInfoInstance}}
           </div>
 
           <h2>Ort</h2>
           <div class="inputField__spacing">
-            {{location-form instance=locationInstance}}
+            {{forms/location-form instance=locationInstance}}
           </div>
 
           <h2>Anmerkungen</h2>
