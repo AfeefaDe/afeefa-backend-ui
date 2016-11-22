@@ -10,11 +10,11 @@
       <div>
         <form {{action 'save' on='submit'}}>
           <div class="inputField__spacing input-field">
-            {{input value=newOrgaInstance.title id="title" type="text" class="validate"}}
+            {{input value=model.entryInstance.title id="title" type="text" class="validate"}}
             <label for="title">Titel</label>
           </div>
           <div class="inputField__spacing input-field">
-            {{input value=newOrgaInstance.description id="description" type="text" class="validate"}}
+            {{input value=model.entryInstance.description id="description" type="text" class="validate"}}
             <label for="description">Beschreibung</label>
           </div>
 
@@ -22,7 +22,7 @@
             <label>Übergeordnete Orga</label>
             <select class="browser-default" onchange={{action "selectParent" value="target.value"}}>
               <option value="-1">Keine übergeordnete Orga</option>
-              {{#each orgas as |orga|}}
+              {{#each model.orgas as |orga|}}
               <option value="{{orga.id}}">{{orga.title}}</option>
               {{/each}}
             </select>
@@ -30,27 +30,27 @@
 
           <div class="inputField__spacing">
             <label>Kategorie</label>
-            {{forms/categories-form instance=newOrgaInstance.category}}
+            {{forms/categories-form instance=model.entryInstance.category}}
           </div>
 
           <div class="inputField__spacing">
             <label>Status</label>
-            {{forms/states-form instance=newOrgaInstance.stateTransition}}
+            {{forms/states-form instance=model.entryInstance.stateTransition}}
           </div>
 
           <h2>Kontaktinformationen</h2>
           <div class="inputField__spacing">
-            {{forms/contact-info-form instance=contactInfo}} instance=contactInfoInstance}}
+            {{forms/contact-info-form instance=model.contactInfoInstance}}
           </div>
 
           <h2>Ort</h2>
           <div class="inputField__spacing">
-            {{forms/location-form instance=locationInstance}}
+            {{forms/location-form instance=model.locationInstance}}
           </div>
 
           <h2>Anmerkungen</h2>
            <div class="inputField__spacing input-field">
-            {{input value=annotationInstance.title id="annotation" type="text" class="validate"}}
+            {{input value=model.annotationInstance.title id="annotation" type="text" class="validate"}}
             <label for="annotation">Anmerkung</label>
           </div>
 

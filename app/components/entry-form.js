@@ -15,16 +15,16 @@ export default Ember.Component.extend(ErrorHandler, RouteHelper, {
      * Save Orga with meta models
      */
 		save: function() {
-      let orga = this.get('newOrgaInstance');
+      let orga = this.get('model.entryInstance');
       orga.save().then((savedOrga)=> {
         /*set contactable*/
-        this.get('contactInfoInstance').set('contactable', savedOrga);
-        this.get('locationInstance').set('locatable', savedOrga);
-        this.get('annotationInstance').set('annotatable', savedOrga);
+        this.get('model.contactInfoInstance').set('contactable', savedOrga);
+        this.get('model.locationInstance').set('locatable', savedOrga);
+        this.get('model.annotationInstance').set('annotatable', savedOrga);
         const saveMeta = RSVP.hash({
-          contact: this.get('contactInfoInstance').save(),
-          location: this.get('locationInstance').save(),
-          annotation: this.get('annotationInstance').save()
+          contact: this.get('model.contactInfoInstance').save(),
+          location: this.get('model.locationInstance').save(),
+          annotation: this.get('model.annotationInstance').save()
         });
         saveMeta.then(() => {
           history.back();
@@ -36,11 +36,11 @@ export default Ember.Component.extend(ErrorHandler, RouteHelper, {
      */
     selectParent: function(parentOrgaID) {
       if(parentOrgaID === -1) {
-        this.set('newOrgaInstance.parentOrga', null);
+        this.set('model.entryInstance.parentOrga', null);
       }
       else {
         let parentOrga = this.get('store').peekRecord('orga', parentOrgaID);
-        this.set('newOrgaInstance.parentOrga', parentOrga);
+        this.set('model.entryInstance.parentOrga', parentOrga);
       }
     }
 	}
