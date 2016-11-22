@@ -10,17 +10,25 @@ import RouteHelper from '../mixins/route-helper';
 
 export default Ember.Component.extend(ErrorHandler, RouteHelper, {
   store: Ember.inject.service(),
+  headline: Ember.computed('model', function() {
+    const entry = this.get('model.entryInstance');
+    return entry.constructor.modelName === 'orga' ? 'Neue Organisation' : 'Neues Event';
+  }),
+  showDate: Ember.computed('model', function() {
+    const entry = this.get('model.entryInstance');
+    return entry.date || entry.date === null;
+  }),
 	actions: {
     /*
-     * Save Orga with meta models
+     * Save Entry with meta models
      */
 		save: function() {
-      let orga = this.get('model.entryInstance');
-      orga.save().then((savedOrga)=> {
+      let entry = this.get('model.entryInstance');
+      entry.save().then((savedEntry)=> {
         /*set contactable*/
-        this.get('model.contactInfoInstance').set('contactable', savedOrga);
-        this.get('model.locationInstance').set('locatable', savedOrga);
-        this.get('model.annotationInstance').set('annotatable', savedOrga);
+        this.get('model.contactInfoInstance').set('contactable', savedEntry);
+        this.get('model.locationInstance').set('locatable', savedEntry);
+        this.get('model.annotationInstance').set('annotatable', savedEntry);
         const saveMeta = RSVP.hash({
           contact: this.get('model.contactInfoInstance').save(),
           location: this.get('model.locationInstance').save(),
@@ -35,12 +43,15 @@ export default Ember.Component.extend(ErrorHandler, RouteHelper, {
      * Input type select for setting parent orga
      */
     selectParent: function(parentOrgaID) {
+      const entry = this.get('model.entryInstance');
+      // @hack
+      const orgaProp = entry.parentOrga || entry.parentOrga === null ? 'parentOrga' : 'orga'
       if(parentOrgaID === -1) {
-        this.set('model.entryInstance.parentOrga', null);
+          this.set(`model.entryInstance.${orgaProp}`, null);
       }
       else {
         let parentOrga = this.get('store').peekRecord('orga', parentOrgaID);
-        this.set('model.entryInstance.parentOrga', parentOrga);
+        this.set(`model.entryInstance.${orgaProp}`, parentOrga);
       }
     }
 	}
