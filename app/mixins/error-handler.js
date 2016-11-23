@@ -7,8 +7,8 @@ export default Ember.Mixin.create({
   handleError: function(reason) {
     if(reason.errors) {
       for (var singleError of reason.errors) {
-        const singleErrorString = `Error saving orga (HTTP: ${singleError.status}): <br>${singleError.detail}`;
-        Materialize.toast(singleErrorString, 1000000);
+        const singleErrorString = `Error saving orga (HTTP: ${singleError.status}): \n${singleError.detail}`;
+        alert(singleErrorString);
       }
     }
   }

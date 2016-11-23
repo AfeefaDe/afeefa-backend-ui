@@ -2,19 +2,19 @@
 
 <form {{action 'save' on='submit'}}>
   <div class="inputField__spacing input-field">
-    {{input value=model.entryInstance.title id="title" type="text" class="validate"}}
+    {{input value=model.entryInstance.title id="title" type="text" class="validate" required="required"}}
     <label for="title">Titel</label>
   </div>
 
   <div class="inputField__spacing input-field">
-    {{input value=model.entryInstance.description id="description" type="text" class="validate"}}
+    {{input value=model.entryInstance.description id="description" type="text" class="validate" maxlength="150" required="required"}}
     <label for="description">Beschreibung</label>
   </div>
 
   {{#if showDate}}
   <div class="inputField__spacing input-field">
     <label for="date">Datum</label>
-    {{input value=model.entryInstance.date id="date" type="date"}}
+    {{input value=model.entryInstance.date id="date" type="date" required="required"}}
   </div>
   {{/if}}
 
