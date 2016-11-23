@@ -15,7 +15,7 @@ export default Ember.Route.extend({
     /*
      * clear store with unsaved models
      */
-    willTransition(transition) {
+    willTransition() {
       const controller = this.controllerFor('protected.newevent');
       controller.get('model.entryInstance').rollbackAttributes();
       controller.get('model.contactInfoInstance').rollbackAttributes();
