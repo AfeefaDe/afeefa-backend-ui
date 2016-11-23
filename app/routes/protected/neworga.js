@@ -9,13 +9,13 @@ export default Ember.Route.extend({
       contactInfoInstance: this.store.createRecord('contactInfo'),
       locationInstance: this.store.createRecord('location'),
       annotationInstance: this.store.createRecord('annotation')
-    })
+    });
   },
   actions: {
     /*
      * clear store with unsaved models
      */
-    willTransition(transition) {
+    willTransition() {
       const controller = this.controllerFor('protected.neworga');
       controller.get('model.entryInstance').rollbackAttributes();
       controller.get('model.contactInfoInstance').rollbackAttributes();

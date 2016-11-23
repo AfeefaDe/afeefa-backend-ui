@@ -41,7 +41,7 @@ export default Ember.Component.extend(ErrorHandler, RouteHelper, {
     selectParent: function(parentOrgaID) {
       const entry = this.get('model.entryInstance');
       // @hack
-      const orgaProp = entry.parentOrga || entry.parentOrga === null ? 'parentOrga' : 'orga'
+      const orgaProp = entry.parentOrga || entry.parentOrga === null ? 'parentOrga' : 'orga';
       if(parentOrgaID === -1) {
           this.set(`model.entryInstance.${orgaProp}`, null);
       }

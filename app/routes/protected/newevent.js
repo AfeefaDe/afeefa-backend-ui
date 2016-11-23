@@ -9,7 +9,7 @@ export default Ember.Route.extend({
       contactInfoInstance: this.store.createRecord('contactInfo'),
       locationInstance: this.store.createRecord('location'),
       annotationInstance: this.store.createRecord('annotation')
-    })
+    });
   },
   actions: {
     /*
