@@ -1,0 +1,68 @@
+{{outlet}}
+
+<div class="row">
+  <div class="col s12 m8 push-m2">
+    <div class="mainCard">
+      <div class="mainCard__header mainCard__headerLight">
+        <h2 class="mainCard__headerTitle">Neues Event anlegen</h2>
+        <a href="#" {{ action 'goBack' }} class="mainCard__headerAction"><i class="material-icons">chancel</i></a>
+      </div>
+      <div>
+        <form {{action 'save' on='submit'}}>
+          <div class="inputField__spacing input-field">
+            {{input value=newEventInstance.title id="title" type="text" class="validate"}}
+            <label for="title">Titel</label>
+          </div>
+
+          <div class="inputField__spacing input-field">
+           {{input value=newEventInstance.description id="description" type="text" class="validate"}}
+           <label for="description">Beschreibung</label>
+          </div>
+
+          <div class="inputField__spacing input-field">
+            <label for="date">Datum</label>
+            {{input value=newEventInstance.date id="date" type="date"}}
+          </div>
+
+          <div class="inputField__spacing">
+            <label>Übergeordnete Orga</label>
+            <select class="browser-default" onchange={{action "selectParent" value="target.value"}}>
+              <option value="-1">Keine übergeordnete Orga</option>
+              {{#each orgas as |orga|}}
+                <option value="{{orga.id}}">{{orga.title}}</option>
+              {{/each}}
+            </select>
+          </div>
+
+          <div class="inputField__spacing">
+            <label>Kategorie</label>
+            {{forms/categories-form instance=newEventInstance.category}}
+          </div>
+
+          <div class="inputField__spacing">
+            <label>Status</label>
+            {{forms/states-form instance=newEventInstance.stateTransition}}
+          </div>
+
+          <h2>Kontaktinformationen</h2>
+          <div class="inputField__spacing">
+            {{forms/contact-info-form instance=contactInfo}} instance=contactInfoInstance}}
+          </div>
+
+          <h2>Ort</h2>
+          <div class="inputField__spacing">
+            {{forms/location-form instance=locationInstance}}
+          </div>
+
+          <h2>Anmerkungen</h2>
+           <div class="inputField__spacing input-field">
+            {{input value=annotationInstance.title id="annotation" type="text" class="validate"}}
+            <label for="annotation">Anmerkung</label>
+          </div>
+
+          <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Speichern</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
