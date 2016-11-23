@@ -20,20 +20,46 @@ export default Ember.Component.extend(ErrorHandler, RouteHelper, {
      */
 		save: function() {
       let entry = this.get('model.entryInstance');
-      entry.save().then((savedEntry)=> {
-        /*set contactable*/
-        this.get('model.contactInfoInstance').set('contactable', savedEntry);
-        this.get('model.locationInstance').set('locatable', savedEntry);
-        this.get('model.annotationInstance').set('annotatable', savedEntry);
-        const saveMeta = RSVP.hash({
-          contact: this.get('model.contactInfoInstance').save(),
-          location: this.get('model.locationInstance').save(),
-          annotation: this.get('model.annotationInstance').save()
+
+      if (entry.get('id')) {
+        const save = entry.save();
+        const annotations = entry.get('annotations').then((annotation) => {
+          annotation.save();
         });
-        saveMeta.then(() => {
+        const contactInfos = entry.get('contactInfos').then((contactInfo) => {
+          contactInfo.save();
+        });
+        const locations = entry.get('locations').then((location) => {
+          location.save();
+        });
+
+        const diff = RSVP.hash({
+          save,
+          annotations,
+          contactInfos,
+          locations,
+        });
+
+        diff.then(()=>{
           history.back();
+        });
+      } else {
+        entry.save().then((savedEntry)=> {
+          /*set contactable*/
+          this.get('model.contactInfoInstance').set('contactable', savedEntry);
+          this.get('model.locationInstance').set('locatable', savedEntry);
+          this.get('model.annotationInstance').set('annotatable', savedEntry);
+          const saveMeta = RSVP.hash({
+            contact: this.get('model.contactInfoInstance').save(),
+            location: this.get('model.locationInstance').save(),
+            annotation: this.get('model.annotationInstance').save()
+          });
+          saveMeta.then(() => {
+            history.back();
+          }, this.handleError);
         }, this.handleError);
-      }, this.handleError);
+      }
+
 		},
     /*
      * Input type select for setting parent orga
