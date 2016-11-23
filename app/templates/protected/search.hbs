@@ -9,10 +9,12 @@
         <form {{action 'search' on='submit'}}>
           <div class="input-field">
             {{input value=term id="title" type="text" class="validate" autofocus="autofocus"}}
-            <label for="title">Titel</label>
+            <label for="title" class="{{if term "active" }}">Titel</label>
           </div>
           <button class="btn waves-effect waves-light" type="submit">Suchen</button>
         </form>
+      </div>
+      <div>
         {{#if status}}
           <p>{{status}}</p>
         {{else}}

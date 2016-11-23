@@ -3,17 +3,17 @@
 <form {{action 'save' on='submit'}}>
   <div class="inputField__spacing input-field">
     {{input value=model.entryInstance.title id="title" type="text" class="validate" required="required"}}
-    <label for="title">Titel</label>
+    <label for="title" class="{{if model.entryInstance.title "active" }}">Titel</label>
   </div>
 
   <div class="inputField__spacing input-field">
     {{input value=model.entryInstance.description id="description" type="text" class="validate" maxlength="150" required="required"}}
-    <label for="description">Beschreibung</label>
+    <label for="description" class="{{if model.entryInstance.description "active" }}">Beschreibung</label>
   </div>
 
   {{#if showDate}}
   <div class="inputField__spacing input-field">
-    <label for="date">Datum</label>
+    <label for="date" class="{{if model.entryInstance.date "active" }}">Datum</label>
     {{input value=model.entryInstance.date id="date" type="date" required="required"}}
   </div>
   {{/if}}
@@ -51,7 +51,7 @@
   <h2>Anmerkungen</h2>
    <div class="inputField__spacing input-field">
     {{input value=model.annotationInstance.title id="annotation" type="text" class="validate"}}
-    <label for="annotation">Anmerkung</label>
+    <label for="annotation" class="{{if model.annotationInstance.title "active" }}">Anmerkung</label>
   </div>
 
   <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Save</button>
