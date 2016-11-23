@@ -10,10 +10,6 @@ import RouteHelper from '../mixins/route-helper';
 
 export default Ember.Component.extend(ErrorHandler, RouteHelper, {
   store: Ember.inject.service(),
-  headline: Ember.computed('model', function() {
-    const entry = this.get('model.entryInstance');
-    return entry.constructor.modelName === 'orga' ? 'Neue Organisation' : 'Neues Event';
-  }),
   showDate: Ember.computed('model', function() {
     const entry = this.get('model.entryInstance');
     return entry.date || entry.date === null;

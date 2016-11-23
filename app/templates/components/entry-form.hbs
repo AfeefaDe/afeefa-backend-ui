@@ -1,70 +1,59 @@
 {{outlet}}
 
-<div class="row">
-  <div class="col s12 m8 push-m2">
-    <div class="mainCard">
-      <div class="mainCard__header mainCard__headerLight">
-        <h2 class="mainCard__headerTitle">{{headline}} anlegen</h2>
-        <a href="#" {{ action 'goBack' }} class="mainCard__headerAction"><i class="material-icons">chancel</i></a>
-      </div>
-      <div>
-        <form {{action 'save' on='submit'}}>
-          <div class="inputField__spacing input-field">
-            {{input value=model.entryInstance.title id="title" type="text" class="validate"}}
-            <label for="title">Titel</label>
-          </div>
-
-          <div class="inputField__spacing input-field">
-            {{input value=model.entryInstance.description id="description" type="text" class="validate"}}
-            <label for="description">Beschreibung</label>
-          </div>
-
-          {{#if showDate}}
-          <div class="inputField__spacing input-field">
-            <label for="date">Datum</label>
-            {{input value=model.entryInstance.date id="date" type="date"}}
-          </div>
-          {{/if}}
-
-          <div class="inputField__spacing">
-            <label>Übergeordnete Orga</label>
-            <select class="browser-default" onchange={{action "selectParent" value="target.value"}}>
-              <option value="-1">Keine übergeordnete Orga</option>
-              {{#each model.orgas as |orga|}}
-              <option value="{{orga.id}}">{{orga.title}}</option>
-              {{/each}}
-            </select>
-            </div>
-
-          <div class="inputField__spacing">
-            <label>Kategorie</label>
-            {{forms/categories-form instance=model.entryInstance.category}}
-          </div>
-
-          <div class="inputField__spacing">
-            <label>Status</label>
-            {{forms/states-form instance=model.entryInstance.stateTransition}}
-          </div>
-
-          <h2>Kontaktinformationen</h2>
-          <div class="inputField__spacing">
-            {{forms/contact-info-form instance=model.contactInfoInstance}}
-          </div>
-
-          <h2>Ort</h2>
-          <div class="inputField__spacing">
-            {{forms/location-form instance=model.locationInstance}}
-          </div>
-
-          <h2>Anmerkungen</h2>
-           <div class="inputField__spacing input-field">
-            {{input value=model.annotationInstance.title id="annotation" type="text" class="validate"}}
-            <label for="annotation">Anmerkung</label>
-          </div>
-
-          <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Save</button>
-        </form>
-      </div>
-    </div>
+<form {{action 'save' on='submit'}}>
+  <div class="inputField__spacing input-field">
+    {{input value=model.entryInstance.title id="title" type="text" class="validate"}}
+    <label for="title">Titel</label>
   </div>
-</div>
+
+  <div class="inputField__spacing input-field">
+    {{input value=model.entryInstance.description id="description" type="text" class="validate"}}
+    <label for="description">Beschreibung</label>
+  </div>
+
+  {{#if showDate}}
+  <div class="inputField__spacing input-field">
+    <label for="date">Datum</label>
+    {{input value=model.entryInstance.date id="date" type="date"}}
+  </div>
+  {{/if}}
+
+  <div class="inputField__spacing">
+    <label>Übergeordnete Orga</label>
+    <select class="browser-default" onchange={{action "selectParent" value="target.value"}}>
+      <option value="-1">Keine übergeordnete Orga</option>
+      {{#each model.orgas as |orga|}}
+      <option value="{{orga.id}}">{{orga.title}}</option>
+      {{/each}}
+    </select>
+    </div>
+
+  <div class="inputField__spacing">
+    <label>Kategorie</label>
+    {{forms/categories-form instance=model.entryInstance.category}}
+  </div>
+
+  <div class="inputField__spacing">
+    <label>Status</label>
+    {{forms/states-form instance=model.entryInstance.stateTransition}}
+  </div>
+
+  <h2>Kontaktinformationen</h2>
+  <div class="inputField__spacing">
+    {{forms/contact-info-form instance=model.contactInfoInstance}}
+  </div>
+
+  <h2>Ort</h2>
+  <div class="inputField__spacing">
+    {{forms/location-form instance=model.locationInstance}}
+  </div>
+
+  <h2>Anmerkungen</h2>
+   <div class="inputField__spacing input-field">
+    {{input value=model.annotationInstance.title id="annotation" type="text" class="validate"}}
+    <label for="annotation">Anmerkung</label>
+  </div>
+
+  <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Save</button>
+</form>
+
