@@ -12,6 +12,7 @@ export default DS.Model.extend({
   state:      DS.attr('string'),
   country:    DS.attr('string'),
   displayed:  DS.attr('boolean'),
+  placename:  DS.attr('string'),
   createdAt:  DS.attr('date', {hideInDetailView: true}),
   updatedAt:  DS.attr('date', {hideInDetailView: true}),
   locatable:  DS.belongsTo('entry', {polymorphic: true})

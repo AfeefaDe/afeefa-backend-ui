@@ -10,10 +10,23 @@ import RouteHelper from '../mixins/route-helper';
 
 export default Ember.Component.extend(ErrorHandler, RouteHelper, {
   store: Ember.inject.service(),
+  /* determine if the entryInstance has attribute model*/
   showDate: Ember.computed('model', function() {
     const entry = this.get('model.entryInstance');
     return entry.date || entry.date === null;
   }),
+  didReceiveAttrs() {
+    this._super(...arguments);
+    /*
+     * workaround to cut off time from date object and pass it into input[type="date"]
+     * not proud at all :(
+     */
+    const date = this.get('model.entryInstance.date');
+    if(date && date.getYear()) {
+      const dateString = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+      this.set('model.entryInstance.date', dateString);
+    }
+  },
 	actions: {
     /*
      * Save Entry with meta models
