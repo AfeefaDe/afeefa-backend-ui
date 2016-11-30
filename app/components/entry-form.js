@@ -1,14 +1,8 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
 
-/*
- * mixins with function validateForm
- */
-import ErrorHandler from '../mixins/error-handler';
-import RouteHelper from '../mixins/route-helper';
 
-
-export default Ember.Component.extend(RouteHelper, {
+export default Ember.Component.extend({
   store: Ember.inject.service(),
   /* determine if the entryInstance has attribute model*/
   showDate: Ember.computed('model', function() {
