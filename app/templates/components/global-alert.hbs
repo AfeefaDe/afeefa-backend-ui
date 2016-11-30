@@ -1,10 +1,10 @@
 {{yield}}
-<div {{action 'closeAlert'}} class="alert {{alertType}} {{visibleClass}}">
+<div {{action 'closeAlert'}} class="alert {{alertTypeClass}} {{visibleClass}}">
   <div class="alert__closeIcon">
         <i class="material-icons">close</i>
   </div>
   <div class="alert__stateIcon">
-      <i class="material-icons">error_outline</i>
+      <i class="material-icons">{{alertTypeIcon}}</i>
   </div>
   <div class="alert__content">
     <p class="alert__contentTitle">{{title}}</p>

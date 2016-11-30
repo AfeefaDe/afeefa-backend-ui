@@ -8,7 +8,7 @@ import ErrorHandler from '../mixins/error-handler';
 import RouteHelper from '../mixins/route-helper';
 
 
-export default Ember.Component.extend(ErrorHandler, RouteHelper, {
+export default Ember.Component.extend(RouteHelper, {
   store: Ember.inject.service(),
   /* determine if the entryInstance has attribute model*/
   showDate: Ember.computed('model', function() {
@@ -33,7 +33,7 @@ export default Ember.Component.extend(ErrorHandler, RouteHelper, {
      */
 		save: function() {
       let entry = this.get('model.entryInstance');
-
+      //case:edit
       if (entry.get('id')) {
         const save = entry.save();
         const annotations = entry.get('annotations').then((annotation) => {
@@ -56,7 +56,7 @@ export default Ember.Component.extend(ErrorHandler, RouteHelper, {
         diff.then(()=>{
           history.back();
         });
-      } else {
+      } else { //case new
         entry.save().then((savedEntry)=> {
           /*set contactable*/
           this.get('model.contactInfoInstance').set('contactable', savedEntry);
@@ -69,10 +69,13 @@ export default Ember.Component.extend(ErrorHandler, RouteHelper, {
           });
           saveMeta.then(() => {
             history.back();
-          }, this.handleError);
-        }, this.handleError);
+          }, (reason)=> {
+            this.EventBus.publish('showAlert', this.handleError(reason));
+          })
+        }, (reason)=> {
+            this.EventBus.publish('showAlert', this.handleError(reason));
+          })
       }
-
 		},
     /*
      * Input type select for setting parent orga
@@ -89,5 +92,20 @@ export default Ember.Component.extend(ErrorHandler, RouteHelper, {
         this.set(`model.entryInstance.${orgaProp}`, parentOrga);
       }
     }
-	}
+	},
+  /*
+   * function that creates the alertData object
+   * @todo: I want to call this.EventBus.publish('showAlert',...)from here. But this is undefined!
+   */
+  handleError(reason) {
+      if(reason && reason.errors) {
+        const errorTitle = "Fehler beim Speichern";
+        let errorDetail = '';
+        for (var singleError of reason.errors) {
+          errorDetail = errorDetail + ' ' + singleError.detail + '\n';
+        }
+        const alertData = {title: errorTitle, description: errorDetail, isError: true, autoHide: false};
+        return alertData;
+      }
+  }
 });
