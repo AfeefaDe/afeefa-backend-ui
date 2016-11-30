@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
+import RouteHelper from '../../mixins/route-helper';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(RouteHelper, {
   model() {
     return RSVP.hash({
       orgas: this.modelFor('protected').orgas,
