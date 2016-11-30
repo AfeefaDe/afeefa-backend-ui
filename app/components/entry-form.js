@@ -47,9 +47,13 @@ export default Ember.Component.extend({
           locations,
         });
 
-        diff.then(()=>{
+        diff.then(()=> {
+          this.EventBus.publish('showAlert', {title: 'Erfolgreich gespeichert', description: 'Deine Änderungen wurden erfolgreich gespeichert', isError: false, autoHide: 2000});
           history.back();
+        }, (reason)=> {
+            this.EventBus.publish('showAlert', this.handleError(reason));
         });
+
       } else { //case new
         entry.save().then((savedEntry)=> {
           /*set contactable*/
@@ -62,6 +66,7 @@ export default Ember.Component.extend({
             annotation: this.get('model.annotationInstance').save()
           });
           saveMeta.then(() => {
+            this.EventBus.publish('showAlert', {title: 'Erfolgreich angelegt', description: 'Der Eintrag wurde erfolgreich angelegt', isError: false, autoHide: 2000});
             history.back();
           }, (reason)=> {
             this.EventBus.publish('showAlert', this.handleError(reason));
@@ -98,7 +103,7 @@ export default Ember.Component.extend({
         for (var singleError of reason.errors) {
           errorDetail = errorDetail + ' ' + singleError.detail + '\n';
         }
-        const alertData = {title: errorTitle, description: errorDetail, isError: true, autoHide: false};
+        const alertData = {title: errorTitle, description: errorDetail, isError: true};
         return alertData;
       }
   }

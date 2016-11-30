@@ -5,7 +5,6 @@ export default Ember.Component.extend({
   title: '',
   description: '',
   visible: false,
-  autoHideTime: 4000,
   didReceiveAttrs() {
     this.EventBus.subscribe('showAlert', this, 'showAlertLocal');
   },
@@ -22,7 +21,7 @@ export default Ember.Component.extend({
     if(autoHide) {
       Ember.run.later((()=> {
         this.send('closeAlert');
-      }), this.get('autoHideTime'));
+      }), autoHide);
     }
   },
   /*output css class to show/hide alert*/
