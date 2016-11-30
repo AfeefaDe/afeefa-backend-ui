@@ -1,0 +1,64 @@
+.alert {
+  position: fixed;
+  z-index: 100;
+  top: ($header-height*1.1);
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 90%;
+  max-width: 500px;
+  padding: 0.5em;
+  border-radius: 4px;
+  background: $black;
+  color: $white;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+  align-items: center;
+
+  &--visible {
+    display: flex;
+  }
+  &--invisible {
+    display: none;
+  }
+
+  a {
+    color: inherit;
+    cursor: pointer;
+  }
+  &__closeIcon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    i {
+      font-size: 30px;
+    }
+  }
+  &__stateIcon {
+    padding: 0 1.5em;
+    i {
+      font-size: 50px;
+    }
+  }
+  &__content {
+    font-size: 1.2rem;
+  }
+  &__contentTitle {
+    font-weight: 500;
+    margin-bottom: 0;
+  }
+  &__contentDescription {
+    font-weight: normal;
+  }
+}
+
+
+
+/*@todo: change icon*/
+$alert-border-width: 7px;
+.alert--error {
+  border-left: $alert-border-width solid $red;
+}
+.alert--success {
+  border-left: $alert-border-width solid $green;
+}
+
+
