@@ -6,5 +6,27 @@ export default DS.JSONAPISerializer.extend(SaveRelationshipsMixin, {
     contactInfos: { serialize: true },
     annotations:  { serialize: true },
     locations: { serialize: true }
+  },
+  normalizeResponse () {
+    //console.log("normalize Response "+primaryModelClass+": ", payload);
+    let result = this._super(...arguments);
+    return result;
+  },
+  payloadKeyFromModelName(modelName) {
+    //return plural model name: 'orga', 'event'
+    let underscore = Ember.String.underscore(modelName);
+    return Ember.String.pluralize(underscore);
+  },
+  keyForRelationship: function(key) {
+    //return underscore keys for relationships
+    return Ember.String.underscore(key);
+  },
+  keyForAttribute: function(key) {
+    //return underscore keys for attributes
+    return Ember.String.underscore(key);
+  },
+  keyForLink: function(key) {
+    //return underscore keys for links
+    return Ember.String.underscore(key);
   }
 });
