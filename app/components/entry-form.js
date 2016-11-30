@@ -1,10 +1,7 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
 
-/*
- * mixins with function validateForm
- */
-import ErrorHandler from '../mixins/error-handler';
+
 import RouteHelper from '../mixins/route-helper';
 
 
@@ -57,21 +54,11 @@ export default Ember.Component.extend(RouteHelper, {
           history.back();
         });
       } else { //case new
+        entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
+        entry.get('locations').pushObject(this.get('model.locationInstance'));
+        entry.get('annotations').pushObject(this.get('model.annotationInstance'));
         entry.save().then((savedEntry)=> {
-          /*set contactable*/
-          this.get('model.contactInfoInstance').set('contactable', savedEntry);
-          this.get('model.locationInstance').set('locatable', savedEntry);
-          this.get('model.annotationInstance').set('annotatable', savedEntry);
-          const saveMeta = RSVP.hash({
-            contact: this.get('model.contactInfoInstance').save(),
-            location: this.get('model.locationInstance').save(),
-            annotation: this.get('model.annotationInstance').save()
-          });
-          saveMeta.then(() => {
-            history.back();
-          }, (reason)=> {
-            this.EventBus.publish('showAlert', this.handleError(reason));
-          })
+          console.log('Saved entry - the hacky way');
         }, (reason)=> {
             this.EventBus.publish('showAlert', this.handleError(reason));
           })
