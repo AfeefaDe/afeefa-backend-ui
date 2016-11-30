@@ -80,15 +80,12 @@ export default Ember.Component.extend({
      * Input type select for setting parent orga
      */
     selectParent: function(parentOrgaID) {
-      const entry = this.get('model.entryInstance');
-      // @hack
-      const orgaProp = entry.parentOrga || entry.parentOrga === null ? 'parentOrga' : 'orga';
       if(parentOrgaID === -1) {
-          this.set(`model.entryInstance.${orgaProp}`, null);
+        this.set('model.entryInstance.parentOrga', null);
       }
       else {
         let parentOrga = this.get('store').peekRecord('orga', parentOrgaID);
-        this.set(`model.entryInstance.${orgaProp}`, parentOrga);
+        this.set('model.entryInstance.parentOrga', parentOrga);
       }
     }
 	},

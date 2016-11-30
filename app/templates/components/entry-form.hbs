@@ -23,7 +23,11 @@
     <select class="browser-default" onchange={{action "selectParent" value="target.value"}}>
       <option value="-1">Keine übergeordnete Orga</option>
       {{#each model.orgas as |orga|}}
-      <option value="{{orga.id}}">{{orga.title}}</option>
+        {{#if (eq orga.id model.entryInstance.parentOrga.id)}}
+          <option selected value="{{orga.id}}">{{orga.title}}</option>
+        {{else}}
+          <option value="{{orga.id}}">{{orga.title}}</option>
+        {{/if}}
       {{/each}}
     </select>
     </div>
@@ -35,7 +39,7 @@
 
   <div class="inputField__spacing">
     <label>Status</label>
-    {{forms/states-form instance=model.entryInstance.stateTransition}}
+    {{forms/states-form instance=model.entryInstance.stateTransition selectedState=model.entryInstance.stateTransition}}
   </div>
 
   <h2>Kontaktinformationen</h2>
