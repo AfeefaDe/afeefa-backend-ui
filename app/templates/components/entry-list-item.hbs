@@ -8,6 +8,10 @@
         {{#each attributesFormatted as |attribute|}}
           {{#if (eq attribute.name "date")}}
             {{format-date attribute.value}}
+          {{else if (eq attribute.name "annotations")}}
+            {{#each attribute.value as |annotation|}}
+              <li>{{annotation}}</li>
+            {{/each}}
           {{else}}
             <p class="item">{{!-- <span class="meta">{{attribute.name}}:</span> --}}{{attribute.value}}</p>
           {{/if}}

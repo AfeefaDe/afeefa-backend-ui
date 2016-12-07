@@ -2,6 +2,10 @@
 
 <ul class="entryList">
     {{#each (limit-array sortedInstances limit) as |instance|}}
-      {{entry-list-item instance=instance attributes=attributes}}
+      {{#if attributes}}
+        {{entry-list-item instance=instance attributes=attributes}}
+      {{else}}
+        {{entry-list-item instance=instance}}
+      {{/if}}
     {{/each}}
 </ul>

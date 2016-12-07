@@ -8,7 +8,10 @@ export default Ember.Route.extend({
       orgas: this.store.peekAll('orga', {include: 'annotations'}),
       todos: this.store.query('entry', {filter: {todo: 'all'}}),
       /*limit entry lists on dashboard*/
-      listLimit: 5
+      listLimit: 5,
+      attrOrga: ['category', 'createdAt'],
+      attrEvent: ['category', 'date'],
+      attrTodo: ['annotations']
     });
   }
 });
