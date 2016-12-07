@@ -1,5 +1,8 @@
 {{yield}}
 <select class="browser-default" onchange={{action "selectCategory" value="target.value"}}>
+  {{#unless instance}}
+    <option selected value="-1">Bitte Kategorie auswählen</option>
+  {{/unless}}
   {{#each possibleCategories as |category index|}}
     {{#if (eq instance category)}}
       <option selected value="{{index}}">{{category}}</option>
