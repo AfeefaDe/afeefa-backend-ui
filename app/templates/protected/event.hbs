@@ -12,9 +12,13 @@
       <div>
         {{entry-detail model=model}}
         <h2>Veranstalter:</h2>
-        <ul class="entryList">
-          {{entry-list-item instance=model.parentOrga}}
-        </ul>
+        {{#if model.parentOrga}}
+          <ul class="entryList">
+            {{entry-list-item instance=model.parentOrga}}
+          </ul>
+        {{else}}
+          Es wurde kein Veranstalter angegeben
+        {{/if}}
       </div>
     </div>
   </div>

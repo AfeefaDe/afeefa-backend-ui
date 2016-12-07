@@ -4,14 +4,6 @@
     <h4 class="title">{{instance.title}}</h4>
     <span class="icon"><i class="material-icons">navigate_next</i></span>
   </a>
-  <!--@todo-->
-  {{#if false}}
-    <div class="entryList__attributes">
-        {{#each attributes as |attribute|}}
-          <i>{{get instance attribute}},</i>
-        {{/each}}
-    </div>
-   {{/if}}
     <div class="entryList__attributes">
       {{#if instance.annotations}}
         {{#each instance.annotations as |annoation|}}
