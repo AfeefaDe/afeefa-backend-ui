@@ -60,14 +60,14 @@ export default Ember.Component.extend(RouteHelper, {
    * @todo: I want to call this.EventBus.publish('showAlert',...)from here. But this is undefined!
    */
   handleError(reason) {
+      const alertData = {title: 'Fehler beim Speichern', description: 'Unbekannter Fehler', isError: true, autoHide: false};
       if(reason && reason.errors) {
-        const errorTitle = "Fehler beim Speichern";
         let errorDetail = '';
         for (var singleError of reason.errors) {
           errorDetail = errorDetail + ' ' + singleError.detail + '\n';
         }
-        const alertData = {title: errorTitle, description: errorDetail, isError: true, autoHide: false};
-        return alertData;
+        alertData.description = errorDetail;
       }
+      return alertData;
   }
 });
