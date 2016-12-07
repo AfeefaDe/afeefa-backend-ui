@@ -5,13 +5,13 @@
     <span class="icon"><i class="material-icons">navigate_next</i></span>
   </a>
     <div class="entryList__attributes">
-      {{#if instance.annotations}}
-        {{#each instance.annotations as |annoation|}}
-          <p class="item"><span class="meta">Anmerkung:</span>{{annoation.title}}</p>
+        {{#each attributesFormatted as |attribute|}}
+          {{#if (eq attribute.name "date")}}
+            {{format-date attribute.value}}
+          {{else}}
+            <p class="item">{{!-- <span class="meta">{{attribute.name}}:</span> --}}{{attribute.value}}</p>
+          {{/if}}
+
         {{/each}}
-      {{else}}
-          <p class="item"><span class="meta">Kategorie:</span>{{instance.category}}</p>
-      {{/if}}
-      <p class="item"><span class="meta">Status:</span>{{instance.state}}</p>
     </div>
 </li>
