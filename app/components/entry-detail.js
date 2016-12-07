@@ -25,6 +25,10 @@ export default Ember.Component.extend({
         ownInstance.set('stateTransition', newStateTransistion);
         ownInstance.save().then(()=> {
           this.set('saving', false);
+        }, (reason) => {
+            const alertData = {title: "Fehler beim Veröffentlichen", description: 'Unbekannter Fehler', isError: true};
+            if(reason && reason.errors[0]) alertData.description = reason.errors[0];
+            this.EventBus.publish('showAlert', this.handleError(reason));
         });
       }
     }
