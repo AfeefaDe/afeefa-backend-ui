@@ -30,39 +30,14 @@ export default Ember.Component.extend(RouteHelper, {
      */
 		save: function() {
       let entry = this.get('model.entryInstance');
-      //case:edit
-      if (entry.get('id')) {
-        const save = entry.save();
-        const annotations = entry.get('annotations').then((annotation) => {
-          annotation.save();
-        });
-        const contactInfos = entry.get('contactInfos').then((contactInfo) => {
-          contactInfo.save();
-        });
-        const locations = entry.get('locations').then((location) => {
-          location.save();
-        });
-
-        const diff = RSVP.hash({
-          save,
-          annotations,
-          contactInfos,
-          locations,
-        });
-
-        diff.then(()=>{
-          history.back();
-        });
-      } else { //case new
-        entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
-        entry.get('locations').pushObject(this.get('model.locationInstance'));
-        entry.get('annotations').pushObject(this.get('model.annotationInstance'));
-        entry.save().then((savedEntry)=> {
-          console.log('Saved entry - the hacky way');
-        }, (reason)=> {
-            this.EventBus.publish('showAlert', this.handleError(reason));
-          })
-      }
+      entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
+      entry.get('locations').pushObject(this.get('model.locationInstance'));
+      entry.get('annotations').pushObject(this.get('model.annotationInstance'));
+      entry.save().then((savedEntry)=> {
+        console.log('Saved entry - the hacky way');
+      }, (reason)=> {
+          this.EventBus.publish('showAlert', this.handleError(reason));
+      });
 		},
     /*
      * Input type select for setting parent orga
