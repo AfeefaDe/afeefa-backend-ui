@@ -7,11 +7,6 @@ export default DS.JSONAPISerializer.extend(SaveRelationshipsMixin, {
     annotations:  { serialize: true },
     locations: { serialize: true }
   },
-  normalizeResponse () {
-    //console.log("normalize Response "+primaryModelClass+": ", payload);
-    let result = this._super(...arguments);
-    return result;
-  },
   payloadKeyFromModelName(modelName) {
     //return plural model name: 'orga', 'event'
     let underscore = Ember.String.underscore(modelName);
