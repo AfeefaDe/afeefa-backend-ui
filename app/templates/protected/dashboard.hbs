@@ -12,7 +12,7 @@
             <a {{action 'showAlert'}} class="mainCard__headerAction"><i class="material-icons">notifications</i></a>
           </div>
           <div>
-            {{entry-list instances=model.todos limit=model.listLimit sortOrder='createdAt:desc'}}
+            {{entry-list instances=model.todos limit=model.listLimit sortOrder='updatedAt:desc'}}
             {{#unless model.todos}}
               <p>Keine Todos</p>
             {{/unless}}

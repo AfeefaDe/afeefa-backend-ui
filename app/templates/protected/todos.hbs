@@ -7,7 +7,7 @@
         <h2 class="mainCard__headerTitle">{{#link-to "protected.todos"}}Todos ({{model.todos.length}}){{/link-to}}</h2>
       </div>
       <div>
-        {{entry-list instances=model.todos  attributes=model.attributes}}
+        {{entry-list instances=model.todos  attributes=model.attributes sortOrder='updatedAt:desc'}}
       </div>
     </div>
   </div>
