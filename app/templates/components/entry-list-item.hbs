@@ -7,7 +7,6 @@
     <div class="entryList__attributes">
         {{#each attributesFormatted as |attribute|}}
           {{#if (eq attribute.name "annotations")}}
-            <br>
             {{#each attribute.value as |annotation|}}
                <p class="item item--annotation">{{annotation.title}}</p>
             {{/each}}
