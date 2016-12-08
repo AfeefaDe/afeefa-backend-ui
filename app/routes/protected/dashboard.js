@@ -11,7 +11,7 @@ export default Ember.Route.extend({
       listLimit: 5,
       attrOrga: ['category', 'createdAt'],
       attrEvent: ['category', 'date'],
-      attrTodo: ['annotations']
+      attrTodo: ['annotations','category']
     });
   }
 });

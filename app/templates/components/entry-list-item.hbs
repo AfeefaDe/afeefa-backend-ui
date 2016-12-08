@@ -6,16 +6,18 @@
   </a>
     <div class="entryList__attributes">
         {{#each attributesFormatted as |attribute|}}
-          {{#if (eq attribute.name "date")}}
-            {{format-date attribute.value}}
-          {{else if (eq attribute.name "annotations")}}
+          {{#if (eq attribute.name "annotations")}}
+            <br>
             {{#each attribute.value as |annotation|}}
-              <li>{{annotation}}</li>
+               <p class="item item--annotation">{{annotation.title}}</p>
             {{/each}}
           {{else}}
-            <p class="item">{{!-- <span class="meta">{{attribute.name}}:</span> --}}{{attribute.value}}</p>
+            {{#if attribute.shouldFormatAsDate }}
+              <p class="item"><span class="meta">{{attribute.name}}:</span>{{format-date attribute.value}}</p>
+            {{else}}
+              <p class="item"><span class="meta">{{attribute.name}}:</span>{{attribute.value}}</p>
+            {{/if}}
           {{/if}}
-
         {{/each}}
     </div>
 </li>

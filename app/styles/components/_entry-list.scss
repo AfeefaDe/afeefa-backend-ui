@@ -27,9 +27,19 @@
     display: flex;
     flex-wrap: wrap;
     font-size: 1em;
-    color: $gray80;
+    margin-top: 0.25em;
+    color: $gray90;
     .item {
-      margin: 0 2.5em 0 0;
+      margin: 0 1.5em 0 0;
+      padding: 0.4em 0 0.2em 0;
+    }
+    .item--annotation {
+      background: #F2F2F2;
+      border-radius: 2px;
+      border-left: 5px solid $blueHightlight;
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+
     }
     .meta {
       margin-right: 0.3em;
