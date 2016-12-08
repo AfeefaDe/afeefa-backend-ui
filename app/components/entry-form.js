@@ -34,8 +34,10 @@ export default Ember.Component.extend(RouteHelper, {
       entry.get('locations').pushObject(this.get('model.locationInstance'));
       entry.get('annotations').pushObject(this.get('model.annotationInstance'));
       entry.save().then((savedEntry)=> {
-        console.log('Saved entry - the hacky way');
+        this.EventBus.publish('showAlert', {title: 'Erfolgreich gespeichert', description: 'Deine Änderungen wurden erfolgreich gespeichert', isError: false, autoHide: 2000});
+        history.back();
       }, (reason)=> {
+          console.log("Failed with reason: ", reason);
           this.EventBus.publish('showAlert', this.handleError(reason));
       });
 		},

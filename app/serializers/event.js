@@ -7,11 +7,6 @@ export default DS.JSONAPISerializer.extend(SaveRelationshipsMixin, {
     annotations:  { serialize: true },
     locations: { serialize: true }
   },
-  normalizeResponse () {
-    //console.log("normalize Response "+primaryModelClass+": ", payload);
-    let result = this._super(...arguments);
-    return result;
-  },
   payloadKeyFromModelName(modelName) {
     //return plural model name: 'orga', 'event'
     let underscore = Ember.String.underscore(modelName);
@@ -28,5 +23,10 @@ export default DS.JSONAPISerializer.extend(SaveRelationshipsMixin, {
   keyForLink: function(key) {
     //return underscore keys for links
     return Ember.String.underscore(key);
+  },
+  normalizeSaveResponse(store, modelName, obj) {
+    //hack: remove relationships when normalizing response, cause they only contain links
+    if(obj.data.relationships) obj.data.relationships = {};
+    return this._super(store, modelName, obj);
   }
 });

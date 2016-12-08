@@ -17,7 +17,6 @@ export default Ember.Component.extend({
     this.set('description', description);
     this.set('title', title);
     this.set('isError', isError);
-    console.log("SHow");
     /*start autohide timer*/
     if(autoHide) {
       Ember.run.later((()=> {
