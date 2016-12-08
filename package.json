@@ -8,7 +8,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "bower install && ember build --environment=production",
+    "build": "ember build --environment=production",
     "start": "ember server",
     "test": "ember test"
   },
