@@ -1,0 +1,17 @@
+.annotationTag {
+    background: #F2F2F2;
+    border-radius: 2px;
+    border-left: 5px solid $blueHightlight;
+    max-width: 100%;
+    line-height: 140%;
+    word-break: break-word;
+    padding: 0.4em 0.5em 0.3em 0.5em;
+    margin: 0 1em 0.4em 0;
+    &__icon {
+      color: inherit;
+    }
+    &__icon i {
+      font-size: 1.3em;
+      vertical-align: sub;
+    }
+}

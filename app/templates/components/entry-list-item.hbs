@@ -8,7 +8,7 @@
         {{#each attributesFormatted as |attribute|}}
           {{#if (eq attribute.name "annotations")}}
             {{#each attribute.value as |annotation|}}
-               <p class="item item--annotation">{{annotation.title}}</p>
+              {{annotation-tag instance=annotation editable=true}}
             {{/each}}
           {{else}}
             {{#if attribute.shouldFormatAsDate }}
