@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
 
+import RouteHelper from '../mixins/route-helper';
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
@@ -9,6 +10,8 @@ export default Ember.Component.extend({
     const entry = this.get('model.entryInstance');
     return entry.date || entry.date === null;
   }),
+  //this string cached the instance date for the input:type date
+  dateString: '',
   didReceiveAttrs() {
     this._super(...arguments);
     /*
@@ -16,9 +19,9 @@ export default Ember.Component.extend({
      * not proud at all :(
      */
     const date = this.get('model.entryInstance.date');
-    if(date && date.getYear()) {
+    if(date && typeof date.getMonth === 'function') {
       const dateString = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
-      this.set('model.entryInstance.date', dateString);
+      this.set('dateString', dateString);
     }
   },
 	actions: {
@@ -27,54 +30,23 @@ export default Ember.Component.extend({
      */
 		save: function() {
       let entry = this.get('model.entryInstance');
-      //case:edit
-      if (entry.get('id')) {
-        const save = entry.save();
-        const annotations = entry.get('annotations').then((annotation) => {
-          annotation.save();
-        });
-        const contactInfos = entry.get('contactInfos').then((contactInfo) => {
-          contactInfo.save();
-        });
-        const locations = entry.get('locations').then((location) => {
-          location.save();
-        });
-
-        const diff = RSVP.hash({
-          save,
-          annotations,
-          contactInfos,
-          locations,
-        });
-
-        diff.then(()=> {
-          this.EventBus.publish('showAlert', {title: 'Erfolgreich gespeichert', description: 'Deine Änderungen wurden erfolgreich gespeichert', isError: false, autoHide: 2000});
-          history.back();
-        }, (reason)=> {
-            this.EventBus.publish('showAlert', this.handleError(reason));
-        });
-
-      } else { //case new
-        entry.save().then((savedEntry)=> {
-          /*set contactable*/
-          this.get('model.contactInfoInstance').set('contactable', savedEntry);
-          this.get('model.locationInstance').set('locatable', savedEntry);
-          this.get('model.annotationInstance').set('annotatable', savedEntry);
-          const saveMeta = RSVP.hash({
-            contact: this.get('model.contactInfoInstance').save(),
-            location: this.get('model.locationInstance').save(),
-            annotation: this.get('model.annotationInstance').save()
-          });
-          saveMeta.then(() => {
-            this.EventBus.publish('showAlert', {title: 'Erfolgreich angelegt', description: 'Der Eintrag wurde erfolgreich angelegt', isError: false, autoHide: 2000});
-            history.back();
-          }, (reason)=> {
-            this.EventBus.publish('showAlert', this.handleError(reason));
-          })
-        }, (reason)=> {
-            this.EventBus.publish('showAlert', this.handleError(reason));
-          })
+      //this converts the dd-mm-yyyy String from the input:type date to an js object because ember doesent support date inputs
+      if(entry.date || entry.date === null) {
+        const dateString = this.get('dateString').split('-');
+        var date = new Date(dateString[0], dateString[1] - 1, dateString[2]);
+        entry.set('date', date);
       }
+
+      entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
+      entry.get('locations').pushObject(this.get('model.locationInstance'));
+      entry.get('annotations').pushObject(this.get('model.annotationInstance'));
+      entry.save().then((savedEntry)=> {
+        this.EventBus.publish('showAlert', {title: 'Erfolgreich gespeichert', description: 'Deine Änderungen wurden erfolgreich gespeichert', isError: false, autoHide: 2000});
+        history.back();
+      }, (reason)=> {
+          console.log("Failed with reason: ", reason);
+          this.EventBus.publish('showAlert', this.handleError(reason));
+      });
 		},
     /*
      * Input type select for setting parent orga
@@ -94,14 +66,14 @@ export default Ember.Component.extend({
    * @todo: I want to call this.EventBus.publish('showAlert',...)from here. But this is undefined!
    */
   handleError(reason) {
+      const alertData = {title: 'Fehler beim Speichern', description: 'Unbekannter Fehler', isError: true, autoHide: false};
       if(reason && reason.errors) {
-        const errorTitle = "Fehler beim Speichern";
         let errorDetail = '';
         for (var singleError of reason.errors) {
           errorDetail = errorDetail + ' ' + singleError.detail + '\n';
         }
-        const alertData = {title: errorTitle, description: errorDetail, isError: true};
-        return alertData;
+        alertData.description = errorDetail;
       }
+      return alertData;
   }
 });
