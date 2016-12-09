@@ -9,7 +9,6 @@
         <div class="mainCard">
           <div class="mainCard__header">
             <h2 class="mainCard__headerTitle">{{#link-to "protected.todos"}}Todos ({{model.todos.length}}){{/link-to}}</h2>
-            <a {{action 'showAlert'}} class="mainCard__headerAction"><i class="material-icons">notifications</i></a>
           </div>
           <div>
             {{entry-list instances=model.todos limit=model.listLimit attributes=model.attrTodo sortOrder='updatedAt:desc'}}
