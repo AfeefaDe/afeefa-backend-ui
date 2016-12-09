@@ -6,6 +6,8 @@
     margin-bottom: 1em;
     padding-bottom: 0.5em;
     border-bottom: 2px solid $gray20;
+    display: flex;
+    align-items: flex-start;
   }
   &__nav {
     cursor: pointer;
@@ -21,6 +23,22 @@
       margin-bottom: 0.2em;
       margin-top: 0;
       font-weight: 500;
+    }
+  }
+  &__icon {
+    margin: 15px;
+    margin-right: 30px;
+    .entry-icon {
+      display: inline-block;
+      width: 23px;
+      height: 23px;
+      background-color: $black;
+      border-radius: 2px;
+      &--orga {
+        transform: rotate(45deg);
+        width: 21px;
+        height: 21px;
+      }
     }
   }
   &__attributes {
