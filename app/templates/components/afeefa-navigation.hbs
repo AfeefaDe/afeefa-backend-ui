@@ -1,16 +1,23 @@
 <navigation>
-  <h1 id="navigation-title">
-  	{{title}}
-  </h1>
-  
+  <div id="breadcrumb">
+    {{#each navigation as |route|}}
+      <i class="material-icons">chevron_right</i>
+      {{#if route.link}}
+        {{#link-to route.link}}{{route.title}}{{/link-to}}
+      {{else}}
+        {{route.title}}
+      {{/if}}
+    {{/each}}
+  </div>
+
   <div {{action 'toggleMenu' instance}} id="btn-sandwich">
 		<i class="material-icons">menu</i>
   </div>
-  
+
 {{#if menuVisible}}
   <div id="menu">
 	  	{{#link-to 'protected.dashboard'}}Dashboard{{/link-to}}
-	  
+
 	  {{#if session.isAuthenticated}}
 	    <section id="user-context">
 		    <p><i class="material-icons">account_circle</i> {{user.forename}} {{user.surname}}</p>

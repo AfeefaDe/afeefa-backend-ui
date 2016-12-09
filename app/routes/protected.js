@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import pathNavigation from '../models/path-navigation'
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
   model() {
@@ -16,10 +17,15 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     });
     return baseData;
   },
+
   actions: {
     willTransition() {
       //publish to global event bus
       this.EventBus.publish('willTransition');
+    },
+    didTransition () {
+      pathNavigation.setRoute(this.get("router.router.state.handlerInfos"))
+      this.EventBus.publish('didTransition');
     }
   }
 });

@@ -9,12 +9,18 @@ navigation {
 	z-index: 100;
   position: fixed;
   width: 100%;
-	h1#navigation-title {
+
+	#breadcrumb {
 		display: inline-block;
 		font-size: 1em;
-		line-height: 1em;
-		/*font-weight: bold;*/
-		margin: 0;
+		a {
+			line-height: 1em;
+			color: white;
+		}
+		i {
+			font-size: 1em;
+			vertical-align: middle;
+		}
 	}
 
 	#btn-sandwich {
