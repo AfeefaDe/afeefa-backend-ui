@@ -7,7 +7,7 @@
   </div>
 
   <div class="inputField__spacing input-field">
-    {{input value=model.entryInstance.description id="description" type="text" class="validate" maxlength="150" required="required"}}
+    {{textarea value=model.entryInstance.description id="description" class="materialize-textarea validate" maxlength="150" required="required"}}
     <label for="description" class="{{if model.entryInstance.description "active" }}">Beschreibung</label>
   </div>
 
@@ -55,4 +55,3 @@
 
   <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Save</button>
 </form>
-
