@@ -12,6 +12,8 @@ export default Ember.Component.extend(RouteHelper, {
     const entry = this.get('model.entryInstance');
     return entry.date || entry.date === null;
   }),
+  //this string cached the instance date for the input:type date
+  dateString: '',
   didReceiveAttrs() {
     this._super(...arguments);
     /*
@@ -19,9 +21,9 @@ export default Ember.Component.extend(RouteHelper, {
      * not proud at all :(
      */
     const date = this.get('model.entryInstance.date');
-    if(date && date.getYear()) {
+    if(date && typeof date.getMonth === 'function') {
       const dateString = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
-      this.set('model.entryInstance.date', dateString);
+      this.set('dateString', dateString);
     }
   },
 	actions: {
@@ -30,6 +32,11 @@ export default Ember.Component.extend(RouteHelper, {
      */
 		save: function() {
       let entry = this.get('model.entryInstance');
+      //this converts the dd-mm-yyyy String from the input:type date to an js object because ember doesent support date inputs
+      const dateString = this.get('dateString').split('-');
+      var date = new Date(dateString[0], dateString[1] - 1, dateString[2]);
+      entry.set('date', date);
+
       entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
       entry.get('locations').pushObject(this.get('model.locationInstance'));
       entry.get('annotations').pushObject(this.get('model.annotationInstance'));
