@@ -1,12 +1,12 @@
 import Ember from 'ember';
-import pathNavigation from '../models/path-navigation';
+import afeefaMenu from '../models/afeefa-menu';
 
 export default Ember.Component.extend({
 	session: Ember.inject.service('session'),
   didReceiveAttrs() {
     this.EventBus.subscribe('willTransition', this, 'hideMenu');
     this.EventBus.subscribe('didTransition', this, 'updateNavigation');
-    this.updateNavigation()
+    this.updateNavigation();
   },
   willDestroyElement() {
     this.EventBus.unsubscribe('willTransition');
@@ -19,7 +19,8 @@ export default Ember.Component.extend({
     this.set('menuVisible', false);
   },
   updateNavigation: function() {
-    this.set('navigation', pathNavigation.getNavigation());
+    this.set('pathNavigation', afeefaMenu.getPathNavigation());
+		this.set('level1Navigation', afeefaMenu.getLevel1Navigation());
   },
 	actions: {
 		toggleMenu: function() {
@@ -29,6 +30,7 @@ export default Ember.Component.extend({
 			this.get('session').invalidate();
 		}
 	},
-	navigation: [],
+	pathNavigation: [],
+	level1Navigation: [],
 	menuVisible: false
 });

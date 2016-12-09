@@ -1,11 +1,11 @@
 <navigation>
   <div id="breadcrumb">
-    {{#each navigation as |route|}}
+    {{#each pathNavigation as |path|}}
       <i class="material-icons">chevron_right</i>
-      {{#if route.route}}
-        {{#link-to route.route}}{{route.title}}{{/link-to}}
+      {{#if path.route}}
+        {{#link-to path.route}}{{path.title}}{{/link-to}}
       {{else}}
-        {{route.title}}
+        {{path.title}}
       {{/if}}
     {{/each}}
   </div>
@@ -16,11 +16,17 @@
 
 {{#if menuVisible}}
   <div id="menu">
-	  	{{#link-to 'protected.dashboard'}}Dashboard{{/link-to}}
+    {{#each level1Navigation as |path|}}
+      {{#if path.route}}
+        {{#link-to path.route}}{{path.title}}{{/link-to}}
+      {{else}}
+        <i class="material-icons">chevron_right</i> {{path.title}}
+      {{/if}}
+    {{/each}}
 
 	  {{#if session.isAuthenticated}}
 	    <section id="user-context">
-		    <p><i class="material-icons">account_circle</i> {{user.forename}} {{user.surname}}</p>
+		    <i class="material-icons">account_circle</i> {{user.forename}} {{user.surname}}
 		  </section>
 	    <a {{action 'invalidateSession'}}>Logout</a>
 	  {{else}}

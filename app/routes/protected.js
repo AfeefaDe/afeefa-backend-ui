@@ -1,12 +1,12 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import pathNavigation from '../models/path-navigation'
+import afeefaMenu from '../models/afeefa-menu'
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
   model() {
     const baseData = RSVP.hash({
-      user:   this.store.findRecord('user', this.get('session.currentUser')),
+      user: this.store.findRecord('user', this.get('session.currentUser')),
       events: this.store.query('event', {include: 'annotations', sort:'title'}),
       orgas: this.store.query('orga', {include: 'annotations', sort:'title'}),
     });
@@ -24,7 +24,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.EventBus.publish('willTransition');
     },
     didTransition () {
-      pathNavigation.setRoute(this.get("router.router.state.handlerInfos"))
+      afeefaMenu.setRoute(this.get("router.router.state.handlerInfos"))
       this.EventBus.publish('didTransition');
     }
   }
