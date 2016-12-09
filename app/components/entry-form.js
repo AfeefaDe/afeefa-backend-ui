@@ -20,7 +20,7 @@ export default Ember.Component.extend({
      */
     const date = this.get('model.entryInstance.date');
     if(date && typeof date.getMonth === 'function') {
-      const dateString = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+      const dateString = date.toISOString().slice(0,10);
       this.set('dateString', dateString);
     }
   },
@@ -30,10 +30,10 @@ export default Ember.Component.extend({
      */
 		save: function() {
       let entry = this.get('model.entryInstance');
-      //this converts the dd-mm-yyyy String from the input:type date to an js object because ember doesent support date inputs
+      //this converts the  yyyy-mm-dd String from the input:type date to an js object because ember doesent support date inputs
       if(entry.date || entry.date === null) {
         const dateString = this.get('dateString').split('-');
-        var date = new Date(dateString[0], dateString[1] - 1, dateString[2]);
+        var date = new Date(dateString[0], dateString[1]-1, dateString[2]);
         entry.set('date', date);
       }
 
