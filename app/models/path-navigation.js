@@ -34,10 +34,9 @@ export default {
     function traverseMenuTree (node, tempPath) {
       node = Object.assign({}, node);
       tempPath.push(node);
-      node.link = node.route;
 
       if (node.route === routeName) {
-        node.link = null; // hide link on active link
+        node.route = null; // hide link on active route
         return tempPath;
       }
 

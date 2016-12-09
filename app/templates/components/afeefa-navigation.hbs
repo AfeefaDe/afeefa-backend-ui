@@ -2,8 +2,8 @@
   <div id="breadcrumb">
     {{#each navigation as |route|}}
       <i class="material-icons">chevron_right</i>
-      {{#if route.link}}
-        {{#link-to route.link}}{{route.title}}{{/link-to}}
+      {{#if route.route}}
+        {{#link-to route.route}}{{route.title}}{{/link-to}}
       {{else}}
         {{route.title}}
       {{/if}}
