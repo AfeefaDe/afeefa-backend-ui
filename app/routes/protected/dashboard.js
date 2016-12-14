@@ -7,6 +7,7 @@ export default Ember.Route.extend({
       events: this.store.peekAll('event', {include: 'annotations'}),
       orgas: this.store.peekAll('orga', {include: 'annotations'}),
       todos: this.store.query('entry', {filter: {todo: 'all'}}),
+      categories: this.store.peekAll('category'),
       /*limit entry lists on dashboard*/
       listLimit: 5,
       attrOrga: ['category', 'createdAt'],

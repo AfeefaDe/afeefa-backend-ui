@@ -34,7 +34,12 @@
 
   <div class="inputField__spacing">
     <label>Kategorie</label>
-    {{forms/categories-form instance=model.entryInstance.category}}
+    {{forms/categories-form instance=model.entryInstance.category showSubCategory=false}}
+  </div>
+
+  <div class="inputField__spacing">
+    <label>Unterkategrie</label>
+    {{forms/categories-form instance=model.entryInstance.subCategory showSubCategory=true}}
   </div>
 
   <h2>Kontaktinformationen</h2>

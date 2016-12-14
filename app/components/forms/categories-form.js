@@ -1,11 +1,22 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  possibleCategories: ['jobs', 'donation', 'leisure', 'language', 'community', 'general', 'medic', 'consultation'],
+  store: Ember.inject.service(),
+  possibleCategories: null,
+  didReceiveAttrs() {
+    this._super(...arguments);
+    /*set up possible categories*/
+    let showSubCategory = this.get('showSubCategory');
+    console.log("Show:", showSubCategory);
+    let possibleCategories = this.get('store').peekAll('category');
+    possibleCategories = possibleCategories.filter((cat) => {
+      return cat.get('isSubCategory') == showSubCategory;
+    });
+    this.set('possibleCategories', possibleCategories);
+  },
   actions: {
     selectCategory: function(categoryId) {
-      let newCategory;
-      if(this.get('possibleCategories')[categoryId]) newCategory = this.get('possibleCategories')[categoryId];
+      let newCategory = this.get('store').peekRecord('category', categoryId);
       this.set('instance', newCategory);
     }
   }

@@ -11,15 +11,19 @@
     <div class="entryList__attributes">
       {{#each attributesFormatted as |attribute|}}
       {{#if (eq attribute.name "annotations")}}
-      {{#each attribute.value as |annotation|}}
-      <p class="item item--annotation">{{annotation.title}}</p>
-      {{/each}}
+        {{#each attribute.value as |annotation|}}
+        <p class="item item--annotation">{{annotation.title}}</p>
+        {{/each}}
       {{else}}
-      {{#if attribute.shouldFormatAsDate }}
-      <p class="item"><span class="meta">{{attribute.name}}:</span>{{format-date attribute.value}}</p>
-      {{else}}
-      <p class="item"><span class="meta">{{attribute.name}}:</span>{{attribute.value}}</p>
-      {{/if}}
+        {{#if attribute.shouldFormatAsDate }}
+          <p class="item"><span class="meta">{{attribute.name}}:</span>{{format-date attribute.value}}</p>
+        {{else if (eq attribute.name "category")}}
+          <p class="item"><span class="meta">Kategorie:</span>{{get instance.category "title"}}</p>
+        {{else if (eq attribute.name "subCategory")}}
+          <p class="item"><span class="meta">Unterkategorie:</span>{{get instance.subCategory "title"}}</p>
+        {{else}}
+          <p class="item"><span class="meta">{{attribute.name}}:</span>{{attribute.value}}</p>
+        {{/if}}
       {{/if}}
       {{/each}}
     </div>

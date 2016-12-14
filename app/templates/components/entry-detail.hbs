@@ -18,6 +18,20 @@
     {{/if}}
   {{/each}}
 
+  {{#if model.category}}
+  <li>
+    <span class="entryDetail__meta">Kategorie:</span>
+    <span>{{get model.category "title"}}</span>
+  </li>
+  {{/if}}
+
+  {{#if model.category}}
+  <li>
+    <span class="entryDetail__meta">Unterkategorie:</span>
+    <span>{{get model.subCategory "title"}}</span>
+  </li>
+  {{/if}}
+
   {{#if model.locations}}
     <h2>Ort</h2>
     <li>
@@ -40,6 +54,7 @@
     <li>
     {{#each model.annotations as |annotation|}}
       {{entry-detail model=annotation}}
+      <br>
     {{/each}}
     </li>
   {{/if}}
