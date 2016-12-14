@@ -9,7 +9,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       user: this.store.findRecord('user', this.get('session.currentUser')),
       events: this.store.query('event', {include: 'annotations', sort:'title'}),
       orgas: this.store.query('orga', {include: 'annotations', sort:'title'}),
-      categories: this.store.findAll('category')
+      categories: this.store.findAll('category'),
+      annotations: this.store.findAll('annotation')
     });
     baseData.catch((reason) =>  {
       const alertData = {title: "Fehler beim Laden der Daten", description: 'Unbekannter Fehler', isError: true};
