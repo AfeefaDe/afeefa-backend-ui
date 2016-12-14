@@ -22,7 +22,7 @@ export default Ember.Component.extend({
         let value = this.get('instance.'+attribute);
         let name = attribute;
         /*cant use Model.transformedAttributes so I'm using this hack:*/
-        let shouldFormatAsDate = (typeof value.getMonth === 'function');
+        let shouldFormatAsDate = (value && (typeof value.getMonth === 'function'));
         attributesFormatted.push({value: value, name: name, shouldFormatAsDate: shouldFormatAsDate});
       }
     }
