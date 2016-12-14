@@ -8,27 +8,27 @@ export default {
     title: 'Dashboard',
     level: 1,
     children: [
-      { route: 'protected.todos', title: 'Todos', level: 1 },
+      { route: 'protected.todos', title: 'Todos', level: 2 },
       {
         route: 'protected.orgas',
         title: 'Orgas',
-        level: 1,
+        level: 2,
         children: [
-          { route: 'protected.orga', title: 'Anzeigen', level: 2 },
-          { route: 'protected.editorga', title: 'Ändern', level: 2 },
-          { route: 'protected.neworga', title: 'Neu', level: 2 }
+          { route: 'protected.orga', title: 'Anzeigen', level: 3 },
+          { route: 'protected.editorga', title: 'Ändern', level: 3 },
+          { route: 'protected.neworga', title: 'Neu', level: 3 }
         ]
       },
       {
         route: 'protected.events',
         title: 'Events',
         children: [
-          { route: 'protected.event', title: 'Anzeigen', level: 2 },
-          { route: 'protected.editevent', title: 'Ändern', level: 2 },
-          { route: 'protected.newevent', title: 'Neu', level: 2 }
+          { route: 'protected.event', title: 'Anzeigen', level: 3 },
+          { route: 'protected.editevent', title: 'Ändern', level: 3 },
+          { route: 'protected.newevent', title: 'Neu', level: 3 }
         ]
       },
-      { route: 'protected.search', title: 'Suche', level: 1 }
+      { route: 'protected.search', title: 'Suche', level: 2 }
     ]
   },
 
