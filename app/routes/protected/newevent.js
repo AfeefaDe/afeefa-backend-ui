@@ -9,7 +9,6 @@ export default Ember.Route.extend(RouteHelper, {
       entryInstance: this.store.createRecord('event'),
       contactInfoInstance: this.store.createRecord('contactInfo'),
       locationInstance: this.store.createRecord('location'),
-      annotationInstance: this.store.createRecord('annotation')
     });
   },
   actions: {
@@ -33,7 +32,6 @@ export default Ember.Route.extend(RouteHelper, {
       controller.get('model.entryInstance').rollbackAttributes();
       controller.get('model.contactInfoInstance').rollbackAttributes();
       controller.get('model.locationInstance').rollbackAttributes();
-      controller.get('model.annotationInstance').rollbackAttributes();
       return true;
     }
   }
