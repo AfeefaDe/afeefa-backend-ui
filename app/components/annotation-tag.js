@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   actions: {
     removeAnnotation: function() {
-      this.get('instance').destroyRecord();
+      if(this.get('onDelete')) this.get('onDelete')(this.get('instance'));
     }
   }
 });

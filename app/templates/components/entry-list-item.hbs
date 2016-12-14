@@ -12,7 +12,7 @@
       {{#each attributesFormatted as |attribute|}}
         {{#if (eq attribute.name "annotations")}}
           {{#each attribute.value as |annotation|}}
-            {{annotation-tag instance=annotation editable=false}}
+            {{annotation-tag instance=annotation}}
           {{/each}}
         {{else}}
           {{#if attribute.shouldFormatAsDate }}

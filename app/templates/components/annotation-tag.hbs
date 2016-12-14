@@ -1,7 +1,7 @@
 {{yield}}
-<p class="annotationTag" title="Durch das bearbeiten des Eintrags kansst Anmerkungen entfernen und hinzufügen">
+<p class="annotationTag" title="Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden.">
   {{instance.title}}
-  {{#if editable}}
+  {{#if onDelete}}
     <a {{action 'removeAnnotation'}} class="annotationTag__icon">
       <i class="material-icons">close</i>
     </a>
