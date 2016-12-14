@@ -51,10 +51,9 @@
 
   {{#if model.annotations}}
     <h2>Anmerkung</h2>
-    <li>
+    <li class="annotationArea">
     {{#each model.annotations as |annotation|}}
-      {{entry-detail model=annotation}}
-      <br>
+      {{annotation-tag instance=annotation editable=true}}
     {{/each}}
     </li>
   {{/if}}

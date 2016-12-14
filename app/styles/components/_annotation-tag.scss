@@ -1,3 +1,15 @@
+.annotationArea {
+  background: $white;
+  padding: 1em;
+  border-radius: 5px;
+  /*change color of annotationTag if inside annotationAre*/
+  .annotationTag {
+    background: $blueHightlight;
+    color: #fff;
+    margin: 0.4em 0.3em;
+    padding: 0.5em;
+  }
+}
 .annotationTag {
     background: #F2F2F2;
     border-radius: 2px;
@@ -15,3 +27,4 @@
       vertical-align: sub;
     }
 }
+
