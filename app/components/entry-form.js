@@ -41,7 +41,6 @@ export default Ember.Component.extend({
 
       entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
       entry.get('locations').pushObject(this.get('model.locationInstance'));
-      entry.get('annotations').pushObject(this.get('model.annotationInstance'));
       entry.save().then((savedEntry)=> {
         const alertData = {title: 'Erfolgreich gespeichert', description: 'Dein Eintrag wurde erfolgreich angelegt.', isError: false, autoHide: 3000};
         if(isEditMode) alertData.description = 'Deine Änderungen wurden erfolgreich gespeichert.';

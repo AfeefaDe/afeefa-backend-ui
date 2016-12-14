@@ -1,7 +1,8 @@
 .annotationArea {
   background: $white;
-  padding: 1em;
+  padding: 0.5em;
   border-radius: 5px;
+  list-style: none;
   /*change color of annotationTag if inside annotationAre*/
   .annotationTag {
     background: $blueHightlight;
@@ -19,6 +20,7 @@
     word-break: break-word;
     padding: 0.4em 0.5em 0.3em 0.5em;
     margin: 0 1em 0.4em 0;
+    display: inline-block;
     &__icon {
       color: inherit;
     }
