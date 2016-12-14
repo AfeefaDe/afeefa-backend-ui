@@ -69,8 +69,16 @@ export default Ember.Component.extend({
      * to remove the annotation from the current entryInstance
      */
     deleteAnnotation: function(annotation) {
-      const entryInstance = this.get('model.entryInstance')
+      const entryInstance = this.get('model.entryInstance');
       entryInstance.get('annotations').removeObject(annotation);
+    },
+     /*
+     * action that gets triggered by annotation-new
+     * to add new annotation to the current entryInstance
+     */
+    addAnnotation: function(annotation) {
+      const entryInstance = this.get('model.entryInstance');
+      entryInstance.get('annotations').addObject(annotation)
     }
 	},
   /*

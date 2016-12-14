@@ -7,8 +7,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   model() {
     const baseData = RSVP.hash({
       user: this.store.findRecord('user', this.get('session.currentUser')),
-      events: this.store.query('event', {include: 'annotations', sort:'title'}),
-      orgas: this.store.query('orga', {include: 'annotations', sort:'title'}),
+      events: this.store.query('event', {include: 'annotations,category', sort:'title'}),
+      orgas: this.store.query('orga', {include: 'annotations,category', sort:'title'}),
       categories: this.store.findAll('category'),
       annotations: this.store.findAll('annotation')
     });

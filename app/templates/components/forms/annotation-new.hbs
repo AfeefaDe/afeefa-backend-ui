@@ -1,0 +1,6 @@
+{{yield}}
+<select class="browser-default" onchange={{action "selectAnnotation" value="target.value"}}>
+  {{#each possibleAnnotation as |annotation|}}
+    <option value="{{annotation.id}}">{{annotation.title}}</option>
+  {{/each}}
+</select>
