@@ -1,22 +1,32 @@
 {{yield}}
 <li>
-  <a {{action 'navigateToSingle' instance}} class="entryList__nav">
-    <h4 class="title">{{instance.title}}</h4>
-    <span class="icon"><i class="material-icons">navigate_next</i></span>
-  </a>
+  <div class="entryList__icon">
+    <span class="entry-icon entry-icon--{{instance.modelName}}"></span>
+  </div>
+  <div class="entryList__content">
+    <a {{action 'navigateToSingle' instance}} class="entryList__nav">
+      <h4 class="title">{{instance.title}}</h4>
+      <span class="icon"><i class="material-icons">navigate_next</i></span>
+    </a>
     <div class="entryList__attributes">
-        {{#each attributesFormatted as |attribute|}}
-          {{#if (eq attribute.name "annotations")}}
-            {{#each attribute.value as |annotation|}}
-              {{annotation-tag instance=annotation editable=true}}
-            {{/each}}
+      {{#each attributesFormatted as |attribute|}}
+        {{#if (eq attribute.name "annotations")}}
+          {{#each attribute.value as |annotation|}}
+            {{annotation-tag instance=annotation editable=false}}
+          {{/each}}
+        {{else}}
+          {{#if attribute.shouldFormatAsDate }}
+            <p class="item"><span class="meta">{{attribute.name}}:</span>{{format-date attribute.value}}</p>
+          {{else if (eq attribute.name "category")}}
+            <p class="item"><span class="meta">Kategorie:</span>{{get instance.category "title"}}</p>
+          {{else if (eq attribute.name "subCategory")}}
+            <p class="item"><span class="meta">Unterkategorie:</span>{{get instance.subCategory "title"}}</p>
           {{else}}
-            {{#if attribute.shouldFormatAsDate }}
-              <p class="item"><span class="meta">{{attribute.name}}:</span>{{format-date attribute.value}}</p>
-            {{else}}
-              <p class="item"><span class="meta">{{attribute.name}}:</span>{{attribute.value}}</p>
-            {{/if}}
+            <p class="item"><span class="meta">{{attribute.name}}:</span>{{attribute.value}}</p>
           {{/if}}
-        {{/each}}
+        {{/if}}
+      {{/each}}
     </div>
+  </div>
+
 </li>

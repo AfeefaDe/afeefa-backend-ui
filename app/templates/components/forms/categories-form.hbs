@@ -3,11 +3,11 @@
   {{#unless instance}}
     <option selected value="-1">Bitte Kategorie auswählen</option>
   {{/unless}}
-  {{#each possibleCategories as |category index|}}
-    {{#if (eq instance category)}}
-      <option selected value="{{index}}">{{category}}</option>
+  {{#each possibleCategories as |category|}}
+    {{#if (eq instance.id category.id)}}
+      <option selected value="{{category.id}}">{{category.title}}</option>
     {{else}}
-      <option value="{{index}}">{{category}}</option>
+      <option value="{{category.id}}">{{category.title}}</option>
     {{/if}}
   {{/each}}
 </select>

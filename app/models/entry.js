@@ -6,14 +6,15 @@ export default DS.Model.extend({
   state:            DS.attr('string', {hideInDetailView: true}),
   stateTransition:  DS.attr('string', {hideInDetailView: true}),
   description:      DS.attr('string'),
-  createdAt:        DS.attr('date', {hideInDetailView: true, de: 'Erstellt am'}),
-  updatedAt:        DS.attr('date', {de: 'Geändert am'}),
+  createdAt:        DS.attr('date', {hideInDetailView: true}),
+  updatedAt:        DS.attr('date'),
   stateChangedAt:   DS.attr('date'),
-  category:         DS.attr('string', {de: 'Kategorie'}),
+  category:         DS.belongsTo('category'),
+  subCategory:      DS.belongsTo('category'),
   contactInfos:     DS.hasMany('contact-info'),
-  annotations:      DS.hasMany('annotation', {de: 'Anmerkungen'}),
+  annotations:      DS.hasMany('annotation'),
   locations:        DS.hasMany('location'),
   //using an alias for the modelName allows us to access the modelName in proxied objects from belongsTo relationships
   //used to navigate toSingle in entry-list-item.js
-  modelName: Ember.computed.alias('constructor.modelName')
+  modelName: Ember.computed.alias('constructor.modelName'),
 });

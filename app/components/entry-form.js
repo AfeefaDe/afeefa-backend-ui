@@ -30,6 +30,8 @@ export default Ember.Component.extend({
      */
 		save: function() {
       let entry = this.get('model.entryInstance');
+      //determine new or edit mode
+      const isEditMode = entry.get('id');
       //this converts the  yyyy-mm-dd String from the input:type date to an js object because ember doesent support date inputs
       if(entry.date || entry.date === null) {
         const dateString = this.get('dateString').split('-');
@@ -41,7 +43,9 @@ export default Ember.Component.extend({
       entry.get('locations').pushObject(this.get('model.locationInstance'));
       entry.get('annotations').pushObject(this.get('model.annotationInstance'));
       entry.save().then((savedEntry)=> {
-        this.EventBus.publish('showAlert', {title: 'Erfolgreich gespeichert', description: 'Deine Änderungen wurden erfolgreich gespeichert', isError: false, autoHide: 2000});
+        const alertData = {title: 'Erfolgreich gespeichert', description: 'Dein Eintrag wurde erfolgreich angelegt.', isError: false, autoHide: 3000};
+        if(isEditMode) alertData.description = 'Deine Änderungen wurden erfolgreich gespeichert.';
+        this.EventBus.publish('showAlert', alertData);
         history.back();
       }, (reason)=> {
           console.log("Failed with reason: ", reason);
