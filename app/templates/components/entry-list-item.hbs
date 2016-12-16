@@ -19,7 +19,6 @@
             <p class="item"><span class="meta">{{attribute.name}}:</span>{{format-date attribute.value}}</p>
           {{else if (eq attribute.name "category")}}
             <p class="item">
-              <span class="meta">Kategorie:</span>
               {{get instance.category "title"}}
               {{#if instance.subCategory}}
               <i class="material-icons">navigate_next</i>{{get instance.subCategory "title"}}
