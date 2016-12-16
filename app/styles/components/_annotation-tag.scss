@@ -5,6 +5,10 @@
   list-style: none;
   display: flex;
   flex-wrap: wrap;
+  &__error {
+    color: $gray50;
+    margin-left: 0.3em;
+  }
   /*change color of annotationTag if inside annotationAre*/
   .annotationTag {
     background: $blueHightlight;

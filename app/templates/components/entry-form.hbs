@@ -58,7 +58,7 @@
       {{annotation-tag instance=annotation onDelete=(action "deleteAnnotation")}}
     {{/each}}
     {{#unless model.entryInstance.annotations}}
-      <p>Keine Anmerkungen</p>
+      <p class="annotationArea__error">Keine Anmerkungen</p>
     {{/unless}}
     <div class="annotationNew">
       {{forms/annotation-new onAdd=(action "addAnnotation") existingAnnotations=model.entryInstance.annotations}}
