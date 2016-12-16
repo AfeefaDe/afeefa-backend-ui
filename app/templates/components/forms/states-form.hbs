@@ -1,5 +1,6 @@
 {{yield}}
 <p>
-  {{input type="checkbox" class="filled-in" id="filled-in-box"  checked=instanceBool}}
-  <label for="filled-in-box">Veröffentlicht</label>
+    <button {{action 'togglePublishState'}} class="btn publisher" type="submit" style="margin-top:1em; width:190.5px;">
+      {{publishState}}
+    </button>
 </p>

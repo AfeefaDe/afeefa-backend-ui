@@ -4,6 +4,7 @@ export default Ember.Component.extend({
   instance: null,
   selectedState: null,
   instanceBool: false,
+  publishState: 'Veröffentlichen',
   didReceiveAttrs() {
     if(this.get('selectedState')==='active') this.set('instanceBool', true);
     if(this.get('selectedState')==='inactive') this.set('instanceBool', false);
@@ -16,5 +17,16 @@ export default Ember.Component.extend({
     this.set('instance', stateTransition);
     //if set call onChange
     if(this.get('onChange')) this.get('onChange')(stateTransition);
-  })
+  }),
+  actions: {
+    togglePublishState: function() {
+      if(this.get('instanceBool')===false) {
+        this.set('instanceBool', true);
+        this.set('publishState', "Deaktivieren");
+      } else {
+        this.set('instanceBool', false);
+        this.set('publishState', "Veröffentlichen");
+      }
+    }
+  }
 });
