@@ -37,13 +37,13 @@
       width: 20px;
       height: 20px;
       background-color: $black;
-      border: 1.5px solid $black;
+      border: 2px solid $black;
       border-radius: 2px;
       &--event {
         transform: rotate(45deg) scale(0.9);
       }
       &--inactive {
-        background-color: $white;
+        background-color: transparent;
       }
     }
   }
