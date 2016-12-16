@@ -1,7 +1,7 @@
 {{yield}}
 <li>
   <div class="entryList__icon">
-    <span class="entry-icon entry-icon--{{instance.modelName}}"></span>
+    <span class="entry-icon entry-icon--{{instance.modelName}} entry-icon--{{instance.state}}"></span>
   </div>
   <div class="entryList__content">
     <a {{action 'navigateToSingle' instance}} class="entryList__nav">

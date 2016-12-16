@@ -34,14 +34,16 @@
     margin-right: 30px;
     .entry-icon {
       display: inline-block;
-      width: 23px;
-      height: 23px;
+      width: 20px;
+      height: 20px;
       background-color: $black;
+      border: 1.5px solid $black;
       border-radius: 2px;
       &--event {
-        transform: rotate(45deg);
-        width: 21px;
-        height: 21px;
+        transform: rotate(45deg) scale(0.9);
+      }
+      &--inactive {
+        background-color: $white;
       }
     }
   }
