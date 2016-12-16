@@ -5,7 +5,12 @@ export default Ember.Component.extend({
   possibleAnnotation: null,
   didReceiveAttrs() {
     this._super(...arguments);
-    const possibleAnnotation = this.get('store').peekAll('annotation');
+    let possibleAnnotation = this.get('store').peekAll('annotation');
+    const existingAnnotations = this.get('existingAnnotations');
+    //only show annotations that are not already attached to the entry
+    possibleAnnotation = possibleAnnotation.filter((annotation) => {
+      return !existingAnnotations.contains(annotation);
+    });
     this.set('possibleAnnotation', possibleAnnotation);
   },
   actions: {
