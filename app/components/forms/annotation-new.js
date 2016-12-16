@@ -9,10 +9,13 @@ export default Ember.Component.extend({
     this.set('possibleAnnotation', possibleAnnotation);
   },
   actions: {
-    selectAnnotation: function(annotationId) {
-      if(this.get('onAdd')) {
+    selectAnnotation: function(selectInput) {
+      const annotationId = selectInput.value;
+      if(this.get('onAdd') && annotationId >= 0) {
         const annotation = this.get('store').peekRecord('annotation', annotationId);
         this.get('onAdd')(annotation);
+        //reset selectInput to show "Neue Anmerkung hinzufügen"
+        selectInput.value = "-1";
       }
     }
   }

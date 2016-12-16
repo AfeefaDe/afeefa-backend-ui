@@ -60,7 +60,9 @@
     {{#unless model.entryInstance.annotations}}
       <p>Keine Anmerkungen</p>
     {{/unless}}
-    {{forms/annotation-new onAdd=(action "addAnnotation")}}
+    <div class="annotationNew">
+      {{forms/annotation-new onAdd=(action "addAnnotation")}}
+    </div>
   </li>
   <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Save</button>
 </form>

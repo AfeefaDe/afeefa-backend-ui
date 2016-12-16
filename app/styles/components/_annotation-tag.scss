@@ -3,6 +3,8 @@
   padding: 0.5em;
   border-radius: 5px;
   list-style: none;
+  display: flex;
+  flex-wrap: wrap;
   /*change color of annotationTag if inside annotationAre*/
   .annotationTag {
     background: $blueHightlight;
@@ -33,3 +35,8 @@
     }
 }
 
+.annotationNew {
+  display: block;
+  width: 100%;
+  margin-top: 0.4em;
+}
