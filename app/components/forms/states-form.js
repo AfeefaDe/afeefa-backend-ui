@@ -3,11 +3,17 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   instance: null,
   selectedState: null,
+  csClass: null,
   instanceBool: false,
-  publishState: 'Veröffentlichen',
+
   didReceiveAttrs() {
-    if(this.get('selectedState')==='active') this.set('instanceBool', true);
-    if(this.get('selectedState')==='inactive') this.set('instanceBool', false);
+    if(this.get('selectedState')==='active') {
+      this.set('instanceBool', true);
+    }
+    else {
+      this.set('instanceBool', false);
+    }
+    this.send('setAll', this.get('instanceBool'));
   },
   valueChanged: Ember.observer('instanceBool', function() {
     //value changed
@@ -19,14 +25,18 @@ export default Ember.Component.extend({
     if(this.get('onChange')) this.get('onChange')(stateTransition);
   }),
   actions: {
-    togglePublishState: function() {
-      if(this.get('instanceBool')===false) {
-        this.set('instanceBool', true);
-        this.set('publishState', "Deaktivieren");
+    setAll(isActivated) {
+      if(isActivated) {
+        this.set('publishState', 'Deaktivieren');
+        this.set('cssClass', 'stateActive');
       } else {
-        this.set('instanceBool', false);
-        this.set('publishState', "Veröffentlichen");
+        this.set('publishState', 'Veröffentlichen');
+        this.set('cssClass', 'stateInactive');
       }
+    },
+    togglePublishState() {
+      this.toggleProperty('instanceBool');
+      this.send('setAll', this.get('instanceBool'));
     }
   }
 });

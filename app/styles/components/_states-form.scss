@@ -1,0 +1,12 @@
+.btn {
+  margin-top: 1em;
+  width: 190.5px;
+
+  &.stateActive {
+    background-color: green;
+  }
+
+  &.stateInactive {
+    background-color: red;
+  }
+}

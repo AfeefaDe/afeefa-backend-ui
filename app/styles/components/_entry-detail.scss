@@ -6,7 +6,8 @@
     display: block;
     margin-bottom: 0.6em;
     display: flex;
-    align-items: baseline;
+    align-items: center;
+    justify-content: center;
   }
   &__meta {
     color: $gray50;
