@@ -7,7 +7,7 @@
   </div>
 
   <div class="inputField__spacing input-field">
-    {{textarea value=model.entryInstance.description id="description" class="materialize-textarea validate" maxlength="150" required="required"}}
+    {{textarea value=model.entryInstance.description id="description" class="materialize-textarea validate" maxlength="350" required="required"}}
     <label for="description" class="{{if model.entryInstance.description "active" }}">Beschreibung</label>
   </div>
 
@@ -53,10 +53,16 @@
   </div>
 
   <h2>Anmerkungen</h2>
-   <div class="inputField__spacing input-field">
-    {{input value=model.annotationInstance.title id="annotation" type="text" class="validate"}}
-    <label for="annotation" class="{{if model.annotationInstance.title "active" }}">Anmerkung</label>
-  </div>
-
+  <li class="annotationArea">
+    {{#each model.entryInstance.annotations as |annotation|}}
+      {{annotation-tag instance=annotation onDelete=(action "deleteAnnotation")}}
+    {{/each}}
+    {{#unless model.entryInstance.annotations}}
+      <p class="annotationArea__error">Keine Anmerkungen</p>
+    {{/unless}}
+    <div class="annotationNew">
+      {{forms/annotation-new onAdd=(action "addAnnotation") existingAnnotations=model.entryInstance.annotations}}
+    </div>
+  </li>
   <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Save</button>
 </form>

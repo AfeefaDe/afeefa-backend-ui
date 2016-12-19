@@ -41,7 +41,6 @@ export default Ember.Component.extend({
 
       entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
       entry.get('locations').pushObject(this.get('model.locationInstance'));
-      entry.get('annotations').pushObject(this.get('model.annotationInstance'));
       entry.save().then((savedEntry)=> {
         const alertData = {title: 'Erfolgreich gespeichert', description: 'Dein Eintrag wurde erfolgreich angelegt.', isError: false, autoHide: 3000};
         if(isEditMode) alertData.description = 'Deine Änderungen wurden erfolgreich gespeichert.';
@@ -57,15 +56,29 @@ export default Ember.Component.extend({
      */
     selectParent: function(parentOrgaID) {
       const entry = this.get('model.entryInstance');
-      // @hack
-      const orgaProp = entry.date || entry.date === null ? 'orga' : 'parentOrga';
       if(parentOrgaID === -1) {
-        this.set(`model.entryInstance.${orgaProp}`, null);
+        this.set('model.entryInstance.parentOrga', null);
       }
       else {
         let parentOrga = this.get('store').peekRecord('orga', parentOrgaID);
-        this.set(`model.entryInstance.${orgaProp}`, parentOrga);
+        this.set('model.entryInstance.parentOrga', parentOrga);
       }
+    },
+    /*
+     * action that gets triggered by annotation-tag
+     * to remove the annotation from the current entryInstance
+     */
+    deleteAnnotation: function(annotation) {
+      const entryInstance = this.get('model.entryInstance');
+      entryInstance.get('annotations').removeObject(annotation);
+    },
+     /*
+     * action that gets triggered by annotation-new
+     * to add new annotation to the current entryInstance
+     */
+    addAnnotation: function(annotation) {
+      const entryInstance = this.get('model.entryInstance');
+      entryInstance.get('annotations').addObject(annotation)
     }
 	},
   /*

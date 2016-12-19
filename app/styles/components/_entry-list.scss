@@ -34,36 +34,34 @@
     margin-right: 30px;
     .entry-icon {
       display: inline-block;
-      width: 23px;
-      height: 23px;
+      width: 20px;
+      height: 20px;
       background-color: $black;
+      border: 2px solid $black;
       border-radius: 2px;
-      &--orga {
-        transform: rotate(45deg);
-        width: 21px;
-        height: 21px;
+      &--event {
+        transform: rotate(45deg) scale(0.9);
+      }
+      &--inactive {
+        background-color: transparent;
       }
     }
   }
   &__attributes {
     display: flex;
     flex-wrap: wrap;
+    align-items: baseline;
     font-size: 1em;
     margin-top: 0.25em;
     color: $gray90;
     .item {
       margin: 0 1.5em 0 0;
-      padding: 0.4em 0 0.2em 0;
     }
-    .item--annotation {
-      background: #F2F2F2;
-      border-radius: 2px;
-      border-left: 5px solid $blueHightlight;
-      padding-left: 0.5em;
-      max-width: 100%;
-      word-break: break-word;
-      padding-right: 0.5em;
-      margin-bottom: 0.4em;
+    .item .material-icons {
+      vertical-align: bottom;
+      font-size: 1.4em;
+      margin-left: -0.3em;
+      margin-right: -0.1em;
     }
     .meta {
       margin-right: 0.3em;
