@@ -1,12 +1,8 @@
-.btn {
-  margin-top: 1em;
-  margin-left: 1em;
-  width: 190.5px;
-
+.publishButton {
+  margin: 0.5em 0;
   &.stateActive {
     background-color: $green;
   }
-
   &.stateInactive {
     background-color: $red;
   }

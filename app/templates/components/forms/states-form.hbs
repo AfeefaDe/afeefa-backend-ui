@@ -1,6 +1,4 @@
 {{yield}}
-<p>
-    <button {{action 'togglePublishState'}} class="btn {{cssClass}} waves-effect" type="submit">
-      {{publishState}}
-    </button>
-</p>
+<button {{action 'togglePublishState'}} class="btn publishButton {{cssClass}} waves-effect" type="submit">
+  {{publishState}}
+</button>

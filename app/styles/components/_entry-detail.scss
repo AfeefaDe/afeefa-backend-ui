@@ -9,6 +9,9 @@
     flex-wrap: wrap;
     align-items: baseline;
   }
+  li.nowrap {
+    display: block;
+  }
   &__meta {
     color: $gray50;
     margin-right: 0.4em;
