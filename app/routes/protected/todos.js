@@ -4,8 +4,9 @@ import RSVP from 'rsvp';
 
 export default Ember.Route.extend({
   model() {
+    const protectedModel = this.modelFor('protected');
     return RSVP.hash({
-      todos: this.store.query('entry', {filter: {todo: 'all'}}),
+      todos: protectedModel.todos,
       attributes: ['category','annotations']
     });
   }

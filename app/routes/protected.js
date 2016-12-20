@@ -9,6 +9,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       user: this.store.findRecord('user', this.get('session.currentUser')),
       events: this.store.query('event', {include: 'annotations,category,sub_category', sort:'title'}),
       orgas: this.store.query('orga', {include: 'annotations,category,sub_category', sort:'title'}),
+      todos: this.store.query('entry', {filter: {todo: 'all'}}),
       categories: this.store.findAll('category'),
       annotations: this.store.findAll('annotation')
     });
