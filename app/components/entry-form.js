@@ -52,6 +52,14 @@ export default Ember.Component.extend({
       });
 		},
     /*
+     * delete button pushed
+     */
+    deleteEntry: function() {
+      let entry = this.get('model.entryInstance');
+      entry.deleteRecord();
+      entry.save();
+    },
+    /*
      * Input type select for setting parent orga
      */
     selectParent: function(parentOrgaID) {
