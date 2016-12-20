@@ -24,9 +24,41 @@ export default DS.JSONAPISerializer.extend(SaveRelationshipsMixin, {
     //return underscore keys for links
     return Ember.String.underscore(key);
   },
+   normalizeSaveResponse(store, modelName, obj) {
+    console.log(store, modelName, obj);
+    const rels = obj.data.relationships || [];
+
+    Object.keys(rels).forEach(rel => {
+
+      // guard against potential `null` relationship, allowed by JSON API
+      if (!rels[rel]) {
+        return;
+      }
+
+      let relationshipData = rels[rel].data;
+      if (Array.isArray(relationshipData)) {
+        // hasMany
+        relationshipData = relationshipData.map(json => {
+          console.log("Mapping hasMany rel: ", json);
+          json.type = Ember.String.singularize(json.type);
+          this.updateRecord(json, store);
+        });
+      } else {
+        // belongsTo
+        console.log("Mapping belinksto rel: ", relationshipData);
+        relationshipData.type = Ember.String.singularize(relationshipData.type);
+        relationshipData = this.updateRecord(relationshipData, store);
+      }
+
+    });
+
+    return this._super(store, modelName, obj);
+
+  }
+  /*
   normalizeSaveResponse(store, modelName, obj) {
     //hack: remove relationships when normalizing response, cause they only contain links
     if(obj.data.relationships) obj.data.relationships = {};
     return this._super(store, modelName, obj);
-  }
+  }*/
 });
