@@ -29,6 +29,7 @@ export default Ember.Component.extend({
         instance.save().then(()=> {
           this.set('savingInstance', false);
         }, (reason)=> {
+          this.EventBus.publish('showAlert', {title: 'Fehler beim Veröffentlichen', description: 'Unbekannter Fehler', isError: true, autoHide: false});
           instance.rollbackAttributes();
           this.set('savingInstance', false);
         });

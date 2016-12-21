@@ -29,6 +29,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     didTransition () {
       afeefaMenu.setRoute(this.get("router.router.state.handlerInfos"))
       this.EventBus.publish('didTransition');
+      window.scrollTo(0,0);
     }
   }
 });
