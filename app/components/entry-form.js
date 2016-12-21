@@ -60,7 +60,8 @@ export default Ember.Component.extend({
       if(confirm === true) {
         entry.deleteRecord();
         entry.save().then(()=> {
-          history.back();
+          const targetRoute = `protected.${entry.get('modelName')}s`;
+          this.get('router').transitionTo(targetRoute);
         }, (reason)=> {
           entry.rollbackAttributes();
           let alertData = this.handleError(reason);

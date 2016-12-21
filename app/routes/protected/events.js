@@ -5,7 +5,7 @@ export default Ember.Route.extend({
     model() {
     //returns model when all promises are resolved
     return RSVP.hash({
-      instances: this.store.findAll('event'),
+      instances: this.store.peekAll('event'),
       attributes: ['category', 'date']
     });
   }
