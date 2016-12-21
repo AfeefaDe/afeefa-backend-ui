@@ -7,11 +7,44 @@ body {
 * {
   box-sizing: border-box;
 }
+.hideDesktop {
+  display: inherit;
+  @media screen and (min-width: $break-medium) {
+    display: none;
+  }
+}
+.hideMobile {
+  display: inherit;
+  @media screen and (max-width: $break-medium) {
+    display: none;
+  }
+}
 
 /*spacing for fixed header*/
+$sidebarWidth: 300px;
 .content {
   padding-top: $header-height;
+  &__sidebar {
+    display: none;
+  }
+  @media screen and (min-width: $break-medium) {
+    padding-top: 0;
+    &__sidebar {
+      display: inherit;
+      width: $sidebarWidth;
+      height: 100%;
+      position: fixed;
+      left: 0;
+      top: 0;
+      background-color: red;
+    }
+    &__main {
+      width: 100%;
+      padding-left: $sidebarWidth;
+    }
+  }
 }
+
 
 .cursor {
   cursor: pointer;
