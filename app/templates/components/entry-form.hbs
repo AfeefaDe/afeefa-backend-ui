@@ -65,12 +65,11 @@
     </div>
   </li>
 
-  {{#if model.entryInstance.id}}
-    <h2>Eintrag löschen</h2>
-    <div class="inputField__spacing">
-      <a class="waves-effect waves-light btn red" {{action "deleteEntry"}} ><i class="material-icons left">delete</i>Löschen</a>
-    </div>
-  {{/if}}
+  <section class="entryForm__actionFooter">
+    <button class="btn waves-effect waves-light" type="submit">Speichern</button>
+    {{#if model.entryInstance.id}}
+      <button class="btn waves-effect waves-light red" {{action "deleteEntry"}}><i class="material-icons left">delete</i>Löschen</button>
+    {{/if}}
+  </section>
 
-  <button class="btn waves-effect waves-light" type="submit" style="margin-top:2em;">Save</button>
 </form>

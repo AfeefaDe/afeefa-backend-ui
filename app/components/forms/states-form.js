@@ -4,11 +4,10 @@ export default Ember.Component.extend({
   instance: null,
   savingInstance: false,
   /*
-   * CSS class to set button color
+   * CSS class to set button color - use materialize classes
    */
   cssClass: Ember.computed('instance.state', function() {
-    if(this.get('instance.state')==true) return 'stateActive';
-    else return 'stateInactive';
+    if(this.get('instance.state')==true) return 'red';
   }),
   /*
    * Text shown inside the button
