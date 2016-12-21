@@ -56,8 +56,18 @@ export default Ember.Component.extend({
      */
     deleteEntry: function() {
       let entry = this.get('model.entryInstance');
-      entry.deleteRecord();
-      entry.save();
+      var confirm = window.confirm("Eintrag wirklich löschen ? \nDiese Aktion kann nicht rückgängig gemacht werden.");
+      if(confirm === true) {
+        entry.deleteRecord();
+        entry.save().then(()=> {
+          history.back();
+        }, (reason)=> {
+          entry.rollbackAttributes();
+          let alertData = this.handleError(reason);
+          alertData.title = 'Fehler beim Löschen des Eintrags';
+          this.EventBus.publish('showAlert', alertData);
+        });
+      }
     },
     /*
      * Input type select for setting parent orga

@@ -16,7 +16,9 @@
           {{/each}}
         {{else}}
           {{#if attribute.shouldFormatAsDate }}
-            <p class="item"><span class="meta">{{attribute.name}}:</span>{{format-date attribute.value}}</p>
+            <p class="item">{{format-date-relative attribute.value}}
+              <span class="entryList--lightColor">({{format-date-absolute attribute.value}})</span>
+            </p>
           {{else if (eq attribute.name "category")}}
             <p class="item">
               {{get instance.category "title"}}

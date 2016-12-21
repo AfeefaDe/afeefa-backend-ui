@@ -45,7 +45,7 @@
             {{#link-to "protected.newevent" class="mainCard__headerAction"}}<i class="material-icons">add</i>{{/link-to}}
           </div>
           <div>
-            {{entry-list instances=model.events limit=model.listLimit sortOrder='date:asc'}}
+            {{entry-list instances=model.events limit=model.listLimit attributes=model.attrEvent sortOrder='date:asc'}}
             {{#unless model.events}}
               <p>Keine Events</p>
             {{/unless}}
