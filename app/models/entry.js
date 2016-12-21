@@ -3,8 +3,7 @@ import DS from 'ember-data';
 
 export default DS.Model.extend({
   title:            DS.attr('string'),
-  state:            DS.attr('string', {hideInDetailView: true}),
-  stateTransition:  DS.attr('string', {hideInDetailView: true}),
+  state:            DS.attr('boolean', {hideInDetailView: true}),
   description:      DS.attr('string'),
   createdAt:        DS.attr('date', {hideInDetailView: true}),
   updatedAt:        DS.attr('date'),

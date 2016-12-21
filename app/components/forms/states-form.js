@@ -2,41 +2,38 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   instance: null,
-  selectedState: null,
-  csClass: null,
-  instanceBool: false,
-
-  didReceiveAttrs() {
-    if(this.get('selectedState')==='active') {
-      this.set('instanceBool', true);
-    }
-    else {
-      this.set('instanceBool', false);
-    }
-    this.send('setAll', this.get('instanceBool'));
-  },
-  valueChanged: Ember.observer('instanceBool', function() {
-    //value changed
-    let stateTransition = null;
-    if(this.get('instanceBool')===true) stateTransition = 'activate';
-    if(this.get('instanceBool')===false) stateTransition = 'deactivate';
-    this.set('instance', stateTransition);
-    //if set call onChange
-    if(this.get('onChange')) this.get('onChange')(stateTransition);
+  savingInstance: false,
+  /*
+   * CSS class to set button color
+   */
+  cssClass: Ember.computed('instance.state', function() {
+    if(this.get('instance.state')==true) return 'stateActive';
+    else return 'stateInactive';
+  }),
+  /*
+   * Text shown inside the button
+   */
+  buttonLabel: Ember.computed('instance.state', function() {
+    if(this.get('instance.state')==true) return 'Deaktivieren';
+    else return 'Aktivieren';
   }),
   actions: {
-    setAll(isActivated) {
-      if(isActivated) {
-        this.set('publishState', 'Deaktivieren');
-        this.set('cssClass', 'stateActive');
-      } else {
-        this.set('publishState', 'Veröffentlichen');
-        this.set('cssClass', 'stateInactive');
-      }
-    },
+    /*
+     * Action triggered by the button
+     */
     togglePublishState() {
-      this.toggleProperty('instanceBool');
-      this.send('setAll', this.get('instanceBool'));
+      if(!this.get('savingInstance')) {
+        this.set('savingInstance', true);
+        let instance = this.get('instance');
+        const newState = !instance.get('state');
+        instance.set('state', newState);
+        instance.save().then(()=> {
+          this.set('savingInstance', false);
+        }, (reason)=> {
+          instance.rollbackAttributes();
+          this.set('savingInstance', false);
+        });
+      }
     }
   }
 });

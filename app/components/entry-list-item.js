@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  instance: null,
   attributes: ['category'],
   actions: {
     /**
@@ -27,5 +28,9 @@ export default Ember.Component.extend({
       }
     }
     return attributesFormatted;
+  }),
+  stateCSSClass: Ember.computed('instance', function() {
+    if(this.get('instance.state')==true) return 'entry-icon--active';
+    else return 'entry-icon--inactive';
   })
 });
