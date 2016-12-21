@@ -7,9 +7,11 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   model() {
     const baseData = RSVP.hash({
       user: this.store.findRecord('user', this.get('session.currentUser')),
-      events: this.store.query('event', {include: 'annotations', sort:'title'}),
-      orgas: this.store.query('orga', {include: 'annotations', sort:'title'}),
-      categories: this.store.findAll('category')
+      events: this.store.query('event', {include: 'annotations,category,sub_category', sort:'title'}),
+      orgas: this.store.query('orga', {include: 'annotations,category,sub_category', sort:'title'}),
+      todos: this.store.query('entry', {filter: {todo: 'all'}}),
+      categories: this.store.findAll('category'),
+      annotations: this.store.findAll('annotation')
     });
     baseData.catch((reason) =>  {
       const alertData = {title: "Fehler beim Laden der Daten", description: 'Unbekannter Fehler', isError: true};
@@ -27,6 +29,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     didTransition () {
       afeefaMenu.setRoute(this.get("router.router.state.handlerInfos"))
       this.EventBus.publish('didTransition');
+      window.scrollTo(0,0);
     }
   }
 });

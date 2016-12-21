@@ -1,12 +1,12 @@
 <ul class="entryDetail">
   {{#each attr as |attribute|}}
-    {{#if (get model attribute.name)}}
+    {{#if (hasAttribute (get model attribute.name))}}
       {{#unless attribute.hide}}
         <li>
         <span class="entryDetail__meta">{{attribute.name}}:</span>
         <span>
           {{#if (eq attribute.type "date")}}
-            {{format-date (get model attribute.name)}}
+            {{format-date-relative (get model attribute.name)}} ({{format-date-absolute (get model attribute.name)}})
           {{else if (eq attribute.name "mail")}}
             <a href="mailto:{{get model attribute.name}}">{{get model attribute.name}}</a>
           {{else}}
@@ -18,21 +18,21 @@
     {{/if}}
   {{/each}}
 
-  {{#if model.category}}
+  {{#if (hasAttribute model.category)}}
   <li>
     <span class="entryDetail__meta">Kategorie:</span>
     <span>{{get model.category "title"}}</span>
   </li>
   {{/if}}
 
-  {{#if model.category}}
+  {{#if (hasAttribute model.category)}}
   <li>
     <span class="entryDetail__meta">Unterkategorie:</span>
     <span>{{get model.subCategory "title"}}</span>
   </li>
   {{/if}}
 
-  {{#if model.locations}}
+  {{#if (hasAttribute model.locations)}}
     <h2>Ort</h2>
     <li>
     {{#each model.locations as |location|}}
@@ -40,7 +40,7 @@
     {{/each}}
     </li>
   {{/if}}
-  {{#if model.contactInfos}}
+  {{#if (hasAttribute model.contactInfos)}}
     <h2>Kontaktinformation</h2>
     <li>
     {{#each model.contactInfos as |contactInfo|}}
@@ -53,17 +53,14 @@
     <h2>Anmerkung</h2>
     <li class="annotationArea">
     {{#each model.annotations as |annotation|}}
-      {{annotation-tag instance=annotation editable=false}}
+      {{annotation-tag instance=annotation}}
     {{/each}}
     </li>
   {{/if}}
-  {{#if model.state}}
-  <li>
-  <span class="entryDetail__meta">Status ändern:</span>
-    {{forms/states-form
-      instance=newOrgaInstance.stateTransition
-      selectedState=model.state
-      onChange=(action "setNewStateTransistion")}}
+  {{#if (hasAttribute model.active)}}
+  <li class="nowrap">
+  <span class="entryDetail__meta">Status Ändern:</span>
+    {{forms/states-form instance=model}}
   </li>
   {{/if}}
   {{yield}}

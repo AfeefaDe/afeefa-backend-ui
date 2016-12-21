@@ -3,10 +3,11 @@ import RSVP from 'rsvp';
 
 export default Ember.Route.extend({
   model() {
+    const protectedModel = this.modelFor('protected');
     return RSVP.hash({
       events: this.store.peekAll('event', {include: 'annotations'}),
       orgas: this.store.peekAll('orga', {include: 'annotations'}),
-      todos: this.store.query('entry', {filter: {todo: 'all'}}),
+      todos: protectedModel.todos,
       categories: this.store.peekAll('category'),
       /*limit entry lists on dashboard*/
       listLimit: 5,

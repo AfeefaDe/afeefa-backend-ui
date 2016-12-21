@@ -2,19 +2,38 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   instance: null,
-  selectedState: null,
-  instanceBool: false,
-  didReceiveAttrs() {
-    if(this.get('selectedState')==='active') this.set('instanceBool', true);
-    if(this.get('selectedState')==='inactive') this.set('instanceBool', false);
-  },
-  valueChanged: Ember.observer('instanceBool', function() {
-    //value changed
-    let stateTransition = null;
-    if(this.get('instanceBool')===true) stateTransition = 'activate';
-    if(this.get('instanceBool')===false) stateTransition = 'deactivate';
-    this.set('instance', stateTransition);
-    //if set call onChange
-    if(this.get('onChange')) this.get('onChange')(stateTransition);
-  })
+  savingInstance: false,
+  /*
+   * CSS class to set button color - use materialize classes
+   */
+  cssClass: Ember.computed('instance.active', function() {
+    if(this.get('instance.active')==true) return 'red';
+  }),
+  /*
+   * Text shown inside the button
+   */
+  buttonLabel: Ember.computed('instance.active', function() {
+    if(this.get('instance.active')==true) return 'Deaktivieren';
+    else return 'Aktivieren';
+  }),
+  actions: {
+    /*
+     * Action triggered by the button
+     */
+    togglePublishState() {
+      if(!this.get('savingInstance')) {
+        this.set('savingInstance', true);
+        let instance = this.get('instance');
+        const newState = !instance.get('active');
+        instance.set('active', newState);
+        instance.save().then(()=> {
+          this.set('savingInstance', false);
+        }, (reason)=> {
+          this.EventBus.publish('showAlert', {title: 'Fehler beim Veröffentlichen', description: 'Unbekannter Fehler', isError: true, autoHide: false});
+          instance.rollbackAttributes();
+          this.set('savingInstance', false);
+        });
+      }
+    }
+  }
 });

@@ -52,19 +52,51 @@ export default Ember.Component.extend({
       });
 		},
     /*
+     * delete button pushed
+     */
+    deleteEntry: function() {
+      let entry = this.get('model.entryInstance');
+      var confirm = window.confirm("Eintrag wirklich löschen ? \nDiese Aktion kann nicht rückgängig gemacht werden.");
+      if(confirm === true) {
+        entry.deleteRecord();
+        entry.save().then(()=> {
+          history.back();
+        }, (reason)=> {
+          entry.rollbackAttributes();
+          let alertData = this.handleError(reason);
+          alertData.title = 'Fehler beim Löschen des Eintrags';
+          this.EventBus.publish('showAlert', alertData);
+        });
+      }
+    },
+    /*
      * Input type select for setting parent orga
      */
     selectParent: function(parentOrgaID) {
       const entry = this.get('model.entryInstance');
-      // @hack
-      const orgaProp = entry.date || entry.date === null ? 'orga' : 'parentOrga';
       if(parentOrgaID === -1) {
-        this.set(`model.entryInstance.${orgaProp}`, null);
+        this.set('model.entryInstance.parentOrga', null);
       }
       else {
         let parentOrga = this.get('store').peekRecord('orga', parentOrgaID);
-        this.set(`model.entryInstance.${orgaProp}`, parentOrga);
+        this.set('model.entryInstance.parentOrga', parentOrga);
       }
+    },
+    /*
+     * action that gets triggered by annotation-tag
+     * to remove the annotation from the current entryInstance
+     */
+    deleteAnnotation: function(annotation) {
+      const entryInstance = this.get('model.entryInstance');
+      entryInstance.get('annotations').removeObject(annotation);
+    },
+     /*
+     * action that gets triggered by annotation-new
+     * to add new annotation to the current entryInstance
+     */
+    addAnnotation: function(annotation) {
+      const entryInstance = this.get('model.entryInstance');
+      entryInstance.get('annotations').addObject(annotation)
     }
 	},
   /*

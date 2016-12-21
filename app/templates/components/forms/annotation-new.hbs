@@ -1,0 +1,7 @@
+{{yield}}
+<select class="browser-default annotationNew" onchange={{action "selectAnnotation" value="target"}}>
+    <option value="-1" selected>Neue Anmerkung hinzufügen</option>
+  {{#each possibleAnnotation as |annotation|}}
+    <option value="{{annotation.id}}">{{annotation.title}}</option>
+  {{/each}}
+</select>

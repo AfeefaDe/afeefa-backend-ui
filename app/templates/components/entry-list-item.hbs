@@ -1,7 +1,7 @@
 {{yield}}
 <li>
   <div class="entryList__icon">
-    <span class="entry-icon entry-icon--{{instance.modelName}}"></span>
+    <span class="entry-icon entry-icon--{{instance.modelName}} {{stateCSSClass}}"></span>
   </div>
   <div class="entryList__content">
     <a {{action 'navigateToSingle' instance}} class="entryList__nav">
@@ -12,15 +12,22 @@
       {{#each attributesFormatted as |attribute|}}
         {{#if (eq attribute.name "annotations")}}
           {{#each attribute.value as |annotation|}}
-            {{annotation-tag instance=annotation editable=false}}
+            {{annotation-tag instance=annotation}}
           {{/each}}
         {{else}}
           {{#if attribute.shouldFormatAsDate }}
-            <p class="item"><span class="meta">{{attribute.name}}:</span>{{format-date attribute.value}}</p>
+            <p class="item">{{format-date-relative attribute.value}}
+              <span class="entryList--lightColor">({{format-date-absolute attribute.value}})</span>
+            </p>
           {{else if (eq attribute.name "category")}}
-            <p class="item"><span class="meta">Kategorie:</span>{{get instance.category "title"}}</p>
-          {{else if (eq attribute.name "subCategory")}}
-            <p class="item"><span class="meta">Unterkategorie:</span>{{get instance.subCategory "title"}}</p>
+            {{#if instance.category}}
+              <p class="item">
+                {{get instance.category "title"}}
+                {{#if instance.subCategory}}
+                <i class="material-icons">navigate_next</i>{{get instance.subCategory "title"}}
+                {{/if}}
+              </p>
+            {{/if}}
           {{else}}
             <p class="item"><span class="meta">{{attribute.name}}:</span>{{attribute.value}}</p>
           {{/if}}

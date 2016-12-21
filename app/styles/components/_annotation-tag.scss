@@ -3,12 +3,20 @@
   padding: 0.5em;
   border-radius: 5px;
   list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  &__error {
+    color: $gray50;
+    margin-left: 0.3em;
+  }
   /*change color of annotationTag if inside annotationAre*/
   .annotationTag {
     background: $blueHightlight;
     color: #fff;
     margin: 0.4em 0.3em;
-    padding: 0.5em;
+    padding: 0.5em 0.8em;
+    border-left-width: 0;
+    /*remove border*/
   }
 }
 .annotationTag {
@@ -23,6 +31,7 @@
     display: inline-block;
     &__icon {
       color: inherit;
+      cursor: pointer;
     }
     &__icon i {
       font-size: 1.3em;
@@ -30,3 +39,8 @@
     }
 }
 
+.annotationNew {
+  display: block;
+  width: 100%;
+  margin-top: 0.4em;
+}
