@@ -57,7 +57,7 @@
     {{/each}}
     </li>
   {{/if}}
-  {{#if (hasAttribute model.state)}}
+  {{#if (hasAttribute model.active)}}
   <li class="nowrap">
   <span class="entryDetail__meta">Status Ändern:</span>
     {{forms/states-form instance=model}}

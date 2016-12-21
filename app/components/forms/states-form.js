@@ -6,14 +6,14 @@ export default Ember.Component.extend({
   /*
    * CSS class to set button color - use materialize classes
    */
-  cssClass: Ember.computed('instance.state', function() {
-    if(this.get('instance.state')==true) return 'red';
+  cssClass: Ember.computed('instance.active', function() {
+    if(this.get('instance.active')==true) return 'red';
   }),
   /*
    * Text shown inside the button
    */
-  buttonLabel: Ember.computed('instance.state', function() {
-    if(this.get('instance.state')==true) return 'Deaktivieren';
+  buttonLabel: Ember.computed('instance.active', function() {
+    if(this.get('instance.active')==true) return 'Deaktivieren';
     else return 'Aktivieren';
   }),
   actions: {
@@ -24,8 +24,8 @@ export default Ember.Component.extend({
       if(!this.get('savingInstance')) {
         this.set('savingInstance', true);
         let instance = this.get('instance');
-        const newState = !instance.get('state');
-        instance.set('state', newState);
+        const newState = !instance.get('active');
+        instance.set('active', newState);
         instance.save().then(()=> {
           this.set('savingInstance', false);
         }, (reason)=> {
