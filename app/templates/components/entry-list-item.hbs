@@ -20,12 +20,14 @@
               <span class="entryList--lightColor">({{format-date-absolute attribute.value}})</span>
             </p>
           {{else if (eq attribute.name "category")}}
-            <p class="item">
-              {{get instance.category "title"}}
-              {{#if instance.subCategory}}
-              <i class="material-icons">navigate_next</i>{{get instance.subCategory "title"}}
-              {{/if}}
-            </p>
+            {{#if instance.category}}
+              <p class="item">
+                {{get instance.category "title"}}
+                {{#if instance.subCategory}}
+                <i class="material-icons">navigate_next</i>{{get instance.subCategory "title"}}
+                {{/if}}
+              </p>
+            {{/if}}
           {{else}}
             <p class="item"><span class="meta">{{attribute.name}}:</span>{{attribute.value}}</p>
           {{/if}}

@@ -14,6 +14,9 @@
     color: inherit;
     display: flex;
     align-items: flex-end;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
     .icon {
 
     }
