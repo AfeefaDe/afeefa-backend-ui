@@ -4,7 +4,7 @@ import RSVP from 'rsvp';
 export default Ember.Route.extend({
 	model() {
     return RSVP.hash({
-      orgas: this.store.peekAll('orga', {include: 'annotations'}),
+      orgas: this.store.peekAll('orga'),
       attributes: ['category', 'createdAt']
     });
 	}
