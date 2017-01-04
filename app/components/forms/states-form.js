@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import FormatReasonErrorMessage from '../../mixins/format-reason-error-message';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(FormatReasonErrorMessage,{
   instance: null,
   savingInstance: false,
   /*
@@ -29,7 +30,9 @@ export default Ember.Component.extend({
         instance.save().then(()=> {
           this.set('savingInstance', false);
         }, (reason)=> {
-          this.EventBus.publish('showAlert', {title: 'Fehler beim Veröffentlichen', description: 'Unbekannter Fehler', isError: true, autoHide: false});
+          let error = this.handleError(reason);
+          error.title = 'Fehler beim Veröffentlichen';
+          this.EventBus.publish('showAlert', error);
           instance.rollbackAttributes();
           this.set('savingInstance', false);
         });

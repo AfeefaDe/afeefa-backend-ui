@@ -2,8 +2,9 @@ import Ember from 'ember';
 import RSVP from 'rsvp';
 
 import RouteHelper from '../mixins/route-helper';
+import FormatReasonErrorMessage from '../mixins/format-reason-error-message';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(FormatReasonErrorMessage, {
   store: Ember.inject.service(),
   /* determine if the entryInstance has attribute model*/
   showDate: Ember.computed('model', function() {
@@ -47,8 +48,9 @@ export default Ember.Component.extend({
         this.EventBus.publish('showAlert', alertData);
         history.back();
       }, (reason)=> {
-          console.log("Failed with reason: ", reason);
-          this.EventBus.publish('showAlert', this.handleError(reason));
+          let error = this.handleError(reason);
+          error.title = 'Fehler beim Speichern';
+          this.EventBus.publish('showAlert', error);
       });
 		},
     /*
@@ -100,19 +102,5 @@ export default Ember.Component.extend({
       entryInstance.get('annotations').addObject(annotation)
     }
 	},
-  /*
-   * function that creates the alertData object
-   * @todo: I want to call this.EventBus.publish('showAlert',...)from here. But this is undefined!
-   */
-  handleError(reason) {
-      const alertData = {title: 'Fehler beim Speichern', description: 'Unbekannter Fehler', isError: true, autoHide: false};
-      if(reason && reason.errors) {
-        let errorDetail = '';
-        for (var singleError of reason.errors) {
-          errorDetail = errorDetail + ' ' + singleError.detail + '\n';
-        }
-        alertData.description = errorDetail;
-      }
-      return alertData;
-  }
+
 });
