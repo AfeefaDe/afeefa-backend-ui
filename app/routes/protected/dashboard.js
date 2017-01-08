@@ -15,5 +15,12 @@ export default Ember.Route.extend({
       attrEvent: ['category', 'date'],
       attrTodo: ['annotations','category']
     });
+  },
+  actions: {
+    loading: function() {
+      var view = this.container.lookup('view:loading').append();
+      this.router.one('didTransition', view, 'destroy');
+    }
   }
+
 });
