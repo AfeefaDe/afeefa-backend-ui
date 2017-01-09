@@ -1,5 +1,8 @@
 {{yield}}
-
+<div class="input-field">
+  <label for="placename" class="{{if instance.placename "active" }}">Ortsbezeichnung</label>
+  {{input value=instance.placename id="placename" type="text" class="validate"}}
+</div>
 <div class="input-field">
   <label for="street" class="{{if instance.street "active" }}">Straße</label>
   {{input value=instance.street id="street" type="text" class="validate"}}
@@ -11,8 +14,4 @@
 <div class="input-field">
   <label for="city" class="{{if instance.city "active" }}">Stadt</label>
   {{input value=instance.city id="city" type="text" class="validate"}}
-</div>
-<div class="input-field">
-  <label for="placename" class="{{if instance.placename "active" }}">Ortsbezeichnung</label>
-  {{input value=instance.placename id="placename" type="text" class="validate"}}
 </div>
