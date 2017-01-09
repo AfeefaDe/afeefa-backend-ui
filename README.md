@@ -1,7 +1,7 @@
-# Afeefa-backend-ui
+# afeefa-backend-ui
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+The afeefa-backend-ui is the interface presented to our editors to manage the entries displayed on [afeefa.de](https://afeefa.de). Users are able to add, remove and edit entries as well as gather an overview of the present data.
+The Ember based webapp communicates with the [afeefa-backend-api](https://github.com/AfeefaDe/afeefa-backend-api) to persist entries. Therefor we are using the [JSON API](http://jsonapi.org/) specifications.
 
 ## Prerequisites
 
@@ -11,7 +11,6 @@ You will need the following things properly installed on your computer.
 * [Node.js](http://nodejs.org/) (with NPM)
 * [Bower](http://bower.io/)
 * [Ember CLI](http://ember-cli.com/)
-* [PhantomJS](http://phantomjs.org/)
 
 ## Installation
 
@@ -30,19 +29,10 @@ You will need the following things properly installed on your computer.
 
 Make use of the many generators for code, try `ember help generate` for more details
 
-### Running Tests
-
-* `ember test`
-* `ember test --server`
-
 ### Building
 
 * `ember build` (development)
 * `ember build --environment production` (production)
-
-### Deploying
-
-Specify what it takes to deploy your app.
 
 ## Further Reading / Useful Links
 
