@@ -37,6 +37,7 @@
     "ember-data": "^2.5.0",
     "ember-data-save-relationships": "0.0.5",
     "ember-export-application-global": "^1.0.5",
+    "ember-flatpickr": "1.1.4",
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
     "ember-simple-auth": "1.1.0",
