@@ -13,7 +13,7 @@
 
   {{#if showDate}}
   <div class="inputField__spacing input-field">
-    <label for="date" class="{{if model.entryInstance.date "active" }}" >Datum</label>
+    <label for="date" class="{{if model.entryInstance.date_start "active" }}" >Datum</label>
     {{ember-flatpickr enableTime=true minuteIncrement=15 time_24hr=true value=(readonly model.entryInstance.date_start) dateFormat='d.m.Y \u\m H:i \U\h\r' onChange=(action 'updateStartDate')}}
   </div>
   {{/if}}

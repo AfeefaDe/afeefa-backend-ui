@@ -31,7 +31,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       //determine new or edit mode
       const isEditMode = entry.get('id');
       // save date in entry model
-      if(entry.date || entry.date === null) {
+      if(entry.date_start || entry.date_start === null) {
           this.set('model.entryInstance.date_start', this.get('dateStartObject'));
       }
 
