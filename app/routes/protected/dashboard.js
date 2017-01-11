@@ -12,7 +12,7 @@ export default Ember.Route.extend({
       /*limit entry lists on dashboard*/
       listLimit: 5,
       attrOrga: ['category', 'createdAt'],
-      attrEvent: ['category', 'date'],
+      attrEvent: ['category', 'date_start'],
       attrTodo: ['annotations','category']
     });
   },

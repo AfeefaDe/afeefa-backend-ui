@@ -5,7 +5,7 @@
         <li>
         <span class="entryDetail__meta">{{attribute.name}}:</span>
         <span>
-          {{#if (eq attribute.type "date")}}
+          {{#if (eq attribute.type "date_start")}}
             {{format-date-relative (get model attribute.name)}} ({{format-date-absolute (get model attribute.name)}})
           {{else if (eq attribute.name "mail")}}
             <a href="mailto:{{get model attribute.name}}">{{get model attribute.name}}</a>

@@ -9,20 +9,19 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
   /* determine if the entryInstance has attribute model*/
   showDate: Ember.computed('model', function() {
     const entry = this.get('model.entryInstance');
-    return entry.date || entry.date === null;
+    return entry.date_start || entry.date_start === null;
   }),
-  dateObject: '',
+  dateStartObject: '',
   didReceiveAttrs() {
     this._super(...arguments);
-
-    const date = this.get('model.entryInstance.date');
-    if(date) {
-      this.set('dateObject', date);
+    const dateStart = this.get('model.entryInstance.date_start');
+    if(dateStart) {
+      this.set('dateStartObject', dateStart);
     }
   },
 	actions: {
-    updateDate(newDate) {
-      this.set('dateObject', newDate[0]);
+    updateStartDate(newDate) {
+      this.set('dateStartObject', newDate[0]);
     },
     /*
      * Save Entry with meta models
@@ -31,10 +30,9 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       let entry = this.get('model.entryInstance');
       //determine new or edit mode
       const isEditMode = entry.get('id');
-
       // save date in entry model
       if(entry.date || entry.date === null) {
-          this.set('model.entryInstance.date', this.get('dateObject'));
+          this.set('model.entryInstance.date_start', this.get('dateStartObject'));
       }
 
       entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
