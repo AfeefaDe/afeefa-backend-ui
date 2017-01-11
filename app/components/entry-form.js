@@ -9,7 +9,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
   /* determine if the entryInstance has attribute model*/
   showDate: Ember.computed('model', function() {
     const entry = this.get('model.entryInstance');
-    return entry.date || entry.date === null;
+    return entry.date_start || entry.date_start === null;
   }),
   //this string cached the instance date for the input:type date
   dateString: '',
@@ -19,7 +19,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
      * workaround to cut off time from date object and pass it into input[type="date"]
      * not proud at all :(
      */
-    const date = this.get('model.entryInstance.date');
+    const date = this.get('model.entryInstance.date_start');
     if(date && typeof date.getMonth === 'function') {
       const dateString = date.toISOString().slice(0,10);
       this.set('dateString', dateString);
@@ -34,10 +34,10 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       //determine new or edit mode
       const isEditMode = entry.get('id');
       //this converts the  yyyy-mm-dd String from the input:type date to an js object because ember doesent support date inputs
-      if(entry.date || entry.date === null) {
+      if(entry.date_start || entry.date_start === null) {
         const dateString = this.get('dateString').split('-');
         var date = new Date(dateString[0], dateString[1]-1, dateString[2]);
-        entry.set('date', date);
+        entry.set('date_start', date);
       }
 
       entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
