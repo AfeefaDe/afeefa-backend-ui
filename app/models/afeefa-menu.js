@@ -6,7 +6,7 @@ export default {
   menuTree: {
     route: 'protected.dashboard',
     title: 'Dashboard',
-    level: 0,
+    level: 1,
     children: [
       { route: 'protected.todos', title: 'Todos', level: 1 },
       {

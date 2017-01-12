@@ -1,7 +1,7 @@
 <navigation>
   <div id="breadcrumb">
-    {{#each pathNavigation as |path|}}
-      {{#unless (eq path.level 0)}}
+    {{#each pathNavigation as |path index|}}
+      {{#unless (eq index 0)}}
         <i class="material-icons">chevron_right</i>
       {{/unless}}
       {{#if path.route}}
