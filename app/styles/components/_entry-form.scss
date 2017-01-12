@@ -5,3 +5,9 @@
     justify-content: space-between;
   }
 }
+
+.input-field {
+  .flatpickr-input {
+    color: inherit !important;
+  }
+}
