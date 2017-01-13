@@ -45,7 +45,10 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         const alertData = {title: 'Erfolgreich gespeichert', description: 'Dein Eintrag wurde erfolgreich angelegt.', isError: false, autoHide: 3000};
         if(isEditMode) alertData.description = 'Deine Änderungen wurden erfolgreich gespeichert.';
         this.EventBus.publish('showAlert', alertData);
-        history.back();
+        let id = entry.get('id');
+        let type = entry.get('modelName');
+        if(id && type) this.get('router').transitionTo('protected.'+type, id);
+        else throw 'Invalid transistion type or id - Cancel transition';
       }, (reason)=> {
           let error = this.handleError(reason);
           error.title = 'Fehler beim Speichern';
