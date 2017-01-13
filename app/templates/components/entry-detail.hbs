@@ -58,6 +58,7 @@
     </li>
   {{/if}}
   {{#if (hasAttribute model.active)}}
+  <h2>Status</h2>
   <li class="nowrap">
   <span class="entryDetail__meta">Status ändern:</span>
     {{forms/states-form instance=model}}
