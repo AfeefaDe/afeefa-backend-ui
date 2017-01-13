@@ -5,27 +5,31 @@ export default Ember.Mixin.create({
 
   actions: {
     willTransition(transition) {
-      const controller = this.controller;
-
-      function hasUnsavedAttributes(modelName) {
-        const model = controller.get(`model.${modelName}`);
-        return Object.keys(model.changedAttributes()).length !== 0;
+      const rollback = () => {
+        this.controller.get('model.entryInstance').rollbackAttributes();
+        this.controller.get('model.contactInfoInstance').rollbackAttributes();
+        this.controller.get('model.locationInstance').rollbackAttributes();
+        this.controller.get('model.entryInstance.annotations').reload();
       }
 
-      function rollback() {
-        controller.get('model.entryInstance').rollbackAttributes();
-        controller.get('model.contactInfoInstance').rollbackAttributes();
-        controller.get('model.locationInstance').rollbackAttributes();
+      const hasChanges = () => {
+        const hasUnsavedAttributes = (modelName) => {
+          const model = this.controller.get(`model.${modelName}`);
+          return Object.keys(model.changedAttributes()).length !== 0 || model.get('hasDirtyAttributes');
+        }
+
+        const entryChanges = hasUnsavedAttributes('entryInstance');
+        const contactChanges = hasUnsavedAttributes('contactInfoInstance');
+        const locationChanges = hasUnsavedAttributes('locationInstance');
+        return entryChanges || contactChanges || locationChanges;
       }
 
-      const entryChanges = hasUnsavedAttributes('entryInstance');
-      const contactChanges = hasUnsavedAttributes('contactInfoInstance');
-      const locationChanges = hasUnsavedAttributes('locationInstance');
-
-      if (entryChanges || contactChanges || locationChanges) {
+      if (hasChanges()) {
+        const isEdit = this.controller.get('model.entryInstance').id !== null;
+        const action = isEdit ? 'Bearbeiten' : 'Hinzufügen';
         this.get('dialogService').showDialog({
           title: 'Abbrechen',
-          message: 'Soll das Hinzufügen abgebrochen werden?'
+          message: `Soll das ${action} abgebrochen werden?`
         }).yes(() => {
           rollback();
           transition.retry();

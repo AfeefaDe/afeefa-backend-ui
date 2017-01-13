@@ -94,6 +94,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
     deleteAnnotation: function(annotation) {
       const entryInstance = this.get('model.entryInstance');
       entryInstance.get('annotations').removeObject(annotation);
+      entryInstance.send('becomeDirty');
     },
      /*
      * action that gets triggered by annotation-new
@@ -102,6 +103,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
     addAnnotation: function(annotation) {
       const entryInstance = this.get('model.entryInstance');
       entryInstance.get('annotations').addObject(annotation)
+      entryInstance.send('becomeDirty');
     }
 	},
 
