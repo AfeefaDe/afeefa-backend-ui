@@ -54,12 +54,3 @@
     }
   }
 }
-
-/*@todo: change icon*/
-$alert-border-width: 7px;
-.alert--error {
-  border-left: $alert-border-width solid $red;
-}
-.alert--success {
-  border-left: $alert-border-width solid $green;
-}
