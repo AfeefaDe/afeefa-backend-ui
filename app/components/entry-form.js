@@ -19,6 +19,10 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       this.set('dateStartObject', dateStart);
     }
   },
+  didRender() {
+    /* materialize: trigger the autoresze action to set height*/
+    $('#description').trigger('autoresize');
+  },
 	actions: {
     updateStartDate(newDate) {
       this.set('dateStartObject', newDate[0]);
