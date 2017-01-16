@@ -23,16 +23,6 @@ export default Ember.Component.extend({
       }), autoHide);
     }
   },
-  /*output css class to show/hide alert*/
-  visibleClass: Ember.computed('visible', function() {
-    if(this.get('visible')) return 'alert--visible';
-    else return 'alert--invisible';
-  }),
-  /*output css class to change type of alert: border-left*/
-  alertTypeClass: Ember.computed('isError', function() {
-    if(this.get('isError')) return 'alert--error';
-    else return 'alert--success';
-  }),
   /*output icon-string for alert icon*/
   alertTypeIcon: Ember.computed('isError', function() {
     if(this.get('isError')) return 'error_outline';
