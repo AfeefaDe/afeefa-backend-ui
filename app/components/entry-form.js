@@ -42,13 +42,19 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
       entry.get('locations').pushObject(this.get('model.locationInstance'));
       entry.save().then((savedEntry)=> {
-        const alertData = {title: 'Erfolgreich gespeichert', description: 'Dein Eintrag wurde erfolgreich angelegt.', isError: false, autoHide: 3000};
-        if(isEditMode) alertData.description = 'Deine Änderungen wurden erfolgreich gespeichert.';
-        this.EventBus.publish('showAlert', alertData);
-        let id = entry.get('id');
-        let type = entry.get('modelName');
-        if(id && type) this.get('router').transitionTo('protected.'+type, id);
-        else throw 'Invalid transistion type or id - Cancel transition';
+        const relations = [];
+        savedEntry.eachRelationship(function(name, descriptor) {
+          relations.push(savedEntry[descriptor.kind](name).reload());
+        });
+        RSVP.all(relations).then(() => {
+          const alertData = {title: 'Erfolgreich gespeichert', description: 'Dein Eintrag wurde erfolgreich angelegt.', isError: false, autoHide: 3000};
+          if(isEditMode) alertData.description = 'Deine Änderungen wurden erfolgreich gespeichert.';
+          this.EventBus.publish('showAlert', alertData);
+          let id = entry.get('id');
+          let type = entry.get('modelName');
+          if(id && type) this.get('router').transitionTo('protected.'+type, id);
+          else throw 'Invalid transistion type or id - Cancel transition';
+        })
       }, (reason)=> {
           let error = this.handleError(reason);
           error.title = 'Fehler beim Speichern';
