@@ -12,6 +12,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
     return entry.date_start || entry.date_start === null;
   }),
   dateStartObject: '',
+  oldAnnotations: null,
   didReceiveAttrs() {
     this._super(...arguments);
     const dateStart = this.get('model.entryInstance.date_start');
@@ -42,14 +43,17 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
       entry.get('locations').pushObject(this.get('model.locationInstance'));
       entry.save().then((savedEntry)=> {
+        // #66 hack
         const relations = [];
         savedEntry.eachRelationship(function(name, descriptor) {
           relations.push(savedEntry[descriptor.kind](name).reload());
         });
+        // end #66 hack
         RSVP.all(relations).then(() => {
           const alertData = {title: 'Erfolgreich gespeichert', description: 'Dein Eintrag wurde erfolgreich angelegt.', isError: false, autoHide: 3000};
           if(isEditMode) alertData.description = 'Deine Änderungen wurden erfolgreich gespeichert.';
           this.EventBus.publish('showAlert', alertData);
+          // goto view
           let id = entry.get('id');
           let type = entry.get('modelName');
           if(id && type) {
@@ -103,7 +107,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
     deleteAnnotation: function(annotation) {
       const entryInstance = this.get('model.entryInstance');
       entryInstance.get('annotations').removeObject(annotation);
-      entryInstance.send('becomeDirty');
+      entryInstance.set('hasAnnotationChanges', true);
     },
      /*
      * action that gets triggered by annotation-new
@@ -112,7 +116,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
     addAnnotation: function(annotation) {
       const entryInstance = this.get('model.entryInstance');
       entryInstance.get('annotations').addObject(annotation)
-      entryInstance.send('becomeDirty');
+      entryInstance.set('hasAnnotationChanges', true);
     }
 	},
 

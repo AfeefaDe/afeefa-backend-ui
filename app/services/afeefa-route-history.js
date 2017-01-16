@@ -25,8 +25,11 @@ export default Ember.Service.extend({
       if (last._names.length) {
         const idName = last._names[0];
         id = last.params[idName];
+        this.get('router').transitionTo(last.name, id);
+      } else {
+        this.get('router').transitionTo(last.name);
       }
-      this.get('router').transitionTo(last.name, id);
+
     } else {
       window.history.back();
     }
