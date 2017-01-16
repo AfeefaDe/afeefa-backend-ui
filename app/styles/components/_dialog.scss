@@ -57,16 +57,13 @@
     flex-grow: 2;
     cursor: pointer;
     font-size: 1.1rem;
-    border-right: solid 1.5px $gray20;
-    border-top: solid 1.5px $gray20;
+    background: lighten($black, 10%);
+    border-right: solid 2px $black;
     &:last-child {
       border-right-style: none;
     }
     &:hover {
-      background: lighten($black, 5%);
-    }
-    &:active {
-      background: lighten($black, 10%);
+      background: lighten($black, 15%);
     }
     &--no {
       color: $white;
