@@ -52,7 +52,10 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
           this.EventBus.publish('showAlert', alertData);
           let id = entry.get('id');
           let type = entry.get('modelName');
-          if(id && type) this.get('router').transitionTo('protected.'+type, id);
+          if(id && type) {
+            const router = this.get('router');
+            router.transitionTo('protected.'+type, id);
+          }
           else throw 'Invalid transistion type or id - Cancel transition';
         })
       }, (reason)=> {
