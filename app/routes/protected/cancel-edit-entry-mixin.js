@@ -5,8 +5,10 @@ export default Ember.Mixin.create({
 
   actions: {
     willTransition(transition) {
+      const entryInstance = this.controller.get('model.entryInstance');
+
       const rollback = () => {
-        this.controller.get('model.entryInstance').rollbackAttributes();
+        entryInstance.rollbackAttributes();
         this.controller.get('model.contactInfoInstance').rollbackAttributes();
         this.controller.get('model.locationInstance').rollbackAttributes();
         this.controller.get('model.entryInstance.annotations').reload();
@@ -15,17 +17,19 @@ export default Ember.Mixin.create({
       const hasChanges = () => {
         const hasUnsavedAttributes = (modelName) => {
           const model = this.controller.get(`model.${modelName}`);
-          return Object.keys(model.changedAttributes()).length !== 0 || model.get('hasDirtyAttributes');
+          return Object.keys(model.changedAttributes()).length !== 0;
         }
 
-        const entryChanges = hasUnsavedAttributes('entryInstance');
+        // setting/deleting an annotation will mark the entryInstance dirty and make hasDirtyAttributes true
+        // so we test on dirty attributes explicitly for the entry even if no genuin attributes is changed
+        const entryChanges = hasUnsavedAttributes('entryInstance') || entryInstance.get('hasDirtyAttributes');
         const contactChanges = hasUnsavedAttributes('contactInfoInstance');
         const locationChanges = hasUnsavedAttributes('locationInstance');
         return entryChanges || contactChanges || locationChanges;
       }
 
       if (hasChanges()) {
-        const isEdit = this.controller.get('model.entryInstance').id !== null;
+        const isEdit = entryInstance.id !== null;
         const action = isEdit ? 'Bearbeiten' : 'Hinzufügen';
         this.get('dialogService').showDialog({
           title: 'Abbrechen',
