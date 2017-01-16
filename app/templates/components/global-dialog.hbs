@@ -1,18 +1,16 @@
+
 {{yield}}
 
-<div class="dialog">
+<div class="dialog {{if dialogService.show 'dialog--visible' 'dialog--invisible'}}">
   <div class="dialog__closeIcon" {{action 'cancel'}}>
         <i class="material-icons">close</i>
   </div>
-
   <div class="dialog__content">
     <p class="dialog__contentTitle">{{dialogService.title}}</p>
     <p class="dialog__contentMessage">{{dialogService.message}}</p>
-    <p class="dialog__contentActions">
-      <button {{action 'no'}} class="btn waves-effect waves-light grey">{{dialogService.noButton}}</button>
-      <button {{action 'yes'}} class="btn waves-effect waves-light">{{dialogService.yesButton}}</button>
-    </p>
-
   </div>
-
+  <p class="dialog__contentActions">
+    <a {{action 'no'}} class="dialog__action dialog__action--no">{{dialogService.noButton}}</a>
+    <a {{action 'yes'}} class="dialog__action dialog__action--yes">{{dialogService.yesButton}}</a>
+  </p>
 </div>

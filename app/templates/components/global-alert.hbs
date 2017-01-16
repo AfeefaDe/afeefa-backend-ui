@@ -1,5 +1,5 @@
 {{yield}}
-<div {{action 'closeAlert'}} class="alert {{alertTypeClass}} {{visibleClass}}">
+<div {{action 'closeAlert'}} class="alert {{if isError 'alert--error' 'alert--success'}} {{if visible 'alert--visible' 'alert--invisible'}}">
   <div class="alert__closeIcon">
         <i class="material-icons">close</i>
   </div>
