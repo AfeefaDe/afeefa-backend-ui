@@ -6,6 +6,7 @@ import FormatReasonErrorMessage from '../mixins/format-reason-error-message';
 
 export default Ember.Component.extend(FormatReasonErrorMessage, {
   store: Ember.inject.service(),
+  dialogService: Ember.inject.service('global-dialog'),
   /* determine if the entryInstance has attribute model*/
   showDate: Ember.computed('model', function() {
     const entry = this.get('model.entryInstance');
@@ -74,8 +75,10 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
      */
     deleteEntry: function() {
       let entry = this.get('model.entryInstance');
-      var confirm = window.confirm("Eintrag wirklich löschen ? \nDiese Aktion kann nicht rückgängig gemacht werden.");
-      if(confirm === true) {
+      this.get('dialogService').showDialog({
+        title: 'Eintrag wirklich löschen ?',
+        message: 'Diese Aktion kann nicht rückgängig gemacht werden.'
+      }).yes(() => {
         entry.deleteRecord();
         entry.save().then(()=> {
           const targetRoute = `protected.${entry.get('modelName')}s`;
@@ -86,7 +89,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
           alertData.title = 'Fehler beim Löschen des Eintrags';
           this.EventBus.publish('showAlert', alertData);
         });
-      }
+      });
     },
     /*
      * Input type select for setting parent orga
