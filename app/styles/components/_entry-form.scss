@@ -11,3 +11,18 @@
     color: inherit !important;
   }
 }
+
+.row-DateAndTime {
+  display: flex;
+  align-items: baseline;
+}
+
+.date-field {
+  width: 30%;
+}
+
+.showTime-button {
+  padding-left: 0.5em;
+  padding-right: 0.45em;
+  margin: 0em 2em 0em 1em;
+}

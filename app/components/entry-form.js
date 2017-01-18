@@ -12,17 +12,72 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
     return entry.date_start || entry.date_start === null;
   }),
   dateStartObject: '',
+  hasStartTime: '',
+  showStartTime: '',
+  startTimeIconState: '',
+  startTimeButtonColor: '',
   didReceiveAttrs() {
     this._super(...arguments);
     const dateStart = this.get('model.entryInstance.date_start');
     if(dateStart) {
       this.set('dateStartObject', dateStart);
+    } else {
+      // date object is needed to set values
+      this.set('dateStartObject', new Date());
+    }
+    //const hasStartTime = this.get('model.entryInstance.hasStartTime'); // TODO
+    const hasStartTime = true;
+    if(hasStartTime) {
+      this.set('hasStartTime', true);
+      this.set('showStartTime', true);
+      this.set('startTimeIconState', 'alarm_off');
+      this.set('startTimeButtonColor', 'red');
+    } else {
+      this.set('hasStartTime', false);
+      this.set('showStartTime', false);
+      this.set('startTimeIconState', 'alarm');
     }
   },
 	actions: {
-    updateStartDate(newDate) {
-      this.set('dateStartObject', newDate[0]);
+    updateStartDate: function(newStartDate) {
+      const day = newStartDate[0].getDate();
+      const month = newStartDate[0].getMonth();
+      const year = newStartDate[0].getFullYear();
+
+      this.get('dateStartObject').setDate(day);
+      this.get('dateStartObject').setMonth(month);
+      this.get('dateStartObject').setFullYear(year);
     },
+    updateStartTime: function(newStartTime) {
+      const hours = newStartTime[0].getHours();
+      const minutes = newStartTime[0].getMinutes();
+
+      this.get('dateStartObject').setHours(hours);
+      this.get('dateStartObject').setMinutes(minutes);
+    },
+    toggleStartTimeElement: function() {
+      if(this.get('showStartTime')) {
+        // hide start time and delete time values
+        this.set('startTimeIconState', 'alarm');
+        this.set('startTimeButtonColor', '');
+        this.get('dateStartObject').setHours(0);
+        this.get('dateStartObject').setMinutes(0);
+        this.get('dateStartObject').setMilliseconds(0)
+      } else {
+        // show start time
+        this.set('startTimeIconState', 'alarm_off');
+        this.set('startTimeButtonColor', 'red');
+      }
+      this.toggleProperty('showStartTime');
+    },
+
+
+    // toggleFlatpickrStatus() {
+    //   this.get('flatpickr').close();
+    // },
+    // clearFlatpickrDate() {
+    //   this.get('flatpickr').clear();
+    // },
     /*
      * Save Entry with meta models
      */

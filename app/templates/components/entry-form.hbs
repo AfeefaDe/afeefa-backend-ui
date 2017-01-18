@@ -12,10 +12,35 @@
   </div>
 
   {{#if showDate}}
-  <div class="inputField__spacing input-field">
-    <label for="date" class="{{if model.entryInstance.date_start "active" }}" >Datum</label>
-    {{ember-flatpickr enableTime=true minuteIncrement=15 time_24hr=true value=(readonly model.entryInstance.date_start) dateFormat='d.m.Y \u\m H:i \U\h\r' onChange=(action 'updateStartDate')}}
-  </div>
+    <div class=row-DateAndTime>
+      <div class="date-field inputField__spacing input-field">
+        {{ember-flatpickr
+            id="startDate"
+            value=(readonly model.entryInstance.date_start)
+            onChange=(action 'updateStartDate')
+            enableTime=false
+            dateFormat='d.m.Y'}}
+        <label for="startDate" class="{{if model.entryInstance.date_start "active" }}" >Startdatum</label>
+      </div>
+
+      <button class="showTime-button btn waves-effect waves-light {{startTimeButtonColor}}" {{action "toggleStartTimeElement"}}><i class="material-icons center">{{startTimeIconState}}</i></button>
+
+      {{#if showStartTime}}
+      <div class="date-field inputField__spacing input-field">
+        {{ember-flatpickr
+            id="startTime"
+            value=(readonly model.entryInstance.date_start)
+            onChange=(action 'updateStartTime')
+            noCalendar=true
+            enableTime=true
+            minuteIncrement=15
+            time_24hr=true
+            dateFormat='H:i \U\h\r'}}
+        <label for="startTime" class="{{if model.entryInstance.date_start "active" }}">Startzeit</label>
+      </div>
+      {{/if}}
+
+    </div>
   {{/if}}
 
   <div class="inputField__spacing">
