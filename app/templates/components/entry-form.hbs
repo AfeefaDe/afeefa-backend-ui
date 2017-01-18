@@ -11,6 +11,7 @@
     <label for="description" class="{{if model.entryInstance.description "active" }}">Beschreibung</label>
   </div>
 
+  <!--  start date and start time -->
   {{#if showDate}}
     <div class=row-DateAndTime>
       <div class="date-field inputField__spacing input-field">
@@ -39,7 +40,38 @@
         <label for="startTime" class="{{if model.entryInstance.date_start "active" }}">Startzeit</label>
       </div>
       {{/if}}
+    </div>
+  {{/if}}
 
+  <!--  end date and end time -->
+  {{#if showDate}}
+    <div class=row-DateAndTime>
+      <div class="date-field inputField__spacing input-field">
+        {{ember-flatpickr
+            id="endDate"
+            value=(readonly model.entryInstance.date_end)
+            onChange=(action 'updateEndDate')
+            enableTime=false
+            dateFormat='d.m.Y'}}
+        <label for="endDate" class="{{if model.entryInstance.date_end "active" }}" >Enddatum</label>
+      </div>
+
+      <button class="showTime-button btn waves-effect waves-light {{endTimeButtonColor}}" {{action "toggleEndTimeElement"}}><i class="material-icons center">{{endTimeIconState}}</i></button>
+
+      {{#if showEndTime}}
+      <div class="date-field inputField__spacing input-field">
+        {{ember-flatpickr
+            id="endTime"
+            value=(readonly model.entryInstance.date_end)
+            onChange=(action 'updateEndTime')
+            noCalendar=true
+            enableTime=true
+            minuteIncrement=15
+            time_24hr=true
+            dateFormat='H:i \U\h\r'}}
+        <label for="endTime" class="{{if model.entryInstance.date_end "active" }}">Endzeit</label>
+      </div>
+      {{/if}}
     </div>
   {{/if}}
 
