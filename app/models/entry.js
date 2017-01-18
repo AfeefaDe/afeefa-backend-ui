@@ -16,4 +16,13 @@ export default DS.Model.extend({
   //using an alias for the modelName allows us to access the modelName in proxied objects from belongsTo relationships
   //used to navigate toSingle in entry-list-item.js
   modelName: Ember.computed.alias('constructor.modelName'),
+
+  // hack attribute to get track of annotations inserts/removes
+  // attribute is set to true manually in entry-from (addAnnotation, removeAnnotation)
+  hasAnnotationChanges: false,
+
+  didUpdate: function() {
+    // reset annotation change marker on each save operation
+    this.set('hasAnnotationChanges', false);
+  }
 });

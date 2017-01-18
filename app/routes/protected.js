@@ -4,6 +4,8 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 import afeefaMenu from '../models/afeefa-menu'
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
+  historyService: Ember.inject.service('afeefa-route-history'),
+
   model() {
     const baseData = RSVP.hash({
       user: this.store.findRecord('user', this.get('session.currentUser')),
@@ -27,7 +29,12 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.EventBus.publish('willTransition');
     },
     didTransition () {
-      afeefaMenu.setRoute(this.get("router.router.state.handlerInfos"))
+      const historyService = this.get('historyService');
+      const routes = this.get("router.router.state.handlerInfos");
+      const current = routes[routes.length - 1];
+      historyService.setCurrentRoute(current);
+
+      afeefaMenu.setRoute(routes);
       this.EventBus.publish('didTransition');
       window.scrollTo(0,0);
     }

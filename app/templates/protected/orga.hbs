@@ -9,6 +9,14 @@
       </div>
       <div>
         {{entry-detail model=model}}
+        <h2>Übergeordnete Orga:</h2>
+        {{#if model.parentOrga}}
+         <ul class="entryList">
+            {{entry-list-item instance=model.parentOrga}}
+          </ul>
+        {{else}}
+          Es exisitert keine übergeordnete Orga
+        {{/if}}
         <h2>Untergeordnete Orgas:</h2>
         {{#if model.subOrgas}}
           {{entry-list instances=model.subOrgas}}

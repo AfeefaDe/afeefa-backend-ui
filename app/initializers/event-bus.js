@@ -1,4 +1,4 @@
-import EventBus from '../event-bus';
+import EventBus from '../services/event-bus';
 
 export function initialize(application) {
     let eventBus = EventBus.create();
@@ -9,7 +9,6 @@ export function initialize(application) {
     application.inject('controller', 'EventBus', 'event-bus:current');
     application.inject('route', 'EventBus', 'event-bus:current');
     application.inject('router:main', 'EventBus', 'event-bus:current');
-
 }
 
 export default {
