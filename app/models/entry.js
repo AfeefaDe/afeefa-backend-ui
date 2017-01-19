@@ -21,8 +21,13 @@ export default DS.Model.extend({
   // attribute is set to true manually in entry-from (addAnnotation, removeAnnotation)
   hasAnnotationChanges: false,
 
+  didCreate: function() {
+    // reset annotation change marker on each create-save operation
+    this.set('hasAnnotationChanges', false);
+  },
+
   didUpdate: function() {
-    // reset annotation change marker on each save operation
+    // reset annotation change marker on each update-save operation
     this.set('hasAnnotationChanges', false);
   }
 });

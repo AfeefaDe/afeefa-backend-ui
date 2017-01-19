@@ -161,14 +161,19 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       entry.get('locations').pushObject(this.get('model.locationInstance'));
       entry.save().then((savedEntry)=> {
         // #66 hack to prevend "dirty"-dialog on save
-        // http://stackoverflow.com/questions/13342250/how-to-manually-set-an-object-state-to-clean-saved-using-ember-data
-        let record = this.get('model.contactInfoInstance');
-        Ember.assign(record._internalModel._data, record._internalModel._attributes);
-        record.send('pushedData');
-        record = this.get('model.locationInstance');
-        Ember.assign(record._internalModel._data, record._internalModel._attributes);
-        record.send('pushedData');
+        const relations = ['contactInfoInstance', 'locationInstance'];
+        for (let relation of relations) {
+          let record = this.get(`model.${relation}`);
+          if (record.id) {
+            // http://stackoverflow.com/questions/13342250/how-to-manually-set-an-object-state-to-clean-saved-using-ember-data
+            Ember.assign(record._internalModel._data, record._internalModel._attributes);
+            record.send('pushedData');
+          } else {
+            record.rollbackAttributes();
+          }
+        }
         // end #66 hack
+
         const alertData = {title: 'Erfolgreich gespeichert', description: 'Dein Eintrag wurde erfolgreich angelegt.', isError: false, autoHide: 3000};
         if(isEditMode) alertData.description = 'Deine Änderungen wurden erfolgreich gespeichert.';
         this.EventBus.publish('showAlert', alertData);
