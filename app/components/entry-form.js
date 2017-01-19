@@ -12,7 +12,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
     const entry = this.get('model.entryInstance');
     return entry.date_start || entry.date_start === null;
   }),
-  oldAnnotations: null,
+
   // start date and start time variables
   dateStartObject: '',
   hasStartTime: '',
@@ -25,6 +25,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
   showEndTime: '',
   endTimeIconState: '',
   endTimeButtonColor: '',
+
   didReceiveAttrs() {
     this._super(...arguments);
     const dateStart = this.get('model.entryInstance.date_start');
