@@ -1,7 +1,5 @@
 import Ember from 'ember';
-import RSVP from 'rsvp';
 
-import RouteHelper from '../mixins/route-helper';
 import FormatReasonErrorMessage from '../mixins/format-reason-error-message';
 
 export default Ember.Component.extend(FormatReasonErrorMessage, {
@@ -97,7 +95,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         this.set('startTimeButtonColor', '');
         this.get('dateStartObject').setHours(0);
         this.get('dateStartObject').setMinutes(0);
-        this.get('dateStartObject').setMilliseconds(0)
+        this.get('dateStartObject').setMilliseconds(0);
         this.set('hasStartTime', false);
       } else {
         // show start time
@@ -131,7 +129,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         this.set('endTimeButtonColor', '');
         this.get('dateEndObject').setHours(0);
         this.get('dateEndObject').setMinutes(0);
-        this.get('dateEndObject').setMilliseconds(0)
+        this.get('dateEndObject').setMilliseconds(0);
         this.set('hasEndTime', false);
       } else {
         // show end time
@@ -160,7 +158,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
 
       entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
       entry.get('locations').pushObject(this.get('model.locationInstance'));
-      entry.save().then((savedEntry)=> {
+      entry.save().then(()=> {
         // #66 hack to prevend "dirty"-dialog on save
         const relations = ['contactInfoInstance', 'locationInstance'];
         for (let relation of relations) {
@@ -217,7 +215,6 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
      * Input type select for setting parent orga
      */
     selectParent: function(parentOrgaID) {
-      const entry = this.get('model.entryInstance');
       if(parentOrgaID === -1) {
         this.set('model.entryInstance.parentOrga', null);
       }
@@ -241,7 +238,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
      */
     addAnnotation: function(annotation) {
       const entryInstance = this.get('model.entryInstance');
-      entryInstance.get('annotations').addObject(annotation)
+      entryInstance.get('annotations').addObject(annotation);
       entryInstance.set('hasAnnotationChanges', true);
     }
 	},

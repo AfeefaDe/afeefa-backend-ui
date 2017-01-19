@@ -9,7 +9,7 @@ export default Ember.Component.extend({
     let showSubCategory = this.get('showSubCategory');
     let possibleCategories = this.get('store').peekAll('category');
     possibleCategories = possibleCategories.filter((cat) => {
-      return cat.get('isSubCategory') == showSubCategory;
+      return cat.get('isSubCategory') === showSubCategory;
     });
     this.set('possibleCategories', possibleCategories);
   },

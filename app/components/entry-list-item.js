@@ -19,7 +19,6 @@ export default Ember.Component.extend({
   attributesFormatted: Ember.computed('attributes', function() {
     let attributesFormatted = [];
     if(this.get('attributes')) {
-      let model = this.get('instance');
       for(let attribute of this.get('attributes')) {
         let value = this.get('instance.'+attribute);
         let name = attribute;
@@ -31,7 +30,7 @@ export default Ember.Component.extend({
     return attributesFormatted;
   }),
   stateCSSClass: Ember.computed('instance', function() {
-    if(this.get('instance.active')==true) return 'entry-icon--active';
+    if(this.get('instance.active')===true) return 'entry-icon--active';
     else return 'entry-icon--inactive';
   })
 });
