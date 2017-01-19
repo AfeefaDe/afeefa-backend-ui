@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import FormReasonErrorMessageMixin from 'afeefa-backend-ui/mixins/form-reason-error-message';
+import FormReasonErrorMessageMixin from 'afeefa-backend-ui/mixins/format-reason-error-message';
 import { module, test } from 'qunit';
 
 module('Unit | Mixin | form reason error message');

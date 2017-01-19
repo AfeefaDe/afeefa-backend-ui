@@ -2,7 +2,7 @@ import { moduleForModel, test } from 'ember-qunit';
 
 moduleForModel('orga', 'Unit | Model | orga', {
   // Specify the other units that are required for this test.
-  needs: []
+  needs: ['model:category', 'model:contact-info', 'model:annotation', 'model:location']
 });
 
 test('it exists', function(assert) {

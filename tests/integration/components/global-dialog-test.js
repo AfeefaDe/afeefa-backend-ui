@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('global-dialog', 'Integration | Component | global confirm', {
+moduleForComponent('global-dialog', 'Integration | Component | global dialog', {
   integration: true
 });
 
@@ -11,14 +11,5 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{global-dialog}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#global-dialog}}
-      template block text
-    {{/global-dialog}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$().text().trim(), 'close');
 });
