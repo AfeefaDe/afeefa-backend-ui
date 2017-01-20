@@ -7,4 +7,7 @@ module('Unit | Helper | gt');
 test('it works', function(assert) {
   let result = gt([42, 10]);
   assert.ok(result);
+
+  result = gt([42, 42]);
+  assert.notOk(result);
 });
