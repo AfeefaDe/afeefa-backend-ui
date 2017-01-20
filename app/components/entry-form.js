@@ -33,6 +33,9 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       this.set('dateStartObject', Ember.copy(dateStart), true);
     } else {
       this.set('dateStartObject', new Date());
+      this.get('dateStartObject').setHours(0);
+      this.get('dateStartObject').setMinutes(0);
+      this.get('dateStartObject').setMilliseconds(0);
     }
     const dateEnd = this.get('model.entryInstance.date_end');
     if(dateEnd) {
@@ -40,6 +43,9 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       this.set('dateEndObject',  Ember.copy(dateEnd, true));
     } else {
       this.set('dateEndObject', new Date());
+      this.get('dateEndObject').setHours(0);
+      this.get('dateEndObject').setMinutes(0);
+      this.get('dateEndObject').setMilliseconds(0);
     }
 
     // set inital values for start time and end time attributes
