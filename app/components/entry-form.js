@@ -4,7 +4,7 @@ import FormatReasonErrorMessage from '../mixins/format-reason-error-message';
 
 export default Ember.Component.extend(FormatReasonErrorMessage, {
   store: Ember.inject.service(),
-  dialogService: Ember.inject.service('global-dialog'),
+  dialogService: Ember.inject.service('dialog'),
   /* determine if the entryInstance has attribute model*/
   showDate: Ember.computed('model', function() {
     const entry = this.get('model.entryInstance');

@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('service:global-dialog', 'Unit | Service | global confirm', {
+moduleFor('service:dialog', 'Unit | Service | global confirm', {
   // Specify the other units that are required for this test.
   // needs: ['service:foo']
 });
