@@ -42,7 +42,8 @@
     "ember-resolver": "^2.0.3",
     "ember-simple-auth": "1.1.0",
     "ember-spin-spinner": "0.3.1",
-    "loader.js": "^4.0.1"
+    "loader.js": "^4.0.1",
+    "phantomjs": "^2.1.7"
   },
   "dependencies": {}
 }

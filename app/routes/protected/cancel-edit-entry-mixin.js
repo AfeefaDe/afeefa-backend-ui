@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
-  dialogService: Ember.inject.service('global-dialog'),
+  dialogService: Ember.inject.service('dialog'),
   oldAnnotations: null,
 
   afterModel: function(model) {
@@ -35,13 +35,13 @@ export default Ember.Mixin.create({
 
           entryInstance.set('hasAnnotationChanges', false);
         }
-      }
+      };
 
       const hasChanges = () => {
         const hasUnsavedAttributes = (modelName) => {
           const model = this.controller.get(`model.${modelName}`);
           return Object.keys(model.changedAttributes()).length !== 0;
-        }
+        };
 
         // setting/deleting an annotation will mark the entryInstance dirty and make hasDirtyAttributes true
         // so we test on dirty attributes explicitly for the entry even if no genuin attributes is changed
@@ -49,7 +49,7 @@ export default Ember.Mixin.create({
         const contactChanges = hasUnsavedAttributes('contactInfoInstance');
         const locationChanges = hasUnsavedAttributes('locationInstance');
         return entryChanges || contactChanges || locationChanges;
-      }
+      };
 
       // cancel with changes
       if (hasChanges()) {

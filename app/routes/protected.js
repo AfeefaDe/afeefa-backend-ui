@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import afeefaMenu from '../models/afeefa-menu'
+import afeefaMenu from '../models/afeefa-menu';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
   historyService: Ember.inject.service('afeefa-route-history'),

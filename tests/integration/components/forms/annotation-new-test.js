@@ -11,14 +11,14 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{forms/annotation-new}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.equal(this.$().text().trim(), 'Neue Anmerkung hinzufügen');
 
   // Template block usage:
-  this.render(hbs`
-    {{#forms/annotation-new}}
-      template block text
-    {{/forms/annotation-new}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  // this.render(hbs`
+  //   {{#forms/annotation-new}}
+  //     template block text
+  //   {{/forms/annotation-new}}
+  // `);
+  //
+  // assert.equal(this.$().text().trim(), 'template block text');
 });

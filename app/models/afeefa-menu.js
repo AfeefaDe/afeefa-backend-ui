@@ -56,7 +56,7 @@ export default {
 
       tmpPath.pop();
       return false;
-    }
+    };
 
     this.pathNavigation = createPathNavigation(this.menuTree, []) || [this.menuTree];
   },
@@ -78,7 +78,7 @@ export default {
           }
         }
         return level1;
-      }
+      };
       this.level1Navigation = createLevel1Navigation(this.menuTree, []);
     }
     return this.level1Navigation;

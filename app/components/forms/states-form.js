@@ -8,13 +8,13 @@ export default Ember.Component.extend(FormatReasonErrorMessage,{
    * CSS class to set button color - use materialize classes
    */
   cssClass: Ember.computed('instance.active', function() {
-    if(this.get('instance.active')==true) return 'red';
+    if(this.get('instance.active')===true) return 'red';
   }),
   /*
    * Text shown inside the button
    */
   buttonLabel: Ember.computed('instance.active', function() {
-    if(this.get('instance.active')==true) return 'Deaktivieren';
+    if(this.get('instance.active')===true) return 'Deaktivieren';
     else return 'Aktivieren';
   }),
   actions: {

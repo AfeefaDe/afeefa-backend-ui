@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  dialogService: Ember.inject.service('global-dialog'),
+  dialogService: Ember.inject.service('dialog'),
 
   actions: {
     yes: function() {

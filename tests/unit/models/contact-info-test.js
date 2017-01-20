@@ -2,7 +2,7 @@ import { moduleForModel, test } from 'ember-qunit';
 
 moduleForModel('contact-info', 'Unit | Model | contact info', {
   // Specify the other units that are required for this test.
-  needs: []
+  needs: ['model:entry']
 });
 
 test('it exists', function(assert) {
