@@ -17,7 +17,7 @@
       <div class="date-field inputField__spacing input-field">
         {{ember-flatpickr
             id="startDate"
-            value=(readonly model.entryInstance.date_start)
+            value=(readonly dateStartObject)
             onChange=(action 'updateStartDate')
             enableTime=false
             dateFormat='d.m.Y'}}
@@ -30,11 +30,11 @@
       <div class="date-field inputField__spacing input-field">
         {{ember-flatpickr
             id="startTime"
-            value=(readonly model.entryInstance.date_start)
+            value=(readonly dateStartObject)
             onChange=(action 'updateStartTime')
             noCalendar=true
             enableTime=true
-            minuteIncrement=15
+            minuteIncrement=5
             time_24hr=true
             dateFormat='H:i \U\h\r'}}
         <label for="startTime" class="{{if model.entryInstance.date_start "active" }}">Startzeit</label>
@@ -49,7 +49,7 @@
       <div class="date-field inputField__spacing input-field">
         {{ember-flatpickr
             id="endDate"
-            value=(readonly model.entryInstance.date_end)
+            value=(readonly dateEndObject)
             onChange=(action 'updateEndDate')
             enableTime=false
             dateFormat='d.m.Y'}}
@@ -62,11 +62,11 @@
       <div class="date-field inputField__spacing input-field">
         {{ember-flatpickr
             id="endTime"
-            value=(readonly model.entryInstance.date_end)
+            value=(readonly dateEndObject)
             onChange=(action 'updateEndTime')
             noCalendar=true
             enableTime=true
-            minuteIncrement=15
+            minuteIncrement=5
             time_24hr=true
             dateFormat='H:i \U\h\r'}}
         <label for="endTime" class="{{if model.entryInstance.date_end "active" }}">Endzeit</label>

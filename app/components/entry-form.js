@@ -27,21 +27,24 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
   endTimeButtonColor: '',
   didReceiveAttrs() {
     this._super(...arguments);
+    // construct objects for start date and end date
     const dateStart = this.get('model.entryInstance.date_start');
     if(dateStart) {
-      this.set('dateStartObject', dateStart);
+      // ember.copy needed to make a deep copy otherwise this would be a reference
+      this.set('dateStartObject', Ember.copy(dateStart), true);
     } else {
       this.set('dateStartObject', new Date());
     }
     const dateEnd = this.get('model.entryInstance.date_end');
     if(dateEnd) {
-      this.set('dateEndObject', dateEnd);
+      // ember.copy needed to make a deep copy otherwise this would be a reference
+      this.set('dateEndObject',  Ember.copy(dateEnd, true));
     } else {
       this.set('dateEndObject', new Date());
     }
 
+    // set inital values for start time and end time attributes
     const has_time_start = this.get('model.entryInstance.has_time_start');
-    //const has_time_start = true;
     if(has_time_start) {
       this.set('hasStartTime', true);
       this.set('showStartTime', true);
@@ -52,9 +55,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       this.set('showStartTime', false);
       this.set('startTimeIconState', 'alarm');
     }
-
     const has_time_end = this.get('model.entryInstance.has_time_end');
-    //const has_time_end = true;
     if(has_time_end) {
       this.set('hasEndTime', true);
       this.set('showEndTime', true);
@@ -71,7 +72,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
     $('#description').trigger('autoresize');
   },
 	actions: {
-    // start date and start time
+    // start date and start time actions
     updateStartDate: function(newStartDate) {
       const day = newStartDate[0].getDate();
       const month = newStartDate[0].getMonth();
@@ -102,10 +103,16 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         // show start time
         this.set('startTimeIconState', 'delete_forever');
         this.set('startTimeButtonColor', 'red');
+        this.set('hasStartTime', true);
+        // set start time to actual time
+        const now = new Date();
+        this.get('dateStartObject').setHours(now.getHours());
+        this.get('dateStartObject').setMinutes(now.getMinutes() - (now.getMinutes()%5) );
       }
       this.toggleProperty('showStartTime');
     },
-    //end date and end time
+
+    //end date and end time actions
     updateEndDate: function(newEndDate) {
       const day = newEndDate[0].getDate();
       const month = newEndDate[0].getMonth();
@@ -136,6 +143,11 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         // show end time
         this.set('endTimeIconState', 'delete_forever');
         this.set('endTimeButtonColor', 'red');
+        this.set('hasEndTime', true);
+        // set end time to actual time
+        const now = new Date();
+        this.get('dateEndObject').setHours(now.getHours());
+        this.get('dateEndObject').setMinutes(now.getMinutes() - (now.getMinutes()%5) );
       }
       this.toggleProperty('showEndTime');
     },
