@@ -37,6 +37,16 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       afeefaMenu.setRoute(routes);
       this.EventBus.publish('didTransition');
       window.scrollTo(0,0);
+    },
+    /*
+     * called (magically) by failing model promisses: redirect to dashboard and show error message
+     */
+    error(reason) {
+      let message = 'Die angeforderte Seite konnte nicht geladen werden.';
+      if(reason.message) message = reason.message;
+      const alertData = {title: 'Fehler beim Laden der Seite', description: message, isError: true, autoHide: false};
+      this.EventBus.publish('showAlert', alertData);
+      this.transitionTo('protected.dashboard');
     }
   }
 });
