@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
-    historyService: Ember.inject.service('afeefa-route-history'),
+    historyService: Ember.inject.service('route-history'),
 
     actions: {
       goBack: function() {

@@ -2,19 +2,11 @@ import { moduleForComponent } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
 import hbs from 'htmlbars-inline-precompile';
 
-//Stub location service
-const dialogServiceMock = Ember.Service.extend({
-  hideDialog(reason) {
-
-  }
-});
-
 moduleForComponent('afeefa-dialog', 'Integration | Component | afeefa dialog', {
   // needs: ['service:dialog'],
   integration: true,
 
   beforeEach: function () {
-      // this.register('service:dialog', userSession);
       this.inject.service('dialog',  {as: 'dialogService'});
   }
 });
@@ -26,7 +18,23 @@ test('it renders', function(assert) {
 });
 
 
+test('it renders with defaults', function(assert) {
+  this.render(hbs`{{afeefa-dialog}}`);
+
+  Ember.run(() => {
+    this.dialogService.showDialog({});
+  });
+
+  assert.equal(this.$('.dialog__contentTitle').text(), 'Titel');
+  assert.equal(this.$('.dialog__contentMessage').text(), 'Fortfahren?');
+  assert.equal(this.$('.dialog__action.dialog__action--yes').text(), 'Ja');
+  assert.equal(this.$('.dialog__action.dialog__action--no').text(), 'Nein');
+});
+
+
 test('it shows the given text attributes', function(assert) {
+  this.render(hbs`{{afeefa-dialog}}`);
+
   Ember.run(() => {
     this.dialogService.showDialog({
       title: 'Fancy Title',
@@ -35,7 +43,8 @@ test('it shows the given text attributes', function(assert) {
       noButton: 'Nope'
     });
   });
-  this.render(hbs`{{afeefa-dialog}}`);
+
+  console.log(this.$().html());
 
   assert.equal(this.$('.dialog__closeIcon i').text(), 'close');
   assert.equal(this.$('.dialog__contentTitle').text(), 'Fancy Title');
@@ -53,10 +62,7 @@ test('it triggers the appropriate service actions on button click', function(ass
   this.render(hbs`{{afeefa-dialog}}`);
 
   Ember.run(() => {
-    const promise = this.dialogService.showDialog({});
-    promise.yes(yes);
-    promise.no(no);
-    promise.cancel(cancel);
+    this.dialogService.showDialog({}).yes(yes).no(no).cancel(cancel);
   });
 
   // click yes
@@ -78,17 +84,20 @@ test('it triggers the appropriate service actions on button click', function(ass
   assert.ok(yes.notCalled, 'yes not called');
   assert.ok(no.notCalled, 'no not called');
   assert.ok(cancel.calledOnce, 'cancel called');
+
+  assert.equal($('body').get(0), document.activeElement);
+
   cancel.reset();
 });
 
-test('it triggers the appropriate service actions on button click', function(assert) {
+
+test('it closes the dialog on ESC', function(assert) {
   const cancel = this.spy();
 
   this.render(hbs`{{afeefa-dialog}}`);
 
   Ember.run(() => {
-    const promise = this.dialogService.showDialog({});
-    promise.cancel(cancel);
+    this.dialogService.showDialog({}).cancel(cancel);
   });
 
   // initial focus

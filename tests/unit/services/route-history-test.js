@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('service:afeefa-route-history', 'Unit | Service | afeefa route history', {
+moduleFor('service:route-history', 'Unit | Service | route history', {
   // Specify the other units that are required for this test.
   // needs: ['service:foo']
 });
