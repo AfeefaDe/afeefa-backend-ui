@@ -28,13 +28,16 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       //publish to global event bus
       this.EventBus.publish('willTransition');
     },
+
     didTransition () {
       const historyService = this.get('historyService');
       const routes = this.get("router.router.state.handlerInfos");
-      const current = routes[routes.length - 1];
-      historyService.setCurrentRoute(current);
-
+      // update menu, pass entire handler info array
       afeefaMenu.setRoute(routes);
+      // update route history with last handler item
+      const routeInfo = historyService.getRouteInfoFromHandler(routes[routes.length - 1]);
+      historyService.setCurrentRoute(routeInfo);
+
       this.EventBus.publish('didTransition');
       window.scrollTo(0,0);
     },

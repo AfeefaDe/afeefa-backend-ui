@@ -3,10 +3,25 @@ import Ember from 'ember';
 export default Ember.Service.extend({
   history: Ember.A(),
 
-  setCurrentRoute (route) {
+  getHistoryApi() {
+    return window.history;
+  },
+
+  getRouteInfoFromHandler(handler) {
+    const info = {
+      name: handler.name,
+      params: []
+    };
+    for (let paramKey of handler._names) {
+      info.params.push(handler.params[paramKey]);
+    }
+    return info;
+  },
+
+  setCurrentRoute (routeInfo) {
     const maxHistoryLength = 10;
     const history = this.get('history');
-    history.pushObject(route);
+    history.pushObject(routeInfo);
     if (history.get('length') > maxHistoryLength) {
       history.shiftObject();
     }
@@ -16,22 +31,17 @@ export default Ember.Service.extend({
     const history = this.get('history');
     const historyLength = history.get('length');
     let last;
-    if (!Ember.isEmpty(history) && historyLength > 1) {
-      last = history.objectAt(historyLength - 2);
+    if (historyLength > 1) {
+      history.popObject();
+      last = history.popObject();
+    } else {
+      history.clear();
     }
 
     if (last) {
-      let id;
-      if (last._names.length) {
-        const idName = last._names[0];
-        id = last.params[idName];
-        this.get('router').transitionTo(last.name, id);
-      } else {
-        this.get('router').transitionTo(last.name);
-      }
-
+      this.get('router').transitionTo(last.name, ...last.params);
     } else {
-      window.history.back();
+      this.getHistoryApi().back();
     }
   }
 
