@@ -1,6 +1,7 @@
 import { moduleFor } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
 import sinon from 'sinon';
+import { MockGet } from 'afeefa-backend-ui/tests/helpers/mocks';
 
 const routeMap = {};
 const createRoute = (name, param) => {
@@ -11,21 +12,26 @@ createRoute('list');
 createRoute('detail', 123);
 createRoute('edit', 123);
 
-
 moduleFor('service:route-history', 'Unit | Service | route history', {
+  needs: ['service:event-bus'],
+
   beforeEach: function () {
     const service = this.subject();
-    service.get('history').clear(); // reset history log
 
+    // reset history
+    service.get('history').clear();
+
+    // create some mocks to be later inspected
     const sandbox = sinon.sandbox.create();
     this.transitionSpy = sandbox.spy();
     this.backSpy = sandbox.spy();
     this.historyStub = sandbox.stub(service, 'getHistoryApi').returns({ back: this.backSpy });
-
     const routerMock = { transitionTo: this.transitionSpy };
     service.set('router', routerMock);
   }
+
 });
+
 
 test('it exists', function(assert) {
   let service = this.subject();
@@ -33,7 +39,40 @@ test('it exists', function(assert) {
 });
 
 
-test('history sets second to last route on goBack', function(assert) {
+test('history updates on eventbus.didchange event', function(assert) {
+  const service = this.subject();
+  service.setCurrentRoute = this.spy();
+
+  const mockGet = new MockGet(service);
+  mockGet.mock('router.router.state.handlerInfos', [{
+    name: 'myroute', _names: [], params: {}
+  }])
+  service.get('EventBus').publish('didTransition');
+  assert.ok(service.setCurrentRoute.calledOnce, 'setCurrentRoute called');
+  assert.ok(service.setCurrentRoute.calledWith({ name: 'myroute', params: [] }), 'setCurrentRoute called with myroute');
+  service.setCurrentRoute.reset();
+
+  // again with params
+  mockGet.mock('router.router.state.handlerInfos', [{
+    name: 'anotherroute', _names: ['item_id'], params: {item_id: 345}
+  }])
+  service.get('EventBus').publish('didTransition');
+  assert.ok(service.setCurrentRoute.calledOnce, 'setCurrentRoute called');
+  assert.ok(service.setCurrentRoute.calledWith({ name: 'anotherroute', params: [345] }), 'setCurrentRoute called with anotherroute');
+  service.setCurrentRoute.reset();
+
+  // again with multiple routes
+  mockGet.mock('router.router.state.handlerInfos', [
+    { name: 'parentroute', _names: [], params: {} },
+    { name: 'subroute', _names: ['item_id', 'view_id'], params: {view_id: 234, item_id: 345} }
+  ])
+  service.get('EventBus').publish('didTransition');
+  assert.ok(service.setCurrentRoute.calledOnce, 'setCurrentRoute called');
+  assert.ok(service.setCurrentRoute.calledWith({ name: 'subroute', params: [345, 234] }), 'setCurrentRoute called with subroute');
+});
+
+
+test('goBack sets second to last route', function(assert) {
   const service = this.subject();
 
   service.setCurrentRoute(routeMap['dashboard']);
@@ -58,7 +97,7 @@ test('history sets second to last route on goBack', function(assert) {
 });
 
 
-test('history uses browser back if less than two items in list', function(assert) {
+test('goBack uses browser back if less than two items in list', function(assert) {
   const service = this.subject();
 
   service.setCurrentRoute(routeMap['dashboard']);

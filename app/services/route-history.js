@@ -2,20 +2,25 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
   history: Ember.A(),
+  EventBus: Ember.inject.service('event-bus'),
+
+  init() {
+    console.log('INIT ROUTE');
+    this.get('EventBus').subscribe('didTransition', this, 'onRouteChanged');
+  },
+
+  onRouteChanged() {
+    const routes = this.get("router.router.state.handlerInfos");
+    const handler = routes[routes.length - 1];
+    const routeInfo = { name: handler.name, params: [] };
+    for (let paramKey of handler._names) {
+      routeInfo.params.push(handler.params[paramKey]);
+    }
+    this.setCurrentRoute(routeInfo);
+  },
 
   getHistoryApi() {
     return window.history;
-  },
-
-  getRouteInfoFromHandler(handler) {
-    const info = {
-      name: handler.name,
-      params: []
-    };
-    for (let paramKey of handler._names) {
-      info.params.push(handler.params[paramKey]);
-    }
-    return info;
   },
 
   setCurrentRoute (routeInfo) {
@@ -25,6 +30,7 @@ export default Ember.Service.extend({
     if (history.get('length') > maxHistoryLength) {
       history.shiftObject();
     }
+    console.log('current route is now', routeInfo);
   },
 
   goBack () {
