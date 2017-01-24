@@ -8,11 +8,7 @@ export class MockGet {
         return this.returnMap[keyName];
       }
       return this.originalGet.call(subject, keyName);
-    }
-  }
-
-  test () {
-    console.log('test');
+    };
   }
 
   mock (keyName, returnValue) {

@@ -4,11 +4,10 @@ import test from 'ember-sinon-qunit/test-support/test';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('afeefa-dialog', 'Integration | Component | afeefa dialog', {
-  // needs: ['service:dialog'],
   integration: true,
 
   beforeEach: function () {
-      this.inject.service('dialog',  {as: 'dialogService'});
+    this.inject.service('dialog',  {as: 'dialogService'});
   }
 });
 
@@ -23,7 +22,7 @@ test('it renders with defaults', function(assert) {
   this.render(hbs`{{afeefa-dialog}}`);
 
   Ember.run(() => {
-    this.dialogService.showDialog({});
+    this.get('dialogService').showDialog({});
   });
 
   assert.equal(this.$('.dialog__contentTitle').text(), 'Titel');
@@ -37,15 +36,13 @@ test('it shows the given text attributes', function(assert) {
   this.render(hbs`{{afeefa-dialog}}`);
 
   Ember.run(() => {
-    this.dialogService.showDialog({
+    this.get('dialogService').showDialog({
       title: 'Fancy Title',
       message: 'Das ist eine krasse Sache!',
       yesButton: 'Yoman',
       noButton: 'Nope'
     });
   });
-
-  console.log(this.$().html());
 
   assert.equal(this.$('.dialog__closeIcon i').text(), 'close');
   assert.equal(this.$('.dialog__contentTitle').text(), 'Fancy Title');
@@ -63,7 +60,7 @@ test('it triggers the appropriate service actions on button click', function(ass
   this.render(hbs`{{afeefa-dialog}}`);
 
   Ember.run(() => {
-    this.dialogService.showDialog({}).yes(yes).no(no).cancel(cancel);
+    this.get('dialogService').showDialog({}).yes(yes).no(no).cancel(cancel);
   });
 
   // click yes
@@ -98,7 +95,7 @@ test('it closes the dialog on ESC', function(assert) {
   this.render(hbs`{{afeefa-dialog}}`);
 
   Ember.run(() => {
-    this.dialogService.showDialog({}).cancel(cancel);
+    this.get('dialogService').showDialog({}).cancel(cancel);
   });
 
   // initial focus

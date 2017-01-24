@@ -5,7 +5,6 @@ export default Ember.Service.extend({
   EventBus: Ember.inject.service('event-bus'),
 
   init() {
-    console.log('INIT ROUTE');
     this.get('EventBus').subscribe('didTransition', this, 'onRouteChanged');
   },
 
@@ -30,7 +29,6 @@ export default Ember.Service.extend({
     if (history.get('length') > maxHistoryLength) {
       history.shiftObject();
     }
-    console.log('current route is now', routeInfo);
   },
 
   goBack () {

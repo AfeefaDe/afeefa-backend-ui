@@ -47,7 +47,7 @@ test('history updates on eventbus.didchange event', function(assert) {
   const mockGet = new MockGet(service);
   mockGet.mock('router.router.state.handlerInfos', [{
     name: 'myroute', _names: [], params: {}
-  }])
+  }]);
   service.get('EventBus').publish('didTransition');
   assert.ok(service.setCurrentRoute.calledOnce, 'setCurrentRoute called');
   assert.ok(service.setCurrentRoute.calledWith({ name: 'myroute', params: [] }), 'setCurrentRoute called with myroute');
@@ -56,7 +56,7 @@ test('history updates on eventbus.didchange event', function(assert) {
   // again with params
   mockGet.mock('router.router.state.handlerInfos', [{
     name: 'anotherroute', _names: ['item_id'], params: {item_id: 345}
-  }])
+  }]);
   service.get('EventBus').publish('didTransition');
   assert.ok(service.setCurrentRoute.calledOnce, 'setCurrentRoute called');
   assert.ok(service.setCurrentRoute.calledWith({ name: 'anotherroute', params: [345] }), 'setCurrentRoute called with anotherroute');
@@ -66,7 +66,7 @@ test('history updates on eventbus.didchange event', function(assert) {
   mockGet.mock('router.router.state.handlerInfos', [
     { name: 'parentroute', _names: [], params: {} },
     { name: 'subroute', _names: ['item_id', 'view_id'], params: {view_id: 234, item_id: 345} }
-  ])
+  ]);
   service.get('EventBus').publish('didTransition');
   assert.ok(service.setCurrentRoute.calledOnce, 'setCurrentRoute called');
   assert.ok(service.setCurrentRoute.calledWith({ name: 'subroute', params: [345, 234] }), 'setCurrentRoute called with subroute');
