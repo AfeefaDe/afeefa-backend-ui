@@ -12,6 +12,7 @@ createRoute('list');
 createRoute('detail', 123);
 createRoute('edit', 123);
 
+
 moduleFor('service:route-history', 'Unit | Service | route history', {
   needs: ['service:event-bus'],
 

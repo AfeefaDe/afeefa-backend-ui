@@ -30,7 +30,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   actions: {
     willTransition() {
-      //publish to global event bus
       this.EventBus.publish('willTransition');
     },
 
@@ -41,8 +40,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.get('EventBus').publish('didTransition');
       window.scrollTo(0,0);
     },
+
     /*
-     * called (magically) by failing model promisses: redirect to dashboard and show error message
+     * called (magically) by failing model promises: redirect to dashboard and show error message
      */
     error(reason) {
       let message = 'Die angeforderte Seite konnte nicht geladen werden.';
