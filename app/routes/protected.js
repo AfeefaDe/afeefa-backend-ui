@@ -4,6 +4,13 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 import afeefaMenu from '../models/afeefa-menu';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
+  // bootstrap history service by getting its instance on init()
+  // unless explicitly initialized the service won't connect to event bus
+  historyService: Ember.inject.service('route-history'),
+  init() {
+    this.get('historyService');
+  },
+
   model() {
     const baseData = RSVP.hash({
       user: this.store.findRecord('user', this.get('session.currentUser')),
