@@ -17,10 +17,10 @@ export default Ember.Component.extend({
 
   visibilityChanges: Ember.observer('dialogService.show', function() {
     if (this.get('dialogService.show')) {
-      this.$().attr('tabindex',0);
-      this.$().focus();
+      this.$('.dialog').attr('tabindex',0);
+      this.$('.dialog').focus();
     } else {
-      this.$().blur();
+      this.$('.dialog').blur();
     }
   }),
 

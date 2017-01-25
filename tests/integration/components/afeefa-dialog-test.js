@@ -99,7 +99,7 @@ test('it closes the dialog on ESC', function(assert) {
   });
 
   // initial focus
-  assert.equal(document.activeElement, this.$('> div').get(0));
+  assert.equal(document.activeElement, this.$('.dialog').get(0));
 
   // hit esc
   var e = $.Event('keydown');
