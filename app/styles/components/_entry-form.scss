@@ -26,3 +26,11 @@
   padding-right: 0.45em;
   margin: 0em 1em 0em 2em;
 }
+
+.hide-endDate {
+  opacity: 0;
+}
+
+.date-field label.hide-sameDay-label {
+    opacity: 0;
+}

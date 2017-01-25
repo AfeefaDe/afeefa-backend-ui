@@ -23,7 +23,10 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
   showEndTime: '',
   endTimeIconState: '',
   endTimeButtonColor: '',
-
+  // variables to handle same day notification
+  isSameDay:'',
+  sameDayLabelStyle: '',
+  endDateStyle: '',
   didReceiveAttrs() {
     this._super(...arguments);
     // construct objects for start date and end date
@@ -41,11 +44,26 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
     if(dateEnd) {
       // ember.copy needed to make a deep copy otherwise this would be a reference
       this.set('dateEndObject',  Ember.copy(dateEnd, true));
+
+      // check if end date and start are equal, then show same day label
+      const day = this.get('dateEndObject').getDate();
+      const month = this.get('dateEndObject').getMonth();
+      const year = this.get('dateEndObject').getFullYear();
+      if(day == this.get('dateStartObject').getDate() && month == this.get('dateStartObject').getMonth() && year == this.get('dateStartObject').getFullYear()) {
+        this.get('isSameDay', true);
+        this.send('setSameDay', true);
+      } else {
+        this.get('isSameDay', false);
+        this.send('setSameDay', false);
+      }
     } else {
+      // new end date
       this.set('dateEndObject', new Date());
       this.get('dateEndObject').setHours(0);
       this.get('dateEndObject').setMinutes(0);
       this.get('dateEndObject').setMilliseconds(0);
+      this.set('isSameDay', true);
+      this.set('endDateStyle', 'hide-endDate');
     }
 
     // set inital values for start time and end time attributes
@@ -86,6 +104,17 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       this.get('dateStartObject').setDate(day);
       this.get('dateStartObject').setMonth(month);
       this.get('dateStartObject').setFullYear(year);
+
+      // show label for same day on end date, if start date and end date are equal
+      if (day == this.get('dateEndObject').getDate() && month == this.get('dateEndObject').getMonth() && year == this.get('dateEndObject').getFullYear()) {
+        this.send('setSameDay', true);
+      }
+      // if same day is shown, set end date equal to start date
+      if(this.get('isSameDay')) {
+        this.get('dateEndObject').setDate(day);
+        this.get('dateEndObject').setMonth(month);
+        this.get('dateEndObject').setFullYear(year);
+      }
     },
     updateStartTime: function(newStartTime) {
       const hours = newStartTime[0].getHours();
@@ -126,6 +155,13 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       this.get('dateEndObject').setDate(day);
       this.get('dateEndObject').setMonth(month);
       this.get('dateEndObject').setFullYear(year);
+
+      // show label for same day on end date, if end date and start date are equal
+      if (day == this.get('dateStartObject').getDate() && month == this.get('dateStartObject').getMonth() && year == this.get('dateStartObject').getFullYear()) {
+        this.send('setSameDay', true);
+      } else {
+        this.send('setSameDay', false);
+      }
     },
     updateEndTime: function(newEndTime) {
       const hours = newEndTime[0].getHours();
@@ -155,6 +191,17 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         this.get('dateEndObject').setMinutes(now.getMinutes() - (now.getMinutes()%5) );
       }
       this.toggleProperty('showEndTime');
+    },
+    setSameDay: function(isSame) {
+      if(isSame) {
+        this.set('endDateStyle', 'hide-endDate');
+        this.set('sameDayLabelStyle', '');
+        this.set('isSameDay', true);
+      } else {
+        this.set('endDateStyle', '');
+        this.set('sameDayLabelStyle', 'hide-sameDay-label');
+        this.set('isSameDay', false);
+      }
     },
     /*
      * Save Entry with meta models

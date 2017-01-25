@@ -47,12 +47,16 @@
   {{#if showDate}}
     <div class=row-DateAndTime>
       <div class="date-field inputField__spacing input-field">
-        {{ember-flatpickr
-            id="endDate"
-            value=(readonly dateEndObject)
-            onChange=(action 'updateEndDate')
-            enableTime=false
-            dateFormat='d.m.Y'}}
+        <div class="{{endDateStyle}}">
+          {{ember-flatpickr
+              id="endDate"
+              value=(readonly dateEndObject)
+              onChange=(action 'updateEndDate')
+              enableTime=false
+              altInput=false
+              dateFormat='d.m.Y'}}
+        </div>
+        <label for="endDate" class="{{sameDayLabelStyle}}" > Gleicher Tag </label>
         <label for="endDate" class="active" >Enddatum</label>
       </div>
 
