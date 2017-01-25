@@ -49,7 +49,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       const day = this.get('dateEndObject').getDate();
       const month = this.get('dateEndObject').getMonth();
       const year = this.get('dateEndObject').getFullYear();
-      if(day == this.get('dateStartObject').getDate() && month == this.get('dateStartObject').getMonth() && year == this.get('dateStartObject').getFullYear()) {
+      if(day === this.get('dateStartObject').getDate() && month === this.get('dateStartObject').getMonth() && year === this.get('dateStartObject').getFullYear()) {
         this.get('isSameDay', true);
         this.send('setSameDay', true);
       } else {
@@ -106,7 +106,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       this.get('dateStartObject').setFullYear(year);
 
       // show label for same day on end date, if start date and end date are equal
-      if (day == this.get('dateEndObject').getDate() && month == this.get('dateEndObject').getMonth() && year == this.get('dateEndObject').getFullYear()) {
+      if (day === this.get('dateEndObject').getDate() && month === this.get('dateEndObject').getMonth() && year === this.get('dateEndObject').getFullYear()) {
         this.send('setSameDay', true);
       }
       // if same day is shown, set end date equal to start date
@@ -157,7 +157,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       this.get('dateEndObject').setFullYear(year);
 
       // show label for same day on end date, if end date and start date are equal
-      if (day == this.get('dateStartObject').getDate() && month == this.get('dateStartObject').getMonth() && year == this.get('dateStartObject').getFullYear()) {
+      if (day === this.get('dateStartObject').getDate() && month === this.get('dateStartObject').getMonth() && year === this.get('dateStartObject').getFullYear()) {
         this.send('setSameDay', true);
       } else {
         this.send('setSameDay', false);
