@@ -1,6 +1,9 @@
 
 {{yield}}
 
+<div class="dialog-container {{if dialogService.show 'dialog-container--visible' 'dialog-container--invisible'}}">
+</div>
+
 <div class="dialog {{if dialogService.show 'dialog--visible' 'dialog--invisible'}}">
   <div class="dialog__closeIcon" {{action 'cancel'}}>
         <i class="material-icons">close</i>
