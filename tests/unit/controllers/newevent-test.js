@@ -1,12 +1,12 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('service:afeefa-route-history', 'Unit | Service | afeefa route history', {
+moduleFor('controller:protected.newevent', 'Unit | Controller | newevent', {
   // Specify the other units that are required for this test.
-  // needs: ['service:foo']
+  // needs: ['controller:foo']
 });
 
 // Replace this with your real tests.
 test('it exists', function(assert) {
-  let service = this.subject();
-  assert.ok(service);
+  let controller = this.subject();
+  assert.ok(controller);
 });

@@ -14,4 +14,19 @@ export default Ember.Component.extend({
       this.get('dialogService').hideDialog('cancel');
     }
   },
+
+  visibilityChanges: Ember.observer('dialogService.show', function() {
+    if (this.get('dialogService.show')) {
+      this.$('.dialog').attr('tabindex',0);
+      this.$('.dialog').focus();
+    } else {
+      this.$('.dialog').blur();
+    }
+  }),
+
+  keyDown: function (event) {
+    if (event.keyCode === 27) {
+      this.get('dialogService').hideDialog('cancel');
+    }
+  }
 });

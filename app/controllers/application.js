@@ -1,5 +1,3 @@
 import Ember from 'ember';
 
-export default Ember.Controller.extend({
-  dialogService: Ember.inject.service('dialog'),
-});
+export default Ember.Controller.extend();

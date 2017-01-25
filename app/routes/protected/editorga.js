@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
-import CancelEditEntryMixin from './cancel-edit-entry-mixin';
+import CancelEditMixin from '../../mixins/cancel-edit-entry-route';
 
-export default Ember.Route.extend(CancelEditEntryMixin, {
+export default Ember.Route.extend(CancelEditMixin, {
   model(params) {
     const entryInstance = this.store.peekRecord('orga', params.orga_id);
     const locationInstance = entryInstance.get('locations').then((locations) => {

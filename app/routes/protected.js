@@ -1,10 +1,16 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import afeefaMenu from '../models/afeefa-menu';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
-  historyService: Ember.inject.service('afeefa-route-history'),
+  // bootstrap services by getting its instance on init()
+  // unless explicitly initialized the services won't connect to event bus
+  historyService: Ember.inject.service('route-history'),
+  navigationService: Ember.inject.service('navigation'),
+  init() {
+    this.get('historyService');
+    this.get('navigationService');
+  },
 
   model() {
     const baseData = RSVP.hash({
@@ -25,18 +31,26 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   actions: {
     willTransition() {
-      //publish to global event bus
       this.EventBus.publish('willTransition');
     },
-    didTransition () {
-      const historyService = this.get('historyService');
-      const routes = this.get("router.router.state.handlerInfos");
-      const current = routes[routes.length - 1];
-      historyService.setCurrentRoute(current);
 
-      afeefaMenu.setRoute(routes);
-      this.EventBus.publish('didTransition');
+    didTransition () {
+      // const routes = this.get('router.router.state.handlerInfos');
+      // afeefaMenu.setRoute(routes);
+      //
+      this.get('EventBus').publish('didTransition');
       window.scrollTo(0,0);
+    },
+
+    /*
+     * called (magically) by failing model promises: redirect to dashboard and show error message
+     */
+    error(reason) {
+      let message = 'Die angeforderte Seite konnte nicht geladen werden.';
+      if(reason.message) message = reason.message;
+      const alertData = {title: 'Fehler beim Laden der Seite', description: message, isError: true, autoHide: false};
+      this.EventBus.publish('showAlert', alertData);
+      this.transitionTo('protected.dashboard');
     }
   }
 });

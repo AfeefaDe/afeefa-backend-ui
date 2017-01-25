@@ -1,9 +1,8 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
-import RouteHelper from '../../mixins/route-helper';
-import CancelEditEntryMixin from './cancel-edit-entry-mixin';
+import CancelEditMixin from '../../mixins/cancel-edit-entry-route';
 
-export default Ember.Route.extend(RouteHelper, CancelEditEntryMixin, {
+export default Ember.Route.extend(CancelEditMixin, {
   model() {
     return RSVP.hash({
       orgas: this.modelFor('protected').orgas,

@@ -1,36 +1,38 @@
 import Ember from 'ember';
-import afeefaMenu from '../models/afeefa-menu';
 
 export default Ember.Component.extend({
-	session: Ember.inject.service('session'),
+  session: Ember.inject.service('session'),
+  navigationService: Ember.inject.service('navigation'),
+
+  pathNavigation: [],
+  level1Navigation: [],
+  menuVisible: false,
+
   didReceiveAttrs() {
-    this.EventBus.subscribe('willTransition', this, 'hideMenu');
-    this.EventBus.subscribe('didTransition', this, 'updateNavigation');
+    this.get('EventBus').subscribe('willTransition', this, 'hideMenu');
+    this.get('navigationService').on('change', this, 'updateNavigation');
     this.updateNavigation();
   },
-  willDestroyElement() {
-    this.EventBus.unsubscribe('willTransition');
-    this.EventBus.unsubscribe('didTransition');
-  },
-  /*
-   * Hide menu on EventBus transiton
-   */
+
+
   hideMenu: function() {
     this.set('menuVisible', false);
   },
+
+
   updateNavigation: function() {
-    this.set('pathNavigation', afeefaMenu.getPathNavigation());
-		this.set('level1Navigation', afeefaMenu.getLevel1Navigation());
+    const navigationService = this.get('navigationService');
+    this.set('pathNavigation', navigationService.getPathNavigation());
+    this.set('level1Navigation', navigationService.getLevel1Navigation());
   },
-	actions: {
-		toggleMenu: function() {
+
+  actions: {
+    toggleMenu: function() {
       this.set('menuVisible', !this.get('menuVisible'));
     },
-		invalidateSession() {
-			this.get('session').invalidate();
-		}
-	},
-	pathNavigation: [],
-	level1Navigation: [],
-	menuVisible: false
+
+    invalidateSession() {
+      this.get('session').invalidate();
+    }
+  }
 });
