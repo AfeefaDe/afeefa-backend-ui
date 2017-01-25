@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('controller:neworga', 'Unit | Controller | neworga', {
+moduleFor('controller:protected.neworga', 'Unit | Controller | neworga', {
   // Specify the other units that are required for this test.
   // needs: ['controller:foo']
 });

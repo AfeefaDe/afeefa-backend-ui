@@ -69,7 +69,7 @@ export default Ember.Mixin.create({
     if (this.hasChanges()) {
       this.showCancelDialog(() => {
         transition.retry();
-      })
+      });
       transition.abort();
     // cancel without changes
     // autoremove runtime created models
@@ -85,7 +85,7 @@ export default Ember.Mixin.create({
       if (this.hasChanges()) {
         this.showCancelDialog(() => {
           this.get('historyService').goBack();
-        })
+        });
       // cancel without changes
       // autoremove runtime created models
       } else {
