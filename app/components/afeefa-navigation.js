@@ -3,7 +3,6 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   session: Ember.inject.service('session'),
   navigationService: Ember.inject.service('navigation'),
-  EventBus: Ember.inject.service('event-bus'),
 
   pathNavigation: [],
   level1Navigation: [],

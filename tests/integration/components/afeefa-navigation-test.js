@@ -20,7 +20,7 @@ moduleForComponent('afeefa-navigation', 'Integration | Component | afeefa naviga
 
 
 test('it renders', function(assert) {
-  this.render(hbs`{{afeefa-navigation}}`);
+  this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
   assert.equal('menu', this.$('#btn-sandwich').text().trim());
   assert.equal(0, this.$('#breadcrumb').children().length, 'no sub elements in path navigation');
   assert.strictEqual(undefined, this.$('#menu').html(), 'no menu shown initially');
@@ -30,7 +30,7 @@ test('it renders', function(assert) {
 test('it updates on navigation service change', function(assert) {
   const navigationService = this.get('navigationService');
 
-  this.render(hbs`{{afeefa-navigation}}`);
+  this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
   assert.equal(0, this.$('#breadcrumb').children().length);
 
   this.stub(navigationService, 'getPathNavigation').returns([
@@ -55,7 +55,7 @@ test('it shows the right items in path navigation', function(assert) {
     { route: null, title: 'Anzeigen'}
   ]);
 
-  this.render(hbs`{{afeefa-navigation}}`);
+  this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
 
   assert.equal(5, this.$('#breadcrumb').children().length);
 
@@ -79,7 +79,7 @@ test('it shows the right items in path navigation', function(assert) {
 
 
 test('it toggles the menu', function(assert) {
-  this.render(hbs`{{afeefa-navigation}}`);
+  this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
 
   assert.equal(0, this.$('#menu').children().length);
 
@@ -96,7 +96,7 @@ test('it toggles the menu', function(assert) {
 
 
 test('it shows the right items in menu navigation', function(assert) {
-  this.render(hbs`{{afeefa-navigation}}`);
+  this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
   this.$('#btn-sandwich').click();
 
   assert.equal(6, this.$('#menu').children().length);
