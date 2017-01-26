@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import CancelEditEntryControllerMixin from 'afeefa-backend-ui/mixins/cancel-edit-entry-controller';
 import { moduleFor } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
 import fixtures from 'afeefa-backend-ui/tests/helpers/fixtures';
@@ -27,7 +26,6 @@ test('existing event properties', function(assert) {
     const ctrl = this.subject();
     const store = ctrl.get('store');
     const model = fixtures.setupEvent(store);
-    const annotation = store.peekRecord('annotation', 1);
 
     assert.ok(model.entryInstance);
     assert.equal(store.peekAll('event').get('length'), 1);
@@ -57,6 +55,7 @@ test('existing event properties', function(assert) {
 
     assert.ok(model.entryInstance.get('annotations'));
     assert.equal(model.entryInstance.get('annotations.length'), 1);
+    const annotation = store.peekRecord('annotation', 1);
     assert.deepEqual([annotation], model.entryInstance.get('annotations').toArray());
     assert.equal(model.entryInstance.get('hasAnnotationChanges'), false);
   });

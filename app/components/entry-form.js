@@ -223,6 +223,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
 
       entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
       entry.get('locations').pushObject(this.get('model.locationInstance'));
+
       entry.save().then(()=> {
         // #66 hack to prevend "dirty"-dialog on save
         const relations = ['contactInfoInstance', 'locationInstance'];
