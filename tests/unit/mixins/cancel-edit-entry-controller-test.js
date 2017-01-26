@@ -130,27 +130,8 @@ test('rollback on existing event works', function(assert) {
     const annotation = store.peekRecord('annotation', 1);
     const annotation2 = store.peekRecord('annotation', 2);
     assert.strictEqual(mixin.hasChanges(), false);
-
-    assert.strictEqual(mixin.get('model.entryInstance.title'), 'Event1');
-    assert.equal(mixin.get('model.entryInstance.isNew'), false);
-    assert.equal(mixin.get('model.entryInstance.hasDirtyAttributes'), false);
-    assert.equal(mixin.get('model.entryInstance.dirtyType'), undefined);
-    assert.equal(mixin.get('model.entryInstance').currentState.stateName, 'root.loaded.saved');
-
-    assert.strictEqual(mixin.get('model.locationInstance.city'), 'Location1');
-    assert.equal(mixin.get('model.locationInstance.isNew'), false);
-    assert.equal(mixin.get('model.locationInstance.hasDirtyAttributes'), false);
-    assert.equal(mixin.get('model.locationInstance.dirtyType'), undefined);
-    assert.equal(mixin.get('model.locationInstance').currentState.stateName, 'root.loaded.saved');
-
-    assert.strictEqual(mixin.get('model.contactInfoInstance.contactPerson'), 'Contactinfo1');
-    assert.equal(mixin.get('model.contactInfoInstance.isNew'), false);
-    assert.equal(mixin.get('model.contactInfoInstance.hasDirtyAttributes'), false);
-    assert.equal(mixin.get('model.contactInfoInstance.dirtyType'), undefined);
-    assert.equal(mixin.get('model.contactInfoInstance').currentState.stateName, 'root.loaded.saved');
-
-    assert.deepEqual(mixin.get('model.entryInstance.annotations').toArray(), [annotation]);
-    assert.equal(false, mixin.get('model.entryInstance.hasAnnotationChanges'));
+    // fixture integrity tested in fixtures-test
+    // ...
 
     // change model
     mixin.set('model.entryInstance.title', 'new title');
@@ -225,34 +206,8 @@ test('rollback on new event works', function(assert) {
     // check initial state
     const annotation = store.peekRecord('annotation', 1);
     assert.strictEqual(mixin.hasChanges(), false);
-    assert.ok(mixin.get('model.entryInstance'));
-    assert.ok(mixin.get('model.locationInstance'));
-    assert.ok(mixin.get('model.contactInfoInstance'));
-    assert.ok(mixin.get('model.entryInstance.annotations'));
-    assert.strictEqual(mixin.get('model.entryInstance.title'), undefined, 'title undefined');
-    assert.strictEqual(mixin.get('model.locationInstance.city'), undefined, 'city undefined');
-    assert.strictEqual(mixin.get('model.contactInfoInstance.contactPerson'), undefined, 'person undefined');
-    assert.deepEqual(mixin.get('model.entryInstance.annotations').toArray(), [], 'annotations empty');
-    assert.equal(mixin.get('model.entryInstance.hasAnnotationChanges'), false);
-
-    // check entry and relations
-    assert.equal(store.peekAll('event').get('length'), 1);
-    assert.equal(mixin.get('model.entryInstance.isNew'), true);
-    assert.equal(mixin.get('model.entryInstance.hasDirtyAttributes'), true);
-    assert.equal(mixin.get('model.entryInstance.dirtyType'), 'created');
-    assert.equal(mixin.get('model.entryInstance').currentState.stateName, 'root.loaded.created.uncommitted');
-
-    assert.equal(store.peekAll('contactInfo').get('length'), 1);
-    assert.equal(mixin.get('model.locationInstance.isNew'), true);
-    assert.equal(mixin.get('model.locationInstance.hasDirtyAttributes'), true);
-    assert.equal(mixin.get('model.locationInstance.dirtyType'), 'created');
-    assert.equal(mixin.get('model.locationInstance').currentState.stateName, 'root.loaded.created.uncommitted');
-
-    assert.equal(store.peekAll('location').get('length'), 1);
-    assert.equal(mixin.get('model.contactInfoInstance.isNew'), true);
-    assert.equal(mixin.get('model.contactInfoInstance.hasDirtyAttributes'), true);
-    assert.equal(mixin.get('model.contactInfoInstance.dirtyType'), 'created');
-    assert.equal(mixin.get('model.contactInfoInstance').currentState.stateName, 'root.loaded.created.uncommitted');
+    // fixture integrity tested in fixtures-test
+    // ...
 
     // change model
     mixin.set('model.entryInstance.title', 'new title');
