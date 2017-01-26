@@ -1,4 +1,42 @@
 class Fixtures {
+  setupNewEvent (store) {
+    store.push({
+      data: [{
+        id: 1,
+        type: 'orga',
+        attributes: {
+          title: 'Orga1'
+        }
+      },{
+        id: 2,
+        type: 'orga',
+        attributes: {
+          title: 'Orga2'
+        }
+      },{
+        id: 1,
+        type: 'annotation',
+        attributes: {
+          title: 'Annotation1'
+        }
+      },{
+        id: 2,
+        type: 'annotation',
+        attributes: {
+          title: 'Annotation2'
+        }
+      }]
+    });
+
+    const model = {
+      orgas: store.peekAll('orga'),
+      entryInstance: store.createRecord('event'),
+      contactInfoInstance: store.createRecord('contactInfo'),
+      locationInstance: store.createRecord('location'),
+    };
+    return model;
+  }
+
   setupEvent (store) {
     store.push({
       data: [{
@@ -37,9 +75,9 @@ class Fixtures {
     const annotation = store.peekRecord('annotation', 1);
     const location = store.peekRecord('location', 1);
     const contactInfo = store.peekRecord('contact-info', 1);
-    event.get('annotations').pushObject(annotation);
-    event.get('locations').pushObject(location);
-    event.get('contactInfos').pushObject(contactInfo);
+    event.get('annotations').addObject(annotation);
+    event.get('locations').addObject(location);
+    event.get('contactInfos').addObject(contactInfo);
     const model = {
       entryInstance: event,
       contactInfoInstance: contactInfo,

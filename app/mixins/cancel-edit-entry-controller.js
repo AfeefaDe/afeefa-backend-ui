@@ -18,7 +18,6 @@ export default Ember.Mixin.create({
   rollback () {
     const entryInstance = this.get('model.entryInstance');
     entryInstance.rollbackAttributes();
-
     this.get('model.contactInfoInstance').rollbackAttributes();
     this.get('model.locationInstance').rollbackAttributes();
 
@@ -58,7 +57,6 @@ export default Ember.Mixin.create({
       title: 'Abbrechen',
       message: `Soll das ${action} abgebrochen werden?`
     }).yes(() => {
-      this.rollback();
       yes();
     });
   },
@@ -84,11 +82,12 @@ export default Ember.Mixin.create({
       // cancel with changes
       if (this.hasChanges()) {
         this.showCancelDialog(() => {
+          this.rollback();
           this.get('historyService').goBack();
         });
       // cancel without changes
-      // autoremove runtime created models
       } else {
+        // autoremove runtime created models
         this.rollback();
         this.get('historyService').goBack();
       }
