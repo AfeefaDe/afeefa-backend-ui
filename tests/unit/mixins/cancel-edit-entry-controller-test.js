@@ -6,7 +6,6 @@ import fixtures from 'afeefa-backend-ui/tests/helpers/fixtures';
 
 moduleFor('mixin:cancel-edit-entry-controller', 'Unit | Mixin | cancel edit entry controller', {
   needs: [
-    'controller:application',
     'model:event',
     'model:orga',
     'model:annotation',
@@ -30,7 +29,7 @@ test('existing event has initially no changes', function(assert) {
   const store = mixin.get('store');
   Ember.run(() => { mixin.set('model', fixtures.setupEvent(store)); });
 
-  assert.strictEqual(false, mixin.hasChanges());
+  assert.strictEqual(mixin.hasChanges(), false);
 });
 
 
@@ -39,7 +38,7 @@ test('new event has initially no changes', function(assert) {
   const store = mixin.get('store');
   Ember.run(() => { mixin.set('model', fixtures.setupNewEvent(store)); });
 
-  assert.strictEqual(false, mixin.hasChanges());
+  assert.strictEqual(mixin.hasChanges(), false);
 });
 
 
@@ -47,29 +46,29 @@ function testEventChanges(assert, mixin) {
   // change event attribute
   const entryInstance = mixin.get('model.entryInstance');
   entryInstance.set('title', 'new title');
-  assert.strictEqual(true, mixin.hasChanges());
+  assert.strictEqual(mixin.hasChanges(), true);
   entryInstance.rollbackAttributes();
-  assert.strictEqual(false, mixin.hasChanges());
+  assert.strictEqual(mixin.hasChanges(), false);
 
   // change location attribute
   const locationInstance = mixin.get('model.locationInstance');
   locationInstance.set('city', 'new city');
-  assert.strictEqual(true, mixin.hasChanges());
+  assert.strictEqual(mixin.hasChanges(), true);
   locationInstance.rollbackAttributes();
-  assert.strictEqual(false, mixin.hasChanges());
+  assert.strictEqual(mixin.hasChanges(), false);
 
   // change contact attribute
   const contactInfoInstance = mixin.get('model.contactInfoInstance');
   contactInfoInstance.set('contactPerson', 'new person');
-  assert.strictEqual(true, mixin.hasChanges());
+  assert.strictEqual(mixin.hasChanges(), true);
   contactInfoInstance.rollbackAttributes();
-  assert.strictEqual(false, mixin.hasChanges());
+  assert.strictEqual(mixin.hasChanges(), false);
 
   // change annotation
   entryInstance.set('hasAnnotationChanges', true);
-  assert.strictEqual(true, mixin.hasChanges());
+  assert.strictEqual(mixin.hasChanges(), true);
   entryInstance.set('hasAnnotationChanges', false);
-  assert.strictEqual(false, mixin.hasChanges());
+  assert.strictEqual(mixin.hasChanges(), false);
 }
 
 
@@ -100,12 +99,12 @@ test('mixin saves existing annotations on modelReady', function(assert) {
   const annotation2 = store.peekRecord('annotation', 2);
   mixin.get('model.entryInstance.annotations').pushObject(annotation2);
 
-  assert.strictEqual(null, mixin.get('oldAnnotations'), 'old annotations empty');
+  assert.strictEqual(mixin.get('oldAnnotations'), null, 'old annotations empty');
 
   mixin.modelReady();
 
   const annotation = store.peekRecord('annotation', 1);
-  assert.deepEqual([annotation, annotation2], mixin.get('oldAnnotations'), 'old annotations saved');
+  assert.deepEqual(mixin.get('oldAnnotations'), [annotation, annotation2], 'old annotations saved');
 
   // no annotation
   Ember.run(() => { mixin.set('model', fixtures.setupEvent(store)); });
@@ -125,32 +124,33 @@ test('rollback on existing event works', function(assert) {
     // init controller
     mixin.set('model', fixtures.setupEvent(store));
     mixin.modelReady();
-    assert.strictEqual(false, mixin.hasChanges());
+    assert.strictEqual(mixin.hasChanges(), false);
 
     // check initial state
     const annotation = store.peekRecord('annotation', 1);
     const annotation2 = store.peekRecord('annotation', 2);
-    assert.strictEqual(false, mixin.hasChanges());
+    assert.strictEqual(mixin.hasChanges(), false);
 
-    assert.strictEqual('Event1', mixin.get('model.entryInstance.title'));
-    assert.equal(false, mixin.get('model.entryInstance.isNew'));
-    assert.equal(false, mixin.get('model.entryInstance.hasDirtyAttributes'));
-    assert.equal(undefined, mixin.get('model.entryInstance.dirtyType'));
-    assert.equal('root.loaded.saved', mixin.get('model.entryInstance').currentState.stateName);
+    assert.strictEqual(mixin.get('model.entryInstance.title'), 'Event1');
+    assert.equal(mixin.get('model.entryInstance.isNew'), false);
+    assert.equal(mixin.get('model.entryInstance.hasDirtyAttributes'), false);
+    assert.equal(mixin.get('model.entryInstance.dirtyType'), undefined);
+    assert.equal(mixin.get('model.entryInstance').currentState.stateName, 'root.loaded.saved');
 
-    assert.strictEqual('Location1', mixin.get('model.locationInstance.city'));
-    assert.equal(false, mixin.get('model.locationInstance.isNew'));
-    assert.equal(false, mixin.get('model.locationInstance.hasDirtyAttributes'));
-    assert.equal(undefined, mixin.get('model.locationInstance.dirtyType'));
-    assert.equal('root.loaded.saved', mixin.get('model.locationInstance').currentState.stateName);
+    assert.strictEqual(mixin.get('model.locationInstance.city'), 'Location1');
+    assert.equal(mixin.get('model.locationInstance.isNew'), false);
+    assert.equal(mixin.get('model.locationInstance.hasDirtyAttributes'), false);
+    assert.equal(mixin.get('model.locationInstance.dirtyType'), undefined);
+    assert.equal(mixin.get('model.locationInstance').currentState.stateName, 'root.loaded.saved');
 
-    assert.strictEqual('Contactinfo1', mixin.get('model.contactInfoInstance.contactPerson'));
-    assert.equal(false, mixin.get('model.contactInfoInstance.isNew'));
-    assert.equal(false, mixin.get('model.contactInfoInstance.hasDirtyAttributes'));
-    assert.equal(undefined, mixin.get('model.contactInfoInstance.dirtyType'));
-    assert.equal('root.loaded.saved', mixin.get('model.contactInfoInstance').currentState.stateName);
+    assert.strictEqual(mixin.get('model.contactInfoInstance.contactPerson'), 'Contactinfo1');
+    assert.equal(mixin.get('model.contactInfoInstance.isNew'), false);
+    assert.equal(mixin.get('model.contactInfoInstance.hasDirtyAttributes'), false);
+    assert.equal(mixin.get('model.contactInfoInstance.dirtyType'), undefined);
+    assert.equal(mixin.get('model.contactInfoInstance').currentState.stateName, 'root.loaded.saved');
 
-    assert.deepEqual([annotation], mixin.get('model.entryInstance.annotations').toArray());
+    assert.deepEqual(mixin.get('model.entryInstance.annotations').toArray(), [annotation]);
+    assert.equal(false, mixin.get('model.entryInstance.hasAnnotationChanges'));
 
     // change model
     mixin.set('model.entryInstance.title', 'new title');
@@ -161,51 +161,53 @@ test('rollback on existing event works', function(assert) {
     mixin.set('model.entryInstance.hasAnnotationChanges', true);
 
     // check changes
-    assert.strictEqual(true, mixin.hasChanges());
+    assert.strictEqual(mixin.hasChanges(), true);
 
-    assert.strictEqual('new title', mixin.get('model.entryInstance.title'));
-    assert.equal(false, mixin.get('model.entryInstance.isNew'));
-    assert.equal(true, mixin.get('model.entryInstance.hasDirtyAttributes'));
-    assert.equal('updated', mixin.get('model.entryInstance.dirtyType'));
-    assert.equal('root.loaded.updated.uncommitted', mixin.get('model.entryInstance').currentState.stateName);
+    assert.strictEqual(mixin.get('model.entryInstance.title'), 'new title');
+    assert.equal(mixin.get('model.entryInstance.isNew'), false);
+    assert.equal(mixin.get('model.entryInstance.hasDirtyAttributes'), true);
+    assert.equal(mixin.get('model.entryInstance.dirtyType'), 'updated');
+    assert.equal(mixin.get('model.entryInstance').currentState.stateName, 'root.loaded.updated.uncommitted');
 
-    assert.strictEqual('new city', mixin.get('model.locationInstance.city'));
-    assert.equal(false, mixin.get('model.entryInstance.isNew'));
-    assert.equal(true, mixin.get('model.entryInstance.hasDirtyAttributes'));
-    assert.equal('updated', mixin.get('model.entryInstance.dirtyType'));
-    assert.equal('root.loaded.updated.uncommitted', mixin.get('model.entryInstance').currentState.stateName);
+    assert.strictEqual(mixin.get('model.locationInstance.city'), 'new city');
+    assert.equal(mixin.get('model.entryInstance.isNew'), false);
+    assert.equal(mixin.get('model.entryInstance.hasDirtyAttributes'), true);
+    assert.equal(mixin.get('model.entryInstance.dirtyType'), 'updated');
+    assert.equal(mixin.get('model.entryInstance').currentState.stateName, 'root.loaded.updated.uncommitted');
 
-    assert.strictEqual('new person', mixin.get('model.contactInfoInstance.contactPerson'));
-    assert.equal(false, mixin.get('model.contactInfoInstance.isNew'));
-    assert.equal(true, mixin.get('model.contactInfoInstance.hasDirtyAttributes'));
-    assert.equal('updated', mixin.get('model.contactInfoInstance.dirtyType'));
-    assert.equal('root.loaded.updated.uncommitted', mixin.get('model.contactInfoInstance').currentState.stateName);
+    assert.strictEqual(mixin.get('model.contactInfoInstance.contactPerson'), 'new person');
+    assert.equal(mixin.get('model.contactInfoInstance.isNew'), false);
+    assert.equal(mixin.get('model.contactInfoInstance.hasDirtyAttributes'), true);
+    assert.equal(mixin.get('model.contactInfoInstance.dirtyType'), 'updated');
+    assert.equal(mixin.get('model.contactInfoInstance').currentState.stateName, 'root.loaded.updated.uncommitted');
 
-    assert.deepEqual([annotation2], mixin.get('model.entryInstance.annotations').toArray());
+    assert.deepEqual(mixin.get('model.entryInstance.annotations').toArray(), [annotation2]);
+    assert.equal(true, mixin.get('model.entryInstance.hasAnnotationChanges'));
 
     // rollback and check changes
     mixin.rollback();
-    assert.strictEqual(false, mixin.hasChanges());
+    assert.strictEqual(mixin.hasChanges(), false);
 
-    assert.strictEqual('Event1', mixin.get('model.entryInstance.title'));
-    assert.equal(false, mixin.get('model.entryInstance.isNew'));
-    assert.equal(false, mixin.get('model.entryInstance.hasDirtyAttributes'));
-    assert.equal(undefined, mixin.get('model.entryInstance.dirtyType'));
-    assert.equal('root.loaded.saved', mixin.get('model.entryInstance').currentState.stateName);
+    assert.strictEqual(mixin.get('model.entryInstance.title'), 'Event1');
+    assert.equal(mixin.get('model.entryInstance.isNew'), false);
+    assert.equal(mixin.get('model.entryInstance.hasDirtyAttributes'), false);
+    assert.equal(mixin.get('model.entryInstance.dirtyType'), undefined);
+    assert.equal(mixin.get('model.entryInstance').currentState.stateName, 'root.loaded.saved');
 
-    assert.strictEqual('Location1', mixin.get('model.locationInstance.city'));
-    assert.equal(false, mixin.get('model.locationInstance.isNew'));
-    assert.equal(false, mixin.get('model.locationInstance.hasDirtyAttributes'));
-    assert.equal(undefined, mixin.get('model.locationInstance.dirtyType'));
-    assert.equal('root.loaded.saved', mixin.get('model.locationInstance').currentState.stateName);
+    assert.strictEqual(mixin.get('model.locationInstance.city'), 'Location1');
+    assert.equal(mixin.get('model.locationInstance.isNew'), false);
+    assert.equal(mixin.get('model.locationInstance.hasDirtyAttributes'), false);
+    assert.equal(mixin.get('model.locationInstance.dirtyType'), undefined);
+    assert.equal(mixin.get('model.locationInstance').currentState.stateName, 'root.loaded.saved');
 
-    assert.strictEqual('Contactinfo1', mixin.get('model.contactInfoInstance.contactPerson'));
-    assert.equal(false, mixin.get('model.contactInfoInstance.isNew'));
-    assert.equal(false, mixin.get('model.contactInfoInstance.hasDirtyAttributes'));
-    assert.equal(undefined, mixin.get('model.contactInfoInstance.dirtyType'));
-    assert.equal('root.loaded.saved', mixin.get('model.contactInfoInstance').currentState.stateName);
+    assert.strictEqual(mixin.get('model.contactInfoInstance.contactPerson'), 'Contactinfo1');
+    assert.equal(mixin.get('model.contactInfoInstance.isNew'), false);
+    assert.equal(mixin.get('model.contactInfoInstance.hasDirtyAttributes'), false);
+    assert.equal(mixin.get('model.contactInfoInstance.dirtyType'), undefined);
+    assert.equal(mixin.get('model.contactInfoInstance').currentState.stateName, 'root.loaded.saved');
 
-    assert.deepEqual([annotation], mixin.get('model.entryInstance.annotations').toArray());
+    assert.deepEqual(mixin.get('model.entryInstance.annotations').toArray(), [annotation]);
+    assert.equal(false, mixin.get('model.entryInstance.hasAnnotationChanges'));
   });
 });
 
@@ -218,38 +220,39 @@ test('rollback on new event works', function(assert) {
     // init controller
     mixin.set('model', fixtures.setupNewEvent(store));
     mixin.modelReady();
-    assert.strictEqual(false, mixin.hasChanges());
+    assert.strictEqual(mixin.hasChanges(), false);
 
     // check initial state
     const annotation = store.peekRecord('annotation', 1);
-    assert.strictEqual(false, mixin.hasChanges());
+    assert.strictEqual(mixin.hasChanges(), false);
     assert.ok(mixin.get('model.entryInstance'));
     assert.ok(mixin.get('model.locationInstance'));
     assert.ok(mixin.get('model.contactInfoInstance'));
     assert.ok(mixin.get('model.entryInstance.annotations'));
-    assert.strictEqual(undefined, mixin.get('model.entryInstance.title'), 'title undefined');
-    assert.strictEqual(undefined, mixin.get('model.locationInstance.city'), 'city undefined');
-    assert.strictEqual(undefined, mixin.get('model.contactInfoInstance.contactPerson'), 'person undefined');
-    assert.deepEqual([], mixin.get('model.entryInstance.annotations').toArray(), 'annotations empty');
+    assert.strictEqual(mixin.get('model.entryInstance.title'), undefined, 'title undefined');
+    assert.strictEqual(mixin.get('model.locationInstance.city'), undefined, 'city undefined');
+    assert.strictEqual(mixin.get('model.contactInfoInstance.contactPerson'), undefined, 'person undefined');
+    assert.deepEqual(mixin.get('model.entryInstance.annotations').toArray(), [], 'annotations empty');
+    assert.equal(mixin.get('model.entryInstance.hasAnnotationChanges'), false);
 
     // check entry and relations
     assert.equal(store.peekAll('event').get('length'), 1);
-    assert.equal(true, mixin.get('model.entryInstance.isNew'));
-    assert.equal(true, mixin.get('model.entryInstance.hasDirtyAttributes'));
-    assert.equal('created', mixin.get('model.entryInstance.dirtyType'));
-    assert.equal('root.loaded.created.uncommitted', mixin.get('model.entryInstance').currentState.stateName);
+    assert.equal(mixin.get('model.entryInstance.isNew'), true);
+    assert.equal(mixin.get('model.entryInstance.hasDirtyAttributes'), true);
+    assert.equal(mixin.get('model.entryInstance.dirtyType'), 'created');
+    assert.equal(mixin.get('model.entryInstance').currentState.stateName, 'root.loaded.created.uncommitted');
 
     assert.equal(store.peekAll('contactInfo').get('length'), 1);
-    assert.equal(true, mixin.get('model.locationInstance.isNew'));
-    assert.equal(true, mixin.get('model.locationInstance.hasDirtyAttributes'));
-    assert.equal('created', mixin.get('model.locationInstance.dirtyType'));
-    assert.equal('root.loaded.created.uncommitted', mixin.get('model.locationInstance').currentState.stateName);
+    assert.equal(mixin.get('model.locationInstance.isNew'), true);
+    assert.equal(mixin.get('model.locationInstance.hasDirtyAttributes'), true);
+    assert.equal(mixin.get('model.locationInstance.dirtyType'), 'created');
+    assert.equal(mixin.get('model.locationInstance').currentState.stateName, 'root.loaded.created.uncommitted');
 
     assert.equal(store.peekAll('location').get('length'), 1);
-    assert.equal(true, mixin.get('model.contactInfoInstance.isNew'));
-    assert.equal(true, mixin.get('model.contactInfoInstance.hasDirtyAttributes'));
-    assert.equal('created', mixin.get('model.contactInfoInstance.dirtyType'));
-    assert.equal('root.loaded.created.uncommitted', mixin.get('model.contactInfoInstance').currentState.stateName);
+    assert.equal(mixin.get('model.contactInfoInstance.isNew'), true);
+    assert.equal(mixin.get('model.contactInfoInstance.hasDirtyAttributes'), true);
+    assert.equal(mixin.get('model.contactInfoInstance.dirtyType'), 'created');
+    assert.equal(mixin.get('model.contactInfoInstance').currentState.stateName, 'root.loaded.created.uncommitted');
 
     // change model
     mixin.set('model.entryInstance.title', 'new title');
@@ -259,37 +262,39 @@ test('rollback on new event works', function(assert) {
     mixin.set('model.entryInstance.hasAnnotationChanges', true);
 
     // check changes
-    assert.strictEqual(true, mixin.hasChanges());
+    assert.strictEqual(mixin.hasChanges(), true);
 
-    assert.strictEqual('new title', mixin.get('model.entryInstance.title'), 'title changed');
-    assert.equal(true, mixin.get('model.entryInstance.hasDirtyAttributes'));
-    assert.equal('created', mixin.get('model.entryInstance.dirtyType'));
-    assert.equal('root.loaded.created.uncommitted', mixin.get('model.entryInstance').currentState.stateName);
+    assert.strictEqual(mixin.get('model.entryInstance.title'), 'new title', 'title changed');
+    assert.equal(mixin.get('model.entryInstance.hasDirtyAttributes'), true);
+    assert.equal(mixin.get('model.entryInstance.dirtyType'), 'created');
+    assert.equal(mixin.get('model.entryInstance').currentState.stateName, 'root.loaded.created.uncommitted');
 
-    assert.strictEqual('new city', mixin.get('model.locationInstance.city'), 'city changed');
-    assert.equal(true, mixin.get('model.locationInstance.isNew'));
-    assert.equal(true, mixin.get('model.locationInstance.hasDirtyAttributes'));
-    assert.equal('root.loaded.created.uncommitted', mixin.get('model.locationInstance').currentState.stateName);
+    assert.strictEqual(mixin.get('model.locationInstance.city'), 'new city', 'city changed');
+    assert.equal(mixin.get('model.locationInstance.isNew'), true);
+    assert.equal(mixin.get('model.locationInstance.hasDirtyAttributes'), true);
+    assert.equal(mixin.get('model.locationInstance').currentState.stateName, 'root.loaded.created.uncommitted');
 
-    assert.strictEqual('new person', mixin.get('model.contactInfoInstance.contactPerson'), 'person changed');
-    assert.equal(true, mixin.get('model.contactInfoInstance.isNew'));
-    assert.equal(true, mixin.get('model.contactInfoInstance.hasDirtyAttributes'));
-    assert.equal('root.loaded.created.uncommitted', mixin.get('model.contactInfoInstance').currentState.stateName);
+    assert.strictEqual(mixin.get('model.contactInfoInstance.contactPerson'), 'new person', 'person changed');
+    assert.equal(mixin.get('model.contactInfoInstance.isNew'), true);
+    assert.equal(mixin.get('model.contactInfoInstance.hasDirtyAttributes'), true);
+    assert.equal(mixin.get('model.contactInfoInstance').currentState.stateName, 'root.loaded.created.uncommitted');
 
-    assert.deepEqual([annotation], mixin.get('model.entryInstance.annotations').toArray());
+    assert.deepEqual(mixin.get('model.entryInstance.annotations').toArray(), [annotation]);
+    assert.equal(true, mixin.get('model.entryInstance.hasAnnotationChanges'));
 
     // rollback and check changes
     mixin.rollback();
-    assert.strictEqual(false, mixin.hasChanges());
+    assert.strictEqual(mixin.hasChanges(), false);
     // check entry and relations are set back
     assert.ok(mixin.get('model.entryInstance'));
     assert.ok(mixin.get('model.locationInstance'));
     assert.ok(mixin.get('model.contactInfoInstance'));
     assert.ok(mixin.get('model.entryInstance.annotations'));
-    assert.strictEqual(undefined, mixin.get('model.entryInstance.title'), 'title undefined');
-    assert.strictEqual(undefined, mixin.get('model.locationInstance.city'), 'city undefined');
-    assert.strictEqual(undefined, mixin.get('model.contactInfoInstance.contactPerson'), 'person undefined');
-    assert.deepEqual([], mixin.get('model.entryInstance.annotations').toArray(), 'annotations empty');
+    assert.strictEqual(mixin.get('model.entryInstance.title'), undefined, 'title undefined');
+    assert.strictEqual(mixin.get('model.locationInstance.city'), undefined, 'city undefined');
+    assert.strictEqual(mixin.get('model.contactInfoInstance.contactPerson'), undefined, 'person undefined');
+    assert.deepEqual(mixin.get('model.entryInstance.annotations').toArray(), [], 'annotations empty');
+    assert.equal(mixin.get('model.entryInstance.hasAnnotationChanges'), false);
     // check entry and relations are removed from store
     // wait for store to cleanup all
     Ember.run.next(this, function() {

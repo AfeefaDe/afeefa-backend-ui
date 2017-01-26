@@ -14,8 +14,8 @@ const createRouteInfos = (name, _names, params) => {
 const assertNavigation = (assert, expected, result) => {
   let i = 0;
   for (let [route, title] of expected) {
-    assert.equal(route, result[i].route, 'item route is correct');
-    assert.equal(title, result[i].title, 'item title is correct');
+    assert.equal(result[i].route, route, 'item route is correct');
+    assert.equal(result[i].title, title, 'item title is correct');
     i++;
   }
 };
@@ -30,10 +30,10 @@ test('it exists and has defaults', function(assert) {
   let service = this.subject();
   assert.ok(service);
 
-  assert.deepEqual([], service.getPathNavigation());
+  assert.deepEqual(service.getPathNavigation(), []);
 
   const level1Navigation = service.getLevel1Navigation();
-  assert.equal(5, level1Navigation.length);
+  assert.equal(level1Navigation.length, 5);
   assertNavigation(assert, [
     ['protected.dashboard', 'Dashboard'],
     ['protected.todos', 'Todos'],

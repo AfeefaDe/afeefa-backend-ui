@@ -83,14 +83,14 @@ test('goBack sets second to last route', function(assert) {
   service.setCurrentRoute(routeMap['list']);
 
   service.goBack();
-  assert.strictEqual(routeMap['edit'], service.get('history.lastObject'));
+  assert.strictEqual(service.get('history.lastObject'), routeMap['edit']);
   assert.ok(this.transitionSpy.calledOnce, 'transitionTo called');
   assert.ok(this.transitionSpy.calledWith('detail', 123), 'transitionTo called with edit,123');
   assert.ok(this.historyStub.notCalled, 'history.back not called');
   this.transitionSpy.reset();
 
   service.goBack();
-  assert.strictEqual(routeMap['dashboard'], service.get('history.lastObject'));
+  assert.strictEqual(service.get('history.lastObject'), routeMap['dashboard']);
   assert.ok(this.transitionSpy.calledOnce, 'transitionTo called once');
   assert.ok(this.transitionSpy.calledWith('list'), 'transitionTo called with list');
   assert.ok(this.historyStub.notCalled, 'history.back not called');
@@ -104,7 +104,7 @@ test('goBack uses browser back if less than two items in list', function(assert)
   service.setCurrentRoute(routeMap['dashboard']);
 
   service.goBack();
-  assert.strictEqual(undefined, service.get('history.lastObject'));
+  assert.strictEqual(service.get('history.lastObject'), undefined);
   assert.ok(this.transitionSpy.notCalled, 'transitionTo not called');
   assert.ok(this.backSpy.calledOnce, 'history.back called once');
 });
@@ -119,19 +119,19 @@ test('history cannot grow than 10', function(assert) {
     service.setCurrentRoute(routeMap['dashboard']);
   }
 
-  assert.equal(10, service.get('history.length'));
-  assert.strictEqual(routeMap['edit'], service.get('history.firstObject'));
-  assert.strictEqual(routeMap['dashboard'], service.get('history.lastObject'));
+  assert.equal(service.get('history.length'), 10);
+  assert.strictEqual(service.get('history.firstObject'), routeMap['edit']);
+  assert.strictEqual(service.get('history.lastObject'), routeMap['dashboard']);
 
   service.setCurrentRoute(routeMap['list']);
-  assert.equal(10, service.get('history.length'));
-  assert.strictEqual(routeMap['detail'], service.get('history.firstObject'));
-  assert.strictEqual(routeMap['list'], service.get('history.lastObject'));
+  assert.equal(service.get('history.length'), 10);
+  assert.strictEqual(service.get('history.firstObject'), routeMap['detail']);
+  assert.strictEqual(service.get('history.lastObject'), routeMap['list']);
 
   for (let i = 1; i <= 10; i++) {
     service.setCurrentRoute(routeMap['edit']);
   }
-  assert.equal(10, service.get('history.length'));
-  assert.strictEqual(routeMap['edit'], service.get('history.firstObject'));
-  assert.strictEqual(routeMap['edit'], service.get('history.lastObject'));
+  assert.equal(service.get('history.length'), 10);
+  assert.strictEqual(service.get('history.firstObject'), routeMap['edit']);
+  assert.strictEqual(service.get('history.lastObject'), routeMap['edit']);
 });
