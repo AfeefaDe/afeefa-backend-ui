@@ -1,9 +1,18 @@
 .navigationSidebar {
 
   &__navContainer {
-
+    margin: 0;
   }
   &__navItem {
-
+    padding: 0.8em 0 0.5em 0;
+    border-bottom: 1px solid $gray20;
+  }
+  &__navItemMeta {
+    float: right;
+    background: $gray20;
+    font-size: 0.8em;
+    font-weight: bolder;
+    padding: 0 0.5em;
+    border-radius: 3px;
   }
 }

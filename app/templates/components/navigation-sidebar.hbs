@@ -10,12 +10,15 @@
       </li>
       <li class="navigationSidebar__navItem">
         {{#link-to 'protected.todos'}}Todos{{/link-to}}
+        <span class="navigationSidebar__navItemMeta">{{model.todos.length}}</span>
       </li>
       <li class="navigationSidebar__navItem">
         {{#link-to 'protected.orgas'}}Orgas{{/link-to}}
+        <span class="navigationSidebar__navItemMeta">{{model.orgas.length}}</span>
       </li>
       <li class="navigationSidebar__navItem">
         {{#link-to 'protected.events'}}Events{{/link-to}}
+        <span class="navigationSidebar__navItemMeta">{{model.events.length}}</span>
       </li>
     </ul>
   </div>
