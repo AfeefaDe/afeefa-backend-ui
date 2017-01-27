@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 import SaveRelationshipsMixin from 'ember-data-save-relationships';
 

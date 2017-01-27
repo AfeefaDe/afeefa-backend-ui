@@ -35,6 +35,11 @@ Router.map(function() {
     * User Routes
     */
     this.route('user', { path: '/user/:user_id'});
+
+    /*
+     * catch undefined routes
+     */
+    this.route('undefined', { path: '*path'});
   });
 });
 

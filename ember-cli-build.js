@@ -4,6 +4,11 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
+    // enable babel for phantomjs tests
+    babel: {
+      optional: ['es6.spec.symbols'],
+      includePolyfill: true
+    },
     // Add options here
     sassOptions: {
       extension: 'scss',
