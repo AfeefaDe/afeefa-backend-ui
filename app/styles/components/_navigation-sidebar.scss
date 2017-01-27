@@ -7,6 +7,9 @@
     padding: 0.8em 0 0.5em 0;
     border-bottom: 1px solid $gray20;
   }
+  &__navItem.level2 {
+    margin-left: 1.5em;
+  }
   &__navItemMeta {
     float: right;
     background: $gray20;
@@ -14,5 +17,22 @@
     font-weight: bolder;
     padding: 0 0.5em;
     border-radius: 3px;
+  }
+  &__footer {
+    margin-top: 20rem;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid $gray20;
+    padding-top: 0.8em;
+  }
+  &__footerItem {
+    display: flex;
+    align-items: center;
+  }
+  &__footerItem .spacing-right {
+    margin-right: 0.2em;
+  }
+  &__footerItem .spacing-left {
+    margin-left: 0.2em;
   }
 }

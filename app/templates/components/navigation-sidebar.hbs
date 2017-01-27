@@ -8,18 +8,28 @@
       <li class="navigationSidebar__navItem">
         {{#link-to 'protected.dashboard'}}Dashboard{{/link-to}}
       </li>
-      <li class="navigationSidebar__navItem">
+      <li class="navigationSidebar__navItem level2">
         {{#link-to 'protected.todos'}}Todos{{/link-to}}
         <span class="navigationSidebar__navItemMeta">{{model.todos.length}}</span>
       </li>
-      <li class="navigationSidebar__navItem">
+      <li class="navigationSidebar__navItem level2">
         {{#link-to 'protected.orgas'}}Orgas{{/link-to}}
         <span class="navigationSidebar__navItemMeta">{{model.orgas.length}}</span>
       </li>
-      <li class="navigationSidebar__navItem">
+      <li class="navigationSidebar__navItem level2">
         {{#link-to 'protected.events'}}Events{{/link-to}}
         <span class="navigationSidebar__navItemMeta">{{model.events.length}}</span>
       </li>
     </ul>
+
+    <div class="navigationSidebar__footer">
+      <span class="navigationSidebar__footerItem" title="Der Name des aktuell eingeloggten Nutzers.">
+        <i class="material-icons spacing-right">account_circle</i>{{model.user.forename}}&nbsp;{{model.user.surname}}
+      </span>
+      <a {{action 'invalidateSession'}} class="cursor navigationSidebar__footerItem">
+        Logout<i class="material-icons spacing-left">exit_to_app</i>
+      </a>
+    </div>
+
   </div>
 </div>
