@@ -21,7 +21,7 @@ body {
 }
 
 /*spacing for fixed header*/
-$sidebarWidth: 300px;
+$sidebarWidth: 350px;
 .content {
   padding-top: $header-height;
   &__sidebar {
@@ -36,7 +36,7 @@ $sidebarWidth: 300px;
       position: fixed;
       left: 0;
       top: 0;
-      background-color: red;
+      padding: 0 1rem;
     }
     &__main {
       width: 100%;

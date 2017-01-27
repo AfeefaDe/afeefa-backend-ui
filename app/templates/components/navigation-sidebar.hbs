@@ -1,0 +1,22 @@
+{{yield}}
+ <div class="navigationSidebar mainCard">
+  <div class="mainCard__header">
+    <h2 class="mainCard__headerTitle">Afeefa Backend</h2>
+  </div>
+  <div>
+    <ul class="navigationSidebar__navContainer">
+      <li class="navigationSidebar__navItem">
+        {{#link-to 'protected.dashboard'}}Dashboard{{/link-to}}
+      </li>
+      <li class="navigationSidebar__navItem">
+        {{#link-to 'protected.todos'}}Todos{{/link-to}}
+      </li>
+      <li class="navigationSidebar__navItem">
+        {{#link-to 'protected.orgas'}}Orgas{{/link-to}}
+      </li>
+      <li class="navigationSidebar__navItem">
+        {{#link-to 'protected.events'}}Events{{/link-to}}
+      </li>
+    </ul>
+  </div>
+</div>
