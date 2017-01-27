@@ -25,7 +25,7 @@
         <div class="mainCard">
           <div class="mainCard__header">
             <h2 class="mainCard__headerTitle">{{#link-to "protected.orgas"}}Organisationen ({{model.orgas.length}}){{/link-to}}</h2>
-            {{#link-to "protected.neworga" class="mainCard__headerAction"}}<i class="material-icons">add</i>{{/link-to}}
+            {{#link-to "protected.orgas.new" class="mainCard__headerAction"}}<i class="material-icons">add</i>{{/link-to}}
           </div>
           <div>
             {{entry-list instances=model.orgas limit=model.listLimit attributes=model.attrOrga sortOrder='createdAt:desc'}}
@@ -33,7 +33,7 @@
               <p>Keine Orgas</p>
             {{/unless}}
             {{#if (gt model.orgas.length  model.listLimit)}}
-              {{#link-to "protected.orgas"}}Alle Orgas...{{/link-to}}
+              {{#link-to "protected.orgas.list"}}Alle Orgas...{{/link-to}}
             {{/if}}
           </div>
         </div>
@@ -42,7 +42,7 @@
         <div class="mainCard">
           <div class="mainCard__header">
             <h2 class="mainCard__headerTitle">{{#link-to "protected.events"}}Events ({{model.events.length}}){{/link-to}}</h2>
-            {{#link-to "protected.newevent" class="mainCard__headerAction"}}<i class="material-icons">add</i>{{/link-to}}
+            {{#link-to "protected.events.new" class="mainCard__headerAction"}}<i class="material-icons">add</i>{{/link-to}}
           </div>
           <div>
             {{entry-list instances=model.events limit=model.listLimit attributes=model.attrEvent sortOrder='date_start:asc'}}
@@ -50,7 +50,7 @@
               <p>Keine Events</p>
             {{/unless}}
             {{#if (gt model.events.length  model.listLimit)}}
-              {{#link-to "protected.events"}}Alle Events...{{/link-to}}
+              {{#link-to "protected.events.list"}}Alle Events...{{/link-to}}
             {{/if}}
           </div>
         </div>

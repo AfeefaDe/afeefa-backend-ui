@@ -12,7 +12,7 @@ export default Ember.Component.extend({
     navigateToSingle: function(instance) {
       let id = instance.get('id');
       let type = instance.get('modelName');
-      if(id && type) this.get('router').transitionTo('protected.'+type, id);
+      if(id && type) this.get('router').transitionTo('protected.'+type+'s.show', id);
       else throw 'Invalid transistion type or id - Cancel transition';
     }
   },
