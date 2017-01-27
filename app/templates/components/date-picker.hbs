@@ -1,11 +1,14 @@
 <!--  start date and start time -->
 {{#if showDate}}
   <div class=row-DateAndTime>
+    <button class="showDate-button btn waves-effect waves-light" {{action "showStartDatePicker"}}><i class="material-icons center">event</i></button>
+
     <div class="date-field inputField__spacing input-field">
       {{ember-flatpickr
           id="startDate"
           value=(readonly model.entryInstance.date_start)
           onChange=(action 'updateStartDate')
+          flatpickrRef=startDatePickerRef
           enableTime=false
           dateFormat='d.m.Y'}}
       <label for="startDate" class="active" >Startdatum</label>
@@ -31,12 +34,15 @@
 
   <!--  end date and end time -->
   <div class=row-DateAndTime>
+    <button class="showDate-button btn waves-effect waves-light" {{action "showEndDatePicker"}}><i class="material-icons center">event</i></button>
+
     <div class="date-field inputField__spacing input-field">
       <div class="{{endDateStyle}}">
         {{ember-flatpickr
             id="endDate"
             value=(readonly model.entryInstance.date_end)
             onChange=(action 'updateEndDate')
+            flatpickrRef=endDatePickerRef
             enableTime=false
             altInput=false
             dateFormat='d.m.Y'}}

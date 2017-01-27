@@ -97,6 +97,8 @@ export default Ember.Component.extend({
         endDateObject.setDate(day);
         endDateObject.setMonth(month);
         endDateObject.setFullYear(year);
+        // update focus of end date picker
+        this.get('endDatePickerRef').setDate(startDateObject);
       }
     },
     updateStartTime: function(newStartTime) {
@@ -187,7 +189,12 @@ export default Ember.Component.extend({
         this.set('sameDayLabelStyle', 'hide-sameDay-label');
         this.set('isSameDay', false);
       }
+    },
+    showStartDatePicker: function() {
+      this.get('startDatePickerRef').toggle();
+    },
+    showEndDatePicker: function() {
+      this.get('endDatePickerRef').toggle();
     }
   },
-
 });
