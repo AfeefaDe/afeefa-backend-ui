@@ -12,6 +12,8 @@ export default Ember.Component.extend({
     this.EventBus.unsubscribe('showAlert');
   },
   showAlertLocal: function({title, description, isError, autoHide}={}) {
+    this.$('.alert').focus();
+    this.$('.alert').attr('tabindex',0);
     this.set('visible', true);
     this.set('description', description);
     this.set('title', title);
@@ -31,6 +33,16 @@ export default Ember.Component.extend({
   actions: {
     closeAlert: function() {
       this.set('visible', false);
+      this.$('.alert').blur();
     }
   },
+  /*
+   * escape triggers hides alert
+   */
+  keyDown: function (event) {
+    console.log("Keydown: ", event.keyCode);
+    if (event.keyCode === 27) {
+      this.send('closeAlert');
+    }
+  }
 });

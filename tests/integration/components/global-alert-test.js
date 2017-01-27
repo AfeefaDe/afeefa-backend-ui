@@ -57,3 +57,18 @@ test('it hides using the autoHide option', function(assert) {
     autohideDone();
   }, interval);
 });
+
+test('it closes the dialog on ESC', function(assert) {
+  this.render(hbs`{{global-alert EventBus=EventBus}}`);
+  Ember.run(() => {
+    this.get('EventBus').publish('showAlert', alertData);
+  });
+  assert.equal(this.$('.alert').hasClass('alert--visible'), true);
+  /* simulate click*/
+  var e = $.Event('keydown');
+  e.keyCode = 20; /* NOT ESC*/
+  assert.equal(this.$('.alert').hasClass('alert--visible'), true);
+  e.keyCode = 27; /* ESC */
+  this.$('.alert').trigger(e);
+  assert.equal(this.$('.alert').hasClass('alert--invisible'), true);
+});
