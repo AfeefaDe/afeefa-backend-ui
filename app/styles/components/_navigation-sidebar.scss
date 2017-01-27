@@ -10,6 +10,10 @@
   &__navItem.level2 {
     margin-left: 1.5em;
   }
+  &__navItem .active {
+    font-weight: bold;
+    text-decoration: underline;
+  }
   &__navItemMeta {
     float: right;
     background: $gray20;
