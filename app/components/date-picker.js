@@ -21,54 +21,58 @@ export default Ember.Component.extend({
   endDateStyle: '',
   didReceiveAttrs() {
     this._super(...arguments);
-    // if no start date is available set new start date
-    if(!this.get('model.entryInstance.date_start')) {
-      this.set('model.entryInstance.date_start', new Date());
-      var dateStart = this.get('model.entryInstance.date_start');
-      dateStart.setHours(0);
-      dateStart.setMinutes(0);
-      dateStart.setMilliseconds(0);
-    }
-    var dateEnd = this.get('model.entryInstance.date_end');
-    if(dateEnd) {
-      // check if end date and start are equal, then show same day label
-      const day = dateEnd.getDate();
-      const month = dateEnd.getMonth();
-      const year = dateEnd.getFullYear();
-      const dateStartObject = this.get('model.entryInstance.date_start');
-      if(day === dateStartObject.getDate() && month === dateStartObject.getMonth() && year === dateStartObject.getFullYear()) {
-        this.send('setSameDay', true);
-      } else {
-        this.send('setSameDay', false);
+    // prevent to show date if entry has no date element (orga element)
+    const showDate = this.get('showDate');
+    if(showDate) {
+      // if no start date is available set new start date
+      if(!this.get('model.entryInstance.date_start')) {
+        this.set('model.entryInstance.date_start', new Date());
+        var dateStart = this.get('model.entryInstance.date_start');
+        dateStart.setHours(0);
+        dateStart.setMinutes(0);
+        dateStart.setMilliseconds(0);
       }
-    } else {
-      // new end date
-      this.set('model.entryInstance.date_end', new Date());
-      dateEnd = this.get('model.entryInstance.date_end');
-      dateEnd.setHours(0);
-      dateEnd.setMinutes(0);
-      dateEnd.setMilliseconds(0);
-      this.send('setSameDay', true);
-    }
+      var dateEnd = this.get('model.entryInstance.date_end');
+      if(dateEnd) {
+        // check if end date and start are equal, then show same day label
+        const day = dateEnd.getDate();
+        const month = dateEnd.getMonth();
+        const year = dateEnd.getFullYear();
+        const dateStartObject = this.get('model.entryInstance.date_start');
+        if(day === dateStartObject.getDate() && month === dateStartObject.getMonth() && year === dateStartObject.getFullYear()) {
+          this.send('setSameDay', true);
+        } else {
+          this.send('setSameDay', false);
+        }
+      } else {
+          // new end date
+          this.set('model.entryInstance.date_end', new Date());
+          dateEnd = this.get('model.entryInstance.date_end');
+          dateEnd.setHours(0);
+          dateEnd.setMinutes(0);
+          dateEnd.setMilliseconds(0);
+          this.send('setSameDay', true);
+      }
 
-    // set inital values for start time and end time attributes
-    var has_time_start = this.get('model.entryInstance.has_time_start');
-    if(has_time_start) {
-      this.set('showStartTime', true);
-      this.set('startTimeIconState', 'delete_forever');
-      this.set('startTimeButtonColor', 'red');
-    } else {
-      this.set('showStartTime', false);
-      this.set('startTimeIconState', 'alarm');
-    }
-    var has_time_end = this.get('model.entryInstance.has_time_end');
-    if(has_time_end) {
-      this.set('showEndTime', true);
-      this.set('endTimeIconState', 'delete_forever');
-      this.set('endTimeButtonColor', 'red');
-    } else {
-      this.set('showEndTime', false);
-      this.set('endTimeIconState', 'alarm');
+      // set inital values for start time and end time attributes
+      var has_time_start = this.get('model.entryInstance.has_time_start');
+      if(has_time_start) {
+        this.set('showStartTime', true);
+        this.set('startTimeIconState', 'delete_forever');
+        this.set('startTimeButtonColor', 'red');
+      } else {
+        this.set('showStartTime', false);
+        this.set('startTimeIconState', 'alarm');
+      }
+      var has_time_end = this.get('model.entryInstance.has_time_end');
+      if(has_time_end) {
+        this.set('showEndTime', true);
+        this.set('endTimeIconState', 'delete_forever');
+        this.set('endTimeButtonColor', 'red');
+      } else {
+        this.set('showEndTime', false);
+        this.set('endTimeIconState', 'alarm');
+      }
     }
   },
   actions: {
