@@ -142,7 +142,7 @@ export default Ember.Component.extend({
 
       // show label for same day on end date, if end date and start date are equal
       const startDateObject = this.get('model.entryInstance.date_start');
-      if (day === startDateObject.getDate() && month === startDateObject.getMonth() && year == startDateObject.getFullYear()) {
+      if (day === startDateObject.getDate() && month === startDateObject.getMonth() && year === startDateObject.getFullYear()) {
         this.send('setSameDay', true);
       } else {
         this.send('setSameDay', false);
