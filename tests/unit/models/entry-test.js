@@ -1,8 +1,8 @@
 import { moduleForModel, test } from 'ember-qunit';
 
-moduleForModel('contactable', 'Unit | Model | contactable', {
+moduleForModel('entry', 'Unit | Model | entry', {
   // Specify the other units that are required for this test.
-  needs: []
+  needs: ['model:category', 'model:contact-info', 'model:annotation', 'model:location']
 });
 
 test('it exists', function(assert) {

@@ -1,0 +1,39 @@
+.loading{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    background-color: inherit;
+
+  .loading-container{
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: center;
+
+      width: auto;
+      margin: 0 auto;
+    }
+
+    .afeefa-logo{
+    }
+
+    .loading-hint{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: center;
+      width: 90%;
+    }
+
+    .loading-spin{
+      position: relative;
+      width: 25%;
+    }
+
+    .loading-text{
+      width: 75%;
+      text-align: center;
+      color:grey;
+    }
+}

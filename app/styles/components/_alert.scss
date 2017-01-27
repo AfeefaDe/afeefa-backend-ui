@@ -13,7 +13,7 @@
   align-items: center;
   display: flex;
   transition: all 0.5s ease;
-
+  outline: 0;
   &--visible {
     top: ($header-height*1.1);
     opacity: 1;
@@ -52,8 +52,6 @@
     white-space: pre-wrap;
   }
 }
-
-/*@todo: change icon*/
 $alert-border-width: 7px;
 .alert--error {
   border-left: $alert-border-width solid $red;
@@ -61,5 +59,3 @@ $alert-border-width: 7px;
 .alert--success {
   border-left: $alert-border-width solid $green;
 }
-
-

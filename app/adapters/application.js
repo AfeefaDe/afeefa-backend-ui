@@ -11,9 +11,13 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
   /*
    * Debug helper: print URL for every API requst running through this adapter
    */
+  ajax: function() {
+    console.log('Request', Array.prototype.slice.call(arguments, 0)[0]);
+    return this._super(...arguments);
+  },
   buildURL: function() {
     let url = this._super(...arguments);
-    console.log("make API request to: "+url);
+    // console.log("make API request to: "+url);
     return url;
   },
   pathForType(modelName) {

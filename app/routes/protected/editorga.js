@@ -1,16 +1,17 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
+import CancelEditMixin from '../../mixins/cancel-edit-entry-route';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(CancelEditMixin, {
   model(params) {
     const entryInstance = this.store.peekRecord('orga', params.orga_id);
-    const locationInstance = entryInstance.get('locations').then((locations)=> {
-       return locations.get('firstObject');
+    const locationInstance = entryInstance.get('locations').then((locations) => {
+       return locations.get('firstObject') || this.store.createRecord('location'); // fallback if no location has been received
     });
-    const contactInfoInstance = entryInstance.get('contactInfos').then((contactInfos)=> {
-       return contactInfos.get('firstObject');
+    const contactInfoInstance = entryInstance.get('contactInfos').then((contactInfos) => {
+       return contactInfos.get('firstObject') || this.store.createRecord('contactInfo'); // fallback if no contact info has been received
     });
-    const annotationInstance = entryInstance.get('annotations').then((annotations)=> {
+    const annotationInstance = entryInstance.get('annotations').then((annotations) => {
        return annotations.get('firstObject');
     });
 

@@ -1,24 +1,74 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
+const alertData = {title: 'Erfolgreich gespeichert' , description: 'Dein Eintrag wurde erfolgreich angelegt.', isError: true, autoHide: true};
+
 moduleForComponent('global-alert', 'Integration | Component | global alert', {
-  integration: true
+  integration: true,
+   beforeEach: function () {
+    this.inject.service('event-bus', {as: 'EventBus'});
+  }
 });
 
 test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
+  assert.equal(this.$().text().trim(), 'menu');
+});
 
-  this.render(hbs`{{global-alert}}`);
+test('it shows the alert data on showAlert action', function(assert) {
+  this.render(hbs`{{global-alert EventBus=EventBus}}`);
+  const {title, description, isError} = alertData;
+  /* show alert*/
+  Ember.run(() => {
+    this.get('EventBus').publish('showAlert', alertData);
+  });
+  /*assertions*/
+  assert.equal(this.$('.alert__contentTitle').text().trim(), title);
+  assert.equal(this.$('.alert__contentDescription').text().trim(), description);
+  let iconText = (isError ? 'error_outline' : 'check');
+  assert.equal(this.$('.alert__stateIcon').text().trim(), iconText);
+  assert.equal(this.$('.alert').hasClass('alert--visible'), true);
+});
 
-  assert.equal(this.$().text().trim(), '');
+test('it hides on click', function(assert) {
+  this.render(hbs`{{global-alert EventBus=EventBus}}`);
+  Ember.run(() => {
+    this.get('EventBus').publish('showAlert', alertData);
+  });
+  assert.equal(this.$('.alert').hasClass('alert--visible'), true);
+  this.$('.alert').click();
+  assert.equal(this.$('.alert').hasClass('alert--invisible'), true);
+});
 
-  // Template block usage:
-  this.render(hbs`
-    {{#global-alert}}
-      template block text
-    {{/global-alert}}
-  `);
+test('it hides using the autoHide option', function(assert) {
+  this.render(hbs`{{global-alert EventBus=EventBus}}`);
+  let customAlertData = alertData;
+  let interval = 10;
+  customAlertData.autoHide = interval;
 
-  assert.equal(this.$().text().trim(), 'template block text');
+  Ember.run(() => {
+    this.get('EventBus').publish('showAlert', alertData);
+  });
+  assert.equal(this.$('.alert').hasClass('alert--visible'), true);
+  var autohideDone = assert.async();
+  setTimeout(function() {
+    assert.equal(this.$('.alert').hasClass('alert--invisible'), true);
+    autohideDone();
+  }, interval);
+});
+
+test('it closes the dialog on ESC', function(assert) {
+  this.render(hbs`{{global-alert EventBus=EventBus}}`);
+  Ember.run(() => {
+    this.get('EventBus').publish('showAlert', alertData);
+  });
+  assert.equal(this.$('.alert').hasClass('alert--visible'), true);
+  /* simulate click*/
+  var e = $.Event('keydown');
+  e.keyCode = 20; /* NOT ESC*/
+  assert.equal(this.$('.alert').hasClass('alert--visible'), true);
+  e.keyCode = 27; /* ESC */
+  this.$('.alert').trigger(e);
+  assert.equal(this.$('.alert').hasClass('alert--invisible'), true);
 });
