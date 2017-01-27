@@ -1,6 +1,11 @@
-<section class="header">
-  {{afeefa-navigation user=model.user}}
+<section class="header hideDesktop">
+  {{afeefa-navigation user=model.user navigation=navigation}}
 </section>
 <section class="content">
-{{outlet}}
+  <section class="content__sidebar">
+    {{navigation-sidebar model=model}}
+  </section>
+  <section class="content__main">
+    {{outlet}}
+  </section>
 </section>

@@ -1,16 +1,6 @@
 <navigation>
-  <div id="breadcrumb">
-    {{#each pathNavigation as |path index|}}
-      {{#unless (eq index 0)}}
-        <i class="material-icons">chevron_right</i>
-      {{/unless}}
-      {{#if path.route}}
-        {{#link-to path.route}}{{path.title}}{{/link-to}}
-      {{else}}
-        <span>{{path.title}}</span>
-      {{/if}}
-    {{/each}}
-  </div>
+
+  {{navigation-breadcrumb}}
 
   <div {{action 'toggleMenu' instance}} id="btn-sandwich">
 		<i class="material-icons">menu</i>
