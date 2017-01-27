@@ -1,6 +1,6 @@
 <ul class="entryDetail">
   {{#each attr as |attribute|}}
-    {{#if (hasAttribute (get model attribute.name))}}
+    {{#if (has-attribute (get model attribute.name))}}
       {{#unless attribute.hide}}
         <li>
         <span class="entryDetail__meta">{{attribute.name}}:</span>
@@ -18,21 +18,21 @@
     {{/if}}
   {{/each}}
 
-  {{#if (hasAttribute model.category)}}
+  {{#if (has-attribute model.category)}}
   <li>
     <span class="entryDetail__meta">Kategorie:</span>
     <span>{{get model.category "title"}}</span>
   </li>
   {{/if}}
 
-  {{#if (hasAttribute model.category)}}
+  {{#if (has-attribute model.category)}}
   <li>
     <span class="entryDetail__meta">Unterkategorie:</span>
     <span>{{get model.subCategory "title"}}</span>
   </li>
   {{/if}}
 
-  {{#if (hasAttribute model.locations)}}
+  {{#if (has-attribute model.locations)}}
     <h2>Ort</h2>
     <li>
     {{#each model.locations as |location|}}
@@ -40,7 +40,7 @@
     {{/each}}
     </li>
   {{/if}}
-  {{#if (hasAttribute model.contactInfos)}}
+  {{#if (has-attribute model.contactInfos)}}
     <h2>Kontaktinformation</h2>
     <li>
     {{#each model.contactInfos as |contactInfo|}}
@@ -61,7 +61,7 @@
       {{annotation-tag instance=annotation}}
     {{/each}}
   {{/if}}
-  {{#if (hasAttribute model.active)}}
+  {{#if (has-attribute model.active)}}
   <h2>Status</h2>
   <li class="nowrap">
   <span class="entryDetail__meta">Status ändern:</span>
