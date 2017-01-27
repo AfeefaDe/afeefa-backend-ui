@@ -28,6 +28,7 @@ test('it shows the alert data on showAlert action', function(assert) {
   assert.equal(this.$('.alert__contentDescription').text().trim(), description);
   let iconText = (isError ? 'error_outline' : 'check');
   assert.equal(this.$('.alert__stateIcon').text().trim(), iconText);
+  assert.equal(this.$('.alert').hasClass('alert--visible'), true);
 });
 
 test('it hides on click', function(assert) {
@@ -35,30 +36,39 @@ test('it hides on click', function(assert) {
   Ember.run(() => {
     this.get('EventBus').publish('showAlert', alertData);
   });
-  assert.equal(this.$('.alert--invisible').length, 0);
-  assert.equal(this.$('.alert--visible').length, 1);
+  assert.equal(this.$('.alert').hasClass('alert--visible'), true);
   this.$('.alert').click();
-  assert.equal(this.$('.alert--invisible').length, 1);
-  assert.equal(this.$('.alert--visible').length, 0);
+  assert.equal(this.$('.alert').hasClass('alert--invisible'), true);
 });
 
 test('it hides using the autoHide option', function(assert) {
   this.render(hbs`{{global-alert EventBus=EventBus}}`);
   let customAlertData = alertData;
-  let interval = 100;
+  let interval = 10;
   customAlertData.autoHide = interval;
 
   Ember.run(() => {
     this.get('EventBus').publish('showAlert', alertData);
   });
-
-  assert.equal(this.$('.alert--invisible').length, 0);
-  assert.equal(this.$('.alert--visible').length, 1);
-
+  assert.equal(this.$('.alert').hasClass('alert--visible'), true);
   var autohideDone = assert.async();
   setTimeout(function() {
-    assert.equal(this.$('.alert--invisible').length, 1);
-    assert.equal(this.$('.alert--visible').length, 0);
+    assert.equal(this.$('.alert').hasClass('alert--invisible'), true);
     autohideDone();
   }, interval);
+});
+
+test('it closes the dialog on ESC', function(assert) {
+  this.render(hbs`{{global-alert EventBus=EventBus}}`);
+  Ember.run(() => {
+    this.get('EventBus').publish('showAlert', alertData);
+  });
+  assert.equal(this.$('.alert').hasClass('alert--visible'), true);
+  /* simulate click*/
+  var e = $.Event('keydown');
+  e.keyCode = 20; /* NOT ESC*/
+  assert.equal(this.$('.alert').hasClass('alert--visible'), true);
+  e.keyCode = 27; /* ESC */
+  this.$('.alert').trigger(e);
+  assert.equal(this.$('.alert').hasClass('alert--invisible'), true);
 });

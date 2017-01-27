@@ -83,7 +83,7 @@ test('it triggers the appropriate service actions on button click', function(ass
   assert.ok(no.notCalled, 'no not called');
   assert.ok(cancel.calledOnce, 'cancel called');
 
-  assert.equal($('body').get(0), document.activeElement);
+  assert.equal(document.activeElement, $('body').get(0));
 
   cancel.reset();
 });
@@ -108,5 +108,5 @@ test('it closes the dialog on ESC', function(assert) {
   assert.ok(cancel.calledOnce, 'cancel called after escape');
 
   // focus removed
-  assert.equal($('body').get(0), document.activeElement);
+  assert.equal(document.activeElement, $('body').get(0));
 });
