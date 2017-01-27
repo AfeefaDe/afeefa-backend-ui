@@ -50,12 +50,16 @@
   {{/if}}
 
   {{#if model.annotations}}
-    <h2>Anmerkung</h2>
-    <li class="annotationArea">
+    <h2>
+      {{#if (eq model.annotations.length 1)}}
+      Anmerkung
+      {{else}}
+      Anmerkungen
+      {{/if}}
+    </h2>
     {{#each model.annotations as |annotation|}}
       {{annotation-tag instance=annotation}}
     {{/each}}
-    </li>
   {{/if}}
   {{#if (hasAttribute model.active)}}
   <h2>Status</h2>
