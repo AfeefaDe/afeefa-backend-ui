@@ -151,10 +151,10 @@ test('rollback on existing event works', function(assert) {
     assert.equal(mixin.get('model.entryInstance').currentState.stateName, 'root.loaded.updated.uncommitted');
 
     assert.strictEqual(mixin.get('model.locationInstance.city'), 'new city');
-    assert.equal(mixin.get('model.entryInstance.isNew'), false);
-    assert.equal(mixin.get('model.entryInstance.hasDirtyAttributes'), true);
-    assert.equal(mixin.get('model.entryInstance.dirtyType'), 'updated');
-    assert.equal(mixin.get('model.entryInstance').currentState.stateName, 'root.loaded.updated.uncommitted');
+    assert.equal(mixin.get('model.locationInstance.isNew'), false);
+    assert.equal(mixin.get('model.locationInstance.hasDirtyAttributes'), true);
+    assert.equal(mixin.get('model.locationInstance.dirtyType'), 'updated');
+    assert.equal(mixin.get('model.locationInstance').currentState.stateName, 'root.loaded.updated.uncommitted');
 
     assert.strictEqual(mixin.get('model.contactInfoInstance.contactPerson'), 'new person');
     assert.equal(mixin.get('model.contactInfoInstance.isNew'), false);
