@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { parseDate } from "ember-data/-private/ext/date";
 
 export default Ember.Mixin.create({
 
@@ -22,7 +23,6 @@ export default Ember.Mixin.create({
   },
 
   serializeRecord(obj) {
-
     if (!obj) {
       return null;
     }
@@ -41,9 +41,7 @@ export default Ember.Mixin.create({
 
     // do not allow embedded relationships
     delete serialized.data.relationships;
-
     return serialized.data;
-
   },
 
   serializeHasMany() {
@@ -56,19 +54,29 @@ export default Ember.Mixin.create({
     this.serializeRelationship(...arguments);
   },
 
+  updateRecordAttribtutes(store, record, json) {
+    record.eachAttribute((name, meta) => {
+      const jsonKey = this.keyForAttribute(name);
+      if (json.attributes.hasOwnProperty(jsonKey)) {
+        let value = json.attributes[jsonKey];
+        if (meta.type === 'number') {
+          value = parseFloat(value);
+        }
+        if (meta.type === 'date') {
+          value = new Date(parseDate(value));
+        }
+        if (meta.type === 'boolean') {
+          value = JSON.parse(value);
+        }
+        record.set(name, value);
+      }
+    });
+  },
+
   updateRecord(json, store) {
     if (!json.attributes) {
       // return non-attribute (id/type only) JSON intact
       return json;
-    }
-
-    function updateWithServerResponse(record, json) {
-      record.eachAttribute(function(name, meta) {
-        const jsonKey = Ember.String.dasherize(name);
-        if (json.attributes.hasOwnProperty(jsonKey)) {
-          record.set(name, json.attributes[jsonKey]);
-        }
-      });
     }
 
     // update created records
@@ -79,7 +87,7 @@ export default Ember.Mixin.create({
 
       if (record) {
         record.set('id', json.id);
-        updateWithServerResponse(record, json);
+        this.updateRecordAttribtutes(store, record, json);
         record._internalModel.flushChangedAttributes();
         record._internalModel.adapterWillCommit();
         store.didSaveRecord(record._internalModel);
@@ -90,7 +98,7 @@ export default Ember.Mixin.create({
       const record = store.peekRecord(json.type, json.id);
 
       if (record) {
-        updateWithServerResponse(record, json);
+        this.updateRecordAttribtutes(store, record, json);
         record._internalModel.flushChangedAttributes();
         record._internalModel.adapterWillCommit();
         store.didSaveRecord(record._internalModel);
@@ -124,6 +132,8 @@ export default Ember.Mixin.create({
         relationshipData = this.updateRecord(relationshipData, store);
       }
     });
+
+    this.updateRecordAttribtutes(store, model, response.data);
 
     return this._super(store, model, response);
   }

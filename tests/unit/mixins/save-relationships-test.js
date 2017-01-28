@@ -7,7 +7,7 @@ import SaveRelationshipsMixin from 'afeefa-backend-ui/mixins/save-relationships'
 
 let owner, store;
 
-QUnit.dump.maxDepth = 2;
+QUnit.dump.maxDepth = 8;
 
 function getInternalId(model) {
   return model.get('_internalModel')[Ember.GUID_KEY];
@@ -48,7 +48,14 @@ moduleFor('mixin:save-relationships', 'Unit | Mixin | save relationships', {
     }));
 
     // define serializers
-    owner.register('serializer:artist', DS.JSONAPISerializer.extend(SaveRelationshipsMixin, {
+    const appSerializer = DS.JSONAPISerializer.extend({
+      keyForAttribute: function(key) {
+        return Ember.String.underscore(key);
+      },
+    });
+    owner.register('serializer:application', appSerializer);
+
+    owner.register('serializer:artist', appSerializer.extend(SaveRelationshipsMixin, {
       attrs: {
         albums: { serialize: true },
         label: { serialize: true }
@@ -76,7 +83,7 @@ test("serialize artist with missing relations", function(assert) {
         type: 'artists',
         attributes: {
           name: 'Radiohead',
-          'num-awards': null
+          'num_awards': null
         },
         relationships: {
           albums: {
@@ -109,7 +116,7 @@ test("serialize artist with new albums and label", function(assert) {
         type: 'artists',
         attributes: {
           name: 'Radiohead',
-          'num-awards': null
+          'num_awards': null
         },
         relationships: {
           albums: {
@@ -119,7 +126,7 @@ test("serialize artist with new albums and label", function(assert) {
                 attributes: {
                   __id__: getInternalId(album1),
                   title: 'Amnesiac',
-                  'num-tracks': null
+                  num_tracks: null
                 }
               },
               {
@@ -127,7 +134,7 @@ test("serialize artist with new albums and label", function(assert) {
                 attributes: {
                   __id__: getInternalId(album2),
                   title: 'The King of Limbs',
-                  'num-tracks': null
+                  num_tracks: null
                 }
               }
             ]
@@ -151,8 +158,8 @@ test("serialize artist with new albums and label", function(assert) {
 
 test("serialize artist with existing albums and label", function(assert) {
   Ember.run(function() {
-    const artist = createRecord('artist', { name: 'Radiohead' });
-    const album1 = createRecord('album', { title: 'Amnesiac' }, 1);
+    const artist = createRecord('artist', { name: 'Radiohead', numAwards: 3 });
+    const album1 = createRecord('album', { title: 'Amnesiac', numTracks: 5 }, 1);
     const album2 = createRecord('album', { title: 'The King of Limbs' }, 2);
     const label = createRecord('label', { name: 'Capitol Records' }, 1);
     artist.get('albums').pushObjects([album1, album2]);
@@ -166,7 +173,7 @@ test("serialize artist with existing albums and label", function(assert) {
         type: 'artists',
         attributes: {
           name: 'Radiohead',
-          'num-awards': null
+          'num_awards': 3
         },
         relationships: {
           albums: {
@@ -176,7 +183,7 @@ test("serialize artist with existing albums and label", function(assert) {
                 type: 'albums',
                 attributes: {
                   title: 'Amnesiac',
-                  'num-tracks': null
+                  num_tracks: 5
                 }
               },
               {
@@ -184,7 +191,7 @@ test("serialize artist with existing albums and label", function(assert) {
                 type: 'albums',
                 attributes: {
                   title: 'The King of Limbs',
-                  'num-tracks': null
+                  num_tracks: null
                 }
               }
             ]
@@ -221,7 +228,7 @@ test("serialize artist with existing and new albums", function(assert) {
         type: 'artists',
         attributes: {
           name: 'Radiohead',
-          'num-awards': null
+          'num_awards': null
         },
         relationships: {
           albums: {
@@ -231,7 +238,7 @@ test("serialize artist with existing and new albums", function(assert) {
                 type: 'albums',
                 attributes: {
                   title: 'Amnesiac',
-                  'num-tracks': 10
+                  num_tracks: 10
                 }
               },
               {
@@ -239,7 +246,7 @@ test("serialize artist with existing and new albums", function(assert) {
                 attributes: {
                   __id__: getInternalId(album2),
                   title: 'The King of Limbs',
-                  'num-tracks': null
+                  num_tracks: null
                 }
               }
             ]
@@ -292,6 +299,66 @@ test("serialize relationship with no attributes", function(assert) {
 });
 
 
+test("serialize different attribute types", function(assert) {
+  owner.register('model:user', DS.Model.extend({
+    name: DS.attr('string'),
+    active: DS.attr('boolean'),
+    age: DS.attr('number'),
+    date: DS.attr('date'),
+    friend: DS.belongsTo('user', { inverse: null }),
+  }));
+
+  owner.register('serializer:user', DS.JSONAPISerializer.extend(SaveRelationshipsMixin, {
+    attrs: {
+      friend: { serialize: true }
+    }
+  }));
+
+  Ember.run(function() {
+    const user = store.createRecord('user');
+    user.set('name', 'User');
+    user.set('active', true);
+    user.set('age', 24);
+    user.set('date', new Date(2017, 1, 28));
+
+    const friend = store.createRecord('user');
+    friend.set('name', 'Friend');
+    friend.set('active', false);
+    friend.set('age', 52);
+    friend.set('date', new Date(2017, 6, 1));
+
+    user.set('friend', friend);
+
+    const serializer = store.serializerFor("user");
+    const json = serializer.serialize(user._createSnapshot());
+
+    assert.deepEqual(json, { data: {
+      type: 'users',
+      attributes: {
+        name: 'User',
+        active: true,
+        age: 24,
+        date: new Date(2017, 1, 28).toISOString()
+      },
+      relationships: {
+        friend: {
+          data: {
+            type: 'users',
+            attributes: {
+              name: 'Friend',
+              active: false,
+              age: 52,
+              date: new Date(2017, 6, 1).toISOString(),
+              __id__: getInternalId(friend)
+            }
+          }
+        }
+      }
+    }});
+  });
+});
+
+
 test("serialize artist with label wich has many artists", function(assert) {
   Ember.run(function() {
     const artist = createRecord('artist', { name: 'Radiohead' }, 1);
@@ -310,7 +377,7 @@ test("serialize artist with label wich has many artists", function(assert) {
         type: 'artists',
         attributes: {
           name: 'Radiohead',
-          'num-awards': null
+          'num_awards': null
         },
         relationships: {
           albums: {
@@ -366,7 +433,7 @@ test("serialize artist with relation to another artist", function(assert) {
                 type: 'albums',
                 attributes: {
                   title: 'Amnesiac',
-                  'num-tracks': 2
+                  num_tracks: 2
                 }
               }
             ]
@@ -618,9 +685,9 @@ test("normalize artist with new and existing album", function(assert) {
 });
 
 
-test("normalize artist album and update to server data", function(assert) {
+test("normalize artist and album and update to server data", function(assert) {
   Ember.run(function() {
-    let artist = createRecord('artist', { name: 'Radiohead' });
+    let artist = createRecord('artist', { name: 'Radiohead', numAwards: 2 });
     let album1 = createRecord('album', { title: 'Amnesiac', numTracks: 10 });
     artist.get('albums').pushObject(album1);
 
@@ -631,7 +698,7 @@ test("normalize artist album and update to server data", function(assert) {
         id: '1',
         type: 'artists',
         attributes: {
-          name: 'Radiohead'
+          name: 'Pixies'
         },
         relationships: {
           albums: {
@@ -641,7 +708,7 @@ test("normalize artist album and update to server data", function(assert) {
                 type: 'albums',
                 attributes: {
                   title: "Amnesiac New Version",
-                  'num-tracks': 5,
+                  num_tracks: 5,
                   __id__: getInternalId(album1)
                 }
               },
@@ -662,6 +729,9 @@ test("normalize artist album and update to server data", function(assert) {
     assert.equal(album1.get('currentState.stateName'), "root.loaded.created.uncommitted");
 
     serializer.normalizeResponse(store, artist, serverJSON, '1', 'createRecord');
+
+    assert.equal(artist.get('name'), 'Pixies');
+    assert.equal(artist.get('numAwards'), 2);
 
     assert.equal(store.peekAll('album').get('length'), 1);
     album1 = store.peekAll('album').get('firstObject');
@@ -690,7 +760,8 @@ test("normalize artist album updates to server data (dasherized attribute)", fun
         id: '1',
         type: 'artists',
         attributes: {
-          name: 'Radiohead'
+          name: 'Radiohead',
+          num_awards: 5
         },
         relationships: {
           albums: {
@@ -699,7 +770,7 @@ test("normalize artist album updates to server data (dasherized attribute)", fun
                 id: "2211",
                 type: 'albums',
                 attributes: {
-                  'num-tracks': 5,
+                  num_tracks: 5,
                   __id__: getInternalId(album1)
                 }
               }
@@ -710,6 +781,9 @@ test("normalize artist album updates to server data (dasherized attribute)", fun
     };
 
     serializer.normalizeResponse(store, artist, serverJSON, '1', 'createRecord');
+
+    assert.equal(artist.get('name'), 'Radiohead');
+    assert.equal(artist.get('numAwards'), 5);
 
     album1 = artist.get('albums.firstObject');
     assert.equal(album1.get('id'), "2211");
@@ -719,13 +793,11 @@ test("normalize artist album updates to server data (dasherized attribute)", fun
 });
 
 
-test("normalize artist does only set defined attributes", function(assert) {
+test("normalize artist album updates to server data (dasherized attribute)", function(assert) {
   Ember.run(function() {
     let artist = createRecord('artist', { name: 'Radiohead' });
-    let album1 = createRecord('album', { title: 'Amnesiac' });
-    let album2 = createRecord('album', { title: 'The King of Limbs', numTracks: 5 }, 456);
-    album2.send('pushedData');
-    artist.get('albums').pushObjects([album1, album2]);
+    let album1 = createRecord('album', { title: 'Amnesiac', numTracks: 10 });
+    artist.get('albums').pushObject(album1);
 
     const serializer = store.serializerFor("artist");
 
@@ -734,25 +806,18 @@ test("normalize artist does only set defined attributes", function(assert) {
         id: '1',
         type: 'artists',
         attributes: {
-          name: 'Radiohead'
+          name: 'Radiohead',
+          num_awards: 5
         },
         relationships: {
           albums: {
             data: [
               {
-                id: "89329",
+                id: "2211",
                 type: 'albums',
                 attributes: {
-                  'num-tracks': 9,
-                  year: 2004,
+                  num_tracks: 5,
                   __id__: getInternalId(album1)
-                }
-              },
-              {
-                id: "456",
-                type: 'albums',
-                attributes: {
-                  title: "The King of Limbs Remix"
                 }
               }
             ]
@@ -763,62 +828,52 @@ test("normalize artist does only set defined attributes", function(assert) {
 
     serializer.normalizeResponse(store, artist, serverJSON, '1', 'createRecord');
 
-    assert.equal(store.peekAll('album').get('length'), 2);
+    assert.equal(artist.get('name'), 'Radiohead');
+    assert.equal(artist.get('numAwards'), 5);
 
-    album1 = store.peekAll('album').get('firstObject');
-    assert.equal(album1.get('id'), "89329");
+    album1 = artist.get('albums.firstObject');
+    assert.equal(album1.get('id'), "2211");
     assert.equal(album1.get("title"), "Amnesiac");
-    assert.equal(album1.get("numTracks"), "9");
-    assert.equal(album1.get("year"), undefined);
-
-    album2 = store.peekAll('album').objectAt(1);
-    assert.equal(album2.get('id'), "456");
-    assert.equal(album2.get("title"), "The King of Limbs Remix");
-    assert.equal(album2.get("numTracks"), "5");
-    assert.equal(album2.get("year"), undefined);
+    assert.equal(album1.get("numTracks"), 5);
   });
 });
 
 
-test("normalize album belongs-to artist", function(assert) {
-
-  owner.register('serializer:artist', DS.JSONAPISerializer.extend(SaveRelationshipsMixin, {
-    attrs: {
-      albums: { serialize: false }
-    }
+test("normalize different attribute types", function(assert) {
+  owner.register('model:user', DS.Model.extend({
+    name: DS.attr('string'),
+    active: DS.attr('boolean'),
+    age: DS.attr('number'),
+    date: DS.attr('date'),
+    friend: DS.belongsTo('user', { inverse: null }),
   }));
-
-  owner.register('serializer:album', DS.JSONAPISerializer.extend(SaveRelationshipsMixin, {
-    attrs: {
-      artist: { serialize: true }
-    }
-  }));
-
-  const serializer = store.serializerFor("album");
-  let albumJSON;
 
   Ember.run(function() {
+    let user = createRecord('user', {}, 1);
+    let friend = createRecord('user', {}, 2);
 
-    const artist = store.createRecord('artist', { name: "Radiohead" });
-    const album = store.createRecord('album', { name: "Kid A", artist });
+    const serializer = store.serializerFor("artist");
 
-    albumJSON = serializer.serialize(album._createSnapshot());
-
-    const internalId = albumJSON.data.relationships.artist.data.attributes.__id__;
-
-    const serverJSON = { data:
-      {
-        id: "1",
-        type: 'albums',
-        attributes: { name: "Kid A"},
+    const serverJSON = {
+      data: {
+        id: 1,
+        type: 'users',
+        attributes: {
+          name: 'User',
+          active: true,
+          age: 24,
+          date: new Date(2017, 1, 28).toISOString()
+        },
         relationships: {
-          artists: {
+          friend: {
             data: {
-              id: "1",
-              type: "artists",
+              id: 2,
+              type: 'users',
               attributes: {
-                name: "Radiohead XXXX",
-                __id__: internalId
+                name: 'Friend',
+                active: 'false',
+                age: '52.5',
+                date: new Date(2017, 6, 1).toISOString()
               }
             }
           }
@@ -826,12 +881,23 @@ test("normalize album belongs-to artist", function(assert) {
       }
     };
 
-    serializer.normalizeResponse(store, album, serverJSON, '1', 'createRecord');
+    serializer.normalizeResponse(store, user, serverJSON, '1', 'createRecord');
 
+    assert.equal(store.peekAll('user').get('length'), 2);
+
+    user = store.peekRecord('user', 1);
+    assert.equal(user.get('name'), 'User');
+    assert.strictEqual(user.get('active'), true);
+    // assert.ok(10 instanceof Number);
+    assert.strictEqual(user.get('age'), 24);
+    assert.ok(user.get('date') instanceof Date);
+    assert.deepEqual(user.get('date'), new Date(2017, 1, 28));
+
+    friend = store.peekRecord('user', 2);
+    assert.equal(friend.get('name'), 'Friend');
+    assert.strictEqual(friend.get('active'), false);
+    assert.strictEqual(friend.get('age'), 52.5);
+    assert.ok(friend.get('date') instanceof Date);
+    assert.deepEqual(friend.get('date'), new Date(2017, 6, 1));
   });
-
-  // should NOT update name
-  const firstAlbum = store.peekAll('album').findBy("name", "Kid A");
-  assert.equal(firstAlbum.get('artist.name'), "Radiohead XXXX");
-
 });
