@@ -1,24 +1,23 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import fixtures from 'afeefa-backend-ui/tests/helpers/fixtures';
 
 moduleForComponent('date-picker', 'Integration | Component | date picker', {
-  integration: true
+  integration: true,
+
+  beforeEach () {
+    this.inject.service('store');
+  }
 });
 
 test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  Ember.run(() => {
+    const store = this.get('store');
+    this.set('model', fixtures.setupEvent(store));
 
-  this.render(hbs`{{date-picker}}`);
+    this.render(hbs`{{date-picker model=model}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#date-picker}}
-      template block text
-    {{/date-picker}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+    assert.equal(this.$('button').eq(0).text().trim(), 'event');
+  });
 });
