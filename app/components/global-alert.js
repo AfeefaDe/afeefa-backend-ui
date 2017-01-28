@@ -19,9 +19,11 @@ export default Ember.Component.extend({
     this.set('title', title);
     this.set('isError', isError);
     /*start autohide timer*/
-    if(autoHide) {
-      Ember.run.later((()=> {
-        this.send('closeAlert');
+    if (autoHide) {
+      Ember.run.later((() => {
+        if (this.get('visible')) {
+          this.send('closeAlert');
+        }
       }), autoHide);
     }
   },
@@ -40,7 +42,6 @@ export default Ember.Component.extend({
    * escape triggers hides alert
    */
   keyDown: function (event) {
-    console.log("Keydown: ", event.keyCode);
     if (event.keyCode === 27) {
       this.send('closeAlert');
     }

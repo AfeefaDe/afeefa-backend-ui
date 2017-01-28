@@ -43,12 +43,12 @@ test('it hides on click', function(assert) {
 
 test('it hides using the autoHide option', function(assert) {
   this.render(hbs`{{global-alert EventBus=EventBus}}`);
-  let customAlertData = alertData;
+  let customAlertData = Object.assign({}, alertData);
   let interval = 10;
   customAlertData.autoHide = interval;
 
   Ember.run(() => {
-    this.get('EventBus').publish('showAlert', alertData);
+    this.get('EventBus').publish('showAlert', customAlertData);
   });
   assert.equal(this.$('.alert').hasClass('alert--visible'), true);
   var autohideDone = assert.async();
@@ -58,7 +58,7 @@ test('it hides using the autoHide option', function(assert) {
   }, interval);
 });
 
-test('it closes the dialog on ESC', function(assert) {
+test('it closes the alert on ESC', function(assert) {
   this.render(hbs`{{global-alert EventBus=EventBus}}`);
   Ember.run(() => {
     this.get('EventBus').publish('showAlert', alertData);
@@ -67,7 +67,9 @@ test('it closes the dialog on ESC', function(assert) {
   /* simulate click*/
   var e = $.Event('keydown');
   e.keyCode = 20; /* NOT ESC*/
+  this.$('.alert').trigger(e);
   assert.equal(this.$('.alert').hasClass('alert--visible'), true);
+
   e.keyCode = 27; /* ESC */
   this.$('.alert').trigger(e);
   assert.equal(this.$('.alert').hasClass('alert--invisible'), true);
