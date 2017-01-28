@@ -11,14 +11,5 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{navigation-sidebar}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#navigation-sidebar}}
-      template block text
-    {{/navigation-sidebar}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal('', '');
 });
