@@ -22,7 +22,7 @@ moduleForComponent('afeefa-navigation', 'Integration | Component | afeefa naviga
 test('it renders', function(assert) {
   this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
   assert.equal('menu', this.$('#btn-sandwich').text().trim());
-  assert.equal(0, this.$('#breadcrumb').children().length, 'no sub elements in path navigation');
+  assert.equal(0, this.$('.navigationBreadcrumb').children().length, 'no sub elements in path navigation');
   assert.strictEqual(undefined, this.$('#menu').html(), 'no menu shown initially');
 });
 
@@ -31,7 +31,7 @@ test('it updates on navigation service change', function(assert) {
   const navigationService = this.get('navigationService');
 
   this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
-  assert.equal(0, this.$('#breadcrumb').children().length);
+  assert.equal(0, this.$('.navigationBreadcrumb').children().length);
 
   this.stub(navigationService, 'getPathNavigation').returns([
     { route: 'protected.dashboard', title: 'Dashboard'},
@@ -42,7 +42,7 @@ test('it updates on navigation service change', function(assert) {
     navigationService.trigger('change');
   });
 
-  assert.equal(3, this.$('#breadcrumb').children().length); // two items and one chevron
+  assert.equal(this.$('.navigationBreadcrumb').children().length, 3); // two items and one chevron
 });
 
 
@@ -57,24 +57,24 @@ test('it shows the right items in path navigation', function(assert) {
 
   this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
 
-  assert.equal(5, this.$('#breadcrumb').children().length);
+  assert.equal(5, this.$('.navigationBreadcrumb').children().length);
 
-  assert.equal('A', this.$('#breadcrumb').children().eq(0).prop('tagName'));
-  assert.equal('Dashboard', this.$('#breadcrumb').children().eq(0).text());
-  assert.equal('/', this.$('#breadcrumb').children().eq(0).attr('href'));
+  assert.equal('A', this.$('.navigationBreadcrumb').children().eq(0).prop('tagName'));
+  assert.equal('Dashboard', this.$('.navigationBreadcrumb').children().eq(0).text());
+  assert.equal('/', this.$('.navigationBreadcrumb').children().eq(0).attr('href'));
 
-  assert.equal('I', this.$('#breadcrumb').children().eq(1).prop('tagName'));
-  assert.equal('chevron_right', this.$('#breadcrumb').children().eq(1).text());
+  assert.equal('I', this.$('.navigationBreadcrumb').children().eq(1).prop('tagName'));
+  assert.equal('chevron_right', this.$('.navigationBreadcrumb').children().eq(1).text());
 
-  assert.equal('A', this.$('#breadcrumb').children().eq(2).prop('tagName'));
-  assert.equal('Orgas', this.$('#breadcrumb').children().eq(2).text());
-  assert.equal('/orgas', this.$('#breadcrumb').children().eq(2).attr('href'));
+  assert.equal('A', this.$('.navigationBreadcrumb').children().eq(2).prop('tagName'));
+  assert.equal('Orgas', this.$('.navigationBreadcrumb').children().eq(2).text());
+  assert.equal('/orgas', this.$('.navigationBreadcrumb').children().eq(2).attr('href'));
 
-  assert.equal('I', this.$('#breadcrumb').children().eq(3).prop('tagName'));
-  assert.equal('chevron_right', this.$('#breadcrumb').children().eq(3).text());
+  assert.equal('I', this.$('.navigationBreadcrumb').children().eq(3).prop('tagName'));
+  assert.equal('chevron_right', this.$('.navigationBreadcrumb').children().eq(3).text());
 
-  assert.equal('SPAN', this.$('#breadcrumb').children().eq(4).prop('tagName'));
-  assert.equal('Anzeigen', this.$('#breadcrumb').children().eq(4).text());
+  assert.equal('SPAN', this.$('.navigationBreadcrumb').children().eq(4).prop('tagName'));
+  assert.equal('Anzeigen', this.$('.navigationBreadcrumb').children().eq(4).text());
 });
 
 
