@@ -5,7 +5,7 @@ import test from 'ember-sinon-qunit/test-support/test';
 import DS from 'ember-data';
 import SaveRelationshipsMixin from 'afeefa-backend-ui/mixins/save-relationships';
 
-let owner, store;
+let owner, store, Artist;
 
 QUnit.dump.maxDepth = 8;
 
@@ -28,12 +28,13 @@ moduleFor('mixin:save-relationships', 'Unit | Mixin | save relationships', {
 
     // define models
 
-    owner.register('model:artist', DS.Model.extend({
+    Artist = DS.Model.extend({
       name: DS.attr('string'),
       numAwards: DS.attr('number'),
       label: DS.belongsTo('label'),
       albums: DS.hasMany('album')
-    }));
+    });
+    owner.register('model:artist', Artist);
 
     owner.register('model:album', DS.Model.extend({
       title: DS.attr('string'),
@@ -455,7 +456,7 @@ test("serialize artist with relation to another artist", function(assert) {
 
 test("normalize artist with missing relations", function(assert) {
   Ember.run(function() {
-    let artist = createRecord('artist', { name: 'Radiohead' });
+    createRecord('artist', { name: 'Radiohead' }, 1);
 
     const serializer = store.serializerFor("artist");
 
@@ -475,7 +476,7 @@ test("normalize artist with missing relations", function(assert) {
       }
     };
 
-    serializer.normalizeResponse(store, artist, serverJSON, '1', 'createRecord');
+    serializer.normalizeResponse(store, Artist, serverJSON, '1', 'createRecord');
 
     assert.equal(store.peekAll('album').get('length'), 0);
     assert.equal(store.peekAll('label').get('length'), 0);
@@ -483,7 +484,7 @@ test("normalize artist with missing relations", function(assert) {
 });
 
 
-test("normalize artist with new album", function(assert) {
+test("normalize new artist", function(assert) {
   Ember.run(function() {
     let artist = createRecord('artist', { name: 'Radiohead' });
     let album1 = createRecord('album', { title: 'Amnesiac', numTracks: 10 });
@@ -493,10 +494,11 @@ test("normalize artist with new album", function(assert) {
 
     const serverJSON = {
       data: {
-        id: '1',
+        id: '1487',
         type: 'artists',
         attributes: {
-          name: 'Radiohead'
+          name: 'Radiohead22',
+          __id__: getInternalId(artist)
         },
         relationships: {
           albums: {
@@ -517,7 +519,13 @@ test("normalize artist with new album", function(assert) {
 
     assert.deepEqual(Object.keys(album1.changedAttributes()), ['title', 'numTracks']);
 
-    serializer.normalizeResponse(store, artist, serverJSON, '1', 'createRecord');
+    serializer.normalizeResponse(store, Artist, serverJSON, '1', 'createRecord');
+
+    assert.equal(store.peekAll('artist').get('length'), 1);
+    artist = store.peekAll('artist').findBy("name", "Radiohead22");
+    assert.deepEqual(Object.keys(artist.changedAttributes()), []);
+    assert.equal(artist.get('currentState.stateName'), "root.loaded.saved");
+    assert.equal(artist.get('id'), "1487");
 
     assert.equal(store.peekAll('album').get('length'), 1);
     album1 = store.peekAll('album').findBy("title", "Amnesiac");
@@ -562,7 +570,7 @@ test("normalize artist with new label", function(assert) {
     assert.deepEqual(Object.keys(label.changedAttributes()), ['name']);
     assert.equal(label.get('currentState.stateName'), "root.loaded.created.uncommitted");
 
-    serializer.normalizeResponse(store, artist, serverJSON, '1', 'createRecord');
+    serializer.normalizeResponse(store, Artist, serverJSON, '1', 'createRecord');
 
     assert.equal(store.peekAll('label').get('length'), 1);
     label = store.peekAll('label').findBy("name", "Cool Music Label");
@@ -608,7 +616,7 @@ test("normalize artist with existing label", function(assert) {
     assert.deepEqual(Object.keys(label.changedAttributes()), ['name']);
     assert.equal(label.get('currentState.stateName'), "root.loaded.created.uncommitted");
 
-    serializer.normalizeResponse(store, artist, serverJSON, '1', 'createRecord');
+    serializer.normalizeResponse(store, Artist, serverJSON, '1', 'createRecord');
 
     assert.equal(store.peekAll('label').get('length'), 1);
     label = store.peekRecord('label', 543);
@@ -667,7 +675,7 @@ test("normalize artist with new and existing album", function(assert) {
     assert.equal(album2.get('currentState.stateName'), "root.loaded.updated.uncommitted");
     assert.deepEqual(Object.keys(album2.changedAttributes()), ['title', 'numTracks']);
 
-    serializer.normalizeResponse(store, artist, serverJSON, '1', 'createRecord');
+    serializer.normalizeResponse(store, Artist, serverJSON, '1', 'createRecord');
 
     assert.equal(store.peekAll('album').get('length'), 2);
     album1 = store.peekAll('album').findBy("title", "Amnesiac");
@@ -687,7 +695,7 @@ test("normalize artist with new and existing album", function(assert) {
 
 test("normalize artist and album and update to server data", function(assert) {
   Ember.run(function() {
-    let artist = createRecord('artist', { name: 'Radiohead', numAwards: 2 });
+    let artist = createRecord('artist', { name: 'Radiohead', numAwards: 2 }, 1);
     let album1 = createRecord('album', { title: 'Amnesiac', numTracks: 10 });
     artist.get('albums').pushObject(album1);
 
@@ -728,7 +736,7 @@ test("normalize artist and album and update to server data", function(assert) {
     assert.deepEqual(Object.keys(album1.changedAttributes()), ['title', 'numTracks']);
     assert.equal(album1.get('currentState.stateName'), "root.loaded.created.uncommitted");
 
-    serializer.normalizeResponse(store, artist, serverJSON, '1', 'createRecord');
+    serializer.normalizeResponse(store, Artist, serverJSON, '1', 'createRecord');
 
     assert.equal(artist.get('name'), 'Pixies');
     assert.equal(artist.get('numAwards'), 2);
@@ -749,7 +757,7 @@ test("normalize artist and album and update to server data", function(assert) {
 
 test("normalize artist album updates to server data (dasherized attribute)", function(assert) {
   Ember.run(function() {
-    let artist = createRecord('artist', { name: 'Radiohead' });
+    let artist = createRecord('artist', { name: 'Radiohead' }, 1);
     let album1 = createRecord('album', { title: 'Amnesiac', numTracks: 10 });
     artist.get('albums').pushObject(album1);
 
@@ -780,53 +788,7 @@ test("normalize artist album updates to server data (dasherized attribute)", fun
       }
     };
 
-    serializer.normalizeResponse(store, artist, serverJSON, '1', 'createRecord');
-
-    assert.equal(artist.get('name'), 'Radiohead');
-    assert.equal(artist.get('numAwards'), 5);
-
-    album1 = artist.get('albums.firstObject');
-    assert.equal(album1.get('id'), "2211");
-    assert.equal(album1.get("title"), "Amnesiac");
-    assert.equal(album1.get("numTracks"), 5);
-  });
-});
-
-
-test("normalize artist album updates to server data (dasherized attribute)", function(assert) {
-  Ember.run(function() {
-    let artist = createRecord('artist', { name: 'Radiohead' });
-    let album1 = createRecord('album', { title: 'Amnesiac', numTracks: 10 });
-    artist.get('albums').pushObject(album1);
-
-    const serializer = store.serializerFor("artist");
-
-    const serverJSON = {
-      data: {
-        id: '1',
-        type: 'artists',
-        attributes: {
-          name: 'Radiohead',
-          num_awards: 5
-        },
-        relationships: {
-          albums: {
-            data: [
-              {
-                id: "2211",
-                type: 'albums',
-                attributes: {
-                  num_tracks: 5,
-                  __id__: getInternalId(album1)
-                }
-              }
-            ]
-          }
-        }
-      }
-    };
-
-    serializer.normalizeResponse(store, artist, serverJSON, '1', 'createRecord');
+    serializer.normalizeResponse(store, Artist, serverJSON, '1', 'createRecord');
 
     assert.equal(artist.get('name'), 'Radiohead');
     assert.equal(artist.get('numAwards'), 5);
@@ -840,13 +802,14 @@ test("normalize artist album updates to server data (dasherized attribute)", fun
 
 
 test("normalize different attribute types", function(assert) {
-  owner.register('model:user', DS.Model.extend({
+  const User = DS.Model.extend({
     name: DS.attr('string'),
     active: DS.attr('boolean'),
     age: DS.attr('number'),
     date: DS.attr('date'),
     friend: DS.belongsTo('user', { inverse: null }),
-  }));
+  });
+  owner.register('model:user', User);
 
   Ember.run(function() {
     let user = createRecord('user', {}, 1);
@@ -881,7 +844,7 @@ test("normalize different attribute types", function(assert) {
       }
     };
 
-    serializer.normalizeResponse(store, user, serverJSON, '1', 'createRecord');
+    serializer.normalizeResponse(store, User, serverJSON, '1', 'createRecord');
 
     assert.equal(store.peekAll('user').get('length'), 2);
 

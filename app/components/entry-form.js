@@ -16,37 +16,11 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
      */
 		save: function() {
       let entry = this.get('model.entryInstance');
-      //determine new or edit mode
       const isEditMode = entry.get('id');
-      // save start date in entry model
-      // if(entry.date_start || entry.date_start === null) {
-      //     this.set('model.entryInstance.date_start', this.get('dateStartObject'));
-      //     this.set('model.entryInstance.has_time_start', this.get('hasStartTime'));
-      // }
-      // // save end date in entry model
-      // if(entry.date_end || entry.date_end === null) {
-      //     this.set('model.entryInstance.date_end', this.get('dateEndObject'));
-      //     this.set('model.entryInstance.has_time_end', this.get('hasEndTime'));
-      // }
-
       entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
       entry.get('locations').pushObject(this.get('model.locationInstance'));
 
       entry.save().then(()=> {
-        // #66 hack to prevend "dirty"-dialog on save
-        const relations = ['contactInfoInstance', 'locationInstance'];
-        for (let relation of relations) {
-          let record = this.get(`model.${relation}`);
-          if (record.id) {
-            // http://stackoverflow.com/questions/13342250/how-to-manually-set-an-object-state-to-clean-saved-using-ember-data
-            Ember.assign(record._internalModel._data, record._internalModel._attributes);
-            record.send('pushedData');
-          } else {
-            record.rollbackAttributes();
-          }
-        }
-        // end #66 hack
-
         const alertData = {title: 'Erfolgreich gespeichert', description: 'Dein Eintrag wurde erfolgreich angelegt.', isError: false, autoHide: 3000};
         if(isEditMode) alertData.description = 'Deine Änderungen wurden erfolgreich gespeichert.';
         this.EventBus.publish('showAlert', alertData);

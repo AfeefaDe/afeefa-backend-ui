@@ -71,6 +71,9 @@ export default Ember.Mixin.create({
         record.set(name, value);
       }
     });
+    record._internalModel.flushChangedAttributes();
+    record._internalModel.adapterWillCommit();
+    store.didSaveRecord(record._internalModel);
   },
 
   updateRecord(json, store) {
@@ -79,36 +82,31 @@ export default Ember.Mixin.create({
       return json;
     }
 
-    // update created records
-    if (json.attributes.__id__) {
+    // an id should always be given, try to find the asscociated recoord
+    // if found --> it's an update
+    let record = store.peekRecord(json.type, json.id);
+
+    if (record) {
+      this.updateRecordAttribtutes(store, record, json);
+    }
+
+    // if there is no record and an internal id is given
+    // try to find a created record for that internal id
+    if (!record && json.attributes.__id__) {
+      // update created records
       const record = store.peekAll(json.type)
       .filterBy('currentState.stateName', "root.loaded.created.uncommitted")
       .findBy('_internalModel.' + Ember.GUID_KEY, json.attributes.__id__);
-
       if (record) {
         record.set('id', json.id);
         this.updateRecordAttribtutes(store, record, json);
-        record._internalModel.flushChangedAttributes();
-        record._internalModel.adapterWillCommit();
-        store.didSaveRecord(record._internalModel);
-      }
-
-    // update updated records
-    } else {
-      const record = store.peekRecord(json.type, json.id);
-
-      if (record) {
-        this.updateRecordAttribtutes(store, record, json);
-        record._internalModel.flushChangedAttributes();
-        record._internalModel.adapterWillCommit();
-        store.didSaveRecord(record._internalModel);
       }
     }
 
     return json;
   },
 
-  normalizeSaveResponse(store, model, response) {
+  normalizeSaveResponse(store, modelClass, response) {
     const relationships = response.data.relationships || [];
 
     Object.keys(relationships).forEach(relKey => {
@@ -124,18 +122,18 @@ export default Ember.Mixin.create({
           json.type = Ember.String.singularize(json.type);
           this.updateRecord(json, store);
         });
-      // filter out empty relationships e.g. label: {}
       // belongsTo e.g. label: { data: { ... } }
       } else {
         // belongsTo
         relationshipData.type = Ember.String.singularize(relationshipData.type);
-        relationshipData = this.updateRecord(relationshipData, store);
+        this.updateRecord(relationshipData, store);
       }
     });
 
-    this.updateRecordAttribtutes(store, model, response.data);
+    response.data.type = Ember.String.singularize(response.data.type);
+    this.updateRecord(response.data, store);
 
-    return this._super(store, model, response);
+    return this._super(store, modelClass, response);
   }
 
 });
