@@ -66,6 +66,7 @@ export default Ember.Mixin.create({
     // cancel with changes
     if (this.hasChanges()) {
       this.showCancelDialog(() => {
+        this.rollback();
         transition.retry();
       });
       transition.abort();
