@@ -48,10 +48,9 @@ test('it updates on navigation service change', function(assert) {
 
 test('it shows the right items in path navigation', function(assert) {
   const navigationService = this.get('navigationService');
-
   this.stub(navigationService, 'getPathNavigation').returns([
     { route: 'protected.dashboard', title: 'Dashboard'},
-    { route: 'protected.orgas', title: 'Orgas'},
+    { route: 'protected.orgas', title: 'Orgas', hint: 7 },
     { route: null, title: 'Anzeigen'}
   ]);
 
@@ -79,13 +78,20 @@ test('it shows the right items in path navigation', function(assert) {
 
 
 test('it toggles the menu', function(assert) {
+  const navigationService = this.get('navigationService');
+  this.stub(navigationService, 'getLevel1Navigation').returns([
+    { route: 'protected.dashboard', title: 'Dashboard'},
+    { route: 'protected.todos', title: 'Todos'},
+    { route: 'protected.orgas', title: 'Orgas'},
+  ]);
+
   this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
 
   assert.equal(0, this.$('#menu').children().length);
 
   this.$('#btn-sandwich').click();
 
-  assert.equal(6, this.$('#menu').children().length);
+  assert.equal(this.$('#menu').children().length, 4);
 
   Ember.run(() => {
     this.get('EventBus').publish('willTransition');
@@ -96,21 +102,32 @@ test('it toggles the menu', function(assert) {
 
 
 test('it shows the right items in menu navigation', function(assert) {
+  const navigationService = this.get('navigationService');
+  this.stub(navigationService, 'getLevel1Navigation').returns([
+    { route: 'protected.dashboard', title: 'Dashboard'},
+    { route: 'protected.todos', title: 'Todos', hint: '10' },
+    { route: 'protected.orgas', title: 'Orgas', hint: '3' },
+    { route: 'protected.events', title: 'Events', hint: '12' },
+    { route: 'protected.search', title: 'Suche'}
+  ]);
+
   this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
   this.$('#btn-sandwich').click();
 
   assert.equal(6, this.$('#menu').children().length);
 
   const check = (index, title, url) => {
-    assert.equal('A', this.$('#menu').children().eq(index).prop('tagName'));
-    assert.equal(title, this.$('#menu').children().eq(index).text());
-    assert.equal(url, this.$('#menu').children().eq(index).attr('href'));
+    assert.equal(this.$('#menu').children().eq(index).prop('tagName'), 'A');
+    let htmlTitle = this.$('#menu').children().eq(index).text().trim();
+    htmlTitle = htmlTitle.replace(/\s+/, ' ');
+    assert.equal(htmlTitle, title);
+    assert.equal(this.$('#menu').children().eq(index).attr('href'), url);
   };
 
   check(0, 'Dashboard', '/');
-  check(1, 'Todos', '/todos');
-  check(2, 'Orgas', '/orgas');
-  check(3, 'Events', '/events');
+  check(1, 'Todos (10)', '/todos');
+  check(2, 'Orgas (3)', '/orgas');
+  check(3, 'Events (12)', '/events');
   check(4, 'Suche', '/search');
   check(5, 'Login', '/login');
 });
