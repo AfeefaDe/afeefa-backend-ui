@@ -484,6 +484,80 @@ test("normalize artist with missing relations", function(assert) {
 });
 
 
+test("normalize artist with missing attributes", function(assert) {
+  Ember.run(function() {
+    let artist = createRecord('artist', { name: 'Radiohead' }, 34);
+    let album1 = createRecord('album', { title: 'Amnesiac' }, 56);
+    let album2 = createRecord('album', { title: 'The King of Limbs' });
+    let album3 = createRecord('album', { title: 'Creep' });
+    artist.get('albums').pushObjects([album1, album2, album3]);
+
+    artist.set('name', 'Wham!');
+    album1.set('title', 'Last Christmas I gave you my heart');
+    album2.set('title', 'Wake Me Up Before You Go-Go');
+    album3.set('title', 'The Edge of Heaven');
+
+    const serializer = store.serializerFor("artist");
+
+    const serverJSON = {
+      data: {
+        id: '34',
+        type: 'artists',
+        relationships: {
+          albums: {
+            data: [
+              {
+                id: "56",
+                type: 'albums'
+              },
+              {
+                id: "57",
+                type: 'albums'
+              },
+              {
+                id: "58",
+                type: 'albums',
+                attributes: {}
+              }
+            ]
+          }
+        }
+      }
+    };
+
+    assert.deepEqual(Object.keys(artist.changedAttributes()), ['name']);
+    assert.deepEqual(Object.keys(album1.changedAttributes()), ['title']);
+    assert.deepEqual(Object.keys(album2.changedAttributes()), ['title']);
+    assert.deepEqual(Object.keys(album3.changedAttributes()), ['title']);
+
+    serializer.normalizeResponse(store, Artist, serverJSON, '1', 'createRecord');
+
+    assert.equal(store.peekAll('artist').get('length'), 1);
+    artist = store.peekAll('artist').findBy("name", "Wham!");
+    assert.deepEqual(Object.keys(artist.changedAttributes()), []);
+    assert.equal(artist.get('currentState.stateName'), "root.loaded.saved");
+    assert.equal(artist.get('id'), "34");
+
+    assert.equal(store.peekAll('album').get('length'), 3);
+
+    album1 = store.peekAll('album').findBy("title", "Last Christmas I gave you my heart");
+    assert.deepEqual(Object.keys(album1.changedAttributes()), []);
+    assert.equal(album1.get('currentState.stateName'), "root.loaded.saved");
+    assert.equal(album1.get('id'), "56");
+
+    album2 = store.peekAll('album').findBy("title", "Wake Me Up Before You Go-Go");
+    assert.deepEqual(Object.keys(album2.changedAttributes()), ['title']);
+    assert.equal(album2.get('currentState.stateName'), "root.loaded.created.uncommitted");
+    assert.equal(album2.get('id'), null);
+
+    album3 = store.peekAll('album').findBy("title", "The Edge of Heaven");
+    assert.deepEqual(Object.keys(album3.changedAttributes()), ['title']);
+    assert.equal(album3.get('currentState.stateName'), "root.loaded.created.uncommitted");
+    assert.equal(album3.get('id'), null);
+  });
+});
+
+
 test("normalize new artist", function(assert) {
   Ember.run(function() {
     let artist = createRecord('artist', { name: 'Radiohead' });

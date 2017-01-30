@@ -55,33 +55,30 @@ export default Ember.Mixin.create({
   },
 
   updateRecordAttribtutes(store, record, json) {
-    record.eachAttribute((name, meta) => {
-      const jsonKey = this.keyForAttribute(name);
-      if (json.attributes.hasOwnProperty(jsonKey)) {
-        let value = json.attributes[jsonKey];
-        if (meta.type === 'number') {
-          value = parseFloat(value);
+    if (json.attributes) {
+      record.eachAttribute((name, meta) => {
+        const jsonKey = this.keyForAttribute(name);
+        if (json.attributes.hasOwnProperty(jsonKey)) {
+          let value = json.attributes[jsonKey];
+          if (meta.type === 'number') {
+            value = parseFloat(value);
+          }
+          if (meta.type === 'date') {
+            value = new Date(parseDate(value));
+          }
+          if (meta.type === 'boolean') {
+            value = JSON.parse(value);
+          }
+          record.set(name, value);
         }
-        if (meta.type === 'date') {
-          value = new Date(parseDate(value));
-        }
-        if (meta.type === 'boolean') {
-          value = JSON.parse(value);
-        }
-        record.set(name, value);
-      }
-    });
+      });
+    }
     record._internalModel.flushChangedAttributes();
     record._internalModel.adapterWillCommit();
     store.didSaveRecord(record._internalModel);
   },
 
   updateRecord(json, store) {
-    if (!json.attributes) {
-      // return non-attribute (id/type only) JSON intact
-      return json;
-    }
-
     // an id should always be given, try to find the asscociated recoord
     // if found --> it's an update
     let record = store.peekRecord(json.type, json.id);
@@ -92,11 +89,11 @@ export default Ember.Mixin.create({
 
     // if there is no record and an internal id is given
     // try to find a created record for that internal id
-    if (!record && json.attributes.__id__) {
+    if (!record && json.attributes && json.attributes.__id__) {
       // update created records
       const record = store.peekAll(json.type)
-      .filterBy('currentState.stateName', "root.loaded.created.uncommitted")
-      .findBy('_internalModel.' + Ember.GUID_KEY, json.attributes.__id__);
+        .filterBy('currentState.stateName', "root.loaded.created.uncommitted")
+        .findBy('_internalModel.' + Ember.GUID_KEY, json.attributes.__id__);
       if (record) {
         record.set('id', json.id);
         this.updateRecordAttribtutes(store, record, json);
