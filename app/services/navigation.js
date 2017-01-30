@@ -51,7 +51,8 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   setRoute (routeHandlerInfos) { // currently always an array of 3 items
-    const routeName = routeHandlerInfos[2].name;
+    const lastIndex = routeHandlerInfos.length - 1;
+    const routeName = routeHandlerInfos[lastIndex].name;
     const createPathNavigation = (node, tmpPath) => {
       node = Object.assign({}, node);
       tmpPath.push(node);

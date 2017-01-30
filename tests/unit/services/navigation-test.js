@@ -3,13 +3,19 @@ import test from 'ember-sinon-qunit/test-support/test';
 import { MockGet } from 'afeefa-backend-ui/tests/helpers/mocks';
 
 
-const createRouteInfos = (name, _names, params) => {
+const createRouteInfos = customInfos => {
   return [
     { name: 'application', _names: [], params: {} },
     { name: 'protected', _names: [], params: {} },
-    { name, _names, params }
+    ...customInfos
   ];
 };
+
+
+const createRouteInfo = (name, _names, params) => {
+  return { name, _names, params };
+};
+
 
 const assertNavigation = (assert, expected, result) => {
   let i = 0;
@@ -37,8 +43,8 @@ test('it exists and has defaults', function(assert) {
   assertNavigation(assert, [
     ['protected.dashboard', 'Dashboard'],
     ['protected.todos', 'Todos'],
-    ['protected.orgas', 'Orgas'],
-    ['protected.events', 'Events'],
+    ['protected.orgas.list', 'Orgas'],
+    ['protected.events.list', 'Events'],
     ['protected.search', 'Suche']
   ], level1Navigation);
 });
@@ -49,7 +55,7 @@ test('it triggers change event when route changes', function(assert) {
   service.trigger = this.spy();
 
   new MockGet(service).mock('router.router.state.handlerInfos',
-    createRouteInfos('myroute', [], {})
+    createRouteInfos([createRouteInfo('myroute', [], {})])
   );
 
   service.get('EventBus').publish('didTransition');
@@ -64,7 +70,7 @@ test('it updates navigation on route change', function(assert) {
   // test orgas
 
   new MockGet(service).mock('router.router.state.handlerInfos',
-    createRouteInfos('protected.orgas', [], {})
+    createRouteInfos([createRouteInfo('protected.orgas.list', [], {})])
   );
   service.get('EventBus').publish('didTransition');
   let pathNavigation = service.getPathNavigation();
@@ -76,7 +82,7 @@ test('it updates navigation on route change', function(assert) {
   // test dashboard
 
   new MockGet(service).mock('router.router.state.handlerInfos',
-    createRouteInfos('protected.dashboard', [], {})
+    createRouteInfos([createRouteInfo('protected.dashboard', [], {})])
   );
   service.get('EventBus').publish('didTransition');
   pathNavigation = service.getPathNavigation();
@@ -87,13 +93,17 @@ test('it updates navigation on route change', function(assert) {
   // test event edit
 
   new MockGet(service).mock('router.router.state.handlerInfos',
-    createRouteInfos('protected.editevent', [], {})
+    createRouteInfos([
+      createRouteInfo('protected.events.list', [], {}),
+      createRouteInfo('protected.events.edit', [], {})
+    ])
   );
   service.get('EventBus').publish('didTransition');
   pathNavigation = service.getPathNavigation();
+  console.log(pathNavigation);
   assertNavigation(assert, [
     ['protected.dashboard', 'Dashboard'],
-    ['protected.events', 'Events'],
+    ['protected.events.list', 'Events'],
     [null, 'Ändern']
   ], pathNavigation);
 });
