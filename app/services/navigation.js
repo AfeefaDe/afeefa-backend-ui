@@ -7,23 +7,23 @@ const menuTree = {
   children: [
     { route: 'protected.todos', title: 'Todos', level: 1 },
     {
-      route: 'protected.orgas',
+      route: 'protected.orgas.list',
       title: 'Orgas',
       level: 1,
       children: [
-        { route: 'protected.orga', title: 'Anzeigen', level: 2 },
-        { route: 'protected.editorga', title: 'Ändern', level: 2 },
-        { route: 'protected.neworga', title: 'Neu', level: 2 }
+        { route: 'protected.orgas.show', title: 'Anzeigen', level: 2 },
+        { route: 'protected.orgas.edit', title: 'Ändern', level: 2 },
+        { route: 'protected.orgas.new', title: 'Neu', level: 2 }
       ]
     },
     {
-      route: 'protected.events',
+      route: 'protected.events.list',
       title: 'Events',
       level: 1,
       children: [
-        { route: 'protected.event', title: 'Anzeigen', level: 2 },
-        { route: 'protected.editevent', title: 'Ändern', level: 2 },
-        { route: 'protected.newevent', title: 'Neu', level: 2 }
+        { route: 'protected.events.show', title: 'Anzeigen', level: 2 },
+        { route: 'protected.events.edit', title: 'Ändern', level: 2 },
+        { route: 'protected.events.new', title: 'Neu', level: 2 }
       ]
     },
     { route: 'protected.search', title: 'Suche', level: 1 }
