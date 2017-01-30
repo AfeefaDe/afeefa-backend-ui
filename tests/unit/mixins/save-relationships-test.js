@@ -610,6 +610,116 @@ test("normalize new artist", function(assert) {
 });
 
 
+test("normalize new artist with included data", function(assert) {
+  Ember.run(function() {
+    let artist = createRecord('artist', { name: 'Radiohead' });
+    let album1 = createRecord('album', { title: 'Amnesiac', numTracks: 10 });
+    let album2 = createRecord('album', { title: 'The King of Limbs' }, 6);
+
+    artist.get('albums').pushObjects([album1, album2]);
+    let label = createRecord('label', { name: 'Cool Music Label' }, 543);
+    artist.set('label', label);
+
+    const serializer = store.serializerFor("artist");
+
+    const serverJSON = {
+      data: {
+        id: '1487',
+        type: 'artists',
+        attributes: {
+          name: 'Radiohead22',
+          __id__: getInternalId(artist)
+        },
+        relationships: {
+          albums: {
+            data: [
+              {
+                id: "4",
+                type: 'albums'
+              },
+              {
+                id: "6",
+                type: 'albums'
+              }
+            ]
+          },
+          label: {
+            data: [
+              {
+                id: "4",
+                type: 'labels'
+              }
+            ]
+          }
+        }
+      },
+      included: [
+        {
+          id: "4",
+          type: 'albums',
+          attributes: {
+            title: "Amnesiac22",
+            __id__: getInternalId(album1)
+          }
+        },
+        {
+          id: "6",
+          type: 'albums',
+          attributes: {
+            title: "The King of Limbs22",
+            num_tracks: 15
+          }
+        },
+        {
+          id: "4",
+          type: 'labels',
+          attributes: {
+            name: "Brands for Jens",
+            city: 'KLOTZSCHE',
+            __id__: getInternalId(label)
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(Object.keys(artist.changedAttributes()), ['name']);
+    assert.deepEqual(Object.keys(album1.changedAttributes()), ['title', 'numTracks']);
+    assert.deepEqual(Object.keys(album2.changedAttributes()), ['title']);
+    assert.deepEqual(Object.keys(label.changedAttributes()), ['name']);
+
+    serializer.normalizeResponse(store, Artist, serverJSON, '1', 'createRecord');
+
+    assert.equal(store.peekAll('artist').get('length'), 1);
+    artist = store.peekAll('artist').findBy("name", "Radiohead22");
+    assert.deepEqual(Object.keys(artist.changedAttributes()), []);
+    assert.equal(artist.get('currentState.stateName'), "root.loaded.saved");
+    assert.equal(artist.get('id'), "1487");
+
+    assert.equal(store.peekAll('album').get('length'), 2);
+
+    album1 = store.peekAll('album').findBy("title", "Amnesiac22");
+    assert.deepEqual(Object.keys(album1.changedAttributes()), []);
+    assert.equal(album1.get('currentState.stateName'), "root.loaded.saved");
+    assert.equal(album1.get('id'), "4");
+
+    album2 = store.peekAll('album').findBy("title", "The King of Limbs22");
+    assert.deepEqual(Object.keys(album1.changedAttributes()), []);
+    assert.equal(album2.get('currentState.stateName'), "root.loaded.saved");
+    assert.equal(album2.get('numTracks'), 15);
+    assert.equal(album2.get('id'), "6");
+
+    assert.equal(store.peekAll('label').get('length'), 1);
+    label = store.peekAll('label').findBy("city", "KLOTZSCHE");
+    assert.equal(label.get('name'), "Brands for Jens");
+    assert.equal(label.get('currentState.stateName'), "root.loaded.saved");
+    assert.equal(label.get('id'), "4");
+
+    assert.deepEqual(Object.keys(label.changedAttributes()), []);
+    assert.equal(artist.get('label')['_internalModel.' + Ember.GUID_KEY], label['_internalModel.' + Ember.GUID_KEY]);
+  });
+});
+
+
 test("normalize artist with new label", function(assert) {
   Ember.run(function() {
     let artist = createRecord('artist', { name: 'Radiohead' });

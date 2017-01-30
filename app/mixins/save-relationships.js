@@ -106,6 +106,18 @@ export default Ember.Mixin.create({
   normalizeSaveResponse(store, modelClass, response) {
     const relationships = response.data.relationships || [];
 
+    // parse included relationship data
+    let included = {};
+    if (response.included) {
+      included = response.included.reduce((included, current) => {
+        if (!included[current.type]) {
+          included[current.type] = {};
+        }
+        included[current.type][current.id] = current;
+        return included;
+      }, included);
+    }
+
     Object.keys(relationships).forEach(relKey => {
       // filter out empty relationships e.g. label: null, label: {}
       if (!relationships[relKey] || !relationships[relKey].data) {
@@ -116,12 +128,18 @@ export default Ember.Mixin.create({
       // has many e.g. albums: { data: [...] }
       if (Array.isArray(relationshipData)) {
         relationshipData = relationshipData.map(json => {
+          if (included[json.type] && included[json.type][json.id]) {
+            json.attributes = included[json.type][json.id].attributes;
+          }
           json.type = Ember.String.singularize(json.type);
           this.updateRecord(json, store);
         });
       // belongsTo e.g. label: { data: { ... } }
       } else {
-        // belongsTo
+        const json = relationshipData;
+        if (included[json.type] && included[json.type][json.id]) {
+          json.attributes = included[json.type][json.id].attributes;
+        }
         relationshipData.type = Ember.String.singularize(relationshipData.type);
         this.updateRecord(relationshipData, store);
       }
