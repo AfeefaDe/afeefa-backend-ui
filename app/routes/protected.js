@@ -46,9 +46,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
      * called (magically) by failing model promises: redirect to dashboard and show error message
      */
     error(reason) {
-      let message = 'Die angeforderte Seite konnte nicht geladen werden.';
-      if(reason.message) message = reason.message;
-      const alertData = {title: 'Fehler beim Laden der Seite', description: message, isError: true, autoHide: false};
+      let description = 'Die angeforderte Seite konnte nicht geladen werden.';
+      let title = 'Fehler beim Laden der Seite';
+      if(reason.errors) {
+        description = `${reason.errors[0].code} - ${reason.errors[0].detail}`;
+        title = reason.errors[0].title;
+      }
+      const alertData = {title, description, isError: true, autoHide: false};
       this.EventBus.publish('showAlert', alertData);
       this.transitionTo('protected.dashboard');
     }

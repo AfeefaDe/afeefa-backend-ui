@@ -151,10 +151,10 @@ test('rollback on existing event works', function(assert) {
     assert.equal(mixin.get('model.entryInstance').currentState.stateName, 'root.loaded.updated.uncommitted');
 
     assert.strictEqual(mixin.get('model.locationInstance.city'), 'new city');
-    assert.equal(mixin.get('model.entryInstance.isNew'), false);
-    assert.equal(mixin.get('model.entryInstance.hasDirtyAttributes'), true);
-    assert.equal(mixin.get('model.entryInstance.dirtyType'), 'updated');
-    assert.equal(mixin.get('model.entryInstance').currentState.stateName, 'root.loaded.updated.uncommitted');
+    assert.equal(mixin.get('model.locationInstance.isNew'), false);
+    assert.equal(mixin.get('model.locationInstance.hasDirtyAttributes'), true);
+    assert.equal(mixin.get('model.locationInstance.dirtyType'), 'updated');
+    assert.equal(mixin.get('model.locationInstance').currentState.stateName, 'root.loaded.updated.uncommitted');
 
     assert.strictEqual(mixin.get('model.contactInfoInstance.contactPerson'), 'new person');
     assert.equal(mixin.get('model.contactInfoInstance.isNew'), false);
@@ -326,7 +326,32 @@ test('cancel with changes raises dialog', function(assert) {
 });
 
 
-test('confirm dialog calls rollback and routes back', function(assert) {
+test('change route with changes raises dialog', function(assert) {
+  const mixin = this.subject();
+  const store = mixin.get('store');
+
+  Ember.run(() => {
+    mixin.set('model', fixtures.setupEvent(store));
+
+    const transitionMock = {
+      retry: this.spy(),
+      abort: this.spy()
+    };
+    mixin.rollback = this.spy();
+    mixin.showCancelDialog = this.spy();
+
+    mixin.set('model.entryInstance.title', 'new title');
+    mixin.willTransition(transitionMock);
+
+    assert.ok(transitionMock.abort.calledOnce);
+    assert.ok(transitionMock.retry.notCalled);
+    assert.ok(mixin.rollback.notCalled);
+    assert.ok(mixin.showCancelDialog.calledOnce);
+  });
+});
+
+
+test('confirm cancel dialog calls rollback and routes back', function(assert) {
   const mixin = this.subject();
   const store = mixin.get('store');
 
@@ -342,6 +367,30 @@ test('confirm dialog calls rollback and routes back', function(assert) {
     mixin.actions.cancel.call(mixin);
 
     assert.ok(goBackSpy.calledOnce);
+    assert.ok(mixin.rollback.calledOnce);
+  });
+});
+
+
+test('confirm transition dialog calls rollback and transitions', function(assert) {
+  const mixin = this.subject();
+  const store = mixin.get('store');
+
+  Ember.run(() => {
+    mixin.set('model', fixtures.setupEvent(store));
+
+    const transitionMock = {
+      retry: this.spy(),
+      abort: this.spy()
+    };
+    mixin.rollback = this.spy();
+    mixin.showCancelDialog = yes => yes();
+
+    mixin.set('model.entryInstance.title', 'new title');
+    mixin.willTransition(transitionMock);
+
+    assert.ok(transitionMock.abort.calledOnce);
+    assert.ok(transitionMock.retry.calledOnce);
     assert.ok(mixin.rollback.calledOnce);
   });
 });

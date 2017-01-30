@@ -189,3 +189,66 @@ test('model again in saved state after save()', function(assert) {
     assert.equal(model.entryInstance.currentState.stateName, 'root.loaded.updated.inFlight');
   });
 });
+
+
+test('model again in saved state after save() two', function(assert) {
+  Ember.run(() => {
+    const store = this.get('store');
+    const model = fixtures.setupEvent(store);
+    this.set('model', model);
+
+    // modify event
+    const annotation = store.peekRecord('annotation', 1);
+    const annotation2 = store.peekRecord('annotation', 2);
+    model.entryInstance.set('title', 'new title');
+    model.locationInstance.set('city', 'new city');
+    model.contactInfoInstance.set('contactPerson', 'new person');
+    model.entryInstance.get('annotations').removeObject(annotation);
+    model.entryInstance.get('annotations').addObject(annotation2);
+    model.entryInstance.set('hasAnnotationChanges', true);
+
+    // hook in transitionTo to verify model state after save
+    this.set('router', {
+      transitionTo: () => {
+        assert.strictEqual(model.entryInstance.get('title'), 'title from server');
+        assert.equal(model.entryInstance.get('hasDirtyAttributes'), false);
+        assert.equal(model.entryInstance.currentState.stateName, 'root.loaded.saved');
+
+        assert.strictEqual(model.locationInstance.get('city'), 'city from server');
+        assert.equal(model.locationInstance.get('hasDirtyAttributes'), false);
+        assert.equal(model.locationInstance.currentState.stateName, 'root.loaded.saved');
+
+        assert.strictEqual(model.contactInfoInstance.get('contactPerson'), 'person from server');
+        assert.equal(model.contactInfoInstance.get('hasDirtyAttributes'), false);
+        assert.equal(model.contactInfoInstance.currentState.stateName, 'root.loaded.saved', 'contact saved');
+      }
+    });
+
+    this.render(hbs`{{entry-form model=model EventBus=EventBus router=router}}`);
+
+    this.$('.entryForm__actionFooter').children().eq(0).submit();
+
+    // verify model state
+    assert.strictEqual(model.entryInstance.get('title'), 'new title');
+    assert.equal(model.entryInstance.get('isNew'), false);
+    assert.equal(model.entryInstance.get('hasDirtyAttributes'), true);
+    assert.equal(model.entryInstance.get('dirtyType'), 'updated');
+    assert.equal(model.entryInstance.currentState.stateName, 'root.loaded.updated.inFlight');
+    // assert.equal(model.entryInstance.currentState.stateName, 'root.loaded.updated.uncommitted');
+
+    assert.strictEqual(model.locationInstance.get('city'), 'new city');
+    assert.equal(model.locationInstance.get('isNew'), false);
+    assert.equal(model.locationInstance.get('hasDirtyAttributes'), true);
+    assert.equal(model.locationInstance.get('dirtyType'), 'updated');
+    assert.equal(model.locationInstance.currentState.stateName, 'root.loaded.updated.uncommitted');
+
+    assert.strictEqual(model.contactInfoInstance.get('contactPerson'), 'new person');
+    assert.equal(model.contactInfoInstance.get('isNew'), false);
+    assert.equal(model.contactInfoInstance.get('hasDirtyAttributes'), true);
+    assert.equal(model.contactInfoInstance.get('dirtyType'), 'updated');
+    assert.equal(model.contactInfoInstance.currentState.stateName, 'root.loaded.updated.uncommitted');
+
+    assert.deepEqual(model.entryInstance.get('annotations').toArray(), [annotation2]);
+    assert.equal(true, model.entryInstance.get('hasAnnotationChanges'));
+  });
+});
