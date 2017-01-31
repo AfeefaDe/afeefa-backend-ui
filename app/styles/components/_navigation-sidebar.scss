@@ -21,6 +21,14 @@
     padding: 0 0.5em;
     border-radius: 3px;
   }
+  &__navItemAction {
+    margin-left: 0.5em;
+  }
+  &__navItemAction i {
+    font-size: 1.4em;
+    vertical-align: middle;
+    margin-bottom: 0.2em;
+  }
   &__footer {
     margin-top: 20rem;
     display: flex;

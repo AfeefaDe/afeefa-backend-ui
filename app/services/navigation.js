@@ -3,11 +3,13 @@ import Ember from 'ember';
 const menuTree = {
   route: 'protected.dashboard',
   title: 'Dashboard',
+  action: null,
   level: 1,
   children: [
     {
       route: 'protected.todos',
       title: 'Todos',
+      action: null,
       level: 2,
       hint: store => {
         const countOrgas = store.peekAll('orga').filter(orga => orga.get('annotations.length')).get('length');
@@ -18,6 +20,11 @@ const menuTree = {
     {
       route: 'protected.orgas',
       title: 'Orgas',
+      action: {
+        name: 'Neue Orga erstellen',
+        icon: 'add_circle_outline',
+        route: 'protected.orgas.new'
+      },
       level: 2,
       hint: store => store.peekAll('orga').get('length'),
       children: [
@@ -29,6 +36,11 @@ const menuTree = {
     {
       route: 'protected.events',
       title: 'Events',
+      action: {
+        name: 'Neues Event erstellen',
+        icon: 'add_circle_outline',
+        route: 'protected.orgas.new'
+      },
       level: 2,
       hint: store => store.peekAll('event').get('length'),
       children: [
@@ -40,6 +52,7 @@ const menuTree = {
     {
       route: 'protected.search',
       title: 'Suche',
+      action: null,
       level: 1
     }
   ]

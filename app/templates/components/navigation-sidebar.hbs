@@ -8,6 +8,9 @@
       {{#each level1Navigation as |path|}}
         <li class="navigationSidebar__navItem level{{path.level}}">
           {{#link-to path.route}}{{path.title}}{{/link-to}}
+          {{#if path.action}}
+            {{#link-to path.action.route class="navigationSidebar__navItemAction"}}<i class="material-icons" title="{{path.action.name}}">{{path.action.icon}}</i>{{/link-to}}
+          {{/if}}
           {{#if path.hint}}
             <span class="navigationSidebar__navItemMeta">{{path.hint}}</span>
           {{/if}}
