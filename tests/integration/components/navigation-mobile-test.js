@@ -4,7 +4,7 @@ import test from 'ember-sinon-qunit/test-support/test';
 import hbs from 'htmlbars-inline-precompile';
 
 
-moduleForComponent('afeefa-navigation', 'Integration | Component | afeefa navigation', {
+moduleForComponent('navigation-mobile', 'Integration | Component | navigation mobile', {
   integration: true,
 
   beforeEach: function () {
@@ -20,7 +20,7 @@ moduleForComponent('afeefa-navigation', 'Integration | Component | afeefa naviga
 
 
 test('it renders', function(assert) {
-  this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
+  this.render(hbs`{{navigation-mobile EventBus=EventBus}}`);
   assert.equal('menu', this.$('#btn-sandwich').text().trim());
   assert.equal(0, this.$('.navigationBreadcrumb').children().length, 'no sub elements in path navigation');
   assert.strictEqual(undefined, this.$('#menu').html(), 'no menu shown initially');
@@ -30,7 +30,7 @@ test('it renders', function(assert) {
 test('it updates on navigation service change', function(assert) {
   const navigationService = this.get('navigationService');
 
-  this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
+  this.render(hbs`{{navigation-mobile EventBus=EventBus}}`);
   assert.equal(0, this.$('.navigationBreadcrumb').children().length);
 
   this.stub(navigationService, 'getPathNavigation').returns([
@@ -54,7 +54,7 @@ test('it shows the right items in path navigation', function(assert) {
     { route: null, title: 'Anzeigen'}
   ]);
 
-  this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
+  this.render(hbs`{{navigation-mobile EventBus=EventBus}}`);
 
   assert.equal(5, this.$('.navigationBreadcrumb').children().length);
 
@@ -85,7 +85,7 @@ test('it toggles the menu', function(assert) {
     { route: 'protected.orgas', title: 'Orgas'},
   ]);
 
-  this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
+  this.render(hbs`{{navigation-mobile EventBus=EventBus}}`);
 
   assert.equal(0, this.$('#menu').children().length);
 
@@ -111,7 +111,7 @@ test('it shows the right items in menu navigation', function(assert) {
     { route: 'protected.search', title: 'Suche'}
   ]);
 
-  this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
+  this.render(hbs`{{navigation-mobile EventBus=EventBus}}`);
   this.$('#btn-sandwich').click();
 
   assert.equal(6, this.$('#menu').children().length);

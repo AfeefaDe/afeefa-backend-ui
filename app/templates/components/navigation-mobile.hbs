@@ -1,0 +1,32 @@
+<navigation>
+
+  {{navigation-breadcrumb}}
+
+  <div {{action 'toggleMenu' instance}} id="btn-sandwich">
+		<i class="material-icons">menu</i>
+  </div>
+
+{{#if menuVisible}}
+  <div id="menu">
+    {{#each level1Navigation as |path|}}
+      {{#link-to path.route}}
+        {{path.title}}
+        {{#if path.hint}}
+          ({{path.hint}})
+        {{/if}}
+      {{/link-to}}
+    {{/each}}
+
+	  {{#if session.isAuthenticated}}
+	    <section id="user-context">
+		    <i class="material-icons">account_circle</i> {{user.forename}} {{user.surname}}
+		  </section>
+	    <a {{action 'invalidateSession'}}>Logout</a>
+	  {{else}}
+	    {{#link-to 'login'}}Login{{/link-to}}
+	  {{/if}}
+  </div>
+{{/if}}
+
+</navigation>
+{{yield}}

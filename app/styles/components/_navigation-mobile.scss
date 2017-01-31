@@ -1,0 +1,49 @@
+navigation {
+	display: block;
+	padding: 1em;
+	background-color: $black_alpha;
+	color: $white;
+  /*defined in _variables.scss*/
+	height: $header-height;
+	position: relative;
+	z-index: 100;
+  position: fixed;
+  width: 100%;
+
+	#btn-sandwich {
+		position: absolute;
+		top: 0.8em;
+		right: 1em;
+		cursor: pointer;
+
+		i { font-size: 2em; }
+	}
+
+	#menu {
+		position: absolute;
+		padding: 1em 2em 1em 1.2em;
+		top: 3.5em;
+		right: 0;
+		background-color: $black_alpha;
+
+		section {
+			font-size: 1.2em;
+		}
+
+		a {
+			display: block;
+			color: $white;
+			cursor: pointer;
+			margin: 10px 0;
+			vertical-align: middle;
+			font-size: 1.2em;
+		}
+
+		i {
+			vertical-align: middle;
+			font-size: 2em;
+			margin-top: -3px;
+		}
+	}
+
+}
