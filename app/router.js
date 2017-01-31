@@ -19,22 +19,31 @@ Router.map(function() {
     /*
     * Orga Routes
     */
-    this.route('orgas');
-    this.route('orga', { path: '/orgas/:orga_id' });
-    this.route('editorga', { path: '/orgas/:orga_id/edit' });
-    this.route('neworga', { path: '/orgas/new' });
+    this.route('orgas', {path: '/orgas'}, function() {
+      this.route('list', {path: '/'});
+      this.route('show', { path: '/:orga_id' });
+      this.route('edit', { path: '/:orga_id/edit' });
+      this.route('new', { path: '/new' });
+    });
     /*
     * Event Routes
     */
-    this.route('events');
-    this.route('event', { path: '/events/:event_id'});
-    this.route('editevent', { path: '/events/:event_id/edit'});
-    this.route('newevent', { path: '/events/new'});
+    this.route('events', {path: '/events'}, function() {
+      this.route('list', {path: '/'});
+      this.route('show', { path: '/:event_id' });
+      this.route('edit', { path: '/:event_id/edit' });
+      this.route('new', { path: '/new' });
+    });
 
     /*
     * User Routes
     */
     this.route('user', { path: '/user/:user_id'});
+
+    /*
+     * catch undefined routes
+     */
+    this.route('undefined', { path: '*path'});
   });
 });
 

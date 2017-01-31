@@ -1,28 +1,14 @@
 import Ember from 'ember';
-import RSVP from 'rsvp';
 
-import RouteHelper from '../mixins/route-helper';
+import FormatReasonErrorMessage from 'afeefa-backend-ui/mixins/format-reason-error-message';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(FormatReasonErrorMessage, {
   store: Ember.inject.service(),
-  /* determine if the entryInstance has attribute model*/
-  showDate: Ember.computed('model', function() {
-    const entry = this.get('model.entryInstance');
-    return entry.date || entry.date === null;
-  }),
-  //this string cached the instance date for the input:type date
-  dateString: '',
-  didReceiveAttrs() {
-    this._super(...arguments);
-    /*
-     * workaround to cut off time from date object and pass it into input[type="date"]
-     * not proud at all :(
-     */
-    const date = this.get('model.entryInstance.date');
-    if(date && typeof date.getMonth === 'function') {
-      const dateString = date.toISOString().slice(0,10);
-      this.set('dateString', dateString);
-    }
+  dialogService: Ember.inject.service('dialog'),
+  datePickerRef: null,
+  didRender() {
+    /* materialize: trigger the autoresze action to set height*/
+    $('#description').trigger('autoresize');
   },
 	actions: {
     /*
@@ -30,25 +16,26 @@ export default Ember.Component.extend({
      */
 		save: function() {
       let entry = this.get('model.entryInstance');
-      //determine new or edit mode
       const isEditMode = entry.get('id');
-      //this converts the  yyyy-mm-dd String from the input:type date to an js object because ember doesent support date inputs
-      if(entry.date || entry.date === null) {
-        const dateString = this.get('dateString').split('-');
-        var date = new Date(dateString[0], dateString[1]-1, dateString[2]);
-        entry.set('date', date);
-      }
-
       entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
       entry.get('locations').pushObject(this.get('model.locationInstance'));
-      entry.save().then((savedEntry)=> {
+
+      entry.save().then(()=> {
         const alertData = {title: 'Erfolgreich gespeichert', description: 'Dein Eintrag wurde erfolgreich angelegt.', isError: false, autoHide: 3000};
         if(isEditMode) alertData.description = 'Deine Änderungen wurden erfolgreich gespeichert.';
         this.EventBus.publish('showAlert', alertData);
-        history.back();
+        // goto view
+        let id = entry.get('id');
+        let type = entry.get('modelName');
+        if(id && type) {
+          const router = this.get('router');
+          router.transitionTo('protected.'+type+'s.show', id);
+        }
+        else throw 'Invalid transistion type or id - Cancel transition';
       }, (reason)=> {
-          console.log("Failed with reason: ", reason);
-          this.EventBus.publish('showAlert', this.handleError(reason));
+          let error = this.handleError(reason);
+          error.title = 'Fehler beim Speichern';
+          this.EventBus.publish('showAlert', error);
       });
 		},
     /*
@@ -56,24 +43,26 @@ export default Ember.Component.extend({
      */
     deleteEntry: function() {
       let entry = this.get('model.entryInstance');
-      var confirm = window.confirm("Eintrag wirklich löschen ? \nDiese Aktion kann nicht rückgängig gemacht werden.");
-      if(confirm === true) {
+      this.get('dialogService').showDialog({
+        title: 'Eintrag wirklich löschen ?',
+        message: 'Diese Aktion kann nicht rückgängig gemacht werden.'
+      }).yes(() => {
         entry.deleteRecord();
         entry.save().then(()=> {
-          history.back();
+          const targetRoute = `protected.${entry.get('modelName')}s`;
+          this.get('router').transitionTo(targetRoute);
         }, (reason)=> {
           entry.rollbackAttributes();
           let alertData = this.handleError(reason);
           alertData.title = 'Fehler beim Löschen des Eintrags';
           this.EventBus.publish('showAlert', alertData);
         });
-      }
+      });
     },
     /*
      * Input type select for setting parent orga
      */
     selectParent: function(parentOrgaID) {
-      const entry = this.get('model.entryInstance');
       if(parentOrgaID === -1) {
         this.set('model.entryInstance.parentOrga', null);
       }
@@ -89,6 +78,7 @@ export default Ember.Component.extend({
     deleteAnnotation: function(annotation) {
       const entryInstance = this.get('model.entryInstance');
       entryInstance.get('annotations').removeObject(annotation);
+      entryInstance.set('hasAnnotationChanges', true);
     },
      /*
      * action that gets triggered by annotation-new
@@ -96,22 +86,9 @@ export default Ember.Component.extend({
      */
     addAnnotation: function(annotation) {
       const entryInstance = this.get('model.entryInstance');
-      entryInstance.get('annotations').addObject(annotation)
+      entryInstance.get('annotations').addObject(annotation);
+      entryInstance.set('hasAnnotationChanges', true);
     }
 	},
-  /*
-   * function that creates the alertData object
-   * @todo: I want to call this.EventBus.publish('showAlert',...)from here. But this is undefined!
-   */
-  handleError(reason) {
-      const alertData = {title: 'Fehler beim Speichern', description: 'Unbekannter Fehler', isError: true, autoHide: false};
-      if(reason && reason.errors) {
-        let errorDetail = '';
-        for (var singleError of reason.errors) {
-          errorDetail = errorDetail + ' ' + singleError.detail + '\n';
-        }
-        alertData.description = errorDetail;
-      }
-      return alertData;
-  }
+
 });

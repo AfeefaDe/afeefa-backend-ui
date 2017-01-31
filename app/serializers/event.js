@@ -1,5 +1,6 @@
+import Ember from 'ember';
 import DS from 'ember-data';
-import SaveRelationshipsMixin from 'ember-data-save-relationships';
+import SaveRelationshipsMixin from 'afeefa-backend-ui/mixins/save-relationships';
 
 export default DS.JSONAPISerializer.extend(SaveRelationshipsMixin, {
   attrs: {
@@ -58,7 +59,7 @@ export default DS.JSONAPISerializer.extend(SaveRelationshipsMixin, {
   /*
   normalizeSaveResponse(store, modelName, obj) {
     //hack: remove relationships when normalizing response, cause they only contain links
-    if(obj.data.relationships) obj.data.relationships = {};
+    // if(obj.data.relationships) obj.data.relationships = {};
     return this._super(store, modelName, obj);
   }*/
 });

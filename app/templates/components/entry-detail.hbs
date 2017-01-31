@@ -1,12 +1,12 @@
 <ul class="entryDetail">
   {{#each attr as |attribute|}}
-    {{#if (hasAttribute (get model attribute.name))}}
+    {{#if (has-attribute (get model attribute.name))}}
       {{#unless attribute.hide}}
         <li>
         <span class="entryDetail__meta">{{attribute.name}}:</span>
         <span>
           {{#if (eq attribute.type "date")}}
-            {{format-date-relative (get model attribute.name)}} ({{format-date-absolute (get model attribute.name)}})
+           {{format-date-absolute (get model attribute.name)}} ({{format-date-relative (get model attribute.name)}})
           {{else if (eq attribute.name "mail")}}
             <a href="mailto:{{get model attribute.name}}">{{get model attribute.name}}</a>
           {{else}}
@@ -18,21 +18,21 @@
     {{/if}}
   {{/each}}
 
-  {{#if (hasAttribute model.category)}}
+  {{#if (has-attribute model.category)}}
   <li>
     <span class="entryDetail__meta">Kategorie:</span>
     <span>{{get model.category "title"}}</span>
   </li>
   {{/if}}
 
-  {{#if (hasAttribute model.category)}}
+  {{#if (has-attribute model.category)}}
   <li>
     <span class="entryDetail__meta">Unterkategorie:</span>
     <span>{{get model.subCategory "title"}}</span>
   </li>
   {{/if}}
 
-  {{#if (hasAttribute model.locations)}}
+  {{#if (has-attribute model.locations)}}
     <h2>Ort</h2>
     <li>
     {{#each model.locations as |location|}}
@@ -40,7 +40,7 @@
     {{/each}}
     </li>
   {{/if}}
-  {{#if (hasAttribute model.contactInfos)}}
+  {{#if (has-attribute model.contactInfos)}}
     <h2>Kontaktinformation</h2>
     <li>
     {{#each model.contactInfos as |contactInfo|}}
@@ -50,16 +50,21 @@
   {{/if}}
 
   {{#if model.annotations}}
-    <h2>Anmerkung</h2>
-    <li class="annotationArea">
+    <h2>
+      {{#if (eq model.annotations.length 1)}}
+      Anmerkung
+      {{else}}
+      Anmerkungen
+      {{/if}}
+    </h2>
     {{#each model.annotations as |annotation|}}
       {{annotation-tag instance=annotation}}
     {{/each}}
-    </li>
   {{/if}}
-  {{#if (hasAttribute model.active)}}
+  {{#if (has-attribute model.active)}}
+  <h2>Status</h2>
   <li class="nowrap">
-  <span class="entryDetail__meta">Status Ändern:</span>
+  <span class="entryDetail__meta">Status ändern:</span>
     {{forms/states-form instance=model}}
   </li>
   {{/if}}

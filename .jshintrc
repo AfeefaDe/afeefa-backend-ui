@@ -1,10 +1,12 @@
 {
   "predef": [
+    "server",
     "Materialize",
     "timeago",
     "document",
     "window",
-    "-Promise"
+    "-Promise",
+    "$"
   ],
   "browser": true,
   "boss": true,

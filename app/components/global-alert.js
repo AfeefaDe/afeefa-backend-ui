@@ -12,27 +12,21 @@ export default Ember.Component.extend({
     this.EventBus.unsubscribe('showAlert');
   },
   showAlertLocal: function({title, description, isError, autoHide}={}) {
+    this.$('.alert').focus();
+    this.$('.alert').attr('tabindex',0);
     this.set('visible', true);
     this.set('description', description);
     this.set('title', title);
     this.set('isError', isError);
     /*start autohide timer*/
-    if(autoHide) {
-      Ember.run.later((()=> {
-        this.send('closeAlert');
+    if (autoHide) {
+      Ember.run.later((() => {
+        if (this.get('visible')) {
+          this.send('closeAlert');
+        }
       }), autoHide);
     }
   },
-  /*output css class to show/hide alert*/
-  visibleClass: Ember.computed('visible', function() {
-    if(this.get('visible')) return 'alert--visible';
-    else return 'alert--invisible';
-  }),
-  /*output css class to change type of alert: border-left*/
-  alertTypeClass: Ember.computed('isError', function() {
-    if(this.get('isError')) return 'alert--error';
-    else return 'alert--success';
-  }),
   /*output icon-string for alert icon*/
   alertTypeIcon: Ember.computed('isError', function() {
     if(this.get('isError')) return 'error_outline';
@@ -41,6 +35,15 @@ export default Ember.Component.extend({
   actions: {
     closeAlert: function() {
       this.set('visible', false);
+      this.$('.alert').blur();
     }
   },
+  /*
+   * escape triggers hides alert
+   */
+  keyDown: function (event) {
+    if (event.keyCode === 27) {
+      this.send('closeAlert');
+    }
+  }
 });

@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('route:todos', 'Unit | Route | todos', {
+moduleFor('route:protected.todos', 'Unit | Route | todos', {
   // Specify the other units that are required for this test.
   // needs: ['controller:foo']
 });

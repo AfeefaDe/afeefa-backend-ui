@@ -1,3 +1,4 @@
+/*used in edit form*/
 .annotationArea {
   background: $white;
   padding: 0.5em;
@@ -19,6 +20,7 @@
     /*remove border*/
   }
 }
+
 .annotationTag {
     background: #F2F2F2;
     border-radius: 2px;
@@ -27,7 +29,7 @@
     line-height: 140%;
     word-break: break-word;
     padding: 0.4em 0.5em 0.3em 0.5em;
-    margin: 0 1em 0.4em 0;
+    margin: .5em 1em 0.4em 0;
     display: inline-block;
     &__icon {
       color: inherit;

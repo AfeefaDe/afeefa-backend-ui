@@ -1,0 +1,71 @@
+<!--  start date and start time -->
+{{#if showDate}}
+  <div class=row-DateAndTime>
+    <button class="showDate-button btn waves-effect waves-light" {{action "showStartDatePicker"}}><i class="material-icons center">event</i></button>
+
+    <div class="date-field inputField__spacing input-field">
+      {{ember-flatpickr
+          id="startDate"
+          value=(readonly model.entryInstance.date_start)
+          onChange=(action 'updateStartDate')
+          flatpickrRef=startDatePickerRef
+          enableTime=false
+          dateFormat='d.m.Y'}}
+      <label for="startDate" class="active" >Startdatum</label>
+    </div>
+
+    <button class="showTime-button btn waves-effect waves-light {{startTimeButtonColor}}" {{action "toggleStartTimeElement"}}><i class="material-icons center">{{startTimeIconState}}</i></button>
+
+    {{#if showStartTime}}
+    <div class="date-field inputField__spacing input-field">
+      {{ember-flatpickr
+          id="startTime"
+          value=(readonly model.entryInstance.date_start)
+          onChange=(action 'updateStartTime')
+          noCalendar=true
+          enableTime=true
+          minuteIncrement=5
+          time_24hr=true
+          dateFormat='H:i \U\h\r'}}
+      <label for="startTime" class="{{if model.entryInstance.has_time_start "active" }}">Startzeit</label>
+    </div>
+    {{/if}}
+  </div>
+
+  <!--  end date and end time -->
+  <div class=row-DateAndTime>
+    <button class="showDate-button btn waves-effect waves-light" {{action "showEndDatePicker"}}><i class="material-icons center">event</i></button>
+
+    <div class="date-field inputField__spacing input-field">
+      <div class="{{endDateStyle}}">
+        {{ember-flatpickr
+            id="endDate"
+            value=(readonly model.entryInstance.date_end)
+            onChange=(action 'updateEndDate')
+            flatpickrRef=endDatePickerRef
+            enableTime=false
+            altInput=false
+            dateFormat='d.m.Y'}}
+      </div>
+      <label for="endDate" class="{{sameDayLabelStyle}}" > Gleicher Tag </label>
+      <label for="endDate" class="active" >Enddatum</label>
+    </div>
+
+    <button class="showTime-button btn waves-effect waves-light {{endTimeButtonColor}}" {{action "toggleEndTimeElement"}}><i class="material-icons center">{{endTimeIconState}}</i></button>
+
+    {{#if showEndTime}}
+    <div class="date-field inputField__spacing input-field">
+      {{ember-flatpickr
+          id="endTime"
+          value=(readonly model.entryInstance.date_end)
+          onChange=(action 'updateEndTime')
+          noCalendar=true
+          enableTime=true
+          minuteIncrement=5
+          time_24hr=true
+          dateFormat='H:i \U\h\r'}}
+      <label for="endTime" class="{{if model.entryInstance.has_time_end "active" }}">Endzeit</label>
+    </div>
+    {{/if}}
+  </div>
+{{/if}}

@@ -11,12 +11,8 @@
     <label for="description" class="{{if model.entryInstance.description "active" }}">Beschreibung</label>
   </div>
 
-  {{#if showDate}}
-  <div class="inputField__spacing input-field">
-    <label for="date" class="active">Datum</label>
-    {{input value=dateString id="date" type="date" required="required"}}
-  </div>
-  {{/if}}
+  <!-- date picker element, which set date_start, date_end, has_time_start, has_time_end in model -->
+  {{date-picker model=model}}
 
   <div class="inputField__spacing">
     <label>Übergeordnete Orga</label>

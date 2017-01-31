@@ -1,19 +1,20 @@
 import Ember from 'ember';
+import FormatReasonErrorMessage from 'afeefa-backend-ui/mixins/format-reason-error-message';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(FormatReasonErrorMessage,{
   instance: null,
   savingInstance: false,
   /*
    * CSS class to set button color - use materialize classes
    */
   cssClass: Ember.computed('instance.active', function() {
-    if(this.get('instance.active')==true) return 'red';
+    if(this.get('instance.active')===true) return 'red';
   }),
   /*
    * Text shown inside the button
    */
   buttonLabel: Ember.computed('instance.active', function() {
-    if(this.get('instance.active')==true) return 'Deaktivieren';
+    if(this.get('instance.active')===true) return 'Deaktivieren';
     else return 'Aktivieren';
   }),
   actions: {
@@ -29,7 +30,9 @@ export default Ember.Component.extend({
         instance.save().then(()=> {
           this.set('savingInstance', false);
         }, (reason)=> {
-          this.EventBus.publish('showAlert', {title: 'Fehler beim Veröffentlichen', description: 'Unbekannter Fehler', isError: true, autoHide: false});
+          let error = this.handleError(reason);
+          error.title = 'Fehler beim Veröffentlichen';
+          this.EventBus.publish('showAlert', error);
           instance.rollbackAttributes();
           this.set('savingInstance', false);
         });

@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('route:orgas', 'Unit | Route | orgas', {
+moduleFor('route:protected.orgas.list', 'Unit | Route | orgas', {
   // Specify the other units that are required for this test.
   // needs: ['controller:foo']
 });

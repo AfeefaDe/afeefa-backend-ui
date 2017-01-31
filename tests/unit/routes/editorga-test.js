@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('route:editorga', 'Unit | Route | editorga', {
+moduleFor('route:protected.orgas.edit', 'Unit | Route | editorga', {
   // Specify the other units that are required for this test.
   // needs: ['controller:foo']
 });
