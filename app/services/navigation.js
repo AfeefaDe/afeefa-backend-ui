@@ -5,41 +5,57 @@ const menuTree = {
   title: 'Dashboard',
   level: 1,
   children: [
-    { route: 'protected.todos', title: 'Todos', level: 1 },
+    {
+      route: 'protected.todos',
+      title: 'Todos',
+      level: 2,
+      hint: store => {
+        const countOrgas = store.peekAll('orga').filter(orga => orga.get('annotations.length')).get('length');
+        const countEvents = store.peekAll('event').filter(event => event.get('annotations.length')).get('length');
+        return countOrgas + countEvents;
+      }
+    },
     {
       route: 'protected.orgas',
       title: 'Orgas',
-      level: 1,
+      level: 2,
+      hint: store => store.peekAll('orga').get('length'),
       children: [
-        { route: 'protected.orga', title: 'Anzeigen', level: 2 },
-        { route: 'protected.editorga', title: 'Ändern', level: 2 },
-        { route: 'protected.neworga', title: 'Neu', level: 2 }
+        { route: 'protected.orgas.show', title: 'Anzeigen', level: 3 },
+        { route: 'protected.orgas.edit', title: 'Ändern', level: 3 },
+        { route: 'protected.orgas.new', title: 'Neu', level: 3 }
       ]
     },
     {
       route: 'protected.events',
       title: 'Events',
-      level: 1,
+      level: 2,
+      hint: store => store.peekAll('event').get('length'),
       children: [
-        { route: 'protected.event', title: 'Anzeigen', level: 2 },
-        { route: 'protected.editevent', title: 'Ändern', level: 2 },
-        { route: 'protected.newevent', title: 'Neu', level: 2 }
+        { route: 'protected.events.show', title: 'Anzeigen', level: 3 },
+        { route: 'protected.events.edit', title: 'Ändern', level: 3 },
+        { route: 'protected.events.new', title: 'Neu', level: 3 }
       ]
     },
-    { route: 'protected.search', title: 'Suche', level: 1 }
+    {
+      route: 'protected.search',
+      title: 'Suche',
+      level: 1
+    }
   ]
 };
 
 
 export default Ember.Service.extend(Ember.Evented, {
   EventBus: Ember.inject.service('event-bus'),
+  store: Ember.inject.service(),
 
-  pathNavigation: [],
+  pathNavigation: null,
   level1Navigation: null,
 
   init () {
     this.pathNavigation = [];
-    this.level1Navigation = null;
+    this.level1Navigation = [];
 
     this.get('EventBus').subscribe('didTransition', this, 'onRouteChanged');
   },
@@ -51,9 +67,15 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   setRoute (routeHandlerInfos) { // currently always an array of 3 items
-    const routeName = routeHandlerInfos[2].name;
+    const lastIndex = routeHandlerInfos.length - 1;
+    const routeName = routeHandlerInfos[lastIndex].name;
     const createPathNavigation = (node, tmpPath) => {
       node = Object.assign({}, node);
+      if (node.hint) {
+        node.hint = node.hint(this.get('store')) + '';
+      } else {
+        node.hint = false;
+      }
       tmpPath.push(node);
 
       if (node.route === routeName) {
@@ -74,7 +96,26 @@ export default Ember.Service.extend(Ember.Evented, {
       return false;
     };
 
+    const createLevel1Navigation = (node, level1) => {
+      node = Object.assign({}, node);
+      if (node.level < 3) {
+        if (node.hint) {
+          node.hint = node.hint(this.get('store')) + '';
+        } else {
+          node.hint = false;
+        }
+        level1.push(node);
+      }
+      if (node.children) {
+        for (let child of node.children) {
+          createLevel1Navigation(child, level1);
+        }
+      }
+      return level1;
+    };
+
     this.pathNavigation = createPathNavigation(menuTree, []) || [menuTree];
+    this.level1Navigation = createLevel1Navigation(menuTree, []);
   },
 
   getPathNavigation () {
@@ -82,21 +123,6 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   getLevel1Navigation () {
-    if (!this.level1Navigation) {
-      const createLevel1Navigation = (node, level1) => {
-        node = Object.assign({}, node);
-        if (node.level === 1) {
-          level1.push(node);
-        }
-        if (node.children) {
-          for (let child of node.children) {
-            createLevel1Navigation(child, level1);
-          }
-        }
-        return level1;
-      };
-      this.level1Navigation = createLevel1Navigation(menuTree, []);
-    }
     return this.level1Navigation;
   }
 });

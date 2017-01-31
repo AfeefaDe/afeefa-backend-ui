@@ -10,7 +10,6 @@
 @import 'materialize-custom';
 
 /* components */
-@import 'components/afeefa-navigation';
 @import 'components/entry-list';
 @import 'components/entry-detail';
 @import 'components/alert';
@@ -20,6 +19,7 @@
 @import 'components/entry-form';
 @import 'components/navigation-sidebar';
 @import 'components/navigation-breadcrumb';
+@import 'components/navigation-mobile';
 @import 'components/list-pagination';
 /* pages */
 @import 'routes/login';

@@ -117,7 +117,7 @@ test('save shows notification and redirects to detail view', function(assert) {
     assert.equal(publishSpy.args[0][0], 'showAlert');
     assert.equal(publishSpy.args[0][1].title, 'Erfolgreich gespeichert');
 
-    assert.ok(transitionSpy.calledWith('protected.event', '1'));
+    assert.ok(transitionSpy.calledWith('protected.events.show', '1'));
   });
 });
 

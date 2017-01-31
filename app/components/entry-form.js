@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-import FormatReasonErrorMessage from '../mixins/format-reason-error-message';
+import FormatReasonErrorMessage from 'afeefa-backend-ui/mixins/format-reason-error-message';
 
 export default Ember.Component.extend(FormatReasonErrorMessage, {
   store: Ember.inject.service(),
@@ -29,7 +29,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         let type = entry.get('modelName');
         if(id && type) {
           const router = this.get('router');
-          router.transitionTo('protected.'+type, id);
+          router.transitionTo('protected.'+type+'s.show', id);
         }
         else throw 'Invalid transistion type or id - Cancel transition';
       }, (reason)=> {

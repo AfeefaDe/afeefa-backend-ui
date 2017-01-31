@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import FormatReasonErrorMessage from '../../mixins/format-reason-error-message';
+import FormatReasonErrorMessage from 'afeefa-backend-ui/mixins/format-reason-error-message';
 
 export default Ember.Component.extend(FormatReasonErrorMessage,{
   instance: null,

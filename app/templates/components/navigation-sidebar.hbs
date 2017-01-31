@@ -5,21 +5,14 @@
   </div>
   <div>
     <ul class="navigationSidebar__navContainer">
-      <li class="navigationSidebar__navItem">
-        {{#link-to 'protected.dashboard'}}Dashboard{{/link-to}}
-      </li>
-      <li class="navigationSidebar__navItem level2">
-        {{#link-to 'protected.todos'}}Todos{{/link-to}}
-        <span class="navigationSidebar__navItemMeta">{{model.todos.length}}</span>
-      </li>
-      <li class="navigationSidebar__navItem level2">
-        {{#link-to 'protected.orgas'}}Orgas{{/link-to}}
-        <span class="navigationSidebar__navItemMeta">{{model.orgas.length}}</span>
-      </li>
-      <li class="navigationSidebar__navItem level2">
-        {{#link-to 'protected.events'}}Events{{/link-to}}
-        <span class="navigationSidebar__navItemMeta">{{model.events.length}}</span>
-      </li>
+      {{#each level1Navigation as |path|}}
+        <li class="navigationSidebar__navItem level{{path.level}}">
+          {{#link-to path.route}}{{path.title}}{{/link-to}}
+          {{#if path.hint}}
+            <span class="navigationSidebar__navItemMeta">{{path.hint}}</span>
+          {{/if}}
+        </li>
+      {{/each}}
     </ul>
 
     <div class="navigationSidebar__footer">

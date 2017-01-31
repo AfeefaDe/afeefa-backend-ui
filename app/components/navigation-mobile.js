@@ -4,7 +4,6 @@ export default Ember.Component.extend({
   session: Ember.inject.service('session'),
   navigationService: Ember.inject.service('navigation'),
 
-  pathNavigation: [],
   level1Navigation: [],
   menuVisible: false,
 
@@ -14,15 +13,12 @@ export default Ember.Component.extend({
     this.updateNavigation();
   },
 
-
   hideMenu: function() {
     this.set('menuVisible', false);
   },
 
-
   updateNavigation: function() {
     const navigationService = this.get('navigationService');
-    this.set('pathNavigation', navigationService.getPathNavigation());
     this.set('level1Navigation', navigationService.getLevel1Navigation());
   },
 
@@ -30,7 +26,6 @@ export default Ember.Component.extend({
     toggleMenu: function() {
       this.set('menuVisible', !this.get('menuVisible'));
     },
-
     invalidateSession() {
       this.get('session').invalidate();
     }

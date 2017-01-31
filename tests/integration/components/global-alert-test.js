@@ -12,8 +12,8 @@ moduleForComponent('global-alert', 'Integration | Component | global alert', {
 });
 
 test('it renders', function(assert) {
-  this.render(hbs`{{afeefa-navigation EventBus=EventBus}}`);
-  assert.equal(this.$().text().trim(), 'menu');
+  this.render(hbs`{{global-alert EventBus=EventBus}}`);
+  assert.equal(this.$().text().trim().replace(/(\r\n|\n|\r)/gm,""), 'close        error_outline');
 });
 
 test('it shows the alert data on showAlert action', function(assert) {

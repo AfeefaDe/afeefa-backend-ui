@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('route:protected.newevent', 'Unit | Route | newevent', {
+moduleFor('route:protected.events.new', 'Unit | Route | newevent', {
   // Specify the other units that are required for this test.
   // needs: ['controller:foo']
 });
