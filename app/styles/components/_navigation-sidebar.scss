@@ -21,7 +21,11 @@
     padding: 0 0.5em;
     border-radius: 3px;
   }
+  &__navItem:hover &__navItemAction {
+    display: inline-block;
+  }
   &__navItemAction {
+    display: none;
     margin-left: 0.5em;
   }
   &__navItemAction i {
