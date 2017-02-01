@@ -191,10 +191,16 @@ export default Ember.Component.extend({
       }
     },
     showStartDatePicker: function() {
-      this.get('startDatePickerRef').toggle();
+      // bugfix: documentClick is called, when clicked
+      Ember.run.later(() => {
+        this.get('startDatePickerRef').open();
+      });
     },
     showEndDatePicker: function() {
-      this.get('endDatePickerRef').toggle();
+      // bugfix: documentClick is called, when clicked
+      Ember.run.later(() => {
+        this.get('endDatePickerRef').toggle();
+      });
     }
   },
 });
