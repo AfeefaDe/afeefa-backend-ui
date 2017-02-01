@@ -11,7 +11,6 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
     $('#description').trigger('autoresize');
   },
   showSubCategoryForm: Ember.computed('model.entryInstance.category', function() {
-    console.log(!this.get('model.entryInstance.category.id'));
     if(!this.get('model.entryInstance.category.id')){
       return false;
     }
