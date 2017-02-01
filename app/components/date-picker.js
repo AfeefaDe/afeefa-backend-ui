@@ -203,19 +203,24 @@ export default Ember.Component.extend({
     },
     setStartDateRange: function() {
       // start date <= end date
-      this.get('startDatePickerRef').set('maxDate', this.get('model.entryInstance.date_end'));
+      if(!this.get('isSameDay')) {
+        this.get('startDatePickerRef').set('maxDate', this.get('model.entryInstance.date_end'));
+      }
+      else {
+        this.get('startDatePickerRef').set('maxDate', '');
+      }
     },
     setEndDateRange: function() {
       // end date >= start date
       this.get('endDatePickerRef').set('minDate', this.get('model.entryInstance.date_start'));
     },
     setStartTimeRange: function() {
-      const startDate = this.get('model.entryInstance.date_start');
-      console.log(startDate);
+      // const startDate = this.get('model.entryInstance.date_start');
+      // console.log(startDate);
 
       if(this.get('isSameDay')) {
-        console.log('blub');
-        this.get('startTimePickerRef').set('minDate', new Date());
+        // console.log('blub');
+        // this.get('startTimePickerRef').set('minDate', new Date());
       }
     },
     setEndTimeRange: function() {
