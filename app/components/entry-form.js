@@ -13,7 +13,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
   showSubCategoryForm: Ember.computed('model.entryInstance.category', function() {
     console.log(!this.get('model.entryInstance.category.id'));
     if(!this.get('model.entryInstance.category.id')){
-      return false
+      return false;
     }
     else return true;
   }),

@@ -10,7 +10,7 @@ export default Ember.Component.extend({
     let possibleCategories = this.get('store').peekAll('category');
     possibleCategories = possibleCategories.filter((cat) => {
       //false: no parentCategory selected -> show all top level categories
-      if(selectedParentCategory==false) {
+      if(selectedParentCategory===false) {
         return !cat.get('parentCategory.id');
       }
       else if(selectedParentCategory.get('id')) {
