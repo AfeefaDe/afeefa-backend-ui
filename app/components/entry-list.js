@@ -13,7 +13,8 @@ export default Ember.Component.extend(PaginatedListMixin, {
   }),
 
   // paginated list properties
-  pageSize: 5,
+  pagination: false,
+  pageSize: 15,
 
   getAllItems () {
     return this.get('sortedInstances');

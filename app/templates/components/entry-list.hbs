@@ -1,6 +1,8 @@
 {{yield}}
 
-{{ list-pagination currentPage=currentPage pageSize=pageSize numItems=instances.length changed=(action "setPage")}}
+{{#if pagination}}
+  {{ list-pagination currentPage=currentPage pageSize=pageSize numItems=instances.length changed=(action "setPage")}}
+{{/if}}
 
 <ul class="entryList">
     {{#each (limit-array currentPageItems limit) as |instance|}}

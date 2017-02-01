@@ -25,7 +25,7 @@ function assertValues(assert, $, { numItems, numPages, currentPage }) {
     assert.equal(this.$('.list-pagination__navigation').html(), undefined, 'page navigation not shown');
   }
 
-  assert.equal(this.$('.list-pagination__pagesize').children().length, 4);
+  assert.equal(this.$('.list-pagination__pagesize').children().length, 3);
 }
 
 
@@ -101,11 +101,11 @@ test('test wrong initial values', function(assert) {
 test('test set page size', function(assert) {
   this.render(hbs`{{list-pagination numItems=97 currentPage=4 pageSize=20}}`);
 
-  this.$('.list-pagination__pagesize').val('5').trigger('change');
+  this.$('.list-pagination__pagesize').val('15').trigger('change');
   assertValues(assert, this.$, {
     numItems: 97,
     currentPage: 1,
-    numPages: 20
+    numPages: 7
   });
 
   this.$('.list-pagination__pagesize').val('1000').trigger('change');
