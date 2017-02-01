@@ -10,6 +10,13 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
     /* materialize: trigger the autoresze action to set height*/
     $('#description').trigger('autoresize');
   },
+  showSubCategoryForm: Ember.computed('model.entryInstance.category', function() {
+    console.log(!this.get('model.entryInstance.category.id'));
+    if(!this.get('model.entryInstance.category.id')){
+      return false
+    }
+    else return true;
+  }),
 	actions: {
     /*
      * Save Entry with meta models

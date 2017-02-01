@@ -1,4 +1,5 @@
 {{yield}}
+
 <select class="browser-default" onchange={{action "selectCategory" value="target.value"}}>
   <option selected value="-1">Bitte Kategorie auswählen</option>
   {{#each possibleCategories as |category|}}
