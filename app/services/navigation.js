@@ -39,7 +39,7 @@ const menuTree = {
       action: {
         name: 'Neues Event erstellen',
         icon: 'add_circle_outline',
-        route: 'protected.orgas.new'
+        route: 'protected.events.new'
       },
       level: 2,
       hint: store => store.peekAll('event').get('length'),
