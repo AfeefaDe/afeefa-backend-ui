@@ -7,7 +7,7 @@
         <h2 class="mainCard__headerTitle">Alle Todos </h2>
       </div>
       <div>
-        {{entry-list instances=model.todos attributes=model.attributes sortOrder='updatedAt:desc'}}
+        {{entry-list instances=model.todos attributes=model.attributes sortOrder='updatedAt:desc' pagination=true}}
       </div>
     </div>
   </div>

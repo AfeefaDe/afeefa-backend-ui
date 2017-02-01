@@ -2,17 +2,23 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
-  possibleCategories: null,
   didReceiveAttrs() {
     this._super(...arguments);
-    /*set up possible categories*/
-    let showSubCategory = this.get('showSubCategory');
+  },
+  possibleCategories: Ember.computed('selectedParentCategory', function() {
+    let selectedParentCategory = this.get('selectedParentCategory');
     let possibleCategories = this.get('store').peekAll('category');
     possibleCategories = possibleCategories.filter((cat) => {
-      return cat.get('isSubCategory') === showSubCategory;
+      //false: no parentCategory selected -> show all top level categories
+      if(selectedParentCategory===false) {
+        return !cat.get('parentCategory.id');
+      }
+      else if(selectedParentCategory.get('id')) {
+        return cat.get('parentCategory.id') === selectedParentCategory.get('id');
+      }
     });
-    this.set('possibleCategories', possibleCategories);
-  },
+    return possibleCategories;
+  }),
   actions: {
     selectCategory: function(categoryId) {
       let newCategory = this.get('store').peekRecord('category', categoryId);

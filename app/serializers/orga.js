@@ -26,8 +26,6 @@ export default DS.JSONAPISerializer.extend(SaveRelationshipsMixin, {
     return Ember.String.underscore(key);
   },
   normalizeSaveResponse(store, modelName, obj) {
-    //hack: remove relationships when normalizing response, cause they only contain links
-    // if(obj.data.relationships) obj.data.relationships = {};
     return this._super(store, modelName, obj);
   }
 });
