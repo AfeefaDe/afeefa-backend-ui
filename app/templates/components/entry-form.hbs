@@ -28,23 +28,10 @@
     </select>
     </div>
 
-  <div class="inputField__spacing">
-    <label>Kategorie (Pflichtfeld)</label>
-    {{forms/categories-form
-      instance=model.entryInstance.category
-      selectedParentCategory=false
-    }}
-  </div>
 
-  {{#if showSubCategoryForm}}
-    <div class="inputField__spacing">
-      <label>Unterkategorie</label>
-      {{forms/categories-form
-        instance=model.entryInstance.subCategory
-        selectedParentCategory=model.entryInstance.category
-      }}
-    </div>
-  {{/if}}
+  {{forms/categories-wrapper parentInstance=model.entryInstance.category childInstance=model.entryInstance.subCategory}}
+
+
   <h2>Kontaktinformationen</h2>
   <div class="inputField__spacing">
     {{forms/contact-info-form instance=model.contactInfoInstance}}
