@@ -6,19 +6,6 @@ moduleForComponent('forms/categories-wrapper', 'Integration | Component | forms/
 });
 
 test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
-
   this.render(hbs`{{forms/categories-wrapper}}`);
-
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#forms/categories-wrapper}}
-      template block text
-    {{/forms/categories-wrapper}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$().text().trim().replace(/(\r\n|\n|\r)/gm,""), 'Kategorie (Pflichtfeld)    Keine Kategorie ausgewählt');
 });
