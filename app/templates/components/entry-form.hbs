@@ -30,12 +30,18 @@
 
   <div class="inputField__spacing">
     <label>Kategorie (Pflichtfeld)</label>
-    {{forms/categories-form instance=model.entryInstance.category showSubCategory=false}}
+    {{forms/categories-form
+      instance=model.entryInstance.category
+      selectedParentCategory=false
+    }}
   </div>
 
   <div class="inputField__spacing">
     <label>Unterkategorie</label>
-    {{forms/categories-form instance=model.entryInstance.subCategory showSubCategory=true}}
+    {{forms/categories-form
+      instance=model.entryInstance.subCategory
+      selectedParentCategory=model.entryInstance.category
+    }}
   </div>
 
   <h2>Kontaktinformationen</h2>

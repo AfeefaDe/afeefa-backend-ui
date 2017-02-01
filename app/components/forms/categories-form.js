@@ -6,10 +6,11 @@ export default Ember.Component.extend({
   didReceiveAttrs() {
     this._super(...arguments);
     /*set up possible categories*/
-    let showSubCategory = this.get('showSubCategory');
+    let selectedParentCategory = this.get('selectedParentCategory');
     let possibleCategories = this.get('store').peekAll('category');
     possibleCategories = possibleCategories.filter((cat) => {
-      return cat.get('isSubCategory') === showSubCategory;
+      if(selectedParentCategory===false) return true;
+      return cat.get('parentCategory') === selectedParentCategory;
     });
     this.set('possibleCategories', possibleCategories);
   },
