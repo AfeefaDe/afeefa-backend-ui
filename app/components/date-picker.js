@@ -180,6 +180,8 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         this.set('endDateStyle', 'hide-endDate');
         this.set('sameDayLabelStyle', '');
         this.set('isSameDay', true);
+        // check if end time values are still valid
+        this.send('testEndTimeRange');
       } else {
         this.set('endDateStyle', '');
         this.set('sameDayLabelStyle', 'hide-sameDay-label');
@@ -233,10 +235,10 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       if(this.get('isSameDay')) {
         const startTime = this.get('model.entryInstance.date_start').getTime();
         const endTime = this.get('model.entryInstance.date_end').getTime();
-        if(startTime >= endTime) {
+        if(startTime >= endTime && this.get('model.entryInstance.has_time_start')) {
           let error = this.handleError();
           error.title = 'Eingabeproblem';
-          error.description = 'Startzeit liegt hinter der Endzeit';
+          error.description = 'Startzeit liegt hinter oder gleicht der Endzeit';
           this.EventBus.publish('showAlert', error);
 
           this.send('resetStartTime');
@@ -248,10 +250,10 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       if(this.get('isSameDay')) {
         const startTime = this.get('model.entryInstance.date_start').getTime();
         const endTime = this.get('model.entryInstance.date_end').getTime();
-        if(endTime <= startTime) {
+        if(endTime <= startTime && this.get('model.entryInstance.has_time_end')) {
           let error = this.handleError();
           error.title = 'Eingabeproblem';
-          error.description = 'Endzeit liegt vor der Startzeit';
+          error.description = 'Endzeit liegt vor oder gleicht der Startzeit';
           this.EventBus.publish('showAlert', error);
 
           this.send('resetEndTime');
