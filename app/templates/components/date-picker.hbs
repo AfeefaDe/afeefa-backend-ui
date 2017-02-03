@@ -13,7 +13,7 @@
           enableTime=false
           dateFormat='d.m.Y'
           locale='de'}}
-      <label for="startDate" class="active" >Startdatum</label>
+      <label for="startDate" class="active clickable-element" >Startdatum</label>
     </div>
 
     <button class="showTime-button btn waves-effect waves-light {{startTimeButtonColor}}" {{action "toggleStartTimeElement"}}><i class="material-icons center">{{startTimeIconState}}</i></button>
@@ -31,7 +31,7 @@
           minuteIncrement=5
           time_24hr=true
           dateFormat='H:i \U\h\r'}}
-      <label for="startTime" class="{{if model.entryInstance.has_time_start "active" }}">Startzeit</label>
+      <label for="startTime" class="{{if model.entryInstance.has_time_start "active" }} clickable-element">Startzeit</label>
     </div>
     {{/if}}
   </div>
@@ -53,8 +53,8 @@
             dateFormat='d.m.Y'
             locale='de'}}
       </div>
-      <label for="endDate" class="{{sameDayLabelStyle}}" > Gleicher Tag </label>
-      <label for="endDate" class="active" >Enddatum</label>
+      <label for="endDate" class="{{sameDayLabelStyle}} clickable-element" > Gleicher Tag </label>
+      <label for="endDate" class="active clickable-element" >Enddatum</label>
     </div>
 
     <button class="showTime-button btn waves-effect waves-light {{endTimeButtonColor}}" {{action "toggleEndTimeElement"}}><i class="material-icons center">{{endTimeIconState}}</i></button>
@@ -72,7 +72,7 @@
           minuteIncrement=5
           time_24hr=true
           dateFormat='H:i \U\h\r'}}
-      <label for="endTime" class="{{if model.entryInstance.has_time_end "active" }}">Endzeit</label>
+      <label for="endTime" class="{{if model.entryInstance.has_time_end "active" }} clickable-element">Endzeit</label>
     </div>
     {{/if}}
   </div>

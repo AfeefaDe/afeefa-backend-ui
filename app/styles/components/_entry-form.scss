@@ -40,3 +40,19 @@
 .date-field label.hide-sameDay-label {
     opacity: 0;
 }
+
+label.clickable-element {
+  cursor: pointer; cursor: hand;
+}
+#startDate {
+  cursor: pointer; cursor: hand;
+}
+#startTime {
+  cursor: pointer; cursor: hand;
+}
+#endDate {
+  cursor: pointer; cursor: hand;
+}
+#endTime {
+  cursor: pointer; cursor: hand;
+}
