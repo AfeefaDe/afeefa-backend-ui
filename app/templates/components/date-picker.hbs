@@ -24,6 +24,7 @@
           value=(readonly model.entryInstance.date_start)
           onChange=(action 'updateStartTime')
           onClose=(action 'testStartTimeRange')
+          flatpickrRef=startTimePickerRef
           noCalendar=true
           enableTime=true
           minuteIncrement=5
@@ -63,6 +64,7 @@
           value=(readonly model.entryInstance.date_end)
           onChange=(action 'updateEndTime')
           onClose=(action 'testEndTimeRange')
+          flatpickrRef=endTimePickerRef
           noCalendar=true
           enableTime=true
           minuteIncrement=5

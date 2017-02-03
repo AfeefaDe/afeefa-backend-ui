@@ -31,7 +31,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         var dateStart = this.get('model.entryInstance.date_start');
         dateStart.setHours(0);
         dateStart.setMinutes(0);
-        dateStart.setMilliseconds(0);
+        dateStart.setSeconds(0);
       }
       var dateEnd = this.get('model.entryInstance.date_end');
       if(dateEnd) {
@@ -51,7 +51,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
           dateEnd = this.get('model.entryInstance.date_end');
           dateEnd.setHours(0);
           dateEnd.setMinutes(0);
-          dateEnd.setMilliseconds(0);
+          dateEnd.setSeconds(0);
           this.send('setSameDay', true);
       }
 
@@ -123,6 +123,8 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         const now = new Date();
         this.get('model.entryInstance.date_start').setHours(now.getHours());
         this.get('model.entryInstance.date_start').setMinutes(now.getMinutes() - (now.getMinutes()%5) );
+        // open start time picker
+        this.send('showStartTimePicker');
       }
       this.toggleProperty('showStartTime');
     },
@@ -161,7 +163,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         this.set('endTimeButtonColor', '');
         this.get('model.entryInstance.date_end').setHours(0);
         this.get('model.entryInstance.date_end').setMinutes(0);
-        this.get('model.entryInstance.date_end').setMilliseconds(0);
+        this.get('model.entryInstance.date_end').setSeconds(0);
         this.set('model.entryInstance.has_time_end', false);
       } else {
         // show end time
@@ -172,6 +174,8 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         const now = new Date();
         this.get('model.entryInstance.date_end').setHours(now.getHours());
         this.get('model.entryInstance.date_end').setMinutes(now.getMinutes() - (now.getMinutes()%5) );
+        // open end time picker
+        this.send('showEndTimePicker');
       }
       this.toggleProperty('showEndTime');
     },
@@ -200,6 +204,18 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         this.get('endDatePickerRef').toggle();
       });
     },
+    showStartTimePicker: function() {
+      // bugfix for: documentClick is called, when clicked
+      Ember.run.later(() => {
+        this.get('startTimePickerRef').open();
+      });
+    },
+    showEndTimePicker: function() {
+      // bugfix for: documentClick is called, when clicked
+      Ember.run.later(() => {
+        this.get('endTimePickerRef').open();
+      });
+    },
     setStartDateRange: function() {
       // start date <= end date
       if(!this.get('isSameDay')) {
@@ -219,7 +235,7 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       this.set('startTimeButtonColor', '');
       this.get('model.entryInstance.date_start').setHours(0);
       this.get('model.entryInstance.date_start').setMinutes(0);
-      this.get('model.entryInstance.date_start').setMilliseconds(0);
+      this.get('model.entryInstance.date_start').setSeconds(0);
       this.set('model.entryInstance.has_time_start', false);
     },
     resetEndTime: function() {
@@ -228,14 +244,17 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       this.set('endTimeButtonColor', '');
       this.get('model.entryInstance.date_end').setHours(0);
       this.get('model.entryInstance.date_end').setMinutes(0);
-      this.get('model.entryInstance.date_end').setMilliseconds(0);
+      this.get('model.entryInstance.date_end').setSeconds(0);
       this.set('model.entryInstance.has_time_end', false);
     },
     testStartTimeRange: function() {
       if(this.get('isSameDay')) {
         const startTime = this.get('model.entryInstance.date_start').getTime();
         const endTime = this.get('model.entryInstance.date_end').getTime();
-        if(startTime >= endTime && this.get('model.entryInstance.has_time_start')) {
+        const hasStartTime = this.get('model.entryInstance.has_time_start');
+        const hasEndTime = this.get('model.entryInstance.has_time_end');
+
+        if(startTime >= endTime && hasStartTime && hasEndTime) {
           let error = this.handleError();
           error.title = 'Eingabeproblem';
           error.description = 'Startzeit liegt hinter oder gleicht der Endzeit';
@@ -250,7 +269,10 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       if(this.get('isSameDay')) {
         const startTime = this.get('model.entryInstance.date_start').getTime();
         const endTime = this.get('model.entryInstance.date_end').getTime();
-        if(endTime <= startTime && this.get('model.entryInstance.has_time_end')) {
+        const hasStartTime = this.get('model.entryInstance.has_time_start');
+        const hasEndTime = this.get('model.entryInstance.has_time_end');
+
+        if(endTime <= startTime && hasStartTime && hasEndTime) {
           let error = this.handleError();
           error.title = 'Eingabeproblem';
           error.description = 'Endzeit liegt vor oder gleicht der Startzeit';
