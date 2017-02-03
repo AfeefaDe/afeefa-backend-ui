@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
-export default Ember.Component.extend({
+import FormatReasonErrorMessage from 'afeefa-backend-ui/mixins/format-reason-error-message';
+
+export default Ember.Component.extend(FormatReasonErrorMessage, {
   /* determine if the entryInstance has attribute model*/
   showDate: Ember.computed('model', function() {
     const entry = this.get('model.entryInstance');
@@ -111,12 +113,7 @@ export default Ember.Component.extend({
     toggleStartTimeElement: function() {
       if(this.get('showStartTime')) {
         // hide start time and delete start time values
-        this.set('startTimeIconState', 'alarm');
-        this.set('startTimeButtonColor', '');
-        this.get('model.entryInstance.date_start').setHours(0);
-        this.get('model.entryInstance.date_start').setMinutes(0);
-        this.get('model.entryInstance.date_start').setMilliseconds(0);
-        this.set('model.entryInstance.has_time_start', false);
+        this.send('resetStartTime');
       } else {
         // show start time
         this.set('startTimeIconState', 'delete_forever');
@@ -210,21 +207,57 @@ export default Ember.Component.extend({
         this.get('startDatePickerRef').set('maxDate', '');
       }
     },
+    resetStartTime: function() {
+      // hide start time and delete start time values
+      this.set('startTimeIconState', 'alarm');
+      this.set('startTimeButtonColor', '');
+      this.get('model.entryInstance.date_start').setHours(0);
+      this.get('model.entryInstance.date_start').setMinutes(0);
+      this.get('model.entryInstance.date_start').setMilliseconds(0);
+      this.set('model.entryInstance.has_time_start', false);
+    },
+    resetEndTime: function() {
+      // hide end time and delete end time values
+      this.set('endTimeIconState', 'alarm');
+      this.set('endTimeButtonColor', '');
+      this.get('model.entryInstance.date_end').setHours(0);
+      this.get('model.entryInstance.date_end').setMinutes(0);
+      this.get('model.entryInstance.date_end').setMilliseconds(0);
+      this.set('model.entryInstance.has_time_end', false);
+    },
     setEndDateRange: function() {
       // end date >= start date
       this.get('endDatePickerRef').set('minDate', this.get('model.entryInstance.date_start'));
     },
-    setStartTimeRange: function() {
-      // const startDate = this.get('model.entryInstance.date_start');
-      // console.log(startDate);
-
+    testStartTimeRange: function() {
       if(this.get('isSameDay')) {
-        // console.log('blub');
-        // this.get('startTimePickerRef').set('minDate', new Date());
+        const startTime = this.get('model.entryInstance.date_start').getTime();
+        const endTime = this.get('model.entryInstance.date_end').getTime();
+        if(startTime >= endTime) {
+          let error = this.handleError();
+          error.title = 'Eingabeproblem';
+          error.description = 'Startzeit liegt hinter der Endzeit';
+          this.EventBus.publish('showAlert', error);
+
+          this.send('resetStartTime');
+          this.toggleProperty('showStartTime');
+        }
       }
     },
-    setEndTimeRange: function() {
+    testEndTimeRange: function() {
+      if(this.get('isSameDay')) {
+        const startTime = this.get('model.entryInstance.date_start').getTime();
+        const endTime = this.get('model.entryInstance.date_end').getTime();
+        if(endTime <= startTime) {
+          let error = this.handleError();
+          error.title = 'Eingabeproblem';
+          error.description = 'Endzeit liegt vor der Startzeit';
+          this.EventBus.publish('showAlert', error);
 
+          this.send('resetEndTime');
+          this.toggleProperty('showEndTime');
+        }
+      }
     }
   },
 });

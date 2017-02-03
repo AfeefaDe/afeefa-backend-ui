@@ -9,7 +9,6 @@
           value=(readonly model.entryInstance.date_start)
           onChange=(action 'updateStartDate')
           onOpen=(action 'setStartDateRange')
-          flatpickrRef=startDatePickerRef
           enableTime=false
           dateFormat='d.m.Y'}}
       <label for="startDate" class="active" >Startdatum</label>
@@ -23,7 +22,7 @@
           id="startTime"
           value=(readonly model.entryInstance.date_start)
           onChange=(action 'updateStartTime')
-          onOpen=(action 'setStartTimeRange')
+          onClose=(action 'testStartTimeRange')
           flatpickrRef=startTimePickerRef
           noCalendar=true
           enableTime=true
@@ -63,8 +62,7 @@
           id="endTime"
           value=(readonly model.entryInstance.date_end)
           onChange=(action 'updateEndTime')
-          onOpen=(action 'setEndTimeRange')
-          flatpickrRef=endTimePickerRef
+          onClose=(action 'testEndTimeRange')
           noCalendar=true
           enableTime=true
           minuteIncrement=5
