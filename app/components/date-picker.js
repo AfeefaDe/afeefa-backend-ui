@@ -46,8 +46,8 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
           this.send('setSameDay', false);
         }
       } else {
-          // new end date
-          this.set('model.entryInstance.date_end', new Date());
+          //set end date to start date -> restore end date which is deleted in save progress
+          this.set('model.entryInstance.date_end', Ember.copy(this.get('model.entryInstance.date_start'), true));
           dateEnd = this.get('model.entryInstance.date_end');
           dateEnd.setHours(0);
           dateEnd.setMinutes(0);
