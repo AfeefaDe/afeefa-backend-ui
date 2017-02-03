@@ -207,6 +207,10 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         this.get('startDatePickerRef').set('maxDate', '');
       }
     },
+    setEndDateRange: function() {
+      // end date >= start date
+      this.get('endDatePickerRef').set('minDate', this.get('model.entryInstance.date_start'));
+    },
     resetStartTime: function() {
       // hide start time and delete start time values
       this.set('startTimeIconState', 'alarm');
@@ -224,10 +228,6 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       this.get('model.entryInstance.date_end').setMinutes(0);
       this.get('model.entryInstance.date_end').setMilliseconds(0);
       this.set('model.entryInstance.has_time_end', false);
-    },
-    setEndDateRange: function() {
-      // end date >= start date
-      this.get('endDatePickerRef').set('minDate', this.get('model.entryInstance.date_start'));
     },
     testStartTimeRange: function() {
       if(this.get('isSameDay')) {
