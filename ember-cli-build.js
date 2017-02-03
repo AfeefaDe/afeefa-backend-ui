@@ -15,6 +15,9 @@ module.exports = function(defaults) {
       includePaths: [
         'bower_components/materialize/sass'
       ]
+    },
+    flatpickr: {
+      locales: ['fr', 'de', 'ru', 'uk']
     }
   });
 
