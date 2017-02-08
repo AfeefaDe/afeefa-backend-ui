@@ -18,7 +18,7 @@
     <label>Übergeordnete Orga</label>
     <select class="browser-default" onchange={{action "selectParent" value="target.value"}}>
       <option value="-1">Keine übergeordnete Orga</option>
-      {{#each model.orgas as |orga|}}
+      {{#each sortedOrgas as |orga|}}
         {{#if (eq orga.id model.entryInstance.parentOrga.id)}}
           <option selected value="{{orga.id}}">{{orga.title}}</option>
         {{else}}

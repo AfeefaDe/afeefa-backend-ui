@@ -11,6 +11,8 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
     /* materialize: trigger the autoresze action to set height*/
     $('#description').trigger('autoresize');
   },
+  sortedOrgas: Ember.computed.sort('model.orgas', 'sortOrgasDefinition'),
+  sortOrgasDefinition: ['title:asc'],
 	actions: {
     /*
      * Save Entry with meta models
