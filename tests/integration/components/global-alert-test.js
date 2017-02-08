@@ -1,5 +1,6 @@
 import Ember from 'ember';
-import { moduleForComponent, test } from 'ember-qunit';
+import { moduleForComponent } from 'ember-qunit';
+import test from 'ember-sinon-qunit/test-support/test';
 import hbs from 'htmlbars-inline-precompile';
 
 const alertData = {title: 'Erfolgreich gespeichert' , description: 'Dein Eintrag wurde erfolgreich angelegt.', isError: true, autoHide: true};
@@ -67,10 +68,37 @@ test('it closes the alert on ESC', function(assert) {
   /* simulate click*/
   var e = $.Event('keydown');
   e.keyCode = 20; /* NOT ESC*/
-  this.$('.alert').trigger(e);
+  $('body').trigger(e);
   assert.equal(this.$('.alert').hasClass('alert--visible'), true);
 
-  e.keyCode = 27; /* ESC */
-  this.$('.alert').trigger(e);
+  Ember.run(() => {
+    e.keyCode = 27; /* ESC */
+    $('body').trigger(e);
+  });
   assert.equal(this.$('.alert').hasClass('alert--invisible'), true);
+});
+
+test('it does not remove unrelated keydown listeners on ESC', function(assert) {
+  this.render(hbs`{{global-alert EventBus=EventBus}}`);
+  Ember.run(() => {
+    this.get('EventBus').publish('showAlert', alertData);
+  });
+  assert.equal(this.$('.alert').hasClass('alert--visible'), true);
+
+  const downSpy = this.spy();
+  $('body').keydown(downSpy);
+
+  var e = $.Event('keydown');
+  e.keyCode = 27; /* ESC */
+
+  Ember.run(() => {
+    $('body').trigger(e);
+  });
+  assert.equal(this.$('.alert').hasClass('alert--invisible'), true);
+  assert.ok(downSpy.calledOnce);
+
+  $('body').trigger(e);
+  $('body').trigger(e);
+  $('body').trigger(e);
+  assert.equal(downSpy.callCount, 4);
 });

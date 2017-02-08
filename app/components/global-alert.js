@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   title: '',
   description: '',
   visible: false,
+  keyDownHandler: null, // will be set runtime
   didReceiveAttrs() {
     this.EventBus.subscribe('showAlert', this, 'showAlertLocal');
   },
@@ -12,8 +13,6 @@ export default Ember.Component.extend({
     this.EventBus.unsubscribe('showAlert');
   },
   showAlertLocal: function({title, description, isError, autoHide}={}) {
-    this.$('.alert').focus();
-    this.$('.alert').attr('tabindex',0);
     this.set('visible', true);
     this.set('description', description);
     this.set('title', title);
@@ -26,6 +25,20 @@ export default Ember.Component.extend({
         }
       }), autoHide);
     }
+
+    // in order to close on ESC we now want to listen to any
+    // keydown event dispatched on the body. we need to create a
+    // runtime closure here to be able to refer to our component's
+    // send method since jquery calls the handler using the event
+    // target as the "this" :-( ... however, it works
+    const alert = this;
+    const handler = (event) => {
+      if (event.keyCode === 27) {
+        alert.send('closeAlert');
+      }
+    };
+    this.set('keyDownHandler', handler); // save handler to revoke listener on close
+    $('body').keydown(handler);
   },
   /*output icon-string for alert icon*/
   alertTypeIcon: Ember.computed('isError', function() {
@@ -35,15 +48,7 @@ export default Ember.Component.extend({
   actions: {
     closeAlert: function() {
       this.set('visible', false);
-      this.$('.alert').blur();
-    }
-  },
-  /*
-   * escape triggers hides alert
-   */
-  keyDown: function (event) {
-    if (event.keyCode === 27) {
-      this.send('closeAlert');
+      $('body').unbind('keydown', this.get('keyDownHandler'));
     }
   }
 });
