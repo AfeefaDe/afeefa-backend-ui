@@ -20,7 +20,7 @@
 
     {{#if showStartTime}}
     <div class="date-field inputField__spacing input-field">
-      {{ember-flatpickr
+      {{time-picker
           id="startTime"
           value=(readonly model.entryInstance.date_start)
           onChange=(action 'updateStartTime')
@@ -61,7 +61,7 @@
 
     {{#if showEndTime}}
     <div class="date-field inputField__spacing input-field">
-      {{ember-flatpickr
+      {{time-picker
           id="endTime"
           value=(readonly model.entryInstance.date_end)
           onChange=(action 'updateEndTime')
