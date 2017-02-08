@@ -85,6 +85,56 @@ class Fixtures {
     };
     return model;
   }
+
+  setupCategories(store) {
+    store.push({
+    data: [{
+        id: 1,
+        type: 'category',
+        attributes: {
+          title: 'Level 1 Category A'
+        }
+      },{
+        id: 2,
+        type: 'category',
+        attributes: {
+          title: 'Level 1 Category B'
+        }
+      },{
+        id: 3,
+        type: 'category',
+        attributes: {
+          title: 'Level 2 Category A'
+        }
+      },{
+        id: 4,
+        type: 'category',
+        attributes: {
+          title: 'Level 2 Category B'
+        }
+      },{
+        id: 5,
+        type: 'category',
+        attributes: {
+          title: 'Level 2 Category C'
+        }
+      }]
+    });
+    const l1A = store.peekRecord('category', 1);
+    const l1B = store.peekRecord('category', 2);
+
+    const l2A = store.peekRecord('category', 3);
+    const l2B = store.peekRecord('category', 4);
+    const l2C = store.peekRecord('category', 5);
+
+    l2A.set('parentCategory', l1A);
+    l2B.set('parentCategory', l1A);
+    l2C.set('parentCategory', l1B);
+    const model = {
+      categories: store.peekAll('category'),
+    };
+    return model;
+  }
 }
 
 export default new Fixtures();
