@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 import FormatReasonErrorMessage from 'afeefa-backend-ui/mixins/format-reason-error-message';
+import { definesAttribute } from 'afeefa-backend-ui/helpers/has-attribute';
 
 export default Ember.Component.extend(FormatReasonErrorMessage, {
   store: Ember.inject.service(),
@@ -20,12 +21,14 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
       entry.get('locations').pushObject(this.get('model.locationInstance'));
 
-      // if no end date and end time available -> set end date object to null
-      const dateStart = this.get('model.entryInstance.date_start');
-      const dateEnd = this.get('model.entryInstance.date_end');
-      const hasEndTime = this.get('model.entryInstance.has_time_end');
-      if(dateStart.getDate()===dateEnd.getDate() && dateStart.getMonth()===dateEnd.getMonth() && dateStart.getFullYear()===dateEnd.getFullYear() && !hasEndTime) {
-        this.set('model.entryInstance.date_end', null);
+      if (definesAttribute(entry, 'date_start')) {
+        // if no end date and end time available -> set end date object to null
+        const dateStart = this.get('model.entryInstance.date_start');
+        const dateEnd = this.get('model.entryInstance.date_end');
+        const hasEndTime = this.get('model.entryInstance.has_time_end');
+        if(dateStart.getDate()===dateEnd.getDate() && dateStart.getMonth()===dateEnd.getMonth() && dateStart.getFullYear()===dateEnd.getFullYear() && !hasEndTime) {
+          this.set('model.entryInstance.date_end', null);
+        }
       }
 
       entry.save().then(()=> {
