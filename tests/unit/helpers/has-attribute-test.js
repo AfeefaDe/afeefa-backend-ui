@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { definesAttribute, hasAttribute } from 'afeefa-backend-ui/helpers/has-attribute';
 import test from 'ember-sinon-qunit/test-support/test';
 import { moduleFor } from 'ember-qunit';

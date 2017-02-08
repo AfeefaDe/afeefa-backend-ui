@@ -6,19 +6,9 @@ moduleForComponent('time-picker', 'Integration | Component | time picker', {
 });
 
 test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{time-picker}}`);
+  this.render(hbs`{{time-picker onChange=null}}`);
 
   assert.equal(this.$().text().trim(), '');
 
-  // Template block usage:
-  this.render(hbs`
-    {{#time-picker}}
-      template block text
-    {{/time-picker}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });
