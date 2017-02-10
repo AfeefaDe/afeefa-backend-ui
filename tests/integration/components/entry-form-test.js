@@ -70,27 +70,6 @@ test('save button triggers entry save method', function(assert) {
 });
 
 
-test('save adds relationships to entry', function(assert) {
-  Ember.run(() => {
-    const store = this.get('store');
-    const model = fixtures.setupNewEvent(store);
-    model.entryInstance.save = () => ({
-      then: () => {}
-    });
-    this.set('model', model);
-    this.render(hbs`{{entry-form model=model}}`);
-
-    assert.equal(model.entryInstance.get('contactInfos.length'), 0);
-    assert.equal(model.entryInstance.get('locations.length'), 0);
-
-    this.$('.entryForm__actionFooter').children().eq(0).submit();
-
-    assert.equal(model.entryInstance.get('contactInfos.length'), 1);
-    assert.equal(model.entryInstance.get('locations.length'), 1);
-  });
-});
-
-
 test('save shows notification and redirects to detail view', function(assert) {
   Ember.run(() => {
     const store = this.get('store');
@@ -118,6 +97,31 @@ test('save shows notification and redirects to detail view', function(assert) {
     assert.equal(publishSpy.args[0][1].title, 'Erfolgreich gespeichert');
 
     assert.ok(transitionSpy.calledWith('protected.events.show', '1'));
+  });
+});
+
+
+test('save calls models secret __SAVED method after save', function(assert) {
+  Ember.run(() => {
+    const store = this.get('store');
+    const model = fixtures.setupEvent(store);
+    model.entryInstance.save = this.stub().returns({
+      then: (success) => {
+        success();
+      }
+    });
+    this.set('model', model);
+
+    this.set('router', { transitionTo: () => {} });
+
+    const savedSpy = this.spy();
+    model.entryInstance.__SAVED = savedSpy;
+
+    this.render(hbs`{{entry-form model=model EventBus=EventBus router=router}}`);
+
+    this.$('.entryForm__actionFooter').children().eq(0).submit();
+
+    assert.ok(savedSpy.calledOnce);
   });
 });
 
@@ -205,7 +209,6 @@ test('model again in saved state after save() two', function(assert) {
     model.contactInfoInstance.set('contactPerson', 'new person');
     model.entryInstance.get('annotations').removeObject(annotation);
     model.entryInstance.get('annotations').addObject(annotation2);
-    model.entryInstance.set('hasAnnotationChanges', true);
 
     // hook in transitionTo to verify model state after save
     this.set('router', {
@@ -249,6 +252,5 @@ test('model again in saved state after save() two', function(assert) {
     assert.equal(model.contactInfoInstance.currentState.stateName, 'root.loaded.updated.uncommitted');
 
     assert.deepEqual(model.entryInstance.get('annotations').toArray(), [annotation2]);
-    assert.equal(true, model.entryInstance.get('hasAnnotationChanges'));
   });
 });

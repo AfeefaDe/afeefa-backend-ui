@@ -1,13 +1,10 @@
 import Ember from 'ember';
-import QUnit from 'qunit';
 import { moduleFor } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
 import DS from 'ember-data';
 import SaveRelationshipsMixin from 'afeefa-backend-ui/mixins/save-relationships';
 
 let owner, store, Artist;
-
-QUnit.dump.maxDepth = 8;
 
 function getInternalId(model) {
   return model.get('_internalModel')[Ember.GUID_KEY];

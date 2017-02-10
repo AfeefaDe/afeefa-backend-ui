@@ -5,20 +5,28 @@ import CancelEditMixin from 'afeefa-backend-ui/mixins/cancel-edit-entry-route';
 export default Ember.Route.extend(CancelEditMixin, {
   model(params) {
     const entryInstance = this.store.peekRecord('event', params.event_id);
+
     const locationInstance = entryInstance.get('locations').then((locations) => {
-       return locations.get('firstObject') || this.store.createRecord('location'); // fallback if no location info has been received
+      let location = locations.get('firstObject');
+      if (!location) {
+        location = this.store.createRecord('location');
+        locations.pushObject(location);
+      }
+      return location;
     });
+
     const contactInfoInstance = entryInstance.get('contactInfos').then((contactInfos) => {
-       return contactInfos.get('firstObject') || this.store.createRecord('contactInfo'); // fallback if no contact info has been received
-    });
-    const annotationInstance = entryInstance.get('annotations').then((annotations) => {
-       return annotations.get('firstObject');
+      let contactInfo = contactInfos.get('firstObject');
+      if (!contactInfo) {
+        contactInfo = this.store.createRecord('contactInfo');
+        contactInfos.pushObject(contactInfo);
+      }
+      return contactInfo;
     });
 
     return RSVP.hash({
       entryInstance,
       contactInfoInstance,
-      annotationInstance,
       locationInstance,
       orgas: this.store.peekAll('orga')
     });

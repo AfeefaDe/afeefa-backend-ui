@@ -20,8 +20,6 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
 		save: function() {
       let entry = this.get('model.entryInstance');
       const isEditMode = entry.get('id');
-      entry.get('contactInfos').pushObject(this.get('model.contactInfoInstance'));
-      entry.get('locations').pushObject(this.get('model.locationInstance'));
 
       if (definesAttribute(entry, 'date_start')) {
         // if no end date and end time available -> set end date object to null
@@ -37,6 +35,13 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
         const alertData = {title: 'Erfolgreich gespeichert', description: 'Dein Eintrag wurde erfolgreich angelegt.', isError: false, autoHide: 3000};
         if(isEditMode) alertData.description = 'Deine Änderungen wurden erfolgreich gespeichert.';
         this.EventBus.publish('showAlert', alertData);
+
+        // mark entry saved
+        // hack to reset all tracked entry changes prior transition
+        if (entry.__SAVED) {
+          entry.__SAVED();
+        }
+
         // goto view
         let id = entry.get('id');
         let type = entry.get('modelName');
@@ -91,7 +96,6 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
     deleteAnnotation: function(annotation) {
       const entryInstance = this.get('model.entryInstance');
       entryInstance.get('annotations').removeObject(annotation);
-      entryInstance.set('hasAnnotationChanges', true);
     },
      /*
      * action that gets triggered by annotation-new
@@ -100,7 +104,6 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
     addAnnotation: function(annotation) {
       const entryInstance = this.get('model.entryInstance');
       entryInstance.get('annotations').addObject(annotation);
-      entryInstance.set('hasAnnotationChanges', true);
     }
 	},
 

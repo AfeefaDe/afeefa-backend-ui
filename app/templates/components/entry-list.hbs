@@ -13,7 +13,3 @@
       {{/if}}
     {{/each}}
 </ul>
-
-{{#if pagination}}
-  {{ list-pagination currentPage=currentPage pageSize=pageSize numItems=instances.length changed=(action "setPage")}}
-{{/if}}

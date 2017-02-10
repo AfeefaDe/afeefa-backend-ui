@@ -3,50 +3,156 @@ import Ember from 'ember';
 export default Ember.Mixin.create({
   historyService: Ember.inject.service('route-history'),
   dialogService: Ember.inject.service('dialog'),
-  oldAnnotations: null,
+  oldRelationsCache: null,
+  justSaved: false,
+
+  // setup non shared state properties here
+  // otherwise other instances use the same references
+  init () {
+    this.set('oldRelationsCache', {});
+  },
 
   // called by associated route within setupController()'
   modelReady () {
-    this.set('oldAnnotations', Ember.A());
-    const annotations = this.get('model.entryInstance.annotations');
-    annotations.forEach(annotation => {
-      this.get('oldAnnotations').pushObject(annotation);
+    const entryInstance = this.get('model.entryInstance');
+    const cache = this.get('oldRelationsCache');
+
+    entryInstance.eachAttribute((name, descriptor) => {
+      if (descriptor.type === 'date') {
+        const oldDate = entryInstance.get(name);
+        cache[name] = oldDate ? new Date(oldDate.getTime()) : oldDate;
+      }
     });
+
+    entryInstance.eachRelationship((name, descriptor) => {
+      if (descriptor.kind === 'hasMany') {
+        cache[name] = Ember.A();
+        const oldRelations = entryInstance.get(name);
+        oldRelations.forEach(oldRelation => {
+          cache[name].pushObject(oldRelation);
+        });
+      }
+      if (descriptor.kind === 'belongsTo') {
+        cache[name] = entryInstance.get(name);
+      }
+    });
+
+
+    entryInstance.__SAVED = () => {
+      this.set('justSaved', true);
+    };
   },
 
   // rollback all changes
   rollback () {
     const entryInstance = this.get('model.entryInstance');
+    const cache = this.get('oldRelationsCache');
+
     entryInstance.rollbackAttributes();
-    this.get('model.contactInfoInstance').rollbackAttributes();
-    this.get('model.locationInstance').rollbackAttributes();
 
-    // rollback annotation changes, if any marked
-    if (entryInstance.get('hasAnnotationChanges')) {
-      const annotations = entryInstance.get('annotations');
-      annotations.clear();
-      const oldAnnotations = this.get('oldAnnotations');
-      oldAnnotations.forEach(oldAnnotation => {
-        annotations.pushObject(oldAnnotation);
-      });
+    entryInstance.eachAttribute((name, descriptor) => {
+      if (descriptor.type === 'date') {
+        const oldDate = cache[name];
+        const currentDate = entryInstance.get(name);
+        if (currentDate && oldDate) {
+          // in any case the date instance has been reset, it will be reverted to
+          // the old instnance within rollbackAttributes(). should we have set new
+          // date values on the sole date instance, we need to reinitialize that
+          // instance with the former value:
+          currentDate.setTime(oldDate.getTime());
+        }
+      }
+    });
 
-      entryInstance.set('hasAnnotationChanges', false);
-    }
+    entryInstance.eachRelationship((name, descriptor) => {
+      if (descriptor.kind === 'hasMany') {
+        const currentRelations = entryInstance.get(name);
+        currentRelations.clear();
+        const oldRelations = cache[name];
+        oldRelations.forEach(oldRelation => {
+          currentRelations.pushObject(oldRelation);
+          oldRelation.rollbackAttributes();
+        });
+      }
+      if (descriptor.kind === 'belongsTo') {
+        const oldRelation = cache[name];
+        entryInstance.set(name, oldRelation);
+        if (oldRelation.content) {
+          oldRelation.content.rollbackAttributes();
+        }
+      }
+    });
+
+    // reset cache
+    this.init();
+    // init cache from current status
+    this.modelReady();
   },
 
   hasChanges () {
-    const hasUnsavedAttributes = (modelName) => {
-      const model = this.get(`model.${modelName}`);
+    const hasUnsavedAttributes = model => {
       return Object.keys(model.changedAttributes()).length !== 0;
     };
 
-    // setting/deleting an annotation will mark the entryInstance dirty and make hasDirtyAttributes true
-    // so we test on dirty attributes explicitly for the entry even if no genuin attributes is changed
     const entryInstance = this.get('model.entryInstance');
-    const entryChanges = hasUnsavedAttributes('entryInstance') || entryInstance.get('hasAnnotationChanges');
-    const contactChanges = hasUnsavedAttributes('contactInfoInstance');
-    const locationChanges = hasUnsavedAttributes('locationInstance');
-    return entryChanges || contactChanges || locationChanges;
+    const cache = this.get('oldRelationsCache');
+
+    const hasEntryChanges = hasUnsavedAttributes(entryInstance);
+
+    let hasDateChanges = false;
+    entryInstance.eachAttribute((name, descriptor) => {
+      if (descriptor.type === 'date') {
+        const currentDate = entryInstance.get(name);
+        const oldDate = cache[name];
+        if (currentDate && !oldDate || oldDate && !currentDate) {
+          hasDateChanges = true;
+          return;
+        }
+        if (currentDate && currentDate.toString() !== oldDate.toString()) {
+          hasDateChanges = true;
+          return;
+        }
+      }
+    });
+
+
+    let hasRelationChanges = false;
+    entryInstance.eachRelationship((name, descriptor) => {
+      if (descriptor.kind === 'hasMany') {
+        const currentRelations = entryInstance.get(name);
+        const oldRelations = cache[name];
+        if (currentRelations.get('length') !== oldRelations.get('length')) {
+          hasRelationChanges = true;
+          return;
+        }
+        for (let i = 0; i < currentRelations.get('length'); i++) {
+          if (currentRelations.objectAt(i) !== oldRelations.objectAt(i)) {
+            hasRelationChanges = true;
+            return;
+          }
+          if (hasUnsavedAttributes(currentRelations.objectAt(i))) {
+            hasRelationChanges = true;
+            return;
+          }
+        }
+      }
+      if (descriptor.kind === 'belongsTo') {
+        const currentRelation = entryInstance.get(name).content;
+        const oldRelation = cache[name].content;
+        if (currentRelation !== oldRelation) {
+          hasRelationChanges = true;
+          return;
+        }
+        if (currentRelation) {
+          if (hasUnsavedAttributes(currentRelation)) {
+            hasRelationChanges = true;
+            return;
+          }
+        }
+      }
+    });
+
+    return hasEntryChanges || hasRelationChanges || hasDateChanges;
   },
 
   showCancelDialog (yes) {
@@ -63,8 +169,12 @@ export default Ember.Mixin.create({
 
   // called by associated route on willTransition()'
   willTransition (transition) {
+    const justSaved = this.get('justSaved');
+    if (justSaved) {
+      this.set('justSaved', false);
+    }
     // cancel with changes
-    if (this.hasChanges()) {
+    if (!justSaved && this.hasChanges()) {
       this.showCancelDialog(() => {
         this.rollback();
         transition.retry();

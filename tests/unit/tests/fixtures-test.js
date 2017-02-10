@@ -30,6 +30,7 @@ test('existing event properties', function(assert) {
     assert.ok(model.entryInstance);
     assert.equal(store.peekAll('event').get('length'), 1);
     assert.strictEqual(model.entryInstance.get('title'), 'Event1');
+    assert.equal(model.entryInstance.get('date_start').toISOString(), new Date(2017, 1, 28).toISOString());
     assert.equal(model.entryInstance.get('isNew'), false);
     assert.equal(model.entryInstance.get('hasDirtyAttributes'), false);
     assert.equal(model.entryInstance.get('dirtyType'), undefined);
@@ -57,7 +58,6 @@ test('existing event properties', function(assert) {
     assert.equal(model.entryInstance.get('annotations.length'), 1);
     const annotation = store.peekRecord('annotation', 1);
     assert.deepEqual([annotation], model.entryInstance.get('annotations').toArray());
-    assert.equal(model.entryInstance.get('hasAnnotationChanges'), false);
   });
 });
 
@@ -77,7 +77,7 @@ test('new event properties', function(assert) {
     assert.equal(model.entryInstance.currentState.stateName, 'root.loaded.created.uncommitted');
 
     assert.ok(model.locationInstance);
-    assert.equal(model.entryInstance.get('locations.length'), 0);
+    assert.equal(model.entryInstance.get('locations.length'), 1);
     assert.equal(store.peekAll('location').get('length'), 1);
     assert.strictEqual(model.locationInstance.get('city'), undefined, 'city undefined');
     assert.equal(model.locationInstance.get('isNew'), true);
@@ -86,7 +86,7 @@ test('new event properties', function(assert) {
     assert.equal(model.locationInstance.currentState.stateName, 'root.loaded.created.uncommitted');
 
     assert.ok(model.contactInfoInstance);
-    assert.equal(model.entryInstance.get('contactInfos.length'), 0);
+    assert.equal(model.entryInstance.get('contactInfos.length'), 1);
     assert.equal(store.peekAll('contactInfo').get('length'), 1);
     assert.strictEqual(model.contactInfoInstance.get('contactPerson'), undefined, 'person undefined');
     assert.equal(model.contactInfoInstance.get('isNew'), true);
@@ -97,6 +97,5 @@ test('new event properties', function(assert) {
     assert.ok(model.entryInstance.get('annotations'));
     assert.equal(model.entryInstance.get('annotations.length'), 0);
     assert.deepEqual(model.entryInstance.get('annotations').toArray(), [], 'annotations empty');
-    assert.equal(model.entryInstance.get('hasAnnotationChanges'), false);
   });
 });
