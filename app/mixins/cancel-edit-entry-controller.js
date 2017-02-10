@@ -173,17 +173,19 @@ export default Ember.Mixin.create({
     if (justSaved) {
       this.set('justSaved', false);
     }
-    // cancel with changes
-    if (!justSaved && this.hasChanges()) {
-      this.showCancelDialog(() => {
+    if (!justSaved) {
+      // cancel with changes
+      if (this.hasChanges()) {
+        this.showCancelDialog(() => {
+          this.rollback();
+          transition.retry();
+        });
+        transition.abort();
+        // cancel without changes
+        // autoremove runtime created models
+      } else {
         this.rollback();
-        transition.retry();
-      });
-      transition.abort();
-    // cancel without changes
-    // autoremove runtime created models
-    } else if(!justSaved && !this.hasChanges()) {
-      this.rollback();
+      }
     }
   },
 
