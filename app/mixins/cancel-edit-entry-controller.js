@@ -182,7 +182,7 @@ export default Ember.Mixin.create({
       transition.abort();
     // cancel without changes
     // autoremove runtime created models
-    } else {
+    } else if(!justSaved && !this.hasChanges()) {
       this.rollback();
     }
   },
