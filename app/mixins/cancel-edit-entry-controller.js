@@ -56,7 +56,7 @@ export default Ember.Mixin.create({
         const currentDate = entryInstance.get(name);
         if (currentDate && oldDate) {
           // in any case the date instance has been reset, it will be reverted to
-          // the old instnance within rollbackAttributes(). should we have set new
+          // the old instance within rollbackAttributes(). should we have set new
           // date values on the sole date instance, we need to reinitialize that
           // instance with the former value:
           currentDate.setTime(oldDate.getTime());
@@ -91,7 +91,25 @@ export default Ember.Mixin.create({
 
   hasChanges () {
     const hasUnsavedAttributes = model => {
-      return Object.keys(model.changedAttributes()).length !== 0;
+      const numberOfChanges = Object.keys(model.changedAttributes()).length;
+      if(numberOfChanges !== 0) {
+        // prevent cancel hook, if date end is set to null in entry-detail
+        let sameDate = false;
+        if(this.get('model.entryInstance.date_start') && this.get('model.entryInstance.date_end')) {
+          const dateStart = this.get('model.entryInstance.date_start');
+          const dateEnd = this.get('model.entryInstance.date_end');
+          const hasEndTime = this.get('model.entryInstance.has_time_end');
+          if(dateStart.getDate()===dateEnd.getDate() && dateStart.getMonth()===dateEnd.getMonth() && dateStart.getFullYear()===dateEnd.getFullYear() && !hasEndTime) {
+            sameDate = true;
+          }
+        }
+        if(sameDate && numberOfChanges === 1 && this.get('oldRelationsCache.date_end')===null && model.changedAttributes().date_end!==undefined) {
+          return false;
+        }
+        else {
+          return true;
+        }
+      }
     };
 
     const entryInstance = this.get('model.entryInstance');
@@ -104,6 +122,11 @@ export default Ember.Mixin.create({
       if (descriptor.type === 'date') {
         const currentDate = entryInstance.get(name);
         const oldDate = cache[name];
+
+        // prevent to show cancel menu when date end is automaticly set to null
+        if(name === 'date_end' && oldDate === null) {
+          return;
+        }
         if (currentDate && !oldDate || oldDate && !currentDate) {
           hasDateChanges = true;
           return;
@@ -114,7 +137,6 @@ export default Ember.Mixin.create({
         }
       }
     });
-
 
     let hasRelationChanges = false;
     entryInstance.eachRelationship((name, descriptor) => {
@@ -195,13 +217,26 @@ export default Ember.Mixin.create({
         this.showCancelDialog(() => {
           this.rollback();
           this.get('historyService').goBack();
+          this.send('deleteEndDate');
         });
       // cancel without changes
       } else {
         // autoremove runtime created models
         this.rollback();
         this.get('historyService').goBack();
+        this.send('deleteEndDate');
       }
-    }
+    },
+    deleteEndDate: function() {
+      // delete date end if it is not used (datepicker always needs an instance)
+      if(this.get('model.entryInstance.date_start') && this.get('model.entryInstance.date_end')) {
+        const dateStart = this.get('model.entryInstance.date_start');
+        const dateEnd = this.get('model.entryInstance.date_end');
+        const hasEndTime = this.get('model.entryInstance.has_time_end');
+        if(dateStart.getDate()===dateEnd.getDate() && dateStart.getMonth()===dateEnd.getMonth() && dateStart.getFullYear()===dateEnd.getFullYear() && !hasEndTime) {
+          this.set('model.entryInstance.date_end', null);
+        }
+      }
+    },
   }
 });

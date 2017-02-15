@@ -21,17 +21,17 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
       let entry = this.get('model.entryInstance');
       const isEditMode = entry.get('id');
 
-      if (definesAttribute(entry, 'date_start')) {
-        // if no end date and end time available -> set end date object to null
-        const dateStart = this.get('model.entryInstance.date_start');
-        const dateEnd = this.get('model.entryInstance.date_end');
-        const hasEndTime = this.get('model.entryInstance.has_time_end');
-        if(dateStart.getDate()===dateEnd.getDate() && dateStart.getMonth()===dateEnd.getMonth() && dateStart.getFullYear()===dateEnd.getFullYear() && !hasEndTime) {
-          this.set('model.entryInstance.date_end', null);
-        }
-      }
-
       entry.save().then(()=> {
+        // if no end date and end time available in an event -> set end date object to null
+        if (this.get('model.entryInstance.date_start') && this.get('model.entryInstance.date_end')) {
+          const dateStart = this.get('model.entryInstance.date_start');
+          const dateEnd = this.get('model.entryInstance.date_end');
+          const hasEndTime = this.get('model.entryInstance.has_time_end');
+          if(dateStart.getDate()===dateEnd.getDate() && dateStart.getMonth()===dateEnd.getMonth() && dateStart.getFullYear()===dateEnd.getFullYear() && !hasEndTime) {
+            this.set('model.entryInstance.date_end', null);
+          }
+        }
+
         const alertData = {title: 'Erfolgreich gespeichert', description: 'Dein Eintrag wurde erfolgreich angelegt.', isError: false, autoHide: 3000};
         if(isEditMode) alertData.description = 'Deine Änderungen wurden erfolgreich gespeichert.';
         this.EventBus.publish('showAlert', alertData);
