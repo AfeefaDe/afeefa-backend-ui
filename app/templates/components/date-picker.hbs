@@ -4,16 +4,17 @@
     <button class="showDate-button btn waves-effect waves-light" {{action "showStartDatePicker"}}><i class="material-icons center">event</i></button>
 
     <div class="date-field inputField__spacing input-field">
-      {{ember-flatpickr
-          id="startDate"
+      {{datum-picker
+          id="date_start"
           value=(readonly model.entryInstance.date_start)
           onChange=(action 'updateStartDate')
           onOpen=(action 'setStartDateRange')
           flatpickrRef=startDatePickerRef
           enableTime=false
           dateFormat='d.m.Y'
-          locale='de'}}
-      <label for="startDate" class="active clickable-element" >Startdatum</label>
+          locale='de'
+          model=model }}
+      <label for="date_start" class="active clickable-element" >Startdatum</label>
     </div>
 
     <button class="showTime-button btn waves-effect waves-light {{startTimeButtonColor}}" {{action "toggleStartTimeElement"}}><i class="material-icons center">{{startTimeIconState}}</i></button>
@@ -42,8 +43,8 @@
 
     <div class="date-field inputField__spacing input-field">
       <div class="{{endDateStyle}}">
-        {{ember-flatpickr
-            id="endDate"
+        {{datum-picker
+            id="date_end"
             value=(readonly model.entryInstance.date_end)
             onChange=(action 'updateEndDate')
             onOpen=(action 'setEndDateRange')
@@ -51,10 +52,11 @@
             enableTime=false
             altInput=false
             dateFormat='d.m.Y'
-            locale='de'}}
+            locale='de'
+            model=model }}
       </div>
-      <label for="endDate" class="{{sameDayLabelStyle}} clickable-element" > Gleicher Tag </label>
-      <label for="endDate" class="active clickable-element" >Enddatum</label>
+      <label for="date_end" class="{{sameDayLabelStyle}} clickable-element" > Gleicher Tag </label>
+      <label for="date_end" class="active clickable-element" >Enddatum</label>
     </div>
 
     <button class="showTime-button btn waves-effect waves-light {{endTimeButtonColor}}" {{action "toggleEndTimeElement"}}><i class="material-icons center">{{endTimeIconState}}</i></button>
