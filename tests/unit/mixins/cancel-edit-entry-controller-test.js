@@ -480,7 +480,7 @@ test('change route with changes does not raise dialog after save', function(asse
 
     assert.ok(transitionMock.abort.notCalled);
     assert.ok(mixin.showCancelDialog.notCalled);
-    assert.ok(mixin.rollback.calledOnce);
+    assert.ok(mixin.rollback.notCalled);
     assert.equal(mixin.get('justSaved'), false);
   });
 });
