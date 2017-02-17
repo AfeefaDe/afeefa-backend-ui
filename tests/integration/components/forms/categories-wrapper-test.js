@@ -26,14 +26,17 @@ test('it shows the child category input after selecting a prent category', funct
     fixtures.setupCategories(store);
     this.set('model', fixtures.setupEvent(store));
     this.render(hbs`{{forms/categories-wrapper parentInstance=model.entryInstance.category childInstance=model.entryInstance.subCategory}}`);
-
-    /*select parent category*/
+    //there is one input for selecting the parent category
     assert.equal(this.$('.categoriesForm').length, 1);
-
+    //okay, this is undefined: this.get('parentInstance.id'));
+    //next: select parent category
     $('.categoriesForm').val('1').trigger('change');
-    //@todo: should contain two select inputs
+
+    //I am excepting two inputs and a set id on the instance:
     //assert.equal(this.$('.categoriesForm').length, 2);
-  });
+    //assert.equal(this.get('model.entryInstance.category.id'), 1)
+  })
+
 });
 
 test('it removes the child category after changing the parent category', function(assert) {
