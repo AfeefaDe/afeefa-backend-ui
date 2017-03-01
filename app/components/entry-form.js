@@ -1,7 +1,6 @@
 import Ember from 'ember';
 
 import FormatReasonErrorMessage from 'afeefa-backend-ui/mixins/format-reason-error-message';
-import { definesAttribute } from 'afeefa-backend-ui/helpers/has-attribute';
 
 export default Ember.Component.extend(FormatReasonErrorMessage, {
   store: Ember.inject.service(),
@@ -29,6 +28,10 @@ export default Ember.Component.extend(FormatReasonErrorMessage, {
           const hasEndTime = this.get('model.entryInstance.has_time_end');
           if(dateStart.getDate()===dateEnd.getDate() && dateStart.getMonth()===dateEnd.getMonth() && dateStart.getFullYear()===dateEnd.getFullYear() && !hasEndTime) {
             this.set('model.entryInstance.date_end', null);
+
+            entry._internalModel.flushChangedAttributes();
+            entry._internalModel.adapterWillCommit();
+            this.get('store').didSaveRecord(entry._internalModel);
           }
         }
 

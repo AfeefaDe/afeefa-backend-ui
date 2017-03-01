@@ -92,23 +92,24 @@ export default Ember.Mixin.create({
   hasChanges () {
     const hasUnsavedAttributes = model => {
       const numberOfChanges = Object.keys(model.changedAttributes()).length;
-      if(numberOfChanges !== 0) {
+      if (numberOfChanges !== 0) {
         // prevent cancel hook, if date end is set to null in entry-detail
         let sameDate = false;
         if(this.get('model.entryInstance.date_start') && this.get('model.entryInstance.date_end')) {
           const dateStart = this.get('model.entryInstance.date_start');
           const dateEnd = this.get('model.entryInstance.date_end');
           const hasEndTime = this.get('model.entryInstance.has_time_end');
-          if(dateStart.getDate()===dateEnd.getDate() && dateStart.getMonth()===dateEnd.getMonth() && dateStart.getFullYear()===dateEnd.getFullYear() && !hasEndTime) {
+          if(dateStart.getDate() === dateEnd.getDate() && dateStart.getMonth() === dateEnd.getMonth() && dateStart.getFullYear() === dateEnd.getFullYear() && !hasEndTime) {
             sameDate = true;
           }
         }
-        if(sameDate && numberOfChanges === 1 && this.get('oldRelationsCache.date_end')===null && model.changedAttributes().date_end!==undefined) {
+        if (sameDate && numberOfChanges === 1 && this.get('oldRelationsCache.date_end') === null && model.changedAttributes().date_end !== undefined) {
           return false;
-        }
-        else {
+        } else {
           return true;
         }
+      } else { // no changes
+        return false;
       }
     };
 

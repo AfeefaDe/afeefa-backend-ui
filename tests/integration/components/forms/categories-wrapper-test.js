@@ -35,20 +35,10 @@ test('it shows the child category input after selecting a prent category', funct
     //I am excepting two inputs and a set id on the instance:
     //assert.equal(this.$('.categoriesForm').length, 2);
     //assert.equal(this.get('model.entryInstance.category.id'), 1)
-  })
+  });
 
 });
 
 test('it removes the child category after changing the parent category', function(assert) {
   assert.equal(true, true);
 });
-
-
-
-
-
-
-
-
-
-

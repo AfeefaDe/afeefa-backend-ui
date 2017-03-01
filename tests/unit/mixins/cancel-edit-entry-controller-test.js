@@ -19,7 +19,7 @@ moduleFor('mixin:cancel-edit-entry-controller', 'Unit | Mixin | cancel edit entr
   ],
 
   beforeEach () {
-    let CancelEditEntryControllerObject = Ember.Object.extend(CancelEditEntryControllerMixin);
+    let CancelEditEntryControllerObject = Ember.Controller.extend(CancelEditEntryControllerMixin);
     const mixin = CancelEditEntryControllerObject.create();
     mixin.set('store', Ember.getOwner(this).lookup('service:store'));
     this.subject = () => mixin;
