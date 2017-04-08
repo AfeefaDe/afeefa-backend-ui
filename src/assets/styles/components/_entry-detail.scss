@@ -1,0 +1,30 @@
+.entryDetail {
+  margin: 0;
+  padding: 0;
+  h2 {
+    margin-top: 2em;
+    font-size: 1.4em;
+    color: $h2_color;
+  }
+  li {
+    list-style: none;
+    display: block;
+    margin-bottom: 0.6em;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+  li.nowrap {
+    display: block;
+  }
+  &__meta {
+    color: $gray50;
+    margin-right: 0.4em;
+    /*@todo: better solution: #138*/
+    text-transform: capitalize;
+  }
+  &__inlineInput {
+    flex-grow: 2;
+    width: auto;
+  }
+}

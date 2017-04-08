@@ -1,0 +1,29 @@
+<template>
+  <entry-list
+    :items="items"
+    :sort-function="sortByTitle"
+    :options="{pagination: true, created_at: true}"
+    :messages="messages">
+  </entry-list>
+</template>
+
+
+<script>
+import EntryListMixin from '@/components/mixins/EntryListMixin'
+import sortByTitle from '@/helpers/sort-by-title'
+import Orgas from '@/resources/Orgas'
+
+export default {
+  mixins: [EntryListMixin],
+
+  data () {
+    return {
+      Resource: Orgas,
+      sortByTitle,
+      messages: {
+        headline: () => this.$t('headlines.organisations')
+      }
+    }
+  }
+}
+</script>
