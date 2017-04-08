@@ -80,7 +80,8 @@ export default {
         enableTime: false,
         dateFormat: 'd.m.Y',
         onClose: this.pickerClosed,
-        onChange: this.pickerChanged
+        onChange: this.pickerChanged,
+        onOpen: this.pickerOpened
       },
 
       timeOptions: {
@@ -262,6 +263,17 @@ export default {
         this.$emit('update', dateStart, dateEnd, this.hasStartTime, this.hasEndTime)
         this.checkSameDay(dateStart, dateEnd)
       })
+    },
+
+    pickerOpened () {
+      // start date <= end date
+      if (this.isSameDay) {
+        this.startDateRef.set('maxDate', '')
+      } else {
+        this.startDateRef.set('maxDate', this.currentDateEnd)
+      }
+      // end date >= start date
+      this.endDateRef.set('minDate', this.currentDateStart)
     }
   },
 
