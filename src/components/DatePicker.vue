@@ -80,7 +80,6 @@ export default {
         enableTime: false,
         dateFormat: 'd.m.Y',
         onClose: this.pickerClosed,
-        onChange: this.pickerChanged,
         onOpen: this.pickerOpened
       },
 
@@ -91,8 +90,7 @@ export default {
         minuteIncrement: 5,
         time_24hr: true,
         dateFormat: 'H:i',
-        onClose: this.pickerClosed,
-        onChange: this.pickerChanged
+        onClose: this.pickerClosed
       },
 
       startDateRef: null,
@@ -173,7 +171,6 @@ export default {
         this.currentTimeStart = new Date()
       }
       this.hasStartTime = !this.hasStartTime
-      this.pickerChanged()
     },
 
     toggleEndTimeButton () {
@@ -185,27 +182,22 @@ export default {
         this.currentTimeEnd = new Date()
       }
       this.hasEndTime = !this.hasEndTime
-      this.pickerChanged()
     },
 
-    closeAllRef () {
+    closeAllRef (butNotRef) {
       const allRefs = [this.startDateRef, this.endDateRef, this.startTimeRef, this.endTimeRef]
       for (let i in allRefs) {
         const ref = allRefs[i]
-        if (ref !== null) {
-          ref.close()
+        if (ref !== null && ref !== butNotRef) {
+          if (ref.isOpen) {
+            ref.close()
+          }
         }
       }
     },
 
     toggleRef (currentRef) {
-      const allRefs = [this.startDateRef, this.endDateRef, this.startTimeRef, this.endTimeRef]
-      for (let i in allRefs) {
-        const ref = allRefs[i]
-        if (ref !== currentRef && ref !== null) {
-          ref.close()
-        }
-      }
+      this.closeAllRef(currentRef)
       currentRef.toggle()
     },
 
@@ -231,38 +223,39 @@ export default {
         const container = instance.element.parentNode
         container.querySelector('label').classList.remove('active')
       }
+      // needs rendering prior calculating updates dates
+      this.$nextTick(this.updateDates)
     },
 
-    pickerChanged () {
-      this.$nextTick(() => {
-        const dayStart = this.startDateRef.selectedDates[0]
-        const timeStart = this.startTimeRef && this.startTimeRef.selectedDates.length ? this.startTimeRef.selectedDates[0] : dayStart
+    updateDates () {
+      const dayStart = this.startDateRef.selectedDates[0]
+      const timeStart = this.startTimeRef && this.startTimeRef.selectedDates.length ? this.startTimeRef.selectedDates[0] : dayStart
 
-        const dateStart = dayStart ? new Date(
-          dayStart.getFullYear(), dayStart.getMonth(), dayStart.getDate(),
-          timeStart.getHours(), timeStart.getMinutes(), timeStart.getSeconds()
-        ) : null
+      const dateStart = dayStart ? new Date(
+        dayStart.getFullYear(), dayStart.getMonth(), dayStart.getDate(),
+        timeStart.getHours(), timeStart.getMinutes()
+      ) : null
 
-        const dayEnd = this.endDateRef.selectedDates[0]
-        const timeEnd = this.endTimeRef && this.endTimeRef.selectedDates.length ? this.endTimeRef.selectedDates[0] : dayEnd
+      const dayEnd = this.endDateRef.selectedDates[0]
+      const timeEnd = this.endTimeRef && this.endTimeRef.selectedDates.length ? this.endTimeRef.selectedDates[0] : dayEnd
 
-        let dateEnd = dayEnd ? new Date(
-          dayEnd.getFullYear(), dayEnd.getMonth(), dayEnd.getDate(),
-          timeEnd.getHours(), timeEnd.getMinutes(), timeEnd.getSeconds()
-        ) : null
+      let dateEnd = dayEnd ? new Date(
+        dayEnd.getFullYear(), dayEnd.getMonth(), dayEnd.getDate(),
+        timeEnd.getHours(), timeEnd.getMinutes()
+      ) : null
 
-        // end date = start day if same day and start day is changed
-        if (moment(dateEnd).startOf('day').isSame(moment(this.dateEnd).startOf('day')) && this.isSameDay) {
-          dateEnd = dateStart
-          this.endDateRef.setDate(dateStart)
-        }
+      // end date = start day if same day and start day is changed
+      if (moment(dateEnd).startOf('day').isSame(moment(this.dateEnd).startOf('day')) && this.isSameDay) {
+        dateEnd = dateStart
+        this.endDateRef.setDate(dateStart)
+      }
 
-        this.currentDateStart = dateStart
-        this.currentDateEnd = dateEnd
+      this.currentDateStart = dateStart
+      this.currentDateEnd = dateEnd
 
-        this.$emit('update', dateStart, dateEnd, this.hasStartTime, this.hasEndTime)
-        this.checkSameDay(dateStart, dateEnd)
-      })
+      this.checkSameDay(dateStart, dateEnd)
+
+      this.$emit('update', dateStart, dateEnd, this.hasStartTime, this.hasEndTime)
     },
 
     pickerOpened () {
