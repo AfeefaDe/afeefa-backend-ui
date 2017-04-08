@@ -23,6 +23,11 @@ module.exports = function () {
   var warnings = []
   for (var i = 0; i < versionRequirements.length; i++) {
     var mod = versionRequirements[i]
+
+    console.log(mod)
+    console.log(mod.currentVersion, mod.versionRequirement)
+    console.log()
+
     if (!semver.satisfies(mod.currentVersion, mod.versionRequirement)) {
       warnings.push(mod.name + ': ' +
         chalk.red(mod.currentVersion) + ' should be ' +
