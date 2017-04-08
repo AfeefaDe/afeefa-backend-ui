@@ -241,12 +241,6 @@ export default {
       )
 
       // end date = start day if same day and start day is changed
-      console.log(moment(dateEnd).startOf('day').toDate())
-      console.log(moment(this.dateEnd).startOf('day').toDate())
-      console.log(moment(this.currentDateEnd).startOf('day').toDate())
-      console.log(this.isSameDay)
-      console.log(moment(dateEnd).startOf('day').isSame(moment(this.currentDateEnd).startOf('day')) && this.isSameDay)
-
       const dateStartDidChange = !moment(dateStart).startOf('day').isSame(moment(this.currentDateStart).startOf('day'))
       if (this.isSameDay && dateStartDidChange) {
         dateEnd = dateStart
