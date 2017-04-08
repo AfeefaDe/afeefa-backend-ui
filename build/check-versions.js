@@ -21,6 +21,9 @@ var versionRequirements = [
 
 module.exports = function () {
   var warnings = []
+
+  console.log('which npm:', exec('which npm'))
+
   for (var i = 0; i < versionRequirements.length; i++) {
     var mod = versionRequirements[i]
 
