@@ -19,3 +19,6 @@ testem.log
 # sass-cache
 app/styles/.sass-cache/*
 ember-serve.bat
+
+# project
+local.js
