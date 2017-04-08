@@ -245,17 +245,22 @@ export default {
         const dayEnd = this.endDateRef.selectedDates[0]
         const timeEnd = this.endTimeRef && this.endTimeRef.selectedDates.length ? this.endTimeRef.selectedDates[0] : dayEnd
 
-        const dateEnd = dayEnd ? new Date(
+        let dateEnd = dayEnd ? new Date(
           dayEnd.getFullYear(), dayEnd.getMonth(), dayEnd.getDate(),
           timeEnd.getHours(), timeEnd.getMinutes(), timeEnd.getSeconds()
         ) : null
+
+        // end date = start day if same day and start day is changed
+        if (moment(dateEnd).startOf('day').isSame(moment(this.dateEnd).startOf('day')) && this.isSameDay) {
+          dateEnd = dateStart
+          this.endDateRef.setDate(dateStart)
+        }
 
         this.currentDateStart = dateStart
         this.currentDateEnd = dateEnd
 
         this.$emit('update', dateStart, dateEnd, this.hasStartTime, this.hasEndTime)
-
-        this.checkSameDay(dayStart, dayEnd)
+        this.checkSameDay(dateStart, dateEnd)
       })
     }
   },
