@@ -7,7 +7,7 @@ import App from './components/routes/App'
 import Filters from './filters'
 import VeeValidate from 'vee-validate'
 
-import 'vue-flatpickr/theme/flatpickr.min.css'
+import 'flatpickr/dist/themes/base16_flat.css'
 
 Vue.use(VeeValidate, {delay: 0})
 Vue.use(Filters)

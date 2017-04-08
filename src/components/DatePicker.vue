@@ -62,7 +62,7 @@
 <script>
 import TimePicker from '@/components/TimePicker'
 import moment from 'moment'
-import Flatpickr from 'vue-flatpickr'
+import Flatpickr from './Flatpickr'
 
 export default {
   props: ['dateStart', 'dateEnd', 'hasTimeStart', 'hasTimeEnd'],
@@ -79,8 +79,7 @@ export default {
         clickOpens: false,
         enableTime: false,
         dateFormat: 'd.m.Y',
-        onClose: this.pickerClosed,
-        onOpen: this.pickerOpened
+        onClose: this.pickerClosed
       },
 
       timeOptions: {
@@ -107,7 +106,7 @@ export default {
     this.currentTimeEnd = this.dateEnd ? new Date(this.dateEnd) : new Date()
     this.hasStartTime = this.hasTimeStart
     this.hasEndTime = this.hasTimeEnd
-    this.checkSameDay(this.currentDateStart, this.currentDateEnd)
+    this.checkSameDay()
   },
 
   mounted () {
@@ -125,11 +124,11 @@ export default {
     })
 
     this.startDateRef = this.$refs.startDatePickerRef.fp
-    const startDay = moment(new Date(this.currentDateStart)).startOf('day').toDate()
+    const startDay = moment(this.currentDateStart).startOf('day').toDate()
     this.startDateRef.setDate(startDay)
 
     this.endDateRef = this.$refs.endDatePickerRef.fp
-    const endDay = moment(this.dateEnd).startOf('day').toDate()
+    const endDay = moment(this.currentDateEnd).startOf('day').toDate()
     this.endDateRef.setDate(endDay)
   },
 
@@ -152,14 +151,10 @@ export default {
       return mDate
     },
 
-    checkSameDay (startDate, endDate) {
-      const sD = moment(startDate).startOf('day')
-      const eD = moment(endDate).startOf('day')
-      if (sD.isSame(eD)) {
-        this.isSameDay = true
-      } else {
-        this.isSameDay = false
-      }
+    checkSameDay () {
+      const sD = moment(this.currentDateStart).startOf('day')
+      const eD = moment(this.currentDateEnd).startOf('day')
+      this.isSameDay = sD.isSame(eD)
     },
 
     toggleStartTimeButton () {
@@ -171,6 +166,7 @@ export default {
         this.currentTimeStart = new Date()
       }
       this.hasStartTime = !this.hasStartTime
+      this.updateDatesLater()
     },
 
     toggleEndTimeButton () {
@@ -182,6 +178,7 @@ export default {
         this.currentTimeEnd = new Date()
       }
       this.hasEndTime = !this.hasEndTime
+      this.updateDatesLater()
     },
 
     closeAllRef (butNotRef) {
@@ -218,12 +215,11 @@ export default {
     },
 
     pickerClosed (selectedDates, dateStr, instance) {
-      const hasDate = selectedDates.length
-      if (!hasDate) {
-        const container = instance.element.parentNode
-        container.querySelector('label').classList.remove('active')
-      }
-      // needs rendering prior calculating updates dates
+      this.updateDatesLater()
+    },
+
+    // needs rendering prior calculating updates dates
+    updateDatesLater () {
       this.$nextTick(this.updateDates)
     },
 
@@ -231,42 +227,37 @@ export default {
       const dayStart = this.startDateRef.selectedDates[0]
       const timeStart = this.startTimeRef && this.startTimeRef.selectedDates.length ? this.startTimeRef.selectedDates[0] : dayStart
 
-      const dateStart = dayStart ? new Date(
+      const dateStart = new Date(
         dayStart.getFullYear(), dayStart.getMonth(), dayStart.getDate(),
         timeStart.getHours(), timeStart.getMinutes()
-      ) : null
+      )
 
-      const dayEnd = this.endDateRef.selectedDates[0]
+      const dayEnd = this.endDateRef.selectedDates[0] || dayStart
       const timeEnd = this.endTimeRef && this.endTimeRef.selectedDates.length ? this.endTimeRef.selectedDates[0] : dayEnd
 
-      let dateEnd = dayEnd ? new Date(
+      let dateEnd = new Date(
         dayEnd.getFullYear(), dayEnd.getMonth(), dayEnd.getDate(),
         timeEnd.getHours(), timeEnd.getMinutes()
-      ) : null
+      )
 
       // end date = start day if same day and start day is changed
-      if (moment(dateEnd).startOf('day').isSame(moment(this.dateEnd).startOf('day')) && this.isSameDay) {
+      console.log(moment(dateEnd).startOf('day').toDate())
+      console.log(moment(this.dateEnd).startOf('day').toDate())
+      console.log(moment(this.currentDateEnd).startOf('day').toDate())
+      console.log(this.isSameDay)
+      console.log(moment(dateEnd).startOf('day').isSame(moment(this.currentDateEnd).startOf('day')) && this.isSameDay)
+
+      const dateStartDidChange = !moment(dateStart).startOf('day').isSame(moment(this.currentDateStart).startOf('day'))
+      if (this.isSameDay && dateStartDidChange) {
         dateEnd = dateStart
-        this.endDateRef.setDate(dateStart)
+        this.endDateRef.setDate(dateEnd)
       }
 
       this.currentDateStart = dateStart
       this.currentDateEnd = dateEnd
-
-      this.checkSameDay(dateStart, dateEnd)
+      this.checkSameDay()
 
       this.$emit('update', dateStart, dateEnd, this.hasStartTime, this.hasEndTime)
-    },
-
-    pickerOpened () {
-      // start date <= end date
-      if (this.isSameDay) {
-        this.startDateRef.set('maxDate', '')
-      } else {
-        this.startDateRef.set('maxDate', this.currentDateEnd)
-      }
-      // end date >= start date
-      this.endDateRef.set('minDate', this.currentDateStart)
     }
   },
 

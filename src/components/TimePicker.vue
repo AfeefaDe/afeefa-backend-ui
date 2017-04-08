@@ -1,5 +1,5 @@
 <script>
-import VueFlatpickr from 'vue-flatpickr'
+import VueFlatpickr from './Flatpickr'
 
 export default {
   mixins: [VueFlatpickr],
