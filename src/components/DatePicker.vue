@@ -35,8 +35,8 @@
       </button>
 
       <div @click.prevent.stop="toggleEndDatePicker" class="date-field end-date-field inputField__spacing input-field">
-        <label :class="['clickable-element', {'hide-label': !isSameDay}]" > Gleicher Tag </label>
         <label for="endDate" :class="['clickable-element', {active: currentDateEnd}]">{{ $t("entries.date_end") }}</label>
+        <span :class="['clickable-element', 'is-same-day-label', {'hide-span': !isSameDay}]"> Gleicher Tag </span>
         <Flatpickr :class="{'hide-picker': isSameDay}" ref="endDatePickerRef" id="endDate" :options="dateOptions"/>
       </div>
 
@@ -108,6 +108,7 @@ export default {
     this.currentTimeEnd = this.dateEnd ? new Date(this.dateEnd) : new Date()
     this.hasStartTime = this.hasTimeStart
     this.hasEndTime = this.hasTimeEnd
+    this.checkSameDay(this.currentDateStart, this.currentDateEnd)
   },
 
   mounted () {
@@ -152,14 +153,14 @@ export default {
       return mDate
     },
 
-    checkSameDay () {
-      // const sD = new Date(this.fpStartDate)
-      // const eD = new Date(this.fpEndDate)
-      // if (sD.getDate() === eD.getDate() && sD.getMonth() === eD.getMonth() && sD.getFullYear() === eD.getFullYear()) {
-      //   this.isSameDay = true
-      // } else {
-      //   this.isSameDay = false
-      // }
+    checkSameDay (startDate, endDate) {
+      const sD = moment(startDate).startOf('day')
+      const eD = moment(endDate).startOf('day')
+      if (sD.isSame(eD)) {
+        this.isSameDay = true
+      } else {
+        this.isSameDay = false
+      }
     },
 
     toggleStartTimeButton () {
@@ -253,7 +254,8 @@ export default {
         this.currentDateEnd = dateEnd
 
         this.$emit('update', dateStart, dateEnd, this.hasStartTime, this.hasEndTime)
-        this.$emit('update', dateStart, dateEnd, this.hasStartTime, this.hasEndTime)
+
+        this.checkSameDay(dayStart, dayEnd)
       })
     }
   },
@@ -269,10 +271,50 @@ export default {
   label.clickable-element {
     pointer-events:none
   }
-  label.hide-label {
-    opacity: 0;
+  span.hide-span {
+    display: none;
+  }
+  span.is-same-day-label {
+    position: absolute;
+    height: 3rem;
+    line-height: 3rem;
+    color: grey;
   }
   .hide-picker {
     opacity: 0;
+  }
+  .row-DateAndTime {
+    display: flex;
+    align-items: baseline;
+  }
+  .date-field {
+    width: 30%;
+  }
+  .showDate-button {
+    padding-left: 0.5em;
+    padding-right: 0.45em;
+    margin: 0em 1em 0em 0em;
+  }
+  .showTime-button {
+    padding-left: 0.5em;
+    padding-right: 0.45em;
+    margin: 0em 1em 0em 2em;
+  }
+  #startDate {
+    cursor: pointer; cursor: hand;
+    border-bottom: none;
+  }
+  #startTime {
+    cursor: pointer; cursor: hand;
+    border-bottom: none;
+  }
+  #endDate {
+    cursor: pointer; cursor: hand;
+    color: inherit;
+    border-bottom: none;
+  }
+  #endTime {
+    cursor: pointer; cursor: hand;
+    border-bottom: none;
   }
 </style>
