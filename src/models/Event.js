@@ -6,9 +6,9 @@ export default class Event extends Entry {
     super.init()
 
     this.type = 'events'
-    this.date_start = new Date()
+    this.date_start = moment(new Date()).startOf('day').toDate()
     this.has_time_start = false
-    this.date_end = new Date()
+    this.date_end = moment(new Date()).startOf('day').toDate()
     this.has_time_end = false
   }
 
