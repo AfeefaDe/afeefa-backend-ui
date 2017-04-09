@@ -70,9 +70,13 @@
             <span class="entryDetail__meta">{{ $t('entries.street') }}:</span>
             <span>{{ entry.location.street }}</span>
           </li>
-          <li v-if="entry.location.lat">
-            <span class="entryDetail__meta">{{ $t('entries.geo_coordinates') }}:</span>
-            <span>{{ entry.location.lat }}, {{ entry.location.lon }}</span>
+          <li>
+            <div class="map">
+              <v-map :zoom="mapCenter.zoom" :center="mapCenter.center">
+                <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
+                <v-marker :lat-lng="{lat:entry.location.lat, lng:entry.location.lon}" v-if="entry.location.lat"></v-marker>
+              </v-map>
+            </div>
           </li>
         </ul>
 
@@ -146,6 +150,7 @@
 
 <script>
 import EntryListItems from '@/components/EntryListItems'
+import Vue2Leaflet from 'vue2-leaflet'
 
 export default {
   props: ['entry', 'routeName', 'Resource', 'messages', 'options'],
@@ -184,8 +189,37 @@ export default {
     }
   },
 
+  computed: {
+    mapCenter () {
+      if (this.entry.location && this.entry.location.lat) {
+        return {
+          zoom: 17,
+          center: [this.entry.location.lat, this.entry.location.lon]
+        }
+      } else {
+        return {
+          zoom: 10,
+          center: [51.0571904, 13.7154319]
+        }
+      }
+    }
+  },
+
   components: {
-    EntryListItems
+    EntryListItems,
+    VMap: Vue2Leaflet.Map,
+    VTilelayer: Vue2Leaflet.TileLayer,
+    VMarker: Vue2Leaflet.Marker
   }
 }
 </script>
+
+
+
+<style lang="scss" scoped>
+.map {
+  margin-top: 1em;
+  width: 300px;
+  height: 300px;
+}
+</style>

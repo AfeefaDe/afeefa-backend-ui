@@ -116,18 +116,40 @@
 
               <div class="input-field">
                 <label for="street" :class="{active: item.location.street}">Straße</label>
-                <input v-model="item.location.street" id="street" type="text" class="validate" />
+                <input v-model="item.location.street" id="street" type="text" class="validate" @change="getGeocode(true)" />
               </div>
 
               <div class="input-field">
-                <label for="number" :class="{active: item.location.number}">Hausnummer</label>
-                <input v-model="item.location.number" id="number" type="text" class="validate" />
+                <label for="zip" :class="{active: item.location.zip}">Postleitzahl</label>
+                <input v-model="item.location.zip" id="number" type="text" class="validate" @change="getGeocode(true)" />
               </div>
 
               <div class="input-field">
                 <label for="city" :class="{active: item.location.city}">Stadt</label>
-                <input v-model="item.location.city" id="city" type="text" class="validate" />
+                <input v-model="item.location.city" id="city" type="text" class="validate" @change="getGeocode(true)" />
               </div>
+
+              <div class="input-field">
+                <div v-if="geodataLoading">
+                  <spinner :show="geodataLoading" :width="1" :radius="5" :length="3" /> Lade Geodaten
+                </div>
+                <span v-else-if="!item.location.lat" class="geodata-not-found validation-error">
+                  Geodaten nicht gefunden. Bitte Adresse anpassen.
+                </span>
+                <span v-if="bippelMoved" class="validation-hint">
+                  <i class="material-icons">error_outline</i>
+                  Der Bippel wurde manuell verschoben und zeigt nicht mehr genau auf die Adresse.<br />
+                  Falls das nicht beabsichtigt ist: <a href="" @click.prevent="resetToGeodateOfAddress">Zurücksetzen auf Adresse.</a>
+                </span>
+              </div>
+
+              <div class="map" v-if="item.location">
+                <v-map :zoom="mapCenter.zoom" :center="mapCenter.center">
+                  <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
+                  <v-marker :lat-lng="{lat:item.location.lat, lng:item.location.lon}" :draggable="true" @l-dragend="bibbelDrag" v-if="item.location.lat"></v-marker>
+                </v-map>
+              </div>
+
             </div>
 
             <h2>{{ $tc('headlines.annotations', 2) }}</h2>
@@ -166,12 +188,15 @@
 <script>
 import Vue from 'vue'
 import autosize from 'autosize'
+import Vue2Leaflet from 'vue2-leaflet'
+import { BASE } from '@/store/api'
 import Orgas from '@/resources/Orgas'
 import Categories from '@/resources/Categories'
 import Annotations from '@/resources/Annotations'
 import sortByTitle from '@/helpers/sort-by-title'
 import DatePicker from '@/components/DatePicker'
 import EventBus from '@/services/event-bus'
+import Spinner from '@/components/Spinner'
 
 export default {
   props: ['id', 'routeName', 'Resource', 'messages', 'options'],
@@ -183,9 +208,15 @@ export default {
       item: null,
       categories: [],
       annotations: [],
-      selectedAnnotation: null,
       orgas: [],
+
+      selectedAnnotation: null,
+
       saved: false,
+
+      geodataLoading: false,
+      geodataOfAddress: null,
+
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
@@ -228,11 +259,40 @@ export default {
     EventBus.$off('beforeRouteLeave', this.beforeRouteLeave)
   },
 
+  watch: {
+    'item.location' (location) {
+      location && this.getGeocode(false)
+    }
+  },
+
   computed: {
     selectableAnnotations () {
       return this.annotations.filter(
         annotation => this.item.annotations.includes(annotation) === false
       )
+    },
+
+    bippelMoved () {
+      if (!this.item.location || !this.geodataOfAddress) {
+        return false
+      }
+
+      return this.item.location.lat !== this.geodataOfAddress.lat ||
+        this.item.location.lon !== this.geodataOfAddress.lon
+    },
+
+    mapCenter () {
+      if (this.item.location && this.item.location.lat) {
+        return {
+          zoom: 17,
+          center: [this.item.location.lat, this.item.location.lon]
+        }
+      } else {
+        return {
+          zoom: 10,
+          center: [51.0571904, 13.7154319]
+        }
+      }
     }
   },
 
@@ -343,11 +403,51 @@ export default {
           next()
         }
       })
+    },
+
+    bibbelDrag (markerEvent) {
+      this.item.location.lat = markerEvent.target._latlng.lat
+      this.item.location.lon = markerEvent.target._latlng.lng
+    },
+
+    resetToGeodateOfAddress () {
+      this.item.location.lat = this.geodataOfAddress.lat
+      this.item.location.lon = this.geodataOfAddress.lon
+    },
+
+    getGeocode (updateItemLocation) {
+      this.geodataLoading = true
+
+      const address = [this.item.location.zip || '', this.item.location.city || '', this.item.location.street || ''].join(' ')
+      let url = BASE + 'geocoding'
+      setTimeout(() => {
+        let request = Vue.http.get(url, {params: {token: 'MapCat_050615', address}})
+        request.then(result => {
+          this.geodataOfAddress = {
+            lat: '' + result.body.latitude,
+            lon: '' + result.body.longitude
+          }
+          if (updateItemLocation) {
+            this.item.location.lat = result.body.latitude
+            this.item.location.lon = result.body.longitude
+          }
+        }).catch(error => {
+          this.item.location.lat = null
+          this.item.location.lon = null
+          console.log('error loading geodata', error)
+        }).finally(() => {
+          this.geodataLoading = false
+        })
+      }, 500)
     }
   },
 
   components: {
-    DatePicker
+    DatePicker,
+    VMap: Vue2Leaflet.Map,
+    VTilelayer: Vue2Leaflet.TileLayer,
+    VMarker: Vue2Leaflet.Marker,
+    Spinner
   }
 }
 </script>
@@ -372,9 +472,34 @@ span.validation-error {
   margin-bottom: 2em;
   color: #cc6666;
   font-size: .9em;
+
+  &.geodata-not-found {
+    margin-bottom: 0;
+  }
+}
+
+span.validation-hint {
+  font-size: .9em;
+  color: #999;
+  i {
+    vertical-align: middle;
+    font-size: 1.4em;
+  }
 }
 
 select + span.validation-error {
   margin-top: .4em;
+}
+
+.map {
+  margin-top: 1em;
+  width: 300px;
+  height: 300px;
+}
+
+.spinner-container {
+  display: inline-block;
+  width: 24px;
+  height: .9em;
 }
 </style>

@@ -11,6 +11,11 @@
 import Alert from '@/components/Alert'
 import DialogWindow from '@/components/Dialog'
 
+import 'flatpickr/dist/themes/base16_flat.css'
+import 'leaflet/dist/leaflet.css'
+import '@/assets/styles/app.scss'
+
+
 export default {
   components: {
     DialogWindow,
@@ -18,5 +23,3 @@ export default {
   }
 }
 </script>
-
-<style src="../../assets/styles/app.scss" lang="scss"></style>
