@@ -17,4 +17,8 @@ export default class BaseResource {
   getItemCacheKey () {
     return this.listCacheKey
   }
+
+  deserialize (item, json) {
+    item.deserialize(json)
+  }
 }

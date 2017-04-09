@@ -9,7 +9,7 @@ import BaseResource from './base/BaseResource'
 class TodosResource extends BaseResource {
   init (keyword) {
     this.listCacheKey = 'todos'
-    this.http = Vue.resource(BASE + 'entries?filter[todo]=all')
+    this.http = Vue.resource(BASE + 'todos')
   }
 
   getItemCacheKey (json) {
@@ -17,11 +17,15 @@ class TodosResource extends BaseResource {
   }
 
   createItem (json) {
-    if (json.type === 'orgas') {
+    if (json.relationships.entry.data.type === 'orgas') {
       return new Orga()
     } else {
       return new Event()
     }
+  }
+
+  deserialize (item, json) {
+    item.deserialize(json.relationships.entry.data)
   }
 }
 

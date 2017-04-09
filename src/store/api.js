@@ -69,7 +69,7 @@ export default {
           // no cached item found ->
           } else {
             item = resource.createItem(json)
-            item.deserialize(json)
+            resource.deserialize(item, json)
           }
           items.push(item)
           duplicatesMap[dupMapKey] = true

@@ -9,11 +9,10 @@ export default {
   props: ['show', 'width', 'radius', 'length'],
 
   mounted () {
-    let spinner = new Spinner({
-      width: this.width || 3,
-      radius: this.radius || 15,
-      length: this.length || 8
-    }).spin()
+    const width = this.width || 3
+    const radius = this.radius || 3
+    const length = this.length || 3
+    let spinner = new Spinner({width, radius, length}).spin()
     this.$el.appendChild(spinner.el)
   }
 }
@@ -22,8 +21,12 @@ export default {
 <style scoped>
 .spinner-container {
   position: relative;
-  smargin: 20px 5px 10px 0;
-  sheight: 40px;
+  display: inline-block;
+  width: 1em;
+  sheight: 3em;
+  vertical-align: middle;
+  margin-right: 5px;
+  margin-top: -4px;
 }
 
 .spinner {

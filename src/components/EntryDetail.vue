@@ -193,7 +193,7 @@ export default {
     mapCenter () {
       if (this.entry.location && this.entry.location.lat) {
         return {
-          zoom: 17,
+          zoom: 11,
           center: [this.entry.location.lat, this.entry.location.lon]
         }
       } else {
@@ -219,7 +219,6 @@ export default {
 <style lang="scss" scoped>
 .map {
   margin-top: 1em;
-  width: 300px;
   height: 300px;
 }
 </style>

@@ -1,12 +1,19 @@
 <template>
   <div>
-    <pagination
+
+    <div v-if="!items">
+      <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Liste
+    </div>
+
+    <div v-else>
+      <pagination
       :num-items="currentNumItems"
       :page-size="currentPageSize"
       :page="currentPage"
       @changed="setPage"
       v-if="has.pagination">
     </pagination>
+    </div>
 
     <ul class="entryList">
       <li v-for="item in itemsSorted">
@@ -63,6 +70,7 @@
 
 <script>
 import Pagination from '@/components/Pagination'
+import Spinner from '@/components/Spinner'
 
 export default {
   props: ['items', 'limit', 'sortFunction', 'options'],
@@ -105,7 +113,8 @@ export default {
   },
 
   components: {
-    Pagination
+    Pagination,
+    Spinner
   }
 }
 </script>

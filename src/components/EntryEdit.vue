@@ -131,7 +131,7 @@
 
               <div class="input-field">
                 <div v-if="geodataLoading">
-                  <spinner :show="geodataLoading" :width="1" :radius="5" :length="3" /> Lade Geodaten
+                  <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Geodaten
                 </div>
                 <span v-else-if="geocodeError" class="geodata-not-found validation-error">
                   {{ geocodeError }}
@@ -392,8 +392,8 @@ export default {
         return
       }
 
-      const hashItem = JSON.stringify(this.item.serialize())
       const hashOrig = JSON.stringify(this.origItem.serialize())
+      const hashItem = JSON.stringify(this.item.serialize())
 
       if (hashOrig === hashItem) {
         next()
@@ -510,11 +510,5 @@ select + span.validation-error {
 .map {
   margin-top: 1em;
   height: 300px;
-}
-
-.spinner-container {
-  display: inline-block;
-  width: 24px;
-  height: .9em;
 }
 </style>
