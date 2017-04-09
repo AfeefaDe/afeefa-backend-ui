@@ -214,7 +214,7 @@ export default {
       this.toggleRef(this.endTimeRef)
     },
 
-    pickerClosed (selectedDates, dateStr, instance) {
+    pickerClosed () {
       this.updateDatesLater()
     },
 
