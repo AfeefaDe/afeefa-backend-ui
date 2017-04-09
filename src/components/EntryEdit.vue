@@ -133,8 +133,8 @@
                 <div v-if="geodataLoading">
                   <spinner :show="geodataLoading" :width="1" :radius="5" :length="3" /> Lade Geodaten
                 </div>
-                <span v-else-if="!item.location.lat" class="geodata-not-found validation-error">
-                  Geodaten nicht gefunden. Bitte Adresse anpassen.
+                <span v-else-if="geocodeError" class="geodata-not-found validation-error">
+                  {{ geocodeError }}
                 </span>
                 <span v-if="bippelMoved" class="validation-hint">
                   <i class="material-icons">error_outline</i>
@@ -216,6 +216,7 @@ export default {
 
       geodataLoading: false,
       geodataOfAddress: null,
+      geocodeError: false,
 
       has: {
         date: options.hasDate,
@@ -261,7 +262,12 @@ export default {
 
   watch: {
     'item.location' (location) {
-      location && this.getGeocode(false)
+      if (location) {
+        const hasAddress = location.zip || location.city || location.street
+        if (hasAddress) {
+          this.getGeocode(false)
+        }
+      }
     }
   },
 
@@ -276,7 +282,6 @@ export default {
       if (!this.item.location || !this.geodataOfAddress) {
         return false
       }
-
       return this.item.location.lat !== this.geodataOfAddress.lat ||
         this.item.location.lon !== this.geodataOfAddress.lon
     },
@@ -406,8 +411,8 @@ export default {
     },
 
     bibbelDrag (markerEvent) {
-      this.item.location.lat = markerEvent.target._latlng.lat
-      this.item.location.lon = markerEvent.target._latlng.lng
+      this.item.location.lat = '' + markerEvent.target._latlng.lat
+      this.item.location.lon = '' + markerEvent.target._latlng.lng
     },
 
     resetToGeodateOfAddress () {
@@ -416,24 +421,35 @@ export default {
     },
 
     getGeocode (updateItemLocation) {
+      const address = [this.item.location.zip || '', this.item.location.city || '', this.item.location.street || ''].join(' ')
+      if (address === '  ') {
+        this.geocodeError = false
+        this.item.location.lat = null
+        this.item.location.lon = null
+        this.geodataOfAddress = null
+        return
+      }
+
       this.geodataLoading = true
 
-      const address = [this.item.location.zip || '', this.item.location.city || '', this.item.location.street || ''].join(' ')
       let url = BASE + 'geocoding'
       setTimeout(() => {
         let request = Vue.http.get(url, {params: {token: 'MapCat_050615', address}})
         request.then(result => {
+          this.geocodeError = false
           this.geodataOfAddress = {
             lat: '' + result.body.latitude,
             lon: '' + result.body.longitude
           }
           if (updateItemLocation) {
-            this.item.location.lat = result.body.latitude
-            this.item.location.lon = result.body.longitude
+            this.item.location.lat = '' + result.body.latitude
+            this.item.location.lon = '' + result.body.longitude
           }
         }).catch(error => {
           this.item.location.lat = null
           this.item.location.lon = null
+          this.geodataOfAddress = null
+          this.geocodeError = 'Geodaten nicht gefunden. Bitte Adresse anpassen.'
           console.log('error loading geodata', error)
         }).finally(() => {
           this.geodataLoading = false
@@ -493,7 +509,6 @@ select + span.validation-error {
 
 .map {
   margin-top: 1em;
-  width: 300px;
   height: 300px;
 }
 
