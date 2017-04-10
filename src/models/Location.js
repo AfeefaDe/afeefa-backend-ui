@@ -28,8 +28,8 @@ export default class Location extends BaseModel {
     const data = {
       type: this.type,
       attributes: {
-        lat: this.lat,
-        lon: this.lon,
+        lat: this.lat || '',
+        lon: this.lon || '',
         street: this.street,
         zip: this.zip,
         city: this.city,
