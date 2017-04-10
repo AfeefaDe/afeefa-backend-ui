@@ -25,9 +25,9 @@
             </div>
 
             <div class="inputField__spacing input-field">
-              <label for="description" :class="{active: item.description}">Beschreibung ({{ item.description.length }} von 350 Zeichen)</span></label>
-              <textarea v-model="item.description" id="description" maxlength="350"
-                data-vv-name="description" v-validate="'required|max:350'"
+              <label for="description" :class="{active: item.description}">Beschreibung</span></label>
+              <textarea v-model="item.description" id="description"
+                data-vv-name="description" v-validate="'required'"
                 :class="['materialize-textarea', {'validation-error': errors.has('description') }]"></textarea>
               <span v-show="errors.has('description')" class="validation-error">{{ errors.first('description') }}</span>
             </div>
@@ -100,10 +100,7 @@
 
               <div class="input-field">
                 <label for="contactPerson" :class="{active: item.contact.person}">Kontaktperson</label>
-                <input v-model="item.contact.person" id="contactPerson" type="text"
-                  data-vv-name="contactPerson" v-validate="'required'"
-                  :class="{'validation-error': errors.has('contactPerson') }"/>
-                <span v-show="errors.has('contactPerson')" class="validation-error">{{ errors.first('contactPerson') }}</span>
+                <input v-model="item.contact.person" id="contactPerson" type="text"/>
               </div>
             </div>
 
