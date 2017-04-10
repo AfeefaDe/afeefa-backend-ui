@@ -4,7 +4,7 @@
   h2 {
     margin-top: 2em;
     font-size: 1.4em;
-    color: $h2_color;
+    font-weight: 500;
   }
   li {
     list-style: none;
@@ -24,5 +24,8 @@
   &__inlineInput {
     flex-grow: 2;
     width: auto;
+  }
+  &__error {
+    color: $red;
   }
 }

@@ -169,8 +169,14 @@
             </div>
 
             <section class="entryForm__actionFooter">
-              <button class="btn waves-effect waves-light" type="submit">Speichern</button>
-              <button class="btn waves-effect waves-light red" @click.prevent="remove" v-if="has.delete"><i class="material-icons left">delete</i>Löschen</button>
+              <button class="btn waves-effect waves-light" type="submit">
+                <i class="material-icons left">done</i>
+                Speichern
+              </button>
+              <button class="btn waves-effect waves-light red" @click.prevent="remove" v-if="has.delete">
+                <i class="material-icons left">delete</i>
+                Löschen
+              </button>
             </section>
 
           </form>

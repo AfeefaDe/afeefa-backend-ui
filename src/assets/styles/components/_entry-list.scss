@@ -3,9 +3,8 @@
   margin-top: 0;
   list-style: none;
   li {
-    margin-bottom: 1em;
-    padding-bottom: 0.5em;
     border-bottom: 2px solid $gray20;
+    padding: 1em 0;
     display: flex;
     align-items: flex-start;
   }
@@ -36,8 +35,9 @@
     flex-grow: 2;
   }
   &__icon {
-    margin: 15px;
-    margin-right: 30px;
+    margin-right: 2em;
+    margin-top: 0.3em;
+    line-height: 100%;
     .entry-icon {
       display: inline-block;
       width: 20px;

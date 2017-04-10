@@ -78,7 +78,7 @@ $sidebarWidth: 350px;
     background-color: $black_alpha;
     color: $white;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     a {
       color: inherit;
       cursor: pointer;
@@ -89,7 +89,6 @@ $sidebarWidth: 350px;
     color: $black;
 		h2 {
 			font-size: 1.4em;
-	    color: $h2_color;
 		}
   }
   &__headerTitle {
