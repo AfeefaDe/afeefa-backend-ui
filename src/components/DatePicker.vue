@@ -9,7 +9,7 @@
 
       <div @click.prevent.stop="toggleStartDatePicker" class="date-field start-date-field inputField__spacing input-field">
         <label for="startDate" :class="['clickable-element', {active: currentDateStart}]">{{ $t("entries.date_start") }}</label>
-        <Flatpickr ref="startDatePickerRef" id="startDate" :options="dateOptions"/>
+        <day-picker ref="startDatePickerRef" id="startDate" :options="dateOptions"/>
       </div>
 
       <template v-if="hasStartTime">
@@ -18,7 +18,7 @@
         </button>
         <div @click.prevent.stop="toggleStartTimePicker" class="date-field start-time-field inputField__spacing input-field">
           <label for="startTime" :class="['clickable-element', {active: currentTimeStart}]">{{ $t("entries.time_start") }}</label>
-          <TimePicker id="startTime" :options="timeOptions" @FlatpickrRef="setStartTimeRef"/>
+          <time-picker id="startTime" :options="timeOptions" @FlatpickrRef="setStartTimeRef"/>
         </div>
       </template>
       <template v-else>
@@ -37,7 +37,7 @@
       <div @click.prevent.stop="toggleEndDatePicker" class="date-field end-date-field inputField__spacing input-field">
         <label for="endDate" :class="['clickable-element', {active: currentDateEnd}]">{{ $t("entries.date_end") }}</label>
         <span :class="['clickable-element', 'is-same-day-label', {'hide-span': !isSameDay}]"> Gleicher Tag </span>
-        <Flatpickr :class="{'hide-picker': isSameDay}" ref="endDatePickerRef" id="endDate" :options="dateOptions"/>
+        <day-picker :class="{'hide-picker': isSameDay}" ref="endDatePickerRef" id="endDate" :options="dateOptions"/>
       </div>
 
       <template v-if="hasEndTime">
@@ -47,7 +47,7 @@
 
         <div @click.prevent.stop="toggleEndTimePicker" class="date-field end-time-field inputField__spacing input-field">
           <label for="endTime" :class="['clickable-element', {active: currentTimeEnd}]">{{ $t("entries.time_end") }}</label>
-          <TimePicker id="endTime" :options="timeOptions" @FlatpickrRef="setEndTimeRef"/>
+          <time-picker id="endTime" :options="timeOptions" @FlatpickrRef="setEndTimeRef"/>
         </div>
       </template>
       <template v-else>
@@ -61,8 +61,8 @@
 
 <script>
 import TimePicker from '@/components/TimePicker'
+import DayPicker from '@/components/DayPicker'
 import moment from 'moment'
-import Flatpickr from './Flatpickr'
 
 export default {
   props: ['dateStart', 'dateEnd', 'hasTimeStart', 'hasTimeEnd'],
@@ -256,8 +256,8 @@ export default {
   },
 
   components: {
-    Flatpickr,
-    TimePicker
+    TimePicker,
+    DayPicker
   }
 }
 </script>
