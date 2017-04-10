@@ -86,14 +86,17 @@
             <span class="entryDetail__meta">{{ $t('entries.person') }}:</span>
             <span>{{ entry.contact.person }}</span>
           </li>
-          <li v-if="entry.contact.mail">
+          <li v-else-if="entry.contact.mail">
             <span class="entryDetail__meta">{{ $t('entries.mail') }}:</span>
             <span><a :href="'mailto:' + entry.contact.mail">{{ entry.contact.mail }}</a></span>
           </li>
-          <li v-if="entry.contact.phone">
+          <li v-else-if="entry.contact.phone">
             <span class="entryDetail__meta">{{ $t('entries.phone') }}:</span>
             <span>{{ entry.contact.phone }}</span>
           </li>
+          <div v-else class="entryDetail__error">
+            {{ $t('errors.noContactPresent') }}
+          </div>
         </ul>
 
         <div class="entryDetail">
@@ -105,8 +108,8 @@
               {{ annotation.title }}
             </p>
           </div>
-          <div v-else>
-            Keine Todos vorhanden.
+          <div v-else class="entryDetail__error">
+            {{ $t('errors.noAnnotationPresent') }}
           </div>
         </div>
 
@@ -114,22 +117,22 @@
           <h2>{{ $t('headlines.status') }}: {{ entry.active ? '' : 'nicht' }} aktiviert</h2>
           <div class="nowrap">
             <button @click="togglePublishState" :class="['btn', 'publishButton', 'waves-effect', {red: entry.active}]" type="submit">
-              {{ entry.active ? 'Deaktivieren' : 'Aktivieren' }}
+              {{ entry.active ? $t('buttons.deactivate') : $t('buttons.activate') }}
             </button>
           </div>
         </div>
 
         <div class="entryDetail" v-if="has.parentOrga">
-          <h2>Übergeordnete Orga</h2>
+          <h2>{{ $t('headlines.parentOrga') }}</h2>
           <entry-list-items :items="[entry.parent_orga]" v-if="entry.parent_orga"></entry-list-items>
-          <div v-else>
-            Es exisitert keine übergeordnete Orga.
+          <div v-else class="entryDetail__error">
+            {{ $t('errors.noParentOrgaPresent') }}
           </div>
 
-          <h2>Untergeordnete Orgas</h2>
+          <h2>{{ $t('headlines.subOrgas') }}</h2>
           <entry-list-items :items="entry.sub_orgas" v-if="entry.sub_orgas.length"></entry-list-items>
-          <div v-else>
-           Es existieren keine untergeordneten Orgas.
+          <div v-else class="entryDetail__error">
+            {{ $t('errors.noSubOrgaPresent') }}
           </div>
         </div>
 

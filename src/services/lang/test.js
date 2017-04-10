@@ -13,7 +13,15 @@ export default {
     edit: '*',
     show: '*',
     status: '*',
-    time: '*'
+    time: '*',
+    parentOrga: '*',
+    subOrgas: '*'
+  },
+  errors: {
+    noContactPresent: '*',
+    noAnnotationPresent: '*',
+    noParentOrgaPresent: '*',
+    noSubOrgaPresent: '*'
   },
   entries: {
     date_start: '*',
@@ -52,5 +60,9 @@ export default {
     page: '*',
     of: '*',
     per_page: '*'
+  },
+  buttons: {
+    activate: '*',
+    deactivate: '*'
   }
 }

@@ -13,7 +13,15 @@ export default {
     edit: 'Edit',
     show: 'Show',
     status: 'Status',
-    time: 'Zeit'
+    time: 'Zeit',
+    parentOrga: 'Parent Organization',
+    subOrgas: 'Sub Organizations'
+  },
+  errors: {
+    noContactPresent: 'No contact information present',
+    noAnnotationPresent: 'No annotation present',
+    noParentOrgaPresent: 'No parent organizations present',
+    noSubOrgaPresent: 'No sub organizations present'
   },
   entries: {
     date_start: 'Start date',
@@ -52,5 +60,9 @@ export default {
     page: 'Page',
     of: 'of',
     per_page: 'per page'
+  },
+  buttons: {
+    activate: 'Activate',
+    deactivate: 'Deactivate'
   }
 }

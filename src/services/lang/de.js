@@ -13,7 +13,15 @@ export default {
     edit: 'Ändern',
     show: 'Anzeigen',
     status: 'Status',
-    time: 'Zeit'
+    time: 'Zeit',
+    parentOrga: 'Übergeordnete Orga',
+    subOrgas: 'Untergeordnete Orgas'
+  },
+  errors: {
+    noContactPresent: 'Keine Kontaktinformationen vorhanden',
+    noAnnotationPresent: 'Keine Annoation vorhanden',
+    noParentOrgaPresent: 'Keine übergeordnete Orga vorhanden',
+    noSubOrgaPresent: 'Keine untergeordneten Orgas vorhanden'
   },
   entries: {
     date_start: 'Startdatum',
@@ -52,5 +60,9 @@ export default {
     page: 'Seite',
     of: 'von',
     per_page: 'pro Seite'
+  },
+  buttons: {
+    activate: 'Aktivieren',
+    deactivate: 'Deaktivieren'
   }
 }
