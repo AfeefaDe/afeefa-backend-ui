@@ -53,7 +53,15 @@ export default {
         return promiseCache.getItem(listCacheKey)
       }
 
+      if (resource.listCacheKey === 'orgas') {
+        console.log('load orgas')
+      }
+
       const promise = resource.http.query().then(response => {
+        if (resource.listCacheKey === 'orgas') {
+          console.log('orgas loaded')
+        }
+
         const items = []
         const duplicatesMap = {}
         for (let json of response.body.data) {
@@ -66,6 +74,16 @@ export default {
           const itemCacheKey = resource.getItemCacheKey(json)
           if (resourceCache.hasItem(itemCacheKey, json.id)) {
             item = resourceCache.getItem(itemCacheKey, json.id)
+            /*
+             * if we can find the item in cache, we assume that we
+             * do not have newer or different data than stored for
+             * the item found. hence, we do not need to deserialize
+             * the item again. the assumption will break when we start
+             * to load lists with different data for each item. in such
+             * a case we would ignore the data of the latter list
+             * loaded an keep the data from the first one.
+             */
+             // resource.deserialize(item, json)
           // no cached item found ->
           } else {
             item = resource.createItem(json)
@@ -112,18 +130,35 @@ export default {
       }
 
       if (resourceCache.hasItem(itemCacheKey, id)) {
-        return Promise.resolve(resourceCache.getItem(itemCacheKey, id))
+        const item = resourceCache.getItem(itemCacheKey, id)
+        if (item._fullyLoaded) {
+          return Promise.resolve(resourceCache.getItem(itemCacheKey, id))
+        }
       }
 
       if (promiseCache.hasItem(itemCacheKey + id)) {
         return promiseCache.getItem(itemCacheKey + id)
       }
 
+      if (resource.listCacheKey === 'orgas') {
+        console.log('load orga', id)
+      }
+
       const promise = resource.http.get({id}).then(response => {
+        console.log('orga loaded', id)
+
         const json = response.body.data
-        const item = resource.createItem(json)
-        item.deserialize(json)
-        resourceCache.addItem(itemCacheKey, item)
+        let item
+        // update existing cached items but not replace them!
+        if (resourceCache.hasItem(itemCacheKey, id)) {
+          item = resourceCache.getItem(itemCacheKey, id)
+          item.deserialize(json)
+        } else {
+          item = resource.createItem(json)
+          item.deserialize(json)
+          resourceCache.addItem(itemCacheKey, item)
+        }
+        item._fullyLoaded = true
         return item
       }).catch(response => {
         dispatch('messages/showAlert', {

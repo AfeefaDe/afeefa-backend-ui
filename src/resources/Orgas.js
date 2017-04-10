@@ -18,24 +18,6 @@ class OrgasResource extends BaseResource {
 }
 
 
-const fetchSubOrgas = orga => {
-  // do not fetch sub orgas multiple times
-  if (orga.sub_orgas.__isLoading) {
-    return
-  }
-
-  for (let id of orga._relationIds.sub_orgas) {
-    Orgas.get(id).then(subOrga => {
-      if (subOrga) {
-        orga.sub_orgas.push(subOrga)
-      }
-    })
-  }
-
-  orga.sub_orgas.__isLoading = true
-}
-
-
 const Orgas = {
   getAll () {
     const resource = new OrgasResource()
@@ -48,7 +30,15 @@ const Orgas = {
     })
   },
 
-  get (id) {
+  get (id, fetchRelationsWhiteList = [
+    'fetchParentOrga',
+    'fetchCategory',
+    'fetchSubCategory',
+    'fetchLocation',
+    'fetchContact',
+    'fetchAnnotations',
+    'fetchSubOrgas'
+  ]) {
     if (!id) {
       const orga = Entries.create(new Orga())
       return Promise.resolve(orga)
@@ -56,13 +46,9 @@ const Orgas = {
     const resource = new OrgasResource()
     return store.dispatch('api/getItem', {resource, id}).then(orga => {
       if (orga) {
-        Entries.fetchParentOrga(orga)
-        Entries.fetchCategory(orga)
-        Entries.fetchSubCategory(orga)
-        Entries.fetchLocation(orga)
-        Entries.fetchContact(orga)
-        Entries.fetchAnnotations(orga)
-        fetchSubOrgas(orga)
+        for (let fetchRelation of fetchRelationsWhiteList) {
+          Entries[fetchRelation](orga)
+        }
       }
       return orga
     })
@@ -70,7 +56,7 @@ const Orgas = {
 
   clone (orga) {
     const clone = Entries.clone(orga)
-    fetchSubOrgas(clone)
+    Entries.fetchSubOrgas(clone)
     return clone
   },
 

@@ -1,5 +1,7 @@
 export default class BaseModel {
   constructor () {
+    this._fullyLoaded = false
+
     this.init()
   }
 

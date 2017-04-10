@@ -2,6 +2,8 @@ import BaseModel from './base/BaseModel'
 
 export default class Category extends BaseModel {
   init () {
+    this._fullyLoaded = true // there is no half-loaded-state
+
     this.id = null
     this.type = 'categories'
     this.title = ''

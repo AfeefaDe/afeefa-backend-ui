@@ -2,6 +2,8 @@ import BaseModel from './base/BaseModel'
 
 export default class Contact extends BaseModel {
   init () {
+    this._fullyLoaded = true // there is no half-loaded-state
+
     this.id = null
     this.type = 'contacts'
     this.person = ''

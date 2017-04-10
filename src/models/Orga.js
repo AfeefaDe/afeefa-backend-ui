@@ -3,10 +3,9 @@ import Entry from './base/Entry'
 export default class Orga extends Entry {
   init () {
     super.init()
+
     this.type = 'orgas'
-
     this.sub_orgas = []
-
     this._relationIds.sub_orgas = []
   }
 
