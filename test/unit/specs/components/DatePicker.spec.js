@@ -137,7 +137,7 @@ describe('Components - DatePicker', () => {
     updateNow($wrapper)
     expectValues(
       $wrapper,
-      {mStartDate: mDate, hasTimeStart: false, mEndDate: mDate, hasTimeEnd: true}
+      {mStartDate: mDate, hasTimeStart: false, mEndDate: mDate.add(1, 'hour'), hasTimeEnd: true}
     )
 
     $button.simulate('click')
@@ -276,10 +276,6 @@ describe('Components - DatePicker', () => {
   })
 
 
-  const datesSame = (date1, date2) => {
-    return date1.toString() === date2.toString()
-  }
-
   const openStartDate = ($wrapper) => {
     $wrapper.find('.showDate-button')[0].simulate('click')
   }
@@ -304,21 +300,11 @@ describe('Components - DatePicker', () => {
   }
 
   it('dispatchs change on close', () => {
-    const checkEventData = () => {
-      let [dateStart, dateEnd, hasTimeStart, hasTimeEnd] = listener.getCall(0).args
-      expect(datesSame(dateStart, mDate.startOf('day').toDate())).to.be.true
-      expect(datesSame(dateEnd, mDate.startOf('day').toDate())).to.be.true
-      expect(hasTimeStart).to.be.false
-      expect(hasTimeEnd).to.be.false
-    }
-
-    const mDate = moment('2013-02-08 09:30:26')
-
-    const date = mDate.toDate()
+    const date = moment('2013-02-08 09:30:26').toDate()
     const $wrapper = mountPicker({dateStart: date, hasTimeStart: false, dateEnd: date, hasTimeEnd: false})
 
     const listener = sinon.spy()
-    $wrapper.vm.$on('update', listener)
+    $wrapper.vm.$on('input', listener)
 
     close($wrapper)
     listener.should.not.have.been.called
@@ -326,12 +312,10 @@ describe('Components - DatePicker', () => {
     openStartDate($wrapper)
     close($wrapper)
     listener.should.have.been.calledOnce
-    checkEventData()
 
     createOrRemoveStartTime($wrapper)
     close($wrapper)
     listener.should.have.been.calledTwice
-    checkEventData()
 
     close($wrapper)
     listener.should.have.been.calledTwice
@@ -339,12 +323,10 @@ describe('Components - DatePicker', () => {
     openEndDate($wrapper)
     close($wrapper)
     listener.should.have.been.calledThrice
-    checkEventData()
 
     createOrRemoveEndTime($wrapper)
     close($wrapper)
     listener.should.have.callCount(4)
-    checkEventData()
 
     close($wrapper)
     listener.should.have.callCount(4)
@@ -369,7 +351,7 @@ describe('Components - DatePicker', () => {
 
   it('updates to the selected dates and times', () => {
     const checkEventData = () => {
-      let [dateStart, dateEnd, hasTimeStart, hasTimeEnd] = listener.lastCall.args
+      let {dateStart, dateEnd, hasTimeStart, hasTimeEnd} = listener.lastCall.args[0]
       expect(dateStart.toString()).to.equal(expectedDateStart.toString())
       expect(dateEnd.toString()).to.equal(expectedDateEnd.toString())
       expect(hasTimeStart).to.equal(expectedHasTimeStart)
@@ -386,7 +368,7 @@ describe('Components - DatePicker', () => {
     })
 
     const listener = sinon.spy()
-    $wrapper.vm.$on('update', listener)
+    $wrapper.vm.$on('input', listener)
 
     let expectedDateStart = mDateStart.startOf('day').toDate()
     let expectedDateEnd = mDateEnd.startOf('day').toDate()
@@ -415,7 +397,7 @@ describe('Components - DatePicker', () => {
 
     createOrRemoveEndTime($wrapper)
     close($wrapper)
-    expectedDateEnd = addCurrentTime(moment('2013-02-24')).toDate()
+    expectedDateEnd = addCurrentTime(moment('2013-02-24')).add(1, 'hour').toDate()
     expectedHasTimeEnd = true
     checkEventData()
   })
@@ -444,7 +426,7 @@ describe('Components - DatePicker', () => {
     })
 
     const listener = sinon.spy()
-    $wrapper.vm.$on('update', listener)
+    $wrapper.vm.$on('input', listener)
 
     // initial
     checkDateEndLabel(false)
@@ -489,7 +471,7 @@ describe('Components - DatePicker', () => {
 
   it('sets and removes time information on time button click', () => {
     const checkEventData = () => {
-      let [dateStart, dateEnd, hasTimeStart, hasTimeEnd] = listener.lastCall.args
+      let {dateStart, dateEnd, hasTimeStart, hasTimeEnd} = listener.lastCall.args[0]
       expect(dateStart.toString()).to.equal(expectedDateStart.toString())
       expect(dateEnd.toString()).to.equal(expectedDateEnd.toString())
       expect(hasTimeStart).to.equal(expectedHasTimeStart)
@@ -506,7 +488,7 @@ describe('Components - DatePicker', () => {
     })
 
     const listener = sinon.spy()
-    $wrapper.vm.$on('update', listener)
+    $wrapper.vm.$on('input', listener)
 
     let expectedDateStart = mDateStart.startOf('day').toDate()
     let expectedDateEnd = mDateEnd.startOf('day').toDate()
@@ -526,7 +508,7 @@ describe('Components - DatePicker', () => {
 
     $button = $wrapper.find('.showTime-button')[1]
     $button.simulate('click')
-    expectedDateEnd = addCurrentTime(moment('2013-02-09')).toDate()
+    expectedDateEnd = addCurrentTime(moment('2013-02-09')).add(1, 'hour').toDate()
     expectedHasTimeEnd = true
     checkEventData()
 
@@ -543,6 +525,9 @@ describe('Components - DatePicker', () => {
     const minuteInput = document.querySelector('.flatpickr-minute')
     minuteInput.value = minute
 
+    const timeContainer = document.querySelector('.flatpickr-time')
+    timeContainer.dispatchEvent(new Event('input'))
+
     const closeButton = document.querySelector('.flatpickr-time > div > button')
     var event = new Event('click', {'bubbles': true})
     closeButton.dispatchEvent(event)
@@ -551,7 +536,7 @@ describe('Components - DatePicker', () => {
 
   it('sets time appropriately', () => {
     const checkEventData = () => {
-      let [dateStart, dateEnd, hasTimeStart, hasTimeEnd] = listener.lastCall.args
+      let {dateStart, dateEnd, hasTimeStart, hasTimeEnd} = listener.lastCall.args[0]
       expect(dateStart.toString()).to.equal(expectedDateStart.toString())
       expect(dateEnd.toString()).to.equal(expectedDateEnd.toString())
       expect(hasTimeStart).to.equal(expectedHasTimeStart)
@@ -568,7 +553,7 @@ describe('Components - DatePicker', () => {
     })
 
     const listener = sinon.spy()
-    $wrapper.vm.$on('update', listener)
+    $wrapper.vm.$on('input', listener)
 
     let expectedDateStart = mDateStart.startOf('day').toDate()
     let expectedDateEnd = mDateEnd.startOf('day').toDate()
@@ -579,12 +564,13 @@ describe('Components - DatePicker', () => {
 
     createOrRemoveStartTime($wrapper)
     setTime(10, 15)
-    expectedDateStart = addCurrentTime(moment('2013-02-08 10:15')).toDate()
+    updateNow($wrapper)
+    expectedDateStart = (moment('2013-02-08 10:15')).toDate()
     expectedHasTimeStart = true
     checkEventData()
 
     setTime(20, 1)
-    expectedDateStart = addCurrentTime(moment('2013-02-08 20:01')).toDate()
+    expectedDateStart = (moment('2013-02-08 20:01')).toDate()
     expectedHasTimeStart = true
     checkEventData()
 
@@ -597,18 +583,58 @@ describe('Components - DatePicker', () => {
 
     createOrRemoveEndTime($wrapper)
     setTime(7, 37)
-    expectedDateEnd = addCurrentTime(moment('2013-02-09 07:37')).toDate()
+    expectedDateEnd = (moment('2013-02-09 07:37')).toDate()
     expectedHasTimeEnd = true
     checkEventData()
 
     setTime(20, 1)
-    expectedDateEnd = addCurrentTime(moment('2013-02-09 20:01')).toDate()
+    expectedDateEnd = (moment('2013-02-09 20:01')).toDate()
     expectedHasTimeEnd = true
     checkEventData()
 
     createOrRemoveEndTime($wrapper)
     expectedDateEnd = moment('2013-02-09').toDate()
     expectedHasTimeEnd = false
+    checkEventData()
+  })
+
+
+  it('sets end time to start time + 1h', () => {
+    const checkEventData = () => {
+      let {dateEnd} = listener.lastCall.args[0]
+      expect(dateEnd.toString()).to.equal(expectedDateEnd.toString())
+    }
+
+    const mDateStart = moment('2013-02-08 09:30:26')
+    const mDateEnd = moment('2013-02-09 17:11:51')
+    const $wrapper = mountPicker({
+      dateStart: mDateStart.toDate(),
+      hasTimeStart: false,
+      dateEnd: mDateEnd.toDate(),
+      hasTimeEnd: false
+    })
+
+    const listener = sinon.spy()
+    $wrapper.vm.$on('input', listener)
+
+    let expectedDateEnd = mDateEnd.startOf('day').toDate()
+
+    // open start time
+    createOrRemoveStartTime($wrapper)
+    setTime(10, 15)
+
+    // open end time, verify start + 1
+    createOrRemoveEndTime($wrapper)
+    expectedDateEnd = moment('2013-02-09 11:15').toDate()
+    checkEventData()
+
+    // remove start and end times
+    createOrRemoveStartTime($wrapper)
+    createOrRemoveEndTime($wrapper)
+
+    // open start time, verify current + 1
+    createOrRemoveEndTime($wrapper)
+    expectedDateEnd = addCurrentTime(moment('2013-02-09')).add(1, 'hour').toDate()
     checkEventData()
   })
 })

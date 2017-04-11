@@ -178,10 +178,10 @@ export default {
         if (this.hasStartTime) {
           const mDateStart = moment(this.currentDateStart)
           this.currentTimeEnd = moment(new Date())
-          .hours(mDateStart.hours()).minutes(mDateStart.minutes())
-          .add(1, 'hour').toDate()
+            .hours(mDateStart.hours()).minutes(mDateStart.minutes())
+            .add(1, 'hour').toDate()
         } else {
-          this.currentTimeEnd = moment(new Date())
+          this.currentTimeEnd = moment(new Date()).add(1, 'hour').toDate()
         }
       }
       this.hasEndTime = !this.hasEndTime
