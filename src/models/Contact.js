@@ -32,4 +32,8 @@ export default class Contact extends BaseModel {
     }
     return data
   }
+
+  isEmpty () {
+    return !this.person && !this.mail && !this.phone
+  }
 }

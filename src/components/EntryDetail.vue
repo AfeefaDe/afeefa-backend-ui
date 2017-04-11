@@ -86,17 +86,17 @@
             <span class="entryDetail__meta">{{ $t('entries.person') }}:</span>
             <span>{{ entry.contact.person }}</span>
           </li>
-          <li v-else-if="entry.contact.mail">
+          <li v-if="entry.contact.mail">
             <span class="entryDetail__meta">{{ $t('entries.mail') }}:</span>
             <span><a :href="'mailto:' + entry.contact.mail">{{ entry.contact.mail }}</a></span>
           </li>
-          <li v-else-if="entry.contact.phone">
+          <li v-if="entry.contact.phone">
             <span class="entryDetail__meta">{{ $t('entries.phone') }}:</span>
             <span>{{ entry.contact.phone }}</span>
           </li>
-          <div v-else class="entryDetail__error">
+          <li v-if="entry.contact.isEmpty" class="entryDetail__error">
             {{ $t('errors.noContactPresent') }}
-          </div>
+          </li>
         </ul>
 
         <div class="entryDetail">
