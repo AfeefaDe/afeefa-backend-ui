@@ -6,6 +6,7 @@ import i18n from './services/lang'
 import App from './components/routes/App'
 import Filters from './filters'
 import VeeValidate from 'vee-validate'
+import './services/validation'
 import './services/leaflet'
 
 

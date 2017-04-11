@@ -43,13 +43,17 @@
 
             <div v-if="has.date">
               <h2>{{ $t("headlines.time") }}</h2>
-              <date-picker class="inputField__spacing"
+              <date-picker
                 :date-start="item.date_start"
                 :date-end="item.date_end"
                 :has-time-start="item.has_time_start"
                 :has-time-end="item.has_time_end"
-                @update="updateDatePickerValues">
+                @input="updateDatePickerValues"
+                data-vv-name="date" v-validate="'date-end-not-before-start|date-end-not-start'"
+                :class="['inputField__spacing', {'validation-error': errors.has('date') }]"></textarea>
+                >
               </date-picker>
+              <span v-show="errors.has('date')" class="validation-error">{{ errors.first('date') }}</span>
             </div>
 
             <div v-if="has.parentOrga">
@@ -201,6 +205,7 @@ import DatePicker from '@/components/DatePicker'
 import EventBus from '@/services/event-bus'
 import Spinner from '@/components/Spinner'
 
+
 export default {
   props: ['id', 'routeName', 'Resource', 'messages', 'options'],
 
@@ -332,11 +337,11 @@ export default {
       }
     },
 
-    updateDatePickerValues (startDateObject, endDateObject, hasStartTime, hasEndTime) {
-      this.item.date_start = startDateObject
-      this.item.date_end = endDateObject
-      this.item.has_time_start = hasStartTime
-      this.item.has_time_end = hasEndTime
+    updateDatePickerValues ({dateStart, dateEnd, hasTimeStart, hasTimeEnd}) {
+      this.item.date_start = dateStart
+      this.item.date_end = dateEnd
+      this.item.has_time_start = hasTimeStart
+      this.item.has_time_end = hasTimeEnd
     },
 
     save () {
@@ -485,6 +490,10 @@ select.validation-error, textarea.validation-error, input.validation-error {
   }
 }
 
+.datePicker.validation-error {
+  background-color: #ffeeee;
+}
+
 span.validation-error {
   display: block;
   margin-top: -16px;
@@ -506,7 +515,7 @@ span.validation-hint {
   }
 }
 
-select + span.validation-error {
+select + span.validation-error, .datePicker + span.validation-error {
   margin-top: .4em;
 }
 

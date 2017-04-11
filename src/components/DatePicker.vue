@@ -14,7 +14,7 @@
 
       <template v-if="hasStartTime">
         <button @click.prevent.stop="toggleStartTimeButton" class="red showTime-button btn waves-effect waves-light">
-          <i class="material-icons center"> delete_forever </i>
+          <i class="material-icons center">delete_forever</i>
         </button>
         <div @click.prevent.stop="toggleStartTimePicker" class="date-field start-time-field inputField__spacing input-field">
           <label for="startTime" :class="['clickable-element', {active: currentTimeStart}]">{{ $t("entries.time_start") }}</label>
@@ -23,7 +23,7 @@
       </template>
       <template v-else>
         <button @click.prevent.stop="toggleStartTimeButton" class="showTime-button btn waves-effect waves-light">
-          <i class="material-icons center"> alarm </i>
+          <i class="material-icons center">alarm</i>
         </button>
       </template>
     </div>
@@ -42,7 +42,7 @@
 
       <template v-if="hasEndTime">
         <button @click.prevent.stop="toggleEndTimeButton" class="red showTime-button btn waves-effect waves-light">
-          <i class="material-icons center"> delete_forever </i>
+          <i class="material-icons center">delete_forever</i>
         </button>
 
         <div @click.prevent.stop="toggleEndTimePicker" class="date-field end-time-field inputField__spacing input-field">
@@ -52,7 +52,7 @@
       </template>
       <template v-else>
         <button @click.prevent.stop="toggleEndTimeButton" class="showTime-button btn waves-effect waves-light">
-          <i class="material-icons center"> alarm </i>
+          <i class="material-icons center">alarm</i>
         </button>
       </template>
     </div>
@@ -175,7 +175,14 @@ export default {
         this.endTimeRef.destroy()
         this.endTimeRef = null
       } else {
-        this.currentTimeEnd = new Date()
+        if (this.hasStartTime) {
+          const mDateStart = moment(this.currentDateStart)
+          this.currentTimeEnd = moment(new Date())
+          .hours(mDateStart.hours()).minutes(mDateStart.minutes())
+          .add(1, 'hour').toDate()
+        } else {
+          this.currentTimeEnd = moment(new Date())
+        }
       }
       this.hasEndTime = !this.hasEndTime
       this.updateDatesLater()
@@ -251,7 +258,7 @@ export default {
       this.currentDateEnd = dateEnd
       this.checkSameDay()
 
-      this.$emit('update', dateStart, dateEnd, this.hasStartTime, this.hasEndTime)
+      this.$emit('input', {dateStart, dateEnd, hasTimeStart: this.hasStartTime, hasTimeEnd: this.hasEndTime})
     }
   },
 
