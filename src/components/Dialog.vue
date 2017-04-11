@@ -25,27 +25,46 @@
 import { mapState } from 'vuex'
 
 export default {
+  data () {
+    return {
+      hasCancelListeners: false
+    }
+  },
+
   computed: mapState({
     dialog: state => state.messages.dialog
   }),
 
-  created () {
-    window.addEventListener('keyup', event => {
-      if (this.dialog && event.keyCode === 27) {
-        this.dialog.cancel()
-      }
-    })
-    window.addEventListener('mouseup', event => {
-      if (this.dialog) {
-        const dialogDom = this.$el.querySelector('.dialog')
-        if (!dialogDom.contains(event.target)) {
-          this.dialog.cancel()
+  watch: {
+    dialog (dialog) {
+      if (dialog) {
+        if (!this.hasCancelListeners) {
+          window.addEventListener('keyup', this.onKeyUp)
+          window.addEventListener('mouseup', this.onMouseUp)
+          this.hasCancelListeners = true
         }
+      } else {
+        window.removeEventListener('keyup', this.onKeyUp)
+        window.removeEventListener('mouseup', this.onMouseUp)
+        this.hasCancelListeners = false
       }
-    })
+    }
   },
 
   methods: {
+    onMouseUp (event) {
+      const dialogDom = this.$el.querySelector('.dialog')
+      if (!dialogDom.contains(event.target)) {
+        this.dialog.cancel()
+      }
+    },
+
+    onKeyUp (event) {
+      if (event.keyCode === 27) {
+        this.dialog.cancel()
+      }
+    },
+
     close (reason) {
       if (this.dialog) {
         this.dialog[reason]()

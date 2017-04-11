@@ -23,22 +23,45 @@
 import { mapState } from 'vuex'
 
 export default {
+  data () {
+    return {
+      hasCancelListeners: false
+    }
+  },
+
   computed: mapState({
     alerts: state => state.messages.alerts
   }),
 
-  created () {
-    window.addEventListener('keyup', event => {
-      if (event.keyCode === 27) {
-        this.$store.dispatch('messages/hideAlerts')
+  watch: {
+    'alerts.length' (alertsLength) {
+      if (alertsLength) {
+        if (!this.hasCancelListeners) {
+          window.addEventListener('keyup', this.onKeyUp)
+          window.addEventListener('mouseup', this.onMouseUp)
+          this.hasCancelListeners = true
+        }
+      } else {
+        window.removeEventListener('keyup', this.onKeyUp)
+        window.removeEventListener('mouseup', this.onMouseUp)
+        this.hasCancelListeners = false
       }
-    })
-    window.addEventListener('mouseup', () => {
-      this.$store.dispatch('messages/hideAlerts')
-    })
+    }
   },
 
   methods: {
+    onMouseUp () {
+      console.log('dialog mouse')
+      this.$store.dispatch('messages/hideAlerts')
+    },
+
+    onKeyUp (event) {
+      console.log('dialog key')
+      if (event.keyCode === 27) {
+        this.$store.dispatch('messages/hideAlerts')
+      }
+    },
+
     close (alert) {
       this.$store.dispatch('messages/hideAlert', alert)
     }
