@@ -1,26 +1,94 @@
 <template>
   <div class="list-pagination">
     <div class="list-pagination__info">
-      {{ currentNumItems }} {{ $tc('pagination.entries', currentNumItems) }}
-      ({{ $t('pagination.page') }} {{ currentPage }} {{ $t('pagination.of') }} {{ currentNumPages }})
+
+      <p class="list-pagination__infoText">{{ currentNumItems }} {{ $tc('pagination.entries', currentNumItems) }}
+      ({{ $t('pagination.page') }} {{ currentPage }} {{ $t('pagination.of') }} {{ currentNumPages }})</p>
+      <label class ="list-pagination__pagesizeSelectLabel" for="pageSizeSelect">Set Page size:</label>
+      <select v-model="currentPageSize"
+        @change="pageSizeChanged"
+        class="list-pagination__pagesizeSelect browser-default"
+        v-if="currentNumItems > 15"
+        id="pageSizeSelect">
+        <option value="15">15 {{ $t('pagination.per_page') }}</option>
+        <option value="30">30 {{ $t('pagination.per_page') }}</option>
+        <option value="1000">{{ $t('status.all') }}</option>
+      </select>
+
     </div>
 
     <div class="list-pagination__navigation" v-if="currentNumPages > 1">
-      <a v-for="pageNumber in currentNumPages"
-        href="" @click.prevent="goto(pageNumber)"
-        :class="[(pageNumber == currentPage ? 'active' : 'inactive')]">{{ pageNumber }}</a>
+      <a v-if="currentPage > 1"
+          class="list-pagination--arrowButton"
+          @click.prevent="gotoPrev()">
+        <i class="material-icons">navigate_before</i>
+      </a>
+      <div class="list-pagination__navigationPages">
+        <a v-for="pageNumber in currentNumPages"
+          href="" @click.prevent="goto(pageNumber)"
+          :class="[(pageNumber == currentPage ? 'active' : 'inactive')]">
+          {{ pageNumber }}
+        </a>
+      </div>
+      <a v-if="currentPage < currentNumPages"
+          class="list-pagination--arrowButton"
+          @click.prevent="gotoNext()">
+        <i class="material-icons">navigate_next</i>
+      </a>
     </div>
 
-    <select v-model="currentPageSize"
-      @change="pageSizeChanged"
-      class="list-pagination__pagesize browser-default"
-      v-if="currentNumItems > 15">
-      <option value="15">15 {{ $t('pagination.per_page') }}</option>
-      <option value="30">30 {{ $t('pagination.per_page') }}</option>
-      <option value="1000">{{ $t('status.all') }}</option>
-    </select>
   </div>
 </template>
+
+<style lang="scss">
+  @import "../assets/styles/_variables.scss";
+  .list-pagination {
+    margin-bottom: 1em;
+    &__info {
+      display: flex;
+      align-items: baseline;
+      margin-bottom: 0.7em;
+    }
+    &__infoText {
+      flex-grow: 2;
+      margin: 0;
+    }
+    &__pagesizeSelect {
+      display: inline-block;
+      width: auto;
+      height: auto;
+    }
+    &__pagesizeSelectLabel {
+      margin-right: 1em;
+    }
+
+    &__navigation {
+      display: flex;
+      justify-content: center;
+      word-wrap: break-word;
+      a {
+        display: inline-block;
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0.3em 0.6em;
+        border-radius: 2px;
+        color: $black;
+        vertical-align: middle;
+      }
+      a:hover {
+        background: $gray20;
+      }
+      a.active {
+        background: $pink;
+        color: white;
+      }
+    }
+    &--arrowButton {
+      height: 24px;
+      box-sizing: initial;
+    }
+  }
+</style>
 
 
 <script>
@@ -86,6 +154,14 @@ export default {
       this.currentNumItems = numItems
       this.currentPage = currentPage
       this.currentPageSize = pageSize
+    },
+
+    gotoNext () {
+      this.goto(this.currentPage + 1)
+    },
+
+    gotoPrev () {
+      this.goto(this.currentPage - 1)
     },
 
     goto (page) {
