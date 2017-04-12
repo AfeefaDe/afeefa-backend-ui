@@ -23,6 +23,10 @@ class SearchResource extends BaseResource {
       return new Event()
     }
   }
+
+  deserialize (item, json) {
+    item.deserialize(json.relationships.entry.data)
+  }
 }
 
 export default {

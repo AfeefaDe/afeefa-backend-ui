@@ -15,7 +15,7 @@ export default class Orga extends Entry {
     const rels = json.relationships
 
     // sub orgas
-    if (rels.sub_orgas.data.length) {
+    if (rels.sub_orgas && rels.sub_orgas.data.length) {
       for (let jsonOrga of rels.sub_orgas.data) {
         if (!this._relationIds.sub_orgas.includes(jsonOrga.id)) {
           this._relationIds.sub_orgas.push(jsonOrga.id)

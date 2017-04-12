@@ -88,10 +88,10 @@ export default class Entry {
     const rels = json.relationships
 
     // parent orga / orga
-    if (this.type === 'orgas' && rels.parent_orga.data) {
+    if (this.type === 'orgas' && rels.parent_orga && rels.parent_orga.data) {
       this._relationIds.parent_orga = rels.parent_orga.data.id
     }
-    if (this.type === 'events' && rels.orga.data) {
+    if (this.type === 'events' && rels.orga && rels.orga.data) {
       this._relationIds.parent_orga = rels.orga.data.id
     }
 
@@ -115,12 +115,12 @@ export default class Entry {
     }
 
     // location
-    if (rels.locations.data.length) {
+    if (rels.locations && rels.locations.data.length) {
       this._relationIds.location = rels.locations.data[0].id
     }
 
     // contact
-    if (rels.contact_infos.data.length) {
+    if (rels.contact_infos && rels.contact_infos.data.length) {
       this._relationIds.contact = rels.contact_infos.data[0].id
     }
   }
