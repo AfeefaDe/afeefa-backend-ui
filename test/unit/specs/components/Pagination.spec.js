@@ -180,4 +180,27 @@ describe('Components - Pagination', () => {
 
     expectValues($wrapper, {numItems: 97, currentPage: 1, numPages: 7})
   })
+
+  it('hides next button on last page', () => {
+    const $wrapper = mount(Pagination, {i18n, propsData: {numItems: 30, page: 1, pageSize: 15}})
+    let $nextButton = $wrapper.find('.list-pagination--arrowButton i')[0]
+
+    expect($nextButton.text()).to.equal('navigate_next')
+
+    setProperty($wrapper, 'page', 2)
+    updateNow($wrapper)
+    $nextButton = $wrapper.find('.list-pagination--arrowButton i')[0]
+    expect($nextButton).not.to.equal('navigate_next')
+  })
+
+  it('hides previous button on first page', () => {
+    const $wrapper = mount(Pagination, {i18n, propsData: {numItems: 60, page: 2, pageSize: 15}})
+    let numberOfButtons = $wrapper.find('.list-pagination--arrowButton i').length
+    expect(numberOfButtons).to.equal(2)
+
+    setProperty($wrapper, 'page', 1)
+    updateNow($wrapper)
+    numberOfButtons = $wrapper.find('.list-pagination--arrowButton i').length
+    expect(numberOfButtons).to.equal(1)
+  })
 })
