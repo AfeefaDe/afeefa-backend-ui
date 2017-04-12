@@ -16,8 +16,6 @@ export default {
     logout () {
       this.$store.dispatch('auth/logout').then(result => {
         this.$router.push({name: 'login'})
-      }, error => {
-        console.log(error)
       })
     }
   },

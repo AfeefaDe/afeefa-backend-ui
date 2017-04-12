@@ -53,15 +53,7 @@ export default {
         return promiseCache.getItem(listCacheKey)
       }
 
-      if (resource.listCacheKey === 'orgas') {
-        console.log('load orgas')
-      }
-
       const promise = resource.http.query().then(response => {
-        if (resource.listCacheKey === 'orgas') {
-          console.log('orgas loaded')
-        }
-
         const items = []
         const duplicatesMap = {}
         for (let json of response.body.data) {
@@ -140,13 +132,7 @@ export default {
         return promiseCache.getItem(itemCacheKey + id)
       }
 
-      if (resource.listCacheKey === 'orgas') {
-        console.log('load orga', id)
-      }
-
       const promise = resource.http.get({id}).then(response => {
-        console.log('orga loaded', id)
-
         const json = response.body.data
         let item
         // update existing cached items but not replace them!

@@ -16,19 +16,19 @@ export default class Location extends BaseModel {
 
   deserialize (json) {
     this.id = json.id
-    this.lat = json.attributes.lat
-    this.lon = json.attributes.lon
-    this.street = json.attributes.street
-    this.zip = json.attributes.zip
-    this.city = json.attributes.city
-    this.placename = json.attributes.placename
+    this.lat = json.attributes.lat || ''
+    this.lon = json.attributes.lon || ''
+    this.street = json.attributes.street || ''
+    this.zip = json.attributes.zip || ''
+    this.city = json.attributes.city || ''
+    this.placename = json.attributes.placename || ''
   }
 
   serialize () {
     const data = {
       type: this.type,
       attributes: {
-        lat: this.lat || '',
+        lat: this.lat || '', // if unknown, it's set to null in entry edit
         lon: this.lon || '',
         street: this.street,
         zip: this.zip,
@@ -40,5 +40,9 @@ export default class Location extends BaseModel {
       data.id = this.id
     }
     return data
+  }
+
+  isEmpty () {
+    return !this.street && !this.zip && !this.city && !this.placename
   }
 }

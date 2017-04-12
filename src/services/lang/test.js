@@ -19,6 +19,7 @@ export default {
   },
   errors: {
     noContactPresent: '*',
+    noLocationPresent: '*',
     noAnnotationPresent: '*',
     noParentOrgaPresent: '*',
     noSubOrgaPresent: '*'

@@ -92,7 +92,7 @@
               <div class="input-field">
                 <label for="mail" :class="{active: item.contact.mail}">E-Mail</label>
                 <input v-model="item.contact.mail" id="mail" type="email"
-                  data-vv-name="email" data-vv-validate-on="blur" v-validate="'required|email'"
+                  data-vv-name="email" data-vv-validate-on="blur" v-validate="'email'"
                   :class="{'validation-error': errors.has('email') }"/>
                 <span v-show="errors.has('email')" class="validation-error">{{ errors.first('email') }}</span>
               </div>

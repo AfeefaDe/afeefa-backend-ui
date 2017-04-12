@@ -19,6 +19,7 @@ export default {
   },
   errors: {
     noContactPresent: 'No contact information present',
+    noLocationPresent: 'No location information present',
     noAnnotationPresent: 'No annotation present',
     noParentOrgaPresent: 'No parent organizations present',
     noSubOrgaPresent: 'No sub organizations present'

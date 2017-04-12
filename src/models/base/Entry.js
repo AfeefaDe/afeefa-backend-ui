@@ -46,14 +46,14 @@ export default class Entry {
       },
       relationships: {
         contact_infos: {
-          data: [
-            this.contact.serialize()
-          ]
+          data: this.contact.isEmpty()
+            ? []
+            : [this.contact.serialize()]
         },
         locations: {
-          data: [
-            this.location.serialize()
-          ]
+          data: this.location.isEmpty()
+            ? []
+            : [this.location.serialize()]
         },
         category: this.category
           ? { data: this.category.serialize() }

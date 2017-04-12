@@ -64,19 +64,22 @@
           </li>
           <li v-if="entry.location.city">
             <span class="entryDetail__meta">{{ $t('entries.city') }}:</span>
-            <span>{{ entry.location.zip }}, {{ entry.location.city }}</span>
+            <span>{{ entry.location.zip }} {{ entry.location.city }}</span>
           </li>
           <li v-if="entry.location.street">
             <span class="entryDetail__meta">{{ $t('entries.street') }}:</span>
             <span>{{ entry.location.street }}</span>
           </li>
-          <li>
+          <li v-if="!entry.location.isEmpty()">
             <div class="map">
               <v-map :zoom="mapCenter.zoom" :center="mapCenter.center">
                 <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
                 <v-marker :lat-lng="{lat:entry.location.lat, lng:entry.location.lon}" v-if="entry.location.lat"></v-marker>
               </v-map>
             </div>
+          </li>
+          <li v-else class="entryDetail__error">
+            {{ $t('errors.noLocationPresent') }}
           </li>
         </ul>
 
@@ -94,7 +97,7 @@
             <span class="entryDetail__meta">{{ $t('entries.phone') }}:</span>
             <span>{{ entry.contact.phone }}</span>
           </li>
-          <li v-if="entry.contact.isEmpty" class="entryDetail__error">
+          <li v-if="entry.contact.isEmpty()" class="entryDetail__error">
             {{ $t('errors.noContactPresent') }}
           </li>
         </ul>

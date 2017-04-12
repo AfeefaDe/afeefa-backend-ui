@@ -51,12 +51,10 @@ export default {
 
   methods: {
     onMouseUp () {
-      console.log('dialog mouse')
       this.$store.dispatch('messages/hideAlerts')
     },
 
     onKeyUp (event) {
-      console.log('dialog key')
       if (event.keyCode === 27) {
         this.$store.dispatch('messages/hideAlerts')
       }

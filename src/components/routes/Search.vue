@@ -52,8 +52,6 @@ export default {
       Search.find(this.keyword).then(result => {
         this.status = result.length ? null : '0 Ergebnisse'
         this.items = result
-      }, error => {
-        console.log(error)
       })
     }
   },

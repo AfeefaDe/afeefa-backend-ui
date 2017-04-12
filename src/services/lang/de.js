@@ -19,6 +19,7 @@ export default {
   },
   errors: {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',
+    noLocationPresent: 'Keine Ortsinformation vorhanden',
     noAnnotationPresent: 'Keine Annoation vorhanden',
     noParentOrgaPresent: 'Keine übergeordnete Orga vorhanden',
     noSubOrgaPresent: 'Keine untergeordneten Orgas vorhanden'
