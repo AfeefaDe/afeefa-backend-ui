@@ -13,6 +13,7 @@ export default class Entry {
     this.created_at = new Date()
     this.updated_at = new Date()
     this.state_changed_at = new Date()
+    this.media_url = ''
 
     this.parent_orga = null
     this.category = null
@@ -42,7 +43,8 @@ export default class Entry {
       attributes: {
         title: this.title,
         description: this.description,
-        active: this.active
+        active: this.active,
+        media_url: this.media_url
       },
       relationships: {
         contact_infos: {
@@ -85,6 +87,9 @@ export default class Entry {
     this.updated_at = new Date(json.attributes.updated_at)
     this.state_changed_at = new Date(json.attributes.state_changed_at)
 
+    this.media_url = json.attributes.media_url || ''
+    this.media_url = this.validateUrl(this.media_url)
+
     const rels = json.relationships
 
     // parent orga / orga
@@ -125,11 +130,21 @@ export default class Entry {
     }
   }
 
+  validateUrl (url) {
+    let img = new Image()
+    img.src = url
+
+    img.onerror = function () {
+      return ''
+    }
+    return url
+  }
 
   clone (entry) {
     entry.id = this.id
     entry.type = this.type
     entry.title = this.title
+    entry.media_url = this.media_url
     entry.description = this.description
     entry.active = this.active
     entry.created_at = this.created_at

@@ -10,6 +10,10 @@
         </router-link>
       </div>
 
+      <div v-if="entry.media_url" class="image-container-style">
+        <div class="image-container" :style="{ 'background-image': 'url(' + entry.media_url + ')' }"> </div>
+      </div>
+
       <div>
         <ul class="entryDetail">
           <li>
@@ -226,5 +230,14 @@ export default {
 .map {
   margin-top: 1em;
   height: 300px;
+}
+.image-container-style {
+  background-color: #eee;
+}
+.image-container {
+  background-repeat: no-repeat;
+  background-position: center left;
+  background-size: contain;
+  height: 9rem;
 }
 </style>
