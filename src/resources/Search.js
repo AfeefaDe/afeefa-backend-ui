@@ -17,7 +17,7 @@ class SearchResource extends BaseResource {
   }
 
   createItem (json) {
-    if (json.type === 'orgas') {
+    if (json.relationships.entry.data.type === 'orgas') {
       return new Orga()
     } else {
       return new Event()
