@@ -1,6 +1,7 @@
 import Pagination from '@/components/Pagination'
 import avoriaz, { mount } from 'avoriaz'
 import { updateNow, setProperty } from '../../helpers'
+import sinon from 'sinon'
 
 import VueI18n from 'vue-i18n'
 import i18n from '@/services/lang'
@@ -202,5 +203,21 @@ describe('Components - Pagination', () => {
     updateNow($wrapper)
     numberOfButtons = $wrapper.find('.list-pagination--arrowButton i').length
     expect(numberOfButtons).to.equal(1)
+  })
+
+  it('dispatchs event on pagesize change', () => {
+    const $wrapper = mount(Pagination, {i18n, propsData: {numItems: 97, page: 4, pageSize: 15}})
+
+    const listener = sinon.spy()
+    $wrapper.vm.$on('changed', listener)
+
+    const $select = $wrapper.find('.list-pagination__pagesizeSelect')[0]
+    $select.element.value = '30'
+    $select.simulate('change')
+    updateNow($wrapper)
+
+    const {page, pageSize} = listener.lastCall.args[0]
+    expect(pageSize).to.equal(30)
+    expect(page).to.equal(1)
   })
 })
