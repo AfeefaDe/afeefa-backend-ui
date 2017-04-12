@@ -144,13 +144,7 @@
                 </span>
               </div>
 
-              <div class="map" v-if="item.location">
-                <v-map :zoom="mapCenter.zoom" :center="mapCenter.center">
-                  <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
-                  <v-marker :lat-lng="{lat:item.location.lat, lng:item.location.lon}" :draggable="true" @l-dragend="bibbelDrag" v-if="item.location.lat"></v-marker>
-                </v-map>
-              </div>
-
+              <location-map :map-center="mapCenter" :location="item.location" :draggable="true" @bibbelDrag="bibbelDrag"></location-map>
             </div>
 
             <h2>{{ $tc('headlines.annotations', 2) }}</h2>
@@ -195,7 +189,6 @@
 <script>
 import Vue from 'vue'
 import autosize from 'autosize'
-import Vue2Leaflet from 'vue2-leaflet'
 import { BASE } from '@/store/api'
 import Orgas from '@/resources/Orgas'
 import Categories from '@/resources/Categories'
@@ -204,6 +197,7 @@ import sortByTitle from '@/helpers/sort-by-title'
 import DatePicker from '@/components/DatePicker'
 import EventBus from '@/services/event-bus'
 import Spinner from '@/components/Spinner'
+import Map from '@/components/Map'
 
 
 export default {
@@ -271,8 +265,7 @@ export default {
   watch: {
     'item.location' (location) {
       if (location) {
-        const hasAddress = location.zip || location.city || location.street
-        if (hasAddress) {
+        if (!location.isEmpty()) {
           this.getGeocode(false)
         }
       }
@@ -296,15 +289,9 @@ export default {
 
     mapCenter () {
       if (this.item.location && this.item.location.lat) {
-        return {
-          zoom: 17,
-          center: [this.item.location.lat, this.item.location.lon]
-        }
+        return [this.item.location.lat, this.item.location.lon]
       } else {
-        return {
-          zoom: 10,
-          center: [51.0571904, 13.7154319]
-        }
+        return [51.0571904, 13.7154319]
       }
     }
   },
@@ -462,16 +449,14 @@ export default {
         }).finally(() => {
           this.geodataLoading = false
         })
-      }, 500)
+      }, 200)
     }
   },
 
   components: {
     DatePicker,
-    VMap: Vue2Leaflet.Map,
-    VTilelayer: Vue2Leaflet.TileLayer,
-    VMarker: Vue2Leaflet.Marker,
-    Spinner
+    Spinner,
+    LocationMap: Map
   }
 }
 </script>
@@ -517,10 +502,5 @@ span.validation-hint {
 
 select + span.validation-error, .datePicker + span.validation-error {
   margin-top: .4em;
-}
-
-.map {
-  margin-top: 1em;
-  height: 300px;
 }
 </style>

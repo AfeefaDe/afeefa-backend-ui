@@ -66,13 +66,13 @@
             <span class="entryDetail__meta">{{ $t('entries.placename') }}:</span>
             <span>{{ entry.location.placename }}</span>
           </li>
-          <li v-if="entry.location.city">
-            <span class="entryDetail__meta">{{ $t('entries.city') }}:</span>
-            <span>{{ entry.location.zip }} {{ entry.location.city }}</span>
-          </li>
           <li v-if="entry.location.street">
             <span class="entryDetail__meta">{{ $t('entries.street') }}:</span>
             <span>{{ entry.location.street }}</span>
+          </li>
+          <li v-if="entry.location.zip || entry.location.city">
+            <span class="entryDetail__meta">{{ $t('entries.city') }}:</span>
+            <span>{{ entry.location.zip }} {{ entry.location.city }}</span>
           </li>
           <li v-if="!entry.location.isEmpty()">
             <location-map :map-center="mapCenter" :location="entry.location"></location-map>
