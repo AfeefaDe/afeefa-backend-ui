@@ -2,7 +2,7 @@
   <entry-list
     :items="items"
     :sort-function="sortByUpdatedAt"
-    :options="{pagination: true, updated_at: true}"
+    :options="{pagination: true, updated_at: true, annotations: true}"
     :messages="messages">
   </entry-list>
 </template>
