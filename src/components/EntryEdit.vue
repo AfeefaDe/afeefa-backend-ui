@@ -17,7 +17,7 @@
           <form @submit.prevent="save" class="entryForm" novalidate>
 
             <div class="inputField__spacing input-field">
-              <label for="title" :class="{active: item.title}">Titel</label>
+              <label for="title" :class="{active: item.title}">Titel <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span></label>
               <input v-model="item.title" id="title" type="text"
                 data-vv-name="title" v-validate="'required'"
                 :class="{'validation-error': errors.has('title') }"/>
@@ -25,7 +25,7 @@
             </div>
 
             <div class="inputField__spacing input-field">
-              <label for="description" :class="{active: item.description}">Beschreibung</span></label>
+              <label for="description" :class="{active: item.description}">Beschreibung <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span></label>
               <textarea v-model="item.description" id="description"
                 data-vv-name="description" v-validate="'required'"
                 :class="['materialize-textarea', {'validation-error': errors.has('description') }]"></textarea>
@@ -69,7 +69,7 @@
 
             <h2>Kategorien</h2>
             <div class="inputField__spacing">
-              <label for="category">Kategorie (Pflichtfeld)</label>
+              <label for="category">Kategorie <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span></label>
               <select v-model="item.category" id="category" @change="categoryChanged"
                 data-vv-name="category" data-vv-validate-on="change" v-validate="'required'"
                 :class="['browser-default', 'categoriesForm', {'validation-error': errors.has('category') }]">

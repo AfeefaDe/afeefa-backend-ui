@@ -65,5 +65,8 @@ export default {
   buttons: {
     activate: '*',
     deactivate: '*'
+  },
+  infos: {
+    mandatory_field: '*'
   }
 }
