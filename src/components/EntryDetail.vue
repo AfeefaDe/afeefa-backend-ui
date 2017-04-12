@@ -75,12 +75,7 @@
             <span>{{ entry.location.street }}</span>
           </li>
           <li v-if="!entry.location.isEmpty()">
-            <div class="map">
-              <v-map :zoom="mapCenter.zoom" :center="mapCenter.center">
-                <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
-                <v-marker :lat-lng="{lat:entry.location.lat, lng:entry.location.lon}" v-if="entry.location.lat"></v-marker>
-              </v-map>
-            </div>
+            <location-map :map-center="mapCenter" :location="entry.location"></location-map>
           </li>
           <li v-else class="entryDetail__error">
             {{ $t('errors.noLocationPresent') }}
@@ -160,7 +155,7 @@
 
 <script>
 import EntryListItems from '@/components/EntryListItems'
-import Vue2Leaflet from 'vue2-leaflet'
+import Map from '@/components/Map'
 
 export default {
   props: ['entry', 'routeName', 'Resource', 'messages', 'options'],
@@ -217,9 +212,7 @@ export default {
 
   components: {
     EntryListItems,
-    VMap: Vue2Leaflet.Map,
-    VTilelayer: Vue2Leaflet.TileLayer,
-    VMarker: Vue2Leaflet.Marker
+    LocationMap: Map
   }
 }
 </script>
@@ -227,10 +220,6 @@ export default {
 
 
 <style lang="scss" scoped>
-.map {
-  margin-top: 1em;
-  height: 300px;
-}
 .image-container-style {
   background-color: #eee;
 }
