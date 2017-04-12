@@ -184,7 +184,7 @@ describe('Components - Pagination', () => {
 
   it('hides next button on last page', () => {
     const $wrapper = mount(Pagination, {i18n, propsData: {numItems: 30, page: 1, pageSize: 15}})
-    let $nextButton = $wrapper.find('.list-pagination--arrowButton i')[0]
+    let $nextButton = $wrapper.find('.list-pagination--arrowButton.enabled i')[0]
 
     expect($nextButton.text()).to.equal('navigate_next')
 
@@ -196,12 +196,12 @@ describe('Components - Pagination', () => {
 
   it('hides previous button on first page', () => {
     const $wrapper = mount(Pagination, {i18n, propsData: {numItems: 60, page: 2, pageSize: 15}})
-    let numberOfButtons = $wrapper.find('.list-pagination--arrowButton i').length
+    let numberOfButtons = $wrapper.find('.list-pagination--arrowButton.enabled').length
     expect(numberOfButtons).to.equal(2)
 
     setProperty($wrapper, 'page', 1)
     updateNow($wrapper)
-    numberOfButtons = $wrapper.find('.list-pagination--arrowButton i').length
+    numberOfButtons = $wrapper.find('.list-pagination--arrowButton.enabled').length
     expect(numberOfButtons).to.equal(1)
   })
 

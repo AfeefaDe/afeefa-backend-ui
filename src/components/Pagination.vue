@@ -18,7 +18,8 @@
     </div>
 
     <div class="list-pagination__navigation" v-if="currentNumPages > 1">
-      <a v-if="currentPage > 1"
+      <a
+          :class="[(currentPage > 1 ? 'enabled' : 'disabled')]"
           class="list-pagination--arrowButton"
           @click.prevent="gotoPrev()">
         <i class="material-icons">navigate_before</i>
@@ -30,7 +31,8 @@
           {{ pageNumber }}
         </a>
       </div>
-      <a v-if="currentPage < currentNumPages"
+      <a
+          :class="[(currentPage < currentNumPages ? 'enabled' : 'disabled')]"
           class="list-pagination--arrowButton"
           @click.prevent="gotoNext()">
         <i class="material-icons">navigate_next</i>
@@ -88,6 +90,14 @@
       height: 24px;
       box-sizing: initial;
     }
+    &--arrowButton.disabled {
+      cursor: initial;
+      color: $gray20;
+    }
+    &--arrowButton.disabled:hover {
+      background: transparent;
+    }
+
   }
 </style>
 
@@ -158,11 +168,15 @@ export default {
     },
 
     gotoNext () {
-      this.goto(this.currentPage + 1)
+      if (this.currentPage < this.currentNumPages) {
+        this.goto(this.currentPage + 1)
+      }
     },
 
     gotoPrev () {
-      this.goto(this.currentPage - 1)
+      if (this.currentPage > 1) {
+        this.goto(this.currentPage - 1)
+      }
     },
 
     goto (page) {
