@@ -27,13 +27,28 @@ export default {
   },
 
   methods: {
+    currentDistance (map) {
+      const earthRadius = 6371
+      const currentCenter = map.getCenter()
+      const lat = currentCenter.lat - parseFloat(this.mapCenter[0])
+      const lng = currentCenter.lng - parseFloat(this.mapCenter[1])
+      var disLat = (lat * Math.PI * earthRadius) / 180
+      var disLng = (lng * Math.PI * earthRadius) / 180
+      var ret = Math.pow(disLat, 2) + Math.pow(disLng, 2)
+      return Math.sqrt(ret) * 1000
+    },
+
     resetCenter () {
-      this.center = this.mapCenter.center.concat()
+      this.center = this.mapCenter.concat()
       if (this.$refs.map) {
         const map = this.$refs.map.mapObject
-        this.zoom = map.getZoom() === 20 ? this.mapCenter.zoom : 20
+        const currentDistance = this.currentDistance(map)
+        // nearer than 50 meters, switch zoom
+        if (currentDistance < 50) {
+          this.zoom = map.getZoom() >= 18 ? 11 : 18
+        }
       } else {
-        this.zoom = 20
+        this.zoom = 18
       }
     },
 

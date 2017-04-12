@@ -197,15 +197,9 @@ export default {
   computed: {
     mapCenter () {
       if (this.entry.location && this.entry.location.lat) {
-        return {
-          zoom: 11,
-          center: [this.entry.location.lat, this.entry.location.lon]
-        }
+        return [this.entry.location.lat, this.entry.location.lon]
       } else {
-        return {
-          zoom: 10,
-          center: [51.0571904, 13.7154319]
-        }
+        return [51.0571904, 13.7154319]
       }
     }
   },
