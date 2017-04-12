@@ -9,14 +9,14 @@ avoriaz.use(VueI18n)
 i18n.locale = 'de'
 
 function expectValues ($wrapper, {numItems, numPages, currentPage}) {
-  const $info = $wrapper.find('.list-pagination__info')[0]
+  const $info = $wrapper.find('.list-pagination__infoText')[0]
   expect($info.text().trim().replace(/\s+/g, ' ')).to.equal(
     `${numItems} Einträge (Seite ${currentPage} von ${numPages})`
   )
 
   const $navigation = $wrapper.find('.list-pagination__navigation')[0]
   if (numPages > 1) {
-    const $buttons = $navigation.find('* > a')
+    const $buttons = $navigation.find('* > .list-pagination__navigationPages > a')
     expect($buttons.length).to.equal(numPages)
     for (let i = 0; i < numPages; i++) {
       if (i === currentPage - 1) {
@@ -29,7 +29,7 @@ function expectValues ($wrapper, {numItems, numPages, currentPage}) {
     expect($navigation).to.be.undefined
   }
 
-  const $select = $wrapper.find('.list-pagination__pagesize')[0]
+  const $select = $wrapper.find('.list-pagination__pagesizeSelect')[0]
   if (numItems > 15) {
     expect($select.find('option').length).to.equal(3)
   } else {
@@ -87,7 +87,7 @@ describe('Components - Pagination', () => {
     const $wrapper = mount(Pagination, {i18n, propsData: {numItems: 97, page: 4, pageSize: 15}})
     expectValues($wrapper, {numItems: 97, currentPage: 4, numPages: 7})
 
-    const $select = $wrapper.find('.list-pagination__pagesize')[0]
+    const $select = $wrapper.find('.list-pagination__pagesizeSelect')[0]
 
     $select.element.value = '1000'
     $select.simulate('change')
@@ -108,15 +108,15 @@ describe('Components - Pagination', () => {
   it('sets correct page', () => {
     const $wrapper = mount(Pagination, {i18n, propsData: {numItems: 97, page: 4, pageSize: 15}})
     const $navigation = $wrapper.find('.list-pagination__navigation')[0]
-    $navigation.find('* > a')[2].simulate('click')
+    $navigation.find('* > .list-pagination__navigationPages > a')[2].simulate('click')
     updateNow($wrapper)
     expectValues($wrapper, {numItems: 97, currentPage: 3, numPages: 7})
 
-    $navigation.find('* > a')[1].simulate('click')
+    $navigation.find('* > .list-pagination__navigationPages > a')[1].simulate('click')
     updateNow($wrapper)
     expectValues($wrapper, {numItems: 97, currentPage: 2, numPages: 7})
 
-    $navigation.find('* > a')[0].simulate('click')
+    $navigation.find('* > .list-pagination__navigationPages > a')[0].simulate('click')
     updateNow($wrapper)
     expectValues($wrapper, {numItems: 97, currentPage: 1, numPages: 7})
   })

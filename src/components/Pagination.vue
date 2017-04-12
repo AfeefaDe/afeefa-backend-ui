@@ -171,7 +171,8 @@ export default {
 
     pageSizeChanged () {
       this.currentPage = 1
-      this.$emit('changed', {page: 1, pageSize: this.currentPageSize})
+      let newPageSize = parseInt(this.currentPageSize)
+      this.$emit('changed', {page: 1, pageSize: newPageSize})
     }
   }
 }

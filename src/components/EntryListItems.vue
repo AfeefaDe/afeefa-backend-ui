@@ -108,8 +108,7 @@ export default {
   methods: {
     setPage (config) {
       this.currentPage = config.page
-      // convert to integer to allow correct slicing of `items`
-      this.currentPageSize = parseInt(config.pageSize)
+      this.currentPageSize = config.pageSize
     }
   },
 
