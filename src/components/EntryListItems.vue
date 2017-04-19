@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div v-if="!items">
       <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Liste
     </div>
@@ -91,6 +90,15 @@ export default {
     }
   },
 
+  created () {
+    if (this.$route.query.page) {
+      this.currentPage = this.$route.query.page
+    }
+    if (this.$route.query.pageSize) {
+      this.currentPageSize = this.$route.query.pageSize
+    }
+  },
+
   computed: {
     itemsSorted () {
       let items = this.sortFunction ? this.sortFunction(this.items) : this.items
@@ -109,6 +117,11 @@ export default {
     setPage (config) {
       this.currentPage = config.page
       this.currentPageSize = config.pageSize
+
+      const query = {...this.$route.query}
+      query.page = config.page === 1 ? undefined : config.page
+      query.pageSize = config.pageSize === 15 ? undefined : config.pageSize
+      this.$router.push({query: query})
     }
   },
 

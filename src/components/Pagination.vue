@@ -125,21 +125,21 @@ export default {
   },
 
   watch: {
-    numItems (val, old) {
+    numItems (val) {
       if (val === this.currentNumItems) {
         return
       }
       this.initProps()
     },
 
-    page (val, old) {
+    page (val) {
       if (val === this.currentPage) {
         return
       }
       this.initProps()
     },
 
-    pageSize (val, old) {
+    pageSize (val) {
       if (val === this.currentPageSize) {
         return
       }
