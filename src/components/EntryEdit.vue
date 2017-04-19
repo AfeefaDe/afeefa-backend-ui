@@ -224,10 +224,9 @@ export default {
       categories: [],
       annotations: [],
       orgas: [],
+
       imageError: false,
-
       selectedAnnotation: null,
-
       saved: false,
 
       geodataLoading: false,

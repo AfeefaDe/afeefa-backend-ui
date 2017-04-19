@@ -60,6 +60,14 @@
           </div>
         </div>
 
+        <div class="entryDetail" v-if="has.events">
+          <h2>Events der Orga</h2>
+          <entry-list-items :items="entry.events" v-if="entry.events.length"></entry-list-items>
+          <div v-else>
+            Keine Events zu dieser Orga vorhanden.
+          </div>
+        </div>
+
         <ul class="entryDetail" v-if="entry.location">
           <h2>{{ $t('headlines.location') }}</h2>
           <li v-if="entry.location.placename">
@@ -167,7 +175,8 @@ export default {
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
-        orga: options.hasOrga
+        orga: options.hasOrga,
+        events: options.hasEvents
       }
     }
   },

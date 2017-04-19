@@ -6,6 +6,7 @@ export default class Orga extends Entry {
 
     this.type = 'orgas'
     this.sub_orgas = []
+    this.events = []
     this._relationIds.sub_orgas = []
   }
 
