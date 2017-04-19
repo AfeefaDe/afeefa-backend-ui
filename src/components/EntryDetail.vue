@@ -62,10 +62,15 @@
 
         <div class="entryDetail" v-if="has.events">
           <h2>Events der Orga</h2>
-          <entry-list-items :items="entry.events" v-if="entry.events.length"></entry-list-items>
+          <entry-list-items
+            :items="events"
+            v-if="events.length"
+            :options="{date_start: true}">
+          </entry-list-items>
           <div v-else>
             Keine Events zu dieser Orga vorhanden.
           </div>
+          <button class="btn">Vergangene Events anzeigen</button>
         </div>
 
         <ul class="entryDetail" v-if="entry.location">
@@ -165,6 +170,7 @@
 import EntryListItems from '@/components/EntryListItems'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
+import Events from '@/resources/Events'
 
 export default {
   props: ['entry', 'routeName', 'Resource', 'messages', 'options'],
@@ -172,11 +178,22 @@ export default {
   data () {
     const options = this.options || {}
     return {
+      events: [],
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
         orga: options.hasOrga,
         events: options.hasEvents
+      }
+    }
+  },
+
+  watch: {
+    entry () {
+      if (this.entry && this.has.events) {
+        Events.getAllForOrga(this.entry.id).then(events => {
+          this.events = events
+        })
       }
     }
   },
