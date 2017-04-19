@@ -11,7 +11,12 @@
       </div>
 
       <div v-if="entry.media_url" class="image-container-style">
-        <div class="image-container" :style="{ 'background-image': 'url(' + entry.media_url + ')' }"> </div>
+        <div v-if="mediaImageLoaded">
+          <div class="image-container" :style="{ 'background-image': 'url(' + entry.media_url + ')' }"> </div>
+        </div>
+        <div v-else-if="mediaImageError">
+          Error laden Bild: {{ entry.media_url }}
+        </div>
       </div>
 
       <div>
@@ -163,10 +168,27 @@ export default {
   data () {
     const options = this.options || {}
     return {
+      mediaImageLoaded: false,
+      mediaImageError: false,
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
         orga: options.hasOrga
+      }
+    }
+  },
+
+  watch: {
+    entry (entry) {
+      if (entry && entry.media_url) {
+        const img = new Image()
+        img.src = entry.media_url
+        img.onload = () => {
+          this.mediaImageLoaded = true
+        }
+        img.onerror = () => {
+          this.mediaImageError = true
+        }
       }
     }
   },
