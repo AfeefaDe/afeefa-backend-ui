@@ -1,10 +1,10 @@
 <template>
 <div class="row">
-
   <div class="col s12 m12">
     <div class="mainCard" v-if="entry">
       <div class="mainCard__header mainCard__headerLight">
-        <h2 class="mainCard__headerTitle">{{ entry.title }}</h2>
+        <a href="" @click.prevent="goBack"><i class="material-icons go-back">chevron_left</i></a>
+        <h2 class="mainCard__headerTitle">{{ entry.title || 'Kein Titel' }}</h2>
         <router-link :to="{name: routeName + '.edit', params: {id: entry.id}}" class="mainCard__headerAction">
           <i class="material-icons">mode_edit</i>
         </router-link>
@@ -192,6 +192,10 @@ export default {
           })
         }
       })
+    },
+
+    goBack () {
+      this.$router.go(-1)
     }
   },
 
@@ -212,3 +216,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.go-back {
+  color: #039be5;
+  margin-left: -6px;
+  font-weight: bold;
+  width: 28px;
+}
+</style>

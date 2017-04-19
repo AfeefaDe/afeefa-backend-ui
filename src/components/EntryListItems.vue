@@ -22,7 +22,7 @@
 
         <div class="entryList__content">
           <router-link :to="{name: item.type + '.show', params: {id: item.id}}" class="entryList__nav">
-            <h4 class="title">{{item.title}}</h4>
+            <h4 class="title">{{ item.title || 'Kein Titel' }}</h4>
             <span class="icon"><i class="material-icons">navigate_next</i></span>
           </router-link>
 
