@@ -1,5 +1,5 @@
 <template>
-  <div v-if="imageUrl" class="image-container-style">
+  <div v-if="imageUrl" :class="[{'image-container-style': mediaImageLoaded}, {'loading-error': mediaImageError}]">
     <div v-if="mediaImageLoaded">
       <div class="image-container" :style="{ 'background-image': 'url(' + imageUrl + ')' }"> </div>
     </div>
@@ -31,10 +31,12 @@ export default {
         img.onload = () => {
           this.mediaImageLoaded = true
           this.mediaImageError = false
+          this.$emit('state', {mediaImageError: this.mediaImageError})
         }
         img.onerror = () => {
           this.mediaImageError = true
           this.mediaImageLoaded = false
+          this.$emit('state', {mediaImageError: this.mediaImageError})
         }
       }
     }
@@ -57,5 +59,8 @@ export default {
   background-position: center left;
   background-size: contain;
   height: 9rem;
+}
+.loading-error {
+  background-color: #ffeeee;
 }
 </style>

@@ -13,6 +13,11 @@
           </div>
         </div>
 
+        <image-container v-if="item" v-show="!imageError"
+          :image-url="item.media_url"
+          @state="updateImageContainerState">
+        </image-container>
+
         <div v-if="item">
           <form @submit.prevent="save" class="entryForm" novalidate>
 
@@ -25,19 +30,18 @@
             </div>
 
             <div class="inputField__spacing input-field">
+              <label for="url" :class="{active: item.media_url}"> Bildadresse </label>
+              <input id="url" v-model="item.media_url"
+              :class="{'validation-error': imageError}"/>
+              <span v-if="imageError" class="validation-error">Fehlerhafte Adresse</span>
+            </div>
+
+            <div class="inputField__spacing input-field">
               <label for="description" :class="{active: item.description}">Beschreibung <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span></label>
               <textarea v-model="item.description" id="description"
                 data-vv-name="description" v-validate="'required'"
                 :class="['materialize-textarea', {'validation-error': errors.has('description') }]"></textarea>
               <span v-show="errors.has('description')" class="validation-error">{{ errors.first('description') }}</span>
-            </div>
-
-            <div class="inputField__spacing input-field">
-              <label for="url" :class="{active: item.media_url}"> Bildadresse </label>
-              <input id="url" v-model="item.media_url"/>
-              <image-container
-                :image-url="item.media_url">
-              </image-container>
             </div>
 
             <div class="inputField__spacing" v-if="has.orga">
@@ -220,6 +224,7 @@ export default {
       categories: [],
       annotations: [],
       orgas: [],
+      imageError: false,
 
       selectedAnnotation: null,
 
@@ -338,6 +343,10 @@ export default {
       this.item.date_end = dateEnd
       this.item.has_time_start = hasTimeStart
       this.item.has_time_end = hasTimeEnd
+    },
+
+    updateImageContainerState ({mediaImageError}) {
+      this.imageError = mediaImageError
     },
 
     save () {
@@ -473,7 +482,7 @@ export default {
 
 
 <style lang="scss" scoped>
-select.validation-error, textarea.validation-error, input.validation-error {
+select.validation-error, textarea.validation-error, input.validation-error, div.validation-error {
   margin-top: 2px;
   background-color: #ffeeee;
   border-bottom-color: red;
