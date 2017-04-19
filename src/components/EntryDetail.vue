@@ -147,13 +147,13 @@
             Keine Events zu dieser Orga vorhanden.
           </div>
 
-          <form v-if="events.length">
+          <form>
             <fieldset>
-              <input type="radio" id="up" v-model="filterOrgaEventsBy" value="upcoming">
+              <input type="radio" id="up" v-model="filterOrgaEventsBy" value="upcoming" v-on:change="updateEventFilter">
               <label for="up"> Kommende Veranstaltungen</label><br>
-              <input type="radio" id="cu" v-model="filterOrgaEventsBy" value="current">
-              <label for="cu"> Aktuelle Veranstaltungen</label><br>
-              <input type="radio" id="pa" v-model="filterOrgaEventsBy" value="past">
+              <input type="radio" id="ru" v-model="filterOrgaEventsBy" value="running" v-on:change="updateEventFilter">
+              <label for="ru"> Aktuelle Veranstaltungen</label><br>
+              <input type="radio" id="pa" v-model="filterOrgaEventsBy" value="past" v-on:change="updateEventFilter">
               <label for="pa"> Vergangene Veranstaltungen</label>
             </fieldset>
           </form>
@@ -213,11 +213,7 @@ export default {
 
   watch: {
     entry () {
-      if (this.entry && this.has.events) {
-        Events.getAllForOrga(this.entry.id).then(events => {
-          this.events = events
-        })
-      }
+      this.updateEventFilter()
     }
   },
 
@@ -241,6 +237,14 @@ export default {
           })
         }
       })
+    },
+
+    updateEventFilter () {
+      if (this.entry && this.has.events) {
+        Events.getAllForOrga(this.entry.id, this.filterOrgaEventsBy).then(events => {
+          this.events = events
+        })
+      }
     },
 
     goBack () {
