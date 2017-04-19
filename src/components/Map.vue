@@ -58,9 +58,13 @@ export default {
         if (this.$refs.map) {
           const map = this.$refs.map.mapObject
           const currentDistance = this.currentDistance(map)
-          // nearer than 50 meters, switch zoom
-          if (currentDistance < 50) {
-            this.zoom = map.getZoom() >= 18 ? 11 : 18
+          // zoomed in and nearer than 50 meters -> zoom out
+          if (map.getZoom() >= 18 && currentDistance < 50) {
+            this.zoom = 11
+          }
+          // zoomed out and nearer than 1000 meters -> zoom in
+          if (map.getZoom() < 18 && currentDistance < 1000) {
+            this.zoom = 18
           }
         } else {
           this.zoom = 18
