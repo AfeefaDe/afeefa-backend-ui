@@ -60,19 +60,6 @@
           </div>
         </div>
 
-        <div class="entryDetail" v-if="has.events">
-          <h2>Events der Orga</h2>
-          <entry-list-items
-            :items="events"
-            v-if="events.length"
-            :options="{date_start: true}">
-          </entry-list-items>
-          <div v-else>
-            Keine Events zu dieser Orga vorhanden.
-          </div>
-          <button class="btn">Vergangene Events anzeigen</button>
-        </div>
-
         <ul class="entryDetail" v-if="entry.location">
           <h2>{{ $t('headlines.location') }}</h2>
           <li v-if="entry.location.placename">
@@ -149,6 +136,29 @@
           </div>
         </div>
 
+        <div class="entryDetail" v-if="has.events">
+          <h2>Events der Orga</h2>
+          <entry-list-items
+            :items="events"
+            v-if="events.length"
+            :options="{date_start: true}">
+          </entry-list-items>
+          <div v-else>
+            Keine Events zu dieser Orga vorhanden.
+          </div>
+
+          <form v-if="events.length">
+            <fieldset>
+              <input type="radio" id="up" v-model="filterOrgaEventsBy" value="upcoming">
+              <label for="up"> Kommende Veranstaltungen</label><br>
+              <input type="radio" id="cu" v-model="filterOrgaEventsBy" value="current">
+              <label for="cu"> Aktuelle Veranstaltungen</label><br>
+              <input type="radio" id="pa" v-model="filterOrgaEventsBy" value="past">
+              <label for="pa"> Vergangene Veranstaltungen</label>
+            </fieldset>
+          </form>
+        </div>
+
         <div class="entryDetail" v-if="has.parentOrga">
           <h2>{{ $t('headlines.parentOrga') }}</h2>
           <entry-list-items :items="[entry.parent_orga]" v-if="entry.parent_orga"></entry-list-items>
@@ -191,6 +201,7 @@ export default {
     const options = this.options || {}
     return {
       events: [],
+      filterOrgaEventsBy: 'upcoming',
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
