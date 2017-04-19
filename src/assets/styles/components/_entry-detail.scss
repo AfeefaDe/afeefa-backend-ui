@@ -27,6 +27,9 @@
     /*@todo: better solution: #138*/
     text-transform: capitalize;
   }
+  &__meta:after {
+    content: ':';
+  }
   &__inlineInput {
     flex-grow: 2;
     width: auto;

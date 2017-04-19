@@ -21,33 +21,33 @@
             <span class="multiLineProperty__content">{{ entry.description }}</span>
           </li>
           <li>
-            <span class="entryDetail__meta">{{ $t('entries.created_at') }}:</span>
+            <span class="entryDetail__meta">{{ $t('entries.created_at') }}</span>
             <span>{{ entry.created_at | formatDateAbsolute }} ({{ entry.created_at | formatDateRelative }}) </span>
           </li>
           <li>
-            <span class="entryDetail__meta">{{ $t('entries.updated_at') }}:</span>
+            <span class="entryDetail__meta">{{ $t('entries.updated_at') }}</span>
             <span>{{ entry.updated_at | formatDateAbsolute }} ({{ entry.updated_at | formatDateRelative }}) </span>
           </li>
           <li>
-            <span class="entryDetail__meta">{{ $t('entries.state_changed_at') }}:</span>
+            <span class="entryDetail__meta">{{ $t('entries.state_changed_at') }}</span>
             <span>{{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }}) </span>
           </li>
           <li>
-            <span class="entryDetail__meta">{{ $t('entries.category') }}:</span>
+            <span class="entryDetail__meta">{{ $t('entries.category') }}</span>
             <span>{{ entry.category ? entry.category.title : 'Keine Kategorie angegeben' }}</span>
           </li>
           <li>
-            <span class="entryDetail__meta">{{ $t('entries.sub_category') }}:</span>
+            <span class="entryDetail__meta">{{ $t('entries.sub_category') }}</span>
             <span>{{ entry.sub_category ? entry.sub_category.title : 'Keine Unterkategorie angegeben' }}</span>
           </li>
         </ul>
         <ul class="entryDetail" v-if="has.date">
           <li>
-            <span class="entryDetail__meta"> {{ $t('entries.date_start') }}:</span>
+            <span class="entryDetail__meta"> {{ $t('entries.date_start') }}</span>
             <span> {{ entry.date_start | formatDateAbsolute }} ({{entry.date_start | formatDateRelative }}) </span>
           </li>
           <li>
-            <span class="entryDetail__meta"> {{ $t('entries.date_end') }}: </span>
+            <span class="entryDetail__meta"> {{ $t('entries.date_end') }}</span>
             <span> {{ entry.date_end | formatDateAbsolute }} ({{entry.date_end | formatDateRelative }}) </span>
           </li>
         </ul>
@@ -63,15 +63,15 @@
         <ul class="entryDetail" v-if="entry.location">
           <h2>{{ $t('headlines.location') }}</h2>
           <li v-if="entry.location.placename">
-            <span class="entryDetail__meta">{{ $t('entries.placename') }}:</span>
+            <span class="entryDetail__meta">{{ $t('entries.placename') }}</span>
             <span>{{ entry.location.placename }}</span>
           </li>
           <li v-if="entry.location.street">
-            <span class="entryDetail__meta">{{ $t('entries.street') }}:</span>
+            <span class="entryDetail__meta">{{ $t('entries.street') }}</span>
             <span>{{ entry.location.street }}</span>
           </li>
           <li v-if="entry.location.zip || entry.location.city">
-            <span class="entryDetail__meta">{{ $t('entries.city') }}:</span>
+            <span class="entryDetail__meta">{{ $t('entries.city') }}</span>
             <span>{{ entry.location.zip }} {{ entry.location.city }}</span>
           </li>
           <li v-if="!entry.location.isEmpty()">
@@ -85,22 +85,22 @@
         <ul class="entryDetail" v-if="entry.contact">
           <h2>{{ $t('headlines.contact') }}</h2>
           <li v-if="entry.contact.person">
-            <span class="entryDetail__meta">{{ $t('entries.person') }}:</span>
+            <span class="entryDetail__meta">{{ $t('entries.person') }}</span>
             <span>{{ entry.contact.person }}</span>
           </li>
           <li v-if="entry.contact.mail">
-            <span class="entryDetail__meta">{{ $t('entries.mail') }}:</span>
+            <span class="entryDetail__meta">{{ $t('entries.mail') }}</span>
             <span><a :href="'mailto:' + entry.contact.mail">{{ entry.contact.mail }}</a></span>
           </li>
           <li v-if="entry.contact.phone">
-            <span class="entryDetail__meta">{{ $t('entries.phone') }}:</span>
+            <span class="entryDetail__meta">{{ $t('entries.phone') }}</span>
             <span>{{ entry.contact.phone }}</span>
           </li>
           <li v-if="entry.contact.isEmpty()" class="entryDetail__error">
             {{ $t('errors.noContactPresent') }}
           </li>
           <li v-if="entry.contact.openingHours" class="multiLineProperty">
-            <span class="entryDetail__meta">{{ $t('entries.openingHours') }}:</span>
+            <span class="entryDetail__meta">{{ $t('entries.openingHours') }}</span>
             <span class="multiLineProperty__content">{{ entry.contact.openingHours }}</span>
           </li>
         </ul>

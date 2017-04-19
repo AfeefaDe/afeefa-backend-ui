@@ -108,7 +108,9 @@
               </div>
 
               <div class="inputField__spacing input-field">
-                <label for="openingHours" :class="{active: item.contact.openingHours}">Öffnungszeiten</label>
+                <label for="openingHours" :class="{active: item.contact.openingHours}">
+                  {{ $t('entries.openingHours') }}
+                </label>
                 <textarea v-model="item.contact.openingHours" id="openingHours"
                   class="materialize-textarea"></textarea>
               </div>
