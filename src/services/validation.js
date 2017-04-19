@@ -45,7 +45,7 @@ Validator.extend('date-end-not-start', rule)
 
 rule = {
   getMessage  (field, params, data) {
-    return 'Die eingegebene URL ist nicht gültig. (Ein https:// wird gefordert)'
+    return 'Die eingegebene URL ist nicht gültig. (http:// wird gefordert)'
   },
   validate (value) {
     // from http://stackoverflow.com/a/15855457
