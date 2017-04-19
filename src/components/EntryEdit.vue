@@ -32,6 +32,14 @@
               <span v-show="errors.has('description')" class="validation-error">{{ errors.first('description') }}</span>
             </div>
 
+            <div class="inputField__spacing input-field">
+              <label for="url" :class="{active: item.media_url}"> Bildadresse </label>
+              <input id="url" v-model="item.media_url"/>
+              <image-container
+                :image-url="item.media_url">
+              </image-container>
+            </div>
+
             <div class="inputField__spacing" v-if="has.orga">
               <h2>Veranstalter</h2>
               <label>Veranstalter</label>
@@ -197,7 +205,8 @@ import sortByTitle from '@/helpers/sort-by-title'
 import DatePicker from '@/components/DatePicker'
 import EventBus from '@/services/event-bus'
 import Spinner from '@/components/Spinner'
-import Map from '@/components/Map'
+import LocationMap from '@/components/Map'
+import ImageContainer from '@/components/ImageContainer'
 
 
 export default {
@@ -456,7 +465,8 @@ export default {
   components: {
     DatePicker,
     Spinner,
-    LocationMap: Map
+    LocationMap,
+    ImageContainer
   }
 }
 </script>

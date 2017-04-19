@@ -10,14 +10,9 @@
         </router-link>
       </div>
 
-      <div v-if="entry.media_url" class="image-container-style">
-        <div v-if="mediaImageLoaded">
-          <div class="image-container" :style="{ 'background-image': 'url(' + entry.media_url + ')' }"> </div>
-        </div>
-        <div v-else-if="mediaImageError">
-          Error laden Bild: {{ entry.media_url }}
-        </div>
-      </div>
+      <image-container
+        :image-url="entry.media_url">
+      </image-container>
 
       <div>
         <ul class="entryDetail">
@@ -160,7 +155,8 @@
 
 <script>
 import EntryListItems from '@/components/EntryListItems'
-import Map from '@/components/Map'
+import LocationMap from '@/components/Map'
+import ImageContainer from '@/components/ImageContainer'
 
 export default {
   props: ['entry', 'routeName', 'Resource', 'messages', 'options'],
@@ -168,27 +164,10 @@ export default {
   data () {
     const options = this.options || {}
     return {
-      mediaImageLoaded: false,
-      mediaImageError: false,
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
         orga: options.hasOrga
-      }
-    }
-  },
-
-  watch: {
-    entry (entry) {
-      if (entry && entry.media_url) {
-        const img = new Image()
-        img.src = entry.media_url
-        img.onload = () => {
-          this.mediaImageLoaded = true
-        }
-        img.onerror = () => {
-          this.mediaImageError = true
-        }
       }
     }
   },
@@ -228,21 +207,8 @@ export default {
 
   components: {
     EntryListItems,
-    LocationMap: Map
+    LocationMap,
+    ImageContainer
   }
 }
 </script>
-
-
-
-<style lang="scss" scoped>
-.image-container-style {
-  background-color: #eee;
-}
-.image-container {
-  background-repeat: no-repeat;
-  background-position: center left;
-  background-size: contain;
-  height: 9rem;
-}
-</style>
