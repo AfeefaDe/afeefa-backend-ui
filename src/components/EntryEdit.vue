@@ -177,6 +177,14 @@
               </div>
 
               <location-map :map-center="mapCenter" :location="item.location" :draggable="true" @bibbelDrag="bibbelDrag"></location-map>
+
+              <div class="input-field">
+                <label for="directions" :class="{active: item.location.directions}">
+                  {{ $t('entries.directions') }}
+                </label>
+                <textarea v-model="item.location.directions" id="directions"
+                  class="materialize-textarea"></textarea>
+              </div>
             </div>
 
             <h2>{{ $tc('headlines.annotations', 2) }}</h2>

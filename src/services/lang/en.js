@@ -48,7 +48,8 @@ export default {
     phone: 'Phone number',
     openingHours: 'Opening hours',
     web: 'Webpage',
-    facebook: 'Facebook'
+    facebook: 'Facebook',
+    directions: 'Directions'
   },
   status: {
     load_event: 'Load Event',

@@ -82,7 +82,11 @@
           <li v-if="!entry.location.isEmpty()">
             <location-map :map-center="mapCenter" :location="entry.location"></location-map>
           </li>
-          <li v-else class="entryDetail__error">
+          <li v-if="entry.location.directions" class="multiLineProperty">
+            <span class="entryDetail__meta">{{ $t('entries.directions') }}</span>
+            <span class="multiLineProperty__content">{{ entry.location.directions }}</span>
+          </li>
+          <li v-if="entry.location.isEmpty()" class="entryDetail__error">
             {{ $t('errors.noLocationPresent') }}
           </li>
         </ul>
