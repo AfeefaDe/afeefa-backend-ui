@@ -46,7 +46,9 @@ export default {
     person: 'Contact Person',
     mail: 'Email',
     phone: 'Phone number',
-    openingHours: 'Opening hours'
+    openingHours: 'Opening hours',
+    web: 'Webpage',
+    facebook: 'Facebook'
   },
   status: {
     load_event: 'Load Event',

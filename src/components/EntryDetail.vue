@@ -101,12 +101,20 @@
             <span class="entryDetail__meta">{{ $t('entries.phone') }}</span>
             <span>{{ entry.contact.phone }}</span>
           </li>
-          <li v-if="entry.contact.isEmpty()" class="entryDetail__error">
-            {{ $t('errors.noContactPresent') }}
-          </li>
           <li v-if="entry.contact.openingHours" class="multiLineProperty">
             <span class="entryDetail__meta">{{ $t('entries.openingHours') }}</span>
             <span class="multiLineProperty__content">{{ entry.contact.openingHours }}</span>
+          </li>
+          <li v-if="entry.contact.web">
+            <span class="entryDetail__meta">{{ $t('entries.web') }}</span>
+            <a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a>
+          </li>
+          <li v-if="entry.contact.facebook">
+            <span class="entryDetail__meta">{{ $t('entries.facebook') }}</span>
+            <a :href="entry.contact.facebook" target="_blank">{{ entry.contact.facebook }}</a>
+          </li>
+          <li v-if="entry.contact.isEmpty()" class="entryDetail__error">
+            {{ $t('errors.noContactPresent') }}
           </li>
         </ul>
 

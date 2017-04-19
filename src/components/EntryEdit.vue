@@ -115,6 +115,29 @@
                   class="materialize-textarea"></textarea>
               </div>
 
+              <div class="input-field">
+                <label for="web" :class="{active: item.contact.web}">{{ $t('entries.web') }}</label>
+                <input id="web"
+                      type="text"
+                      v-model="item.contact.web"
+                      data-vv-name="web"
+                      data-vv-validate-on="blur"
+                      v-validate="'url'"
+                      :class="{'validation-error': errors.has('web') }"/>
+                <span v-show="errors.has('web')" class="validation-error">{{ errors.first('web') }}</span>
+              </div>
+
+              <div class="input-field">
+                <label for="facebook" :class="{active: item.contact.facebook}">{{ $t('entries.facebook') }}</label>
+                <input id="facebook"
+                      type="text"
+                      v-model="item.contact.facebook"
+                      data-vv-name="facebook"
+                      data-vv-validate-on="blur"
+                      v-validate="'url'"
+                      :class="{'validation-error': errors.has('facebook') }"/>
+                </div>
+                <span v-show="errors.has('facebook')" class="validation-error">{{ errors.first('facebook') }}</span>
             </div>
 
             <h2>{{ $t('headlines.location') }}</h2>

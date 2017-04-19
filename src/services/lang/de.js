@@ -46,7 +46,9 @@ export default {
     person: 'Ansprechpartner*in',
     mail: 'Email',
     phone: 'Telefonnummer',
-    openingHours: 'Öffnungszeiten'
+    openingHours: 'Öffnungszeiten',
+    web: 'Homepage',
+    facebook: 'Facebook'
   },
   status: {
     load_event: 'Lade Event',

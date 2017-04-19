@@ -46,7 +46,9 @@ export default {
     person: '*',
     mail: '*',
     phone: '*',
-    openingHours: '*'
+    openingHours: '*',
+    web: '*',
+    facebook: '*'
   },
   status: {
     load_event: '*',
