@@ -15,7 +15,11 @@
 /libpeerconnection.log
 npm-debug.log
 testem.log
+test/unit/coverage/*
 
 # sass-cache
 app/styles/.sass-cache/*
 ember-serve.bat
+
+# project
+local.js

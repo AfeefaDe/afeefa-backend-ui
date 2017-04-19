@@ -1,0 +1,103 @@
+body {
+	margin: 0;
+	background-color: $white;
+	color: $black;
+}
+
+* {
+  box-sizing: border-box;
+}
+.hideDesktop {
+  display: inherit;
+  @media screen and (min-width: $break-medium) {
+    display: none;
+  }
+}
+.hideMobile {
+  display: inherit;
+  @media screen and (max-width: $break-medium) {
+    display: none;
+  }
+}
+
+/*spacing for fixed header*/
+$sidebarWidth: 350px;
+.content {
+  padding-top: $header-height;
+  &__sidebar {
+    display: none;
+  }
+  @media screen and (min-width: $break-medium) {
+    padding-top: 0;
+    &__sidebar {
+      display: inherit;
+      width: $sidebarWidth;
+      height: 100%;
+      position: fixed;
+      left: 0;
+      top: 0;
+      padding: 0 1rem;
+    }
+    &__main {
+      width: 100%;
+      padding-left: $sidebarWidth;
+    }
+  }
+}
+
+
+.cursor {
+  cursor: pointer;
+}
+
+/*overwrite default materialize grid behavior*/
+@media screen and (max-width: $break-small) {
+  .row .col.s12 {
+    padding: 0;
+  }
+}
+
+.mainCard {
+  $height: 24px;
+  background-color: white;
+  margin-top: 2em;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+  h2 {
+    font-size: 1.2em;
+  }
+  @media screen and (max-width: $break-small) {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 1em;
+  }
+  /*top level divs*/
+  > div {
+    padding: 1em;
+  }
+  &__header {
+    background-color: $black_alpha;
+    color: $white;
+    display: flex;
+    align-items: flex-start;
+    a {
+      color: inherit;
+      cursor: pointer;
+    }
+  }
+  &__headerLight {
+    background-color: white;
+    color: $black;
+		h2 {
+			font-size: 1.4em;
+		}
+  }
+  &__headerTitle {
+    flex-grow: 2;
+    line-height: $height;
+    margin: 0;
+  }
+  &__headerAction {
+    color: inherit;
+    max-height: $height;
+  }
+}

@@ -1,0 +1,22 @@
+/* Main scss file */
+
+/* basics */
+@import 'variables';
+@import 'basic';
+@import 'fonts';
+@import 'materialize-custom';
+
+/* components */
+@import 'components/entry-detail';
+@import 'components/entry-list';
+@import 'components/alert';
+@import 'components/dialog';
+@import 'components/states-form';
+@import 'components/annotation-tag';
+@import 'components/entry-form';
+@import 'components/navigation-sidebar';
+@import 'components/navigation-breadcrumb';
+@import 'components/navigation-mobile';
+/* pages */
+@import 'routes/dashboard';
+@import 'routes/loading';
