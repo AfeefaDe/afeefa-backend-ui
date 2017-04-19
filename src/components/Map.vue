@@ -1,11 +1,11 @@
 <template>
   <div :class="['map', {active: mapActive}]" @mousedown="activateMap">
-    <v-map ref="map" :zoom="zoom" :center="center" @l-ready="mapLoad()" @l-blur="mapLeave" @l-dblclick="autoZoom" @l-dragend="dragEnd">
+    <v-map ref="map" :zoom="zoom" :center="center" @l-ready="mapLoad()" @l-blur="mapLeave" @l-dblclick="autoZoom" @l-dragend="mapDragEnd">
       <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
       <v-marker :lat-lng="marker" :draggable="draggable"
-        @l-mousedown="markerDown"
-        @l-dragend="dragEnd"
-        @l-click="markerUp"
+        @l-mousedown="bibbleDown"
+        @l-dragend="bibbleDragEnd"
+        @l-click="bibbleUp"
         v-if="marker"></v-marker>
     </v-map>
   </div>
@@ -24,7 +24,7 @@ export default {
       zoom: null,
       marker: null,
       mapActive: false,
-      isDrag: false
+      isBibbleDrag: false
     }
   },
 
@@ -93,28 +93,32 @@ export default {
       map.doubleClickZoom.disable()
     },
 
-    markerDown () {
-      this.isDrag = true
-      this.activateMap()
-    },
-
-    dragEnd (event) {
-      this.$emit('bibbelDrag', event)
-      this.markerUp()
-    },
-
-    markerUp () {
-      this.isDrag = false
-      const map = this.$refs.map.$el
-      this.activateMap()
-      map.focus()
-    },
-
     mapLeave (event) {
-      if (this.isDrag) {
+      if (this.isBibbleDrag) {
         return
       }
       this.deactivateMap()
+    },
+
+    mapDragEnd (event) {
+      this.bibbleUp()
+    },
+
+    bibbleDown () {
+      this.isBibbleDrag = true
+      this.activateMap()
+    },
+
+    bibbleDragEnd (event) {
+      this.$emit('bibbelDrag', event)
+      this.bibbleUp()
+    },
+
+    bibbleUp () {
+      this.isBibbleDrag = false
+      this.activateMap()
+      const mapDom = this.$refs.map.$el
+      mapDom.focus()
     },
 
     activateMap () {
