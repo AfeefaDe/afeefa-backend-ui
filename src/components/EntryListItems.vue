@@ -91,11 +91,12 @@ export default {
   },
 
   created () {
-    if (this.$route.query.page) {
-      this.currentPage = this.$route.query.page
-    }
-    if (this.$route.query.pageSize) {
-      this.currentPageSize = this.$route.query.pageSize
+    this.initPageProperties()
+  },
+
+  watch: {
+    '$route' () {
+      this.initPageProperties()
     }
   },
 
@@ -114,6 +115,15 @@ export default {
   },
 
   methods: {
+    initPageProperties () {
+      if (this.$route.query.page) {
+        this.currentPage = this.$route.query.page
+      }
+      if (this.$route.query.pageSize) {
+        this.currentPageSize = this.$route.query.pageSize
+      }
+    },
+
     setPage (config) {
       this.currentPage = config.page
       this.currentPageSize = config.pageSize
