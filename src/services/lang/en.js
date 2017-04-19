@@ -45,7 +45,10 @@ export default {
     placename: 'Placename',
     person: 'Contact Person',
     mail: 'Email',
-    phone: 'Phone number'
+    phone: 'Phone number',
+    openingHours: 'Opening hours',
+    web: 'Webpage',
+    facebook: 'Facebook'
   },
   status: {
     load_event: 'Load Event',

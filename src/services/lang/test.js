@@ -45,7 +45,10 @@ export default {
     placename: '*',
     person: '*',
     mail: '*',
-    phone: '*'
+    phone: '*',
+    openingHours: '*',
+    web: '*',
+    facebook: '*'
   },
   status: {
     load_event: '*',
