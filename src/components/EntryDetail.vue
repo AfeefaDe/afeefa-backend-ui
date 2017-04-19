@@ -240,8 +240,49 @@ export default {
 
 
 <style lang="scss" scoped>
+@import "../assets/styles/_variables.scss";
+.entryDetail {
+  margin: 0;
+  padding: 0;
+  h2 {
+    margin-top: 2em;
+    font-size: 1.4em;
+    font-weight: 500;
+  }
+  li {
+    list-style: none;
+    display: block;
+    margin-bottom: 0.6em;
+    align-items: baseline;
+  }
+  li.multiLineProperty {
+    display: flex;
+    .multiLineProperty__content {
+      white-space: pre-wrap;
+    }
+  }
+  li.nowrap {
+    display: block;
+  }
+  &__meta {
+    color: $gray50;
+    margin-right: 0.4em;
+    /*@todo: better solution: #138*/
+    text-transform: capitalize;
+  }
+  &__meta:after {
+    content: ':';
+  }
+  &__inlineInput {
+    flex-grow: 2;
+    width: auto;
+  }
+  &__error {
+    color: $red;
+  }
+}
 .image-container-style {
-  background-color: #eee;
+  background-color: $white;
 }
 .image-container {
   background-repeat: no-repeat;
