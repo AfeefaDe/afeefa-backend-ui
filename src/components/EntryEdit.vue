@@ -283,6 +283,11 @@ export default {
           this.getGeocode(false)
         }
       }
+    },
+    'item.media_url' (url) {
+      if (url === '') {
+        this.imageError = false
+      }
     }
   },
 
