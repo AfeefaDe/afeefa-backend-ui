@@ -12,6 +12,12 @@
     margin-bottom: 0.6em;
     align-items: baseline;
   }
+  li.multiLineProperty {
+    display: flex;
+    .multiLineProperty__content {
+      white-space: pre-wrap;
+    }
+  }
   li.nowrap {
     display: block;
   }

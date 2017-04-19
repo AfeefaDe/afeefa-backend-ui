@@ -9,6 +9,7 @@ export default class Contact extends BaseModel {
     this.person = ''
     this.mail = ''
     this.phone = ''
+    this.openingHours = ''
   }
 
   deserialize (json) {
@@ -16,6 +17,7 @@ export default class Contact extends BaseModel {
     this.person = json.attributes.contact_person || ''
     this.mail = json.attributes.mail || ''
     this.phone = json.attributes.phone || ''
+    this.openingHours = json.attributes.opening_hours || ''
   }
 
   serialize () {
@@ -24,7 +26,8 @@ export default class Contact extends BaseModel {
       attributes: {
         contact_person: this.person,
         mail: this.mail,
-        phone: this.phone
+        phone: this.phone,
+        opening_hours: this.openingHours
       }
     }
     if (this.id) {
@@ -34,6 +37,6 @@ export default class Contact extends BaseModel {
   }
 
   isEmpty () {
-    return !this.person && !this.mail && !this.phone
+    return !this.person && !this.mail && !this.phone && this.openingHours
   }
 }

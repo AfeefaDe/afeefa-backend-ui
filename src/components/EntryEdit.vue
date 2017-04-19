@@ -106,6 +106,13 @@
                 <label for="contactPerson" :class="{active: item.contact.person}">Kontaktperson</label>
                 <input v-model="item.contact.person" id="contactPerson" type="text"/>
               </div>
+
+              <div class="inputField__spacing input-field">
+                <label for="openingHours" :class="{active: item.contact.openingHours}">Öffnungszeiten</label>
+                <textarea v-model="item.contact.openingHours" id="openingHours"
+                  class="materialize-textarea"></textarea>
+              </div>
+
             </div>
 
             <h2>{{ $t('headlines.location') }}</h2>

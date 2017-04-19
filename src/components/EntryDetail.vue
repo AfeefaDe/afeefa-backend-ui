@@ -16,9 +16,9 @@
 
       <div>
         <ul class="entryDetail">
-          <li>
+          <li class="multiLineProperty">
             <span class="entryDetail__meta">{{ $t('entries.description') }}</span>
-            <span>{{ entry.description }}</span>
+            <span class="multiLineProperty__content">{{ entry.description }}</span>
           </li>
           <li>
             <span class="entryDetail__meta">{{ $t('entries.created_at') }}:</span>
@@ -98,6 +98,10 @@
           </li>
           <li v-if="entry.contact.isEmpty()" class="entryDetail__error">
             {{ $t('errors.noContactPresent') }}
+          </li>
+          <li v-if="entry.contact.openingHours" class="multiLineProperty">
+            <span class="entryDetail__meta">{{ $t('entries.openingHours') }}:</span>
+            <span class="multiLineProperty__content">{{ entry.contact.openingHours }}</span>
           </li>
         </ul>
 

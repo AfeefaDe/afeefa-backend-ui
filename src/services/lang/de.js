@@ -45,7 +45,8 @@ export default {
     placename: 'Ortsbezeichnung',
     person: 'Ansprechpartner*in',
     mail: 'Email',
-    phone: 'Telefonnummer'
+    phone: 'Telefonnummer',
+    openingHours: 'Öffnungszeiten'
   },
   status: {
     load_event: 'Lade Event',
