@@ -122,7 +122,7 @@
                       v-model="item.contact.web"
                       data-vv-name="web"
                       data-vv-validate-on="blur"
-                      v-validate="'url'"
+                      v-validate="'url-with-protocol'"
                       :class="{'validation-error': errors.has('web') }"/>
                 <span v-show="errors.has('web')" class="validation-error">{{ errors.first('web') }}</span>
               </div>
@@ -134,7 +134,7 @@
                       v-model="item.contact.facebook"
                       data-vv-name="facebook"
                       data-vv-validate-on="blur"
-                      v-validate="'url'"
+                      v-validate="'url-with-protocol'"
                       :class="{'validation-error': errors.has('facebook') }"/>
                 </div>
                 <span v-show="errors.has('facebook')" class="validation-error">{{ errors.first('facebook') }}</span>
