@@ -30,10 +30,10 @@
             </div>
 
             <div class="inputField__spacing input-field">
-              <label for="url" :class="{active: item.media_url}"> Bildadresse </label>
+              <label for="url" :class="{active: item.media_url}">Bildadresse</label>
               <input id="url" v-model="item.media_url"
-              :class="{'validation-error': imageError}"/>
-              <span v-if="imageError" class="validation-error">Fehlerhafte Adresse</span>
+                :class="{'validation-error': imageError}"/>
+              <span v-if="imageError" class="validation-error">Die Bild-URL ist fehlerhaft.</span>
             </div>
 
             <div class="inputField__spacing input-field">
@@ -386,7 +386,15 @@ export default {
     },
 
     save () {
-      this.$validator.validateAll().then(() => {
+      this.$validator.validateAll().then(result => {
+        // fix for vee-validator which is currently not
+        // able to deal with async validations:
+        // https://github.com/logaretm/vee-validate/issues/356
+        // using an async validator for image url, we always would
+        // land in this block rather than in 'catch'
+        if (this.imageError) {
+          throw new Error()
+        }
         this.Resource.save(this.item).then(entry => {
           if (entry) {
             this.$store.dispatch('messages/showAlert', {
@@ -398,6 +406,14 @@ export default {
         })
       }).catch(() => {
         const errors = this.$validator.getErrors().errors
+
+        // fix for vee-validator async validation bug see above
+        if (this.imageError) {
+          this.errors.add('imageurl', 'Die Bild-URL ist fehlerhaft.')
+        } else {
+          this.errors.remove('imageurl')
+        }
+
         let errorString = '\n\n'
         for (let error of errors) {
           errorString += error.msg + '\n'

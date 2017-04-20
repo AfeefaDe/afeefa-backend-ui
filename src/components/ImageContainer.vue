@@ -4,7 +4,7 @@
       <div class="image-container" :style="{ 'background-image': 'url(' + imageUrl + ')' }"> </div>
     </div>
     <div v-else-if="mediaImageError">
-      Fehler beim laden des Bildes
+      Fehler beim laden des Bildes.
     </div>
   </div>
 </template>
