@@ -258,7 +258,19 @@ export default {
       this.currentDateEnd = dateEnd
       this.checkSameDay()
 
-      this.$emit('input', {dateStart, dateEnd, hasTimeStart: this.hasStartTime, hasTimeEnd: this.hasEndTime})
+      this.$emit('input', this.value)
+    }
+  },
+
+  computed: {
+    // used by vee-validator to validate current date
+    value () {
+      return {
+        dateStart: this.currentDateStart,
+        dateEnd: this.currentDateEnd,
+        hasTimeStart: this.hasStartTime,
+        hasTimeEnd: this.hasEndTime
+      }
     }
   },
 
