@@ -116,12 +116,8 @@ export default {
 
   methods: {
     initPageProperties () {
-      if (this.$route.query.page) {
-        this.currentPage = this.$route.query.page
-      }
-      if (this.$route.query.pageSize) {
-        this.currentPageSize = this.$route.query.pageSize
-      }
+      this.currentPage = this.$route.query.page || 1
+      this.currentPageSize = this.$route.query.pageSize || 15
     },
 
     setPage (config) {
