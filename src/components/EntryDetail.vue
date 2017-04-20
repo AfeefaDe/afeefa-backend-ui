@@ -141,6 +141,7 @@
           <entry-list-items
             :items="events"
             v-if="events.length"
+            :sort-function="sortByDateStart"
             :options="{date_start: true}">
           </entry-list-items>
           <div v-else>
@@ -193,6 +194,7 @@ import EntryListItems from '@/components/EntryListItems'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
 import Events from '@/resources/Events'
+import sortByDateStart from '@/helpers/sort-by-date-start'
 
 export default {
   props: ['entry', 'routeName', 'Resource', 'messages', 'options'],
@@ -202,6 +204,7 @@ export default {
     return {
       events: [],
       filterOrgaEventsBy: 'upcoming',
+      sortByDateStart,
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
