@@ -48,7 +48,8 @@ export default {
     phone: 'Telefonnummer',
     openingHours: 'Öffnungszeiten',
     web: 'Homepage',
-    facebook: 'Facebook'
+    facebook: 'Facebook',
+    directions: 'Anfahrtsweg'
   },
   status: {
     load_event: 'Lade Event',
