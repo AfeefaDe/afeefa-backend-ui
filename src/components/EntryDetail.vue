@@ -138,16 +138,6 @@
 
         <div class="entryDetail" v-if="has.events">
           <h2>Events der Orga</h2>
-          <entry-list-items
-            :items="events"
-            v-if="events.length"
-            :sort-function="sortByDateStart"
-            :options="{date_start: true}">
-          </entry-list-items>
-          <div v-else>
-            Keine Events zu dieser Orga vorhanden.
-          </div>
-
           <form>
             <fieldset>
               <input type="radio" id="up" v-model="filterOrgaEventsBy" value="upcoming" v-on:change="updateEventFilter">
@@ -158,6 +148,15 @@
               <label for="pa"> Vergangene Veranstaltungen</label>
             </fieldset>
           </form>
+          <entry-list-items
+            :items="events"
+            v-if="events.length"
+            :sort-function="sortByDateStart"
+            :options="{date_start: true}">
+          </entry-list-items>
+          <div v-else>
+            Keine Events zu dieser Orga vorhanden.
+          </div>
         </div>
 
         <div class="entryDetail" v-if="has.parentOrga">
