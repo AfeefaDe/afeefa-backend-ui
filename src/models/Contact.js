@@ -43,6 +43,6 @@ export default class Contact extends BaseModel {
   }
 
   isEmpty () {
-    return !this.person && !this.mail && !this.phone && !this.openingHours && !this.web && !this.openingHours
+    return !this.person && !this.mail && !this.phone && !this.openingHours && !this.web && !this.facebook
   }
 }

@@ -328,6 +328,9 @@ export default {
         if (!location.isEmpty()) {
           this.getGeocode(false)
         }
+        Vue.nextTick(() => {
+          autosize(this.$el.querySelector('#directions'))
+        })
       }
     },
     'item.media_url' (url) {
