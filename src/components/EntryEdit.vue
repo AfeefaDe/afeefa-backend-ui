@@ -62,7 +62,7 @@
                 :has-time-end="item.has_time_end"
                 @input="updateDatePickerValues"
                 data-vv-name="date" v-validate="'date-end-not-before-start|date-end-not-start'"
-                :class="['inputField__spacing', {'validation-error': errors.has('date') }]"></textarea>
+                :class="['inputField__spacing', {'validation-error': errors.has('date') }]"
                 >
               </date-picker>
               <span v-show="errors.has('date')" class="validation-error">{{ errors.first('date') }}</span>
@@ -308,6 +308,13 @@ export default {
   },
 
   watch: {
+    'item.contact' (contact) {
+      if (contact) {
+        Vue.nextTick(() => {
+          autosize(this.$el.querySelector('#openingHours'))
+        })
+      }
+    },
     'item.location' (location) {
       if (location) {
         if (!location.isEmpty()) {
