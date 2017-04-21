@@ -150,11 +150,12 @@ export default {
 <style lang="scss" scoped>
 .map {
   margin-top: 1em;
-  padding-bottom: 1em;
+  padding: 1px;
   height: 300px;
 
   &.active {
     border: 1px solid #26a69a;
+    padding: 0;
   }
 }
 </style>
