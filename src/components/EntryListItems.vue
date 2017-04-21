@@ -72,7 +72,7 @@ import Pagination from '@/components/Pagination'
 import Spinner from '@/components/Spinner'
 
 export default {
-  props: ['items', 'limit', 'sortFunction', 'options'],
+  props: ['items', 'limit', 'sortFunction', 'sortOrder', 'options'],
 
   data () {
     const options = this.options || {}
@@ -80,6 +80,7 @@ export default {
       currentPageSize: 15,
       currentPage: 1,
       currentNumItems: 0,
+      currentSortOrder: null,
       has: {
         pagination: options.pagination,
         annotations: options.annotations,
@@ -92,6 +93,9 @@ export default {
 
   created () {
     this.initPageProperties()
+    if (this.sortOrder) {
+      this.currentSortOrder = this.sortOrder
+    }
   },
 
   watch: {
@@ -102,7 +106,12 @@ export default {
 
   computed: {
     itemsSorted () {
-      let items = this.sortFunction ? this.sortFunction(this.items) : this.items
+      let items
+      if (this.currentSortOrder) {
+        items = this.sortFunction ? this.sortFunction(this.items, this.sortOrder) : this.items
+      } else {
+        items = this.sortFunction ? this.sortFunction(this.items) : this.items
+      }
       this.currentNumItems = items.length
       if (this.limit) {
         items = items.slice(0, this.limit)
