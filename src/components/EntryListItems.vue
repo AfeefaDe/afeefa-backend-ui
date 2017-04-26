@@ -102,12 +102,7 @@ export default {
 
   computed: {
     itemsSorted () {
-      let items
-      if (this.sortOrder) {
-        items = this.sortFunction ? this.sortFunction(this.items, this.sortOrder) : this.items
-      } else {
-        items = this.sortFunction ? this.sortFunction(this.items) : this.items
-      }
+      let items = this.sortFunction ? this.sortFunction(this.items, this.sortOrder) : this.items
       this.currentNumItems = items.length
       if (this.limit) {
         items = items.slice(0, this.limit)
