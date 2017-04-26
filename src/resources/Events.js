@@ -88,8 +88,8 @@ export default {
     }
   },
 
-  updateOrgaEventList (eventId) {
-    if (eventId) {
+  updateOrgaEventList (orgaId) {
+    if (orgaId) {
       const resourceCache = store.state.api.resourceCache
       resourceCache.purgeList(`orgas/${eventId}/events?filter[date]=upcoming`)
       resourceCache.purgeList(`orgas/${eventId}/events?filter[date]=past`)
