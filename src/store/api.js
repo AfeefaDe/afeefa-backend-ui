@@ -27,7 +27,7 @@ export default {
 
 
   state: {
-    resourceCache: resourceCache.cache // add to state in order to show up in chromes vuex debug view
+    resourceCache
   },
 
 
@@ -185,12 +185,12 @@ export default {
       return resource.http.update(
         {id: item.id}, {data: item.serialize()}
       ).then(response => {
-        const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
         // todo fixme purge cache before deserialize entry in order to be able to fully reload
         if (['events', 'orgas', 'todos'].includes(itemCacheKey)) {
           resourceCache.purgeItem('locations', item.location.id)
           resourceCache.purgeItem('contacts', item.contact.id)
         }
+        const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
         cachedItem.deserialize(response.body.data)
         dispatch('getMetaInformation')
         return cachedItem

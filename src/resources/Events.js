@@ -67,15 +67,32 @@ export default {
 
   save (event) {
     if (event.id) {
+      const oldOrgaId = event._relationIds.parent_orga
+      const currentOrgaId = event.parent_orga.id
       return store.dispatch('api/saveItem', {
         resource: new EventsResource(),
         item: event
+      }).then(event => {
+        this.updateOrgaEventList(oldOrgaId)
+        this.updateOrgaEventList(currentOrgaId)
+        return event
       })
     } else {
       return store.dispatch('api/addItem', {
         resource: new EventsResource(),
         item: event
+      }).then(event => {
+        this.updateOrgaEventList(event._relationIds.parent_orga)
+        return event
       })
+    }
+  },
+
+  updateOrgaEventList (eventId) {
+    if (eventId) {
+      const resourceCache = store.state.api.resourceCache
+      resourceCache.purgeList(`orgas/${eventId}/events?filter[date]=upcoming`)
+      resourceCache.purgeList(`orgas/${eventId}/events?filter[date]=past`)
     }
   },
 
@@ -89,6 +106,11 @@ export default {
     return store.dispatch('api/deleteItem', {
       resource: new EventsResource(),
       item: event
+    }).then(() => {
+      if (event.parent_orga) {
+        this.updateOrgaEventList(event.parent_orga.id)
+      }
+      return event
     })
   }
 }
