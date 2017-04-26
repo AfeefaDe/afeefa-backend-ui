@@ -157,8 +157,8 @@
             :sort-order="filterOrgaEventsBy"
             :options="{date_start: true}">
           </entry-list-items>
-          <div v-else>
-            Keine Events zu dieser Orga vorhanden.
+          <div v-else class="entryDetail__error">
+            {{ $t('errors.noEventsForOrga') }}
           </div>
         </div>
 

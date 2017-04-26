@@ -22,7 +22,8 @@ export default {
     noLocationPresent: 'Keine Ortsinformation vorhanden',
     noAnnotationPresent: 'Keine Annoation vorhanden',
     noParentOrgaPresent: 'Keine übergeordnete Orga vorhanden',
-    noSubOrgaPresent: 'Keine untergeordneten Orgas vorhanden'
+    noSubOrgaPresent: 'Keine untergeordneten Orgas vorhanden',
+    noEventsForOrga: 'Keine Events zu dieser Orga vorhanden'
   },
   entries: {
     date_start: 'Startdatum',

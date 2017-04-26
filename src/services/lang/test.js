@@ -22,7 +22,8 @@ export default {
     noLocationPresent: '*',
     noAnnotationPresent: '*',
     noParentOrgaPresent: '*',
-    noSubOrgaPresent: '*'
+    noSubOrgaPresent: '*',
+    noEventsForOrga: '*'
   },
   entries: {
     date_start: '*',
