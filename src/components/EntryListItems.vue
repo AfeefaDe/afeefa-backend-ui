@@ -80,7 +80,6 @@ export default {
       currentPageSize: 15,
       currentPage: 1,
       currentNumItems: 0,
-      currentSortOrder: null,
       has: {
         pagination: options.pagination,
         annotations: options.annotations,
@@ -93,9 +92,6 @@ export default {
 
   created () {
     this.initPageProperties()
-    if (this.sortOrder) {
-      this.currentSortOrder = this.sortOrder
-    }
   },
 
   watch: {
@@ -107,7 +103,7 @@ export default {
   computed: {
     itemsSorted () {
       let items
-      if (this.currentSortOrder) {
+      if (this.sortOrder) {
         items = this.sortFunction ? this.sortFunction(this.items, this.sortOrder) : this.items
       } else {
         items = this.sortFunction ? this.sortFunction(this.items) : this.items

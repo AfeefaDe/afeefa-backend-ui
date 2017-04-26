@@ -6,10 +6,10 @@ export default function (items, order) {
     if (a.date_start === b.date_start) {
       return 0
     }
-    if (order === 'past') {
-      return a.date_start < b.date_start ? 1 : -1
+    let result = a.date_start > b.date_start ? 1 : -1
+    if (order === 'DESC') {
+      result = -1 * result
     }
-    // order === upcoming
-    return a.date_start > b.date_start ? 1 : -1
+    return result
   })
 }

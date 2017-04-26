@@ -154,7 +154,7 @@
             :items="events"
             v-if="events.length"
             :sort-function="sortByDateStart"
-            :sort-order="filterOrgaEventsBy"
+            :sort-order="orgaEventsSortOrder"
             :options="{date_start: true}">
           </entry-list-items>
           <div v-else class="entryDetail__error">
@@ -206,6 +206,7 @@ export default {
     return {
       events: [],
       filterOrgaEventsBy: 'upcoming',
+      orgaEventsSortOrder: 'ASC',
       sortByDateStart,
       has: {
         date: options.hasDate,
@@ -249,6 +250,11 @@ export default {
         Events.getAllForOrga(this.entry.id, this.filterOrgaEventsBy).then(events => {
           this.events = events
         })
+      }
+      if (this.filterOrgaEventsBy === 'upcoming') {
+        this.orgaEventsSortOrder = 'ASC'
+      } else if (this.filterOrgaEventsBy === 'past') {
+        this.orgaEventsSortOrder = 'DESC'
       }
     },
 
