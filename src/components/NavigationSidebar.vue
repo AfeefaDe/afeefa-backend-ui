@@ -14,6 +14,10 @@
         </li>
       </ul>
 
+      <ul>
+        <button @click="changeLanguage" class="btn btn-lang">switch language</button>
+      </ul>
+
       <div class="navigationSidebar__footer">
         <span class="navigationSidebar__footerItem" title="Der Name des aktuell eingeloggten Nutzers.">
           <i class="material-icons spacing-right">account_circle</i>{{username}}
@@ -32,6 +36,21 @@
 import NavigationMixin from './mixins/NavigationMixin'
 
 export default {
-  mixins: [NavigationMixin]
+  mixins: [NavigationMixin],
+  methods: {
+    changeLanguage () {
+      if (this.$i18n.locale === 'de') {
+        this.$i18n.locale = 'en'
+      } else {
+        this.$i18n.locale = 'de'
+      }
+    }
+  }
 }
 </script>
+
+<style>
+button.btn-lang{
+  font-size: 10px;
+}
+</style>
