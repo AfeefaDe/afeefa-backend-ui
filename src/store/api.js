@@ -41,6 +41,7 @@ export default {
       })
     },
 
+
     getMetaInformation: ({state, dispatch}) => {
       const itemResource = Vue.resource(BASE + 'meta')
 
@@ -57,6 +58,7 @@ export default {
       })
       return promise
     },
+
 
     getList: ({state, dispatch}, resource) => {
       const listCacheKey = resource.listCacheKey
@@ -91,8 +93,8 @@ export default {
              * a case we would ignore the data of the latter list
              * loaded an keep the data from the first one.
              */
-             // resource.deserialize(item, json)
-          // no cached item found ->
+             // do nothing (before was: resource.deserialize(item, json))
+           // no cached item found -> create one
           } else {
             item = resource.createItem(json)
             resource.deserialize(item, json)
