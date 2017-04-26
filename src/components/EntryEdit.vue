@@ -3,12 +3,12 @@
     <div class="col s12 m12">
       <div class="mainCard">
 
-        <div class="mainCard__header mainCard__headerLight" v-if="item">
+        <div class="mainCard__header mainCard__headerGreen" v-if="item">
           <h2 class="mainCard__headerTitle"> {{item.title || 'Kein Titel'}}</h2>
           <a href="" @click.prevent="cancel" class="mainCard__headerAction"><i class="material-icons">cancel</i></a>
         </div>
         <div v-else>
-          <div class="mainCard__header mainCard__headerLight">
+          <div class="mainCard__header mainCard__headerGreen">
             {{ messages.loading() }} ...
           </div>
         </div>

@@ -91,11 +91,38 @@ $sidebarWidth: 350px;
 			font-size: 1.4em;
 		}
   }
+  &__headerGreen {
+    background-color: $turquoise;
+    color: white;
+    h2 {
+      font-size: 1.4em;
+      font-weight: normal;
+    }
+  }
   &__headerTitle {
     flex-grow: 2;
     line-height: $height;
     margin: 0;
   }
+  &__headerSubtitle {
+    font-size: 1rem;
+    font-weight: normal;
+    padding-top: 0.5em;
+    display: inline-block;
+  }
+  &__headerButton {
+    font-size: 1em;
+    border: 1px solid white;
+    padding: 0.4em 0.6em;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    .material-icons {
+      font-size: 1.4em;
+      margin-left: 0.5em;
+    }
+  }
+
   &__headerAction {
     color: inherit;
     max-height: $height;

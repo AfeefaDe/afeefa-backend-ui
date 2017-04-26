@@ -2,10 +2,17 @@
 <div class="row">
   <div class="col s12 m12">
     <div class="mainCard" v-if="entry">
-      <div class="mainCard__header mainCard__headerLight">
+      <div class="mainCard__header mainCard__headerGreen">
         <a href="" @click.prevent="goBack"><i class="material-icons go-back">chevron_left</i></a>
-        <h2 class="mainCard__headerTitle">{{ entry.title || 'Kein Titel' }}</h2>
-        <router-link :to="{name: routeName + '.edit', params: {id: entry.id}}" class="mainCard__headerAction">
+        <h2 class="mainCard__headerTitle">
+          {{ entry.title || 'Kein Titel' }}
+          <br>
+          <span v-if="has.parentOrga" class="mainCard__headerSubtitle">
+            {{ $t('headlines.parentOrga') }}: <u>%%Name of ParentOrga</u>
+          </span>
+        </h2>
+        <router-link :to="{name: routeName + '.edit', params: {id: entry.id}}" class="mainCard__headerButton">
+          Bearbeiten
           <i class="material-icons">mode_edit</i>
         </router-link>
       </div>
@@ -16,10 +23,16 @@
 
       <div>
         <ul class="entryDetail">
-          <li class="multiLineProperty">
-            <span class="entryDetail__meta">{{ $t('entries.description') }}</span>
-            <span class="multiLineProperty__content">{{ entry.description }}</span>
-          </li>
+
+        <entry-detail-property :name="$t('entries.description')" :iconName="'more_horiz'" :isMultiline="true">{{ entry.description }}</entry-detail-property>
+
+        <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'">
+          <p>{{ entry.category ? entry.category.title : 'Keine Kategorie angegeben' }}
+          <i class="material-icons">navigate_next</i>
+          {{ entry.sub_category ? entry.sub_category.title : 'Keine Unterkategorie angegeben' }}</p>
+        </entry-detail-property>
+
+
           <li>
             <span class="entryDetail__meta">{{ $t('entries.created_at') }}</span>
             <span>{{ entry.created_at | formatDateAbsolute }} ({{ entry.created_at | formatDateRelative }}) </span>
@@ -32,14 +45,7 @@
             <span class="entryDetail__meta">{{ $t('entries.state_changed_at') }}</span>
             <span>{{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }}) </span>
           </li>
-          <li>
-            <span class="entryDetail__meta">{{ $t('entries.category') }}</span>
-            <span>{{ entry.category ? entry.category.title : 'Keine Kategorie angegeben' }}</span>
-          </li>
-          <li>
-            <span class="entryDetail__meta">{{ $t('entries.sub_category') }}</span>
-            <span>{{ entry.sub_category ? entry.sub_category.title : 'Keine Unterkategorie angegeben' }}</span>
-          </li>
+
         </ul>
         <ul class="entryDetail" v-if="has.date">
           <li>
@@ -62,25 +68,21 @@
 
         <ul class="entryDetail" v-if="entry.location">
           <h2>{{ $t('headlines.location') }}</h2>
-          <li v-if="entry.location.placename">
-            <span class="entryDetail__meta">{{ $t('entries.placename') }}</span>
-            <span>{{ entry.location.placename }}</span>
-          </li>
-          <li v-if="entry.location.street">
-            <span class="entryDetail__meta">{{ $t('entries.street') }}</span>
-            <span>{{ entry.location.street }}</span>
-          </li>
-          <li v-if="entry.location.zip || entry.location.city">
-            <span class="entryDetail__meta">{{ $t('entries.city') }}</span>
-            <span>{{ entry.location.zip }} {{ entry.location.city }}</span>
-          </li>
+
+          <entry-detail-property :name="$t('entries.address')" :iconName="'location_on'">
+              {{ entry.location.placename }}
+              {{ entry.location.street }}
+              {{ entry.location.zip }} {{ entry.location.city }}
+          </entry-detail-property>
+
+          <entry-detail-property :name="$t('entries.directions')" :iconName="'train'" :isMultiline="true">
+              {{ entry.location.directions }}
+          </entry-detail-property>
+
           <li v-if="!entry.location.isEmpty()">
             <location-map :map-center="mapCenter" :location="entry.location"></location-map>
           </li>
-          <li v-if="entry.location.directions" class="multiLineProperty">
-            <span class="entryDetail__meta">{{ $t('entries.directions') }}</span>
-            <span class="multiLineProperty__content">{{ entry.location.directions }}</span>
-          </li>
+
           <li v-if="entry.location.isEmpty()" class="entryDetail__error">
             {{ $t('errors.noLocationPresent') }}
           </li>
@@ -88,47 +90,43 @@
 
         <ul class="entryDetail" v-if="entry.contact">
           <h2>{{ $t('headlines.contact') }}</h2>
-          <li v-if="entry.contact.person">
-            <span class="entryDetail__meta">{{ $t('entries.person') }}</span>
-            <span>{{ entry.contact.person }}</span>
-          </li>
-          <li v-if="entry.contact.mail">
-            <span class="entryDetail__meta">{{ $t('entries.mail') }}</span>
-            <span><a :href="'mailto:' + entry.contact.mail">{{ entry.contact.mail }}</a></span>
-          </li>
-          <li v-if="entry.contact.phone">
-            <span class="entryDetail__meta">{{ $t('entries.phone') }}</span>
-            <span>{{ entry.contact.phone }}</span>
-          </li>
-          <li v-if="entry.contact.openingHours" class="multiLineProperty">
-            <span class="entryDetail__meta">{{ $t('entries.openingHours') }}</span>
-            <span class="multiLineProperty__content">{{ entry.contact.openingHours }}</span>
-          </li>
-          <li v-if="entry.contact.web">
-            <span class="entryDetail__meta">{{ $t('entries.web') }}</span>
+
+          <entry-detail-property :name="$t('headlines.contact')" :iconName="'mail_outline'" :isMultiline="true">
+              {{ entry.contact.person }}
+              {{ entry.contact.phone }}
+              <a :href="'mailto:' + entry.contact.mail">{{ entry.contact.mail }}</a>
+          </entry-detail-property>
+
+          <entry-detail-property :name="$t('entries.openingHours')" :iconName="'access_time'" :isMultiline="true">
+              {{ entry.contact.openingHours }}
+          </entry-detail-property>
+
+          <entry-detail-property :name="'Links'" :iconName="'link'" :isMultiline="true">
             <a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a>
-          </li>
-          <li v-if="entry.contact.facebook">
-            <span class="entryDetail__meta">{{ $t('entries.facebook') }}</span>
             <a :href="entry.contact.facebook" target="_blank">{{ entry.contact.facebook }}</a>
-          </li>
+          </entry-detail-property>
+
           <li v-if="entry.contact.isEmpty()" class="entryDetail__error">
             {{ $t('errors.noContactPresent') }}
           </li>
+
         </ul>
 
         <div class="entryDetail">
-          <h2>{{ $tc('headlines.annotations', entry.annotations.length) }}</h2>
-          <div v-if="entry.annotations.length">
-            <p class="annotationTag"
-              title="Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden."
-              v-for="annotation in entry.annotations">
-              {{ annotation.title }}
-            </p>
-          </div>
-          <div v-else class="entryDetail__error">
-            {{ $t('errors.noAnnotationPresent') }}
-          </div>
+          <entry-detail-property
+            :name="$tc('headlines.annotations', entry.annotations.length)"
+            :iconName="'label_outline'">
+            <div v-if="entry.annotations.length">
+              <p class="annotationTag"
+                title="Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden."
+                v-for="annotation in entry.annotations">
+                {{ annotation.title }}
+              </p>
+            </div>
+            <div v-else class="entryDetail__error">
+              {{ $t('errors.noAnnotationPresent') }}
+            </div>
+          </entry-detail-property>
         </div>
 
         <div class="entryDetail">
@@ -191,10 +189,51 @@
 </template>
 
 
+<style lang="scss" scoped>
+@import "../assets/styles/_variables.scss";
+
+.go-back {
+  color: white;
+  margin-left: -6px;
+  font-weight: bold;
+  width: 28px;
+}
+
+.entryDetail {
+  margin: 0;
+  padding: 0;
+  h2 {
+    margin-top: 2em;
+    font-size: 1.4em;
+    font-weight: 500;
+  }
+
+
+  &__meta {
+    color: $gray50;
+    margin-right: 0.4em;
+    /*@todo: better solution: #138*/
+    text-transform: capitalize;
+  }
+  &__meta:after {
+    content: ':';
+  }
+  &__inlineInput {
+    flex-grow: 2;
+    width: auto;
+  }
+  &__error {
+    color: $red;
+  }
+}
+</style>
+
+
 <script>
 import EntryListItems from '@/components/EntryListItems'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
+import EntryDetailProperty from '@/components/EntryDetailProperty'
 import Events from '@/resources/Events'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 
@@ -270,68 +309,8 @@ export default {
   components: {
     EntryListItems,
     LocationMap,
-    ImageContainer
+    ImageContainer,
+    EntryDetailProperty
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@import "../assets/styles/_variables.scss";
-
-.go-back {
-  color: #039be5;
-  margin-left: -6px;
-  font-weight: bold;
-  width: 28px;
-}
-
-.entryDetail {
-  margin: 0;
-  padding: 0;
-  h2 {
-    margin-top: 2em;
-    font-size: 1.4em;
-    font-weight: 500;
-  }
-  li {
-    list-style: none;
-    display: block;
-    margin-bottom: 0.6em;
-    align-items: baseline;
-  }
-  li.multiLineProperty {
-    display: flex;
-    .multiLineProperty__content {
-      white-space: pre-wrap;
-    }
-  }
-  li.nowrap {
-    display: block;
-  }
-  &__meta {
-    color: $gray50;
-    margin-right: 0.4em;
-    /*@todo: better solution: #138*/
-    text-transform: capitalize;
-  }
-  &__meta:after {
-    content: ':';
-  }
-  &__inlineInput {
-    flex-grow: 2;
-    width: auto;
-  }
-  &__error {
-    color: $red;
-  }
-}
-.image-container-style {
-  background-color: $white;
-}
-.image-container {
-  background-repeat: no-repeat;
-  background-position: center left;
-  background-size: contain;
-  height: 9rem;
-}
-</style>

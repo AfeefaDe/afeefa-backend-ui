@@ -39,6 +39,7 @@ export default {
     category: 'Category',
     sub_category: 'Subcategory',
     geo_coordinates: 'Geocoordinates',
+    address: 'Address',
     lat: 'Lattitude',
     lon: 'Longitude',
     street: 'Street',

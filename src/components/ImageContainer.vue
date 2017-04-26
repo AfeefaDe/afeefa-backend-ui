@@ -53,12 +53,14 @@ export default {
 <style lang="scss" scoped>
 .image-container-style {
   background-color: #eee;
+  padding: 0;
 }
 .image-container {
   background-repeat: no-repeat;
-  background-position: center left;
-  background-size: contain;
-  height: 9rem;
+  background-position: top center;
+  background-size: cover;
+  height: 30vh;
+  max-height: 300px;
 }
 .loading-error {
   background-color: #ffeeee;
