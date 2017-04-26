@@ -41,6 +41,22 @@ export default {
       })
     },
 
+    getMetaInformation: ({state, dispatch}) => {
+      const itemResource = Vue.resource(BASE + 'meta')
+
+      const promise = itemResource.get().then(response => {
+        let metaItem = response.body.meta
+        dispatch('navigation/setNumItemFromMetaInformation', {metaInformation: metaItem}, {root: true})
+      }).catch(response => {
+        dispatch('messages/showAlert', {
+          isError: true,
+          title: 'Fehler beim Laden',
+          description: getErrorDescription(response)
+        }, {root: true})
+        console.log('error loading item', response)
+      })
+      return promise
+    },
 
     getList: ({state, dispatch}, resource) => {
       const listCacheKey = resource.listCacheKey
@@ -174,6 +190,7 @@ export default {
           resourceCache.purgeItem('contacts', item.contact.id)
         }
         cachedItem.deserialize(response.body.data)
+        dispatch('getMetaInformation')
         return cachedItem
       }).catch(response => {
         dispatch('messages/showAlert', {
@@ -200,6 +217,7 @@ export default {
         }
         item.deserialize(response.body.data)
         resourceCache.addItem(itemCacheKey, item)
+        dispatch('getMetaInformation')
         return item
       }).catch(response => {
         dispatch('messages/showAlert', {
