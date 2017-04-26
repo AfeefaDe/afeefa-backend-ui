@@ -18,6 +18,10 @@ export default class ResourceCache {
     const listCache = this.getCache(key).lists
     listCache[url] = list
     for (let item of list) {
+      const cachedItem = this.getItem(item.type, item.id)
+      if (cachedItem && cachedItem._fullyLoaded) {
+        continue
+      }
       this.addItem(item.type, item)
     }
   }

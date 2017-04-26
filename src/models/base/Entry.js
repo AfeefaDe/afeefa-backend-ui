@@ -1,8 +1,6 @@
-export default class Entry {
-  constructor () {
-    this.init()
-  }
+import BaseModel from './BaseModel'
 
+export default class Entry extends BaseModel {
   init () {
     this.id = null
     this.type = null
