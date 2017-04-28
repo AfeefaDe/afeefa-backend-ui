@@ -39,7 +39,7 @@
               class="annotationTag"
               :title="$t('hints.edit_annotations')"
               v-if="has.annotations">
-              {{annotation.title}}
+                <b>{{annotation.annotationCategory.title}}</b><span v-if="annotation.detail"><br>{{annotation.detail}}</span>
             </p>
 
             <p class="item entryList--lightColor" v-if="has.updated_at">

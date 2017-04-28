@@ -67,14 +67,19 @@ export default {
 
   save (event) {
     if (event.id) {
-      const oldOrgaId = event._relationIds.parent_orga
-      const currentOrgaId = event.parent_orga.id
       return store.dispatch('api/saveItem', {
         resource: new EventsResource(),
         item: event
       }).then(event => {
-        this.updateOrgaEventList(oldOrgaId)
-        this.updateOrgaEventList(currentOrgaId)
+        // only update list for extisting parent_orgas
+        if (event._relationIds.parent_orga) {
+          const oldOrgaId = event._relationIds.parent_orga
+          this.updateOrgaEventList(oldOrgaId)
+        }
+        if (event.parent_orga && event.parent_orga.id) {
+          const currentOrgaId = event.parent_orga.id
+          this.updateOrgaEventList(currentOrgaId)
+        }
         return event
       })
     } else {
