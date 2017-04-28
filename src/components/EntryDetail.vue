@@ -123,7 +123,7 @@
             <p class="annotationTag"
               :title="$t('hints.edit_annotations')"
               v-for="annotation in entry.annotations">
-              {{ annotation.title }}
+               <b>{{annotation.annotationCategory.title}}</b><span v-if="annotation.detail"><br>{{annotation.detail}}</span>
             </p>
           </div>
           <div v-else class="entryDetail__error">

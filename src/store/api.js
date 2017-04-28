@@ -99,8 +99,11 @@ export default {
             item = resource.createItem(json)
             resource.deserialize(item, json)
           }
-          items.push(item)
-          duplicatesMap[dupMapKey] = true
+          // workaround for issue #149
+          if (item) {
+            items.push(item)
+            duplicatesMap[dupMapKey] = true
+          }
         }
 
         resourceCache.addList(listCacheKey, '', items)
