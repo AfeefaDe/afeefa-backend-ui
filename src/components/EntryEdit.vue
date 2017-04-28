@@ -86,7 +86,7 @@
                 data-vv-name="category" data-vv-validate-on="change" v-validate="'required'"
                 :class="['browser-default', 'categoriesForm', {'validation-error': errors.has('category') }]">
                 <option selected :value="null">Keine Kategorie ausgewählt</option>
-                <option selected :value="category" v-for="category in categories">{{category.title}}</option>
+                <option selected :value="category" v-for="category in categories">{{ $t('categories.' + category.title) }}</option>
               </select>
               <span v-show="errors.has('category')" class="validation-error">{{ errors.first('category') }}</span>
             </div>
@@ -95,7 +95,7 @@
               <label>Unterkategorie</label>
               <select class="browser-default categoriesForm" v-model="item.sub_category">
                 <option selected :value="null">Keine Kategorie ausgewählt</option>
-                <option selected :value="category" v-for="category in item.category.sub_categories">{{category.title}}</option>
+                <option selected :value="category" v-for="category in item.category.sub_categories">{{ $t('categories.' + category.title) }}</option>
               </select>
             </div>
 

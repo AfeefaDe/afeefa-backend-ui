@@ -28,10 +28,10 @@
 
           <div class="entryList__attributes">
             <p class="item category" v-if="item.category">
-              {{item.category.title}}
+              {{ $t('categories.' + item.category.title) }}
               <span v-if="item.sub_category">
                 <i class="material-icons">navigate_next</i>
-                {{item.sub_category.title}}
+                {{ $t('categories.' + item.sub_category.title) }}
               </span>
             </p>
 
