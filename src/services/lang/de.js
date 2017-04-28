@@ -15,7 +15,8 @@ export default {
     status: 'Status',
     time: 'Zeit',
     parentOrga: 'Übergeordnete Orga',
-    subOrgas: 'Untergeordnete Orgas'
+    subOrgas: 'Untergeordnete Orgas',
+    systemLanguage: 'Systemsprache'
   },
   errors: {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',
@@ -73,5 +74,9 @@ export default {
   },
   infos: {
     mandatory_field: 'Pflichtfeld'
+  },
+  languages: {
+    de: 'Deutsch',
+    en: 'Englisch'
   }
 }

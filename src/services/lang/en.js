@@ -15,7 +15,8 @@ export default {
     status: 'Status',
     time: 'Zeit',
     parentOrga: 'Parent Organization',
-    subOrgas: 'Sub Organizations'
+    subOrgas: 'Sub Organizations',
+    systemLanguage: 'System language'
   },
   errors: {
     noContactPresent: 'No contact information present',
@@ -73,5 +74,9 @@ export default {
   },
   infos: {
     mandatory_field: 'mandatory'
+  },
+  languages: {
+    de: 'German',
+    en: 'English'
   }
 }

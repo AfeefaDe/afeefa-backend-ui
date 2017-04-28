@@ -15,7 +15,8 @@ export default {
     status: '*',
     time: '*',
     parentOrga: '*',
-    subOrgas: '*'
+    subOrgas: '*',
+    systemLanguage: '*'
   },
   errors: {
     noContactPresent: '*',
@@ -73,5 +74,9 @@ export default {
   },
   infos: {
     mandatory_field: '*'
+  },
+  languages: {
+    de: '*',
+    en: '*'
   }
 }
