@@ -14,11 +14,6 @@
         </li>
       </ul>
 
-      <ul>
-        <button @click="changeLanguage" class="btn btn-lang">switch language</button>
-      </ul>
-
-
       <div class="navigationSidebar__footer">
       <div class="navigationSidebar__footerRow">
         <span class="navigationSidebar__footerItem">
