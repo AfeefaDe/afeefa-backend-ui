@@ -74,7 +74,9 @@ export default {
     deactivate: '*'
   },
   infos: {
-    mandatory_field: '*'
+    mandatory_field: '*',
+    no_category: '*',
+    no_subcategory: '*'
   },
   languages: {
     de: '*',

@@ -74,7 +74,9 @@ export default {
     deactivate: 'Deactivate'
   },
   infos: {
-    mandatory_field: 'mandatory'
+    mandatory_field: 'mandatory',
+    no_category: 'No category existing',
+    no_subcategory: 'No subcategory existing'
   },
   languages: {
     de: 'German',

@@ -34,11 +34,11 @@
           </li>
           <li>
             <span class="entryDetail__meta">{{ $t('entries.category') }}</span>
-            <span>{{ entry.category ? entry.category.title : 'Keine Kategorie angegeben' }}</span>
+            <span>{{ entry.category ? entry.category.title : $t('infos.no_category') }}</span>
           </li>
           <li>
             <span class="entryDetail__meta">{{ $t('entries.sub_category') }}</span>
-            <span>{{ entry.sub_category ? entry.sub_category.title : 'Keine Unterkategorie angegeben' }}</span>
+            <span>{{ entry.sub_category ? entry.sub_category.title : $t('infos.no_subcategory') }}</span>
           </li>
         </ul>
         <ul class="entryDetail" v-if="has.date">

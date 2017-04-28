@@ -74,7 +74,9 @@ export default {
     deactivate: 'Deaktivieren'
   },
   infos: {
-    mandatory_field: 'Pflichtfeld'
+    mandatory_field: 'Pflichtfeld',
+    no_category: 'Keine Kategorie angegeben',
+    no_subcategory: 'Keine Unterkategorie angegeben'
   },
   languages: {
     de: 'Deutsch',

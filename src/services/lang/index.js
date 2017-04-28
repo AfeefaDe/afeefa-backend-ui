@@ -7,7 +7,7 @@ import test from './test'
 Vue.use(VueI18n)
 
 export default new VueI18n({
-  locale: 'test', // set locale
+  locale: 'de', // set locale
   messages: {
     de,
     en,
