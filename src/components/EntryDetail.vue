@@ -253,7 +253,8 @@ export default {
       }
       if (this.filterOrgaEventsBy === 'upcoming') {
         this.orgaEventsSortOrder = 'ASC'
-      } else if (this.filterOrgaEventsBy === 'past') {
+      } else {
+        // this.filterOrgaEventsBy === 'past'
         this.orgaEventsSortOrder = 'DESC'
       }
     },
