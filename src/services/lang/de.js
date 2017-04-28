@@ -66,7 +66,8 @@ export default {
     entries: 'Eintrag | Einträge',
     page: 'Seite',
     of: 'von',
-    per_page: 'pro Seite'
+    per_page: 'pro Seite',
+    set_page_size: 'Seiteneinträge'
   },
   buttons: {
     activate: 'Aktivieren',
@@ -77,6 +78,11 @@ export default {
   },
   languages: {
     de: 'Deutsch',
-    en: 'Englisch'
+    en: 'Englisch',
+    test: '*'
+  },
+  hints: {
+    edit_annotations: 'Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden.',
+    user_status: 'Der Name des aktuell eingeloggten Nutzers.'
   }
 }

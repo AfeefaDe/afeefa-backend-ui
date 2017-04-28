@@ -66,7 +66,8 @@ export default {
     entries: '*',
     page: '*',
     of: '*',
-    per_page: '*'
+    per_page: '*',
+    set_page_size: '*'
   },
   buttons: {
     activate: '*',
@@ -77,6 +78,11 @@ export default {
   },
   languages: {
     de: '*',
-    en: '*'
+    en: '*',
+    test: '*'
+  },
+  hints: {
+    edit_annotations: '*',
+    user_status: '*'
   }
 }

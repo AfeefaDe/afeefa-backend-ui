@@ -121,7 +121,7 @@
           <h2>{{ $tc('headlines.annotations', entry.annotations.length) }}</h2>
           <div v-if="entry.annotations.length">
             <p class="annotationTag"
-              title="Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden."
+              :title="$t('hints.edit_annotations')"
               v-for="annotation in entry.annotations">
               {{ annotation.title }}
             </p>

@@ -37,7 +37,7 @@
 
             <p v-for="annotation in item.annotations"
               class="annotationTag"
-              title="Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden."
+              :title="$t('hints.edit_annotations')"
               v-if="has.annotations">
               {{annotation.title}}
             </p>

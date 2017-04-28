@@ -4,7 +4,7 @@
 
       <p class="list-pagination__infoText">{{ currentNumItems }} {{ $tc('pagination.entries', currentNumItems) }}
       ({{ $t('pagination.page') }} {{ currentPage }} {{ $t('pagination.of') }} {{ currentNumPages }})</p>
-      <label class="list-pagination__pagesizeSelectLabel" for="pageSizeSelect" v-if="currentNumItems > 15">Set Page size:</label>
+      <label class="list-pagination__pagesizeSelectLabel" for="pageSizeSelect" v-if="currentNumItems > 15">{{ $t('pagination.set_page_size') }}:</label>
       <select v-model="currentPageSize"
         @change="pageSizeChanged"
         class="list-pagination__pagesizeSelect browser-default"

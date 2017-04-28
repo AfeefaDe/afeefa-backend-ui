@@ -202,7 +202,7 @@
             <h2>{{ $tc('headlines.annotations', 2) }}</h2>
             <div class="annotationArea">
               <p class="annotationTag"
-                title="Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden."
+                :title="$t('hints.edit_annotations')"
                 v-for="annotation in item.annotations">
                 {{ annotation.title }}
                 <a href="" @click.prevent="removeAnnotation(annotation)" class="annotationTag__icon">

@@ -66,7 +66,8 @@ export default {
     entries: 'Entry | Entries',
     page: 'Page',
     of: 'of',
-    per_page: 'per page'
+    per_page: 'per page',
+    set_page_size: 'set page size'
   },
   buttons: {
     activate: 'Activate',
@@ -77,6 +78,11 @@ export default {
   },
   languages: {
     de: 'German',
-    en: 'English'
+    en: 'English',
+    test: '*'
+  },
+  hints: {
+    edit_annotations: 'You can add and delete annotations if you edit the entry.',
+    user_status: 'Shows the name of the current user.'
   }
 }

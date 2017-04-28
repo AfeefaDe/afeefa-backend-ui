@@ -15,21 +15,21 @@
       </ul>
 
       <div class="navigationSidebar__footer">
-      <div class="navigationSidebar__footerRow">
-        <span class="navigationSidebar__footerItem">
-          {{ $t('headlines.systemLanguage') }}:
-          <a href="#" class="navigationSidebar__footerItemSpacing spacing-left" @click="changeLanguage()">{{ $t('languages.'+$i18n.locale) }}</a>
-        </span>
-      </div>
-      <div class="navigationSidebar__footerSeperator"></div>
-      <div class="navigationSidebar__footerRow">
-        <span class="navigationSidebar__footerItem" title="Der Name des aktuell eingeloggten Nutzers.">
-          <i class="material-icons spacing-right">account_circle</i>{{username}}
-        </span>
-        <a href="" @click.prevent="logout()" class="cursor navigationSidebar__footerItem">
-          {{ $t('headlines.logout') }}<i class="material-icons spacing-left">exit_to_app</i>
-        </a>
-      </div>
+        <div class="navigationSidebar__footerRow">
+          <span class="navigationSidebar__footerItem">
+            {{ $t('headlines.systemLanguage') }}:
+            <a href="#" class="navigationSidebar__footerItemSpacing spacing-left" @click="changeLanguage()">{{ $t('languages.'+$i18n.locale) }}</a>
+          </span>
+        </div>
+        <div class="navigationSidebar__footerSeperator"></div>
+        <div class="navigationSidebar__footerRow">
+          <span class="navigationSidebar__footerItem" :title="$t('hints.user_status')">
+            <i class="material-icons spacing-right">account_circle</i>{{username}}
+          </span>
+          <a href="" @click.prevent="logout()" class="cursor navigationSidebar__footerItem">
+            {{ $t('headlines.logout') }}<i class="material-icons spacing-left">exit_to_app</i>
+          </a>
+        </div>
       </div>
 
     </div>
