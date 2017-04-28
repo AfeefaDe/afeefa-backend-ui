@@ -100,6 +100,7 @@ export default {
     'craft-art': 'Handwerk + Kunst',
     'donation': 'Spenden',
     'education-counselling': 'Bildungsberatung',
+    'education-sponsorship': 'Bildungsunterstützung',
     'eventseries': 'Veranstaltungsreihe',
     'external-event': 'integrierte Daten',
     'family-counselling': 'Familienberatung',

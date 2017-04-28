@@ -100,6 +100,7 @@ export default {
     'craft-art': '*',
     'donation': '*',
     'education-counselling': '*',
+    'education-sponsorship': '*',
     'eventseries': '*',
     'external-event': '*',
     'family-counselling': '*',
