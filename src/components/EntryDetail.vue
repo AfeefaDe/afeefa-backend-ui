@@ -5,10 +5,13 @@
       <div class="mainCard__header mainCard__headerGreen">
         <a href="" @click.prevent="goBack"><i class="material-icons go-back">chevron_left</i></a>
         <h2 class="mainCard__headerTitle">
-          {{ entry.title || 'Kein Titel' }}
+            {{ entry.title || 'Kein Titel' }}
           <br>
-          <span v-if="has.parentOrga" class="mainCard__headerSubtitle">
-            {{ $t('headlines.parentOrga') }}: <u>%%Name of ParentOrga</u>
+          <span v-if="entry.parent_orga" class="mainCard__headerSubtitle">
+            {{ $t('headlines.parentOrga') }}:
+            <router-link :to="{name: entry.parent_orga.type + '.show', params: {id: entry.parent_orga.id}}">
+              <u> {{ entry.parent_orga.title }}</u>
+            </router-link>
           </span>
         </h2>
         <router-link :to="{name: routeName + '.edit', params: {id: entry.id}}" class="mainCard__headerButton">
@@ -23,15 +26,21 @@
 
       <div>
         <ul class="entryDetail">
+          <entry-detail-property :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' >
+            {{ entry.title }}
+          </entry-detail-property>
 
-        <entry-detail-property :name="$t('entries.description')" :iconName="'more_horiz'" :isMultiline="true">{{ entry.description }}</entry-detail-property>
+          <entry-detail-property :name="$t('entries.description')" :iconName="'more_horiz'" :isMultiline="true">
+            {{ entry.description }}
+          </entry-detail-property>
 
-        <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'">
-          <p>{{ entry.category ? entry.category.title : 'Keine Kategorie angegeben' }}
-          <i class="material-icons">navigate_next</i>
-          {{ entry.sub_category ? entry.sub_category.title : 'Keine Unterkategorie angegeben' }}</p>
-        </entry-detail-property>
+          <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'">
+            {{ entry.category ? entry.category.title : 'Keine Kategorie angegeben' }} >
+            {{ entry.sub_category ? entry.sub_category.title : 'Keine Unterkategorie angegeben' }}
+          </entry-detail-property>
 
+          <entry-detail-property :name="$tc('headlines.annotations', 2)" :iconName="'label_outline'">
+          </entry-detail-property>
 
           <li>
             <span class="entryDetail__meta">{{ $t('entries.created_at') }}</span>
