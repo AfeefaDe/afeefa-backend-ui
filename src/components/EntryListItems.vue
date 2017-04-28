@@ -28,18 +28,18 @@
 
           <div class="entryList__attributes">
             <p class="item category" v-if="item.category">
-              {{item.category.title}}
+              {{ $t('categories.' + item.category.title) }}
               <span v-if="item.sub_category">
                 <i class="material-icons">navigate_next</i>
-                {{item.sub_category.title}}
+                {{ $t('categories.' + item.sub_category.title) }}
               </span>
             </p>
 
             <p v-for="annotation in item.annotations"
               class="annotationTag"
-              title="Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden."
+              :title="$t('hints.edit_annotations')"
               v-if="has.annotations">
-              {{annotation.title}}
+                <b>{{annotation.annotationCategory.title}}</b><span v-if="annotation.detail"><br>{{annotation.detail}}</span>
             </p>
 
             <p class="item entryList--lightColor" v-if="has.updated_at">
@@ -80,7 +80,6 @@ export default {
       currentPageSize: 15,
       currentPage: 1,
       currentNumItems: 0,
-      currentSortOrder: null,
       has: {
         pagination: options.pagination,
         annotations: options.annotations,
@@ -93,9 +92,6 @@ export default {
 
   created () {
     this.initPageProperties()
-    if (this.sortOrder) {
-      this.currentSortOrder = this.sortOrder
-    }
   },
 
   watch: {
@@ -106,12 +102,7 @@ export default {
 
   computed: {
     itemsSorted () {
-      let items
-      if (this.currentSortOrder) {
-        items = this.sortFunction ? this.sortFunction(this.items, this.sortOrder) : this.items
-      } else {
-        items = this.sortFunction ? this.sortFunction(this.items) : this.items
-      }
+      let items = this.sortFunction ? this.sortFunction(this.items, this.sortOrder) : this.items
       this.currentNumItems = items.length
       if (this.limit) {
         items = items.slice(0, this.limit)

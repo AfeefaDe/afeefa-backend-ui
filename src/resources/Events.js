@@ -70,12 +70,34 @@ export default {
       return store.dispatch('api/saveItem', {
         resource: new EventsResource(),
         item: event
+      }).then(event => {
+        // only update list for extisting parent_orgas
+        if (event._relationIds.parent_orga) {
+          const oldOrgaId = event._relationIds.parent_orga
+          this.updateOrgaEventList(oldOrgaId)
+        }
+        if (event.parent_orga && event.parent_orga.id) {
+          const currentOrgaId = event.parent_orga.id
+          this.updateOrgaEventList(currentOrgaId)
+        }
+        return event
       })
     } else {
       return store.dispatch('api/addItem', {
         resource: new EventsResource(),
         item: event
+      }).then(event => {
+        this.updateOrgaEventList(event._relationIds.parent_orga)
+        return event
       })
+    }
+  },
+
+  updateOrgaEventList (orgaId) {
+    if (orgaId) {
+      const resourceCache = store.state.api.resourceCache
+      resourceCache.purgeList(`orgas/${orgaId}/events?filter[date]=upcoming`)
+      resourceCache.purgeList(`orgas/${orgaId}/events?filter[date]=past`)
     }
   },
 
@@ -89,6 +111,11 @@ export default {
     return store.dispatch('api/deleteItem', {
       resource: new EventsResource(),
       item: event
+    }).then(() => {
+      if (event.parent_orga) {
+        this.updateOrgaEventList(event.parent_orga.id)
+      }
+      return event
     })
   }
 }

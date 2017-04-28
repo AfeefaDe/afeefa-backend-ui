@@ -27,7 +27,7 @@ export default {
 
 
   state: {
-    resourceCache: resourceCache.cache // add to state in order to show up in chromes vuex debug view
+    resourceCache
   },
 
 
@@ -40,6 +40,7 @@ export default {
         next()
       })
     },
+
 
     getMetaInformation: ({state, dispatch}) => {
       const itemResource = Vue.resource(BASE + 'meta')
@@ -57,6 +58,7 @@ export default {
       })
       return promise
     },
+
 
     getList: ({state, dispatch}, resource) => {
       const listCacheKey = resource.listCacheKey
@@ -91,14 +93,17 @@ export default {
              * a case we would ignore the data of the latter list
              * loaded an keep the data from the first one.
              */
-             // resource.deserialize(item, json)
-          // no cached item found ->
+             // do nothing (before was: resource.deserialize(item, json))
+           // no cached item found -> create one
           } else {
             item = resource.createItem(json)
             resource.deserialize(item, json)
           }
-          items.push(item)
-          duplicatesMap[dupMapKey] = true
+          // workaround for issue #149
+          if (item) {
+            items.push(item)
+            duplicatesMap[dupMapKey] = true
+          }
         }
 
         resourceCache.addList(listCacheKey, '', items)
@@ -183,12 +188,12 @@ export default {
       return resource.http.update(
         {id: item.id}, {data: item.serialize()}
       ).then(response => {
-        const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
         // todo fixme purge cache before deserialize entry in order to be able to fully reload
         if (['events', 'orgas', 'todos'].includes(itemCacheKey)) {
           resourceCache.purgeItem('locations', item.location.id)
           resourceCache.purgeItem('contacts', item.contact.id)
         }
+        const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
         cachedItem.deserialize(response.body.data)
         dispatch('getMetaInformation')
         return cachedItem

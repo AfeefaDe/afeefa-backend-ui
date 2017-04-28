@@ -1,4 +1,5 @@
 import Categories from '@/resources/Categories'
+import AnnotationCategories from '@/resources/AnnotationCategories'
 import Annotations from '@/resources/Annotations'
 import Contacts from '@/resources/Contacts'
 import Locations from '@/resources/Locations'
@@ -99,11 +100,13 @@ export default {
     for (let id of entry._relationIds.annotations) {
       Annotations.get(id).then(annotation => {
         if (annotation) {
-          entry.annotations.push(annotation)
+          AnnotationCategories.get(annotation._relationIds.annotationCategory).then(annotationCategory => {
+            annotation.annotationCategory = annotationCategory
+            entry.annotations.push(annotation)
+          })
         }
       })
     }
-
     entry.annotations.__isLoading = true
   },
 
