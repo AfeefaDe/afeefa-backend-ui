@@ -159,6 +159,7 @@ export default {
     'sponsorship': '*',
     'sports': '*',
     'stage': '*',
+    'tandem': '*',
     'tram': '*',
     'volunteer-coordination': '*',
     'welcome-network': '*',

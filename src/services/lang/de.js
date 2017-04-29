@@ -159,6 +159,7 @@ export default {
     'sponsorship': 'Patenschaften',
     'sports': 'Sport',
     'stage': 'Bühne',
+    'tandem': 'Tandem',
     'tram': 'Straßenbahn',
     'volunteer-coordination': 'Ehrenamtskoordination',
     'welcome-network': 'Willkommensbündnis',
