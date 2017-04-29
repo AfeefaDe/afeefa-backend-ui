@@ -16,6 +16,7 @@ export default {
     time: '*',
     parentOrga: '*',
     subOrgas: '*',
+    organizer: '*',
     systemLanguage: '*',
     generalPane: '*',
     placePane: '*',

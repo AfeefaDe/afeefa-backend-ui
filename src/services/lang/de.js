@@ -16,6 +16,7 @@ export default {
     time: 'Zeit',
     parentOrga: 'Übergeordnete Orga',
     subOrgas: 'Untergeordnete Orgas',
+    organizer: 'Veranstalter',
     systemLanguage: 'Systemsprache',
     generalPane: 'Allgemeines',
     placePane: 'Ort',

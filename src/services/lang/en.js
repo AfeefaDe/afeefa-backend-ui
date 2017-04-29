@@ -16,6 +16,7 @@ export default {
     time: 'Zeit',
     parentOrga: 'Parent Organization',
     subOrgas: 'Sub Organizations',
+    organizer: 'Organizer',
     systemLanguage: 'System language',
     generalPane: 'General',
     placePane: 'Place',

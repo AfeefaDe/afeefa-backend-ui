@@ -4,16 +4,15 @@
     <div class="mainCard" v-if="entry">
       <div class="mainCard__header mainCard__headerGreen">
         <a href="" @click.prevent="goBack"><i class="material-icons go-back">chevron_left</i></a>
-        <h2 class="mainCard__headerTitle">
-            {{ entry.title || 'Kein Titel' }}
-          <br>
+        <div class="mainCard__headerTitleContainer">
+          <h2 class="mainCard__headerTitle">{{ entry.title || 'Kein Titel' }}</h2>
           <span v-if="entry.parent_orga" class="mainCard__headerSubtitle">
-            {{ $t('headlines.parentOrga') }}:
+            {{ has.date ? $t('headlines.organizer') : $t('headlines.parentOrga') }}:
             <router-link :to="{name: entry.parent_orga.type + '.show', params: {id: entry.parent_orga.id}}">
               <u> {{ entry.parent_orga.title }}</u>
             </router-link>
           </span>
-        </h2>
+        </div>
         <router-link :to="{name: routeName + '.edit', params: {id: entry.id}}" class="mainCard__headerButton">
           Bearbeiten
           <i class="material-icons">mode_edit</i>
@@ -39,6 +38,16 @@
             </entry-detail-property>
 
             <entry-detail-property
+              :name="$tc('entries.date')"
+              :iconName="'date_range'"
+              v-if="has.date">
+                <span v-if="entry.date_start"> {{ $t('entries.date_start') }}: {{ entry.date_start | formatDateAbsolute }} ({{entry.date_start | formatDateRelative }})<br></span>
+                <span v-if="entry.date_end">
+                {{ $t('entries.date_end') }}: {{ entry.date_end | formatDateAbsolute }} ({{entry.date_end | formatDateRelative }})<br>
+                </span>
+            </entry-detail-property>
+
+            <entry-detail-property
               :name="$tc('headlines.annotations', entry.annotations.length)"
               :iconName="'label_outline'">
               <div v-if="entry.annotations.length">
@@ -59,30 +68,10 @@
               :iconName= "entry.active ? 'visibility' : 'visibility_off'">
               <button @click="togglePublishState" :class="['btn', 'publishButton', 'waves-effect', {green: entry.active}]" type="submit">
                 {{ entry.active ? $t('buttons.deactivate') : $t('buttons.activate') }}
-              </button>
-            </entry-detail-property>
-
-            <li class="align-status-items">
-              <span>{{ $t('entries.created_at') }}: </span>
-              <span>{{ entry.created_at | formatDateAbsolute }} ({{ entry.created_at | formatDateRelative }}) </span>
-            </li>
-            <li class="align-status-items">
-              <span>{{ $t('entries.updated_at') }}: </span>
-              <span>{{ entry.updated_at | formatDateAbsolute }} ({{ entry.updated_at | formatDateRelative }}) </span>
-            </li>
-            <li class="align-status-items">
-              <span>{{ $t('entries.state_changed_at') }}: </span>
-              <span>{{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }}) </span>
-            </li>
-
-            <entry-detail-property
-              :name="$tc('entries.date')"
-              :iconName="'date_range'"
-              v-if="has.date">
-                <span v-if="entry.date_start"> {{ $t('entries.date_start') }}: {{ entry.date_start | formatDateAbsolute }} ({{entry.date_start | formatDateRelative }})<br></span>
-                <span v-if="entry.date_end">
-                {{ $t('entries.date_end') }}: {{ entry.date_end | formatDateAbsolute }} ({{entry.date_end | formatDateRelative }})<br>
-                </span>
+              </button><br>
+              <span>{{ $t('entries.created_at') }}: {{ entry.created_at | formatDateAbsolute }} ({{ entry.created_at | formatDateRelative }})</span><br>
+              <span>{{ $t('entries.updated_at') }}: {{ entry.updated_at | formatDateAbsolute }} ({{ entry.updated_at | formatDateRelative }})</span><br>
+              <span>{{ $t('entries.state_changed_at') }}: {{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }})</span><br>
             </entry-detail-property>
           </ul>
         </section>
@@ -310,10 +299,6 @@ export default {
   span.annotation-detail {
     color: grey;
     font-size: 12px;
-  }
-
-  li.align-status-items {
-    margin-left: 4.5em;
   }
 
   &__meta {
