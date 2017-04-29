@@ -24,7 +24,7 @@
             <div class="inputField__spacing input-field">
               <label for="title" :class="{active: item.title}">Titel <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span></label>
               <input v-model="item.title" id="title" type="text"
-                data-vv-name="title" v-validate="'required'"
+                data-vv-name="title" v-validate="'required|max: 150'"
                 :class="{'validation-error': errors.has('title') }"/>
               <span v-show="errors.has('title')" class="validation-error">{{ errors.first('title') }}</span>
             </div>
@@ -38,7 +38,10 @@
 
             <div class="inputField__spacing input-field">
               <label for="description" :class="{active: item.description}">Kurzbeschreibung</label>
-              <textarea class="materialize-textarea" v-model="item.short_description" id="short_description"></textarea>
+              <textarea v-model="item.short_description" id="short_description"
+              data-vv-name="short_description" v-validate="'max: 350'"
+              :class="['materialize-textarea', {'validation-error': errors.has('short_description') }]"></textarea>
+              <span v-show="errors.has('short_description')" class="validation-error">{{ errors.first('short_description') }}</span>
             </div>
 
             <div class="inputField__spacing input-field">
