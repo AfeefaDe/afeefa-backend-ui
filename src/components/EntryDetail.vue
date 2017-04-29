@@ -119,6 +119,9 @@
           </ul>
         </section>
         <section slot="linkTab">
+          <ul v-if="entry.type === 'events'" class="entryDetail__error entryDetail__error_white_space">
+              {{ $t('errors.noLinksPresent') }}
+          </ul>
           <ul class="entryDetail" v-if="entry.type === 'orgas'">
             <entry-detail-property :name="$t('headlines.organisations')" hasEntryIcon="true" entryIconType='orgas' :entryIconStatus='false'>
 
@@ -171,7 +174,6 @@
           </entry-detail-property>
         </ul>
       </section>
-<!-- >>>>>>> design boost for links in entry page -->
       </entry-detail-tabbed-content>
     </div>
 
@@ -299,7 +301,7 @@ export default {
     margin-top: 2em;
     font-size: 1.4em;
     font-weight: 500;
-}
+  }
 
 span.annotation-detail {
   color: grey;
@@ -328,6 +330,9 @@ li.align-status-items {
   }
   &__error {
     color: $red;
+  }
+  &__error_white_space {
+    margin-bottom: 2.5em;
   }
 }
 </style>

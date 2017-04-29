@@ -29,6 +29,7 @@ export default {
     noContactPresent: '*',
     noLocationPresent: '*',
     noAnnotationPresent: '*',
+    noLinksPresent: '*',
     noParentOrgaPresent: '*',
     noSubOrgaPresent: '*',
     noEventsForOrga: '*',

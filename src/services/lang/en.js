@@ -29,6 +29,7 @@ export default {
     noContactPresent: 'No contact information present',
     noLocationPresent: 'No location information present',
     noAnnotationPresent: 'No annotation present',
+    noLinksPresent: 'No links present',
     noParentOrgaPresent: 'No parent organizations present',
     noSubOrgaPresent: 'No sub organizations present',
     noEventsForOrga: 'No events for organiszation present',

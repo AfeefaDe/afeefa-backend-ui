@@ -29,6 +29,7 @@ export default {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',
     noLocationPresent: 'Keine Ortsinformation vorhanden',
     noAnnotationPresent: 'Keine Annoation vorhanden',
+    noLinksPresent: 'Keine Verweise vorhanden',
     noParentOrgaPresent: 'Keine übergeordnete Orga vorhanden',
     noSubOrgaPresent: 'Keine untergeordneten Orgas vorhanden',
     noEventsForOrga: 'Keine Events zu dieser Orga vorhanden',
