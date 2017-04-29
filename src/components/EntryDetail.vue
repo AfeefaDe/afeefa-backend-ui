@@ -26,7 +26,7 @@
       <entry-detail-tabbed-content>
         <section slot="generalTab">
           <ul class="entryDetail">
-            <entry-detail-property :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' >
+            <entry-detail-property v-if="entry.title" :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' >
               {{ entry.title }}
             </entry-detail-property>
 
