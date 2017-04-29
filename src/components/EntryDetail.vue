@@ -55,7 +55,30 @@
             {{ entry.sub_category ? entry.sub_category.title : 'Keine Unterkategorie angegeben' }}
           </entry-detail-property>
 
-          <entry-detail-property :name="$tc('headlines.annotations', 2)" :iconName="'label_outline'">
+          <entry-detail-property
+            :name="$tc('headlines.annotations', entry.annotations.length)"
+            :iconName="'label_outline'">
+            <div v-if="entry.annotations.length">
+              <p class="annotationTag"
+                :title= "$t('hints.edit_annotations')"
+                v-for="annotation in entry.annotations">
+                 {{annotation.annotationCategory.title}}
+                 <span v-if="annotation.detail" class="annotation-detail"><br> {{annotation.detail}} </span>
+              </p>
+            </div>
+            <div v-else class="entryDetail__error">
+              {{ $t('errors.noAnnotationPresent') }}
+            </div>
+          </entry-detail-property>
+
+          <entry-detail-property
+            :name="$tc('headlines.status')"
+            :iconName= "entry.active ? 'visibility' : 'visibility_off'">
+            <div class="nowrap">
+              <button @click="togglePublishState" :class="['btn', 'publishButton', 'waves-effect', {green: entry.active}]" type="submit">
+                {{ entry.active ? $t('buttons.deactivate') : $t('buttons.activate') }}
+              </button>
+            </div>
           </entry-detail-property>
 
           <li>
@@ -71,6 +94,8 @@
             <span>{{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }}) </span>
           </li>
         </ul>
+
+
         <ul class="entryDetail" v-if="has.date">
           <li>
             <span class="entryDetail__meta"> {{ $t('entries.date_start') }}</span>
@@ -135,32 +160,6 @@
           </li>
 
         </ul>
-
-        <div class="entryDetail">
-          <entry-detail-property
-            :name="$tc('headlines.annotations', entry.annotations.length)"
-            :iconName="'label_outline'">
-            <div v-if="entry.annotations.length">
-              <p class="annotationTag"
-                title="Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden."
-                v-for="annotation in entry.annotations">
-                <b>{{annotation.annotationCategory.title}}</b><span v-if="annotation.detail"><br>{{annotation.detail}}</span>
-              </p>
-            </div>
-            <div v-else class="entryDetail__error">
-              {{ $t('errors.noAnnotationPresent') }}
-            </div>
-          </entry-detail-property>
-        </div>
-
-        <div class="entryDetail">
-          <h2>{{ $t('headlines.status') }}: {{ entry.active ? '' : 'nicht' }} aktiviert</h2>
-          <div class="nowrap">
-            <button @click="togglePublishState" :class="['btn', 'publishButton', 'waves-effect', {red: entry.active}]" type="submit">
-              {{ entry.active ? $t('buttons.deactivate') : $t('buttons.activate') }}
-            </button>
-          </div>
-        </div>
 
         <div class="entryDetail" v-if="has.events">
           <h2>Veranstaltungen der Orga</h2>
@@ -330,6 +329,10 @@ export default {
     font-weight: 500;
   }
 
+  span.annotation-detail {
+      color: grey;
+      font-size: 12px;
+  }
 
   &__meta {
     color: $gray50;
