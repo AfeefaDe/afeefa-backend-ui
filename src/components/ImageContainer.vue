@@ -4,7 +4,7 @@
       <div class="image-container" :style="{ 'background-image': 'url(' + imageUrl + ')' }"> </div>
     </div>
     <div v-else-if="mediaImageError">
-      Fehler beim laden des Bildes.
+      {{$t('errors.loadingImageError')}}
     </div>
   </div>
 </template>
@@ -59,7 +59,7 @@ export default {
   background-repeat: no-repeat;
   background-position: top center;
   background-size: cover;
-  height: 30vh;
+  height: 40vh;
   max-height: 300px;
 }
 .loading-error {

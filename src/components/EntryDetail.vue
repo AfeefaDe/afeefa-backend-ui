@@ -24,6 +24,22 @@
         :image-url="entry.media_url">
       </image-container>
 
+      <entry-detail-tabbed-content>
+        <section slot="generalPane">
+          @todo: enter general pane
+        </section>
+        <section slot="placePane">
+          @todo: enter place pane
+        </section>
+        <section slot="contactPane">
+          @todo: enter contact pane
+        </section>
+        <section slot="linkPane">
+          @todo: enter links pane
+        </section>
+      </entry-detail-tabbed-content>
+
+
       <div>
         <ul class="entryDetail">
           <entry-detail-property :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' >
@@ -105,7 +121,7 @@
               <a :href="'mailto:' + entry.contact.mail">{{ entry.contact.mail }}</a>
           </entry-detail-property>
 
-          <entry-detail-property :name="$t('entries.openingHours')" :iconName="'access_time'" :isMultiline="true">
+          <entry-detail-property v-if="entry.contact.openingHours"> :name="$t('entries.openingHours')" :iconName="'access_time'" :isMultiline="true"
               {{ entry.contact.openingHours }}
           </entry-detail-property>
 
@@ -197,44 +213,7 @@
 </template>
 
 
-<style lang="scss" scoped>
-@import "../assets/styles/_variables.scss";
 
-.go-back {
-  color: white;
-  margin-left: -6px;
-  font-weight: bold;
-  width: 28px;
-}
-
-.entryDetail {
-  margin: 0;
-  padding: 0;
-  h2 {
-    margin-top: 2em;
-    font-size: 1.4em;
-    font-weight: 500;
-  }
-
-
-  &__meta {
-    color: $gray50;
-    margin-right: 0.4em;
-    /*@todo: better solution: #138*/
-    text-transform: capitalize;
-  }
-  &__meta:after {
-    content: ':';
-  }
-  &__inlineInput {
-    flex-grow: 2;
-    width: auto;
-  }
-  &__error {
-    color: $red;
-  }
-}
-</style>
 
 
 <script>
@@ -242,6 +221,7 @@ import EntryListItems from '@/components/EntryListItems'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
 import EntryDetailProperty from '@/components/EntryDetailProperty'
+import EntryDetailTabbedContent from '@/components/EntryDetailTabbedContent'
 import Events from '@/resources/Events'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 
@@ -325,7 +305,47 @@ export default {
     EntryListItems,
     LocationMap,
     ImageContainer,
-    EntryDetailProperty
+    EntryDetailProperty,
+    EntryDetailTabbedContent
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import "../assets/styles/_variables.scss";
+
+.go-back {
+  color: white;
+  margin-left: -6px;
+  font-weight: bold;
+  width: 28px;
+}
+
+.entryDetail {
+  margin: 0;
+  padding: 0;
+  h2 {
+    margin-top: 2em;
+    font-size: 1.4em;
+    font-weight: 500;
+  }
+
+
+  &__meta {
+    color: $gray50;
+    margin-right: 0.4em;
+    /*@todo: better solution: #138*/
+    text-transform: capitalize;
+  }
+  &__meta:after {
+    content: ':';
+  }
+  &__inlineInput {
+    flex-grow: 2;
+    width: auto;
+  }
+  &__error {
+    color: $red;
+  }
+}
+</style>

@@ -16,7 +16,11 @@ export default {
     time: '*',
     parentOrga: '*',
     subOrgas: '*',
-    systemLanguage: '*'
+    systemLanguage: '*',
+    generalPane: '*',
+    placePane: '*',
+    contactPane: '*',
+    linkPane: '*'
   },
   errors: {
     noContactPresent: '*',
@@ -24,7 +28,8 @@ export default {
     noAnnotationPresent: '*',
     noParentOrgaPresent: '*',
     noSubOrgaPresent: '*',
-    noEventsForOrga: '*'
+    noEventsForOrga: '*',
+    loadingImageError: '*'
   },
   entries: {
     date_start: '*',

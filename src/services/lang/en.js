@@ -16,7 +16,11 @@ export default {
     time: 'Zeit',
     parentOrga: 'Parent Organization',
     subOrgas: 'Sub Organizations',
-    systemLanguage: 'System language'
+    systemLanguage: 'System language',
+    generalPane: 'General',
+    placePane: 'Place',
+    contactPane: 'Contact',
+    linkPane: 'Links'
   },
   errors: {
     noContactPresent: 'No contact information present',
@@ -24,7 +28,9 @@ export default {
     noAnnotationPresent: 'No annotation present',
     noParentOrgaPresent: 'No parent organizations present',
     noSubOrgaPresent: 'No sub organizations present',
-    noEventsForOrga: 'No events for organiszation present'
+    noEventsForOrga: 'No events for organiszation present',
+    loadingImageError: 'Error loading image'
+
   },
   entries: {
     date_start: 'Start date',

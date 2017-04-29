@@ -16,7 +16,11 @@ export default {
     time: 'Zeit',
     parentOrga: 'Übergeordnete Orga',
     subOrgas: 'Untergeordnete Orgas',
-    systemLanguage: 'Systemsprache'
+    systemLanguage: 'Systemsprache',
+    generalPane: 'Allgemeines',
+    placePane: 'Ort',
+    contactPane: 'Kontakt',
+    linkPane: 'Verweise'
   },
   errors: {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',
@@ -24,7 +28,8 @@ export default {
     noAnnotationPresent: 'Keine Annoation vorhanden',
     noParentOrgaPresent: 'Keine übergeordnete Orga vorhanden',
     noSubOrgaPresent: 'Keine untergeordneten Orgas vorhanden',
-    noEventsForOrga: 'Keine Events zu dieser Orga vorhanden'
+    noEventsForOrga: 'Keine Events zu dieser Orga vorhanden',
+    loadingImageError: 'Fehler beim Laden des Bildes.'
   },
   entries: {
     date_start: 'Startdatum',
