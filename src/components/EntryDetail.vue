@@ -31,9 +31,7 @@
               {{ entry.title }}
             </entry-detail-property>
 
-            <entry-detail-property :name="$t('entries.description')" :iconName="'more_horiz'" :isMultiline="true">
-              {{ entry.description }}
-            </entry-detail-property>
+            <entry-detail-property :name="$t('entries.description')" :iconName="'more_horiz'" :isMultiline="true">{{ entry.description }}</entry-detail-property>
 
             <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'">
               {{ entry.category ? entry.category.title : 'Keine Kategorie angegeben' }} >
@@ -92,47 +90,43 @@
 
         <section slot="placePane">
           <ul class="entryDetail" v-if="entry.location">
-            <h2>{{ $t('headlines.location') }}</h2>
-
-            <entry-detail-property :name="$t('entries.address')" :iconName="'location_on'">
-                {{ entry.location.placename }}
-                {{ entry.location.street }}
-                {{ entry.location.zip }} {{ entry.location.city }}
-            </entry-detail-property>
-
-            <entry-detail-property :name="$t('entries.directions')" :iconName="'train'" :isMultiline="true">
-                {{ entry.location.directions }}
-            </entry-detail-property>
-
-            <li v-if="!entry.location.isEmpty()">
-              <location-map :map-center="mapCenter" :location="entry.location"></location-map>
-            </li>
-
             <li v-if="entry.location.isEmpty()" class="entryDetail__error">
               {{ $t('errors.noLocationPresent') }}
+            </li>
+            <li v-else>
+              <entry-detail-property :name="$t('entries.address')" :iconName="'location_on'">
+                  <span v-if="entry.location.placename">{{ entry.location.placename }}<br></span>
+                  <span v-if="entry.location.street">{{ entry.location.street }}<br></span>
+                  <span v-if="entry.location.zip || entry.location.city">{{ entry.location.zip }} {{ entry.location.city }}</span>
+              </entry-detail-property>
+
+              <entry-detail-property v-if="entry.location.directions" :name="$t('entries.directions')" :iconName="'train'" :isMultiline="true">{{ entry.location.directions }}</entry-detail-property>
+
+              <li v-if="!entry.location.isEmpty()">
+                <location-map :map-center="mapCenter" :location="entry.location"></location-map>
+              </li>
             </li>
           </ul>
         </section>
 
         <section slot="contactPane">
           <ul class="entryDetail" v-if="entry.contact">
-            <entry-detail-property :name="$t('headlines.contact')" :iconName="'mail_outline'" :isMultiline="true">
-                {{ entry.contact.person }}
-                {{ entry.contact.phone }}
-                <a :href="'mailto:' + entry.contact.mail">{{ entry.contact.mail }}</a>
-            </entry-detail-property>
-
-            <entry-detail-property v-if="entry.contact.openingHours"> :name="$t('entries.openingHours')" :iconName="'access_time'" :isMultiline="true"
-                {{ entry.contact.openingHours }}
-            </entry-detail-property>
-
-            <entry-detail-property :name="'Links'" :iconName="'link'" :isMultiline="true">
-              <a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a>
-              <a :href="entry.contact.facebook" target="_blank">{{ entry.contact.facebook }}</a>
-            </entry-detail-property>
-
             <li v-if="entry.contact.isEmpty()" class="entryDetail__error">
               {{ $t('errors.noContactPresent') }}
+            </li>
+            <li v-else>
+              <entry-detail-property :name="$t('headlines.contact')" :iconName="'mail_outline'" v-if="entry.contact.person || entry.contact.phone || entry.contact.mail">
+                  <span v-if="entry.contact.person">{{ entry.contact.person }}<br></span>
+                  <span v-if="entry.contact.phone">{{ entry.contact.phone }}<br></span>
+                  <a v-if="entry.contact.mail" :href="'mailto:' + entry.contact.mail">{{ entry.contact.mail }}</a>
+              </entry-detail-property>
+
+              <entry-detail-property v-if="entry.contact.openingHours" :name="$t('entries.openingHours')" :iconName="'access_time'" :isMultiline="true">{{ entry.contact.openingHours }}</entry-detail-property>
+
+              <entry-detail-property :name="'Links'" :iconName="'link'" v-if="entry.contact.web || entry.contact.facebook">
+                <span v-if="entry.contact.web"><a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a><br></span>
+                <span v-if="entry.contact.facebook"><a :href="entry.contact.facebook" target="_blank">{{ entry.contact.facebook }}</a></span>
+              </entry-detail-property>
             </li>
           </ul>
         </section>

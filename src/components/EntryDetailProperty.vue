@@ -50,10 +50,11 @@ export default {
   &__propertyContent {
       margin-top: 0.5em;
       margin-bottom: 0;
+      white-space: normal;
+      line-height: 160%;
   }
   .multiline {
-      line-height: 175%;
-      white-space: normal;
+      white-space: pre-wrap;
   }
 }
 
