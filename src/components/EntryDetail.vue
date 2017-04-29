@@ -59,23 +59,21 @@
             <entry-detail-property
               :name="$tc('headlines.status')"
               :iconName= "entry.active ? 'visibility' : 'visibility_off'">
-              <div class="nowrap">
-                <button @click="togglePublishState" :class="['btn', 'publishButton', 'waves-effect', {green: entry.active}]" type="submit">
-                  {{ entry.active ? $t('buttons.deactivate') : $t('buttons.activate') }}
-                </button>
-              </div>
+              <button @click="togglePublishState" :class="['btn', 'publishButton', 'waves-effect', {green: entry.active}]" type="submit">
+                {{ entry.active ? $t('buttons.deactivate') : $t('buttons.activate') }}
+              </button>
             </entry-detail-property>
 
-            <li>
-              <span class="entryDetail__meta">{{ $t('entries.created_at') }}</span>
+            <li class="align-status-items">
+              <span>{{ $t('entries.created_at') }}: </span>
               <span>{{ entry.created_at | formatDateAbsolute }} ({{ entry.created_at | formatDateRelative }}) </span>
             </li>
-            <li>
-              <span class="entryDetail__meta">{{ $t('entries.updated_at') }}</span>
+            <li class="align-status-items">
+              <span>{{ $t('entries.updated_at') }}: </span>
               <span>{{ entry.updated_at | formatDateAbsolute }} ({{ entry.updated_at | formatDateRelative }}) </span>
             </li>
-            <li>
-              <span class="entryDetail__meta">{{ $t('entries.state_changed_at') }}</span>
+            <li class="align-status-items">
+              <span>{{ $t('entries.state_changed_at') }}: </span>
               <span>{{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }}) </span>
             </li>
 
@@ -317,8 +315,12 @@ export default {
   }
 
   span.annotation-detail {
-      color: grey;
-      font-size: 12px;
+    color: grey;
+    font-size: 12px;
+  }
+
+  li.align-status-items {
+    margin-left: 4.5em;
   }
 
   &__meta {
