@@ -4,8 +4,8 @@
     <div class="mainCard" v-if="entry">
       <div class="mainCard__header mainCard__headerGreen">
         <a href="" @click.prevent="goBack"><i class="material-icons go-back">chevron_left</i></a>
-        <div class="mainCard__headerTitleContainer">
-          <h2 class="mainCard__headerTitle">{{ entry.title || 'Kein Titel' }}</h2>
+        <div class="mainCard__headerTitle">
+          <h2 class="mainCard__headerTitleHeading">{{ entry.title || 'Kein Titel' }}</h2>
           <span v-if="entry.parent_orga" class="mainCard__headerSubtitle">
             {{ has.date ? $t('headlines.organizer') : $t('headlines.parentOrga') }}:
             <router-link :to="{name: entry.parent_orga.type + '.show', params: {id: entry.parent_orga.id}}">

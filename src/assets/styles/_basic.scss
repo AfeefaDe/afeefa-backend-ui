@@ -99,13 +99,14 @@ $sidebarWidth: 350px;
       font-weight: normal;
     }
   }
-  &__headerTitleContainer {
+  &__headerTitle {
     flex-grow: 2;
     overflow-x: hidden;
     padding-right: 1em;
-  }
-  &__headerTitle {
+    margin: 0;
     line-height: $height;
+  }
+  &__headerTitleHeading {
     margin: 0;
     white-space: nowrap;
     text-overflow: ellipsis;
