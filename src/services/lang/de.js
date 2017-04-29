@@ -36,6 +36,7 @@ export default {
     date_end: 'Enddatum',
     time_start: 'Startzeit',
     time_end: 'Endzeit',
+    date: 'Datum',
     title: 'Titel',
     description: 'Beschreibung',
     active: 'Aktiv',

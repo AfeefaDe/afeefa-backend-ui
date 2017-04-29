@@ -75,16 +75,15 @@
               <span>{{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }}) </span>
             </li>
 
-            <ul class="entryDetail" v-if="has.date">
-              <li>
-                <span class="entryDetail__meta"> {{ $t('entries.date_start') }}</span>
-                <span> {{ entry.date_start | formatDateAbsolute }} ({{entry.date_start | formatDateRelative }}) </span>
-              </li>
-              <li>
-                <span class="entryDetail__meta"> {{ $t('entries.date_end') }}</span>
-                <span> {{ entry.date_end | formatDateAbsolute }} ({{entry.date_end | formatDateRelative }}) </span>
-              </li>
-            </ul>
+            <entry-detail-property
+              :name="$tc('entries.date')"
+              :iconName="'date_range'"
+              v-if="has.date">
+                <span v-if="entry.date_start"> {{ $t('entries.date_start') }}: {{ entry.date_start | formatDateAbsolute }} ({{entry.date_start | formatDateRelative }})<br></span>
+                <span v-if="entry.date_end">
+                {{ $t('entries.date_end') }}: {{ entry.date_end | formatDateAbsolute }} ({{entry.date_end | formatDateRelative }})<br>
+                </span>
+            </entry-detail-property>
           </ul>
         </section>
 
