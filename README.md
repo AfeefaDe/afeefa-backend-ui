@@ -28,3 +28,7 @@ npm test
 ```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+**category translations**
+
+Call `node build/migrate_category_translations.js` in order to convert phraseapp category translation into the app.
