@@ -1,27 +1,27 @@
 <template>
 <div class="tabbedSection">
     <ul class="tabbedSection__navItemContainer">
-      <li :class="['tabbedSection__navItem', {active: activePane === 'generalPane'}]">
-        <a href="#" @click.prevent="setActivePane('generalPane')">{{$t('headlines.generalPane')}}</a>
+      <li :class="['tabbedSection__navItem', {active: activeTab === 'generalTab'}]">
+        <a href="#" @click.prevent="setActiveTab('generalTab')">{{$t('headlines.generalTab')}}</a>
       </li>
-      <li :class="['tabbedSection__navItem', {active: activePane === 'placePane'}]">
-        <a href="#" @click.prevent="setActivePane('placePane')">{{$t('headlines.placePane')}}</a>
+      <li :class="['tabbedSection__navItem', {active: activeTab === 'placeTab'}]">
+        <a href="#" @click.prevent="setActiveTab('placeTab')">{{$t('headlines.placeTab')}}</a>
       </li>
-      <li :class="['tabbedSection__navItem', {active: activePane === 'contactPane'}]">
-        <a href="#" @click.prevent="setActivePane('contactPane')">{{$t('headlines.contactPane')}}</a>
+      <li :class="['tabbedSection__navItem', {active: activeTab === 'contactTab'}]">
+        <a href="#" @click.prevent="setActiveTab('contactTab')">{{$t('headlines.contactTab')}}</a>
       </li>
-      <li :class="['tabbedSection__navItem', {active: activePane === 'linkPane'}]">
-        <a href="#" @click.prevent="setActivePane('linkPane')">{{$t('headlines.linkPane')}}</a>
+      <li :class="['tabbedSection__navItem', {active: activeTab === 'linkTab'}]">
+        <a href="#" @click.prevent="setActiveTab('linkTab')">{{$t('headlines.linkTab')}}</a>
       </li>
     </ul>
 
-  <slot name="generalPane" v-if="activePane === 'generalPane'"></slot>
+  <slot name="generalTab" v-if="activeTab === 'generalTab'"></slot>
 
-  <slot name="placePane" v-if="activePane === 'placePane'"></slot>
+  <slot name="placeTab" v-if="activeTab === 'placeTab'"></slot>
 
-  <slot name="contactPane" v-if="activePane === 'contactPane'"></slot>
+  <slot name="contactTab" v-if="activeTab === 'contactTab'"></slot>
 
-  <slot name="linkPane" v-if="activePane === 'linkPane'"></slot>
+  <slot name="linkTab" v-if="activeTab === 'linkTab'"></slot>
 </div>
 </template>
 
@@ -29,12 +29,28 @@
 export default {
   data () {
     return {
-      activePane: 'generalPane'
+      activeTab: 'generalTab'
     }
   },
+  created () {
+    this.initPageProperties()
+  },
+
+  watch: {
+    '$route' () {
+      this.initPageProperties()
+    }
+  },
+
   methods: {
-    setActivePane (pane) {
-      this.activePane = pane
+    initPageProperties () {
+      this.activeTab = this.$route.query.tab || 'generalTab'
+    },
+    setActiveTab (tab) {
+      this.activeTab = tab
+      const query = {...this.$route.query}
+      query.tab = tab === 'generalTab' ? undefined : tab
+      this.$router.push({query: query})
     }
   }
 }

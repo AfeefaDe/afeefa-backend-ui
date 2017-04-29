@@ -18,10 +18,10 @@ export default {
     subOrgas: 'Sub Organizations',
     organizer: 'Organizer',
     systemLanguage: 'System language',
-    generalPane: 'General',
-    placePane: 'Place',
-    contactPane: 'Contact',
-    linkPane: 'Links'
+    generalTab: 'General',
+    placeTab: 'Place',
+    contactTab: 'Contact',
+    linkTab: 'Links'
   },
   errors: {
     noContactPresent: 'No contact information present',

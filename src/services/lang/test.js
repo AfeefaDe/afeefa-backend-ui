@@ -18,10 +18,10 @@ export default {
     subOrgas: '*',
     organizer: '*',
     systemLanguage: '*',
-    generalPane: '*',
-    placePane: '*',
-    contactPane: '*',
-    linkPane: '*'
+    generalTab: '*',
+    placeTab: '*',
+    contactTab: '*',
+    linkTab: '*'
   },
   errors: {
     noContactPresent: '*',

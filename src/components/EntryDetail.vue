@@ -24,7 +24,7 @@
       </image-container>
 
       <entry-detail-tabbed-content>
-        <section slot="generalPane">
+        <section slot="generalTab">
           <ul class="entryDetail">
             <entry-detail-property :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' >
               {{ entry.title }}
@@ -76,7 +76,7 @@
           </ul>
         </section>
 
-        <section slot="placePane">
+        <section slot="placeTab">
           <ul class="entryDetail" v-if="entry.location">
             <li v-if="entry.location.isEmpty()" class="entryDetail__error">
               {{ $t('errors.noLocationPresent') }}
@@ -97,7 +97,7 @@
           </ul>
         </section>
 
-        <section slot="contactPane">
+        <section slot="contactTab">
           <ul class="entryDetail" v-if="entry.contact">
             <li v-if="entry.contact.isEmpty()" class="entryDetail__error">
               {{ $t('errors.noContactPresent') }}
@@ -119,7 +119,7 @@
           </ul>
         </section>
 
-        <section slot="linkPane">
+        <section slot="linkTab">
           @todo: enter links pane
           <div class="entryDetail" v-if="has.orga">
             <h2>Veranstalter</h2>

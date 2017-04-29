@@ -18,10 +18,10 @@ export default {
     subOrgas: 'Untergeordnete Orgas',
     organizer: 'Veranstalter',
     systemLanguage: 'Systemsprache',
-    generalPane: 'Allgemeines',
-    placePane: 'Ort',
-    contactPane: 'Kontakt',
-    linkPane: 'Verweise'
+    generalTab: 'Allgemeines',
+    placeTab: 'Ort',
+    contactTab: 'Kontakt',
+    linkTab: 'Verweise'
   },
   errors: {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',
