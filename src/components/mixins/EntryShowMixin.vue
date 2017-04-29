@@ -18,10 +18,14 @@ export default {
   beforeRouteUpdate (to, from, next) {
     // page reload with different entry
     // -> short timeout for better user experience :-)
-    this.item = null
-    setTimeout(() => {
+    if (this.id !== to.params.id) {
+      this.item = null
+      setTimeout(() => {
+        this.initItem(to.params.id)
+      }, 100)
+    } else {
       this.initItem(to.params.id)
-    }, 100)
+    }
     next()
   },
 
