@@ -7,6 +7,7 @@ export default class Entry extends BaseModel {
 
     this.title = ''
     this.description = ''
+    this.short_description = ''
     this.media_url = ''
 
     this.active = false
@@ -42,6 +43,7 @@ export default class Entry extends BaseModel {
       attributes: {
         title: this.title,
         description: this.description,
+        short_description: this.short_description,
         active: this.active,
         media_url: this.media_url
       },
@@ -81,6 +83,7 @@ export default class Entry extends BaseModel {
 
     this.title = json.attributes.title || ''
     this.description = json.attributes.description || ''
+    this.short_description = json.attributes.short_description || ''
     this.media_url = json.attributes.media_url || ''
 
     this.active = json.attributes.active === true
@@ -133,6 +136,7 @@ export default class Entry extends BaseModel {
     entry.type = this.type
     entry.title = this.title
     entry.description = this.description
+    entry.short_description = this.short_description
     entry.media_url = this.media_url
 
     entry.active = this.active

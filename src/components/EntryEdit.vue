@@ -37,6 +37,11 @@
             </div>
 
             <div class="inputField__spacing input-field">
+              <label for="description" :class="{active: item.description}">Kurzbeschreibung</label>
+              <textarea class="materialize-textarea" v-model="item.short_description" id="short_description"></textarea>
+            </div>
+
+            <div class="inputField__spacing input-field">
               <label for="description" :class="{active: item.description}">Beschreibung <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span></label>
               <textarea v-model="item.description" id="description"
                 data-vv-name="description" v-validate="'required'"

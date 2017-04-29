@@ -62,7 +62,8 @@ export default {
     openingHours: 'Öffnungszeiten',
     web: 'Homepage',
     facebook: 'Facebook',
-    directions: 'Anfahrtsweg'
+    directions: 'Anfahrtsweg',
+    short_description: 'Kurzbeschreibung'
   },
   status: {
     load_event: 'Lade Event',

@@ -63,7 +63,8 @@ export default {
     openingHours: 'Opening hours',
     web: 'Webpage',
     facebook: 'Facebook',
-    directions: 'Directions'
+    directions: 'Directions',
+    short_description: 'Short description'
   },
   status: {
     load_event: 'Load Event',
