@@ -21,7 +21,7 @@ export default {
       Resource: Events,
       sortByDateStart,
       messages: {
-        headline: () => this.$t('headlines.events')
+        headline: () => this.$tc('headlines.events', 2)
       }
     }
   }

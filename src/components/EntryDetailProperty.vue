@@ -53,6 +53,10 @@ export default {
       white-space: normal;
       line-height: 160%;
   }
+  &__propertyContainer {
+    width: 100%;
+    max-width: 400px;
+  }
   .multiline {
       white-space: pre-wrap;
   }

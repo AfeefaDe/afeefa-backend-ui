@@ -16,14 +16,14 @@
 
     <ul class="entryList">
       <li v-for="item in itemsSorted">
-        <div class="entryList__icon">
+        <div v-if="!showIcon" class="entryList__icon">
           <span :class="['entry-icon',  'entry-icon--' + item.type, 'entry-icon--' + (item.active ? 'active' : 'inactive')]"></span>
         </div>
 
         <div class="entryList__content">
           <router-link :to="{name: item.type + '.show', params: {id: item.id}}" class="entryList__nav">
             <h4 class="title">{{ item.title || 'Kein Titel' }}</h4>
-            <span class="icon"><i class="material-icons">navigate_next</i></span>
+            <span class="icon"><i v-if="!showIcon" class="material-icons">navigate_next</i></span>
           </router-link>
 
           <div class="entryList__attributes">
@@ -72,7 +72,7 @@ import Pagination from '@/components/Pagination'
 import Spinner from '@/components/Spinner'
 
 export default {
-  props: ['items', 'limit', 'sortFunction', 'sortOrder', 'options'],
+  props: ['items', 'limit', 'sortFunction', 'sortOrder', 'showIcon', 'options'],
 
   data () {
     const options = this.options || {}

@@ -118,53 +118,60 @@
             </li>
           </ul>
         </section>
-
         <section slot="linkTab">
-          @todo: enter links pane
-          <div class="entryDetail" v-if="has.orga">
-            <h2>Veranstalter</h2>
-            <entry-list-items :items="[entry.parent_orga]" v-if="entry.parent_orga"></entry-list-items>
-            <div v-else>
-              Kein Veranstalter angegeben.
-            </div>
-          </div>
+          <ul class="entryDetail" v-if="entry.type === 'orgas'">
+            <entry-detail-property :name="$t('headlines.organisations')" hasEntryIcon="true" entryIconType='orgas' :entryIconStatus='false'>
 
-          <div class="entryDetail" v-if="has.events">
-            <h2>Veranstaltungen der Orga</h2>
-            <form>
-              <fieldset>
-                <input type="radio" id="up" v-model="filterOrgaEventsBy" value="upcoming" v-on:change="updateEventFilter">
-                <label for="up"> Aktuelle Veranstaltungen</label><br>
-                <input type="radio" id="pa" v-model="filterOrgaEventsBy" value="past" v-on:change="updateEventFilter">
-                <label for="pa"> Vergangene Veranstaltungen</label>
-              </fieldset>
-            </form>
-            <entry-list-items
-              :items="events"
-              v-if="events.length"
-              :sort-function="sortByDateStart"
-              :sort-order="orgaEventsSortOrder"
-              :options="{date_start: true}">
-            </entry-list-items>
-            <div v-else class="entryDetail__error">
-              {{ $t('errors.noEventsForOrga') }}
-            </div>
-          </div>
+              <div v-if="has.parentOrga">
+                <b>{{ $t('headlines.parentOrga') }}</b>
+                <entry-list-items
+                  :items="[entry.parent_orga]"
+                  v-if="entry.parent_orga"
+                  showIcon="false">
+                </entry-list-items>
+                <div v-else class="entryDetail__error">
+                  {{ $t('errors.noParentOrgaPresent') }}
+                </div>
+              </div>
 
-          <div class="entryDetail" v-if="has.parentOrga">
-            <h2>{{ $t('headlines.parentOrga') }}</h2>
-            <entry-list-items :items="[entry.parent_orga]" v-if="entry.parent_orga"></entry-list-items>
-            <div v-else class="entryDetail__error">
-              {{ $t('errors.noParentOrgaPresent') }}
-            </div>
+              <EntryListDropDownMenu :title="$t('headlines.subOrgas')" :numberOfItems="entry.sub_orgas.length" :isOpened="false">
+                <entry-list-items
+                  :items="entry.sub_orgas"
+                  showIcon="false"
+                  v-if="entry.sub_orgas.length">
+                </entry-list-items>
+                <div v-else class="entryDetail__error">
+                  {{ $t('errors.noSubOrgaPresent') }}
+                </div>
+              </EntryListDropDownMenu>
+            </entry-detail-property>
 
-            <h2>{{ $t('headlines.subOrgas') }}</h2>
-            <entry-list-items :items="entry.sub_orgas" v-if="entry.sub_orgas.length"></entry-list-items>
-            <div v-else class="entryDetail__error">
-              {{ $t('errors.noSubOrgaPresent') }}
-            </div>
-          </div>
-        </section>
+            <entry-detail-property :name="$tc('headlines.events', 2)" hasEntryIcon="true" entryIconType='events' :entryIconStatus='false' >
+              <EntryListDropDownMenu :title="$t('headlines.upcomingEvents')" :numberOfItems="upcomingEvents.length" :isOpened="false">
+                <entry-list-items
+                  :items="upcomingEvents"
+                  v-if="upcomingEvents.length"
+                  :sort-function="sortByDateStart"
+                  sort-order="ASC"
+                  showIcon="false"
+                  :options="{date_start: true}">
+                </entry-list-items>
+              </EntryListDropDownMenu>
+              <br>
+              <EntryListDropDownMenu :title="$t('headlines.pastEvents')" :numberOfItems="pastEvents.length" :isOpened="false">
+                <entry-list-items
+                :items="pastEvents"
+                v-if="pastEvents.length"
+                :sort-function="sortByDateStart"
+                sort-order="DESC"
+                showIcon="false"
+                :options="{date_start: true}">
+              </entry-list-items>
+            </EntryListDropDownMenu>
+          </entry-detail-property>
+        </ul>
+      </section>
+<!-- >>>>>>> design boost for links in entry page -->
       </entry-detail-tabbed-content>
     </div>
 
@@ -188,6 +195,7 @@ import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
 import EntryDetailProperty from '@/components/EntryDetailProperty'
 import EntryDetailTabbedContent from '@/components/EntryDetailTabbedContent'
+import EntryListDropDownMenu from '@/components/EntryListDropDownMenu'
 import Events from '@/resources/Events'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 
@@ -197,7 +205,8 @@ export default {
   data () {
     const options = this.options || {}
     return {
-      events: [],
+      pastEvents: [],
+      upcomingEvents: [],
       filterOrgaEventsBy: 'upcoming',
       orgaEventsSortOrder: 'ASC',
       sortByDateStart,
@@ -212,7 +221,15 @@ export default {
 
   watch: {
     entry () {
-      this.updateEventFilter()
+      // load past and upcoming events for orga
+      if (this.entry && this.has.events) {
+        Events.getAllForOrga(this.entry.id, 'upcoming').then(events => {
+          this.upcomingEvents = events
+        })
+        Events.getAllForOrga(this.entry.id, 'past').then(events => {
+          this.pastEvents = events
+        })
+      }
     }
   },
 
@@ -238,20 +255,6 @@ export default {
       })
     },
 
-    updateEventFilter () {
-      if (this.entry && this.has.events) {
-        Events.getAllForOrga(this.entry.id, this.filterOrgaEventsBy).then(events => {
-          this.events = events
-        })
-      }
-      if (this.filterOrgaEventsBy === 'upcoming') {
-        this.orgaEventsSortOrder = 'ASC'
-      } else {
-        // this.filterOrgaEventsBy === 'past'
-        this.orgaEventsSortOrder = 'DESC'
-      }
-    },
-
     goBack () {
       this.$router.go(-1)
     }
@@ -272,7 +275,8 @@ export default {
     LocationMap,
     ImageContainer,
     EntryDetailProperty,
-    EntryDetailTabbedContent
+    EntryDetailTabbedContent,
+    EntryListDropDownMenu
   }
 }
 </script>
@@ -289,17 +293,25 @@ export default {
 
 .entryDetail {
   margin: 0;
+  margin-bottom: 3em;
   padding: 0;
   h2 {
     margin-top: 2em;
     font-size: 1.4em;
     font-weight: 500;
-  }
+}
 
-  span.annotation-detail {
-    color: grey;
-    font-size: 12px;
-  }
+span.annotation-detail {
+  color: grey;
+  font-size: 12px;
+}
+
+li.align-status-items {
+  margin-left: 4.5em;
+}
+.entryDetail__error {
+  margin-bottom: 1em;
+}
 
   &__meta {
     color: $gray50;

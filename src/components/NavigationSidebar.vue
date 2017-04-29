@@ -6,7 +6,7 @@
     <div>
       <ul class="navigationSidebar__navContainer">
         <li :class="['navigationSidebar__navItem', 'level' + item.level]" v-for="item in items">
-          <router-link :to="{name: item.route}" :exact="item.route==='dashboard'"> {{ $t(item.title) }} </router-link>
+          <router-link :to="{name: item.route}" :exact="item.route==='dashboard'"> {{ $tc(item.title, 2) }} </router-link>
           <router-link :to="{name: item.action.route}" class="navigationSidebar__navItemAction" v-if="item.action">
             <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
           </router-link>

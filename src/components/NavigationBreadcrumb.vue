@@ -2,8 +2,8 @@
   <div class="navigationBreadcrumb">
     <span v-for="(item, index) in items">
       <i class="material-icons" v-if="index">&nbsp;chevron_right</i>
-      <router-link :to="{name: item.route}" v-if="item.route"> {{ $t(item.title) }} </router-link>
-      <span v-else> {{ $t(item.title) }} </span>
+      <router-link :to="{name: item.route}" v-if="item.route"> {{ $tc(item.title, 2) }} </router-link>
+      <span v-else> {{ $tc(item.title, 2) }} </span>
     </span>
   </div>
 </template>

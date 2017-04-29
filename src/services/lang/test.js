@@ -17,6 +17,8 @@ export default {
     parentOrga: '*',
     subOrgas: '*',
     organizer: '*',
+    upcomingEvents: '*',
+    pastEvents: '*',
     systemLanguage: '*',
     generalTab: '*',
     placeTab: '*',

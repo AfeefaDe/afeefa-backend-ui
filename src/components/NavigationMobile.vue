@@ -8,7 +8,7 @@
 
     <div id="menu" v-if="visible">
       <div v-for="item in items">
-        <router-link :to="{name: item.route}"> {{ $t(item.title) }}
+        <router-link :to="{name: item.route}"> {{ $tc(item.title, 2) }}
           <span v-if="item.hint || item.hint === 0">({{item.hint}})</span>
         </router-link>
       </div>
