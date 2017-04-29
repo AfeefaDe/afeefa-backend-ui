@@ -26,179 +26,166 @@
 
       <entry-detail-tabbed-content>
         <section slot="generalPane">
-          @todo: enter general pane
+          <ul class="entryDetail">
+            <entry-detail-property :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' >
+              {{ entry.title }}
+            </entry-detail-property>
+
+            <entry-detail-property :name="$t('entries.description')" :iconName="'more_horiz'" :isMultiline="true">
+              {{ entry.description }}
+            </entry-detail-property>
+
+            <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'">
+              {{ entry.category ? entry.category.title : 'Keine Kategorie angegeben' }} >
+              {{ entry.sub_category ? entry.sub_category.title : 'Keine Unterkategorie angegeben' }}
+            </entry-detail-property>
+
+            <entry-detail-property
+              :name="$tc('headlines.annotations', entry.annotations.length)"
+              :iconName="'label_outline'">
+              <div v-if="entry.annotations.length">
+                <p class="annotationTag"
+                  :title= "$t('hints.edit_annotations')"
+                  v-for="annotation in entry.annotations">
+                   {{annotation.annotationCategory.title}}
+                   <span v-if="annotation.detail" class="annotation-detail"><br> {{annotation.detail}} </span>
+                </p>
+              </div>
+              <div v-else class="entryDetail__error">
+                {{ $t('errors.noAnnotationPresent') }}
+              </div>
+            </entry-detail-property>
+
+            <entry-detail-property
+              :name="$tc('headlines.status')"
+              :iconName= "entry.active ? 'visibility' : 'visibility_off'">
+              <div class="nowrap">
+                <button @click="togglePublishState" :class="['btn', 'publishButton', 'waves-effect', {green: entry.active}]" type="submit">
+                  {{ entry.active ? $t('buttons.deactivate') : $t('buttons.activate') }}
+                </button>
+              </div>
+            </entry-detail-property>
+
+            <li>
+              <span class="entryDetail__meta">{{ $t('entries.created_at') }}</span>
+              <span>{{ entry.created_at | formatDateAbsolute }} ({{ entry.created_at | formatDateRelative }}) </span>
+            </li>
+            <li>
+              <span class="entryDetail__meta">{{ $t('entries.updated_at') }}</span>
+              <span>{{ entry.updated_at | formatDateAbsolute }} ({{ entry.updated_at | formatDateRelative }}) </span>
+            </li>
+            <li>
+              <span class="entryDetail__meta">{{ $t('entries.state_changed_at') }}</span>
+              <span>{{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }}) </span>
+            </li>
+
+            <ul class="entryDetail" v-if="has.date">
+              <li>
+                <span class="entryDetail__meta"> {{ $t('entries.date_start') }}</span>
+                <span> {{ entry.date_start | formatDateAbsolute }} ({{entry.date_start | formatDateRelative }}) </span>
+              </li>
+              <li>
+                <span class="entryDetail__meta"> {{ $t('entries.date_end') }}</span>
+                <span> {{ entry.date_end | formatDateAbsolute }} ({{entry.date_end | formatDateRelative }}) </span>
+              </li>
+            </ul>
+          </ul>
         </section>
+
         <section slot="placePane">
-          @todo: enter place pane
+          <ul class="entryDetail" v-if="entry.location">
+            <h2>{{ $t('headlines.location') }}</h2>
+
+            <entry-detail-property :name="$t('entries.address')" :iconName="'location_on'">
+                {{ entry.location.placename }}
+                {{ entry.location.street }}
+                {{ entry.location.zip }} {{ entry.location.city }}
+            </entry-detail-property>
+
+            <entry-detail-property :name="$t('entries.directions')" :iconName="'train'" :isMultiline="true">
+                {{ entry.location.directions }}
+            </entry-detail-property>
+
+            <li v-if="!entry.location.isEmpty()">
+              <location-map :map-center="mapCenter" :location="entry.location"></location-map>
+            </li>
+
+            <li v-if="entry.location.isEmpty()" class="entryDetail__error">
+              {{ $t('errors.noLocationPresent') }}
+            </li>
+          </ul>
         </section>
+
         <section slot="contactPane">
-          @todo: enter contact pane
+          <ul class="entryDetail" v-if="entry.contact">
+            <entry-detail-property :name="$t('headlines.contact')" :iconName="'mail_outline'" :isMultiline="true">
+                {{ entry.contact.person }}
+                {{ entry.contact.phone }}
+                <a :href="'mailto:' + entry.contact.mail">{{ entry.contact.mail }}</a>
+            </entry-detail-property>
+
+            <entry-detail-property v-if="entry.contact.openingHours"> :name="$t('entries.openingHours')" :iconName="'access_time'" :isMultiline="true"
+                {{ entry.contact.openingHours }}
+            </entry-detail-property>
+
+            <entry-detail-property :name="'Links'" :iconName="'link'" :isMultiline="true">
+              <a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a>
+              <a :href="entry.contact.facebook" target="_blank">{{ entry.contact.facebook }}</a>
+            </entry-detail-property>
+
+            <li v-if="entry.contact.isEmpty()" class="entryDetail__error">
+              {{ $t('errors.noContactPresent') }}
+            </li>
+          </ul>
         </section>
+
         <section slot="linkPane">
           @todo: enter links pane
+          <div class="entryDetail" v-if="has.orga">
+            <h2>Veranstalter</h2>
+            <entry-list-items :items="[entry.parent_orga]" v-if="entry.parent_orga"></entry-list-items>
+            <div v-else>
+              Kein Veranstalter angegeben.
+            </div>
+          </div>
+
+          <div class="entryDetail" v-if="has.events">
+            <h2>Veranstaltungen der Orga</h2>
+            <form>
+              <fieldset>
+                <input type="radio" id="up" v-model="filterOrgaEventsBy" value="upcoming" v-on:change="updateEventFilter">
+                <label for="up"> Aktuelle Veranstaltungen</label><br>
+                <input type="radio" id="pa" v-model="filterOrgaEventsBy" value="past" v-on:change="updateEventFilter">
+                <label for="pa"> Vergangene Veranstaltungen</label>
+              </fieldset>
+            </form>
+            <entry-list-items
+              :items="events"
+              v-if="events.length"
+              :sort-function="sortByDateStart"
+              :sort-order="orgaEventsSortOrder"
+              :options="{date_start: true}">
+            </entry-list-items>
+            <div v-else class="entryDetail__error">
+              {{ $t('errors.noEventsForOrga') }}
+            </div>
+          </div>
+
+          <div class="entryDetail" v-if="has.parentOrga">
+            <h2>{{ $t('headlines.parentOrga') }}</h2>
+            <entry-list-items :items="[entry.parent_orga]" v-if="entry.parent_orga"></entry-list-items>
+            <div v-else class="entryDetail__error">
+              {{ $t('errors.noParentOrgaPresent') }}
+            </div>
+
+            <h2>{{ $t('headlines.subOrgas') }}</h2>
+            <entry-list-items :items="entry.sub_orgas" v-if="entry.sub_orgas.length"></entry-list-items>
+            <div v-else class="entryDetail__error">
+              {{ $t('errors.noSubOrgaPresent') }}
+            </div>
+          </div>
         </section>
       </entry-detail-tabbed-content>
-
-
-      <div>
-        <ul class="entryDetail">
-          <entry-detail-property :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' >
-            {{ entry.title }}
-          </entry-detail-property>
-
-          <entry-detail-property :name="$t('entries.description')" :iconName="'more_horiz'" :isMultiline="true">
-            {{ entry.description }}
-          </entry-detail-property>
-
-          <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'">
-            {{ entry.category ? entry.category.title : 'Keine Kategorie angegeben' }} >
-            {{ entry.sub_category ? entry.sub_category.title : 'Keine Unterkategorie angegeben' }}
-          </entry-detail-property>
-
-          <entry-detail-property
-            :name="$tc('headlines.annotations', entry.annotations.length)"
-            :iconName="'label_outline'">
-            <div v-if="entry.annotations.length">
-              <p class="annotationTag"
-                :title= "$t('hints.edit_annotations')"
-                v-for="annotation in entry.annotations">
-                 {{annotation.annotationCategory.title}}
-                 <span v-if="annotation.detail" class="annotation-detail"><br> {{annotation.detail}} </span>
-              </p>
-            </div>
-            <div v-else class="entryDetail__error">
-              {{ $t('errors.noAnnotationPresent') }}
-            </div>
-          </entry-detail-property>
-
-          <entry-detail-property
-            :name="$tc('headlines.status')"
-            :iconName= "entry.active ? 'visibility' : 'visibility_off'">
-            <div class="nowrap">
-              <button @click="togglePublishState" :class="['btn', 'publishButton', 'waves-effect', {green: entry.active}]" type="submit">
-                {{ entry.active ? $t('buttons.deactivate') : $t('buttons.activate') }}
-              </button>
-            </div>
-          </entry-detail-property>
-
-          <li>
-            <span class="entryDetail__meta">{{ $t('entries.created_at') }}</span>
-            <span>{{ entry.created_at | formatDateAbsolute }} ({{ entry.created_at | formatDateRelative }}) </span>
-          </li>
-          <li>
-            <span class="entryDetail__meta">{{ $t('entries.updated_at') }}</span>
-            <span>{{ entry.updated_at | formatDateAbsolute }} ({{ entry.updated_at | formatDateRelative }}) </span>
-          </li>
-          <li>
-            <span class="entryDetail__meta">{{ $t('entries.state_changed_at') }}</span>
-            <span>{{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }}) </span>
-          </li>
-        </ul>
-
-
-        <ul class="entryDetail" v-if="has.date">
-          <li>
-            <span class="entryDetail__meta"> {{ $t('entries.date_start') }}</span>
-            <span> {{ entry.date_start | formatDateAbsolute }} ({{entry.date_start | formatDateRelative }}) </span>
-          </li>
-          <li>
-            <span class="entryDetail__meta"> {{ $t('entries.date_end') }}</span>
-            <span> {{ entry.date_end | formatDateAbsolute }} ({{entry.date_end | formatDateRelative }}) </span>
-          </li>
-        </ul>
-
-        <div class="entryDetail" v-if="has.orga">
-          <h2>Veranstalter</h2>
-          <entry-list-items :items="[entry.parent_orga]" v-if="entry.parent_orga"></entry-list-items>
-          <div v-else>
-            Kein Veranstalter angegeben.
-          </div>
-        </div>
-
-        <ul class="entryDetail" v-if="entry.location">
-          <h2>{{ $t('headlines.location') }}</h2>
-
-          <entry-detail-property :name="$t('entries.address')" :iconName="'location_on'">
-              {{ entry.location.placename }}
-              {{ entry.location.street }}
-              {{ entry.location.zip }} {{ entry.location.city }}
-          </entry-detail-property>
-
-          <entry-detail-property :name="$t('entries.directions')" :iconName="'train'" :isMultiline="true">
-              {{ entry.location.directions }}
-          </entry-detail-property>
-
-          <li v-if="!entry.location.isEmpty()">
-            <location-map :map-center="mapCenter" :location="entry.location"></location-map>
-          </li>
-
-          <li v-if="entry.location.isEmpty()" class="entryDetail__error">
-            {{ $t('errors.noLocationPresent') }}
-          </li>
-        </ul>
-
-        <ul class="entryDetail" v-if="entry.contact">
-          <h2>{{ $t('headlines.contact') }}</h2>
-
-          <entry-detail-property :name="$t('headlines.contact')" :iconName="'mail_outline'" :isMultiline="true">
-              {{ entry.contact.person }}
-              {{ entry.contact.phone }}
-              <a :href="'mailto:' + entry.contact.mail">{{ entry.contact.mail }}</a>
-          </entry-detail-property>
-
-          <entry-detail-property v-if="entry.contact.openingHours"> :name="$t('entries.openingHours')" :iconName="'access_time'" :isMultiline="true"
-              {{ entry.contact.openingHours }}
-          </entry-detail-property>
-
-          <entry-detail-property :name="'Links'" :iconName="'link'" :isMultiline="true">
-            <a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a>
-            <a :href="entry.contact.facebook" target="_blank">{{ entry.contact.facebook }}</a>
-          </entry-detail-property>
-
-          <li v-if="entry.contact.isEmpty()" class="entryDetail__error">
-            {{ $t('errors.noContactPresent') }}
-          </li>
-
-        </ul>
-
-        <div class="entryDetail" v-if="has.events">
-          <h2>Veranstaltungen der Orga</h2>
-          <form>
-            <fieldset>
-              <input type="radio" id="up" v-model="filterOrgaEventsBy" value="upcoming" v-on:change="updateEventFilter">
-              <label for="up"> Aktuelle Veranstaltungen</label><br>
-              <input type="radio" id="pa" v-model="filterOrgaEventsBy" value="past" v-on:change="updateEventFilter">
-              <label for="pa"> Vergangene Veranstaltungen</label>
-            </fieldset>
-          </form>
-          <entry-list-items
-            :items="events"
-            v-if="events.length"
-            :sort-function="sortByDateStart"
-            :sort-order="orgaEventsSortOrder"
-            :options="{date_start: true}">
-          </entry-list-items>
-          <div v-else class="entryDetail__error">
-            {{ $t('errors.noEventsForOrga') }}
-          </div>
-        </div>
-
-        <div class="entryDetail" v-if="has.parentOrga">
-          <h2>{{ $t('headlines.parentOrga') }}</h2>
-          <entry-list-items :items="[entry.parent_orga]" v-if="entry.parent_orga"></entry-list-items>
-          <div v-else class="entryDetail__error">
-            {{ $t('errors.noParentOrgaPresent') }}
-          </div>
-
-          <h2>{{ $t('headlines.subOrgas') }}</h2>
-          <entry-list-items :items="entry.sub_orgas" v-if="entry.sub_orgas.length"></entry-list-items>
-          <div v-else class="entryDetail__error">
-            {{ $t('errors.noSubOrgaPresent') }}
-          </div>
-        </div>
-
-      </div>
-
     </div>
 
     <div v-else class="mainCard">
