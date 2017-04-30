@@ -37,7 +37,7 @@
             </div>
 
             <div class="inputField__spacing input-field">
-              <label for="description" :class="{active: item.description}">Kurzbeschreibung</label>
+              <label for="description" :class="{active: item.short_description}">Kurzbeschreibung</label>
               <textarea v-model="item.short_description" id="short_description"
               data-vv-name="short_description" v-validate="'max: 350'"
               :class="['materialize-textarea', {'validation-error': errors.has('short_description') }]"></textarea>
