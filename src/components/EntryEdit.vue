@@ -33,19 +33,20 @@
             </div>
 
             <div class="inputField__spacing input-field">
-              <label for="description" :class="{active: item.short_description}">Kurzbeschreibung</label>
+              <label for="description" :class="{active: item.short_description}">
+                Kurzbeschreibung (maximal 350 Zeichen)
+                <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span>
+              </label>
               <textarea v-model="item.short_description" id="short_description"
-              data-vv-name="short_description" v-validate="'max: 350'"
+              data-vv-name="short_description" v-validate="'required|max: 350'"
               :class="['materialize-textarea', {'validation-error': errors.has('short_description') }]"></textarea>
               <span v-show="errors.has('short_description')" class="validation-error">{{ errors.first('short_description') }}</span>
             </div>
 
             <div class="inputField__spacing input-field">
-              <label for="description" :class="{active: item.description}">Beschreibung <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span></label>
+              <label for="description" :class="{active: item.description}">Beschreibung</label>
               <textarea v-model="item.description" id="description"
-                data-vv-name="description" v-validate="'required'"
-                :class="['materialize-textarea', {'validation-error': errors.has('description') }]"></textarea>
-              <span v-show="errors.has('description')" class="validation-error">{{ errors.first('description') }}</span>
+                class="materialize-textarea"></textarea>
             </div>
 
             <div class="inputField__spacing" v-if="has.orga">
@@ -123,7 +124,7 @@
                 <input v-model="item.contact.person" id="contactPerson" type="text"/>
               </div>
 
-              <div class="inputField__spacing input-field">
+              <div class="inputField__spacing input-field" v-if="item.type === 'orgas'">
                 <label for="openingHours" :class="{active: item.contact.openingHours}">
                   {{ $t('entries.openingHours') }}
                 </label>
@@ -159,7 +160,7 @@
             <h2>{{ $t('headlines.location') }}</h2>
             <div class="inputField__spacing" v-if="item.location">
               <div class="input-field">
-                <label for="placename" :class="{active: item.location.placename}">Ortsbezeichnung</label>
+                <label for="placename" :class="{active: item.location.placename}">Ortsbezeichnung (z.B. Hinterhof)</label>
                 <input v-model="item.location.placename" id="placename" type="text" class="validate" />
               </div>
 
