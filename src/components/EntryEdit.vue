@@ -7,11 +7,7 @@
           <h2 class="mainCard__headerTitle"> {{item.title || 'Kein Titel'}}</h2>
           <a href="" @click.prevent="cancel" class="mainCard__headerAction"><i class="material-icons">cancel</i></a>
         </div>
-        <div v-else>
-          <div class="mainCard__header mainCard__headerGreen">
-            {{ messages.loading() }} ...
-          </div>
-        </div>
+
 
         <image-container v-if="item" v-show="!imageError"
           :image-url="item.media_url"
@@ -234,6 +230,14 @@
 
           </form>
         </div>
+
+        <div v-else class="mainCard">
+          <div class="mainCard__header mainCard__headerLight">
+            {{ messages.loading() }} ...
+          </div>
+        </div>
+
+
       </div>
     </div>
   </div>
