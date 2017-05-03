@@ -22,13 +22,13 @@ export default {
       messages: {
         loading: () => this.$t('status.load_orga') + ' ' + this.id,
         activateHeadline: active => {
-          return `Orga ${active ? 'de' : ''}aktivieren`
+          return `Orga ${active ? 'verbergen' : 'veröffentlichen'}`
         },
         activate: active => {
-          return `Soll die Orga "${this.item.title}" ${active ? 'de' : ''}aktiviert werden?`
+          return `Soll die Orga "${this.item.title}" ${active ? 'verborgen' : 'veröffentlicht'} werden?`
         },
         activated: active => {
-          return `Die Orga wurde ${active ? '' : 'de'}aktiviert.`
+          return `Die Orga wurde ${active ? 'veröffentlicht' : 'verborgen'}.`
         }
       }
     }
