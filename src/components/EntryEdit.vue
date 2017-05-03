@@ -205,10 +205,12 @@
             </div>
 
             <h2>{{ $tc('headlines.annotations', 2) }}</h2>
+            <span v-if="bippelMoved" class="validation-hint">
+              <i class="material-icons">error_outline</i>
+              Annmerkungen sind nicht öffentlich sichtbar und dienen nur den Redakteur*innen.
+            </span>
             <div class="annotationEditArea">
-
               <annotation-tag v-for="annotation in item.annotations" :annotation="annotation" :editMode="true" v-on:remove="removeAnnotation" :key="annotation.id"></annotation-tag>
-
               <p v-if="!item.annotations.length" class="annotationArea__error">Keine Anmerkungen</p>
               <div class="annotationNew">
                 <select class="browser-default annotationNew" v-model="selectedAnnotation" @change="addAnnotation">
@@ -641,6 +643,7 @@ select + span.validation-error, .datePicker + span.validation-error {
   background: $white;
   padding: 0.5em;
   border-radius: 5px;
+  margin-top: 0.5em;
   list-style: none;
   display: flex;
   flex-wrap: wrap;
