@@ -326,7 +326,7 @@ li.align-status-items {
     color: $red;
   }
   &__error_white_space {
-    margin-bottom: 2.5em;
+    margin-bottom: 3em;
   }
 }
 </style>
