@@ -52,8 +52,11 @@ export default {
   &__propertyContent {
       margin-top: 0.5em;
       margin-bottom: 0;
-      white-space: normal;
       line-height: 160%;
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      hyphens: auto;
   }
   &__propertyContainer {
     width: 100%;
