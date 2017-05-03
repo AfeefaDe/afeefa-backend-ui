@@ -52,6 +52,9 @@
     display: flex;
     align-items: baseline;
     margin-bottom: 0.7em;
+    @media screen and (max-width: $break-medium) {
+      display: block;
+    }
   }
   &__infoText {
     flex-grow: 2;

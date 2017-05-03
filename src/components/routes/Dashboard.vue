@@ -25,7 +25,8 @@
           <h2 class="mainCard__headerTitle">
             <router-link :to="{name: 'orgas.list'}">{{ $t('headlines.organisations') }} ({{ numOrgas }})</router-link>
           </h2>
-          <router-link :to="{name: 'orgas.new'}" class="mainCard__headerAction">
+          <router-link :to="{name: 'orgas.new'}"  class="mainCard__headerButton">
+            {{$t('buttons.add')}}
             <i class="material-icons">add</i>
           </router-link>
         </div>
@@ -47,7 +48,8 @@
           <h2 class="mainCard__headerTitle">
             <router-link :to="{name: 'events.list'}">{{ $tc('headlines.events', 2) }} ({{numEvents}})</router-link>
           </h2>
-          <router-link :to="{name: 'events.new'}" class="mainCard__headerAction">
+          <router-link :to="{name: 'events.new'}"  class="mainCard__headerButton">
+            {{$t('buttons.add')}}
             <i class="material-icons">add</i>
           </router-link>
         </div>

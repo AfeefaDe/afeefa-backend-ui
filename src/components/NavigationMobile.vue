@@ -1,9 +1,12 @@
 <template>
   <div class="navigation-mobile">
-    <navigation-breadcrumb></navigation-breadcrumb>
+    <div class="navigation-mobile__header">
+      <navigation-breadcrumb></navigation-breadcrumb>
 
-    <div id="btn-sandwich" @click="toggleMenu()">
-  		<i class="material-icons">menu</i>
+      <div id="btn-sandwich" @click="toggleMenu()">
+        <i class="material-icons" v-if="visible">close</i>
+        <i class="material-icons" v-else>menu</i>
+      </div>
     </div>
 
     <div id="menu" v-if="visible">
@@ -13,11 +16,10 @@
         </router-link>
       </div>
 
-      <section id="user-context">
-  	    <i class="material-icons">account_circle</i> {{username}}
-  	  </section>
-      <a href="" @click.prevent="logout()"> {{ $t('headlines.logout') }} </a>
-
+      <section class="navigation-mobile__footer">
+        <span><i class="material-icons">account_circle</i> {{username}}</span>
+        <a href="" @click.prevent="logout()"> {{ $t('headlines.logout') }} </a>
+      </section>
     </div>
   </div>
 </template>
@@ -59,48 +61,45 @@ export default {
 
 .navigation-mobile {
   display: block;
-  padding: 1em;
+  padding: 1em 0.8em;
   background-color: $black_alpha;
   color: $white;
   /*defined in _variables.scss*/
-  height: $header-height;
-  position: relative;
+  height: auto;
   z-index: 100;
-  position: fixed;
   width: 100%;
 
-  #btn-sandwich {
-    position: absolute;
-    top: 0.8em;
-    right: 1em;
-    cursor: pointer;
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
+  #btn-sandwich {
+    cursor: pointer;
+    margin-top: 0.2em;
     i { font-size: 2em; }
   }
 
   #menu {
-    position: absolute;
-    padding: 1em 2em 1em 1.2em;
-    top: 3.5em;
-    right: 0;
-    background-color: $black_alpha;
-
-    section {
-      font-size: 1.2em;
-    }
-
+    margin-top: 0.5em;
+    border-top: 1px solid $gray20;
+    position: relative;
+    text-align: left;
     a {
       display: block;
-      color: $white;
       cursor: pointer;
       margin: 10px 0;
       vertical-align: middle;
-      font-size: 1.2em;
     }
 
     i {
       vertical-align: middle;
-      font-size: 2em;
       margin-top: -3px;
     }
   }

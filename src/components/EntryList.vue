@@ -4,7 +4,8 @@
       <div class="mainCard">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">{{ $t('status.all') }} {{ messages.headline() }} ({{ numItems }})</h2>
-          <router-link v-if="addEntryButton" :to="{name: addEntryButton}" class="mainCard__headerAction">
+          <router-link v-if="addEntryButton" :to="{name: addEntryButton}"  class="mainCard__headerButton">
+            {{$t('buttons.add')}}
             <i class="material-icons">add</i>
           </router-link>
         </div>

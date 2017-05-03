@@ -86,6 +86,8 @@ export default {
   buttons: {
     activate: 'Publish',
     deactivate: 'Unpublish'
+    edit: 'Edit',
+    add: 'Add'
   },
   infos: {
     mandatory_field: 'mandatory',

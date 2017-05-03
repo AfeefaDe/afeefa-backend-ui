@@ -84,7 +84,9 @@ export default {
   },
   buttons: {
     activate: '*',
-    deactivate: '*'
+    deactivate: '*',
+    edit: '*',
+    add: '*'
   },
   infos: {
     mandatory_field: '*',

@@ -85,6 +85,8 @@ export default {
   buttons: {
     activate: 'Veröffentlichen',
     deactivate: 'Verbergen'
+    edit: 'Bearbeiten',
+    add: 'Hinzufügen'
   },
   infos: {
     mandatory_field: 'Pflichtfeld',

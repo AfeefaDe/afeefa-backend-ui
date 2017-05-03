@@ -23,12 +23,10 @@ body {
 /*spacing for fixed header*/
 $sidebarWidth: 350px;
 .content {
-  padding-top: $header-height;
   &__sidebar {
     display: none;
   }
   @media screen and (min-width: $break-medium) {
-    padding-top: 0;
     &__sidebar {
       display: inherit;
       width: $sidebarWidth;
@@ -73,6 +71,9 @@ $sidebarWidth: 350px;
   /*top level divs*/
   > div {
     padding: 1em;
+    @media screen and (max-width: $break-medium) {
+      padding: 1em 0.8em;
+    }
   }
   &__header {
     background-color: $black_alpha;
@@ -111,6 +112,11 @@ $sidebarWidth: 350px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    @media screen and (max-width: $break-medium) {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: none;
+    }
   }
   &__headerSubtitle {
     font-size: 0.9rem;
@@ -122,12 +128,16 @@ $sidebarWidth: 350px;
     overflow: hidden;
   }
   &__headerButton {
-    font-size: 1em;
+    font-size: 0.93em;
     border: 1px solid white;
-    padding: 0.4em 0.6em;
+    border-radius: 2px;
+    padding: 0.3em 0.5em;
     white-space: nowrap;
     display: flex;
     align-items: center;
+    &:hover {
+      background-color: $gray80;
+    }
     .material-icons {
       font-size: 1.4em;
       margin-left: 0.5em;
