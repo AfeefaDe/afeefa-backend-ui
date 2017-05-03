@@ -1,6 +1,7 @@
 <template>
   <entry-list
     :items="items"
+    addEntryButton="orgas.new"
     :sort-function="sortByTitle"
     :options="{pagination: true, created_at: true}"
     :messages="messages">

@@ -4,7 +4,7 @@
       <div class="mainCard">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">{{ $t('status.all') }} {{ messages.headline() }} ({{ numItems }})</h2>
-          <router-link :to="{name: 'events.new'}" class="mainCard__headerAction">
+          <router-link v-if="addEntryButton" :to="{name: addEntryButton}" class="mainCard__headerAction">
             <i class="material-icons">add</i>
           </router-link>
         </div>
@@ -23,7 +23,7 @@
 import EntryListItems from '@/components/EntryListItems'
 
 export default {
-  props: ['items', 'sortFunction', 'options', 'messages'],
+  props: ['items', 'sortFunction', 'options', 'messages', 'addEntryButton'],
 
   computed: {
     numItems () {

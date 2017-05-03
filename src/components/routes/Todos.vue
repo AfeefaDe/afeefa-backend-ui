@@ -1,6 +1,7 @@
 <template>
   <entry-list
     :items="items"
+    :addEntryButton="false"
     :sort-function="sortByUpdatedAt"
     :options="{pagination: true, updated_at: true, annotations: true}"
     :messages="messages">

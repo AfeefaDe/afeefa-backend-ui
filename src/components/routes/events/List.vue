@@ -1,6 +1,7 @@
 <template>
   <entry-list
     :items="items"
+    addEntryButton="events.new"
     :sort-function="sortByDateStart"
     :options="{pagination: true, date_start: true}"
     :messages="messages">
