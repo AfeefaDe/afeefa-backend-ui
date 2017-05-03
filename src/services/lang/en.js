@@ -85,7 +85,7 @@ export default {
   },
   buttons: {
     activate: 'Publish',
-    deactivate: 'Unpublish'
+    deactivate: 'Unpublish',
     edit: 'Edit',
     add: 'Add'
   },

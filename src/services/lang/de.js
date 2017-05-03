@@ -84,7 +84,7 @@ export default {
   },
   buttons: {
     activate: 'Veröffentlichen',
-    deactivate: 'Verbergen'
+    deactivate: 'Verbergen',
     edit: 'Bearbeiten',
     add: 'Hinzufügen'
   },
