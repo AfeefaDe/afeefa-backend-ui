@@ -26,7 +26,7 @@
             </div>
 
             <div class="inputField__spacing input-field">
-              <label for="url" :class="{active: item.media_url}">Bildadresse</label>
+              <label for="url" :class="{active: item.media_url}">{{ $t('entries.image_link') }}</label>
               <input id="url" v-model="item.media_url"
                 :class="{'validation-error': imageError}"/>
               <span v-if="imageError" class="validation-error">Die Bild-URL ist fehlerhaft.</span>

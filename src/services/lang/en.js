@@ -43,6 +43,7 @@ export default {
     time_end: 'End time',
     date: 'Date',
     title: 'Title',
+    image_link: 'Image link',
     description: 'Description',
     active: 'Active',
     created_at: 'Created at',
@@ -83,8 +84,8 @@ export default {
     set_page_size: 'set page size'
   },
   buttons: {
-    activate: 'Activate',
-    deactivate: 'Deactivate'
+    activate: 'Publish',
+    deactivate: 'Unpublish'
   },
   infos: {
     mandatory_field: 'mandatory',

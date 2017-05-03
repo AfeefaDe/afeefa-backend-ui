@@ -42,6 +42,7 @@ export default {
     time_end: '*',
     date: '*',
     title: '*',
+    image_link: '*',
     description: '*',
     active: '*',
     created_at: '*',

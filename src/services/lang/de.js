@@ -42,6 +42,7 @@ export default {
     time_end: 'Endzeit',
     date: 'Datum',
     title: 'Titel',
+    image_link: 'Link zum Bild',
     description: 'Beschreibung',
     active: 'Aktiv',
     created_at: 'Erstellt',
@@ -82,8 +83,8 @@ export default {
     set_page_size: 'Seiteneinträge'
   },
   buttons: {
-    activate: 'Aktivieren',
-    deactivate: 'Deaktivieren'
+    activate: 'Veröffentlichen',
+    deactivate: 'Verbergen'
   },
   infos: {
     mandatory_field: 'Pflichtfeld',
