@@ -283,7 +283,7 @@ export default {
 
 <style lang="scss">
   label.clickable-element {
-    pointer-events:none
+    pointer-events:none;
   }
   span.hide-span {
     display: none;
@@ -317,18 +317,21 @@ export default {
   #startDate {
     cursor: pointer; cursor: hand;
     border-bottom: none;
+    color: black;
   }
   #startTime {
     cursor: pointer; cursor: hand;
     border-bottom: none;
+    color: black;
   }
   #endDate {
     cursor: pointer; cursor: hand;
-    color: inherit;
     border-bottom: none;
+    color: black;
   }
   #endTime {
     cursor: pointer; cursor: hand;
     border-bottom: none;
+    color: black;
   }
 </style>
