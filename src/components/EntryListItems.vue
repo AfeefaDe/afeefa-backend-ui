@@ -17,7 +17,7 @@
     <ul class="entryList">
       <li v-for="item in itemsSorted">
         <div v-if="!showIcon" class="entryList__icon">
-          <span :class="['entry-icon',  'entry-icon--' + item.type, 'entry-icon--' + (item.active ? 'active' : 'inactive')]"></span>
+          <span :class="['entryType-icon',  'entryType-icon--' + item.type, 'entryType-icon--' + (item.active ? 'active' : 'inactive')]"></span>
         </div>
 
         <div class="entryList__content">
@@ -35,12 +35,7 @@
               </span>
             </p>
 
-            <p v-for="annotation in item.annotations"
-              class="annotationTag"
-              :title="$t('hints.edit_annotations')"
-              v-if="has.annotations">
-                <b>{{annotation.annotationCategory.title}}</b><span v-if="annotation.detail"><br>{{annotation.detail}}</span>
-            </p>
+           <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
 
             <p class="item entryList--lightColor" v-if="has.updated_at">
               {{ $t('status.changed') }}
@@ -69,6 +64,7 @@
 
 <script>
 import Pagination from '@/components/Pagination'
+import AnnotationTag from '@/components/AnnotationTag'
 import Spinner from '@/components/Spinner'
 
 export default {
@@ -133,7 +129,78 @@ export default {
 
   components: {
     Pagination,
-    Spinner
+    Spinner,
+    AnnotationTag
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import "~variables";
+
+.entryList {
+  padding-left: 0;
+  margin-top: 0;
+  list-style: none;
+  li {
+    border-bottom: 2px solid $gray20;
+    padding: 1em 0;
+    display: flex;
+    align-items: flex-start;
+  }
+  li:last-child {
+    border-bottom: none
+  }
+  &__nav {
+    cursor: pointer;
+    color: inherit;
+    display: flex;
+    align-items: flex-end;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
+    .title {
+      flex-grow: 2;
+      font-size: 1.4em;
+      margin-bottom: 0.2em;
+      margin-top: 0;
+      font-weight: 500;
+      line-height: 120%;
+    }
+  }
+  &__content {
+    flex-grow: 2;
+  }
+  &__icon {
+    margin-right: 2em;
+    margin-top: 0.3em;
+    line-height: 100%;
+  }
+  &__attributes {
+    align-items: baseline;
+    font-size: 1em;
+    color: $gray90;
+    .category {
+      font-size: 1.1em;
+    }
+    .item {
+      margin: 0 1.5em 0 0;
+      &.category {
+        margin-bottom: .2em;
+      }
+    }
+    .item .material-icons {
+      vertical-align: bottom;
+      font-size: 1.4em;
+      margin-left: -0.3em;
+      margin-right: -0.1em;
+    }
+    .meta {
+      margin-right: 0.3em;
+    }
+  }
+  &--lightColor {
+    color: $gray50;
+  }
+}
+</style>

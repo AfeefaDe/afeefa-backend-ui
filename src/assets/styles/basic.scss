@@ -139,3 +139,19 @@ $sidebarWidth: 350px;
     max-height: $height;
   }
 }
+
+/* entry icon for events and orgas; used in list and detail view */
+.entryType-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: $black;
+  border: 2px solid $black;
+  border-radius: 2px;
+  &--events {
+    transform: rotate(45deg) scale(0.9);
+  }
+  &--inactive {
+    background-color: transparent;
+  }
+}

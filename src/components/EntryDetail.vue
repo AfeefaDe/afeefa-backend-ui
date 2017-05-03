@@ -53,12 +53,7 @@
               :name="$tc('headlines.annotations', entry.annotations.length)"
               :iconName="'label_outline'">
               <div v-if="entry.annotations.length">
-                <p class="annotationTag"
-                  :title= "$t('hints.edit_annotations')"
-                  v-for="annotation in entry.annotations">
-                   {{annotation.annotationCategory.title}}
-                   <span v-if="annotation.detail" class="annotation-detail"><br> {{annotation.detail}} </span>
-                </p>
+                <annotation-tag v-for="annotation in entry.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
               </div>
               <div v-else class="entryDetail__error">
                 {{ $t('errors.noAnnotationPresent') }}
@@ -70,7 +65,7 @@
               :iconName= "entry.active ? 'visibility' : 'visibility_off'">
               <button @click="togglePublishState" :class="['btn', 'publishButton', 'waves-effect', {green: entry.active}]" type="submit">
                 {{ entry.active ? $t('buttons.deactivate') : $t('buttons.activate') }}
-              </button><br>
+              </button><br><br>
               <span>{{ $t('entries.created_at') }}: {{ entry.created_at | formatDateAbsolute }} ({{ entry.created_at | formatDateRelative }})</span><br>
               <span>{{ $t('entries.updated_at') }}: {{ entry.updated_at | formatDateAbsolute }} ({{ entry.updated_at | formatDateRelative }})</span><br>
               <span>{{ $t('entries.state_changed_at') }}: {{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }})</span><br>
@@ -200,6 +195,7 @@ import ImageContainer from '@/components/ImageContainer'
 import EntryDetailProperty from '@/components/EntryDetailProperty'
 import EntryDetailTabbedContent from '@/components/EntryDetailTabbedContent'
 import EntryListDropDownMenu from '@/components/EntryListDropDownMenu'
+import AnnotationTag from '@/components/AnnotationTag'
 import Events from '@/resources/Events'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 
@@ -280,13 +276,14 @@ export default {
     ImageContainer,
     EntryDetailProperty,
     EntryDetailTabbedContent,
-    EntryListDropDownMenu
+    EntryListDropDownMenu,
+    AnnotationTag
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/styles/_variables.scss";
+@import "~variables";
 
 .go-back {
   color: white;
@@ -304,11 +301,6 @@ export default {
     font-size: 1.4em;
     font-weight: 500;
   }
-
-span.annotation-detail {
-  color: grey;
-  font-size: 12px;
-}
 
 li.align-status-items {
   margin-left: 4.5em;

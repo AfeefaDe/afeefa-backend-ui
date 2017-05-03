@@ -208,17 +208,10 @@
             </div>
 
             <h2>{{ $tc('headlines.annotations', 2) }}</h2>
-            <div class="annotationArea">
-              <p class="annotationTag"
-                :title="$t('hints.edit_annotations')"
-                v-for="annotation in item.annotations">
-                <span class="annotationTag__text">
-                  <b>{{annotation.annotationCategory.title}}</b><span v-if="annotation.detail"><br>{{annotation.detail}}</span>
-                </span>
-                <a href="" @click.prevent="removeAnnotation(annotation)" class="annotationTag__icon">
-                  <i class="material-icons">close</i>
-                </a>
-              </p>
+            <div class="annotationEditArea">
+
+              <annotation-tag v-for="annotation in item.annotations" :annotation="annotation" :editMode="true" v-on:remove="removeAnnotation" :key="annotation.id"></annotation-tag>
+
               <p v-if="!item.annotations.length" class="annotationArea__error">Keine Anmerkungen</p>
               <div class="annotationNew">
                 <select class="browser-default annotationNew" v-model="selectedAnnotation" @change="addAnnotation">
@@ -258,6 +251,7 @@ import Annotations from '@/resources/Annotations'
 import AnnotationCategories from '@/resources/AnnotationCategories'
 import sortByTitle from '@/helpers/sort-by-title'
 import DatePicker from '@/components/DatePicker'
+import AnnotationTag from '@/components/AnnotationTag'
 import EventBus from '@/services/event-bus'
 import Spinner from '@/components/Spinner'
 import LocationMap from '@/components/Map'
@@ -566,13 +560,37 @@ export default {
     DatePicker,
     Spinner,
     LocationMap,
-    ImageContainer
+    ImageContainer,
+    AnnotationTag
   }
 }
 </script>
 
 
 <style lang="scss" scoped>
+@import "~variables";
+
+.entryForm {
+  h2 {
+    margin-top: 2em;
+    font-size: 1.4em;
+    font-weight: 500;
+  }
+  &__actionFooter {
+    margin-top: 1.2em;
+    display: flex;
+    justify-content: space-between;
+  }
+  .mandatory-field {
+    color: #26a69a;
+  }
+}
+.input-field {
+  .flatpickr-input {
+    color: inherit !important;
+  }
+}
+
 select.validation-error, textarea.validation-error, input.validation-error, div.validation-error {
   margin-top: 2px;
   background-color: #ffeeee;
@@ -613,4 +631,23 @@ span.validation-hint {
 select + span.validation-error, .datePicker + span.validation-error {
   margin-top: .4em;
 }
+
+.annotationEditArea {
+  background: $white;
+  padding: 0.5em;
+  border-radius: 5px;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  &__error {
+    color: $gray50;
+    margin-left: 0.3em;
+  }
+  .annotationNew {
+    display: block;
+    width: 100%;
+    margin-top: 0.4em;
+  }
+}
+
 </style>

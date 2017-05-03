@@ -1,7 +1,7 @@
 <template>
   <li class="detailProperty">
-    <div v-if="hasEntryIcon" class="detailProperty__propertyEntryIcon entryList__icon">
-      <span :class="['entry-icon', 'entry-icon--' + this.entryIconType, 'entry-icon--' + (entryIconStatus ? 'active' : 'inactive')]"></span>
+    <div v-if="hasEntryIcon" class="detailProperty__propertyEntryIcon">
+      <span :class="['entryType-icon', 'entryType-icon--' + this.entryIconType, 'entryType-icon--' + (entryIconStatus ? 'active' : 'inactive')]"></span>
     </div>
 
     <span v-else class="detailProperty__propertyIcon">
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/styles/_variables.scss";
+@import "~variables";
 
 .detailProperty {
   display: flex;
@@ -39,8 +39,10 @@ export default {
   }
   &__propertyEntryIcon {
     margin-left: 0.3em;
-    margin-top: 0.5em;
+    margin-right: 2em;
+    margin-top: 0.3em;
     padding-right: 0.3em;
+    line-height: 100%;
   }
   &__propertyName {
     text-transform: uppercase;

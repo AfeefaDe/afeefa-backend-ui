@@ -20,3 +20,19 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+@import "~variables";
+
+.navigationBreadcrumb {
+  display: inline-block;
+  font-size: 1em;
+  a {
+    line-height: 1em;
+    color: white;
+  }
+  i {
+    font-size: 1em;
+    vertical-align: middle;
+  }
+}
+</style>

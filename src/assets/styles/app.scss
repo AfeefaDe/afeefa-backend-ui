@@ -1,20 +1,10 @@
 /* Main scss file */
 
-/* basics */
+/* main scss variables */
 @import 'variables';
+/* global styles and layouts */
 @import 'basic';
+/* font configuration */
 @import 'fonts';
+/* customize materialize styles */
 @import 'materialize-custom';
-
-/* components */
-@import 'components/entry-list';
-@import 'components/alert';
-@import 'components/dialog';
-@import 'components/states-form';
-@import 'components/annotation-tag';
-@import 'components/entry-form';
-@import 'components/navigation-breadcrumb';
-@import 'components/navigation-mobile';
-/* pages */
-@import 'routes/dashboard';
-@import 'routes/loading';
