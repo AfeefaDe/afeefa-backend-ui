@@ -102,6 +102,9 @@ export default {
     edit_annotations: '*',
     user_status: '*'
   },
+  messages: {
+    loading: '*'
+  },
   categories: {
     'asylum-counselling': '*',
     'authority': '*',

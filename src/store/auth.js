@@ -125,7 +125,7 @@ export default {
     login ({commit, dispatch}, loginData) {
       const url = BASE + 'users/sign_in'
       const request = Vue.http.post(url, loginData)
-      request.then(response => {
+      return request.then(response => {
         commit('setCurrentUser', response.body.data)
         router.push({name: 'dashboard'})
       }).catch(response => {

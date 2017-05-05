@@ -102,6 +102,9 @@ export default {
     edit_annotations: 'Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden.',
     user_status: 'Der Name des aktuell eingeloggten Nutzers.'
   },
+  messages: {
+    loading: 'Lädt'
+  },
   categories: {
     'asylum-counselling': 'Asylberatung',
     'authority': 'Behörden',
