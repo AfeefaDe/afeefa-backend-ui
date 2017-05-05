@@ -23,7 +23,7 @@
         :image-url="entry.media_url">
       </image-container>
 
-      <entry-detail-tabbed-content>
+      <entry-tabbed-content>
         <section slot="generalTab">
           <ul class="entryDetail">
             <entry-detail-property v-if="entry.title" :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' >
@@ -171,7 +171,7 @@
           </entry-detail-property>
         </ul>
       </section>
-      </entry-detail-tabbed-content>
+      </entry-tabbed-content>
     </div>
 
     <div v-else class="mainCard">
@@ -193,7 +193,7 @@ import EntryListItems from '@/components/EntryListItems'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
 import EntryDetailProperty from '@/components/EntryDetailProperty'
-import EntryDetailTabbedContent from '@/components/EntryDetailTabbedContent'
+import EntryTabbedContent from '@/components/EntryTabbedContent'
 import EntryListDropDownMenu from '@/components/EntryListDropDownMenu'
 import AnnotationTag from '@/components/AnnotationTag'
 import Events from '@/resources/Events'
@@ -275,7 +275,7 @@ export default {
     LocationMap,
     ImageContainer,
     EntryDetailProperty,
-    EntryDetailTabbedContent,
+    EntryTabbedContent,
     EntryListDropDownMenu,
     AnnotationTag
   }

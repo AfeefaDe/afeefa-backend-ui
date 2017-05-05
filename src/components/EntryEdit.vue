@@ -17,7 +17,7 @@
         <div v-if="item">
           <form @submit.prevent="save" class="entryForm" novalidate>
 
-            <entry-detail-tabbed-content>
+            <entry-tabbed-content>
               <section slot="generalTab">
                 <br>
                 <div class="inputField__spacing input-field">
@@ -232,7 +232,7 @@
                   </div>
                 </div>
               </section>
-            </entry-detail-tabbed-content>
+            </entry-tabbed-content>
 
             <br>
             <section class="entryForm__actionFooter">
@@ -279,7 +279,7 @@ import EventBus from '@/services/event-bus'
 import Spinner from '@/components/Spinner'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
-import EntryDetailTabbedContent from '@/components/EntryDetailTabbedContent'
+import EntryTabbedContent from '@/components/EntryTabbedContent'
 
 
 export default {
@@ -586,7 +586,7 @@ export default {
     LocationMap,
     ImageContainer,
     AnnotationTag,
-    EntryDetailTabbedContent
+    EntryTabbedContent
   }
 }
 </script>
@@ -597,7 +597,7 @@ export default {
 
 .entryForm {
   h2 {
-    margin-top: 2em;
+    margin-top: 1.5em;
     font-size: 1.4em;
     font-weight: 500;
   }
