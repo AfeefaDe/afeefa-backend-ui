@@ -109,11 +109,5 @@ export default {
     display: flex;
     align-items: center;
   }
-  &__footerItem .spacing-right {
-    margin-right: 0.2em;
-  }
-  &__footerItem .spacing-left {
-    margin-left: 0.2em;
-  }
 }
 </style>

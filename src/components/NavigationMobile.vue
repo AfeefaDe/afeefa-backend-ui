@@ -10,15 +10,18 @@
     </div>
 
     <div id="menu" v-if="visible">
-      <div v-for="item in items">
+      <div v-for="item in items" :class="['navigation-mobile__item', 'level' + item.level]">
         <router-link :to="{name: item.route}"> {{ $tc(item.title, 2) }}
           <span v-if="item.hint || item.hint === 0">({{item.hint}})</span>
         </router-link>
+        <router-link :to="{name: item.action.route}" class="navigation-mobile__itemAction" v-if="item.action">
+            <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
+          </router-link>
       </div>
 
       <section class="navigation-mobile__footer">
         <span><i class="material-icons">account_circle</i> {{username}}</span>
-        <a href="" @click.prevent="logout()"> {{ $t('headlines.logout') }} </a>
+        <a href="" @click.prevent="logout()"> {{ $t('headlines.logout') }}<i class="material-icons spacing-left">exit_to_app</i></a>
       </section>
     </div>
   </div>
@@ -68,7 +71,16 @@ export default {
   height: auto;
   z-index: 100;
   width: 100%;
-
+  &__item {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__item.level2 {
+    margin-left: 1em;
+  }
+  &__itemAction i {
+    font-size: 1.3em;
+  }
   &__header {
     display: flex;
     align-items: center;
@@ -94,7 +106,7 @@ export default {
     a {
       display: block;
       cursor: pointer;
-      margin: 10px 0;
+      margin: 0.6em 0;
       vertical-align: middle;
     }
 
