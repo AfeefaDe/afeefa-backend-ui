@@ -21,7 +21,11 @@
               <section slot="generalTab">
                 <br>
                 <div class="inputField__spacing input-field">
-                  <label for="title" :class="{active: item.title}">Titel <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span></label>
+                  <label for="title" :class="{active: item.title}">
+                    Titel
+                    <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span>
+                    <span class="labelCharacterCount" v-if="item.title.length">{{item.title.length}}/150</span>
+                  </label>
                   <input v-model="item.title" id="title" type="text"
                     data-vv-name="title" v-validate="'required|max: 150'"
                     :class="{'validation-error': errors.has('title') }"/>
@@ -37,8 +41,9 @@
 
                 <div class="inputField__spacing input-field">
                   <label for="description" :class="{active: item.short_description}">
-                    Kurzbeschreibung (maximal 350 Zeichen)
+                    Kurzbeschreibung
                     <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span>
+                    <span class="labelCharacterCount" v-if="item.short_description.length">{{item.short_description.length}}/350</span>
                   </label>
                   <textarea v-model="item.short_description" id="short_description"
                   data-vv-name="short_description" v-validate="'required|max: 350'"
@@ -613,6 +618,13 @@ export default {
 .input-field {
   .flatpickr-input {
     color: inherit !important;
+  }
+  label {
+    display: inline-block;
+    width: 100%;
+  }
+  .labelCharacterCount {
+    float: right;
   }
 }
 
