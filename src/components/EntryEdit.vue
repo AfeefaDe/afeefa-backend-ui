@@ -8,7 +8,6 @@
           <a href="" @click.prevent="cancel" class="mainCard__headerAction"><i class="material-icons">cancel</i></a>
         </div>
 
-
         <image-container v-if="item" v-show="!imageError"
           :image-url="item.media_url"
           @state="updateImageContainerState">
@@ -17,7 +16,7 @@
         <div v-if="item">
           <form @submit.prevent="save" class="entryForm" novalidate>
 
-            <entry-tabbed-content>
+            <entry-tabbed-content v-on:setCurrentTab="setCurrentTab">
               <section slot="generalTab">
                 <br>
                 <div class="inputField__spacing input-field">
@@ -305,6 +304,8 @@ export default {
       geodataOfAddress: null,
       geocodeError: false,
 
+      currentTab: '',
+
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
@@ -409,6 +410,10 @@ export default {
       this.item.sub_category = null
     },
 
+    setCurrentTab (newCurrentTab) {
+      this.currentTab = newCurrentTab
+    },
+
     addAnnotation () {
       const annotationCategory = this.selectedAnnotation
       let newAnnotation = Annotations.createItem()
@@ -428,7 +433,7 @@ export default {
 
     cancel () {
       if (this.item.id) {
-        this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}})
+        this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}, query: {tab: this.currentTab}})
       } else {
         this.$router.push({name: this.routeName + '.list'})
       }

@@ -45,9 +45,12 @@ export default {
   methods: {
     initPageProperties () {
       this.activeTab = this.$route.query.tab || 'generalTab'
+      this.$emit('setCurrentTab', this.activeTab)
     },
     setActiveTab (tab) {
       this.activeTab = tab
+      // set active tab to parent (used to switch between edit/view mode consistently)
+      this.$emit('setCurrentTab', this.activeTab)
       const query = {...this.$route.query}
       query.tab = tab === 'generalTab' ? undefined : tab
       this.$router.replace({query: query})
