@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="inputField__spacing input-field">
-                  <label for="description" :class="{active: item.short_description}">
+                  <label for="short_description" :class="{active: item.short_description}">
                     {{ $t('entries.short_description') }}
                     <span class="labelCharacterCount" v-if="item.short_description.length">{{item.short_description.length}}/350</span>
                   </label>
