@@ -62,7 +62,7 @@ export default {
     phone: 'Telefonnummer',
     openingHours: 'Öffnungszeiten',
     web: 'Homepage',
-    facebook: 'Facebook',
+    socialMedia: 'Social Media',
     directions: 'Anfahrtsweg',
     short_description: 'Kurzbeschreibung'
   },

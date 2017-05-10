@@ -63,7 +63,7 @@ export default {
     phone: 'Phone number',
     openingHours: 'Opening hours',
     web: 'Webpage',
-    facebook: 'Facebook',
+    socialMedia: 'Social Media',
     directions: 'Directions',
     short_description: 'Short description'
   },

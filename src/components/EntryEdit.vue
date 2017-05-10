@@ -200,16 +200,16 @@
                   </div>
 
                   <div class="input-field">
-                    <label for="facebook" :class="{active: item.contact.facebook}">{{ $t('entries.facebook') }}</label>
-                    <input id="facebook"
+                    <label for="socialMedia" :class="{active: item.contact.socialMedia}">{{ $t('entries.socialMedia') }}</label>
+                    <input id="socialMedia"
                           type="text"
-                          v-model="item.contact.facebook"
-                          data-vv-name="facebook"
+                          v-model="item.contact.socialMedia"
+                          data-vv-name="socialMedia"
                           data-vv-validate-on="blur"
                           v-validate="'url-with-protocol'"
-                          :class="{'validation-error': errors.has('facebook') }"/>
+                          :class="{'validation-error': errors.has('socialMedia') }"/>
                     </div>
-                    <span v-show="errors.has('facebook')" class="validation-error">{{ errors.first('facebook') }}</span>
+                    <span v-show="errors.has('socialMedia')" class="validation-error">{{ errors.first('socialMedia') }}</span>
                 </div>
               </section>
 

@@ -62,7 +62,7 @@ export default {
     phone: '*',
     openingHours: '*',
     web: '*',
-    facebook: '*',
+    socialMedia: '*',
     directions: '*',
     short_description: '*'
   },

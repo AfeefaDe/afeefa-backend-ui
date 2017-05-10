@@ -11,7 +11,7 @@ export default class Contact extends BaseModel {
     this.phone = ''
     this.openingHours = ''
     this.web = ''
-    this.facebook = ''
+    this.socialMedia = ''
   }
 
   deserialize (json) {
@@ -21,7 +21,7 @@ export default class Contact extends BaseModel {
     this.phone = json.attributes.phone || ''
     this.openingHours = json.attributes.opening_hours || ''
     this.web = json.attributes.web || ''
-    this.facebook = json.attributes.facebook || ''
+    this.socialMedia = json.attributes.social_media || ''
   }
 
   serialize () {
@@ -33,7 +33,7 @@ export default class Contact extends BaseModel {
         phone: this.phone,
         opening_hours: this.openingHours,
         web: this.web,
-        facebook: this.facebook
+        social_media: this.socialMedia
       }
     }
     if (this.id) {
@@ -43,6 +43,6 @@ export default class Contact extends BaseModel {
   }
 
   isEmpty () {
-    return !this.person && !this.mail && !this.phone && !this.openingHours && !this.web && !this.facebook
+    return !this.person && !this.mail && !this.phone && !this.openingHours && !this.web && !this.socialMedia
   }
 }

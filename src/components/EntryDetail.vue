@@ -108,9 +108,9 @@
 
               <entry-detail-property v-if="entry.contact.openingHours" :name="$t('entries.openingHours')" :iconName="'access_time'" :isMultiline="true">{{ entry.contact.openingHours }}</entry-detail-property>
 
-              <entry-detail-property :name="'Links'" :iconName="'link'" v-if="entry.contact.web || entry.contact.facebook">
+              <entry-detail-property :name="'Links'" :iconName="'link'" v-if="entry.contact.web || entry.contact.socialMedia">
                 <span v-if="entry.contact.web"><a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a><br></span>
-                <span v-if="entry.contact.facebook"><a :href="entry.contact.facebook" target="_blank">{{ entry.contact.facebook }}</a></span>
+                <span v-if="entry.contact.socialMedia"><a :href="entry.contact.socialMedia" target="_blank">{{ entry.contact.socialMedia }}</a></span>
               </entry-detail-property>
             </li>
           </ul>
