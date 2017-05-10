@@ -5,8 +5,13 @@ import moment from 'moment'
 Validator.addLocale(de)
 
 let rule = {
-  getMessage (field, params, data) {
-    return 'Die Endzeit liegt vor der Anfangszeit.'
+  messages: {
+    en: (field, args) => {
+      return 'End time is earlier than start time.'
+    },
+    de: (field, args) => {
+      return 'Die Endzeit liegt vor der Anfangszeit.'
+    }
   },
   validate ({dateStart, dateEnd, hasTimeStart, hasTimeEnd}) {
     const endDayIsBefore = moment(dateEnd).startOf('day')
@@ -33,8 +38,13 @@ Validator.extend('date-end-not-before-start', rule)
 
 
 rule = {
-  getMessage (field, params, data) {
-    return 'Die Endzeit ist gleich der Anfangszeit.'
+  messages: {
+    en: (field, args) => {
+      return 'End time and start time are equal.'
+    },
+    de: (field, args) => {
+      return 'Die Endzeit ist gleich der Anfangszeit.'
+    }
   },
   validate ({dateStart, dateEnd, hasTimeStart, hasTimeEnd}) {
     if (hasTimeEnd && moment(dateStart).isSame(moment(dateEnd))) {
