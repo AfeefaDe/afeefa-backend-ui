@@ -47,8 +47,13 @@ Validator.extend('date-end-not-start', rule)
 
 
 rule = {
-  getMessage  (field, params, data) {
-    return 'Die eingegebene URL ist nicht gültig. (http:// wird gefordert)'
+  messages: {
+    en: (field, args) => {
+      return 'Url is not validate. (http:// is needed)'
+    },
+    de: (field, args) => {
+      return 'Die eingegebene URL ist nicht gültig. (http:// wird gefordert)'
+    }
   },
   validate (value) {
     // from http://stackoverflow.com/a/15855457
