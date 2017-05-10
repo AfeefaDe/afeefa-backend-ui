@@ -116,9 +116,20 @@
           </ul>
         </section>
         <section slot="linkTab">
-          <ul v-if="entry.type === 'events'" class="entryDetail__error entryDetail__error_white_space">
+          <ul v-if="entry.type === 'events' && !entry.parent_orga" class="entryDetail__error entryDetail__error_white_space">
               {{ $t('errors.noLinksPresent') }}
           </ul>
+
+          <ul v-if="entry.type === 'events' && entry.parent_orga">
+            <entry-detail-property :name="$t('headlines.organizer')" hasEntryIcon="true" entryIconType='orgas' :entryIconStatus='false'>
+              <entry-list-items
+                :items="[entry.parent_orga]"
+                v-if="entry.parent_orga"
+                showIcon="false">
+              </entry-list-items>
+            </entry-detail-property>
+          </ul>
+
           <ul class="entryDetail" v-if="entry.type === 'orgas'">
             <entry-detail-property :name="$t('headlines.organisations')" hasEntryIcon="true" entryIconType='orgas' :entryIconStatus='false'>
 
