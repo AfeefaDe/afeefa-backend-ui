@@ -50,7 +50,7 @@ export default {
       this.activeTab = tab
       const query = {...this.$route.query}
       query.tab = tab === 'generalTab' ? undefined : tab
-      this.$router.push({query: query})
+      this.$router.replace({query: query})
     }
   }
 }
