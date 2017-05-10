@@ -12,6 +12,7 @@ export default class Location extends BaseModel {
     this.zip = ''
     this.city = ''
     this.placename = ''
+    this.directions = ''
   }
 
   deserialize (json) {
@@ -22,6 +23,7 @@ export default class Location extends BaseModel {
     this.zip = json.attributes.zip || ''
     this.city = json.attributes.city || ''
     this.placename = json.attributes.placename || ''
+    this.directions = json.attributes.directions || ''
   }
 
   serialize () {
@@ -33,7 +35,8 @@ export default class Location extends BaseModel {
         street: this.street,
         zip: this.zip,
         city: this.city,
-        placename: this.placename
+        placename: this.placename,
+        directions: this.directions
       }
     }
     if (this.id) {
@@ -43,6 +46,6 @@ export default class Location extends BaseModel {
   }
 
   isEmpty () {
-    return !this.street && !this.zip && !this.city && !this.placename
+    return !this.street && !this.zip && !this.city && !this.placename && !this.directions
   }
 }

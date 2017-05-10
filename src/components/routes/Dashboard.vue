@@ -25,7 +25,8 @@
           <h2 class="mainCard__headerTitle">
             <router-link :to="{name: 'orgas.list'}">{{ $t('headlines.organisations') }} ({{ numOrgas }})</router-link>
           </h2>
-          <router-link :to="{name: 'orgas.new'}" class="mainCard__headerAction">
+          <router-link :to="{name: 'orgas.new'}"  class="mainCard__headerButton">
+            {{$t('buttons.add')}}
             <i class="material-icons">add</i>
           </router-link>
         </div>
@@ -45,9 +46,10 @@
       <div class="mainCard">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">
-            <router-link :to="{name: 'events.list'}">{{ $t('headlines.events') }} ({{numEvents}})</router-link>
+            <router-link :to="{name: 'events.list'}">{{ $tc('headlines.events', 2) }} ({{numEvents}})</router-link>
           </h2>
-          <router-link :to="{name: 'events.new'}" class="mainCard__headerAction">
+          <router-link :to="{name: 'events.new'}"  class="mainCard__headerButton">
+            {{$t('buttons.add')}}
             <i class="material-icons">add</i>
           </router-link>
         </div>
@@ -58,7 +60,7 @@
             :sort-function="eventsSort"
             :options="{date_start: true}">
           </entry-list-items>
-          <router-link :to="{name: 'events.list'}">{{ $t('status.all') }} {{ $t('headlines.events') }}</router-link>
+          <router-link :to="{name: 'events.list'}">{{ $t('status.all') }} {{ $tc('headlines.events', 2) }}</router-link>
         </div>
       </div>
     </div>

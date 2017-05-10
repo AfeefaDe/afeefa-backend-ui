@@ -1,12 +1,17 @@
+let ID = 0
+
 export default class BaseModel {
   constructor () {
+    this._ID = ++ID
     this._fullyLoaded = false
 
     this.init()
   }
 
+
   init () {
   }
+
 
   serialize () {
     const data = {
@@ -15,6 +20,7 @@ export default class BaseModel {
     }
     return data
   }
+
 
   clone () {
     const Constructor = this.constructor

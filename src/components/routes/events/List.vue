@@ -1,6 +1,7 @@
 <template>
   <entry-list
     :items="items"
+    addEntryButton="events.new"
     :sort-function="sortByDateStart"
     :options="{pagination: true, date_start: true}"
     :messages="messages">
@@ -21,7 +22,7 @@ export default {
       Resource: Events,
       sortByDateStart,
       messages: {
-        headline: () => this.$t('headlines.events')
+        headline: () => this.$tc('headlines.events', 2)
       }
     }
   }

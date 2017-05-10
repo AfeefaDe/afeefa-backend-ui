@@ -27,6 +27,14 @@
           </div>
         </div>
       </div>
+      <transition name="fade">
+        <div v-if="loading" class="loadingOverlay">
+          <div>
+            <div class="spinner"></div>
+            <p>{{$t('messages.loading')}}</p>
+          </div>
+        </div>
+      </transition>
   </div>
 </template>
 
@@ -36,13 +44,17 @@ export default {
   data () {
     return {
       email: '',
-      password: ''
+      password: '',
+      loading: false
     }
   },
   methods: {
     submitLoginForm: function () {
       var loginData = {email: this.email, password: this.password}
-      this.$store.dispatch('auth/login', loginData)
+      this.loading = true
+      this.$store.dispatch('auth/login', loginData).then(() => {
+        this.loading = false
+      })
     }
   }
 }
@@ -60,5 +72,42 @@ export default {
     display: block;
     margin: 0 auto;
   }
+}
+.loadingOverlay {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(0,0,0,0.5);
+  & > {
+    display: block;
+    text-align: center;
+    margin: 50vh auto;
+    color: white;
+    font-size: 1.2rem;
+    line-height: 200%;
+  }
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}
+
+// from http://codepen.io/brunjo/pen/WbrjKw
+.spinner {
+  margin: 0 auto;
+  height: 50px;
+  width: 50px;
+  animation: rotate 0.8s infinite linear;
+  border: 8px solid white;
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+@keyframes rotate {
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
 }
 </style>

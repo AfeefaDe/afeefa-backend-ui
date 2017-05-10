@@ -24,6 +24,9 @@ export default {
   components: {
     NavigationSidebar,
     NavigationMobile
+  },
+  created () {
+    this.$store.dispatch('api/getMetaInformation')
   }
 }
 

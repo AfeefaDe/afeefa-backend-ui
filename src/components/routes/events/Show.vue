@@ -22,13 +22,13 @@ export default {
       messages: {
         loading: () => this.$t('status.load_event') + ' ' + this.id,
         activateHeadline: active => {
-          return `Event ${active ? 'de' : ''}aktivieren`
+          return `Event ${active ? 'verbergen' : 'veröffentlichen'}`
         },
         activate: active => {
-          return `Soll das Event "${this.item.title}" ${active ? 'de' : ''}aktiviert werden?`
+          return `Soll das Event "${this.item.title}" ${active ? 'verborgen' : 'veröffentlicht'} werden?`
         },
         activated: active => {
-          return `Das Event wurde ${active ? '' : 'de'}aktiviert.`
+          return `Das Event ${active ? 'wurde veröffentlicht' : ' ist nun nicht mehr öffentlich sichtbar'}.`
         }
       }
     }

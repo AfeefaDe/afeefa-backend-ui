@@ -133,6 +133,16 @@ export default {
 
 
   actions: {
+    setNumItemFromMetaInformation ({commit, dispatch}, {metaInformation}) {
+      if (!metaInformation) return
+      for (let metaInformationKey in metaInformation) {
+        const numItems = metaInformation[metaInformationKey]
+        const key = 'num' + metaInformationKey.charAt(0).toUpperCase() + metaInformationKey.slice(1)
+        commit('setNumItems', {key, numItems})
+      }
+      dispatch('updateNavigation')
+    },
+
     updateNumItems ({commit, dispatch}, {type, numItems}) {
       const key = 'num' + type.charAt(0).toUpperCase() + type.slice(1)
       commit('setNumItems', {key, numItems})

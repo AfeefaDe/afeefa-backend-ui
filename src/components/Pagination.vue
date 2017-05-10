@@ -4,7 +4,7 @@
 
       <p class="list-pagination__infoText">{{ currentNumItems }} {{ $tc('pagination.entries', currentNumItems) }}
       ({{ $t('pagination.page') }} {{ currentPage }} {{ $t('pagination.of') }} {{ currentNumPages }})</p>
-      <label class="list-pagination__pagesizeSelectLabel" for="pageSizeSelect" v-if="currentNumItems > 15">Set Page size:</label>
+      <label class="list-pagination__pagesizeSelectLabel" for="pageSizeSelect" v-if="currentNumItems > 15">{{ $t('pagination.set_page_size') }}:</label>
       <select v-model="currentPageSize"
         @change="pageSizeChanged"
         class="list-pagination__pagesizeSelect browser-default"
@@ -44,61 +44,64 @@
 
 
 <style lang="scss">
-  @import "../assets/styles/_variables.scss";
-  .list-pagination {
-    margin-bottom: 1em;
-    &__info {
-      display: flex;
-      align-items: baseline;
-      margin-bottom: 0.7em;
-    }
-    &__infoText {
-      flex-grow: 2;
-      margin: 0;
-    }
-    &__pagesizeSelect {
-      display: inline-block;
-      width: auto;
-      height: auto;
-    }
-    &__pagesizeSelectLabel {
-      margin-right: 1em;
-    }
+@import "~variables";
 
-    &__navigation {
-      display: flex;
-      justify-content: center;
-      word-wrap: break-word;
-      a {
-        display: inline-block;
-        cursor: pointer;
-        font-size: 1rem;
-        padding: 0.3em 0.6em;
-        border-radius: 2px;
-        color: $black;
-        vertical-align: middle;
-      }
-      a:hover {
-        background: $gray20;
-      }
-      a.active {
-        background: $pink;
-        color: white;
-      }
+.list-pagination {
+  margin-bottom: 1em;
+  &__info {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 0.7em;
+    @media screen and (max-width: $break-medium) {
+      display: block;
     }
-    &--arrowButton {
-      height: 24px;
-      box-sizing: initial;
-    }
-    &--arrowButton.disabled {
-      cursor: initial;
-      color: $gray20;
-    }
-    &--arrowButton.disabled:hover {
-      background: transparent;
-    }
-
   }
+  &__infoText {
+    flex-grow: 2;
+    margin: 0;
+  }
+  &__pagesizeSelect {
+    display: inline-block;
+    width: auto;
+    height: auto;
+  }
+  &__pagesizeSelectLabel {
+    margin-right: 1em;
+  }
+
+  &__navigation {
+    display: flex;
+    justify-content: center;
+    word-wrap: break-word;
+    a {
+      display: inline-block;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.3em 0.6em;
+      border-radius: 2px;
+      color: $black;
+      vertical-align: middle;
+    }
+    a:hover {
+      background: $gray20;
+    }
+    a.active {
+      background: $pink;
+      color: white;
+    }
+  }
+  &--arrowButton {
+    height: 24px;
+    box-sizing: initial;
+  }
+  &--arrowButton.disabled {
+    cursor: initial;
+    color: $gray20;
+  }
+  &--arrowButton.disabled:hover {
+    background: transparent;
+  }
+}
 </style>
 
 
@@ -125,21 +128,21 @@ export default {
   },
 
   watch: {
-    numItems (val, old) {
+    numItems (val) {
       if (val === this.currentNumItems) {
         return
       }
       this.initProps()
     },
 
-    page (val, old) {
+    page (val) {
       if (val === this.currentPage) {
         return
       }
       this.initProps()
     },
 
-    pageSize (val, old) {
+    pageSize (val) {
       if (val === this.currentPageSize) {
         return
       }

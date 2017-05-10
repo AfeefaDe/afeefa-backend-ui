@@ -258,7 +258,19 @@ export default {
       this.currentDateEnd = dateEnd
       this.checkSameDay()
 
-      this.$emit('input', {dateStart, dateEnd, hasTimeStart: this.hasStartTime, hasTimeEnd: this.hasEndTime})
+      this.$emit('input', this.value)
+    }
+  },
+
+  computed: {
+    // used by vee-validator to validate current date
+    value () {
+      return {
+        dateStart: this.currentDateStart,
+        dateEnd: this.currentDateEnd,
+        hasTimeStart: this.hasStartTime,
+        hasTimeEnd: this.hasEndTime
+      }
     }
   },
 
@@ -271,7 +283,7 @@ export default {
 
 <style lang="scss">
   label.clickable-element {
-    pointer-events:none
+    pointer-events:none;
   }
   span.hide-span {
     display: none;
@@ -305,18 +317,21 @@ export default {
   #startDate {
     cursor: pointer; cursor: hand;
     border-bottom: none;
+    color: black;
   }
   #startTime {
     cursor: pointer; cursor: hand;
     border-bottom: none;
+    color: black;
   }
   #endDate {
     cursor: pointer; cursor: hand;
-    color: inherit;
     border-bottom: none;
+    color: black;
   }
   #endTime {
     cursor: pointer; cursor: hand;
     border-bottom: none;
+    color: black;
   }
 </style>

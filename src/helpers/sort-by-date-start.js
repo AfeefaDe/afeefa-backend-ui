@@ -1,4 +1,4 @@
-export default function (items) {
+export default function (items, order) {
   if (!items) {
     return []
   }
@@ -6,6 +6,10 @@ export default function (items) {
     if (a.date_start === b.date_start) {
       return 0
     }
-    return a.date_start > b.date_start ? 1 : -1
+    let result = a.date_start > b.date_start ? 1 : -1
+    if (order === 'DESC') {
+      result = -1 * result
+    }
+    return result
   })
 }

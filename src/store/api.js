@@ -27,7 +27,7 @@ export default {
 
 
   state: {
-    resourceCache: resourceCache.cache // add to state in order to show up in chromes vuex debug view
+    resourceCache
   },
 
 
@@ -39,6 +39,24 @@ export default {
         }
         next()
       })
+    },
+
+
+    getMetaInformation: ({state, dispatch}) => {
+      const itemResource = Vue.resource(BASE + 'meta')
+
+      const promise = itemResource.get().then(response => {
+        let metaItem = response.body.meta
+        dispatch('navigation/setNumItemFromMetaInformation', {metaInformation: metaItem}, {root: true})
+      }).catch(response => {
+        dispatch('messages/showAlert', {
+          isError: true,
+          title: 'Fehler beim Laden',
+          description: getErrorDescription(response)
+        }, {root: true})
+        console.log('error loading item', response)
+      })
+      return promise
     },
 
 
@@ -75,14 +93,17 @@ export default {
              * a case we would ignore the data of the latter list
              * loaded an keep the data from the first one.
              */
-             // resource.deserialize(item, json)
-          // no cached item found ->
+             // do nothing (before was: resource.deserialize(item, json))
+           // no cached item found -> create one
           } else {
             item = resource.createItem(json)
             resource.deserialize(item, json)
           }
-          items.push(item)
-          duplicatesMap[dupMapKey] = true
+          // workaround for issue #149
+          if (item) {
+            items.push(item)
+            duplicatesMap[dupMapKey] = true
+          }
         }
 
         resourceCache.addList(listCacheKey, '', items)
@@ -167,13 +188,14 @@ export default {
       return resource.http.update(
         {id: item.id}, {data: item.serialize()}
       ).then(response => {
-        const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
         // todo fixme purge cache before deserialize entry in order to be able to fully reload
         if (['events', 'orgas', 'todos'].includes(itemCacheKey)) {
           resourceCache.purgeItem('locations', item.location.id)
           resourceCache.purgeItem('contacts', item.contact.id)
         }
+        const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
         cachedItem.deserialize(response.body.data)
+        dispatch('getMetaInformation')
         return cachedItem
       }).catch(response => {
         dispatch('messages/showAlert', {
@@ -200,6 +222,7 @@ export default {
         }
         item.deserialize(response.body.data)
         resourceCache.addItem(itemCacheKey, item)
+        dispatch('getMetaInformation')
         return item
       }).catch(response => {
         dispatch('messages/showAlert', {

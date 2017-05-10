@@ -52,14 +52,30 @@ export default {
     }
   },
 
+  created () {
+    if (this.$route.query.keyword !== undefined) {
+      this.keyword = this.$route.query.keyword
+      this.search(false)
+    }
+  },
+
   methods: {
-    search () {
+    search (resetPageQueryParams = true) {
       this.loading = true
       this.status = 'Suche Einträge'
       Search.find(this.keyword).then(result => {
         this.status = result.length ? null : '0 Ergebnisse'
         this.items = result
         this.loading = false
+
+        // reset page properties (page, size) after each manual search operation
+        // but not initially to support hot linking and history.back
+        const query = {...this.$route.query, keyword: this.keyword}
+        if (resetPageQueryParams) {
+          query.page = undefined
+          query.pageSize = undefined
+        }
+        this.$router.push({query})
       })
     },
 

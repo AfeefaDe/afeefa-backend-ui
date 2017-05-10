@@ -1,19 +1,19 @@
-export default class Entry {
-  constructor () {
-    this.init()
-  }
+import BaseModel from './BaseModel'
 
+export default class Entry extends BaseModel {
   init () {
     this.id = null
     this.type = null
 
     this.title = ''
     this.description = ''
+    this.short_description = ''
+    this.media_url = ''
+
     this.active = false
     this.created_at = new Date()
     this.updated_at = new Date()
     this.state_changed_at = new Date()
-    this.media_url = ''
 
     this.parent_orga = null
     this.category = null
@@ -43,6 +43,7 @@ export default class Entry {
       attributes: {
         title: this.title,
         description: this.description,
+        short_description: this.short_description,
         active: this.active,
         media_url: this.media_url
       },
@@ -82,13 +83,13 @@ export default class Entry {
 
     this.title = json.attributes.title || ''
     this.description = json.attributes.description || ''
+    this.short_description = json.attributes.short_description || ''
+    this.media_url = json.attributes.media_url || ''
+
     this.active = json.attributes.active === true
     this.created_at = new Date(json.attributes.created_at)
     this.updated_at = new Date(json.attributes.updated_at)
     this.state_changed_at = new Date(json.attributes.state_changed_at)
-
-    this.media_url = json.attributes.media_url || ''
-    this.media_url = this.validateUrl(this.media_url)
 
     const rels = json.relationships
 
@@ -130,22 +131,14 @@ export default class Entry {
     }
   }
 
-  validateUrl (url) {
-    let img = new Image()
-    img.src = url
-
-    img.onerror = function () {
-      return ''
-    }
-    return url
-  }
-
   clone (entry) {
     entry.id = this.id
     entry.type = this.type
     entry.title = this.title
-    entry.media_url = this.media_url
     entry.description = this.description
+    entry.short_description = this.short_description
+    entry.media_url = this.media_url
+
     entry.active = this.active
     entry.created_at = this.created_at
     entry.updated_at = this.updated_at
