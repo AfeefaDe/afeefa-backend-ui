@@ -28,7 +28,7 @@ export default {
           return `Soll die Orga "${this.item.title}" ${active ? 'verborgen' : 'veröffentlicht'} werden?`
         },
         activated: active => {
-          return `Die Orga wurde ${active ? 'veröffentlicht' : 'verborgen'}.`
+          return `Die Orga ${active ? 'wurde veröffentlicht' : 'ist nun nicht mehr öffentlich sichtbar'}.`
         }
       }
     }

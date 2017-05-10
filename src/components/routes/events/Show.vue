@@ -28,7 +28,7 @@ export default {
           return `Soll das Event "${this.item.title}" ${active ? 'verborgen' : 'veröffentlicht'} werden?`
         },
         activated: active => {
-          return `Das Event wurde ${active ? 'veröffentlicht' : 'verborgen'}.`
+          return `Das Event ${active ? 'wurde veröffentlicht' : ' ist nun nicht mehr öffentlich sichtbar'}.`
         }
       }
     }
