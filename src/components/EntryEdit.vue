@@ -23,11 +23,10 @@
                 <div class="inputField__spacing input-field">
                   <label for="title" :class="{active: item.title}">
                     Titel
-                    <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span>
                     <span class="labelCharacterCount" v-if="item.title.length">{{item.title.length}}/150</span>
                   </label>
                   <input v-model="item.title" id="title" type="text"
-                    data-vv-name="title" v-validate="'required|max: 150'"
+                    name="title" v-validate.initial="'required|max: 150'"
                     :class="{'validation-error': errors.has('title') }"/>
                   <span v-show="errors.has('title')" class="validation-error">{{ errors.first('title') }}</span>
                 </div>
@@ -42,11 +41,10 @@
                 <div class="inputField__spacing input-field">
                   <label for="description" :class="{active: item.short_description}">
                     Kurzbeschreibung
-                    <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span>
                     <span class="labelCharacterCount" v-if="item.short_description.length">{{item.short_description.length}}/350</span>
                   </label>
                   <textarea v-model="item.short_description" id="short_description"
-                  data-vv-name="short_description" v-validate="'required|max: 350'"
+                  name="short_description" v-validate.initial="'required|max: 350'"
                   :class="['materialize-textarea', {'validation-error': errors.has('short_description') }]"></textarea>
                   <span v-show="errors.has('short_description')" class="validation-error">{{ errors.first('short_description') }}</span>
                 </div>
@@ -59,9 +57,9 @@
 
                 <h2>Kategorien</h2>
                 <div class="inputField__spacing">
-                  <label for="category">Kategorie <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span></label>
+                  <label for="category">Kategorie</label>
                   <select v-model="item.category" id="category" @change="categoryChanged"
-                    data-vv-name="category" data-vv-validate-on="change" v-validate="'required'"
+                   name="category" data-vv-validate-on="change" v-validate.initial="'required'"
                     :class="['browser-default', 'categoriesForm', {'validation-error': errors.has('category') }]">
                     <option selected :value="null">Keine Kategorie ausgewählt</option>
                     <option selected :value="category" v-for="category in categories">{{ $t('categories.' + category.title) }}</option>

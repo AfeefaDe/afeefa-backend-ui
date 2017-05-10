@@ -1,5 +1,8 @@
 import { Validator } from 'vee-validate'
+import de from 'vee-validate/dist/locale/de'
 import moment from 'moment'
+
+Validator.addLocale(de)
 
 let rule = {
   getMessage (field, params, data) {

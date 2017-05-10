@@ -46,8 +46,10 @@ export default {
     changeLanguage () {
       if (this.$i18n.locale === 'de') {
         this.$i18n.locale = 'en'
+        this.$validator.setLocale('en')
       } else {
         this.$i18n.locale = 'de'
+        this.$validator.setLocale('de')
       }
     }
   }

@@ -10,7 +10,7 @@ import './services/validation'
 import './services/leaflet'
 
 
-Vue.use(VeeValidate, {delay: 0})
+Vue.use(VeeValidate, {delay: 0, locale: 'de'})
 Vue.use(Filters)
 Vue.use(VueResource)
 
