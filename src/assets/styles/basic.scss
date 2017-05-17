@@ -102,7 +102,7 @@ $sidebarWidth: 350px;
   }
   &__headerTitle {
     flex-grow: 2;
-    overflow-x: hidden;
+    overflow: hidden;
     padding-right: 1em;
     margin: 0;
     line-height: $height;
@@ -126,6 +126,16 @@ $sidebarWidth: 350px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+  }
+  &__headerButtonContainer {
+    display: flex;
+    @media screen and (max-width: $break-medium) {
+      display: block;
+      & > *:first-child {
+        margin-right: 0;
+        margin-bottom: 0.5em;
+      }
+    }
   }
   &__headerButton {
     font-size: 0.93em;
