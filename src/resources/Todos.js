@@ -7,7 +7,7 @@ import Entries from './base/Entries'
 import BaseResource from './base/BaseResource'
 
 class TodosResource extends BaseResource {
-  init (keyword) {
+  init () {
     this.listCacheKey = 'todos'
     this.http = Vue.resource(BASE + 'todos')
   }

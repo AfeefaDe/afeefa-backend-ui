@@ -6,7 +6,6 @@ import BaseResource from './base/BaseResource'
 
 class ContactsResource extends BaseResource {
   init () {
-    this.api_type = 'contact_infos'
     this.http = Vue.resource(BASE + 'contact_infos{/id}')
     this.listCacheKey = 'contacts'
   }

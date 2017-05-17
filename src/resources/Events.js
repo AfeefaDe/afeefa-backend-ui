@@ -7,7 +7,6 @@ import BaseResource from './base/BaseResource'
 
 class EventsResource extends BaseResource {
   init () {
-    this.api_type = 'events'
     this.http = Vue.resource(BASE + 'events{/id}', {}, {update: {method: 'PATCH'}})
     this.listCacheKey = 'events'
   }
@@ -103,7 +102,10 @@ export default {
 
   updateAttributes (id, attributes) {
     return store.dispatch('api/updateItemAttributes', {
-      resource: new EventsResource(), id, attributes
+      resource: new EventsResource(),
+      id,
+      type: 'events',
+      attributes
     })
   },
 

@@ -7,7 +7,6 @@ import BaseResource from './base/BaseResource'
 
 class OrgasResource extends BaseResource {
   init () {
-    this.api_type = 'orgas'
     this.http = Vue.resource(BASE + 'orgas{/id}', {}, {update: {method: 'PATCH'}})
     this.listCacheKey = 'orgas'
   }
@@ -76,7 +75,10 @@ const Orgas = {
 
   updateAttributes (id, attributes) {
     return store.dispatch('api/updateItemAttributes', {
-      resource: new OrgasResource(), id, attributes
+      resource: new OrgasResource(),
+      id,
+      type: 'orgas',
+      attributes
     })
   },
 

@@ -1,7 +1,5 @@
 export default class BaseResource {
   constructor () {
-    this.api_type = null
-
     this.init(arguments)
   }
 

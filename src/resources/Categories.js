@@ -6,7 +6,6 @@ import BaseResource from './base/BaseResource'
 
 class CategoriesResource extends BaseResource {
   init () {
-    this.api_type = 'categories'
     this.http = Vue.resource(BASE + 'categories{/id}')
     this.listCacheKey = 'categories'
   }

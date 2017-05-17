@@ -6,7 +6,6 @@ import BaseResource from './base/BaseResource'
 
 class LocationsResource extends BaseResource {
   init () {
-    this.api_type = 'locations'
     this.http = Vue.resource(BASE + 'locations{/id}')
     this.listCacheKey = 'locations'
   }

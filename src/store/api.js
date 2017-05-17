@@ -258,10 +258,10 @@ export default {
     },
 
 
-    updateItemAttributes: ({state, dispatch}, {resource, id, attributes}) => {
+    updateItemAttributes: ({state, dispatch}, {resource, id, type, attributes}) => {
       const data = {
         id,
-        type: resource.api_type,
+        type,
         attributes
       }
       return resource.http.update({id}, {data}).then(response => {

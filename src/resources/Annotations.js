@@ -6,7 +6,6 @@ import BaseResource from './base/BaseResource'
 
 class AnnotationsResource extends BaseResource {
   init () {
-    this.api_type = 'annotations'
     this.http = Vue.resource(BASE + 'annotations{/id}')
     this.listCacheKey = 'annotations'
   }
