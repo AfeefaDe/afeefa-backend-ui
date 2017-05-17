@@ -22,7 +22,7 @@ export default {
       Resource: Orgas,
       sortByTitle,
       messages: {
-        headline: () => this.$t('headlines.organisations')
+        headline: () => this.$tc('headlines.organisations', 2)
       }
     }
   }

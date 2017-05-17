@@ -2,7 +2,7 @@ export default {
   headlines: {
     dashboard: 'Dashboard',
     todos: 'Todos',
-    organisations: 'Organisationen',
+    organisations: 'Organisation | Organisationen',
     events: 'Veranstaltung | Veranstaltungen',
     location: 'Ort',
     contact: 'Kontakt',

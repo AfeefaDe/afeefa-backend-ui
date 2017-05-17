@@ -23,7 +23,7 @@
       <div class="mainCard">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">
-            <router-link :to="{name: 'orgas.list'}">{{ $t('headlines.organisations') }} ({{ numOrgas }})</router-link>
+            <router-link :to="{name: 'orgas.list'}">{{ $tc('headlines.organisations', numOrgas) }} ({{ numOrgas }})</router-link>
           </h2>
           <router-link :to="{name: 'orgas.new'}"  class="mainCard__headerButton">
             {{$t('buttons.add')}}
@@ -37,7 +37,7 @@
             :sort-function="orgaSort"
             :options="{created_at: true}">
           </entry-list-items>
-          <router-link :to="{name: 'orgas.list'}">{{ $t('status.all') }} {{ $t('headlines.organisations') }}</router-link>
+          <router-link :to="{name: 'orgas.list'}">{{ $t('status.all') }} {{ $tc('headlines.organisations', numOrgas) }}</router-link>
         </div>
       </div>
     </div>

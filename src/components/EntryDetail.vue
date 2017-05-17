@@ -131,7 +131,7 @@
           </ul>
 
           <ul class="entryDetail" v-if="entry.type === 'orgas'">
-            <entry-detail-property :name="$t('headlines.organisations')" hasEntryIcon="true" entryIconType='orgas' :entryIconStatus='false'>
+            <entry-detail-property :name="$tc('headlines.organisations', 2)" hasEntryIcon="true" entryIconType='orgas' :entryIconStatus='false'>
 
               <div v-if="has.parentOrga">
                 <b>{{ $t('headlines.parentOrga') }}</b>
@@ -145,7 +145,7 @@
                 </div>
               </div>
 
-              <EntryListDropDownMenu :title="$t('headlines.subOrgas')" :numberOfItems="entry.sub_orgas.length" :isOpened="false">
+              <EntryListDropDownMenu :title="$t('headlines.subOrgas')" :numberOfItems="entry.sub_orgas.length" :isOpened="false" entryType="orgas">
                 <entry-list-items
                   :items="entry.sub_orgas"
                   showIcon="false"
@@ -157,8 +157,8 @@
               </EntryListDropDownMenu>
             </entry-detail-property>
 
-            <entry-detail-property :name="$tc('headlines.events', 2)" hasEntryIcon="true" entryIconType='events' :entryIconStatus='false' >
-              <EntryListDropDownMenu :title="$t('headlines.upcomingEvents')" :numberOfItems="upcomingEvents.length" :isOpened="false">
+            <entry-detail-property :name="$tc('headlines.events', 2)" hasEntryIcon="true" entryIconType='events' :entryIconStatus='false'>
+              <EntryListDropDownMenu :title="$t('headlines.upcomingEvents')" :numberOfItems="upcomingEvents.length" :isOpened="false" entryType="events">
                 <entry-list-items
                   :items="upcomingEvents"
                   v-if="upcomingEvents.length"
@@ -169,7 +169,7 @@
                 </entry-list-items>
               </EntryListDropDownMenu>
               <br>
-              <EntryListDropDownMenu :title="$t('headlines.pastEvents')" :numberOfItems="pastEvents.length" :isOpened="false">
+              <EntryListDropDownMenu :title="$t('headlines.pastEvents')" :numberOfItems="pastEvents.length" :isOpened="false" entryType="events">
                 <entry-list-items
                 :items="pastEvents"
                 v-if="pastEvents.length"

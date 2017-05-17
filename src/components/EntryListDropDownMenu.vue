@@ -8,7 +8,12 @@
       </div>
       <div class="subtitle">
         <span> {{numberOfItems}} </span>
-        {{ $tc('headlines.events', numberOfItems) }}
+        <template v-if="entryType === 'events'">
+          {{ $tc('headlines.events', numberOfItems) }}
+        </template>
+        <template v-if="entryType === 'orgas'">
+          {{ $tc('headlines.organisations', numberOfItems) }}
+        </template>
       </div>
     </div>
 
@@ -20,7 +25,7 @@
 
 <script>
 export default {
-  props: ['title', 'numberOfItems', 'isOpened'],
+  props: ['title', 'numberOfItems', 'isOpened', 'entryType'],
 
   data () {
     return {
