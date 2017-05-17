@@ -65,6 +65,8 @@ export default {
 .tabbedSection {
   &__navItemContainer {
     width: 100%;
+    // fixes strange chrome bug (#200)
+    overflow-x: hidden;
     background: transparent;
     color: inherit;
     box-shadow: none;
