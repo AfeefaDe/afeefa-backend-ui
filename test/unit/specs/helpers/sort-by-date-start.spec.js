@@ -1,6 +1,6 @@
 import sortByDateStart from '@/helpers/sort-by-date-start'
 
-describe.only('Helpers - sort-by-date-start', () => {
+describe('Helpers - sort-by-date-start', () => {
   it('should sort ASC by default', () => {
     const a = { date_start: new Date('2011-04-11') }
     const b = { date_start: new Date('2011-04-12') }
