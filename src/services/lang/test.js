@@ -23,7 +23,8 @@ export default {
     generalTab: '*',
     placeTab: '*',
     contactTab: '*',
-    linkTab: '*'
+    linkTab: '*',
+    preview: '*'
   },
   errors: {
     noContactPresent: '*',

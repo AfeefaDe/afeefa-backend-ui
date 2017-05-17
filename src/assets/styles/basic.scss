@@ -132,6 +132,10 @@ $sidebarWidth: 350px;
     border: 1px solid white;
     border-radius: 2px;
     padding: 0.3em 0.5em;
+    margin-right: 1em;
+    &:last-child {
+      margin-right: 0;
+    }
     white-space: nowrap;
     display: flex;
     align-items: center;

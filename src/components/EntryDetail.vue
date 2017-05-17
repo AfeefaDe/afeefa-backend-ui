@@ -13,6 +13,9 @@
             </router-link>
           </span>
         </div>
+        <a :href="previewLink" target="_blank" class="mainCard__headerButton">
+          {{$t('headlines.preview')}}
+        </a>
         <router-link :to="{name: routeName + '.edit', params: {id: entry.id}, query:{tab: currentTab}}" class="mainCard__headerButton">
           Bearbeiten
           <i class="material-icons">mode_edit</i>
@@ -230,7 +233,6 @@ export default {
       }
     }
   },
-
   watch: {
     entry () {
       // load past and upcoming events for orga
@@ -281,6 +283,9 @@ export default {
       } else {
         return [51.0571904, 13.7154319]
       }
+    },
+    previewLink () {
+      return `${process.env.FRONTEND_URL}#${this.entry.id}`
     }
   },
 

@@ -23,7 +23,8 @@ export default {
     generalTab: 'Allgemeines',
     placeTab: 'Ort',
     contactTab: 'Kontakt',
-    linkTab: 'Verweise'
+    linkTab: 'Verweise',
+    preview: 'Vorschau'
   },
   errors: {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',
