@@ -13,7 +13,7 @@
             </router-link>
           </span>
         </div>
-        <router-link :to="{name: routeName + '.edit', params: {id: entry.id}}" class="mainCard__headerButton">
+        <router-link :to="{name: routeName + '.edit', params: {id: entry.id}, query:{tab: currentTab}}" class="mainCard__headerButton">
           Bearbeiten
           <i class="material-icons">mode_edit</i>
         </router-link>
@@ -23,7 +23,7 @@
         :image-url="entry.media_url">
       </image-container>
 
-      <entry-tabbed-content>
+      <entry-tabbed-content v-on:setCurrentTab="setCurrentTab">
         <section slot="generalTab">
           <ul class="entryDetail">
             <entry-detail-property v-if="entry.title" :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' >
@@ -221,6 +221,7 @@ export default {
       filterOrgaEventsBy: 'upcoming',
       orgaEventsSortOrder: 'ASC',
       sortByDateStart,
+      currentTab: '',
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
@@ -265,7 +266,9 @@ export default {
         }
       })
     },
-
+    setCurrentTab (newCurrentTab) {
+      this.currentTab = newCurrentTab
+    },
     goBack () {
       this.$router.go(-1)
     }
