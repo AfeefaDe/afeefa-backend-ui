@@ -21,7 +21,7 @@ let annotationCategoriesLoaded = false
 export default {
   getAll () {
     const resource = new AnnotationCategoriesResource()
-    return store.dispatch('api/getList', resource).then(annotationCategories => {
+    return store.dispatch('api/getList', {resource}).then(annotationCategories => {
       if (!annotationCategoriesLoaded) {
         annotationCategoriesLoaded = true
       }

@@ -21,6 +21,7 @@ export default {
     return {
       Resource: Events,
       sortByDateStart,
+      queryParams: {'filter[date]': 'upcoming'},
       messages: {
         headline: () => this.$tc('headlines.events', 2)
       }

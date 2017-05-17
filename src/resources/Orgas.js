@@ -20,7 +20,7 @@ class OrgasResource extends BaseResource {
 const Orgas = {
   getAll () {
     const resource = new OrgasResource()
-    return store.dispatch('api/getList', resource).then(orgas => {
+    return store.dispatch('api/getList', {resource}).then(orgas => {
       for (let orga of orgas) {
         Entries.fetchCategory(orga)
         Entries.fetchSubCategory(orga)

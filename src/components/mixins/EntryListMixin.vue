@@ -6,12 +6,13 @@ export default {
 
   data () {
     return {
-      items: null
+      items: null,
+      queryParams: null
     }
   },
 
   created () {
-    this.Resource.getAll().then(entries => {
+    this.Resource.getAll(this.queryParams).then(entries => {
       this.items = entries
     })
   },

@@ -18,7 +18,7 @@ class AnnotationsResource extends BaseResource {
 export default {
   getAll () {
     const resource = new AnnotationsResource()
-    return store.dispatch('api/getList', resource)
+    return store.dispatch('api/getList', {resource})
   },
 
   get (id) {

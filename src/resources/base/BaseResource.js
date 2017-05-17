@@ -16,7 +16,16 @@ export default class BaseResource {
     return this.listCacheKey
   }
 
+  // creates a new model based on the given json response
+  // @see Todos or Search
+  createItem (json) {
+  }
+
+  // deserialized the current item
+  // @see Search
+  // @see Todos or Search
   deserialize (item, json) {
     item.deserialize(json)
   }
+
 }

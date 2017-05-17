@@ -32,7 +32,7 @@ class SearchResource extends BaseResource {
 export default {
   find (keyword) {
     const resource = new SearchResource(keyword)
-    return store.dispatch('api/getList', resource).then(entries => {
+    return store.dispatch('api/getList', {resource}).then(entries => {
       for (let entry of entries) {
         Entries.fetchCategory(entry)
         Entries.fetchSubCategory(entry)

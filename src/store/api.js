@@ -60,7 +60,7 @@ export default {
     },
 
 
-    getList: ({state, dispatch}, resource) => {
+    getList: ({state, dispatch}, {resource, params}) => {
       const listCacheKey = resource.listCacheKey
 
       if (resourceCache.hasList(listCacheKey, '')) {
@@ -71,7 +71,7 @@ export default {
         return promiseCache.getItem(listCacheKey)
       }
 
-      const promise = resource.http.query().then(response => {
+      const promise = resource.http.query(params).then(response => {
         const items = []
         const duplicatesMap = {}
         for (let json of response.body.data) {

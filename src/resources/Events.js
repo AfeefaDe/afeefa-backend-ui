@@ -21,7 +21,7 @@ export default {
     const resource = new EventsResource()
     resource.http = Vue.resource(BASE + `orgas/${id}/events?filter[date]=${filter}`)
     resource.listCacheKey = `orgas/${id}/events?filter[date]=${filter}`
-    return store.dispatch('api/getList', resource).then(events => {
+    return store.dispatch('api/getList', {resource}).then(events => {
       for (let event of events) {
         Entries.fetchCategory(event)
         Entries.fetchSubCategory(event)
@@ -30,9 +30,9 @@ export default {
     })
   },
 
-  getAll () {
+  getAll (params) {
     const resource = new EventsResource()
-    return store.dispatch('api/getList', resource).then(events => {
+    return store.dispatch('api/getList', {resource, params}).then(events => {
       for (let event of events) {
         Entries.fetchCategory(event)
         Entries.fetchSubCategory(event)

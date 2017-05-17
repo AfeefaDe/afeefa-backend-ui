@@ -38,7 +38,7 @@ const createCategoryTree = categories => {
 export default {
   getAll () {
     const resource = new CategoriesResource()
-    return store.dispatch('api/getList', resource).then(categories => {
+    return store.dispatch('api/getList', {resource}).then(categories => {
       if (!categoriesLoaded) {
         createCategoryTree(categories)
         categoriesLoaded = true
