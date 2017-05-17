@@ -59,8 +59,7 @@ export default {
       hyphens: auto;
   }
   &__propertyContainer {
-    width: 100%;
-    max-width: 400px;
+    width: 80%;
   }
   .multiline {
       white-space: pre-wrap;
