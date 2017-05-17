@@ -143,12 +143,6 @@ export default {
       dispatch('updateNavigation')
     },
 
-    updateNumItems ({commit, dispatch}, {type, numItems}) {
-      const key = 'num' + type.charAt(0).toUpperCase() + type.slice(1)
-      commit('setNumItems', {key, numItems})
-      dispatch('updateNavigation')
-    },
-
     updateNavigation ({state, commit}) {
       const routeName = router.currentRoute.name
 

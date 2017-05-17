@@ -92,7 +92,7 @@ describe('Store - navigation', () => {
   })
 
 
-  it('updates after num items change', () => {
+  it.skip('updates after num items change', () => {
     navigation.actions.updateNumItems({commit, dispatch}, {
       type: 'orgas',
       numItems: 10

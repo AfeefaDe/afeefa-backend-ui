@@ -108,16 +108,6 @@ export default {
 
         resourceCache.addList(listCacheKey, '', items)
 
-        // todo update navigation
-        if (['events', 'orgas', 'todos'].includes(listCacheKey)) {
-          dispatch('navigation/updateNumItems', {
-            type: listCacheKey,
-            numItems: items.length
-          }, {
-            root: true
-          })
-        }
-
         return items
       }).catch(response => {
         dispatch('messages/showAlert', {
@@ -195,7 +185,7 @@ export default {
         }
         const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
         cachedItem.deserialize(response.body.data)
-        dispatch('getMetaInformation')
+        dispatch('getMetaInformation') // e.g. todos may change after annotation change
         return cachedItem
       }).catch(response => {
         dispatch('messages/showAlert', {
@@ -245,6 +235,7 @@ export default {
           resourceCache.purgeList(itemCacheKey)
           resourceCache.purgeList('todos')
         }
+        dispatch('getMetaInformation')
         return true
       }).catch(response => {
         dispatch('messages/showAlert', {
