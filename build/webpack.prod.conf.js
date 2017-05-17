@@ -13,6 +13,11 @@ var env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
   : config.build.env
 
+if (process.env.IS_STAGING == 'true') {
+  //set staging environment
+  env = config.stage.env
+}
+
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({

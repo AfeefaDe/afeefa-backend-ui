@@ -12,9 +12,7 @@ var webpackConfig = require('./webpack.prod.conf')
 var spinner;
 
 if (process.env.IS_STAGING == 'true') {
-  //set staging environment
   spinner = ora('building for production [staging]...')
-  config.build.env = config.stage.env
 } else {
   spinner = ora('building for production [live]...')
 }
