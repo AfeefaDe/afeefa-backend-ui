@@ -58,7 +58,7 @@
             :items="events"
             :limit="5"
             :sort-function="eventsSort"
-            :options="{date_start: true}">
+            :options="{created_at: true}">
           </entry-list-items>
           <router-link :to="{name: 'events.list'}">{{ $t('status.all') }} {{ $tc('headlines.events', 2) }}</router-link>
         </div>
@@ -71,7 +71,6 @@
 
 <script>
 import EntryListItems from '@/components/EntryListItems'
-import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByUpdatedAt from '@/helpers/sort-by-updated-at'
 import sortByCreatedAt from '@/helpers/sort-by-created-at'
 import { mapState } from 'vuex'
@@ -87,7 +86,7 @@ export default {
       orgas: null,
       orgaSort: sortByCreatedAt,
       events: null,
-      eventsSort: sortByDateStart
+      eventsSort: sortByCreatedAt
     }
   },
 
