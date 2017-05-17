@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "build": "node build/build.js",
+    "build-staging": "IS_STAGING=true node build/build.js",
+    "build": "IS_STAGING=false node build/build.js ",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --no-single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",

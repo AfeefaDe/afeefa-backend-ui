@@ -9,8 +9,15 @@ var chalk = require('chalk')
 var webpack = require('webpack')
 var config = require('../config')
 var webpackConfig = require('./webpack.prod.conf')
+var spinner;
 
-var spinner = ora('building for production...')
+if (process.env.IS_STAGING == 'true') {
+  //set staging environment
+  spinner = ora('building for production [staging]...')
+  config.build.env = config.stage.env
+} else {
+  spinner = ora('building for production [live]...')
+}
 spinner.start()
 
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
