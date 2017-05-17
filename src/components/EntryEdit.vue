@@ -320,10 +320,6 @@ export default {
       if (entry) {
         this.origItem = entry
         this.item = this.Resource.clone(entry)
-
-        Vue.nextTick(() => {
-          autosize(this.$el.querySelector('#description'))
-        })
       }
     })
 
@@ -351,9 +347,7 @@ export default {
   watch: {
     'item.contact' (contact) {
       if (contact) {
-        Vue.nextTick(() => {
-          autosize(this.$el.querySelector('#openingHours'))
-        })
+        this.checkAutosizeFields()
       }
     },
     'item.location' (location) {
@@ -361,9 +355,7 @@ export default {
         if (!location.isEmpty()) {
           this.getGeocode(false)
         }
-        Vue.nextTick(() => {
-          autosize(this.$el.querySelector('#directions'))
-        })
+        this.checkAutosizeFields()
       }
     },
     'item.media_url' (url) {
@@ -412,6 +404,28 @@ export default {
 
     setCurrentTab (newCurrentTab) {
       this.currentTab = newCurrentTab
+
+      this.checkAutosizeFields()
+    },
+
+    checkAutosizeFields () {
+      Vue.nextTick(() => {
+        const description = this.$el.querySelector('#description')
+        if (description) {
+          autosize(this.$el.querySelector('#description'))
+          autosize(this.$el.querySelector('#short_description'))
+        }
+
+        const directions = this.$el.querySelector('#directions')
+        if (directions) {
+          autosize(this.$el.querySelector('#directions'))
+        }
+
+        const openingHours = this.$el.querySelector('#openingHours')
+        if (openingHours) {
+          autosize(this.$el.querySelector('#openingHours'))
+        }
+      })
     },
 
     addAnnotation () {
