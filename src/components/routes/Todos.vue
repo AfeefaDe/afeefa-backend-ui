@@ -11,7 +11,7 @@
 
 <script>
 import EntryListMixin from '@/components/mixins/EntryListMixin'
-import sortByUpdatedAt from '@/helpers/sort-by-update-at'
+import sortByUpdatedAt from '@/helpers/sort-by-updated-at'
 import Todos from '@/resources/Todos'
 
 export default {
