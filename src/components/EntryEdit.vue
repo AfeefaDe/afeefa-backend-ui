@@ -480,7 +480,7 @@ export default {
               description: this.messages.saved()
             })
             this.saved = true
-            this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}})
+            this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}, query: {tab: this.currentTab}})
           }
         })
       }).catch(() => {
