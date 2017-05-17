@@ -51,16 +51,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~variables";
+
 .image-container-style {
-  background-color: #eee;
-  padding: 0;
+  background-color: $gray20;
+  padding: 1em 0;
 }
 .image-container {
   background-repeat: no-repeat;
   background-position: top center;
   background-size: cover;
-  height: 40vh;
-  max-height: 300px;
+  height: 50vh;
+  //matches max-height of bunner at afeefa.de
+  max-height: 150px;
+  //matches sidebar width of afeefa.de
+  max-width: 440px;
+  margin: 0 auto;
 }
 .loading-error {
   background-color: #ffeeee;

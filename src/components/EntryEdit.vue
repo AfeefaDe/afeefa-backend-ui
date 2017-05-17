@@ -21,11 +21,11 @@
                 <br>
                 <div class="inputField__spacing input-field">
                   <label for="title" :class="{active: item.title}">
-                    Titel
+                    {{ $t('entries.title') }}
                     <span class="labelCharacterCount" v-if="item.title.length">{{item.title.length}}/150</span>
                   </label>
                   <input v-model="item.title" id="title" type="text"
-                    name="title" v-validate.initial="'required|max: 150'"
+                    name="title" :data-vv-as="$t('entries.title')" v-validate.initial="'required|max: 150'"
                     :class="{'validation-error': errors.has('title') }"/>
                   <span v-show="errors.has('title')" class="validation-error">{{ errors.first('title') }}</span>
                 </div>
@@ -38,12 +38,12 @@
                 </div>
 
                 <div class="inputField__spacing input-field">
-                  <label for="description" :class="{active: item.short_description}">
-                    Kurzbeschreibung
+                  <label for="short_description" :class="{active: item.short_description}">
+                    {{ $t('entries.short_description') }}
                     <span class="labelCharacterCount" v-if="item.short_description.length">{{item.short_description.length}}/350</span>
                   </label>
                   <textarea v-model="item.short_description" id="short_description"
-                  name="short_description" v-validate.initial="'required|max: 350'"
+                  name="short_description" :data-vv-as="$t('entries.short_description')" v-validate.initial="'required|max: 350'"
                   :class="['materialize-textarea', {'validation-error': errors.has('short_description') }]"></textarea>
                   <span v-show="errors.has('short_description')" class="validation-error">{{ errors.first('short_description') }}</span>
                 </div>
@@ -58,7 +58,7 @@
                 <div class="inputField__spacing">
                   <label for="category">Kategorie</label>
                   <select v-model="item.category" id="category" @change="categoryChanged"
-                   name="category" data-vv-validate-on="change" v-validate.initial="'required'"
+                   name="category" data-vv-validate-on="change" :data-vv-as="$t('entries.category')" v-validate.initial="'required'"
                     :class="['browser-default', 'categoriesForm', {'validation-error': errors.has('category') }]">
                     <option selected :value="null">Keine Kategorie ausgewählt</option>
                     <option selected :value="category" v-for="category in categories">{{ $t('categories.' + category.title) }}</option>
@@ -82,7 +82,7 @@
                     :has-time-start="item.has_time_start"
                     :has-time-end="item.has_time_end"
                     @input="updateDatePickerValues"
-                    data-vv-name="date" v-validate="'date-end-not-before-start|date-end-not-start'"
+                    name="date" v-validate="'date-end-not-before-start|date-end-not-start'"
                     :class="['inputField__spacing', {'validation-error': errors.has('date') }]"
                     >
                   </date-picker>
@@ -163,7 +163,7 @@
                   <div class="input-field">
                     <label for="mail" :class="{active: item.contact.mail}">E-Mail</label>
                     <input v-model="item.contact.mail" id="mail" type="email"
-                      data-vv-name="email" data-vv-validate-on="blur" v-validate="'email'"
+                      name="email" data-vv-validate-on="blur" v-validate="'email'"
                       :class="{'validation-error': errors.has('email') }"/>
                     <span v-show="errors.has('email')" class="validation-error">{{ errors.first('email') }}</span>
                   </div>
@@ -191,7 +191,7 @@
                     <input id="web"
                           type="text"
                           v-model="item.contact.web"
-                          data-vv-name="web"
+                          name="web"
                           data-vv-validate-on="blur"
                           v-validate="'url-with-protocol'"
                           :class="{'validation-error': errors.has('web') }"/>
@@ -203,7 +203,7 @@
                     <input id="socialMedia"
                           type="text"
                           v-model="item.contact.socialMedia"
-                          data-vv-name="socialMedia"
+                          name="socialMedia"
                           data-vv-validate-on="blur"
                           v-validate="'url-with-protocol'"
                           :class="{'validation-error': errors.has('socialMedia') }"/>

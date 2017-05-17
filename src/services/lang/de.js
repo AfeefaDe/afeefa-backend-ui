@@ -16,7 +16,7 @@ export default {
     time: 'Zeit',
     parentOrga: 'Übergeordnete Orga',
     subOrgas: 'Untergeordnete Orgas',
-    organizer: 'Veranstalter',
+    organizer: 'Veranstaltende',
     upcomingEvents: 'Anstehende Veranstaltungen',
     pastEvents: 'Vergangene Veranstaltungen',
     systemLanguage: 'Systemsprache',
