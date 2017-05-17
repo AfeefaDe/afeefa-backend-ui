@@ -262,7 +262,9 @@ export default {
               this.$store.dispatch('messages/showAlert', {
                 description: this.messages.activated(attributes.active)
               })
-              this.entry.active = attributes.active
+              this.entry.active = attributes.active === true
+              this.entry.state_changed_at = new Date(attributes.state_changed_at)
+              this.entry.updated_at = new Date(attributes.updated_at)
             }
           })
         }
