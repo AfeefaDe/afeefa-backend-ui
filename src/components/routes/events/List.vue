@@ -3,7 +3,7 @@
     :items="items"
     addEntryButton="events.new"
     :sort-function="sortByDateStart"
-    :options="{pagination: true, date_start: true}"
+    :options="{pagination: true, event_date: true}"
     :messages="messages">
   </entry-list>
 </template>
