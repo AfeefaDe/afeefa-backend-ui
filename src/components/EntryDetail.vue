@@ -170,7 +170,7 @@
                   :sort-function="sortByDateStart"
                   sort-order="ASC"
                   showIcon="false"
-                  :options="{date_start: true}">
+                  :options="{event_date: true}">
                 </entry-list-items>
               </EntryListDropDownMenu>
               <br>
@@ -181,7 +181,7 @@
                 :sort-function="sortByDateStart"
                 sort-order="DESC"
                 showIcon="false"
-                :options="{date_start: true}">
+                :options="{event_date: true}">
               </entry-list-items>
             </EntryListDropDownMenu>
           </entry-detail-property>

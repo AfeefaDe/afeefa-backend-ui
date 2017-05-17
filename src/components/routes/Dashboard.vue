@@ -58,7 +58,7 @@
             :items="events"
             :limit="5"
             :sort-function="eventsSort"
-            :options="{created_at: true}">
+            :options="{created_at: true, event_date: true}">
           </entry-list-items>
           <router-link :to="{name: 'events.list'}">{{ $t('status.all') }} {{ $tc('headlines.events', 2) }}</router-link>
         </div>

@@ -72,8 +72,8 @@ export default {
     load_orga: 'Lade Orga',
     no: 'Keine',
     all: 'Alle',
-    added: 'Hinzugefügt',
-    changed: 'Geändert',
+    added: 'Hinzugefügt am',
+    changed: 'Zuletzt geändert am',
     time: 'Zeitpunkt'
   },
   pagination: {

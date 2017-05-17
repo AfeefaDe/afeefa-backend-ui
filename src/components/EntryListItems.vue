@@ -21,6 +21,7 @@
         </div>
 
         <div class="entryList__content">
+
           <router-link :to="{name: item.type + '.show', params: {id: item.id}}" class="entryList__nav">
             <h4 class="title">{{ item.title || 'Kein Titel' }}</h4>
             <span class="icon"><i v-if="!showIcon" class="material-icons">navigate_next</i></span>
@@ -35,12 +36,16 @@
               </span>
             </p>
 
-           <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
+            <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
+
+            <p class="item entryList--lightColor" v-if="has.event_date">
+              {{item | formatEventDate}}
+            </p>
 
             <p class="item entryList--lightColor" v-if="has.updated_at">
               {{ $t('status.changed') }}
-              {{item.updated_at | formatDateRelative}}
-              <span>({{item.updated_at | formatDateAbsolute}})</span>
+              {{item.updated_at | formatDateAbsolute}}
+              <span>({{item.updated_at | formatDateRelative}})</span>
             </p>
 
             <p class="item entryList--lightColor" v-if="has.date_start">
@@ -51,8 +56,8 @@
 
             <p class="item entryList--lightColor" v-if="has.created_at">
               {{ $t('status.added') }}
-              {{item.created_at | formatDateRelative}}
-              <span>({{item.created_at | formatDateAbsolute}})</span>
+              {{item.created_at | formatDateAbsolute}}
+              <span>({{item.created_at | formatDateRelative}})</span>
             </p>
           </div>
         </div>
@@ -80,8 +85,8 @@ export default {
         pagination: options.pagination,
         annotations: options.annotations,
         updated_at: options.updated_at,
-        date_start: options.date_start,
-        created_at: options.created_at
+        created_at: options.created_at,
+        event_date: options.event_date
       }
     }
   },
