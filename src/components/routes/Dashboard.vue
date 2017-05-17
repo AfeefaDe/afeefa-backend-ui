@@ -4,7 +4,7 @@
       <div class="mainCard">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">
-            <router-link :to="{name: 'orgas.list'}">{{ $t('headlines.todos') }} ({{ numTodos }})</router-link>
+            <router-link :to="{name: 'todos'}">{{ $t('headlines.todos') }} ({{ numTodos }})</router-link>
           </h2>
         </div>
         <div>
