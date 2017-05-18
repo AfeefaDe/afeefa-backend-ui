@@ -66,7 +66,9 @@ export default {
     web: 'Webpage',
     socialMedia: 'Social Media',
     directions: 'Directions',
-    short_description: 'Short description'
+    short_description: 'Short description',
+    for_children: 'For children',
+    for_children_yes: 'Verfified'
   },
   status: {
     load_event: 'Load Event',

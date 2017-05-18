@@ -9,6 +9,7 @@ export default class Entry extends BaseModel {
     this.description = ''
     this.short_description = ''
     this.media_url = ''
+    this.for_children = false
 
     this.active = false
     this.created_at = new Date()
@@ -45,7 +46,8 @@ export default class Entry extends BaseModel {
         description: this.description,
         short_description: this.short_description,
         active: this.active,
-        media_url: this.media_url
+        media_url: this.media_url,
+        for_children: this.for_children
       },
       relationships: {
         contact_infos: {
@@ -85,6 +87,7 @@ export default class Entry extends BaseModel {
     this.description = json.attributes.description || ''
     this.short_description = json.attributes.short_description || ''
     this.media_url = json.attributes.media_url || ''
+    this.for_children = json.attributes.for_children
 
     this.active = json.attributes.active === true
     this.created_at = new Date(json.attributes.created_at)
@@ -138,6 +141,7 @@ export default class Entry extends BaseModel {
     entry.description = this.description
     entry.short_description = this.short_description
     entry.media_url = this.media_url
+    entry.for_children = this.for_children
 
     entry.active = this.active
     entry.created_at = this.created_at

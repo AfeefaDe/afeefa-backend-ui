@@ -65,7 +65,9 @@ export default {
     web: 'Homepage',
     socialMedia: 'Social Media',
     directions: 'Anfahrtsweg',
-    short_description: 'Kurzbeschreibung'
+    short_description: 'Kurzbeschreibung',
+    for_children: 'Für Kinder',
+    for_children_yes: 'Geeignet'
   },
   status: {
     load_event: 'Lade Event',

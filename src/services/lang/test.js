@@ -65,7 +65,9 @@ export default {
     web: '*',
     socialMedia: '*',
     directions: '*',
-    short_description: '*'
+    short_description: '*',
+    for_children: '*',
+    for_children_yes: '*'
   },
   status: {
     load_event: '*',

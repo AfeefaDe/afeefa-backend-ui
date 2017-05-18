@@ -55,6 +55,13 @@
             </entry-detail-property>
 
             <entry-detail-property
+              :name="$t('entries.for_children')"
+              :iconName="'child_friendly'"
+              v-if="entry.for_children">
+                 {{$t('entries.for_children_yes')}}
+            </entry-detail-property>
+
+            <entry-detail-property
               :name="$tc('headlines.annotations', entry.annotations.length)"
               :iconName="'label_outline'">
               <div v-if="entry.annotations.length">
@@ -170,7 +177,7 @@
                   :sort-function="sortByDateStart"
                   sort-order="ASC"
                   showIcon="false"
-                  :options="{event_date: true}">
+                  :options="{date_start: true}">
                 </entry-list-items>
               </EntryListDropDownMenu>
               <br>
@@ -181,7 +188,7 @@
                 :sort-function="sortByDateStart"
                 sort-order="DESC"
                 showIcon="false"
-                :options="{event_date: true}">
+                :options="{date_start: true}">
               </entry-list-items>
             </EntryListDropDownMenu>
           </entry-detail-property>
