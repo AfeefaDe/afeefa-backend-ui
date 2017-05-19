@@ -73,12 +73,15 @@ const Orgas = {
     }
   },
 
-  updateAttributes (id, attributes) {
+  updateAttributes (orga, attributes) {
     return store.dispatch('api/updateItemAttributes', {
       resource: new OrgasResource(),
-      id,
+      id: orga.id,
       type: 'orgas',
       attributes
+    }).then(attributes => {
+      Entries.updateAttributes(orga, attributes)
+      return attributes
     })
   },
 

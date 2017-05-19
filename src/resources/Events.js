@@ -100,12 +100,15 @@ export default {
     }
   },
 
-  updateAttributes (id, attributes) {
+  updateAttributes (event, attributes) {
     return store.dispatch('api/updateItemAttributes', {
       resource: new EventsResource(),
-      id,
+      id: event.id,
       type: 'events',
       attributes
+    }).then(attributes => {
+      Entries.updateAttributes(event, attributes)
+      return attributes
     })
   },
 
