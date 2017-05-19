@@ -3,7 +3,17 @@
     <div class="col s12 m12">
       <div class="mainCard">
         <div class="mainCard__header">
-          <h2 class="mainCard__headerTitle">{{ $t('status.all') }} {{ messages.headline() }} ({{ numItems }})</h2>
+          <h2 v-if="type === 'events'" class="mainCard__headerTitle">
+            <template v-if="showPastEvents === true">
+              {{ $t('headlines.pastEvents') }} ({{ numItems }})
+            </template>
+            <template v-else>
+              {{ $t('headlines.upcomingEvents') }} ({{ numItems }})
+            </template>
+          </h2>
+          <h2 v-else class="mainCard__headerTitle">
+            {{ $t('status.all') }} {{ messages.headline() }} ({{ numItems }})
+          </h2>
           <router-link v-if="addEntryButton" :to="{name: addEntryButton}"  class="mainCard__headerButton">
             {{$t('buttons.add')}}
             <i class="material-icons">add</i>

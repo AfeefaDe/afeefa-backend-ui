@@ -17,7 +17,7 @@ export default {
     parentOrga: 'Übergeordnete Orga',
     subOrgas: 'Untergeordnete Orgas',
     organizer: 'Veranstaltende',
-    upcomingEvents: 'Anstehende Veranstaltungen',
+    upcomingEvents: 'Kommende Veranstaltungen',
     pastEvents: 'Vergangene Veranstaltungen',
     systemLanguage: 'Systemsprache',
     generalTab: 'Allgemeines',
