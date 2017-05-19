@@ -91,6 +91,9 @@ export default {
     edit: '*',
     add: '*'
   },
+  checkboxes: {
+    show_past_events: '*'
+  },
   infos: {
     mandatory_field: '*',
     no_category: '*',

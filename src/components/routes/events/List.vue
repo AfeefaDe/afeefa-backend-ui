@@ -4,7 +4,9 @@
     addEntryButton="events.new"
     :sort-function="sortByDateStart"
     :options="{pagination: true, event_date: true}"
-    :messages="messages">
+    :messages="messages"
+    type="events"
+    @input="updateEntryList">
   </entry-list>
 </template>
 
@@ -25,6 +27,14 @@ export default {
       messages: {
         headline: () => this.$tc('headlines.events', 2)
       }
+    }
+  },
+
+  methods: {
+    updateEntryList (queryParams) {
+      this.Resource.getAll(queryParams).then(entries => {
+        this.items = entries
+      })
     }
   }
 }

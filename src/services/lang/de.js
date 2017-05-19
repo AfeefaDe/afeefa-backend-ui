@@ -91,6 +91,9 @@ export default {
     edit: 'Bearbeiten',
     add: 'Hinzufügen'
   },
+  checkboxes: {
+    show_past_events: 'Zeige vergangene Veranstaltungen'
+  },
   infos: {
     mandatory_field: 'Pflichtfeld',
     no_category: 'Keine Kategorie angegeben',

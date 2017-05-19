@@ -9,10 +9,17 @@
             <i class="material-icons">add</i>
           </router-link>
         </div>
+
+        <div v-if="type === 'events'" class="past-events-checkbox">
+          <input class="filled-in" type="checkbox" id="pastEventFilter" v-on:click="updateCheckbox" value="false" v-model="showPastEvents">
+          <label for="pastEventFilter">{{ $t('checkboxes.show_past_events') }}</label>
+        </div>
+
         <entry-list-items
           :items="items"
           :sort-function="sortFunction"
-          :options="options">
+          :options="options"
+          :sortOrder="sortOrder">
         </entry-list-items>
       </div>
     </div>
@@ -24,11 +31,30 @@
 import EntryListItems from '@/components/EntryListItems'
 
 export default {
-  props: ['items', 'sortFunction', 'options', 'messages', 'addEntryButton'],
+  props: ['items', 'sortFunction', 'options', 'messages', 'addEntryButton', 'type'],
+
+  data () {
+    return {
+      showPastEvents: false,
+      sortOrder: 'ASC'
+    }
+  },
 
   computed: {
     numItems () {
       return this.items ? this.items.length : 0
+    }
+  },
+
+  methods: {
+    updateCheckbox () {
+      if (this.showPastEvents === true) {
+        this.$emit('input', {'filter[date]': 'past'})   // show past events
+        this.sortOrder = 'DESC'
+      } else {
+        this.$emit('input', {'filter[date]': 'upcoming'})   // show upcoming events
+        this.sortOrder = 'ASC'
+      }
     }
   },
 
@@ -37,3 +63,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.past-events-checkbox {
+  display: flex;
+  justify-content: flex-end;
+}
+</style>
