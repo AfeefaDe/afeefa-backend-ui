@@ -74,6 +74,14 @@
                   </select>
                 </div>
 
+
+                <h2>{{ $t("entries.for_children") }}</h2>
+                <div class="input-field">
+                  <input type="checkbox" id="for_children" class="filled-in" v-model="item.for_children"/>
+                  <label for="for_children">{{$t("entries.for_children")}}</label>
+                </div>
+
+
                 <div v-if="has.date">
                   <h2>{{ $t("headlines.time") }}</h2>
                   <date-picker
@@ -619,7 +627,8 @@ export default {
 
 .entryForm {
   h2 {
-    margin-top: 1.5em;
+    margin-top: 2em;
+    margin-bottom: 0.5em;
     font-size: 1.4em;
     font-weight: 500;
   }
