@@ -63,8 +63,9 @@ export default {
     getList: ({state, dispatch}, {resource, params}) => {
       const listCacheKey = resource.listCacheKey
 
-      if (resourceCache.hasList(listCacheKey, '')) {
-        return Promise.resolve(resourceCache.getList(listCacheKey, ''))
+      const cacheUrl = JSON.stringify(params || '')   // distinct different caches of filtered events
+      if (resourceCache.hasList(listCacheKey, cacheUrl)) {
+        return Promise.resolve(resourceCache.getList(listCacheKey, cacheUrl))
       }
 
       if (promiseCache.hasItem(listCacheKey)) {
@@ -106,7 +107,7 @@ export default {
           }
         }
 
-        resourceCache.addList(listCacheKey, '', items)
+        resourceCache.addList(listCacheKey, cacheUrl, items)
 
         return items
       }).catch(response => {
