@@ -45,7 +45,7 @@ export default {
 
   data () {
     return {
-      showPastEvents: false,
+      showPastEvents: null,
       sortOrder: 'ASC'
     }
   },
@@ -56,15 +56,17 @@ export default {
     }
   },
 
+  created () {
+    if (this.$route.query.filter === 'past') {
+      this.showPastEvents = true
+    } else {
+      this.showPastEvents = false
+    }
+  },
+
   methods: {
     updateCheckbox () {
-      if (this.showPastEvents === true) {
-        this.$emit('input', {'filter[date]': 'past'})   // show past events
-        this.sortOrder = 'DESC'
-      } else {
-        this.$emit('input', {'filter[date]': 'upcoming'})   // show upcoming events
-        this.sortOrder = 'ASC'
-      }
+      this.$emit('input', this.showPastEvents)
     }
   },
 

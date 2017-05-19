@@ -23,7 +23,6 @@ export default {
     return {
       Resource: Events,
       sortByDateStart,
-      queryParams: {'filter[date]': 'upcoming'},
       messages: {
         headline: () => this.$tc('headlines.events', 2)
       }
@@ -31,10 +30,29 @@ export default {
   },
 
   methods: {
-    updateEntryList (queryParams) {
-      this.Resource.getAll(queryParams).then(entries => {
-        this.items = entries
-      })
+    updateEntryList (showPastEvents) {
+      let filter
+      if (showPastEvents) {
+        filter = 'past'
+      } else {
+        filter = 'upcoming'
+      }
+
+      // update url query
+      const query = {...this.$route.query}
+      delete query.page
+      delete query.pageSize
+      query.filter = filter
+      this.$router.replace({query: query})
+
+      this.loadItems()
+    },
+    getQueryParams () {
+      // init filter
+      if (this.$route.query.filter === undefined) {
+        return {'filter[date]': 'upcoming'}
+      }
+      return {'filter[date]': this.$route.query.filter}
     }
   }
 }
