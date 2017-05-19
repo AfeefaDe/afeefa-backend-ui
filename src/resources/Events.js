@@ -14,6 +14,37 @@ class EventsResource extends BaseResource {
   createItem () {
     return new Event()
   }
+
+  itemAdded (event) {
+    const resourceCache = store.state.api.resourceCache
+    // new event added to lists
+    resourceCache.purgeList('events')
+    resourceCache.purgeList('todos')
+  }
+
+  itemDeleted (event) {
+    const resourceCache = store.state.api.resourceCache
+    // remove old event from cache
+    resourceCache.purgeItem('events', event.id)
+    // old event not in lists any longer
+    resourceCache.purgeList('events')
+    resourceCache.purgeList('todos')
+  }
+
+  itemSaved (eventOld, event) {
+    const resourceCache = store.state.api.resourceCache
+    // event date might move the event from past to upcoming list
+    resourceCache.purgeList('events')
+    // annotation might be changed, entry may (disappear) in todo list
+    resourceCache.purgeList('todos')
+    // location or contact might be changed
+    resourceCache.purgeItem('locations', eventOld.location.id)
+    resourceCache.purgeItem('contacts', eventOld.contact.id)
+  }
+
+  itemAttributesUpdated (event, attributes) {
+    Entries.updateAttributes(event, attributes)
+  }
 }
 
 export default {
@@ -86,6 +117,7 @@ export default {
         resource: new EventsResource(),
         item: event
       }).then(event => {
+        // purge event list of orga of the new event
         this.updateOrgaEventList(event._relationIds.parent_orga)
         return event
       })
@@ -103,12 +135,9 @@ export default {
   updateAttributes (event, attributes) {
     return store.dispatch('api/updateItemAttributes', {
       resource: new EventsResource(),
-      id: event.id,
+      item: event,
       type: 'events',
       attributes
-    }).then(attributes => {
-      Entries.updateAttributes(event, attributes)
-      return attributes
     })
   },
 

@@ -179,13 +179,9 @@ export default {
       return resource.http.update(
         {id: item.id}, {data: item.serialize()}
       ).then(response => {
-        // todo fixme purge cache before deserialize entry in order to be able to fully reload
-        if (['events', 'orgas', 'todos'].includes(itemCacheKey)) {
-          resourceCache.purgeItem('locations', item.location.id)
-          resourceCache.purgeItem('contacts', item.contact.id)
-        }
         const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
         cachedItem.deserialize(response.body.data)
+        resource.itemSaved(item, cachedItem)
         dispatch('getMetaInformation') // e.g. todos may change after annotation change
         return cachedItem
       }).catch(response => {
@@ -206,13 +202,9 @@ export default {
       return resource.http.save(
         {id: item.id}, {data: item.serialize()}
       ).then(response => {
-        // todo fixme purge cache before deserialize entry in order to be able to fully reload
-        if (['events', 'orgas', 'todos'].includes(itemCacheKey)) {
-          resourceCache.purgeList(itemCacheKey)
-          resourceCache.purgeList('todos')
-        }
         item.deserialize(response.body.data)
         resourceCache.addItem(itemCacheKey, item)
+        resource.itemAdded(item)
         dispatch('getMetaInformation')
         return item
       }).catch(response => {
@@ -228,14 +220,8 @@ export default {
 
 
     deleteItem: ({state, dispatch}, {resource, item}) => {
-      const itemCacheKey = resource.getItemCacheKey()
-
       return resource.http.delete({id: item.id}).then(response => {
-        if (['events', 'orgas', 'todos'].includes(itemCacheKey)) {
-          resourceCache.purgeItem(itemCacheKey, item.id)
-          resourceCache.purgeList(itemCacheKey)
-          resourceCache.purgeList('todos')
-        }
+        resource.itemDeleted(item)
         dispatch('getMetaInformation')
         return true
       }).catch(response => {
@@ -250,14 +236,18 @@ export default {
     },
 
 
-    updateItemAttributes: ({state, dispatch}, {resource, id, type, attributes}) => {
+    updateItemAttributes: ({state, dispatch}, {resource, item, type, attributes}) => {
       const data = {
-        id,
+        id: item.id,
         type,
         attributes
       }
-      return resource.http.update({id}, {data}).then(response => {
-        return response.body.data.attributes
+      return resource.http.update({id: item.id}, {data}).then(response => {
+        const itemCacheKey = resource.getItemCacheKey()
+        const attributes = response.body.data.attributes
+        const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
+        resource.itemAttributesUpdated(cachedItem, attributes)
+        return attributes
       }).catch(response => {
         dispatch('messages/showAlert', {
           isError: true,

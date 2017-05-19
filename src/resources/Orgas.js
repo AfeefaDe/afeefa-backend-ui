@@ -14,6 +14,37 @@ class OrgasResource extends BaseResource {
   createItem () {
     return new Orga()
   }
+
+  itemAdded (orga) {
+    const resourceCache = store.state.api.resourceCache
+    // new orga added to lists
+    resourceCache.purgeList('orgas')
+    resourceCache.purgeList('todos')
+  }
+
+  itemDeleted (orga) {
+    const resourceCache = store.state.api.resourceCache
+    // remove old orga from cache
+    resourceCache.purgeItem('orgas', orga.id)
+    // old orga not in lists any longer
+    resourceCache.purgeList('orgas')
+    resourceCache.purgeList('todos')
+  }
+
+  itemSaved (orgaOld, orga) {
+    const resourceCache = store.state.api.resourceCache
+    // orga date might move the orga from past to upcoming list
+    resourceCache.purgeList('orgas')
+    // annotation might be changed, entry may (disappear) in todo list
+    resourceCache.purgeList('todos')
+    // location or contact might be changed
+    resourceCache.purgeItem('locations', orgaOld.location.id)
+    resourceCache.purgeItem('contacts', orgaOld.contact.id)
+  }
+
+  itemAttributesUpdated (orga, attributes) {
+    Entries.updateAttributes(orga, attributes)
+  }
 }
 
 
@@ -76,12 +107,9 @@ const Orgas = {
   updateAttributes (orga, attributes) {
     return store.dispatch('api/updateItemAttributes', {
       resource: new OrgasResource(),
-      id: orga.id,
+      item: orga,
       type: 'orgas',
       attributes
-    }).then(attributes => {
-      Entries.updateAttributes(orga, attributes)
-      return attributes
     })
   },
 
