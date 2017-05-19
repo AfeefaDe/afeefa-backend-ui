@@ -48,10 +48,7 @@
               :name="$tc('entries.date')"
               :iconName="'date_range'"
               v-if="has.date">
-                <span v-if="entry.date_start"> {{ $t('entries.date_start') }}: {{ entry.date_start | formatDateAbsolute }} ({{entry.date_start | formatDateRelative }})<br></span>
-                <span v-if="entry.date_end">
-                {{ $t('entries.date_end') }}: {{ entry.date_end | formatDateAbsolute }} ({{entry.date_end | formatDateRelative }})<br>
-                </span>
+                {{ entry | formatEventDate }}
             </entry-detail-property>
 
             <entry-detail-property
