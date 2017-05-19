@@ -62,6 +62,13 @@
             </entry-detail-property>
 
             <entry-detail-property
+              :name="$t('entries.support_wanted')"
+              :iconName="'pan_tool'"
+              v-if="entry.support_wanted">
+                 {{$t('entries.support_wanted_yes')}}
+            </entry-detail-property>
+
+            <entry-detail-property
               :name="$tc('headlines.annotations', entry.annotations.length)"
               :iconName="'label_outline'">
               <div v-if="entry.annotations.length">

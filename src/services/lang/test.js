@@ -24,7 +24,9 @@ export default {
     placeTab: '*',
     contactTab: '*',
     linkTab: '*',
-    preview: '*'
+    preview: '*',
+    support_wanted: '*',
+    for_children: '*'
   },
   errors: {
     noContactPresent: '*',
@@ -67,7 +69,9 @@ export default {
     directions: '*',
     short_description: '*',
     for_children: '*',
-    for_children_yes: '*'
+    for_children_yes: '*',
+    support_wanted: '*',
+    support_wanted_yes: '*'
   },
   status: {
     load_event: '*',

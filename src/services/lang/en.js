@@ -24,7 +24,9 @@ export default {
     placeTab: 'Place',
     contactTab: 'Contact',
     linkTab: 'Links',
-    preview: 'Preview'
+    preview: 'Preview',
+    support_wanted: 'Support wanted',
+    for_children: 'Qualified for children'
   },
   errors: {
     noContactPresent: 'No contact information present',
@@ -68,7 +70,9 @@ export default {
     directions: 'Directions',
     short_description: 'Short description',
     for_children: 'For children',
-    for_children_yes: 'Verfified'
+    for_children_yes: 'Verfified',
+    support_wanted: 'Support',
+    support_wanted_yes: 'Wanted'
   },
   status: {
     load_event: 'Load Event',

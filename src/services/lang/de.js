@@ -24,7 +24,9 @@ export default {
     placeTab: 'Ort',
     contactTab: 'Kontakt',
     linkTab: 'Verweise',
-    preview: 'Vorschau'
+    preview: 'Vorschau',
+    support_wanted: 'Unterstützung wird benötigt',
+    for_children: 'Für Kinder geeignet'
   },
   errors: {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',
@@ -67,7 +69,9 @@ export default {
     directions: 'Anfahrtsweg',
     short_description: 'Kurzbeschreibung',
     for_children: 'Für Kinder',
-    for_children_yes: 'Geeignet'
+    for_children_yes: 'Geeignet',
+    support_wanted: 'Unterstützung',
+    support_wanted_yes: 'Wird benötigt'
   },
   status: {
     load_event: 'Lade Event',

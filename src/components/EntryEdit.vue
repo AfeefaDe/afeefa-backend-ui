@@ -74,13 +74,17 @@
                   </select>
                 </div>
 
-
-                <h2>{{ $t("entries.for_children") }}</h2>
                 <div class="input-field">
+                  <h2>{{ $t("headlines.for_children") }}</h2>
                   <input type="checkbox" id="for_children" class="filled-in" v-model="item.for_children"/>
-                  <label for="for_children">{{$t("entries.for_children")}}</label>
+                  <label for="for_children">{{$t("entries.for_children_yes")}}</label>
                 </div>
 
+                <div class="input-field">
+                  <h2>{{ $t("headlines.support_wanted") }}</h2>
+                  <input type="checkbox" id="support_wanted" class="filled-in" v-model="item.support_wanted"/>
+                  <label for="support_wanted">{{$t("entries.support_wanted_yes")}}</label>
+                </div>
 
                 <div v-if="has.date">
                   <h2>{{ $t("headlines.time") }}</h2>
