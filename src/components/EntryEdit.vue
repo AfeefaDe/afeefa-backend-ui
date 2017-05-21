@@ -259,8 +259,6 @@
                 Löschen
               </button>
             </section>
-            <br>
-
           </form>
         </div>
 
@@ -640,6 +638,13 @@ export default {
     margin-top: 1.2em;
     display: flex;
     justify-content: space-between;
+    @media screen and (max-width: $break-medium) {
+      flex-wrap: wrap;
+      button {
+        flex-grow: 2;
+        margin-bottom: 1.5em;
+      }
+    }
   }
   .mandatory-field {
     color: #26a69a;
