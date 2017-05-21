@@ -26,7 +26,8 @@ export default {
     linkTab: '*',
     preview: '*',
     support_wanted: '*',
-    for_children: '*'
+    for_children: '*',
+    tags: '*'
   },
   errors: {
     noContactPresent: '*',
@@ -71,7 +72,8 @@ export default {
     for_children: '*',
     for_children_yes: '*',
     support_wanted: '*',
-    support_wanted_yes: '*'
+    support_wanted_yes: '*',
+    tags: '*'
   },
   status: {
     load_event: '*',

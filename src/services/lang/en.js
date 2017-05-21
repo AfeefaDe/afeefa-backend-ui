@@ -26,7 +26,8 @@ export default {
     linkTab: 'Links',
     preview: 'Preview',
     support_wanted: 'Support wanted',
-    for_children: 'Qualified for children'
+    for_children: 'Qualified for children',
+    tags: 'Tags'
   },
   errors: {
     noContactPresent: 'No contact information present',
@@ -72,7 +73,8 @@ export default {
     for_children: 'For children',
     for_children_yes: 'Verfified',
     support_wanted: 'Support',
-    support_wanted_yes: 'Wanted'
+    support_wanted_yes: 'Wanted',
+    tags: 'Tag | Tags'
   },
   status: {
     load_event: 'Load Event',

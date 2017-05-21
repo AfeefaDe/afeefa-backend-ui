@@ -18,7 +18,6 @@
 
             <entry-tabbed-content v-on:setCurrentTab="setCurrentTab">
               <section slot="generalTab">
-                <br>
                 <div class="inputField__spacing input-field">
                   <label for="title" :class="{active: item.title}">
                     {{ $t('entries.title') }}
@@ -52,6 +51,17 @@
                   <label for="description" :class="{active: item.description}">Beschreibung</label>
                   <textarea v-model="item.description" id="description"
                     class="materialize-textarea"></textarea>
+                </div>
+
+               <div class="inputField__spacing input-field">
+                  <div class="input-field">
+                    <label for="tags" :class="{active: item.tags}">{{$t("headlines.tags")}}</label>
+                    <input type="text" id="tags" v-model="item.tags" class="validate"/>
+                  </div>
+                   <span class="validation-hint">
+                  <i class="material-icons">error_outline</i>
+                  Tags können mehrere Orgas und Veranstaltungen gruppieren. Mehrere Tags werden mit Kommas separiert.
+                </span>
                 </div>
 
                 <h2>Kategorien</h2>
@@ -102,10 +112,6 @@
                 </div>
 
                 <h2>{{ $tc('headlines.annotations', 2) }}</h2>
-                <span v-if="bippelMoved" class="validation-hint">
-                  <i class="material-icons">error_outline</i>
-                  Annmerkungen sind nicht öffentlich sichtbar und dienen nur den Redakteur*innen.
-                </span>
                 <div class="annotationEditArea">
                   <annotation-tag v-for="annotation in item.annotations" :annotation="annotation" :editMode="true" v-on:remove="removeAnnotation" :key="annotation.id"></annotation-tag>
                   <p v-if="!item.annotations.length" class="annotationArea__error">Keine Anmerkungen</p>
@@ -116,6 +122,10 @@
                     </select>
                   </div>
                 </div>
+                <span class="validation-hint">
+                  <i class="material-icons">error_outline</i>
+                  Annmerkungen sind nicht öffentlich sichtbar und dienen nur den Redakteur*innen.
+                </span>
               </section>
 
 

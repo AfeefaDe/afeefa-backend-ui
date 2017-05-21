@@ -26,7 +26,8 @@ export default {
     linkTab: 'Verweise',
     preview: 'Vorschau',
     support_wanted: 'Unterstützung wird benötigt',
-    for_children: 'Für Kinder geeignet'
+    for_children: 'Für Kinder geeignet',
+    tags: 'Tags'
   },
   errors: {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',
@@ -71,7 +72,8 @@ export default {
     for_children: 'Für Kinder',
     for_children_yes: 'Geeignet',
     support_wanted: 'Unterstützung',
-    support_wanted_yes: 'Wird benötigt'
+    support_wanted_yes: 'Wird benötigt',
+    tags: 'Tag | Tags'
   },
   status: {
     load_event: 'Lade Event',
