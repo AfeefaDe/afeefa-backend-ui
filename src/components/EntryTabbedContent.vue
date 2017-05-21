@@ -23,7 +23,7 @@
     <slot name="placeTab"></slot>
   </section>
 
-  <section v-show="activeTab === 'placeTab'">
+  <section v-show="activeTab === 'contactTab'">
     <slot name="contactTab"></slot>
   </section>
 
