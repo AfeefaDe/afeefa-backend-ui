@@ -2,6 +2,7 @@ body {
 	margin: 0;
 	background-color: $white;
 	color: $black;
+  min-width: 320px;
 }
 
 * {
@@ -107,8 +108,7 @@ $sidebarWidth: 350px;
     margin: 0;
     line-height: $height;
   }
-  &__headerTitleHeading {
-    margin: 0;
+  &__headerTitleHeading, &__headerSubtitle  {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -118,14 +118,14 @@ $sidebarWidth: 350px;
       text-overflow: none;
     }
   }
+  &__headerTitleHeading {
+    margin: 0;
+  }
   &__headerSubtitle {
     font-size: 0.9rem;
     font-weight: normal;
     padding-top: 0.5em;
     display: block;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
   }
   &__headerButtonContainer {
     display: flex;
