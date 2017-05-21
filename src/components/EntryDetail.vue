@@ -7,7 +7,6 @@
         <div class="mainCard__headerTitle">
           <h2 class="mainCard__headerTitleHeading">{{ entry.title || 'Kein Titel' }}</h2>
           <span v-if="entry.parent_orga" class="mainCard__headerSubtitle">
-            {{ has.date ? $t('headlines.organizer') : $t('headlines.parentOrga') }}:
             <router-link :to="{name: entry.parent_orga.type + '.show', params: {id: entry.parent_orga.id}}">
               <u> {{ entry.parent_orga.title }}</u>
             </router-link>
