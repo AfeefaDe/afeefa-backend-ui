@@ -26,7 +26,8 @@ export default {
     linkTab: '*',
     preview: '*',
     support_wanted: '*',
-    for_children: '*'
+    for_children: '*',
+    translations: '*'
   },
   errors: {
     noContactPresent: '*',

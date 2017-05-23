@@ -17,6 +17,7 @@ import EditEvent from '@/components/routes/events/Edit'
 import ShowEvent from '@/components/routes/events/Show'
 
 import Search from '@/components/routes/Search'
+import Translations from '@/components/routes/Translations'
 import NotFound from '@/components/routes/NotFound'
 
 import store from '@/store'
@@ -97,6 +98,11 @@ const routes = [
         path: 'search',
         name: 'search',
         component: Search
+      },
+      {
+        path: 'translations',
+        name: 'translations',
+        component: Translations
       }
     ]
   },

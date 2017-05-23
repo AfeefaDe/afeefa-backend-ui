@@ -26,7 +26,8 @@ export default {
     linkTab: 'Verweise',
     preview: 'Vorschau',
     support_wanted: 'Unterstützung wird benötigt',
-    for_children: 'Für Kinder geeignet'
+    for_children: 'Für Kinder geeignet',
+    translations: 'Übersetzungen'
   },
   errors: {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',
