@@ -127,6 +127,11 @@
                 <span v-if="entry.contact.web"><a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a><br></span>
                 <span v-if="entry.contact.socialMedia"><a :href="entry.contact.socialMedia" target="_blank">{{ entry.contact.socialMedia }}</a></span>
               </entry-detail-property>
+
+              <entry-detail-property :name="$t('headlines.spokenLanguages')" :iconName="'translate'" v-if="entry.contact.spokenLanguages">
+                {{spokenLanguages}}
+              </entry-detail-property>
+
             </li>
           </ul>
         </section>
@@ -224,6 +229,7 @@ import EntryListDropDownMenu from '@/components/EntryListDropDownMenu'
 import AnnotationTag from '@/components/AnnotationTag'
 import Events from '@/resources/Events'
 import sortByDateStart from '@/helpers/sort-by-date-start'
+import Languages from '@/helpers/iso_639_languages.js'
 
 export default {
   props: ['entry', 'routeName', 'Resource', 'messages', 'options'],
@@ -297,6 +303,22 @@ export default {
     },
     previewLink () {
       return `${process.env.FRONTEND_URL}#${this.entry.id}`
+    },
+    /*
+     * Stringify spoken languages
+     */
+    spokenLanguages () {
+      let spokenLanguagesString = ''
+      if (this.entry.contact.spokenLanguages && this.entry.contact.spokenLanguages.split(',')) {
+        const langCodes = this.entry.contact.spokenLanguages.split(',')
+        for (let langCode of langCodes) {
+          const langObject = Languages.getLanguageFromCode(langCode)
+          // @todo: make use of current language selection
+          // @todo: use ','
+          spokenLanguagesString += ' ' + langObject.german
+        }
+      }
+      return spokenLanguagesString
     }
   },
 

@@ -26,7 +26,8 @@ export default {
     linkTab: 'Links',
     preview: 'Preview',
     support_wanted: 'Support wanted',
-    for_children: 'Qualified for children'
+    for_children: 'Qualified for children',
+    spokenLanguages: 'Spoken Languages'
   },
   errors: {
     noContactPresent: 'No contact information present',

@@ -222,7 +222,7 @@
                   </div>
                   <span v-show="errors.has('socialMedia')" class="validation-error">{{ errors.first('socialMedia') }}</span>
 
-                  <lang-select-input></lang-select-input>
+                  <lang-select-input  @input="updateSpokenLanguages" :entryValue="item.contact.spokenLanguages"></lang-select-input>
 
                 </div>
               </section>
@@ -471,6 +471,10 @@ export default {
       this.item.date_end = dateEnd
       this.item.has_time_start = hasTimeStart
       this.item.has_time_end = hasTimeEnd
+    },
+
+    updateSpokenLanguages (spokenLanguages) {
+      this.item.contact.spokenLanguages = spokenLanguages
     },
 
     updateImageContainerState ({mediaImageError}) {
