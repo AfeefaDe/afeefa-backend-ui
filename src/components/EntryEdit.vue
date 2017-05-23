@@ -219,8 +219,11 @@
                           data-vv-validate-on="blur"
                           v-validate="'url-with-protocol'"
                           :class="{'validation-error': errors.has('socialMedia') }"/>
-                    </div>
-                    <span v-show="errors.has('socialMedia')" class="validation-error">{{ errors.first('socialMedia') }}</span>
+                  </div>
+                  <span v-show="errors.has('socialMedia')" class="validation-error">{{ errors.first('socialMedia') }}</span>
+
+                  <lang-select-input></lang-select-input>
+
                 </div>
               </section>
 
@@ -292,7 +295,7 @@ import Spinner from '@/components/Spinner'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
 import EntryTabbedContent from '@/components/EntryTabbedContent'
-
+import LangSelectInput from '@/components/LangSelectInput'
 
 export default {
   props: ['id', 'routeName', 'Resource', 'messages', 'options'],
@@ -618,7 +621,8 @@ export default {
     LocationMap,
     ImageContainer,
     AnnotationTag,
-    EntryTabbedContent
+    EntryTabbedContent,
+    LangSelectInput
   }
 }
 </script>
