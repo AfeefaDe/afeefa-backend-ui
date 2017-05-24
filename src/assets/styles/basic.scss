@@ -109,14 +109,9 @@ $sidebarWidth: 350px;
     line-height: $height;
   }
   &__headerTitleHeading, &__headerSubtitle  {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    @media screen and (max-width: $break-medium) {
       white-space: normal;
       overflow: visible;
       text-overflow: none;
-    }
   }
   &__headerTitleHeading {
     margin: 0;
