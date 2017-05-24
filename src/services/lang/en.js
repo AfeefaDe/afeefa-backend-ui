@@ -122,7 +122,8 @@ export default {
   multiselect: {
     selectLabel: 'Press enter to select',
     selectedLabel: 'Selected',
-    deselectLabel: 'Press enter to remove'
+    deselectLabel: 'Press enter to remove',
+    noResult: 'No elements found. Consider changing the search query.'
   },
   categories: {
     'asylum-counselling': 'Asylum counselling',

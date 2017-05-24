@@ -121,7 +121,8 @@ export default {
   multiselect: {
     selectLabel: 'Zur Auswahl Enter drücken',
     selectedLabel: 'Ausgewählt',
-    deselectLabel: 'Zum Entfernen Enter drücken'
+    deselectLabel: 'Zum Entfernen Enter drücken',
+    noResult: 'Keine Einträge gefunden. Bitte Suchanfrage ändern.'
   },
   categories: {
     'asylum-counselling': 'Asylberatung',

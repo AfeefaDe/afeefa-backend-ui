@@ -295,11 +295,6 @@ export default {
       'iso639v1': 'ka'
     },
     {
-      'de': 'Deutsch',
-      'en': 'de',
-      'iso639v1': 'de'
-    },
-    {
       'de': 'Gälisch-Schottisch',
       'en': 'Gaelic; Scottish Gaelic',
       'iso639v1': 'gd'

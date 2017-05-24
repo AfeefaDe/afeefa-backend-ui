@@ -16,6 +16,7 @@
       :deselectLabel="$t('multiselect.deselectLabel')"
       :placeholder="$tc('headlines.spokenLanguages', 2)"
       >
+      <span slot="noResult">{{$t('multiselect.noResult')}}</span>
     </multiselect>
   </div>
 </template>

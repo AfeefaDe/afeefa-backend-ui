@@ -121,7 +121,8 @@ export default {
   multiselect: {
     selectLabel: '*',
     selectedLabel: '*',
-    deselectLabel: '*'
+    deselectLabel: '*',
+    noResult: '*'
   },
   categories: {
     'asylum-counselling': '*',
