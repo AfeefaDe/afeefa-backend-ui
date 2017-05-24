@@ -5,16 +5,19 @@
 
 var fs = require('fs');
 
-var input = require('./solanguages.json');
+var input = require('./isolanguages.json');
 
 function createOutput(fileName) {
   let finalResult = [];
   for(let key in input) {
     let lang = input[key]
-    if (lang.iso639v1.length>0) finalResult.push({'de' : lang.german, 'en' : lang.english, 'iso639v1': lang.iso639v1})
+    //duplicate detection
+    let obj = finalResult.find(x => x.iso639v1 === lang.iso639v1)
+    if (lang.iso639v1.length>0 && !obj) finalResult.push({'de' : lang.german, 'en' : lang.english, 'iso639v1': lang.iso639v1})
   }
+console.log(finalResult.length)
   fs.writeFileSync('./'+fileName, JSON.stringify(finalResult, null, 2).replace(/"/g, "'"), 'utf-8');
 }
 /* create files */
-createOutput('lang.json');
+createOutput('output_lang.json');
 

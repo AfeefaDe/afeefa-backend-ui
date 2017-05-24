@@ -35,11 +35,6 @@ export default {
       'iso639v1': 'sq'
     },
     {
-      'de': 'Albanisch',
-      'en': 'Albanian',
-      'iso639v1': 'sq'
-    },
-    {
       'de': 'Amharisch',
       'en': 'Amharic',
       'iso639v1': 'am'
@@ -195,11 +190,6 @@ export default {
       'iso639v1': 'cs'
     },
     {
-      'de': 'Tschechisch',
-      'en': 'Czech',
-      'iso639v1': 'cs'
-    },
-    {
       'de': 'Dänisch',
       'en': 'Danish',
       'iso639v1': 'da'
@@ -275,11 +265,6 @@ export default {
       'iso639v1': 'fr'
     },
     {
-      'de': 'Französisch',
-      'en': 'French',
-      'iso639v1': 'fr'
-    },
-    {
       'de': 'Friesisch',
       'en': 'Western Frisian',
       'iso639v1': 'fy'
@@ -313,11 +298,6 @@ export default {
       'de': 'Manx',
       'en': 'Manx',
       'iso639v1': 'gv'
-    },
-    {
-      'de': 'Neugriechisch',
-      'en': 'Greek, Modern (1453-)',
-      'iso639v1': 'el'
     },
     {
       'de': 'Guaraní-Sprache',
@@ -370,11 +350,6 @@ export default {
       'iso639v1': 'hu'
     },
     {
-      'de': 'Armenisch',
-      'en': 'Armenian',
-      'iso639v1': 'hy'
-    },
-    {
       'de': 'Ibo-Sprache',
       'en': 'Igbo',
       'iso639v1': 'ig'
@@ -420,11 +395,6 @@ export default {
       'iso639v1': 'ik'
     },
     {
-      'de': 'Isländisch',
-      'en': 'Icelandic',
-      'iso639v1': 'is'
-    },
-    {
       'de': 'Italienisch',
       'en': 'Italian',
       'iso639v1': 'it'
@@ -453,11 +423,6 @@ export default {
       'de': 'Kaschmiri',
       'en': 'Kashmiri',
       'iso639v1': 'ks'
-    },
-    {
-      'de': 'Georgisch',
-      'en': 'Georgian',
-      'iso639v1': 'ka'
     },
     {
       'de': 'Kanuri-Sprache',
@@ -565,11 +530,6 @@ export default {
       'iso639v1': 'mk'
     },
     {
-      'de': 'Makedonisch',
-      'en': 'Macedonian',
-      'iso639v1': 'mk'
-    },
-    {
       'de': 'Marschallesisch',
       'en': 'Marshallese',
       'iso639v1': 'mh'
@@ -578,11 +538,6 @@ export default {
       'de': 'Malayalam',
       'en': 'Malayalam',
       'iso639v1': 'ml'
-    },
-    {
-      'de': 'Maori-Sprache',
-      'en': 'Maori',
-      'iso639v1': 'mi'
     },
     {
       'de': 'Maori-Sprache',
@@ -600,21 +555,6 @@ export default {
       'iso639v1': 'ms'
     },
     {
-      'de': 'Malaiisch',
-      'en': 'Malay',
-      'iso639v1': 'ms'
-    },
-    {
-      'de': 'Makedonisch',
-      'en': 'Macedonian',
-      'iso639v1': 'mk'
-    },
-    {
-      'de': 'Makedonisch',
-      'en': 'Macedonian',
-      'iso639v1': 'mk'
-    },
-    {
       'de': 'Malagassi-Sprache',
       'en': 'Malagasy',
       'iso639v1': 'mg'
@@ -628,31 +568,6 @@ export default {
       'de': 'Mongolisch',
       'en': 'Mongolian',
       'iso639v1': 'mn'
-    },
-    {
-      'de': 'Maori-Sprache',
-      'en': 'Maori',
-      'iso639v1': 'mi'
-    },
-    {
-      'de': 'Maori-Sprache',
-      'en': 'Maori',
-      'iso639v1': 'mi'
-    },
-    {
-      'de': 'Malaiisch',
-      'en': 'Malay',
-      'iso639v1': 'ms'
-    },
-    {
-      'de': 'Malaiisch',
-      'en': 'Malay',
-      'iso639v1': 'ms'
-    },
-    {
-      'de': 'Birmanisch',
-      'en': 'Burmese',
-      'iso639v1': 'my'
     },
     {
       'de': 'Nauruanisch',
@@ -683,11 +598,6 @@ export default {
       'de': 'Nepali',
       'en': 'Nepali',
       'iso639v1': 'ne'
-    },
-    {
-      'de': 'Niederländisch',
-      'en': 'Dutch; Flemish',
-      'iso639v1': 'nl'
     },
     {
       'de': 'Nynorsk',
@@ -740,11 +650,6 @@ export default {
       'iso639v1': 'pa'
     },
     {
-      'de': 'Persisch',
-      'en': 'Persian',
-      'iso639v1': 'fa'
-    },
-    {
       'de': 'Pali',
       'en': 'Pali',
       'iso639v1': 'pi'
@@ -780,11 +685,6 @@ export default {
       'iso639v1': 'ro'
     },
     {
-      'de': 'Rumänisch',
-      'en': 'Romanian; Moldavian; Moldovan',
-      'iso639v1': 'ro'
-    },
-    {
       'de': 'Rundi-Sprache',
       'en': 'Rundi',
       'iso639v1': 'rn'
@@ -808,11 +708,6 @@ export default {
       'de': 'Singhalesisch',
       'en': 'Sinhala; Sinhalese',
       'iso639v1': 'si'
-    },
-    {
-      'de': 'Slowakisch',
-      'en': 'Slovak',
-      'iso639v1': 'sk'
     },
     {
       'de': 'Slowakisch',
@@ -858,11 +753,6 @@ export default {
       'de': 'Spanisch',
       'en': 'Spanish; Castilian',
       'iso639v1': 'es'
-    },
-    {
-      'de': 'Albanisch',
-      'en': 'Albanian',
-      'iso639v1': 'sq'
     },
     {
       'de': 'Sardisch',
@@ -928,11 +818,6 @@ export default {
       'de': 'Thailändisch',
       'en': 'Thai',
       'iso639v1': 'th'
-    },
-    {
-      'de': 'Tibetisch',
-      'en': 'Tibetan',
-      'iso639v1': 'bo'
     },
     {
       'de': 'Tigrinja-Sprache',
@@ -1005,11 +890,6 @@ export default {
       'iso639v1': 'vo'
     },
     {
-      'de': 'Kymrisch',
-      'en': 'Welsh',
-      'iso639v1': 'cy'
-    },
-    {
       'de': 'Wallonisch',
       'en': 'Walloon',
       'iso639v1': 'wa'
@@ -1040,15 +920,9 @@ export default {
       'iso639v1': 'za'
     },
     {
-      'de': 'Chinesisch',
-      'en': 'Chinese',
-      'iso639v1': 'zh'
-    },
-    {
       'de': 'Zulu-Sprache',
       'en': 'Zulu',
       'iso639v1': 'zu'
     }
   ]
 }
-
