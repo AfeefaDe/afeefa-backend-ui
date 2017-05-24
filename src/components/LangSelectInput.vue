@@ -3,14 +3,19 @@
     <multiselect
       v-model="chosenLanguages"
       track-by="iso639v1"
-      label="german"
-      placeholder="Spoken languages"
       :options="possibleLanguages"
       :searchable="true"
       :allow-empty="true"
       :multiple="true"
       :close-on-select="false"
-      @input="chosenLanguagesChanged">
+      @input="chosenLanguagesChanged"
+
+      :label="$i18n.locale"
+      :selectLabel="$t('multiselect.selectLabel')"
+      :selectedLabel="$t('multiselect.selectedLabel')"
+      :deselectLabel="$t('multiselect.deselectLabel')"
+      :placeholder="$tc('headlines.spokenLanguages', 2)"
+      >
     </multiselect>
   </div>
 </template>

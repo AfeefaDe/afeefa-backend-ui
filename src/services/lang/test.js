@@ -116,6 +116,11 @@ export default {
   messages: {
     loading: '*'
   },
+  multiselect: {
+    selectLabel: '*',
+    selectedLabel: '*',
+    deselectLabel: '*'
+  },
   categories: {
     'asylum-counselling': '*',
     'authority': '*',

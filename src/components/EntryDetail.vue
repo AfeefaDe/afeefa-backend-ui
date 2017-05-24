@@ -128,7 +128,7 @@
                 <span v-if="entry.contact.socialMedia"><a :href="entry.contact.socialMedia" target="_blank">{{ entry.contact.socialMedia }}</a></span>
               </entry-detail-property>
 
-              <entry-detail-property :name="$t('headlines.spokenLanguages')" :iconName="'translate'" v-if="entry.contact.spokenLanguages">
+              <entry-detail-property :name="$tc('headlines.spokenLanguages', entry.contact.spokenLanguages.split(',').length)" :iconName="'translate'" v-if="entry.contact.spokenLanguages">
                 {{spokenLanguages}}
               </entry-detail-property>
 
@@ -305,18 +305,19 @@ export default {
       return `${process.env.FRONTEND_URL}#${this.entry.id}`
     },
     /*
-     * Stringify spoken languages
+     * Stringify spoken languages depending on current UI langugage
      */
     spokenLanguages () {
+      const languageKey = this.$i18n.locale
       let spokenLanguagesString = ''
       if (this.entry.contact.spokenLanguages && this.entry.contact.spokenLanguages.split(',')) {
         const langCodes = this.entry.contact.spokenLanguages.split(',')
         for (let langCode of langCodes) {
           const langObject = Languages.getLanguageFromCode(langCode)
-          // @todo: make use of current language selection
-          // @todo: use ','
-          spokenLanguagesString += ' ' + langObject.german
+          spokenLanguagesString += langObject[languageKey] + ', '
         }
+        // remove last ','
+        spokenLanguagesString = spokenLanguagesString.substring(0, spokenLanguagesString.length - 2)
       }
       return spokenLanguagesString
     }

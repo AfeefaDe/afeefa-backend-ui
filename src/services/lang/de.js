@@ -27,7 +27,7 @@ export default {
     preview: 'Vorschau',
     support_wanted: 'Unterstützung wird benötigt',
     for_children: 'Für Kinder geeignet',
-    spokenLanguages: 'Gesprochene Sprachen'
+    spokenLanguages: 'Gesprochene Sprache | Gesprochene Sprachen'
   },
   errors: {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',
@@ -115,6 +115,11 @@ export default {
   },
   messages: {
     loading: 'Lädt'
+  },
+  multiselect: {
+    selectLabel: 'Zur Auswahl Enter drücken',
+    selectedLabel: 'Ausgewählt',
+    deselectLabel: 'Zum Entfernen Enter drücken'
   },
   categories: {
     'asylum-counselling': 'Asylberatung',

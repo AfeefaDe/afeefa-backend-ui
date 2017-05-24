@@ -6,1050 +6,1052 @@ export default {
     }
     return obj
   },
+  // downloaded from http://heimsath.org/blog/articles/iso-sprachen/
+  // removed incomplete langauges, removed french translation and renamed certain keys
   data: [
     {
-      'german': 'Danakil-Sprache',
-      'english': 'Afar',
+      'de': 'Danakil-Sprache',
+      'en': 'Afar',
       'iso639v1': 'aa'
     },
     {
-      'german': 'Abchasisch',
-      'english': 'Abkhazian',
+      'de': 'Abchasisch',
+      'en': 'Abkhazian',
       'iso639v1': 'ab'
     },
     {
-      'german': 'Afrikaans',
-      'english': 'Afrikaans',
+      'de': 'Afrikaans',
+      'en': 'Afrikaans',
       'iso639v1': 'af'
     },
     {
-      'german': 'Akan-Sprache',
-      'english': 'Akan',
+      'de': 'Akan-Sprache',
+      'en': 'Akan',
       'iso639v1': 'ak'
     },
     {
-      'german': 'Albanisch',
-      'english': 'Albanian',
+      'de': 'Albanisch',
+      'en': 'Albanian',
       'iso639v1': 'sq'
     },
     {
-      'german': 'Albanisch',
-      'english': 'Albanian',
+      'de': 'Albanisch',
+      'en': 'Albanian',
       'iso639v1': 'sq'
     },
     {
-      'german': 'Amharisch',
-      'english': 'Amharic',
+      'de': 'Amharisch',
+      'en': 'Amharic',
       'iso639v1': 'am'
     },
     {
-      'german': 'Arabisch',
-      'english': 'Arabic',
+      'de': 'Arabisch',
+      'en': 'Arabic',
       'iso639v1': 'ar'
     },
     {
-      'german': 'Aragonesisch',
-      'english': 'Aragonese',
+      'de': 'Aragonesisch',
+      'en': 'Aragonese',
       'iso639v1': 'an'
     },
     {
-      'german': 'Armenisch',
-      'english': 'Armenian',
+      'de': 'Armenisch',
+      'en': 'Armenian',
       'iso639v1': 'hy'
     },
     {
-      'german': 'Assamesisch',
-      'english': 'Assamese',
+      'de': 'Assamesisch',
+      'en': 'Assamese',
       'iso639v1': 'as'
     },
     {
-      'german': 'Awarisch',
-      'english': 'Avaric',
+      'de': 'Awarisch',
+      'en': 'Avaric',
       'iso639v1': 'av'
     },
     {
-      'german': 'Avestisch',
-      'english': 'Avestan',
+      'de': 'Avestisch',
+      'en': 'Avestan',
       'iso639v1': 'ae'
     },
     {
-      'german': 'Aymará-Sprache',
-      'english': 'Aymara',
+      'de': 'Aymará-Sprache',
+      'en': 'Aymara',
       'iso639v1': 'ay'
     },
     {
-      'german': 'Aserbeidschanisch',
-      'english': 'Azerbaijani',
+      'de': 'Aserbeidschanisch',
+      'en': 'Azerbaijani',
       'iso639v1': 'az'
     },
     {
-      'german': 'Baschkirisch',
-      'english': 'Bashkir',
+      'de': 'Baschkirisch',
+      'en': 'Bashkir',
       'iso639v1': 'ba'
     },
     {
-      'german': 'Bambara-Sprache',
-      'english': 'Bambara',
+      'de': 'Bambara-Sprache',
+      'en': 'Bambara',
       'iso639v1': 'bm'
     },
     {
-      'german': 'Weißrussisch',
-      'english': 'Belarusian',
+      'de': 'Weißrussisch',
+      'en': 'Belarusian',
       'iso639v1': 'be'
     },
     {
-      'german': 'Bengali',
-      'english': 'Bengali',
+      'de': 'Bengali',
+      'en': 'Bengali',
       'iso639v1': 'bn'
     },
     {
-      'german': 'Bihari (Andere)',
-      'english': 'Bihari languages',
+      'de': 'Bihari (Andere)',
+      'en': 'Bihari languages',
       'iso639v1': 'bh'
     },
     {
-      'german': 'Beach-la-mar',
-      'english': 'Bislama',
+      'de': 'Beach-la-mar',
+      'en': 'Bislama',
       'iso639v1': 'bi'
     },
     {
-      'german': 'Tibetisch',
-      'english': 'Tibetan',
+      'de': 'Tibetisch',
+      'en': 'Tibetan',
       'iso639v1': 'bo'
     },
     {
-      'german': 'Bosnisch',
-      'english': 'Bosnian',
+      'de': 'Bosnisch',
+      'en': 'Bosnian',
       'iso639v1': 'bs'
     },
     {
-      'german': 'Bretonisch',
-      'english': 'Breton',
+      'de': 'Bretonisch',
+      'en': 'Breton',
       'iso639v1': 'br'
     },
     {
-      'german': 'Bulgarisch',
-      'english': 'Bulgarian',
+      'de': 'Bulgarisch',
+      'en': 'Bulgarian',
       'iso639v1': 'bg'
     },
     {
-      'german': 'Birmanisch',
-      'english': 'Burmese',
+      'de': 'Birmanisch',
+      'en': 'Burmese',
       'iso639v1': 'my'
     },
     {
-      'german': 'Katalanisch',
-      'english': 'Catalan; Valencian',
+      'de': 'Katalanisch',
+      'en': 'Catalan; Valencian',
       'iso639v1': 'ca'
     },
     {
-      'german': 'Chamorro-Sprache',
-      'english': 'Chamorro',
+      'de': 'Chamorro-Sprache',
+      'en': 'Chamorro',
       'iso639v1': 'ch'
     },
     {
-      'german': 'Tschetschenisch',
-      'english': 'Chechen',
+      'de': 'Tschetschenisch',
+      'en': 'Chechen',
       'iso639v1': 'ce'
     },
     {
-      'german': 'Chinesisch',
-      'english': 'Chinese',
+      'de': 'Chinesisch',
+      'en': 'Chinese',
       'iso639v1': 'zh'
     },
     {
-      'german': 'Kirchenslawisch',
-      'english': 'Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic',
+      'de': 'Kirchenslawisch',
+      'en': 'Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic',
       'iso639v1': 'cu'
     },
     {
-      'german': 'Tschuwaschisch',
-      'english': 'Chuvash',
+      'de': 'Tschuwaschisch',
+      'en': 'Chuvash',
       'iso639v1': 'cv'
     },
     {
-      'german': 'Kornisch',
-      'english': 'Cornish',
+      'de': 'Kornisch',
+      'en': 'Cornish',
       'iso639v1': 'kw'
     },
     {
-      'german': 'Korsisch',
-      'english': 'Corsican',
+      'de': 'Korsisch',
+      'en': 'Corsican',
       'iso639v1': 'co'
     },
     {
-      'german': 'Cree-Sprache',
-      'english': 'Cree',
+      'de': 'Cree-Sprache',
+      'en': 'Cree',
       'iso639v1': 'cr'
     },
     {
-      'german': 'Kymrisch',
-      'english': 'Welsh',
+      'de': 'Kymrisch',
+      'en': 'Welsh',
       'iso639v1': 'cy'
     },
     {
-      'german': 'Tschechisch',
-      'english': 'Czech',
+      'de': 'Tschechisch',
+      'en': 'Czech',
       'iso639v1': 'cs'
     },
     {
-      'german': 'Tschechisch',
-      'english': 'Czech',
+      'de': 'Tschechisch',
+      'en': 'Czech',
       'iso639v1': 'cs'
     },
     {
-      'german': 'Dänisch',
-      'english': 'Danish',
+      'de': 'Dänisch',
+      'en': 'Danish',
       'iso639v1': 'da'
     },
     {
-      'german': 'Deutsch',
-      'english': 'German',
+      'de': 'Deutsch',
+      'en': 'German',
       'iso639v1': 'de'
     },
     {
-      'german': 'Maledivisch',
-      'english': 'Divehi; Dhivehi; Maldivian',
+      'de': 'Maledivisch',
+      'en': 'Divehi; Dhivehi; Maldivian',
       'iso639v1': 'dv'
     },
     {
-      'german': 'Niederländisch',
-      'english': 'Dutch; Flemish',
+      'de': 'Niederländisch',
+      'en': 'Dutch; Flemish',
       'iso639v1': 'nl'
     },
     {
-      'german': 'Dzongkha',
-      'english': 'Dzongkha',
+      'de': 'Dzongkha',
+      'en': 'Dzongkha',
       'iso639v1': 'dz'
     },
     {
-      'german': 'Neugriechisch',
-      'english': 'Greek, Modern (1453-)',
+      'de': 'Neugriechisch',
+      'en': 'Greek, Modern (1453-)',
       'iso639v1': 'el'
     },
     {
-      'german': 'Englisch',
-      'english': 'English',
+      'de': 'Englisch',
+      'en': 'English',
       'iso639v1': 'en'
     },
     {
-      'german': 'Esperanto',
-      'english': 'Esperanto',
+      'de': 'Esperanto',
+      'en': 'Esperanto',
       'iso639v1': 'eo'
     },
     {
-      'german': 'Estnisch',
-      'english': 'Estonian',
+      'de': 'Estnisch',
+      'en': 'Estonian',
       'iso639v1': 'et'
     },
     {
-      'german': 'Ewe-Sprache',
-      'english': 'Ewe',
+      'de': 'Ewe-Sprache',
+      'en': 'Ewe',
       'iso639v1': 'ee'
     },
     {
-      'german': 'Färöisch',
-      'english': 'Faroese',
+      'de': 'Färöisch',
+      'en': 'Faroese',
       'iso639v1': 'fo'
     },
     {
-      'german': 'Persisch',
-      'english': 'Persian',
+      'de': 'Persisch',
+      'en': 'Persian',
       'iso639v1': 'fa'
     },
     {
-      'german': 'Fidschi-Sprache',
-      'english': 'Fijian',
+      'de': 'Fidschi-Sprache',
+      'en': 'Fijian',
       'iso639v1': 'fj'
     },
     {
-      'german': 'Finnisch',
-      'english': 'Finnish',
+      'de': 'Finnisch',
+      'en': 'Finnish',
       'iso639v1': 'fi'
     },
     {
-      'german': 'Französisch',
-      'english': 'French',
+      'de': 'Französisch',
+      'en': 'French',
       'iso639v1': 'fr'
     },
     {
-      'german': 'Französisch',
-      'english': 'French',
+      'de': 'Französisch',
+      'en': 'French',
       'iso639v1': 'fr'
     },
     {
-      'german': 'Friesisch',
-      'english': 'Western Frisian',
+      'de': 'Friesisch',
+      'en': 'Western Frisian',
       'iso639v1': 'fy'
     },
     {
-      'german': 'Ful',
-      'english': 'Fulah',
+      'de': 'Ful',
+      'en': 'Fulah',
       'iso639v1': 'ff'
     },
     {
-      'german': 'Georgisch',
-      'english': 'Georgian',
+      'de': 'Georgisch',
+      'en': 'Georgian',
       'iso639v1': 'ka'
     },
     {
-      'german': 'Deutsch',
-      'english': 'German',
+      'de': 'Deutsch',
+      'en': 'de',
       'iso639v1': 'de'
     },
     {
-      'german': 'Gälisch-Schottisch',
-      'english': 'Gaelic; Scottish Gaelic',
+      'de': 'Gälisch-Schottisch',
+      'en': 'Gaelic; Scottish Gaelic',
       'iso639v1': 'gd'
     },
     {
-      'german': 'Irisch',
-      'english': 'Irish',
+      'de': 'Irisch',
+      'en': 'Irish',
       'iso639v1': 'ga'
     },
     {
-      'german': 'Galicisch',
-      'english': 'Galician',
+      'de': 'Galicisch',
+      'en': 'Galician',
       'iso639v1': 'gl'
     },
     {
-      'german': 'Manx',
-      'english': 'Manx',
+      'de': 'Manx',
+      'en': 'Manx',
       'iso639v1': 'gv'
     },
     {
-      'german': 'Neugriechisch',
-      'english': 'Greek, Modern (1453-)',
+      'de': 'Neugriechisch',
+      'en': 'Greek, Modern (1453-)',
       'iso639v1': 'el'
     },
     {
-      'german': 'Guaraní-Sprache',
-      'english': 'Guarani',
+      'de': 'Guaraní-Sprache',
+      'en': 'Guarani',
       'iso639v1': 'gn'
     },
     {
-      'german': 'Gujarati-Sprache',
-      'english': 'Gujarati',
+      'de': 'Gujarati-Sprache',
+      'en': 'Gujarati',
       'iso639v1': 'gu'
     },
     {
-      'german': 'Haïtien (Haiti-Kreolisch)',
-      'english': 'Haitian; Haitian Creole',
+      'de': 'Haïtien (Haiti-Kreolisch)',
+      'en': 'Haitian; Haitian Creole',
       'iso639v1': 'ht'
     },
     {
-      'german': 'Haussa-Sprache',
-      'english': 'Hausa',
+      'de': 'Haussa-Sprache',
+      'en': 'Hausa',
       'iso639v1': 'ha'
     },
     {
-      'german': 'Hebräisch',
-      'english': 'Hebrew',
+      'de': 'Hebräisch',
+      'en': 'Hebrew',
       'iso639v1': 'he'
     },
     {
-      'german': 'Herero-Sprache',
-      'english': 'Herero',
+      'de': 'Herero-Sprache',
+      'en': 'Herero',
       'iso639v1': 'hz'
     },
     {
-      'german': 'Hindi',
-      'english': 'Hindi',
+      'de': 'Hindi',
+      'en': 'Hindi',
       'iso639v1': 'hi'
     },
     {
-      'german': 'Hiri-Motu',
-      'english': 'Hiri Motu',
+      'de': 'Hiri-Motu',
+      'en': 'Hiri Motu',
       'iso639v1': 'ho'
     },
     {
-      'german': 'Kroatisch ',
-      'english': 'Croatian',
+      'de': 'Kroatisch ',
+      'en': 'Croatian',
       'iso639v1': 'hr'
     },
     {
-      'german': 'Ungarisch',
-      'english': 'Hungarian',
+      'de': 'Ungarisch',
+      'en': 'Hungarian',
       'iso639v1': 'hu'
     },
     {
-      'german': 'Armenisch',
-      'english': 'Armenian',
+      'de': 'Armenisch',
+      'en': 'Armenian',
       'iso639v1': 'hy'
     },
     {
-      'german': 'Ibo-Sprache',
-      'english': 'Igbo',
+      'de': 'Ibo-Sprache',
+      'en': 'Igbo',
       'iso639v1': 'ig'
     },
     {
-      'german': 'Isländisch',
-      'english': 'Icelandic',
+      'de': 'Isländisch',
+      'en': 'Icelandic',
       'iso639v1': 'is'
     },
     {
-      'german': 'Ido',
-      'english': 'Ido',
+      'de': 'Ido',
+      'en': 'Ido',
       'iso639v1': 'io'
     },
     {
-      'german': 'Lalo-Sprache',
-      'english': 'Sichuan Yi; Nuosu',
+      'de': 'Lalo-Sprache',
+      'en': 'Sichuan Yi; Nuosu',
       'iso639v1': 'ii'
     },
     {
-      'german': 'Inuktitut',
-      'english': 'Inuktitut',
+      'de': 'Inuktitut',
+      'en': 'Inuktitut',
       'iso639v1': 'iu'
     },
     {
-      'german': 'Interlingue',
-      'english': 'Interlingue; Occidental',
+      'de': 'Interlingue',
+      'en': 'Interlingue; Occidental',
       'iso639v1': 'ie'
     },
     {
-      'german': 'Interlingua',
-      'english': 'Interlingua (International Auxiliary Language Association)',
+      'de': 'Interlingua',
+      'en': 'Interlingua (International Auxiliary Language Association)',
       'iso639v1': 'ia'
     },
     {
-      'german': 'Bahasa Indonesia',
-      'english': 'Indonesian',
+      'de': 'Bahasa Indonesia',
+      'en': 'Indonesian',
       'iso639v1': 'id'
     },
     {
-      'german': 'Inupik',
-      'english': 'Inupiaq',
+      'de': 'Inupik',
+      'en': 'Inupiaq',
       'iso639v1': 'ik'
     },
     {
-      'german': 'Isländisch',
-      'english': 'Icelandic',
+      'de': 'Isländisch',
+      'en': 'Icelandic',
       'iso639v1': 'is'
     },
     {
-      'german': 'Italienisch',
-      'english': 'Italian',
+      'de': 'Italienisch',
+      'en': 'Italian',
       'iso639v1': 'it'
     },
     {
-      'german': 'Javanisch',
-      'english': 'Javanese',
+      'de': 'Javanisch',
+      'en': 'Javanese',
       'iso639v1': 'jv'
     },
     {
-      'german': 'Japanisch',
-      'english': 'Japanese',
+      'de': 'Japanisch',
+      'en': 'Japanese',
       'iso639v1': 'ja'
     },
     {
-      'german': 'Grönländisch',
-      'english': 'Kalaallisut; Greenlandic',
+      'de': 'Grönländisch',
+      'en': 'Kalaallisut; Greenlandic',
       'iso639v1': 'kl'
     },
     {
-      'german': 'Kannada',
-      'english': 'Kannada',
+      'de': 'Kannada',
+      'en': 'Kannada',
       'iso639v1': 'kn'
     },
     {
-      'german': 'Kaschmiri',
-      'english': 'Kashmiri',
+      'de': 'Kaschmiri',
+      'en': 'Kashmiri',
       'iso639v1': 'ks'
     },
     {
-      'german': 'Georgisch',
-      'english': 'Georgian',
+      'de': 'Georgisch',
+      'en': 'Georgian',
       'iso639v1': 'ka'
     },
     {
-      'german': 'Kanuri-Sprache',
-      'english': 'Kanuri',
+      'de': 'Kanuri-Sprache',
+      'en': 'Kanuri',
       'iso639v1': 'kr'
     },
     {
-      'german': 'Kasachisch',
-      'english': 'Kazakh',
+      'de': 'Kasachisch',
+      'en': 'Kazakh',
       'iso639v1': 'kk'
     },
     {
-      'german': 'Kambodschanisch',
-      'english': 'Central Khmer',
+      'de': 'Kambodschanisch',
+      'en': 'Central Khmer',
       'iso639v1': 'km'
     },
     {
-      'german': 'Kikuyu-Sprache',
-      'english': 'Kikuyu; Gikuyu',
+      'de': 'Kikuyu-Sprache',
+      'en': 'Kikuyu; Gikuyu',
       'iso639v1': 'ki'
     },
     {
-      'german': 'Rwanda-Sprache',
-      'english': 'Kinyarwanda',
+      'de': 'Rwanda-Sprache',
+      'en': 'Kinyarwanda',
       'iso639v1': 'rw'
     },
     {
-      'german': 'Kirgisisch',
-      'english': 'Kirghiz; Kyrgyz',
+      'de': 'Kirgisisch',
+      'en': 'Kirghiz; Kyrgyz',
       'iso639v1': 'ky'
     },
     {
-      'german': 'Komi-Sprache',
-      'english': 'Komi',
+      'de': 'Komi-Sprache',
+      'en': 'Komi',
       'iso639v1': 'kv'
     },
     {
-      'german': 'Kongo-Sprache',
-      'english': 'Kongo',
+      'de': 'Kongo-Sprache',
+      'en': 'Kongo',
       'iso639v1': 'kg'
     },
     {
-      'german': 'Koreanisch',
-      'english': 'Korean',
+      'de': 'Koreanisch',
+      'en': 'Korean',
       'iso639v1': 'ko'
     },
     {
-      'german': 'Kwanyama-Sprache',
-      'english': 'Kuanyama; Kwanyama',
+      'de': 'Kwanyama-Sprache',
+      'en': 'Kuanyama; Kwanyama',
       'iso639v1': 'kj'
     },
     {
-      'german': 'Kurdisch',
-      'english': 'Kurdish',
+      'de': 'Kurdisch',
+      'en': 'Kurdish',
       'iso639v1': 'ku'
     },
     {
-      'german': 'Laotisch',
-      'english': 'Lao',
+      'de': 'Laotisch',
+      'en': 'Lao',
       'iso639v1': 'lo'
     },
     {
-      'german': 'Latein',
-      'english': 'Latin',
+      'de': 'Latein',
+      'en': 'Latin',
       'iso639v1': 'la'
     },
     {
-      'german': 'Lettisch',
-      'english': 'Latvian',
+      'de': 'Lettisch',
+      'en': 'Latvian',
       'iso639v1': 'lv'
     },
     {
-      'german': 'Limburgisch',
-      'english': 'Limburgan; Limburger; Limburgish',
+      'de': 'Limburgisch',
+      'en': 'Limburgan; Limburger; Limburgish',
       'iso639v1': 'li'
     },
     {
-      'german': 'Lingala',
-      'english': 'Lingala',
+      'de': 'Lingala',
+      'en': 'Lingala',
       'iso639v1': 'ln'
     },
     {
-      'german': 'Litauisch',
-      'english': 'Lithuanian',
+      'de': 'Litauisch',
+      'en': 'Lithuanian',
       'iso639v1': 'lt'
     },
     {
-      'german': 'Luxemburgisch',
-      'english': 'Luxembourgish; Letzeburgesch',
+      'de': 'Luxemburgisch',
+      'en': 'Luxembourgish; Letzeburgesch',
       'iso639v1': 'lb'
     },
     {
-      'german': 'Luba-Katanga-Sprache',
-      'english': 'Luba-Katanga',
+      'de': 'Luba-Katanga-Sprache',
+      'en': 'Luba-Katanga',
       'iso639v1': 'lu'
     },
     {
-      'german': 'Ganda-Sprache',
-      'english': 'Ganda',
+      'de': 'Ganda-Sprache',
+      'en': 'Ganda',
       'iso639v1': 'lg'
     },
     {
-      'german': 'Makedonisch',
-      'english': 'Macedonian',
+      'de': 'Makedonisch',
+      'en': 'Macedonian',
       'iso639v1': 'mk'
     },
     {
-      'german': 'Makedonisch',
-      'english': 'Macedonian',
+      'de': 'Makedonisch',
+      'en': 'Macedonian',
       'iso639v1': 'mk'
     },
     {
-      'german': 'Marschallesisch',
-      'english': 'Marshallese',
+      'de': 'Marschallesisch',
+      'en': 'Marshallese',
       'iso639v1': 'mh'
     },
     {
-      'german': 'Malayalam',
-      'english': 'Malayalam',
+      'de': 'Malayalam',
+      'en': 'Malayalam',
       'iso639v1': 'ml'
     },
     {
-      'german': 'Maori-Sprache',
-      'english': 'Maori',
+      'de': 'Maori-Sprache',
+      'en': 'Maori',
       'iso639v1': 'mi'
     },
     {
-      'german': 'Maori-Sprache',
-      'english': 'Maori',
+      'de': 'Maori-Sprache',
+      'en': 'Maori',
       'iso639v1': 'mi'
     },
     {
-      'german': 'Marathi',
-      'english': 'Marathi',
+      'de': 'Marathi',
+      'en': 'Marathi',
       'iso639v1': 'mr'
     },
     {
-      'german': 'Malaiisch',
-      'english': 'Malay',
+      'de': 'Malaiisch',
+      'en': 'Malay',
       'iso639v1': 'ms'
     },
     {
-      'german': 'Malaiisch',
-      'english': 'Malay',
+      'de': 'Malaiisch',
+      'en': 'Malay',
       'iso639v1': 'ms'
     },
     {
-      'german': 'Makedonisch',
-      'english': 'Macedonian',
+      'de': 'Makedonisch',
+      'en': 'Macedonian',
       'iso639v1': 'mk'
     },
     {
-      'german': 'Makedonisch',
-      'english': 'Macedonian',
+      'de': 'Makedonisch',
+      'en': 'Macedonian',
       'iso639v1': 'mk'
     },
     {
-      'german': 'Malagassi-Sprache',
-      'english': 'Malagasy',
+      'de': 'Malagassi-Sprache',
+      'en': 'Malagasy',
       'iso639v1': 'mg'
     },
     {
-      'german': 'Maltesisch',
-      'english': 'Maltese',
+      'de': 'Maltesisch',
+      'en': 'Maltese',
       'iso639v1': 'mt'
     },
     {
-      'german': 'Mongolisch',
-      'english': 'Mongolian',
+      'de': 'Mongolisch',
+      'en': 'Mongolian',
       'iso639v1': 'mn'
     },
     {
-      'german': 'Maori-Sprache',
-      'english': 'Maori',
+      'de': 'Maori-Sprache',
+      'en': 'Maori',
       'iso639v1': 'mi'
     },
     {
-      'german': 'Maori-Sprache',
-      'english': 'Maori',
+      'de': 'Maori-Sprache',
+      'en': 'Maori',
       'iso639v1': 'mi'
     },
     {
-      'german': 'Malaiisch',
-      'english': 'Malay',
+      'de': 'Malaiisch',
+      'en': 'Malay',
       'iso639v1': 'ms'
     },
     {
-      'german': 'Malaiisch',
-      'english': 'Malay',
+      'de': 'Malaiisch',
+      'en': 'Malay',
       'iso639v1': 'ms'
     },
     {
-      'german': 'Birmanisch',
-      'english': 'Burmese',
+      'de': 'Birmanisch',
+      'en': 'Burmese',
       'iso639v1': 'my'
     },
     {
-      'german': 'Nauruanisch',
-      'english': 'Nauru',
+      'de': 'Nauruanisch',
+      'en': 'Nauru',
       'iso639v1': 'na'
     },
     {
-      'german': 'Navajo-Sprache',
-      'english': 'Navajo; Navaho',
+      'de': 'Navajo-Sprache',
+      'en': 'Navajo; Navaho',
       'iso639v1': 'nv'
     },
     {
-      'german': 'Ndebele-Sprache (Transvaal)',
-      'english': 'Ndebele, South; South Ndebele',
+      'de': 'Ndebele-Sprache (Transvaal)',
+      'en': 'Ndebele, South; South Ndebele',
       'iso639v1': 'nr'
     },
     {
-      'german': 'Ndebele-Sprache (Simbabwe)',
-      'english': 'Ndebele, North; North Ndebele',
+      'de': 'Ndebele-Sprache (Simbabwe)',
+      'en': 'Ndebele, North; North Ndebele',
       'iso639v1': 'nd'
     },
     {
-      'german': 'Ndonga',
-      'english': 'Ndonga',
+      'de': 'Ndonga',
+      'en': 'Ndonga',
       'iso639v1': 'ng'
     },
     {
-      'german': 'Nepali',
-      'english': 'Nepali',
+      'de': 'Nepali',
+      'en': 'Nepali',
       'iso639v1': 'ne'
     },
     {
-      'german': 'Niederländisch',
-      'english': 'Dutch; Flemish',
+      'de': 'Niederländisch',
+      'en': 'Dutch; Flemish',
       'iso639v1': 'nl'
     },
     {
-      'german': 'Nynorsk',
-      'english': 'Norwegian Nynorsk; Nynorsk, Norwegian',
+      'de': 'Nynorsk',
+      'en': 'Norwegian Nynorsk; Nynorsk, Norwegian',
       'iso639v1': 'nn'
     },
     {
-      'german': 'Bokmål',
-      'english': 'Bokmål, Norwegian; Norwegian Bokmål',
+      'de': 'Bokmål',
+      'en': 'Bokmål, Norwegian; Norwegian Bokmål',
       'iso639v1': 'nb'
     },
     {
-      'german': 'Norwegisch',
-      'english': 'Norwegian',
+      'de': 'Norwegisch',
+      'en': 'Norwegian',
       'iso639v1': 'no'
     },
     {
-      'german': 'Nyanja-Sprache',
-      'english': 'Chichewa; Chewa; Nyanja',
+      'de': 'Nyanja-Sprache',
+      'en': 'Chichewa; Chewa; Nyanja',
       'iso639v1': 'ny'
     },
     {
-      'german': 'Okzitanisch',
-      'english': 'Occitan (post 1500)',
+      'de': 'Okzitanisch',
+      'en': 'Occitan (post 1500)',
       'iso639v1': 'oc'
     },
     {
-      'german': 'Ojibwa-Sprache',
-      'english': 'Ojibwa',
+      'de': 'Ojibwa-Sprache',
+      'en': 'Ojibwa',
       'iso639v1': 'oj'
     },
     {
-      'german': 'Oriya-Sprache',
-      'english': 'Oriya',
+      'de': 'Oriya-Sprache',
+      'en': 'Oriya',
       'iso639v1': 'or'
     },
     {
-      'german': 'Galla-Sprache',
-      'english': 'Oromo',
+      'de': 'Galla-Sprache',
+      'en': 'Oromo',
       'iso639v1': 'om'
     },
     {
-      'german': 'Ossetisch',
-      'english': 'Ossetian; Ossetic',
+      'de': 'Ossetisch',
+      'en': 'Ossetian; Ossetic',
       'iso639v1': 'os'
     },
     {
-      'german': 'Pandschabi-Sprache',
-      'english': 'Panjabi; Punjabi',
+      'de': 'Pandschabi-Sprache',
+      'en': 'Panjabi; Punjabi',
       'iso639v1': 'pa'
     },
     {
-      'german': 'Persisch',
-      'english': 'Persian',
+      'de': 'Persisch',
+      'en': 'Persian',
       'iso639v1': 'fa'
     },
     {
-      'german': 'Pali',
-      'english': 'Pali',
+      'de': 'Pali',
+      'en': 'Pali',
       'iso639v1': 'pi'
     },
     {
-      'german': 'Polnisch',
-      'english': 'Polish',
+      'de': 'Polnisch',
+      'en': 'Polish',
       'iso639v1': 'pl'
     },
     {
-      'german': 'Portugiesisch',
-      'english': 'Portuguese',
+      'de': 'Portugiesisch',
+      'en': 'Portuguese',
       'iso639v1': 'pt'
     },
     {
-      'german': 'Paschtu',
-      'english': 'Pushto; Pashto',
+      'de': 'Paschtu',
+      'en': 'Pushto; Pashto',
       'iso639v1': 'ps'
     },
     {
-      'german': 'Quechua-Sprache',
-      'english': 'Quechua',
+      'de': 'Quechua-Sprache',
+      'en': 'Quechua',
       'iso639v1': 'qu'
     },
     {
-      'german': 'Rätoromanisch',
-      'english': 'Romansh',
+      'de': 'Rätoromanisch',
+      'en': 'Romansh',
       'iso639v1': 'rm'
     },
     {
-      'german': 'Rumänisch',
-      'english': 'Romanian; Moldavian; Moldovan',
+      'de': 'Rumänisch',
+      'en': 'Romanian; Moldavian; Moldovan',
       'iso639v1': 'ro'
     },
     {
-      'german': 'Rumänisch',
-      'english': 'Romanian; Moldavian; Moldovan',
+      'de': 'Rumänisch',
+      'en': 'Romanian; Moldavian; Moldovan',
       'iso639v1': 'ro'
     },
     {
-      'german': 'Rundi-Sprache',
-      'english': 'Rundi',
+      'de': 'Rundi-Sprache',
+      'en': 'Rundi',
       'iso639v1': 'rn'
     },
     {
-      'german': 'Russisch',
-      'english': 'Russian',
+      'de': 'Russisch',
+      'en': 'Russian',
       'iso639v1': 'ru'
     },
     {
-      'german': 'Sango-Sprache',
-      'english': 'Sango',
+      'de': 'Sango-Sprache',
+      'en': 'Sango',
       'iso639v1': 'sg'
     },
     {
-      'german': 'Sanskrit',
-      'english': 'Sanskrit',
+      'de': 'Sanskrit',
+      'en': 'Sanskrit',
       'iso639v1': 'sa'
     },
     {
-      'german': 'Singhalesisch',
-      'english': 'Sinhala; Sinhalese',
+      'de': 'Singhalesisch',
+      'en': 'Sinhala; Sinhalese',
       'iso639v1': 'si'
     },
     {
-      'german': 'Slowakisch',
-      'english': 'Slovak',
+      'de': 'Slowakisch',
+      'en': 'Slovak',
       'iso639v1': 'sk'
     },
     {
-      'german': 'Slowakisch',
-      'english': 'Slovak',
+      'de': 'Slowakisch',
+      'en': 'Slovak',
       'iso639v1': 'sk'
     },
     {
-      'german': 'Slowenisch',
-      'english': 'Slovenian',
+      'de': 'Slowenisch',
+      'en': 'Slovenian',
       'iso639v1': 'sl'
     },
     {
-      'german': 'Nordsaamisch',
-      'english': 'Northern Sami',
+      'de': 'Nordsaamisch',
+      'en': 'Northern Sami',
       'iso639v1': 'se'
     },
     {
-      'german': 'Samoanisch',
-      'english': 'Samoan',
+      'de': 'Samoanisch',
+      'en': 'Samoan',
       'iso639v1': 'sm'
     },
     {
-      'german': 'Schona-Sprache',
-      'english': 'Shona',
+      'de': 'Schona-Sprache',
+      'en': 'Shona',
       'iso639v1': 'sn'
     },
     {
-      'german': 'Sindhi-Sprache',
-      'english': 'Sindhi',
+      'de': 'Sindhi-Sprache',
+      'en': 'Sindhi',
       'iso639v1': 'sd'
     },
     {
-      'german': 'Somali',
-      'english': 'Somali',
+      'de': 'Somali',
+      'en': 'Somali',
       'iso639v1': 'so'
     },
     {
-      'german': 'Süd-Sotho-Sprache',
-      'english': 'Sotho, Southern',
+      'de': 'Süd-Sotho-Sprache',
+      'en': 'Sotho, Southern',
       'iso639v1': 'st'
     },
     {
-      'german': 'Spanisch',
-      'english': 'Spanish; Castilian',
+      'de': 'Spanisch',
+      'en': 'Spanish; Castilian',
       'iso639v1': 'es'
     },
     {
-      'german': 'Albanisch',
-      'english': 'Albanian',
+      'de': 'Albanisch',
+      'en': 'Albanian',
       'iso639v1': 'sq'
     },
     {
-      'german': 'Sardisch',
-      'english': 'Sardinian',
+      'de': 'Sardisch',
+      'en': 'Sardinian',
       'iso639v1': 'sc'
     },
     {
-      'german': 'Serbisch ',
-      'english': 'Serbian',
+      'de': 'Serbisch ',
+      'en': 'Serbian',
       'iso639v1': 'sr'
     },
     {
-      'german': 'Swasi-Sprache',
-      'english': 'Swati',
+      'de': 'Swasi-Sprache',
+      'en': 'Swati',
       'iso639v1': 'ss'
     },
     {
-      'german': 'Sundanesisch',
-      'english': 'Sundanese',
+      'de': 'Sundanesisch',
+      'en': 'Sundanese',
       'iso639v1': 'su'
     },
     {
-      'german': 'Swahili',
-      'english': 'Swahili',
+      'de': 'Swahili',
+      'en': 'Swahili',
       'iso639v1': 'sw'
     },
     {
-      'german': 'Schwedisch',
-      'english': 'Swedish',
+      'de': 'Schwedisch',
+      'en': 'Swedish',
       'iso639v1': 'sv'
     },
     {
-      'german': 'Tahitisch',
-      'english': 'Tahitian',
+      'de': 'Tahitisch',
+      'en': 'Tahitian',
       'iso639v1': 'ty'
     },
     {
-      'german': 'Tamil',
-      'english': 'Tamil',
+      'de': 'Tamil',
+      'en': 'Tamil',
       'iso639v1': 'ta'
     },
     {
-      'german': 'Tatarisch',
-      'english': 'Tatar',
+      'de': 'Tatarisch',
+      'en': 'Tatar',
       'iso639v1': 'tt'
     },
     {
-      'german': 'Telugu-Sprache',
-      'english': 'Telugu',
+      'de': 'Telugu-Sprache',
+      'en': 'Telugu',
       'iso639v1': 'te'
     },
     {
-      'german': 'Tadschikisch',
-      'english': 'Tajik',
+      'de': 'Tadschikisch',
+      'en': 'Tajik',
       'iso639v1': 'tg'
     },
     {
-      'german': 'Tagalog',
-      'english': 'Tagalog',
+      'de': 'Tagalog',
+      'en': 'Tagalog',
       'iso639v1': 'tl'
     },
     {
-      'german': 'Thailändisch',
-      'english': 'Thai',
+      'de': 'Thailändisch',
+      'en': 'Thai',
       'iso639v1': 'th'
     },
     {
-      'german': 'Tibetisch',
-      'english': 'Tibetan',
+      'de': 'Tibetisch',
+      'en': 'Tibetan',
       'iso639v1': 'bo'
     },
     {
-      'german': 'Tigrinja-Sprache',
-      'english': 'Tigrinya',
+      'de': 'Tigrinja-Sprache',
+      'en': 'Tigrinya',
       'iso639v1': 'ti'
     },
     {
-      'german': 'Tongaisch',
-      'english': 'Tonga (Tonga Islands)',
+      'de': 'Tongaisch',
+      'en': 'Tonga (Tonga Islands)',
       'iso639v1': 'to'
     },
     {
-      'german': 'Tswana-Sprache',
-      'english': 'Tswana',
+      'de': 'Tswana-Sprache',
+      'en': 'Tswana',
       'iso639v1': 'tn'
     },
     {
-      'german': 'Tsonga-Sprache',
-      'english': 'Tsonga',
+      'de': 'Tsonga-Sprache',
+      'en': 'Tsonga',
       'iso639v1': 'ts'
     },
     {
-      'german': 'Turkmenisch',
-      'english': 'Turkmen',
+      'de': 'Turkmenisch',
+      'en': 'Turkmen',
       'iso639v1': 'tk'
     },
     {
-      'german': 'Türkisch',
-      'english': 'Turkish',
+      'de': 'Türkisch',
+      'en': 'Turkish',
       'iso639v1': 'tr'
     },
     {
-      'german': 'Twi-Sprache',
-      'english': 'Twi',
+      'de': 'Twi-Sprache',
+      'en': 'Twi',
       'iso639v1': 'tw'
     },
     {
-      'german': 'Uigurisch',
-      'english': 'Uighur; Uyghur',
+      'de': 'Uigurisch',
+      'en': 'Uighur; Uyghur',
       'iso639v1': 'ug'
     },
     {
-      'german': 'Ukrainisch',
-      'english': 'Ukrainian',
+      'de': 'Ukrainisch',
+      'en': 'Ukrainian',
       'iso639v1': 'uk'
     },
     {
-      'german': 'Urdu',
-      'english': 'Urdu',
+      'de': 'Urdu',
+      'en': 'Urdu',
       'iso639v1': 'ur'
     },
     {
-      'german': 'Usbekisch',
-      'english': 'Uzbek',
+      'de': 'Usbekisch',
+      'en': 'Uzbek',
       'iso639v1': 'uz'
     },
     {
-      'german': 'Venda-Sprache',
-      'english': 'Venda',
+      'de': 'Venda-Sprache',
+      'en': 'Venda',
       'iso639v1': 've'
     },
     {
-      'german': 'Vietnamesisch',
-      'english': 'Vietnamese',
+      'de': 'Vietnamesisch',
+      'en': 'Vietnamese',
       'iso639v1': 'vi'
     },
     {
-      'german': 'Volapük',
-      'english': 'Volapük',
+      'de': 'Volapük',
+      'en': 'Volapük',
       'iso639v1': 'vo'
     },
     {
-      'german': 'Kymrisch',
-      'english': 'Welsh',
+      'de': 'Kymrisch',
+      'en': 'Welsh',
       'iso639v1': 'cy'
     },
     {
-      'german': 'Wallonisch',
-      'english': 'Walloon',
+      'de': 'Wallonisch',
+      'en': 'Walloon',
       'iso639v1': 'wa'
     },
     {
-      'german': 'Wolof-Sprache',
-      'english': 'Wolof',
+      'de': 'Wolof-Sprache',
+      'en': 'Wolof',
       'iso639v1': 'wo'
     },
     {
-      'german': 'Xhosa-Sprache',
-      'english': 'Xhosa',
+      'de': 'Xhosa-Sprache',
+      'en': 'Xhosa',
       'iso639v1': 'xh'
     },
     {
-      'german': 'Jiddisch',
-      'english': 'Yiddish',
+      'de': 'Jiddisch',
+      'en': 'Yiddish',
       'iso639v1': 'yi'
     },
     {
-      'german': 'Yoruba-Sprache',
-      'english': 'Yoruba',
+      'de': 'Yoruba-Sprache',
+      'en': 'Yoruba',
       'iso639v1': 'yo'
     },
     {
-      'german': 'Zhuang',
-      'english': 'Zhuang; Chuang',
+      'de': 'Zhuang',
+      'en': 'Zhuang; Chuang',
       'iso639v1': 'za'
     },
     {
-      'german': 'Chinesisch',
-      'english': 'Chinese',
+      'de': 'Chinesisch',
+      'en': 'Chinese',
       'iso639v1': 'zh'
     },
     {
-      'german': 'Zulu-Sprache',
-      'english': 'Zulu',
+      'de': 'Zulu-Sprache',
+      'en': 'Zulu',
       'iso639v1': 'zu'
     }
   ]
