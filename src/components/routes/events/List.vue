@@ -43,9 +43,7 @@ export default {
       } else {
         filter = 'upcoming'
       }
-
       this.updateFilterQuery(filter)
-      this.loadItems()
     },
     updateFilterQuery (filter) {
       // update url query
