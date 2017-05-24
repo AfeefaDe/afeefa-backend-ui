@@ -60,8 +60,10 @@ export default {
   updated () {
     if (this.$route.query.filter === 'past') {
       this.showPastEvents = true
+      this.sortOrder = 'DESC'
     } else {
       this.showPastEvents = false
+      this.sortOrder = 'ASC'
     }
   },
 
