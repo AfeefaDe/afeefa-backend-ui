@@ -74,6 +74,7 @@ export default {
       padding: 8px 26px 8px 14px;
       i:after {
         line-height: 30px;
+         color: white;
       }
     }
     .multiselect__tag-icon:focus, .multiselect__tag-icon:hover {

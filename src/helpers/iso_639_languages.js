@@ -10,6 +10,56 @@ export default {
   // removed incomplete langauges, removed french translation and renamed certain keys
   data: [
     {
+      'de': 'Deutsch',
+      'en': 'German',
+      'iso639v1': 'de'
+    },
+    {
+      'de': 'Englisch',
+      'en': 'English',
+      'iso639v1': 'en'
+    },
+    {
+      'de': 'Russisch',
+      'en': 'Russian',
+      'iso639v1': 'ru'
+    },
+    {
+      'de': 'Arabisch',
+      'en': 'Arabic',
+      'iso639v1': 'ar'
+    },
+    {
+      'de': 'Französisch',
+      'en': 'French',
+      'iso639v1': 'fr'
+    },
+    {
+      'de': 'Persisch',
+      'en': 'Persian',
+      'iso639v1': 'fa'
+    },
+    {
+      'de': 'Serbisch ',
+      'en': 'Serbian',
+      'iso639v1': 'sr'
+    },
+    {
+      'de': 'Italienisch',
+      'en': 'Italian',
+      'iso639v1': 'it'
+    },
+    {
+      'de': 'Kurdisch',
+      'en': 'Kurdish',
+      'iso639v1': 'ku'
+    },
+    {
+      'de': 'Tigrinja-Sprache',
+      'en': 'Tigrinya',
+      'iso639v1': 'ti'
+    },
+    {
       'de': 'Danakil-Sprache',
       'en': 'Afar',
       'iso639v1': 'aa'
@@ -38,11 +88,6 @@ export default {
       'de': 'Amharisch',
       'en': 'Amharic',
       'iso639v1': 'am'
-    },
-    {
-      'de': 'Arabisch',
-      'en': 'Arabic',
-      'iso639v1': 'ar'
     },
     {
       'de': 'Aragonesisch',
@@ -195,11 +240,6 @@ export default {
       'iso639v1': 'da'
     },
     {
-      'de': 'Deutsch',
-      'en': 'German',
-      'iso639v1': 'de'
-    },
-    {
       'de': 'Maledivisch',
       'en': 'Divehi; Dhivehi; Maldivian',
       'iso639v1': 'dv'
@@ -218,11 +258,6 @@ export default {
       'de': 'Neugriechisch',
       'en': 'Greek, Modern (1453-)',
       'iso639v1': 'el'
-    },
-    {
-      'de': 'Englisch',
-      'en': 'English',
-      'iso639v1': 'en'
     },
     {
       'de': 'Esperanto',
@@ -245,11 +280,6 @@ export default {
       'iso639v1': 'fo'
     },
     {
-      'de': 'Persisch',
-      'en': 'Persian',
-      'iso639v1': 'fa'
-    },
-    {
       'de': 'Fidschi-Sprache',
       'en': 'Fijian',
       'iso639v1': 'fj'
@@ -258,11 +288,6 @@ export default {
       'de': 'Finnisch',
       'en': 'Finnish',
       'iso639v1': 'fi'
-    },
-    {
-      'de': 'Französisch',
-      'en': 'French',
-      'iso639v1': 'fr'
     },
     {
       'de': 'Friesisch',
@@ -395,11 +420,6 @@ export default {
       'iso639v1': 'ik'
     },
     {
-      'de': 'Italienisch',
-      'en': 'Italian',
-      'iso639v1': 'it'
-    },
-    {
       'de': 'Javanisch',
       'en': 'Javanese',
       'iso639v1': 'jv'
@@ -473,11 +493,6 @@ export default {
       'de': 'Kwanyama-Sprache',
       'en': 'Kuanyama; Kwanyama',
       'iso639v1': 'kj'
-    },
-    {
-      'de': 'Kurdisch',
-      'en': 'Kurdish',
-      'iso639v1': 'ku'
     },
     {
       'de': 'Laotisch',
@@ -690,11 +705,6 @@ export default {
       'iso639v1': 'rn'
     },
     {
-      'de': 'Russisch',
-      'en': 'Russian',
-      'iso639v1': 'ru'
-    },
-    {
       'de': 'Sango-Sprache',
       'en': 'Sango',
       'iso639v1': 'sg'
@@ -760,11 +770,6 @@ export default {
       'iso639v1': 'sc'
     },
     {
-      'de': 'Serbisch ',
-      'en': 'Serbian',
-      'iso639v1': 'sr'
-    },
-    {
       'de': 'Swasi-Sprache',
       'en': 'Swati',
       'iso639v1': 'ss'
@@ -818,11 +823,6 @@ export default {
       'de': 'Thailändisch',
       'en': 'Thai',
       'iso639v1': 'th'
-    },
-    {
-      'de': 'Tigrinja-Sprache',
-      'en': 'Tigrinya',
-      'iso639v1': 'ti'
     },
     {
       'de': 'Tongaisch',
