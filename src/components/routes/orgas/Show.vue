@@ -1,6 +1,7 @@
 <template>
   <entry-detail
     :entry="item"
+    :entry-loading-error="loadingError"
     route-name="orgas"
     :Resource="Resource"
     :messages="messages"
@@ -21,6 +22,7 @@ export default {
       Resource: Orgas,
       messages: {
         loading: () => this.$t('status.load_orga') + ' ' + this.id,
+        loadingError: () => this.$t('errors.loadingEntryError') + ' ' + this.id,
         activateHeadline: active => {
           return `Orga ${active ? 'verbergen' : 'veröffentlichen'}`
         },

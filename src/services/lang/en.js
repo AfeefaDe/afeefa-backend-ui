@@ -37,7 +37,8 @@ export default {
     noParentOrgaPresent: 'No parent organizations present',
     noSubOrgaPresent: 'No sub organizations present',
     noEventsForOrga: 'No events for organiszation present',
-    loadingImageError: 'Error loading image'
+    loadingImageError: 'Error loading image',
+    loadingEntryError: 'Error loading entry'
 
   },
   entries: {

@@ -7,7 +7,8 @@ export default {
   data () {
     return {
       item: null,
-      Resource: null
+      Resource: null,
+      loadingError: false
     }
   },
 
@@ -31,8 +32,14 @@ export default {
 
   methods: {
     initItem (id) {
+      this.loadingError = false
       this.Resource.get(id).then(entry => {
         this.item = entry
+        if (!this.item) {
+          this.loadingError = true
+        }
+      }).catch(() => {
+        console.log('error error error')
       })
     }
   },

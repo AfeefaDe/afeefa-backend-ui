@@ -202,7 +202,8 @@
 
     <div v-else class="mainCard">
       <div class="mainCard__header mainCard__headerLight">
-        {{ messages.loading() }} ...
+        <span v-if="entryLoadingError">{{ messages.loadingError() }}</span>
+        <span v-else>{{ messages.loading() }} ...</span>
       </div>
     </div>
 
@@ -226,7 +227,7 @@ import Events from '@/resources/Events'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 
 export default {
-  props: ['entry', 'routeName', 'Resource', 'messages', 'options'],
+  props: ['entry', 'entryLoadingError', 'routeName', 'Resource', 'messages', 'options'],
 
   data () {
     const options = this.options || {}

@@ -37,7 +37,8 @@ export default {
     noParentOrgaPresent: 'Keine übergeordnete Orga vorhanden',
     noSubOrgaPresent: 'Keine untergeordneten Orgas vorhanden',
     noEventsForOrga: 'Keine Events zu dieser Orga vorhanden',
-    loadingImageError: 'Fehler beim Laden des Bildes.'
+    loadingImageError: 'Fehler beim Laden des Bildes',
+    loadingEntryError: 'Fehler beim Laden des Eintrags'
   },
   entries: {
     date_start: 'Startdatum',

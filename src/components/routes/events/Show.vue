@@ -1,6 +1,7 @@
 <template>
   <entry-detail
     :entry="item"
+    :entry-loading-error="loadingError"
     route-name="events"
     :Resource="Resource"
     :messages="messages"
@@ -21,6 +22,7 @@ export default {
       Resource: Events,
       messages: {
         loading: () => this.$t('status.load_event') + ' ' + this.id,
+        loadingError: () => this.$t('errors.loadingEntryError') + ' ' + this.id,
         activateHeadline: active => {
           return `Event ${active ? 'verbergen' : 'veröffentlichen'}`
         },

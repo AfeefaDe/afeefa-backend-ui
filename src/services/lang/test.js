@@ -37,7 +37,8 @@ export default {
     noParentOrgaPresent: '*',
     noSubOrgaPresent: '*',
     noEventsForOrga: '*',
-    loadingImageError: '*'
+    loadingImageError: '*',
+    loadingEntryError: '*'
   },
   entries: {
     date_start: '*',
