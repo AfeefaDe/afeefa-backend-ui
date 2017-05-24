@@ -35,6 +35,9 @@ export default {
     initApp ({dispatch}) {
       Vue.http.interceptors.push((request, next) => {
         if (request.method === 'POST' || request.method === 'PATCH') {
+          if (request.body && typeof request.body === 'object') {
+            request.body = JSON.stringify(request.body)
+          }
           request.headers.set('Content-Type', 'application/vnd.api+json')
         }
         next()
