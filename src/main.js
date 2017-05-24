@@ -9,6 +9,11 @@ import VeeValidate from 'vee-validate'
 import './services/validation'
 import './services/leaflet'
 
+// import materialize js and css
+import 'materialize-css/dist/js/materialize.min.js'
+import 'materialize-css/dist/css/materialize.min.css'
+// import vue multiselect style
+import 'vue-multiselect/dist/vue-multiselect.min.css'
 
 Vue.use(VeeValidate, {delay: 0, locale: 'de'})
 Vue.use(Filters)

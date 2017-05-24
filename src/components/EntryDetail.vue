@@ -127,6 +127,11 @@
                 <span v-if="entry.contact.web"><a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a><br></span>
                 <span v-if="entry.contact.socialMedia"><a :href="entry.contact.socialMedia" target="_blank">{{ entry.contact.socialMedia }}</a></span>
               </entry-detail-property>
+
+              <entry-detail-property :name="$tc('headlines.spokenLanguages', entry.contact.spokenLanguages.split(',').length)" :iconName="'translate'" v-if="entry.contact.spokenLanguages">
+                {{spokenLanguages}}
+              </entry-detail-property>
+
             </li>
           </ul>
         </section>
@@ -225,6 +230,7 @@ import EntryListDropDownMenu from '@/components/EntryListDropDownMenu'
 import AnnotationTag from '@/components/AnnotationTag'
 import Events from '@/resources/Events'
 import sortByDateStart from '@/helpers/sort-by-date-start'
+import Languages from '@/helpers/iso_639_languages.js'
 
 export default {
   props: ['entry', 'entryLoadingError', 'routeName', 'Resource', 'messages', 'options'],
@@ -298,6 +304,23 @@ export default {
     },
     previewLink () {
       return `${process.env.FRONTEND_URL}#${this.entry.id}`
+    },
+    /*
+     * Stringify spoken languages depending on current UI langugage
+     */
+    spokenLanguages () {
+      const languageKey = this.$i18n.locale
+      let spokenLanguagesString = ''
+      if (this.entry.contact.spokenLanguages && this.entry.contact.spokenLanguages.split(',')) {
+        const langCodes = this.entry.contact.spokenLanguages.split(',')
+        for (let langCode of langCodes) {
+          const langObject = Languages.getLanguageFromCode(langCode)
+          spokenLanguagesString += langObject[languageKey] + ', '
+        }
+        // remove last ','
+        spokenLanguagesString = spokenLanguagesString.substring(0, spokenLanguagesString.length - 2)
+      }
+      return spokenLanguagesString
     }
   },
 

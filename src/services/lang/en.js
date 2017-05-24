@@ -27,7 +27,8 @@ export default {
     preview: 'Preview',
     support_wanted: 'Support wanted',
     for_children: 'Qualified for children',
-    translations: 'Translations'
+    translations: 'Translations',
+    spokenLanguages: 'Spoken Language | Spoken Languages'
   },
   errors: {
     noContactPresent: 'No contact information present',
@@ -117,6 +118,11 @@ export default {
   },
   messages: {
     loading: 'Loading'
+  },
+  multiselect: {
+    selectLabel: 'Press enter to select',
+    selectedLabel: 'Selected',
+    deselectLabel: 'Press enter to remove'
   },
   categories: {
     'asylum-counselling': 'Asylum counselling',

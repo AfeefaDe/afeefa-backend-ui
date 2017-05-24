@@ -27,7 +27,8 @@ export default {
     preview: '*',
     support_wanted: '*',
     for_children: '*',
-    translations: '*'
+    translations: '*',
+    spokenLanguages: '*'
   },
   errors: {
     noContactPresent: '*',
@@ -116,6 +117,11 @@ export default {
   },
   messages: {
     loading: '*'
+  },
+  multiselect: {
+    selectLabel: '*',
+    selectedLabel: '*',
+    deselectLabel: '*'
   },
   categories: {
     'asylum-counselling': '*',
