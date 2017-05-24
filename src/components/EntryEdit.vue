@@ -267,10 +267,10 @@
 
         <div v-else class="mainCard">
           <div class="mainCard__header mainCard__headerLight">
-            {{ messages.loading() }} ...
+            <span v-if="loadingError">{{ messages.loadingError() }} ...</span>
+            <span v-else>{{ messages.loading() }} ...</span>
           </div>
         </div>
-
 
       </div>
     </div>
@@ -310,6 +310,7 @@ export default {
       orgas: [],
 
       imageError: false,
+      loadingError: false,
       selectedAnnotation: null,
       saved: false,
 
@@ -333,6 +334,9 @@ export default {
       if (entry) {
         this.origItem = entry
         this.item = this.Resource.clone(entry)
+      } else {
+        console.log('error loading item')
+        this.loadingError = true
       }
     })
 
