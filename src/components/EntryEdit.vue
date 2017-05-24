@@ -540,6 +540,11 @@ export default {
         return
       }
 
+      if (!this.entry) { // loading error
+        next()
+        return
+      }
+
       // goto login form after api/logout click
       if (to.name === 'login') {
         next()
