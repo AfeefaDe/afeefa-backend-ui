@@ -38,8 +38,6 @@ export default {
         if (!this.item) {
           this.loadingError = true
         }
-      }).catch(() => {
-        console.log('error error error')
       })
     }
   },
