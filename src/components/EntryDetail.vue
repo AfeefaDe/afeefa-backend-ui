@@ -303,7 +303,7 @@ export default {
       }
     },
     previewLink () {
-      return `${process.env.FRONTEND_URL}#${this.entry.id}`
+      return `${process.env.FRONTEND_URL}${this.entry.type}/${this.entry.id}`
     },
     /*
      * Stringify spoken languages depending on current UI langugage
@@ -356,12 +356,12 @@ export default {
     font-weight: 500;
   }
 
-li.align-status-items {
-  margin-left: 4.5em;
-}
-.entryDetail__error {
-  margin-bottom: 1em;
-}
+  li.align-status-items {
+    margin-left: 4.5em;
+  }
+  .entryDetail__error {
+    margin-bottom: 1em;
+  }
 
   &__meta {
     color: $gray50;
