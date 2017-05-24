@@ -29,6 +29,12 @@ export default {
     }
   },
 
+  watch: {
+    '$route.query.filter': function (filter) {
+      this.loadItems()
+    }
+  },
+
   methods: {
     updateEntryList (showPastEvents) {
       let filter
@@ -38,18 +44,21 @@ export default {
         filter = 'upcoming'
       }
 
+      this.updateFilterQuery(filter)
+      this.loadItems()
+    },
+    updateFilterQuery (filter) {
       // update url query
       const query = {...this.$route.query}
       delete query.page
       delete query.pageSize
       query.filter = filter
       this.$router.replace({query: query})
-
-      this.loadItems()
     },
     getQueryParams () {
       // init filter
       if (this.$route.query.filter === undefined) {
+        this.updateFilterQuery('upcoming')
         return {'filter[date]': 'upcoming'}
       }
       return {'filter[date]': this.$route.query.filter}

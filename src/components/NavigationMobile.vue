@@ -11,12 +11,11 @@
 
     <div id="menu" v-if="visible">
       <div v-for="item in items" :class="['navigation-mobile__item', 'level' + item.level]">
-        <router-link :to="{name: item.route}"> {{ $tc(item.title, 2) }}
-          <span v-if="item.hint || item.hint === 0">({{item.hint}})</span>
-        </router-link>
+        <router-link v-if="item.route === 'events.list'" :to="{name: item.route, query: { filter: 'upcoming' }}"> {{ $tc(item.title, 2) }} </router-link>
+        <router-link v-else :to="{name: item.route}" :exact="item.route==='dashboard'"> {{ $tc(item.title, 2) }} </router-link>
         <router-link :to="{name: item.action.route}" class="navigation-mobile__itemAction" v-if="item.action">
-            <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
-          </router-link>
+          <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
+        </router-link>
       </div>
 
       <section class="navigation-mobile__footer">

@@ -20,17 +20,18 @@
           </router-link>
         </div>
 
-        <div v-if="type === 'events'" class="past-events-checkbox">
-          <input class="filled-in" type="checkbox" id="pastEventFilter" v-on:click="updateCheckbox" value="false" v-model="showPastEvents">
-          <label for="pastEventFilter">{{ $t('checkboxes.show_past_events') }}</label>
-        </div>
-
         <entry-list-items
           :items="items"
           :sort-function="sortFunction"
           :options="options"
           :sortOrder="sortOrder">
         </entry-list-items>
+
+        <div v-if="type === 'events'" class="past-events-checkbox">
+          <br>
+          <input class="filled-in" type="checkbox" id="pastEventFilter" v-on:click="updateCheckbox" value="false" v-model="showPastEvents">
+          <label for="pastEventFilter">{{ $t('checkboxes.show_past_events') }}</label>
+        </div>
       </div>
     </div>
   </div>
@@ -56,7 +57,7 @@ export default {
     }
   },
 
-  created () {
+  updated () {
     if (this.$route.query.filter === 'past') {
       this.showPastEvents = true
     } else {
