@@ -109,9 +109,12 @@ $sidebarWidth: 350px;
     line-height: $height;
   }
   &__headerTitleHeading, &__headerSubtitle  {
-      white-space: normal;
-      overflow: visible;
-      text-overflow: none;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: none;
+  }
+  &__headerTitleHeading {
+    margin: 0;
   }
   &__headerTitleHeading {
     margin: 0;

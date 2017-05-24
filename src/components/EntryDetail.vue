@@ -65,6 +65,13 @@
             </entry-detail-property>
 
             <entry-detail-property
+              v-if="entry.tags"
+              :name="$tc('entries.tags', entry.tags.split(',').length)"
+              :iconName="'more_vert'">
+                 {{entry.tags}}
+            </entry-detail-property>
+
+            <entry-detail-property
               :name="$tc('headlines.annotations', entry.annotations.length)"
               :iconName="'label_outline'">
               <div v-if="entry.annotations.length">

@@ -28,7 +28,8 @@ export default {
     support_wanted: '*',
     for_children: '*',
     translations: '*',
-    spokenLanguages: '*'
+    spokenLanguages: '*',
+    tags: '*'
   },
   errors: {
     noContactPresent: '*',
@@ -74,7 +75,8 @@ export default {
     for_children: '*',
     for_children_yes: '*',
     support_wanted: '*',
-    support_wanted_yes: '*'
+    support_wanted_yes: '*',
+    tags: '*'
   },
   status: {
     load_event: '*',

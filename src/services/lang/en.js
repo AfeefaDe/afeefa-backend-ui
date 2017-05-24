@@ -28,7 +28,8 @@ export default {
     support_wanted: 'Support wanted',
     for_children: 'Qualified for children',
     translations: 'Translations',
-    spokenLanguages: 'Spoken Language | Spoken Languages'
+    spokenLanguages: 'Spoken Language | Spoken Languages',
+    tags: 'Tags'
   },
   errors: {
     noContactPresent: 'No contact information present',
@@ -75,7 +76,8 @@ export default {
     for_children: 'For children',
     for_children_yes: 'Verfified',
     support_wanted: 'Support',
-    support_wanted_yes: 'Wanted'
+    support_wanted_yes: 'Wanted',
+    tags: 'Tag | Tags'
   },
   status: {
     load_event: 'Load Event',
