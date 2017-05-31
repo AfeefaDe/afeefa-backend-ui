@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="inputField__spacing input-field">
-                  <label for="description" :class="{active: item.description}">Beschreibung</label>
+                  <label for="description" :class="{active: item.description}">{{ $t('entries.description') }}</label>
                   <textarea v-model="item.description" id="description"
                     class="materialize-textarea"></textarea>
                 </div>
