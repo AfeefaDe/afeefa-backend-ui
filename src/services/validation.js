@@ -71,3 +71,22 @@ rule = {
   }
 }
 Validator.extend('url-with-protocol', rule)
+
+
+/*
+ * simple validator to prevent spaces in tags string
+ */
+rule = {
+  messages: {
+    en: (field, args) => {
+      return 'Whitespaces are not allowed in the tags input'
+    },
+    de: (field, args) => {
+      return 'Leerzeichen sind im Tags-Feld nicht erlaubt'
+    }
+  },
+  validate (value, args) {
+    return !value.includes(' ')
+  }
+}
+Validator.extend('tag-without-spaces', rule)
