@@ -58,30 +58,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-  @import "~variables";
-  .customMultiselect {
-    .multiselect__tags {
-      border: 0;
-      padding-left: 0;
-    }
-    .multiselect__option--highlight, .multiselect__option--highlight:after {
-      background: $turquoise;
-    }
-    .multiselect__tag {
-      background: $turquoise;
-      padding: 8px 26px 8px 14px;
-      i:after {
-        line-height: 30px;
-         color: white;
-      }
-    }
-    .multiselect__tag-icon:focus, .multiselect__tag-icon:hover {
-      background: $turquoise;
-    }
-    .multiselect--above .multiselect__content {
-      background: $gray20;
-    }
-  }
-</style>

@@ -239,13 +239,27 @@
 
 
               <section slot="linkTab">
-                <div class="inputField__spacing" v-if="has.orga">
-                  <br>
+                <div class="inputField__spacing customMultiselect" v-if="has.orga">
                   <label>Veranstalter</label>
+                  <multiselect
+                    v-model="item.parent_orga"
+                    :options="orgasSimplified"
+                    label="title"
+                    track-by="id"
+                    :searchable="true"
+                    :allow-empty="true"
+                    @input="parentOrgaChanged"
+
+                    :selectLabel="$t('multiselect.selectLabel')"
+                    :selectedLabel="$t('multiselect.selectedLabel')"
+                    :deselectLabel="$t('multiselect.deselectLabel')"
+                  ></multiselect>
+                  <!--
                   <select class="browser-default" v-model="item.parent_orga" v-if="orgas.length">
                     <option :value="null">Kein Veranstalter</option>
                     <option :value="orga" v-for="orga in orgas">{{ orga.title }}</option>
                   </select>
+                  -->
                 </div>
 
                 <div v-if="has.parentOrga">
@@ -306,6 +320,7 @@ import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
 import EntryTabbedContent from '@/components/EntryTabbedContent'
 import LangSelectInput from '@/components/LangSelectInput'
+import Multiselect from 'vue-multiselect'
 
 export default {
   props: ['id', 'routeName', 'Resource', 'messages', 'options'],
@@ -421,10 +436,23 @@ export default {
       } else {
         return [51.0571904, 13.7154319]
       }
+    },
+    orgasSimplified () {
+      let result = []
+      for (let orga of this.orgas) {
+        result.push({title: orga.title, id: orga.id})
+      }
+      console.log(result.length)
+      return result
     }
   },
 
+
   methods: {
+    parentOrgaChanged () {
+      console.log('Changed to: ', this.item.parent_orga)
+    },
+
     categoryChanged () {
       this.item.sub_category = null
     },
@@ -645,7 +673,8 @@ export default {
     ImageContainer,
     AnnotationTag,
     EntryTabbedContent,
-    LangSelectInput
+    LangSelectInput,
+    Multiselect
   }
 }
 </script>
