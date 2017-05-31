@@ -121,7 +121,13 @@
 
                 <h2>{{ $tc('headlines.annotations', 2) }}</h2>
                 <div class="annotationEditArea">
-                  <annotation-tag v-for="annotation in item.annotations" :annotation="annotation" :editMode="true" v-on:remove="removeAnnotation" :key="annotation.id"></annotation-tag>
+                  <annotation-tag
+                    v-for="annotation in item.annotations"
+                    :annotation="annotation"
+                    :editMode="true"
+                    v-on:remove="removeAnnotation"
+                    :key="annotation.id">
+                  </annotation-tag>
                   <p v-if="!item.annotations.length" class="annotationArea__error">Keine Anmerkungen</p>
                   <div class="annotationNew">
                     <select class="browser-default annotationNew" v-model="selectedAnnotation" @change="addAnnotation">
@@ -245,40 +251,25 @@
                 </div>
               </section>
 
-
               <section slot="linkTab">
-                <div class="inputField__spacing customMultiselect" v-if="has.orga">
-                  <label>Veranstalter</label>
+                <div class="inputField__spacing customMultiselect">
+                  <label v-if="has.parentOrga">Übergeordnete Orga</label>
+                  <label v-if="has.orga">Veranstalter</label>
                   <multiselect
-                    v-model="item.parent_orga"
+                    v-model="parentOrgaSimplified"
                     :options="orgasSimplified"
+
                     label="title"
                     track-by="id"
+
+                    @input="parentOrgaChanged"
                     :searchable="true"
                     :allow-empty="true"
-                    @input="parentOrgaChanged"
 
                     :selectLabel="$t('multiselect.selectLabel')"
                     :selectedLabel="$t('multiselect.selectedLabel')"
                     :deselectLabel="$t('multiselect.deselectLabel')"
                   ></multiselect>
-                  <!--
-                  <select class="browser-default" v-model="item.parent_orga" v-if="orgas.length">
-                    <option :value="null">Kein Veranstalter</option>
-                    <option :value="orga" v-for="orga in orgas">{{ orga.title }}</option>
-                  </select>
-                  -->
-                </div>
-
-                <div v-if="has.parentOrga">
-                  <br>
-                  <div class="inputField__spacing">
-                    <label>Übergeordnete Orga</label>
-                    <select class="browser-default" v-model="item.parent_orga" v-if="orgas.length">
-                      <option :value="null">Keine übergeordnete Orga</option>
-                      <option :value="orga" v-for="orga in orgas">{{ orga.title }}</option>
-                    </select>
-                  </div>
                 </div>
               </section>
             </entry-tabbed-content>
@@ -346,6 +337,8 @@ export default {
       loadingError: false,
       selectedAnnotation: null,
       saved: false,
+      orgasSimplified: [],
+      parentOrgaSimplified: null,
 
       geodataLoading: false,
       geodataOfAddress: null,
@@ -412,6 +405,26 @@ export default {
       if (url === '') {
         this.imageError = false
       }
+    },
+    /*
+     * simplify orga list by removing circular references
+     * gets passed as options for parent_orga select input
+     */
+    'orgas' (orgas) {
+      let result = []
+      for (let orga of this.orgas) {
+        if (this.item.id !== orga.id) {
+          result.push({title: orga.title, id: orga.id})
+        }
+      }
+      this.orgasSimplified = result
+    },
+    'item.parent_orga' (parentOrga) {
+      if (parentOrga) {
+        this.parentOrgaSimplified = {title: this.item.parent_orga.title, id: this.item.parent_orga.id}
+      } else {
+        this.parentOrgaSimplified = null
+      }
     }
   },
 
@@ -444,21 +457,21 @@ export default {
       } else {
         return [51.0571904, 13.7154319]
       }
-    },
-    orgasSimplified () {
-      let result = []
-      for (let orga of this.orgas) {
-        result.push({title: orga.title, id: orga.id})
-      }
-      console.log(result.length)
-      return result
     }
   },
 
 
   methods: {
+    /*
+     * match back simplified parent_orga to full orga object from this.orgas
+     */
     parentOrgaChanged () {
-      console.log('Changed to: ', this.item.parent_orga)
+      if (!this.parentOrgaSimplified) {
+        this.item.parent_orga = null
+      } else {
+        const parentOrga = this.orgas.find(x => x.id === this.parentOrgaSimplified.id)
+        this.item.parent_orga = parentOrga
+      }
     },
 
     categoryChanged () {
