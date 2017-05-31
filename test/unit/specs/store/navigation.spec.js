@@ -60,7 +60,9 @@ describe('Store - navigation', () => {
       ['todos', 'headlines.todos', 0],
       ['orgas.list', 'headlines.organisations', 0],
       ['events.list', 'headlines.events', 0],
-      ['search', 'headlines.search', false]
+      ['events.past', 'headlines.pastEventsShort', false],
+      ['search', 'headlines.search', false],
+      ['translations', 'headlines.translations', false]
     ], navigation.state.level1Navigation)
 
     assertNavigation([

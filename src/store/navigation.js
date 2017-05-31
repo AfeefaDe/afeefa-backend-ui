@@ -24,9 +24,9 @@ const menuTree = {
       level: 2,
       hint: state => state.numOrgas,
       children: [
-        { route: 'orgas.show', title: 'headlines.show', level: 3 },
-        { route: 'orgas.edit', title: 'headlines.edit', level: 3 },
-        { route: 'orgas.new', title: 'headlines.new', level: 3 }
+        { route: 'orgas.show', title: 'headlines.show', level: 4 },
+        { route: 'orgas.edit', title: 'headlines.edit', level: 4 },
+        { route: 'orgas.new', title: 'headlines.new', level: 4 }
       ]
     },
     {
@@ -40,9 +40,10 @@ const menuTree = {
       level: 2,
       hint: state => state.numEvents,
       children: [
-        { route: 'events.show', title: 'headlines.show', level: 3 },
-        { route: 'events.edit', title: 'headlines.edit', level: 3 },
-        { route: 'events.new', title: 'headlines.new', level: 3 }
+        { route: 'events.past', title: 'headlines.pastEventsShort', level: 3 },
+        { route: 'events.show', title: 'headlines.show', level: 4 },
+        { route: 'events.edit', title: 'headlines.edit', level: 4 },
+        { route: 'events.new', title: 'headlines.new', level: 4 }
       ]
     },
     {
@@ -87,7 +88,7 @@ const createPathNavigation = (node, tmpPath, currentRouteName) => {
 
 const createLevel1Navigation = (state, node, level1) => {
   node = Object.assign({}, node)
-  if (node.level < 3) {
+  if (node.level < 4) {
     if (node.hint) {
       node.hint = node.hint(state)
     } else {

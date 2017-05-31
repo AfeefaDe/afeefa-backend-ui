@@ -19,6 +19,7 @@ export default {
     organizer: 'Veranstaltende',
     upcomingEvents: 'Kommende Veranstaltungen',
     pastEvents: 'Vergangene Veranstaltungen',
+    pastEventsShort: 'Vergangene',
     systemLanguage: 'Systemsprache',
     generalTab: 'Allgemeines',
     placeTab: 'Ort',

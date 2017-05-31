@@ -22,7 +22,7 @@ export default {
       Resource: Todos,
       sortByUpdatedAt,
       messages: {
-        headline: () => this.$t('headlines.todos')
+        headline: () => this.$t('status.all') + ' ' + this.$t('headlines.todos')
       }
     }
   }

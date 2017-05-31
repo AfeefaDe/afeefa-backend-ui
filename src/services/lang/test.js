@@ -19,6 +19,7 @@ export default {
     organizer: '*',
     upcomingEvents: '*',
     pastEvents: '*',
+    pastEventsShort: '*',
     systemLanguage: '*',
     generalTab: '*',
     placeTab: '*',

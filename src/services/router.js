@@ -73,7 +73,14 @@ const routes = [
           {
             path: '',
             name: 'events.list',
-            component: ListEvents
+            component: ListEvents,
+            children: [
+              {
+                path: 'past',
+                name: 'events.past',
+                component: ListEvents
+              }
+            ]
           },
           {
             path: 'new',

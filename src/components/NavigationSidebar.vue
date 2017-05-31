@@ -6,8 +6,7 @@
     <div>
       <ul class="navigationSidebar__navContainer">
         <li :class="['navigationSidebar__navItem', 'level' + item.level]" v-for="item in items">
-          <router-link v-if="item.route === 'events.list'" :to="{name: item.route, query: { filter: 'upcoming' }}"> {{ $tc(item.title, 2) }} </router-link>
-          <router-link v-else :to="{name: item.route}" :exact="item.route==='dashboard'"> {{ $tc(item.title, 2) }} </router-link>
+          <router-link :to="{name: item.route}" :exact="item.route==='dashboard'"> {{ $tc(item.title, 2) }} </router-link>
           <router-link :to="{name: item.action.route}" class="navigationSidebar__navItemAction" v-if="item.action">
             <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
           </router-link>
@@ -70,6 +69,12 @@ export default {
   }
   &__navItem.level2 {
     margin-left: 1.5em;
+  }
+  &__navItem.level2 {
+    margin-left: 1.5em;
+  }
+  &__navItem.level3 {
+    margin-left: 4em;
   }
   &__navItem .active {
     font-weight: bold;
