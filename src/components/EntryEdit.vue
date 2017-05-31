@@ -56,11 +56,19 @@
                <div class="inputField__spacing input-field">
                   <div class="input-field">
                     <label for="tags" :class="{active: item.tags}">{{$t("headlines.tags")}}</label>
-                    <input type="text" id="tags" v-model="item.tags" class="validate"/>
+                    <input
+                      type="text"
+                      name="tags"
+                      id="tags"
+                      v-model="item.tags"
+                      :data-vv-as="$tc('entries.tags', 2)"
+                      :class="{'validation-error': errors.has('tags') }"
+                      v-validate="'tag-without-spaces'" />
+                    <span v-show="errors.has('tags')" class="validation-error">{{ errors.first('tags') }}</span>
                   </div>
                    <span class="validation-hint">
                   <i class="material-icons">error_outline</i>
-                  Tags können mehrere Orgas und Veranstaltungen gruppieren. Mehrere Tags werden mit Kommas separiert.
+                  Tags können mehrere Orgas und Veranstaltungen gruppieren. Mehrere Tags werden mit Kommas separiert. Leerzeichen sind nicht erlaubt.
                 </span>
                 </div>
 
@@ -496,6 +504,7 @@ export default {
     },
 
     save () {
+      this.$validator.setLocale(this.$i18n.locale)
       this.$validator.validateAll().then(result => {
         // fix for vee-validator which is currently not
         // able to deal with async validations:
