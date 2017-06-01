@@ -11,9 +11,9 @@ const getErrorDescription = response => {
   let description = ''
   if (response.body && response.body.errors) {
     for (let error of response.body.errors) {
-      description += error.detail + '\n'
+      description += (error.detail || error) + '\n'
     }
-  } else if (response.body) {
+  } else if (response.body && response.body.exception) {
     description = response.body.exception
   } else {
     description = response.statusText || response + ''
@@ -32,7 +32,7 @@ export default {
 
 
   actions: {
-    initApp ({dispatch}) {
+    initApp () {
       Vue.http.interceptors.push((request, next) => {
         if (request.method === 'POST' || request.method === 'PATCH') {
           if (request.body && typeof request.body === 'object') {
@@ -45,25 +45,38 @@ export default {
     },
 
 
-    getMetaInformation: ({state, dispatch}) => {
+    logout () {
+      resourceCache.purge()
+    },
+
+
+    loadingError: ({dispatch}, response) => {
+      if (!response.status) { // cancelled
+        return
+      }
+      dispatch('messages/showAlert', {
+        isError: true,
+        title: 'Fehler beim Laden',
+        description: getErrorDescription(response)
+      }, {root: true})
+    },
+
+
+    getMetaInformation: ({dispatch}) => {
       const itemResource = Vue.resource(BASE + 'meta')
 
       const promise = itemResource.get().then(response => {
         let metaItem = response.body.meta
         dispatch('navigation/setNumItemFromMetaInformation', {metaInformation: metaItem}, {root: true})
       }).catch(response => {
-        dispatch('messages/showAlert', {
-          isError: true,
-          title: 'Fehler beim Laden',
-          description: getErrorDescription(response)
-        }, {root: true})
+        dispatch('loadingError', response)
         console.log('error loading item', response)
       })
       return promise
     },
 
 
-    getList: ({state, dispatch}, {resource, params}) => {
+    getList: ({dispatch}, {resource, params}) => {
       const listCacheKey = resource.listCacheKey
 
       const cacheUrl = JSON.stringify(params || '')   // distinct different caches of filtered events
@@ -114,11 +127,7 @@ export default {
 
         return items
       }).catch(response => {
-        dispatch('messages/showAlert', {
-          isError: true,
-          title: 'Fehler beim Laden',
-          description: getErrorDescription(response)
-        }, {root: true})
+        dispatch('loadingError', response)
         console.log('error loading list', response)
         return []
       })
@@ -128,7 +137,7 @@ export default {
     },
 
 
-    getItem: ({state, dispatch}, {resource, id}) => {
+    getItem: ({dispatch}, {resource, id}) => {
       const itemCacheKey = resource.getItemCacheKey()
 
       if (!id) {
@@ -162,11 +171,7 @@ export default {
         item._fullyLoaded = true
         return item
       }).catch(response => {
-        dispatch('messages/showAlert', {
-          isError: true,
-          title: 'Fehler beim Laden',
-          description: getErrorDescription(response)
-        }, {root: true})
+        dispatch('loadingError', response)
         console.log('error loading item', response)
         return null
       })
@@ -176,7 +181,7 @@ export default {
     },
 
 
-    saveItem: ({state, dispatch}, {resource, item}) => {
+    saveItem: ({dispatch}, {resource, item}) => {
       const itemCacheKey = resource.getItemCacheKey()
 
       return resource.http.update(
@@ -199,7 +204,7 @@ export default {
     },
 
 
-    addItem: ({state, dispatch}, {resource, item}) => {
+    addItem: ({dispatch}, {resource, item}) => {
       const itemCacheKey = resource.getItemCacheKey()
 
       return resource.http.save(
@@ -222,7 +227,7 @@ export default {
     },
 
 
-    deleteItem: ({state, dispatch}, {resource, item}) => {
+    deleteItem: ({dispatch}, {resource, item}) => {
       return resource.http.delete({id: item.id}).then(response => {
         resource.itemDeleted(item)
         dispatch('getMetaInformation')
@@ -239,7 +244,7 @@ export default {
     },
 
 
-    updateItemAttributes: ({state, dispatch}, {resource, item, type, attributes}) => {
+    updateItemAttributes: ({dispatch}, {resource, item, type, attributes}) => {
       const data = {
         id: item.id,
         type,

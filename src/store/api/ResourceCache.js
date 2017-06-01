@@ -4,6 +4,10 @@ export default class ResourceCache {
     this.cache = {}
   }
 
+  purge () {
+    this.cache = {}
+  }
+
   getCache (key) {
     if (!this.cache[key]) {
       this.cache[key] = {

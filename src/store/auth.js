@@ -90,7 +90,9 @@ export default {
            */
           if (response.status === 401) {
             console.log('AUTH: 401 returned.')
+            window.stop() // cancel all requests
             dispatch('forwardToLogin')
+            response.body.errors = ['Session abgelaufen']
           /*
            * save auth information, if found in response
            */
@@ -113,11 +115,12 @@ export default {
     },
 
 
-    forwardToLogin ({commit}) {
+    forwardToLogin ({commit, dispatch}) {
       console.log('AUTH: Clear all auth info and forward to login.')
       localStorage.removeItem(STORAGE_KEY)
       commit('setCurrentUser', null)
       commit('setLastAuthHeader', {})
+      dispatch('api/logout', '', {root: true})
       router.push({name: 'login'})
     },
 
@@ -140,7 +143,7 @@ export default {
     },
 
 
-    logout ({state, commit}) {
+    logout ({state, commit, dispatch}) {
       localStorage.removeItem(STORAGE_KEY)
       const url = BASE + 'users/sign_out'
       const request = Vue.http.delete(url, {headers: state.lastAuthHeader})
@@ -149,6 +152,7 @@ export default {
       }, response => {
         console.log('error logout', response)
       })
+      dispatch('api/logout', '', {root: true})
       return request
     }
   }
