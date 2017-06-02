@@ -6,15 +6,24 @@ export default {
 
   data () {
     return {
-      items: null,
-      queryParams: null
+      items: null
     }
   },
 
   created () {
-    this.Resource.getAll(this.queryParams).then(entries => {
-      this.items = entries
-    })
+    this.loadItems()
+  },
+
+  methods: {
+    getQueryParams () {
+      return null
+    },
+    loadItems () {
+      const queryParams = this.getQueryParams()
+      this.Resource.getAll(queryParams).then(entries => {
+        this.items = entries
+      })
+    }
   },
 
   components: {

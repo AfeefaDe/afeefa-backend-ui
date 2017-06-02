@@ -11,9 +11,9 @@ const getErrorDescription = response => {
   let description = ''
   if (response.body && response.body.errors) {
     for (let error of response.body.errors) {
-      description += error.detail + '\n'
+      description += (error.detail || error) + '\n'
     }
-  } else if (response.body) {
+  } else if (response.body && response.body.exception) {
     description = response.body.exception
   } else {
     description = response.statusText || response + ''
@@ -32,9 +32,12 @@ export default {
 
 
   actions: {
-    initApp ({dispatch}) {
+    initApp () {
       Vue.http.interceptors.push((request, next) => {
         if (request.method === 'POST' || request.method === 'PATCH') {
+          if (request.body && typeof request.body === 'object') {
+            request.body = JSON.stringify(request.body)
+          }
           request.headers.set('Content-Type', 'application/vnd.api+json')
         }
         next()
@@ -42,29 +45,43 @@ export default {
     },
 
 
-    getMetaInformation: ({state, dispatch}) => {
+    logout () {
+      resourceCache.purge()
+    },
+
+
+    loadingError: ({dispatch}, response) => {
+      if (!response.status) { // cancelled
+        return
+      }
+      dispatch('messages/showAlert', {
+        isError: true,
+        title: 'Fehler beim Laden',
+        description: getErrorDescription(response)
+      }, {root: true})
+    },
+
+
+    getMetaInformation: ({dispatch}) => {
       const itemResource = Vue.resource(BASE + 'meta')
 
       const promise = itemResource.get().then(response => {
         let metaItem = response.body.meta
         dispatch('navigation/setNumItemFromMetaInformation', {metaInformation: metaItem}, {root: true})
       }).catch(response => {
-        dispatch('messages/showAlert', {
-          isError: true,
-          title: 'Fehler beim Laden',
-          description: getErrorDescription(response)
-        }, {root: true})
+        dispatch('loadingError', response)
         console.log('error loading item', response)
       })
       return promise
     },
 
 
-    getList: ({state, dispatch}, {resource, params}) => {
+    getList: ({dispatch}, {resource, params}) => {
       const listCacheKey = resource.listCacheKey
 
-      if (resourceCache.hasList(listCacheKey, '')) {
-        return Promise.resolve(resourceCache.getList(listCacheKey, ''))
+      const cacheUrl = JSON.stringify(params || '')   // distinct different caches of filtered events
+      if (resourceCache.hasList(listCacheKey, cacheUrl)) {
+        return Promise.resolve(resourceCache.getList(listCacheKey, cacheUrl))
       }
 
       if (promiseCache.hasItem(listCacheKey)) {
@@ -106,15 +123,11 @@ export default {
           }
         }
 
-        resourceCache.addList(listCacheKey, '', items)
+        resourceCache.addList(listCacheKey, cacheUrl, items)
 
         return items
       }).catch(response => {
-        dispatch('messages/showAlert', {
-          isError: true,
-          title: 'Fehler beim Laden',
-          description: getErrorDescription(response)
-        }, {root: true})
+        dispatch('loadingError', response)
         console.log('error loading list', response)
         return []
       })
@@ -124,7 +137,7 @@ export default {
     },
 
 
-    getItem: ({state, dispatch}, {resource, id}) => {
+    getItem: ({dispatch}, {resource, id}) => {
       const itemCacheKey = resource.getItemCacheKey()
 
       if (!id) {
@@ -158,11 +171,7 @@ export default {
         item._fullyLoaded = true
         return item
       }).catch(response => {
-        dispatch('messages/showAlert', {
-          isError: true,
-          title: 'Fehler beim Laden',
-          description: getErrorDescription(response)
-        }, {root: true})
+        dispatch('loadingError', response)
         console.log('error loading item', response)
         return null
       })
@@ -172,19 +181,15 @@ export default {
     },
 
 
-    saveItem: ({state, dispatch}, {resource, item}) => {
+    saveItem: ({dispatch}, {resource, item}) => {
       const itemCacheKey = resource.getItemCacheKey()
 
       return resource.http.update(
         {id: item.id}, {data: item.serialize()}
       ).then(response => {
-        // todo fixme purge cache before deserialize entry in order to be able to fully reload
-        if (['events', 'orgas', 'todos'].includes(itemCacheKey)) {
-          resourceCache.purgeItem('locations', item.location.id)
-          resourceCache.purgeItem('contacts', item.contact.id)
-        }
         const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
         cachedItem.deserialize(response.body.data)
+        resource.itemSaved(item, cachedItem)
         dispatch('getMetaInformation') // e.g. todos may change after annotation change
         return cachedItem
       }).catch(response => {
@@ -199,19 +204,15 @@ export default {
     },
 
 
-    addItem: ({state, dispatch}, {resource, item}) => {
+    addItem: ({dispatch}, {resource, item}) => {
       const itemCacheKey = resource.getItemCacheKey()
 
       return resource.http.save(
         {id: item.id}, {data: item.serialize()}
       ).then(response => {
-        // todo fixme purge cache before deserialize entry in order to be able to fully reload
-        if (['events', 'orgas', 'todos'].includes(itemCacheKey)) {
-          resourceCache.purgeList(itemCacheKey)
-          resourceCache.purgeList('todos')
-        }
         item.deserialize(response.body.data)
         resourceCache.addItem(itemCacheKey, item)
+        resource.itemAdded(item)
         dispatch('getMetaInformation')
         return item
       }).catch(response => {
@@ -226,15 +227,9 @@ export default {
     },
 
 
-    deleteItem: ({state, dispatch}, {resource, item}) => {
-      const itemCacheKey = resource.getItemCacheKey()
-
+    deleteItem: ({dispatch}, {resource, item}) => {
       return resource.http.delete({id: item.id}).then(response => {
-        if (['events', 'orgas', 'todos'].includes(itemCacheKey)) {
-          resourceCache.purgeItem(itemCacheKey, item.id)
-          resourceCache.purgeList(itemCacheKey)
-          resourceCache.purgeList('todos')
-        }
+        resource.itemDeleted(item)
         dispatch('getMetaInformation')
         return true
       }).catch(response => {
@@ -249,14 +244,18 @@ export default {
     },
 
 
-    updateItemAttributes: ({state, dispatch}, {resource, id, type, attributes}) => {
+    updateItemAttributes: ({dispatch}, {resource, item, type, attributes}) => {
       const data = {
-        id,
+        id: item.id,
         type,
         attributes
       }
-      return resource.http.update({id}, {data}).then(response => {
-        return response.body.data.attributes
+      return resource.http.update({id: item.id}, {data}).then(response => {
+        const itemCacheKey = resource.getItemCacheKey()
+        const attributes = response.body.data.attributes
+        const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
+        resource.itemAttributesUpdated(cachedItem, attributes)
+        return attributes
       }).catch(response => {
         dispatch('messages/showAlert', {
           isError: true,

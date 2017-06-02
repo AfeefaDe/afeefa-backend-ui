@@ -125,5 +125,15 @@ export default {
     this.fetchContact(clone, true) // true => contact.clone()
     this.fetchAnnotations(clone)
     return clone
+  },
+
+  updateAttributes (entry, attributes) {
+    if (attributes) {
+      if ('active' in attributes) {
+        entry.active = attributes.active === true
+        entry.state_changed_at = new Date(attributes.state_changed_at)
+      }
+      entry.updated_at = new Date(attributes.updated_at)
+    }
   }
 }

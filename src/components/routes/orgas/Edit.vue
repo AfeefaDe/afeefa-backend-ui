@@ -23,6 +23,7 @@ export default {
       Resource: Orgas,
       messages: {
         loading: () => this.$t('status.load_orga') + ' ' + this.id,
+        loadingError: () => this.$t('errors.loadingEntryError') + ' ' + this.id,
         deleteHeadline: () => {
           return `Orga löschen`
         },

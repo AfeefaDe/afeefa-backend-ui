@@ -17,14 +17,20 @@ export default {
     parentOrga: 'Übergeordnete Orga',
     subOrgas: 'Untergeordnete Orgas',
     organizer: 'Veranstaltende',
-    upcomingEvents: 'Anstehende Veranstaltungen',
+    upcomingEvents: 'Kommende Veranstaltungen',
     pastEvents: 'Vergangene Veranstaltungen',
+    pastEventsShort: 'Vergangene',
     systemLanguage: 'Systemsprache',
     generalTab: 'Allgemeines',
     placeTab: 'Ort',
     contactTab: 'Kontakt',
     linkTab: 'Verweise',
-    preview: 'Vorschau'
+    preview: 'Vorschau',
+    support_wanted: 'Unterstützung wird benötigt',
+    for_children: 'Für Kinder geeignet',
+    translations: 'Übersetzungen',
+    spokenLanguages: 'Gesprochene Sprache | Gesprochene Sprachen',
+    tags: 'Tags'
   },
   errors: {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',
@@ -34,7 +40,8 @@ export default {
     noParentOrgaPresent: 'Keine übergeordnete Orga vorhanden',
     noSubOrgaPresent: 'Keine untergeordneten Orgas vorhanden',
     noEventsForOrga: 'Keine Events zu dieser Orga vorhanden',
-    loadingImageError: 'Fehler beim Laden des Bildes.'
+    loadingImageError: 'Fehler beim Laden des Bildes',
+    loadingEntryError: 'Fehler beim Laden des Eintrags'
   },
   entries: {
     date_start: 'Startdatum',
@@ -44,7 +51,7 @@ export default {
     date: 'Datum',
     title: 'Titel',
     image_link: 'Link zum Bild',
-    description: 'Beschreibung',
+    description: 'Mehr Informationen',
     active: 'Aktiv',
     created_at: 'Erstellt',
     updated_at: 'Geändert',
@@ -65,7 +72,12 @@ export default {
     web: 'Homepage',
     socialMedia: 'Social Media',
     directions: 'Anfahrtsweg',
-    short_description: 'Kurzbeschreibung'
+    short_description: 'Beschreibung',
+    for_children: 'Für Kinder',
+    for_children_yes: 'Geeignet',
+    support_wanted: 'Unterstützung',
+    support_wanted_yes: 'Wird benötigt',
+    tags: 'Tag | Tags'
   },
   status: {
     load_event: 'Lade Event',
@@ -89,6 +101,9 @@ export default {
     edit: 'Bearbeiten',
     add: 'Hinzufügen'
   },
+  checkboxes: {
+    show_past_events: 'Zeige vergangene Veranstaltungen'
+  },
   infos: {
     mandatory_field: 'Pflichtfeld',
     no_category: 'Keine Kategorie angegeben',
@@ -105,6 +120,13 @@ export default {
   },
   messages: {
     loading: 'Lädt'
+  },
+  multiselect: {
+    selectLabel: 'Zur Auswahl Enter drücken',
+    selectedLabel: 'Ausgewählt',
+    deselectLabel: 'Zum Entfernen Enter drücken',
+    noResult: 'Keine Einträge gefunden. Bitte Suchanfrage ändern.',
+    noSelection: 'Kein Eintag ausgewählt'
   },
   categories: {
     'asylum-counselling': 'Asylberatung',

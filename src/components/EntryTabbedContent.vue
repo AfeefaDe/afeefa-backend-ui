@@ -15,13 +15,21 @@
       </li>
     </ul>
 
-  <slot name="generalTab" v-if="activeTab === 'generalTab'"></slot>
+  <section v-show="activeTab === 'generalTab'">
+    <slot name="generalTab"></slot>
+  </section>
 
-  <slot name="placeTab" v-if="activeTab === 'placeTab'"></slot>
+  <section v-show="activeTab === 'placeTab'">
+    <slot name="placeTab"></slot>
+  </section>
 
-  <slot name="contactTab" v-if="activeTab === 'contactTab'"></slot>
+  <section v-show="activeTab === 'contactTab'">
+    <slot name="contactTab"></slot>
+  </section>
 
-  <slot name="linkTab" v-if="activeTab === 'linkTab'"></slot>
+  <section v-show="activeTab === 'linkTab'">
+    <slot name="linkTab"></slot>
+  </section>
 </div>
 </template>
 

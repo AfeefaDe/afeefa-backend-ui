@@ -18,7 +18,6 @@
 
             <entry-tabbed-content v-on:setCurrentTab="setCurrentTab">
               <section slot="generalTab">
-                <br>
                 <div class="inputField__spacing input-field">
                   <label for="title" :class="{active: item.title}">
                     {{ $t('entries.title') }}
@@ -49,9 +48,28 @@
                 </div>
 
                 <div class="inputField__spacing input-field">
-                  <label for="description" :class="{active: item.description}">Beschreibung</label>
+                  <label for="description" :class="{active: item.description}">{{ $t('entries.description') }}</label>
                   <textarea v-model="item.description" id="description"
                     class="materialize-textarea"></textarea>
+                </div>
+
+               <div class="inputField__spacing input-field">
+                  <div class="input-field">
+                    <label for="tags" :class="{active: item.tags}">{{$t("headlines.tags")}}</label>
+                    <input
+                      type="text"
+                      name="tags"
+                      id="tags"
+                      v-model="item.tags"
+                      :data-vv-as="$tc('entries.tags', 2)"
+                      :class="{'validation-error': errors.has('tags') }"
+                      v-validate="'tag-without-spaces'" />
+                    <span v-show="errors.has('tags')" class="validation-error">{{ errors.first('tags') }}</span>
+                  </div>
+                   <span class="validation-hint">
+                  <i class="material-icons">error_outline</i>
+                  Tags können mehrere Orgas und Veranstaltungen gruppieren. Mehrere Tags werden mit Kommas separiert. Leerzeichen sind nicht erlaubt.
+                </span>
                 </div>
 
                 <h2>Kategorien</h2>
@@ -74,6 +92,18 @@
                   </select>
                 </div>
 
+                <div class="input-field">
+                  <h2>{{ $t("headlines.for_children") }}</h2>
+                  <input type="checkbox" id="for_children" class="filled-in" v-model="item.for_children"/>
+                  <label for="for_children">{{$t("entries.for_children_yes")}}</label>
+                </div>
+
+                <div class="input-field">
+                  <h2>{{ $t("headlines.support_wanted") }}</h2>
+                  <input type="checkbox" id="support_wanted" class="filled-in" v-model="item.support_wanted"/>
+                  <label for="support_wanted">{{$t("entries.support_wanted_yes")}}</label>
+                </div>
+
                 <div v-if="has.date">
                   <h2>{{ $t("headlines.time") }}</h2>
                   <date-picker
@@ -90,12 +120,14 @@
                 </div>
 
                 <h2>{{ $tc('headlines.annotations', 2) }}</h2>
-                <span v-if="bippelMoved" class="validation-hint">
-                  <i class="material-icons">error_outline</i>
-                  Annmerkungen sind nicht öffentlich sichtbar und dienen nur den Redakteur*innen.
-                </span>
                 <div class="annotationEditArea">
-                  <annotation-tag v-for="annotation in item.annotations" :annotation="annotation" :editMode="true" v-on:remove="removeAnnotation" :key="annotation.id"></annotation-tag>
+                  <annotation-tag
+                    v-for="annotation in item.annotations"
+                    :annotation="annotation"
+                    :editMode="true"
+                    v-on:remove="removeAnnotation"
+                    :key="annotation.id">
+                  </annotation-tag>
                   <p v-if="!item.annotations.length" class="annotationArea__error">Keine Anmerkungen</p>
                   <div class="annotationNew">
                     <select class="browser-default annotationNew" v-model="selectedAnnotation" @change="addAnnotation">
@@ -104,6 +136,10 @@
                     </select>
                   </div>
                 </div>
+                <span class="validation-hint">
+                  <i class="material-icons">error_outline</i>
+                  Annmerkungen sind nicht öffentlich sichtbar und dienen nur den Redakteur*innen.
+                </span>
               </section>
 
 
@@ -207,31 +243,36 @@
                           data-vv-validate-on="blur"
                           v-validate="'url-with-protocol'"
                           :class="{'validation-error': errors.has('socialMedia') }"/>
-                    </div>
-                    <span v-show="errors.has('socialMedia')" class="validation-error">{{ errors.first('socialMedia') }}</span>
+                  </div>
+                  <span v-show="errors.has('socialMedia')" class="validation-error">{{ errors.first('socialMedia') }}</span>
+
+                  <lang-select-input  @input="updateSpokenLanguages" :entryValue="item.contact.spokenLanguages"></lang-select-input>
+
                 </div>
               </section>
 
-
               <section slot="linkTab">
-                <div class="inputField__spacing" v-if="has.orga">
-                  <br>
-                  <label>Veranstalter</label>
-                  <select class="browser-default" v-model="item.parent_orga" v-if="orgas.length">
-                    <option :value="null">Kein Veranstalter</option>
-                    <option :value="orga" v-for="orga in orgas">{{ orga.title }}</option>
-                  </select>
-                </div>
+                <div v-bind:class="[{'customMultiselect--hide': parentOrgaSimplified.length===1}, 'inputField__spacing', 'customMultiselect']">
+                  <label v-if="has.parentOrga">Übergeordnete Orga</label>
+                  <label v-if="has.orga">Veranstalter</label>
+                  <multiselect
+                    v-model="parentOrgaSimplified"
+                    :options="orgasSimplified"
+                    label="title"
+                    track-by="id"
 
-                <div v-if="has.parentOrga">
-                  <br>
-                  <div class="inputField__spacing">
-                    <label>Übergeordnete Orga</label>
-                    <select class="browser-default" v-model="item.parent_orga" v-if="orgas.length">
-                      <option :value="null">Keine übergeordnete Orga</option>
-                      <option :value="orga" v-for="orga in orgas">{{ orga.title }}</option>
-                    </select>
-                  </div>
+                    :multiple="true"
+                    :max="1"
+                    :searchable="true"
+                    :allow-empty="true"
+                    @input="parentOrgaChanged"
+
+                    :placeholder="$t('multiselect.noSelection')"
+                    :selectLabel="$t('multiselect.selectLabel')"
+                    :selectedLabel="$t('multiselect.selectedLabel')"
+                    :deselectLabel="$t('multiselect.deselectLabel')"
+                  >
+                  </multiselect>
                 </div>
               </section>
             </entry-tabbed-content>
@@ -247,17 +288,15 @@
                 Löschen
               </button>
             </section>
-            <br>
-
           </form>
         </div>
 
         <div v-else class="mainCard">
           <div class="mainCard__header mainCard__headerLight">
-            {{ messages.loading() }} ...
+            <span v-if="loadingError">{{ messages.loadingError() }} ...</span>
+            <span v-else>{{ messages.loading() }} ...</span>
           </div>
         </div>
-
 
       </div>
     </div>
@@ -282,7 +321,8 @@ import Spinner from '@/components/Spinner'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
 import EntryTabbedContent from '@/components/EntryTabbedContent'
-
+import LangSelectInput from '@/components/LangSelectInput'
+import Multiselect from 'vue-multiselect'
 
 export default {
   props: ['id', 'routeName', 'Resource', 'messages', 'options'],
@@ -297,8 +337,13 @@ export default {
       orgas: [],
 
       imageError: false,
+      loadingError: false,
       selectedAnnotation: null,
       saved: false,
+      orgasSimplified: [],
+      // implemented as array to allow the :multiple="true" option on vue-multiselect
+      // the limit is set to one. so this array contains one element max
+      parentOrgaSimplified: [],
 
       geodataLoading: false,
       geodataOfAddress: null,
@@ -320,6 +365,9 @@ export default {
       if (entry) {
         this.origItem = entry
         this.item = this.Resource.clone(entry)
+      } else {
+        console.log('error loading item')
+        this.loadingError = true
       }
     })
 
@@ -362,6 +410,26 @@ export default {
       if (url === '') {
         this.imageError = false
       }
+    },
+    /*
+     * simplify orga list by removing circular references
+     * gets passed as options for parent_orga select input
+     */
+    'orgas' (orgas) {
+      let result = []
+      for (let orga of this.orgas) {
+        if (this.item.id !== orga.id) {
+          result.push({title: orga.title, id: orga.id})
+        }
+      }
+      this.orgasSimplified = result
+    },
+    'item.parent_orga' (parentOrga) {
+      if (parentOrga) {
+        this.parentOrgaSimplified = [{title: this.item.parent_orga.title, id: this.item.parent_orga.id}]
+      } else {
+        this.parentOrgaSimplified = []
+      }
     }
   },
 
@@ -397,7 +465,20 @@ export default {
     }
   },
 
+
   methods: {
+    /*
+     * match back simplified parent_orga to full orga object from this.orgas
+     */
+    parentOrgaChanged () {
+      if (this.parentOrgaSimplified.length === 0) {
+        this.item.parent_orga = null
+      } else {
+        const parentOrga = this.orgas.find(x => x.id === this.parentOrgaSimplified[0].id)
+        this.item.parent_orga = parentOrga
+      }
+    },
+
     categoryChanged () {
       this.item.sub_category = null
     },
@@ -460,11 +541,16 @@ export default {
       this.item.has_time_end = hasTimeEnd
     },
 
+    updateSpokenLanguages (spokenLanguages) {
+      this.item.contact.spokenLanguages = spokenLanguages
+    },
+
     updateImageContainerState ({mediaImageError}) {
       this.imageError = mediaImageError
     },
 
     save () {
+      this.$validator.setLocale(this.$i18n.locale)
       this.$validator.validateAll().then(result => {
         // fix for vee-validator which is currently not
         // able to deal with async validations:
@@ -526,6 +612,11 @@ export default {
 
     beforeRouteLeave ({to, from, next}) {
       if (this.saved) {
+        next()
+        return
+      }
+
+      if (!this.entry) { // loading error
         next()
         return
       }
@@ -608,7 +699,9 @@ export default {
     LocationMap,
     ImageContainer,
     AnnotationTag,
-    EntryTabbedContent
+    EntryTabbedContent,
+    LangSelectInput,
+    Multiselect
   }
 }
 </script>
@@ -619,7 +712,8 @@ export default {
 
 .entryForm {
   h2 {
-    margin-top: 1.5em;
+    margin-top: 2em;
+    margin-bottom: 0.5em;
     font-size: 1.4em;
     font-weight: 500;
   }
@@ -627,6 +721,13 @@ export default {
     margin-top: 1.2em;
     display: flex;
     justify-content: space-between;
+    @media screen and (max-width: $break-medium) {
+      flex-wrap: wrap;
+      button {
+        flex-grow: 2;
+        margin-bottom: 1.5em;
+      }
+    }
   }
   .mandatory-field {
     color: #26a69a;

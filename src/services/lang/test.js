@@ -19,12 +19,18 @@ export default {
     organizer: '*',
     upcomingEvents: '*',
     pastEvents: '*',
+    pastEventsShort: '*',
     systemLanguage: '*',
     generalTab: '*',
     placeTab: '*',
     contactTab: '*',
     linkTab: '*',
-    preview: '*'
+    preview: '*',
+    support_wanted: '*',
+    for_children: '*',
+    translations: '*',
+    spokenLanguages: '*',
+    tags: '*'
   },
   errors: {
     noContactPresent: '*',
@@ -34,7 +40,8 @@ export default {
     noParentOrgaPresent: '*',
     noSubOrgaPresent: '*',
     noEventsForOrga: '*',
-    loadingImageError: '*'
+    loadingImageError: '*',
+    loadingEntryError: '*'
   },
   entries: {
     date_start: '*',
@@ -65,7 +72,12 @@ export default {
     web: '*',
     socialMedia: '*',
     directions: '*',
-    short_description: '*'
+    short_description: '*',
+    for_children: '*',
+    for_children_yes: '*',
+    support_wanted: '*',
+    support_wanted_yes: '*',
+    tags: '*'
   },
   status: {
     load_event: '*',
@@ -89,6 +101,9 @@ export default {
     edit: '*',
     add: '*'
   },
+  checkboxes: {
+    show_past_events: '*'
+  },
   infos: {
     mandatory_field: '*',
     no_category: '*',
@@ -105,6 +120,13 @@ export default {
   },
   messages: {
     loading: '*'
+  },
+  multiselect: {
+    selectLabel: '*',
+    selectedLabel: '*',
+    deselectLabel: '*',
+    noResult: '*',
+    noSelection: '*'
   },
   categories: {
     'asylum-counselling': '*',

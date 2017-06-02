@@ -48,12 +48,6 @@
               <span>({{item.updated_at | formatDateRelative}})</span>
             </p>
 
-            <p class="item entryList--lightColor" v-if="has.date_start">
-              {{ $t('status.time') }}
-              {{item.date_start | formatDateRelative}}
-              <span>({{item.date_start | formatDateAbsolute}})</span>
-            </p>
-
             <p class="item entryList--lightColor" v-if="has.created_at">
               {{ $t('status.added') }}
               {{item.created_at | formatDateAbsolute}}

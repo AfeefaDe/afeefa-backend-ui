@@ -1,0 +1,38 @@
+.customMultiselect {
+  .multiselect__tags {
+    border: 0;
+    padding-left: 0;
+  }
+  .multiselect__option--highlight, .multiselect__option--highlight:after {
+    background: $turquoise;
+  }
+  .multiselect__tag {
+    background: $turquoise;
+    padding: 8px 26px 8px 14px;
+    i:after {
+      line-height: 30px;
+       color: white;
+    }
+  }
+  .multiselect__tag-icon:focus, .multiselect__tag-icon:hover {
+    background: $turquoise;
+  }
+  .multiselect--active {
+    z-index: 10;
+  }
+  .multiselect--active .multiselect__content {
+    background: $gray20;
+    z-index: 10000;
+  }
+}
+/*
+ * this class gets applied after the selection of one parentOrga
+ * ist hides the corresponding inputs to prevent the ability to select another parentOrga
+ */
+.customMultiselect--hide {
+  .multiselect__select,
+  .multiselect__input,
+  .multiselect__content {
+    display: none;
+  }
+}

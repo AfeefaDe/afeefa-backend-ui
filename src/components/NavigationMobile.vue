@@ -11,12 +11,11 @@
 
     <div id="menu" v-if="visible">
       <div v-for="item in items" :class="['navigation-mobile__item', 'level' + item.level]">
-        <router-link :to="{name: item.route}"> {{ $tc(item.title, 2) }}
-          <span v-if="item.hint || item.hint === 0">({{item.hint}})</span>
-        </router-link>
+        <router-link :to="{name: item.route}"> {{ $tc(item.title, 2) }} </router-link>
+
         <router-link :to="{name: item.action.route}" class="navigation-mobile__itemAction" v-if="item.action">
-            <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
-          </router-link>
+          <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
+        </router-link>
       </div>
 
       <section class="navigation-mobile__footer">
@@ -76,7 +75,10 @@ export default {
     justify-content: space-between;
   }
   &__item.level2 {
-    margin-left: 1em;
+    margin-left: 2em;
+  }
+  &__item.level3 {
+    margin-left: 4em;
   }
   &__itemAction i {
     font-size: 1.3em;
@@ -109,7 +111,6 @@ export default {
       margin: 0.6em 0;
       vertical-align: middle;
     }
-
     i {
       vertical-align: middle;
       margin-top: -3px;

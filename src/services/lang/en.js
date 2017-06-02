@@ -19,12 +19,18 @@ export default {
     organizer: 'Organizer',
     upcomingEvents: 'Upcoming Events',
     pastEvents: 'Past Events',
+    pastEventsShort: 'Past',
     systemLanguage: 'System language',
     generalTab: 'General',
     placeTab: 'Place',
     contactTab: 'Contact',
     linkTab: 'Links',
-    preview: 'Preview'
+    preview: 'Preview',
+    support_wanted: 'Support wanted',
+    for_children: 'Qualified for children',
+    translations: 'Translations',
+    spokenLanguages: 'Spoken Language | Spoken Languages',
+    tags: 'Tags'
   },
   errors: {
     noContactPresent: 'No contact information present',
@@ -34,7 +40,8 @@ export default {
     noParentOrgaPresent: 'No parent organizations present',
     noSubOrgaPresent: 'No sub organizations present',
     noEventsForOrga: 'No events for organiszation present',
-    loadingImageError: 'Error loading image'
+    loadingImageError: 'Error loading image',
+    loadingEntryError: 'Error loading entry'
 
   },
   entries: {
@@ -45,7 +52,7 @@ export default {
     date: 'Date',
     title: 'Title',
     image_link: 'Image link',
-    description: 'Description',
+    description: 'More informations',
     active: 'Active',
     created_at: 'Created at',
     updated_at: 'Updated at',
@@ -66,7 +73,12 @@ export default {
     web: 'Webpage',
     socialMedia: 'Social Media',
     directions: 'Directions',
-    short_description: 'Short description'
+    short_description: 'Description',
+    for_children: 'For children',
+    for_children_yes: 'Verfified',
+    support_wanted: 'Support',
+    support_wanted_yes: 'Wanted',
+    tags: 'Tag | Tags'
   },
   status: {
     load_event: 'Load Event',
@@ -90,6 +102,9 @@ export default {
     edit: 'Edit',
     add: 'Add'
   },
+  checkboxes: {
+    show_past_events: 'Show past events'
+  },
   infos: {
     mandatory_field: 'mandatory',
     no_category: 'No category existing',
@@ -106,6 +121,13 @@ export default {
   },
   messages: {
     loading: 'Loading'
+  },
+  multiselect: {
+    selectLabel: 'Press enter to select',
+    selectedLabel: 'Selected',
+    deselectLabel: 'Press enter to remove',
+    noResult: 'No elements found. Consider changing the search query.',
+    noSelection: 'Nothing selected'
   },
   categories: {
     'asylum-counselling': 'Asylum counselling',

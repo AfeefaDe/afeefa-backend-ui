@@ -3,16 +3,23 @@
     <div class="col s12 m12">
       <div class="mainCard">
         <div class="mainCard__header">
-          <h2 class="mainCard__headerTitle">{{ $t('status.all') }} {{ messages.headline() }} ({{ numItems }})</h2>
+
+          <h2 class="mainCard__headerTitle">
+            {{ messages.headline() }} ({{ numItems }})
+          </h2>
+
           <router-link v-if="addEntryButton" :to="{name: addEntryButton}"  class="mainCard__headerButton">
             {{$t('buttons.add')}}
             <i class="material-icons">add</i>
           </router-link>
+
         </div>
+
         <entry-list-items
           :items="items"
           :sort-function="sortFunction"
-          :options="options">
+          :options="options"
+          :sort-order="sortOrder">
         </entry-list-items>
       </div>
     </div>
@@ -24,7 +31,7 @@
 import EntryListItems from '@/components/EntryListItems'
 
 export default {
-  props: ['items', 'sortFunction', 'options', 'messages', 'addEntryButton'],
+  props: ['items', 'sortFunction', 'sortOrder', 'options', 'messages', 'addEntryButton'],
 
   computed: {
     numItems () {
@@ -37,3 +44,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.past-events-checkbox {
+  display: flex;
+  justify-content: flex-end;
+}
+</style>

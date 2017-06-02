@@ -28,4 +28,25 @@ export default class BaseResource {
     item.deserialize(json)
   }
 
+  // called after an item has been added
+  // to enable custom resource cache treatment
+  itemAdded (item) {
+  }
+
+  // called after an item has been deleted
+  // to enable custom resource cache treatment
+  itemDeleted (item) {
+  }
+
+  // called after an item has been changed
+  // to enable custom resource cache treatment
+  // use the old item to access the item relations
+  // that have been present prior saving
+  itemSaved (itemOld, item) {
+  }
+
+  // called after attributes of an item have been changed
+  // to enable custom resource cache treatment
+  itemAttributesUpdated (item, attributes) {
+  }
 }

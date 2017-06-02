@@ -22,7 +22,7 @@ export default {
       Resource: Orgas,
       sortByTitle,
       messages: {
-        headline: () => this.$tc('headlines.organisations', 2)
+        headline: () => this.$t('status.all') + ' ' + this.$tc('headlines.organisations', 2)
       }
     }
   }

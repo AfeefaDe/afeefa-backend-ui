@@ -7,7 +7,6 @@
         <div class="mainCard__headerTitle">
           <h2 class="mainCard__headerTitleHeading">{{ entry.title || 'Kein Titel' }}</h2>
           <span v-if="entry.parent_orga" class="mainCard__headerSubtitle">
-            {{ has.date ? $t('headlines.organizer') : $t('headlines.parentOrga') }}:
             <router-link :to="{name: entry.parent_orga.type + '.show', params: {id: entry.parent_orga.id}}">
               <u> {{ entry.parent_orga.title }}</u>
             </router-link>
@@ -37,7 +36,7 @@
 
             <entry-detail-property v-if="entry.short_description" :name="$t('entries.short_description')" :iconName="'more_horiz'" :isMultiline="true">{{ entry.short_description }}</entry-detail-property>
 
-            <entry-detail-property v-if="entry.description"  :name="$t('entries.description')" :iconName="'more_horiz'" :isMultiline="true">{{ entry.description }}</entry-detail-property>
+            <entry-detail-property v-if="entry.description"  :name="$t('entries.description')" :iconName="'info_outline'" :isMultiline="true">{{ entry.description }}</entry-detail-property>
 
             <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'">
               {{ entry.category ? entry.category.title : 'Keine Kategorie angegeben' }} >
@@ -48,10 +47,28 @@
               :name="$tc('entries.date')"
               :iconName="'date_range'"
               v-if="has.date">
-                <span v-if="entry.date_start"> {{ $t('entries.date_start') }}: {{ entry.date_start | formatDateAbsolute }} ({{entry.date_start | formatDateRelative }})<br></span>
-                <span v-if="entry.date_end">
-                {{ $t('entries.date_end') }}: {{ entry.date_end | formatDateAbsolute }} ({{entry.date_end | formatDateRelative }})<br>
-                </span>
+                {{ entry | formatEventDate }}
+            </entry-detail-property>
+
+            <entry-detail-property
+              :name="$t('entries.for_children')"
+              :iconName="'child_friendly'"
+              v-if="entry.for_children">
+                 {{$t('entries.for_children_yes')}}
+            </entry-detail-property>
+
+            <entry-detail-property
+              :name="$t('entries.support_wanted')"
+              :iconName="'pan_tool'"
+              v-if="entry.support_wanted">
+                 {{$t('entries.support_wanted_yes')}}
+            </entry-detail-property>
+
+            <entry-detail-property
+              v-if="entry.tags"
+              :name="$tc('entries.tags', entry.tags.split(',').length)"
+              :iconName="'more_vert'">
+                 {{entry.tags}}
             </entry-detail-property>
 
             <entry-detail-property
@@ -117,6 +134,11 @@
                 <span v-if="entry.contact.web"><a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a><br></span>
                 <span v-if="entry.contact.socialMedia"><a :href="entry.contact.socialMedia" target="_blank">{{ entry.contact.socialMedia }}</a></span>
               </entry-detail-property>
+
+              <entry-detail-property :name="$tc('headlines.spokenLanguages', entry.contact.spokenLanguages.split(',').length)" :iconName="'translate'" v-if="entry.contact.spokenLanguages">
+                {{spokenLanguages}}
+              </entry-detail-property>
+
             </li>
           </ul>
         </section>
@@ -170,7 +192,7 @@
                   :sort-function="sortByDateStart"
                   sort-order="ASC"
                   showIcon="false"
-                  :options="{event_date: true}">
+                  :options="{date_start: true}">
                 </entry-list-items>
               </EntryListDropDownMenu>
               <br>
@@ -181,7 +203,7 @@
                 :sort-function="sortByDateStart"
                 sort-order="DESC"
                 showIcon="false"
-                :options="{event_date: true}">
+                :options="{date_start: true}">
               </entry-list-items>
             </EntryListDropDownMenu>
           </entry-detail-property>
@@ -192,7 +214,8 @@
 
     <div v-else class="mainCard">
       <div class="mainCard__header mainCard__headerLight">
-        {{ messages.loading() }} ...
+        <span v-if="entryLoadingError">{{ messages.loadingError() }}</span>
+        <span v-else>{{ messages.loading() }} ...</span>
       </div>
     </div>
 
@@ -214,9 +237,10 @@ import EntryListDropDownMenu from '@/components/EntryListDropDownMenu'
 import AnnotationTag from '@/components/AnnotationTag'
 import Events from '@/resources/Events'
 import sortByDateStart from '@/helpers/sort-by-date-start'
+import Languages from '@/helpers/iso_639_languages.js'
 
 export default {
-  props: ['entry', 'routeName', 'Resource', 'messages', 'options'],
+  props: ['entry', 'entryLoadingError', 'routeName', 'Resource', 'messages', 'options'],
 
   data () {
     const options = this.options || {}
@@ -259,14 +283,11 @@ export default {
           const attributes = {
             active: !this.entry.active
           }
-          this.Resource.updateAttributes(this.entry.id, attributes).then(attributes => {
+          this.Resource.updateAttributes(this.entry, attributes).then(attributes => {
             if (attributes) {
               this.$store.dispatch('messages/showAlert', {
                 description: this.messages.activated(attributes.active)
               })
-              this.entry.active = attributes.active === true
-              this.entry.state_changed_at = new Date(attributes.state_changed_at)
-              this.entry.updated_at = new Date(attributes.updated_at)
             }
           })
         }
@@ -289,7 +310,24 @@ export default {
       }
     },
     previewLink () {
-      return `${process.env.FRONTEND_URL}#${this.entry.id}`
+      return `${process.env.FRONTEND_URL}${this.entry.type}/${this.entry.id}`
+    },
+    /*
+     * Stringify spoken languages depending on current UI langugage
+     */
+    spokenLanguages () {
+      const languageKey = this.$i18n.locale
+      let spokenLanguagesString = ''
+      if (this.entry.contact.spokenLanguages && this.entry.contact.spokenLanguages.split(',')) {
+        const langCodes = this.entry.contact.spokenLanguages.split(',')
+        for (let langCode of langCodes) {
+          const langObject = Languages.getLanguageFromCode(langCode)
+          spokenLanguagesString += langObject[languageKey] + ', '
+        }
+        // remove last ','
+        spokenLanguagesString = spokenLanguagesString.substring(0, spokenLanguagesString.length - 2)
+      }
+      return spokenLanguagesString
     }
   },
 
@@ -325,12 +363,12 @@ export default {
     font-weight: 500;
   }
 
-li.align-status-items {
-  margin-left: 4.5em;
-}
-.entryDetail__error {
-  margin-bottom: 1em;
-}
+  li.align-status-items {
+    margin-left: 4.5em;
+  }
+  .entryDetail__error {
+    margin-bottom: 1em;
+  }
 
   &__meta {
     color: $gray50;

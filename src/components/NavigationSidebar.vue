@@ -70,6 +70,12 @@ export default {
   &__navItem.level2 {
     margin-left: 1.5em;
   }
+  &__navItem.level2 {
+    margin-left: 1.5em;
+  }
+  &__navItem.level3 {
+    margin-left: 4em;
+  }
   &__navItem .active {
     font-weight: bold;
   }

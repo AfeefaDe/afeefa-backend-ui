@@ -22,6 +22,7 @@ export default {
       Resource: Events,
       messages: {
         loading: () => this.$t('status.load_event') + ' ' + this.id,
+        loadingError: () => this.$t('errors.loadingEntryError') + ' ' + this.id,
         deleteHeadline: () => {
           return `Event löschen`
         },

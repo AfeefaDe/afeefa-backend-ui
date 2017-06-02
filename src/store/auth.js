@@ -10,6 +10,7 @@ export default {
 
   state: {
     currentUser: null,
+    redirectAfterLogin: null,
     lastAuthHeader: {}
   },
 
@@ -18,7 +19,9 @@ export default {
     setCurrentUser (state, user) {
       state.currentUser = user
     },
-
+    setRedirectAfterLogin (state, route) {
+      state.redirectAfterLogin = route
+    },
     setLastAuthHeader (state, header) {
       state.lastAuthHeader = header
     }
@@ -58,6 +61,7 @@ export default {
               })
             } else {
               console.log('AUTH: No info in local storage found. Forward to login.')
+              commit('setRedirectAfterLogin', to)
               router.push({name: 'login'})
             }
           } else { // login or error route
@@ -90,7 +94,9 @@ export default {
            */
           if (response.status === 401) {
             console.log('AUTH: 401 returned.')
+            window.stop() // cancel all requests
             dispatch('forwardToLogin')
+            response.body.errors = ['Session abgelaufen']
           /*
            * save auth information, if found in response
            */
@@ -113,22 +119,31 @@ export default {
     },
 
 
-    forwardToLogin ({commit}) {
+    forwardToLogin ({commit, dispatch}) {
       console.log('AUTH: Clear all auth info and forward to login.')
       localStorage.removeItem(STORAGE_KEY)
       commit('setCurrentUser', null)
       commit('setLastAuthHeader', {})
+      dispatch('api/logout', '', {root: true})
       router.push({name: 'login'})
     },
 
 
-    login ({commit, dispatch}, loginData) {
+    login ({state, commit, dispatch}, loginData) {
       const url = BASE + 'users/sign_in'
       const request = Vue.http.post(url, loginData)
       return request.then(response => {
         commit('setCurrentUser', response.body.data)
-        router.push({name: 'dashboard'})
+        if (state.redirectAfterLogin) {
+          // navigate to safed location
+          router.push(state.redirectAfterLogin.fullPath)
+          // clear redirectAfterLogin property
+          commit('setRedirectAfterLogin', null)
+        } else {
+          router.push({name: 'dashboard'})
+        }
       }).catch(response => {
+        console.log('Response: ', response)
         dispatch('messages/showAlert', {
           isError: true,
           title: 'Anmeldung fehlgeschlagen',
@@ -140,7 +155,7 @@ export default {
     },
 
 
-    logout ({state, commit}) {
+    logout ({state, commit, dispatch}) {
       localStorage.removeItem(STORAGE_KEY)
       const url = BASE + 'users/sign_out'
       const request = Vue.http.delete(url, {headers: state.lastAuthHeader})
@@ -149,6 +164,7 @@ export default {
       }, response => {
         console.log('error logout', response)
       })
+      dispatch('api/logout', '', {root: true})
       return request
     }
   }
