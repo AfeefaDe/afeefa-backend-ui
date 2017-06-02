@@ -125,7 +125,8 @@ export default {
     selectLabel: 'Zur Auswahl Enter drücken',
     selectedLabel: 'Ausgewählt',
     deselectLabel: 'Zum Entfernen Enter drücken',
-    noResult: 'Keine Einträge gefunden. Bitte Suchanfrage ändern.'
+    noResult: 'Keine Einträge gefunden. Bitte Suchanfrage ändern.',
+    noSelection: 'Kein Eintag ausgewählt'
   },
   categories: {
     'asylum-counselling': 'Asylberatung',

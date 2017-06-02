@@ -126,7 +126,8 @@ export default {
     selectLabel: 'Press enter to select',
     selectedLabel: 'Selected',
     deselectLabel: 'Press enter to remove',
-    noResult: 'No elements found. Consider changing the search query.'
+    noResult: 'No elements found. Consider changing the search query.',
+    noSelection: 'Nothing selected'
   },
   categories: {
     'asylum-counselling': 'Asylum counselling',

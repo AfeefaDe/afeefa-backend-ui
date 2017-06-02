@@ -125,7 +125,8 @@ export default {
     selectLabel: '*',
     selectedLabel: '*',
     deselectLabel: '*',
-    noResult: '*'
+    noResult: '*',
+    noSelection: '*'
   },
   categories: {
     'asylum-counselling': '*',

@@ -25,3 +25,14 @@
     z-index: 10000;
   }
 }
+/*
+ * this class gets applied after the selection of one parentOrga
+ * ist hides the corresponding inputs to prevent the ability to select another parentOrga
+ */
+.customMultiselect--hide {
+  .multiselect__select,
+  .multiselect__input,
+  .multiselect__content {
+    display: none;
+  }
+}

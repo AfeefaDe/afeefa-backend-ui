@@ -252,24 +252,27 @@
               </section>
 
               <section slot="linkTab">
-                <div class="inputField__spacing customMultiselect">
+                <div v-bind:class="[{'customMultiselect--hide': parentOrgaSimplified.length===1}, 'inputField__spacing', 'customMultiselect']">
                   <label v-if="has.parentOrga">Übergeordnete Orga</label>
                   <label v-if="has.orga">Veranstalter</label>
                   <multiselect
                     v-model="parentOrgaSimplified"
                     :options="orgasSimplified"
-
                     label="title"
                     track-by="id"
 
-                    @input="parentOrgaChanged"
+                    :multiple="true"
+                    :max="1"
                     :searchable="true"
                     :allow-empty="true"
+                    @input="parentOrgaChanged"
 
+                    :placeholder="$t('multiselect.noSelection')"
                     :selectLabel="$t('multiselect.selectLabel')"
                     :selectedLabel="$t('multiselect.selectedLabel')"
                     :deselectLabel="$t('multiselect.deselectLabel')"
-                  ></multiselect>
+                  >
+                  </multiselect>
                 </div>
               </section>
             </entry-tabbed-content>
@@ -338,7 +341,9 @@ export default {
       selectedAnnotation: null,
       saved: false,
       orgasSimplified: [],
-      parentOrgaSimplified: null,
+      // implemented as array to allow the :multiple="true" option on vue-multiselect
+      // the limit is set to one. so this array contains one element max
+      parentOrgaSimplified: [],
 
       geodataLoading: false,
       geodataOfAddress: null,
@@ -421,9 +426,9 @@ export default {
     },
     'item.parent_orga' (parentOrga) {
       if (parentOrga) {
-        this.parentOrgaSimplified = {title: this.item.parent_orga.title, id: this.item.parent_orga.id}
+        this.parentOrgaSimplified = [{title: this.item.parent_orga.title, id: this.item.parent_orga.id}]
       } else {
-        this.parentOrgaSimplified = null
+        this.parentOrgaSimplified = []
       }
     }
   },
@@ -466,10 +471,10 @@ export default {
      * match back simplified parent_orga to full orga object from this.orgas
      */
     parentOrgaChanged () {
-      if (!this.parentOrgaSimplified) {
+      if (this.parentOrgaSimplified.length === 0) {
         this.item.parent_orga = null
       } else {
-        const parentOrga = this.orgas.find(x => x.id === this.parentOrgaSimplified.id)
+        const parentOrga = this.orgas.find(x => x.id === this.parentOrgaSimplified[0].id)
         this.item.parent_orga = parentOrga
       }
     },
