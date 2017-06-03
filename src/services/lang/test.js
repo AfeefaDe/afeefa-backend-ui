@@ -27,6 +27,7 @@ export default {
     linkTab: '*',
     preview: '*',
     support_wanted: '*',
+    certified_sfr: '*',
     for_children: '*',
     translations: '*',
     spokenLanguages: '*',
@@ -77,6 +78,8 @@ export default {
     for_children_yes: '*',
     support_wanted: '*',
     support_wanted_yes: '*',
+    certified_sfr: '*',
+    certified_sfr_yes: '*',
     tags: '*'
   },
   status: {

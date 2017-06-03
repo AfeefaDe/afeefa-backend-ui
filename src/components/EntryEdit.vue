@@ -104,6 +104,12 @@
                   <label for="support_wanted">{{$t("entries.support_wanted_yes")}}</label>
                 </div>
 
+                <div class="input-field">
+                  <h2>{{ $t("headlines.certified_sfr") }}</h2>
+                  <input type="checkbox" id="certified_sfr" class="filled-in" v-model="item.certified_sfr"/>
+                  <label for="certified_sfr">{{$t("entries.certified_sfr_yes")}}</label>
+                </div>
+
                 <div v-if="has.date">
                   <h2>{{ $t("headlines.time") }}</h2>
                   <date-picker

@@ -65,6 +65,13 @@
             </entry-detail-property>
 
             <entry-detail-property
+              :name="$t('entries.certified_sfr')"
+              :iconName="'check_circle'"
+              v-if="entry.certified_sfr">
+                 {{$t('entries.certified_sfr_yes')}}
+            </entry-detail-property>
+
+            <entry-detail-property
               v-if="entry.tags"
               :name="$tc('entries.tags', entry.tags.split(',').length)"
               :iconName="'more_vert'">

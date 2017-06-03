@@ -11,6 +11,7 @@ export default class Entry extends BaseModel {
     this.media_url = ''
     this.for_children = false
     this.support_wanted = false
+    this.certified_sfr = false
     this.tags = ''
 
     this.active = false
@@ -51,6 +52,7 @@ export default class Entry extends BaseModel {
         media_url: this.media_url,
         for_children: this.for_children,
         support_wanted: this.support_wanted,
+        certified_sfr: this.certified_sfr,
         tags: this.tags
       },
       relationships: {
@@ -93,6 +95,7 @@ export default class Entry extends BaseModel {
     this.media_url = json.attributes.media_url || ''
     this.for_children = json.attributes.for_children
     this.support_wanted = json.attributes.support_wanted
+    this.certified_sfr = json.attributes.certified_sfr
     this.tags = json.attributes.tags
 
     this.active = json.attributes.active === true
@@ -149,6 +152,7 @@ export default class Entry extends BaseModel {
     entry.media_url = this.media_url
     entry.for_children = this.for_children
     entry.support_wanted = this.support_wanted
+    entry.certified_sfr = this.certified_sfr
     entry.tags = this.tags
 
     entry.active = this.active

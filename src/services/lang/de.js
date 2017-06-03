@@ -27,6 +27,7 @@ export default {
     linkTab: 'Verweise',
     preview: 'Vorschau',
     support_wanted: 'Unterstützung wird benötigt',
+    certified_sfr: 'Zertifiziert vom Sächsischen Flüchtlingsrat',
     for_children: 'Für Kinder geeignet',
     translations: 'Übersetzungen',
     spokenLanguages: 'Gesprochene Sprache | Gesprochene Sprachen',
@@ -77,6 +78,8 @@ export default {
     for_children_yes: 'Geeignet',
     support_wanted: 'Unterstützung',
     support_wanted_yes: 'Wird benötigt',
+    certified_sfr: 'Zertifizierung',
+    certified_sfr_yes: 'Zertifiziert',
     tags: 'Tag | Tags'
   },
   status: {
