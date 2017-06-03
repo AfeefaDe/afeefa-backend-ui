@@ -143,7 +143,6 @@ export default {
           router.push({name: 'dashboard'})
         }
       }).catch(response => {
-        console.log('Response: ', response)
         dispatch('messages/showAlert', {
           isError: true,
           title: 'Anmeldung fehlgeschlagen',

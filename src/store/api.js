@@ -84,8 +84,8 @@ export default {
         return Promise.resolve(resourceCache.getList(listCacheKey, cacheUrl))
       }
 
-      if (promiseCache.hasItem(listCacheKey)) {
-        return promiseCache.getItem(listCacheKey)
+      if (promiseCache.hasItem(listCacheKey + cacheUrl)) {
+        return promiseCache.getItem(listCacheKey + cacheUrl)
       }
 
       const promise = resource.http.query(params).then(response => {
@@ -132,7 +132,7 @@ export default {
         return []
       })
 
-      promiseCache.addItem(resource.listCacheKey, promise)
+      promiseCache.addItem(resource.listCacheKey + cacheUrl, promise)
       return promise
     },
 
