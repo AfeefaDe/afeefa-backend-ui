@@ -55,6 +55,10 @@ export default class Entry extends BaseModel {
         inheritanceArray.push(key)
       }
     })
+    let inheritance = null
+    if (inheritanceArray.length > 0) {
+      inheritance = inheritanceArray.join('|')
+    }
 
     const data = {
       type: this.type,
@@ -68,7 +72,7 @@ export default class Entry extends BaseModel {
         support_wanted: this.support_wanted,
         certified_sfr: this.certified_sfr,
         tags: this.tags,
-        inheritance: inheritanceArray.join('|')
+        inheritance: inheritance
       },
       relationships: {
         contact_infos: {
@@ -113,6 +117,7 @@ export default class Entry extends BaseModel {
     this.certified_sfr = json.attributes.certified_sfr
     this.tags = json.attributes.tags
 
+    // feed inheritance object with values
     if (json.attributes.inheritance) {
       const inheritanceArray = json.attributes.inheritance.split('|')
       for (let i in inheritanceArray) {
