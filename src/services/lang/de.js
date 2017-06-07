@@ -80,7 +80,8 @@ export default {
     support_wanted_yes: 'Wird benötigt',
     certified_sfr: 'Zertifizierung',
     certified_sfr_yes: 'Zertifiziert',
-    tags: 'Tag | Tags'
+    tags: 'Tag | Tags',
+    additionally_informations: 'Zusätzliche Informationen'
   },
   status: {
     load_event: 'Lade Event',
@@ -106,9 +107,9 @@ export default {
   },
   checkboxes: {
     show_past_events: 'Zeige vergangene Veranstaltungen',
-    short_description_inheritance: 'Zeige zusätzlich Beschreibung der übergeordneten Orga an',
-    locations_inheritance: 'Zeige zusätzlich Ortsbeschreibung der übergeordneten Orga an',
-    contact_infos_inheritance: 'Zeige zusätzlich Kontakteschreibung der übergeordneten Orga an'
+    short_description_inheritance: 'Zeige Beschreibung der Übergordneten Orga',
+    locations_inheritance: 'Zeige Ortsbeschreibung der Übergordneten Orga',
+    contact_infos_inheritance: 'Zeige Kontaktbeschreibung der Übergordneten Orga'
   },
   infos: {
     mandatory_field: 'Pflichtfeld',

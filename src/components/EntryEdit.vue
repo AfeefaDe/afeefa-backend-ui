@@ -47,19 +47,21 @@
                   <span v-show="errors.has('short_description')" class="validation-error">{{ errors.first('short_description') }}</span>
                 </div>
 
-                <div v-if="item && item.parent_orga" class="align-right">
-                  <input class="filled-in" id="inhShortDesc" type="checkbox" v-model="item.inheritance.short_description">
-                  <label class="small-text" for="inhShortDesc">{{$t('checkboxes.short_description_inheritance')}}</label>
-                </div>
-                <br>
-
                 <div class="inputField__spacing input-field">
                   <label for="description" :class="{active: item.description}">{{ $t('entries.description') }}</label>
                   <textarea v-model="item.description" id="description"
                     class="materialize-textarea"></textarea>
                 </div>
 
+                <div v-if="item && item.parent_orga" class="input-field">
+                  <h2>{{ $t("entries.additionally_informations") }}</h2>
+                  <input class="filled-in" id="inhShortDesc" type="checkbox" v-model="item.inheritance.short_description">
+                  <label for="inhShortDesc">{{$t('checkboxes.short_description_inheritance')}}</label>
+                </div>
+                <br>
+
                <div class="inputField__spacing input-field">
+                 <h2>{{ $tc("entries.tags", 2) }}</h2>
                   <div class="input-field">
                     <label for="tags" :class="{active: item.tags}">{{$t("headlines.tags")}}</label>
                     <input
@@ -204,9 +206,10 @@
                   </div>
                 </div>
 
-                <div v-if="item && item.parent_orga">
+                <div v-if="item && item.parent_orga" class="input-field">
+                  <h2>{{ $t("entries.additionally_informations") }}</h2>
                   <input class="filled-in" id="inhLocations" type="checkbox" v-model="item.inheritance.locations">
-                  <label class="small-text" for="inhLocations">{{$t('checkboxes.locations_inheritance')}}</label>
+                  <label for="inhLocations">{{$t('checkboxes.locations_inheritance')}}</label>
                 </div>
                 <br>
               </section>
@@ -269,9 +272,10 @@
 
                 </div>
                 <br>
-                <div v-if="item && item.parent_orga">
+                <div v-if="item && item.parent_orga" class="input-field">
+                  <h2>{{ $t("entries.additionally_informations") }}</h2>
                   <input class="filled-in" id="inhContact" type="checkbox" v-model="item.inheritance.contact_infos">
-                  <label class="small-text" for="inhContact">{{$t('checkboxes.contact_infos_inheritance')}}</label>
+                  <label for="inhContact">{{$t('checkboxes.contact_infos_inheritance')}}</label>
                 </div>
                 <br>
               </section>
@@ -829,14 +833,6 @@ select + span.validation-error, .datePicker + span.validation-error {
     width: 100%;
     margin-top: 0.4em;
   }
-}
-
-.align-right {
-  text-align: right;
-}
-
-label.small-text {
-  font-size: 85%;
 }
 
 </style>

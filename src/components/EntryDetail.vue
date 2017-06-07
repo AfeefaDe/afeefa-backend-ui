@@ -37,6 +37,10 @@
             <entry-detail-property v-if="entry.short_description" :name="$t('entries.short_description')" :iconName="'more_horiz'" :isMultiline="true">{{ entry.short_description }}</entry-detail-property>
 
             <entry-detail-property v-if="entry.description"  :name="$t('entries.description')" :iconName="'info_outline'" :isMultiline="true">{{ entry.description }}</entry-detail-property>
+            
+            <entry-detail-property v-if="entry.inheritance.short_description && entry.parent_orga" :name="$t('entries.additionally_informations')" :iconName="'settings_input_composite'">
+              {{ $t('checkboxes.short_description_inheritance') }}
+            </entry-detail-property>
 
             <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'">
               {{ entry.category ? entry.category.title : 'Keine Kategorie angegeben' }} >
@@ -104,7 +108,7 @@
 
         <section slot="placeTab">
           <ul class="entryDetail" v-if="entry.location">
-            <li v-if="entry.location.isEmpty()" class="entryDetail__error">
+            <li v-if="entry.location.isEmpty() && !entry.inheritance.locations" class="entryDetail__error">
               {{ $t('errors.noLocationPresent') }}
             </li>
             <li v-else>
@@ -119,13 +123,17 @@
               <li v-if="!entry.location.isEmpty()">
                 <location-map :map-center="mapCenter" :location="entry.location"></location-map>
               </li>
+
+              <entry-detail-property v-if="entry.inheritance.locations && entry.parent_orga" :name="$t('entries.additionally_informations')" :iconName="'settings_input_composite'">
+                {{ $t('checkboxes.locations_inheritance') }}
+              </entry-detail-property>
             </li>
           </ul>
         </section>
 
         <section slot="contactTab">
           <ul class="entryDetail" v-if="entry.contact">
-            <li v-if="entry.contact.isEmpty()" class="entryDetail__error">
+            <li v-if="entry.contact.isEmpty() && !entry.inheritance.contact_infos" class="entryDetail__error">
               {{ $t('errors.noContactPresent') }}
             </li>
             <li v-else>
@@ -144,6 +152,10 @@
 
               <entry-detail-property :name="$tc('headlines.spokenLanguages', entry.contact.spokenLanguages.split(',').length)" :iconName="'translate'" v-if="entry.contact.spokenLanguages">
                 {{spokenLanguages}}
+              </entry-detail-property>
+
+              <entry-detail-property v-if="entry.inheritance.contact_infos && entry.parent_orga" :name="$t('entries.additionally_informations')" :iconName="'settings_input_composite'">
+                {{ $t('checkboxes.contact_infos_inheritance') }}
               </entry-detail-property>
 
             </li>

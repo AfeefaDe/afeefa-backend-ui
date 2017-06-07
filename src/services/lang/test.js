@@ -80,7 +80,8 @@ export default {
     support_wanted_yes: '*',
     certified_sfr: '*',
     certified_sfr_yes: '*',
-    tags: '*'
+    tags: '*',
+    additionally_informations: '*'
   },
   status: {
     load_event: '*',

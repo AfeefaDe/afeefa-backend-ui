@@ -81,7 +81,8 @@ export default {
     support_wanted_yes: 'Wanted',
     certified_sfr: 'Certification',
     certified_sfr_yes: 'Certified',
-    tags: 'Tag | Tags'
+    tags: 'Tag | Tags',
+    additionally_informations: 'Additionally informations'
   },
   status: {
     load_event: 'Load Event',
@@ -107,9 +108,9 @@ export default {
   },
   checkboxes: {
     show_past_events: 'Show past events',
-    short_description_inheritance: 'Show additionally short description of parent orga',
-    locations_inheritance: 'Show additionally locations of parent orga',
-    contact_infos_inheritance: 'Show additionally contact infos of parent orga'
+    short_description_inheritance: 'Show short description of parent orga',
+    locations_inheritance: 'Show locations of parent orga',
+    contact_infos_inheritance: 'Show contact infos of parent orga'
   },
   infos: {
     mandatory_field: 'mandatory',
