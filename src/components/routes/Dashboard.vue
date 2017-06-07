@@ -93,7 +93,7 @@ export default {
   computed: mapState({
     numTodos: state => state.navigation.numTodos,
     numOrgas: state => state.navigation.numOrgas,
-    numEvents: state => state.navigation.numEvents
+    numEvents: state => state.navigation.numEvents.all
   }),
 
   created () {
