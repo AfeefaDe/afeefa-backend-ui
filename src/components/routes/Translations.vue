@@ -15,7 +15,8 @@
             <spinner :show="true" :width="1" :radius="5" :length="3" /> Löse Übersetzungen aus
           </p>
           <div v-else-if="loaded">
-            Die Übersetzungen wurden erfolgreich ausgelöst.
+            Die Übersetzungen wurden erfolgreich ausgelöst:<br>
+            <b>{{responseMessage}}</b>
           </div>
           <div v-else-if="error">
             Die Übersetzungen konnten leider nicht ausgelöst werden.
@@ -41,7 +42,8 @@ export default {
     return {
       loaded: false,
       error: false,
-      loading: false
+      loading: false,
+      responseMessage: ''
     }
   },
 
@@ -53,6 +55,9 @@ export default {
       this.error = false
       let request = Vue.http.post(url, {token: 'MapCat_050615'})
       request.then(result => {
+        if (result.body.msg) {
+          this.responseMessage = result.body.msg
+        }
         this.loading = false
         this.loaded = true
       }).catch(e => {
