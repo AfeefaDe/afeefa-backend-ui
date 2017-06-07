@@ -37,8 +37,8 @@
             <entry-detail-property v-if="entry.short_description" :name="$t('entries.short_description')" :iconName="'more_horiz'" :isMultiline="true">{{ entry.short_description }}</entry-detail-property>
 
             <entry-detail-property v-if="entry.description"  :name="$t('entries.description')" :iconName="'info_outline'" :isMultiline="true">{{ entry.description }}</entry-detail-property>
-            
-            <entry-detail-property v-if="entry.inheritance.short_description && entry.parent_orga" :name="$t('entries.additionally_informations')" :iconName="'settings_input_composite'">
+
+            <entry-detail-property v-if="entry.inheritance.short_description" :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
               {{ $t('checkboxes.short_description_inheritance') }}
             </entry-detail-property>
 
@@ -112,7 +112,7 @@
               {{ $t('errors.noLocationPresent') }}
             </li>
             <li v-else>
-              <entry-detail-property :name="$t('entries.address')" :iconName="'location_on'">
+              <entry-detail-property v-if="!entry.location.isEmpty()" :name="$t('entries.address')" :iconName="'location_on'">
                   <span v-if="entry.location.placename">{{ entry.location.placename }}<br></span>
                   <span v-if="entry.location.street">{{ entry.location.street }}<br></span>
                   <span v-if="entry.location.zip || entry.location.city">{{ entry.location.zip }} {{ entry.location.city }}</span>
@@ -124,7 +124,7 @@
                 <location-map :map-center="mapCenter" :location="entry.location"></location-map>
               </li>
 
-              <entry-detail-property v-if="entry.inheritance.locations && entry.parent_orga" :name="$t('entries.additionally_informations')" :iconName="'settings_input_composite'">
+              <entry-detail-property v-if="entry.inheritance.locations" :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
                 {{ $t('checkboxes.locations_inheritance') }}
               </entry-detail-property>
             </li>
@@ -154,7 +154,7 @@
                 {{spokenLanguages}}
               </entry-detail-property>
 
-              <entry-detail-property v-if="entry.inheritance.contact_infos && entry.parent_orga" :name="$t('entries.additionally_informations')" :iconName="'settings_input_composite'">
+              <entry-detail-property v-if="entry.inheritance.contact_infos" :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
                 {{ $t('checkboxes.contact_infos_inheritance') }}
               </entry-detail-property>
 

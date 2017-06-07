@@ -53,7 +53,7 @@
                     class="materialize-textarea"></textarea>
                 </div>
 
-                <div v-if="item && item.parent_orga" class="input-field">
+                <div v-if="item" class="input-field">
                   <h2>{{ $t("entries.additionally_informations") }}</h2>
                   <input class="filled-in" id="inhShortDesc" type="checkbox" v-model="item.inheritance.short_description">
                   <label for="inhShortDesc">{{$t('checkboxes.short_description_inheritance')}}</label>
@@ -206,7 +206,7 @@
                   </div>
                 </div>
 
-                <div v-if="item && item.parent_orga" class="input-field">
+                <div v-if="item" class="input-field">
                   <h2>{{ $t("entries.additionally_informations") }}</h2>
                   <input class="filled-in" id="inhLocations" type="checkbox" v-model="item.inheritance.locations">
                   <label for="inhLocations">{{$t('checkboxes.locations_inheritance')}}</label>
@@ -272,7 +272,7 @@
 
                 </div>
                 <br>
-                <div v-if="item && item.parent_orga" class="input-field">
+                <div v-if="item" class="input-field">
                   <h2>{{ $t("entries.additionally_informations") }}</h2>
                   <input class="filled-in" id="inhContact" type="checkbox" v-model="item.inheritance.contact_infos">
                   <label for="inhContact">{{$t('checkboxes.contact_infos_inheritance')}}</label>
