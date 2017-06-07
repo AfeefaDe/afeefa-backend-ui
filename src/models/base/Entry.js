@@ -26,6 +26,12 @@ export default class Entry extends BaseModel {
     this.contact = null
     this.annotations = []
 
+    this.inheritance = {
+      short_description: false,
+      contact_infos: false,
+      locations: false
+    }
+
     this._relationIds = {
       parent_orga: null,
       category: null,
@@ -42,6 +48,14 @@ export default class Entry extends BaseModel {
       annotations.push(annotation.serialize())
     }
 
+    // create array of inheritance properties
+    let inheritanceArray = []
+    Object.keys(this.inheritance).forEach((key) => {
+      if (this.inheritance[key] === true) {
+        inheritanceArray.push(key)
+      }
+    })
+
     const data = {
       type: this.type,
       attributes: {
@@ -53,7 +67,8 @@ export default class Entry extends BaseModel {
         for_children: this.for_children,
         support_wanted: this.support_wanted,
         certified_sfr: this.certified_sfr,
-        tags: this.tags
+        tags: this.tags,
+        inheritance: inheritanceArray.join('|')
       },
       relationships: {
         contact_infos: {
@@ -97,6 +112,21 @@ export default class Entry extends BaseModel {
     this.support_wanted = json.attributes.support_wanted
     this.certified_sfr = json.attributes.certified_sfr
     this.tags = json.attributes.tags
+
+    if (json.attributes.inheritance) {
+      const inheritanceArray = json.attributes.inheritance.split('|')
+      for (let i in inheritanceArray) {
+        if (inheritanceArray[i] === 'short_description') {
+          this.inheritance.short_description = true
+        }
+        if (inheritanceArray[i] === 'contact_infos') {
+          this.inheritance.contact_infos = true
+        }
+        if (inheritanceArray[i] === 'locations') {
+          this.inheritance.locations = true
+        }
+      }
+    }
 
     this.active = json.attributes.active === true
     this.created_at = new Date(json.attributes.created_at)
@@ -154,6 +184,7 @@ export default class Entry extends BaseModel {
     entry.support_wanted = this.support_wanted
     entry.certified_sfr = this.certified_sfr
     entry.tags = this.tags
+    entry.inheritance = this.inheritance
 
     entry.active = this.active
     entry.created_at = this.created_at

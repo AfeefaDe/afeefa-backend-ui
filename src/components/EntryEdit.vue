@@ -47,6 +47,12 @@
                   <span v-show="errors.has('short_description')" class="validation-error">{{ errors.first('short_description') }}</span>
                 </div>
 
+                <div v-if="item && item.parent_orga" class="align-right">
+                  <input class="filled-in" id="inhShortDesc" type="checkbox" v-model="item.inheritance.short_description">
+                  <label class="small-text" for="inhShortDesc">{{$t('checkboxes.short_description_inheritance')}}</label>
+                </div>
+                <br>
+
                 <div class="inputField__spacing input-field">
                   <label for="description" :class="{active: item.description}">{{ $t('entries.description') }}</label>
                   <textarea v-model="item.description" id="description"
@@ -152,6 +158,7 @@
               <section slot="placeTab">
                 <br>
                 <div class="inputField__spacing" v-if="item.location">
+
                   <div class="input-field">
                     <label for="placename" :class="{active: item.location.placename}">Ortsbezeichnung (z.B. Hinterhof)</label>
                     <input v-model="item.location.placename" id="placename" type="text" class="validate" />
@@ -196,6 +203,12 @@
                       class="materialize-textarea"></textarea>
                   </div>
                 </div>
+
+                <div v-if="item && item.parent_orga">
+                  <input class="filled-in" id="inhLocations" type="checkbox" v-model="item.inheritance.locations">
+                  <label class="small-text" for="inhLocations">{{$t('checkboxes.locations_inheritance')}}</label>
+                </div>
+                <br>
               </section>
 
 
@@ -255,6 +268,12 @@
                   <lang-select-input  @input="updateSpokenLanguages" :entryValue="item.contact.spokenLanguages"></lang-select-input>
 
                 </div>
+                <br>
+                <div v-if="item && item.parent_orga">
+                  <input class="filled-in" id="inhContact" type="checkbox" v-model="item.inheritance.contact_infos">
+                  <label class="small-text" for="inhContact">{{$t('checkboxes.contact_infos_inheritance')}}</label>
+                </div>
+                <br>
               </section>
 
               <section slot="linkTab">
@@ -810,6 +829,14 @@ select + span.validation-error, .datePicker + span.validation-error {
     width: 100%;
     margin-top: 0.4em;
   }
+}
+
+.align-right {
+  text-align: right;
+}
+
+label.small-text {
+  font-size: 85%;
 }
 
 </style>

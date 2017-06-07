@@ -105,7 +105,10 @@ export default {
     add: '*'
   },
   checkboxes: {
-    show_past_events: '*'
+    show_past_events: '*',
+    short_description_inheritance: '*',
+    locations_inheritance: '*',
+    contact_infos_inheritance: '*'
   },
   infos: {
     mandatory_field: '*',

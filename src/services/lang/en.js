@@ -106,7 +106,10 @@ export default {
     add: 'Add'
   },
   checkboxes: {
-    show_past_events: 'Show past events'
+    show_past_events: 'Show past events',
+    short_description_inheritance: 'Show additionally short description of parent orga',
+    locations_inheritance: 'Show additionally locations of parent orga',
+    contact_infos_inheritance: 'Show additionally contact infos of parent orga'
   },
   infos: {
     mandatory_field: 'mandatory',

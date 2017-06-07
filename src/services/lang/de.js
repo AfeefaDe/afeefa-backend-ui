@@ -105,7 +105,10 @@ export default {
     add: 'Hinzufügen'
   },
   checkboxes: {
-    show_past_events: 'Zeige vergangene Veranstaltungen'
+    show_past_events: 'Zeige vergangene Veranstaltungen',
+    short_description_inheritance: 'Zeige zusätzlich Beschreibung der übergeordneten Orga an',
+    locations_inheritance: 'Zeige zusätzlich Ortsbeschreibung der übergeordneten Orga an',
+    contact_infos_inheritance: 'Zeige zusätzlich Kontakteschreibung der übergeordneten Orga an'
   },
   infos: {
     mandatory_field: 'Pflichtfeld',
