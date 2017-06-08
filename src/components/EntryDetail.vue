@@ -38,7 +38,7 @@
 
             <entry-detail-property v-if="entry.description"  :name="$t('entries.description')" :iconName="'info_outline'" :isMultiline="true">{{ entry.description }}</entry-detail-property>
 
-            <entry-detail-property v-if="entry.inheritance.short_description" :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
+            <entry-detail-property v-if="entry.inheritance.short_description && entry.parent_orga" :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
               <template v-if="entry.type === 'orgas'"> {{ $t('checkboxes.short_description_inheritance_orga') }} </template>
               <template v-else> {{ $t('checkboxes.short_description_inheritance_event') }} </template>
             </entry-detail-property>
@@ -109,8 +109,11 @@
 
         <section slot="placeTab">
           <ul class="entryDetail" v-if="entry.location">
-            <li v-if="entry.location.isEmpty() && !entry.inheritance.locations" class="entryDetail__error">
-              {{ $t('errors.noLocationPresent') }}
+            <li v-if="entry.location.isEmpty()" class="entryDetail__error">
+              <template v-if="entry.inheritance.locations && entry.parent_orga"></template>
+              <template v-else>
+                {{ $t('errors.noLocationPresent') }}
+              </template>
             </li>
             <li v-else>
               <entry-detail-property v-if="!entry.location.isEmpty()" :name="$t('entries.address')" :iconName="'location_on'">
@@ -124,8 +127,10 @@
               <li v-if="!entry.location.isEmpty()">
                 <location-map :map-center="mapCenter" :location="entry.location"></location-map>
               </li>
+            </li>
 
-              <entry-detail-property v-if="entry.inheritance.locations" :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
+            <li v-if="entry.inheritance.locations && entry.parent_orga">
+              <entry-detail-property :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
                 <template v-if="entry.type === 'orgas'"> {{ $t('checkboxes.locations_inheritance_orga') }} </template>
                 <template v-else> {{ $t('checkboxes.locations_inheritance_event') }} </template>
               </entry-detail-property>
@@ -135,8 +140,11 @@
 
         <section slot="contactTab">
           <ul class="entryDetail" v-if="entry.contact">
-            <li v-if="entry.contact.isEmpty() && !entry.inheritance.contact_infos" class="entryDetail__error">
-              {{ $t('errors.noContactPresent') }}
+            <li v-if="entry.contact.isEmpty()" class="entryDetail__error">
+              <template v-if="entry.inheritance.contact_infos && entry.parent_orga"></template>
+              <template v-else>
+                {{ $t('errors.noContactPresent') }}
+              </template>
             </li>
             <li v-else>
               <entry-detail-property :name="$t('headlines.contact')" :iconName="'mail_outline'" v-if="entry.contact.person || entry.contact.phone || entry.contact.mail">
@@ -155,12 +163,13 @@
               <entry-detail-property :name="$tc('headlines.spokenLanguages', entry.contact.spokenLanguages.split(',').length)" :iconName="'translate'" v-if="entry.contact.spokenLanguages">
                 {{spokenLanguages}}
               </entry-detail-property>
+            </li>
 
-              <entry-detail-property v-if="entry.inheritance.contact_infos" :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
+            <li v-if="entry.inheritance.contact_infos && entry.parent_orga">
+              <entry-detail-property :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
                 <template v-if="entry.type === 'orgas'"> {{ $t('checkboxes.contact_infos_inheritance_orga') }} </template>
                 <template v-else> {{ $t('checkboxes.contact_infos_inheritance_event') }} </template>
               </entry-detail-property>
-
             </li>
           </ul>
         </section>
