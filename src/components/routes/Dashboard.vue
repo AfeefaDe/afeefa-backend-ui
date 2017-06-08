@@ -46,7 +46,7 @@
       <div class="mainCard">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">
-            <router-link :to="{name: 'events.list'}">{{ $tc('headlines.events', numEvents.all) }} ({{numEvents.all}})</router-link>
+            <router-link :to="{name: 'events.list'}">{{ $tc('headlines.events', numEvents) }} ({{numEvents}})</router-link>
           </h2>
           <router-link :to="{name: 'events.new'}"  class="mainCard__headerButton">
             {{$t('buttons.add')}}
