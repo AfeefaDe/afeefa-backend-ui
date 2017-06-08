@@ -34,14 +34,12 @@
               {{ entry.title }}
             </entry-detail-property>
 
-            <entry-detail-property v-if="entry.short_description" :name="$t('entries.short_description')" :iconName="'more_horiz'" :isMultiline="true">{{ entry.short_description }}</entry-detail-property>
+            <entry-detail-property v-if="entry.short_description || entry.inheritance.short_description" :name="$t('entries.short_description')" :iconName="'more_horiz'" :isMultiline="true">
+              <p class="inheritedValue" v-if="entry.inheritance.short_description">{{entry.parent_orga.short_description}}</p>
+              <span v-if="entry.short_description">{{ entry.short_description }}</span>
+            </entry-detail-property>
 
             <entry-detail-property v-if="entry.description"  :name="$t('entries.description')" :iconName="'info_outline'" :isMultiline="true">{{ entry.description }}</entry-detail-property>
-
-            <entry-detail-property v-if="entry.inheritance.short_description && entry.parent_orga" :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
-              <template v-if="entry.type === 'orgas'"> {{ $t('checkboxes.short_description_inheritance_orga') }} </template>
-              <template v-else> {{ $t('checkboxes.short_description_inheritance_event') }} </template>
-            </entry-detail-property>
 
             <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'">
               {{ entry.category ? entry.category.title : 'Keine Kategorie angegeben' }} >
@@ -382,6 +380,11 @@ export default {
   margin-left: -6px;
   font-weight: bold;
   width: 28px;
+}
+.inheritedValue {
+  padding-left: 1em;
+  border-left: 3px solid $turquoise;
+  font-style: italic;
 }
 
 .entryDetail {

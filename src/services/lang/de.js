@@ -52,7 +52,7 @@ export default {
     date: 'Datum',
     title: 'Titel',
     image_link: 'Link zum Bild',
-    description: 'Mehr Informationen',
+    description: 'Ausführliche Beschreibung',
     active: 'Aktiv',
     created_at: 'Erstellt',
     updated_at: 'Geändert',
@@ -73,7 +73,7 @@ export default {
     web: 'Homepage',
     socialMedia: 'Social Media',
     directions: 'Anfahrtsweg',
-    short_description: 'Beschreibung',
+    short_description: 'Kurze Beschreibung',
     for_children: 'Für Kinder',
     for_children_yes: 'Geeignet',
     support_wanted: 'Unterstützung',
@@ -81,7 +81,7 @@ export default {
     certified_sfr: 'Zertifizierung',
     certified_sfr_yes: 'Zertifiziert',
     tags: 'Tag | Tags',
-    additionally_informations: 'Zusätzliche Informationen'
+    additionally_informations: 'Zusätzliche Informationen vom übergeordneten Eintrag'
   },
   status: {
     load_event: 'Lade Event',
