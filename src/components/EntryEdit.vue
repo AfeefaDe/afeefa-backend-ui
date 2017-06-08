@@ -293,8 +293,8 @@
 
               <section slot="linkTab">
                 <div v-bind:class="[{'customMultiselect--hide': parentOrgaSimplified.length===1}, 'inputField__spacing', 'customMultiselect']">
-                  <label v-if="has.parentOrga">Übergeordnete Orga</label>
-                  <label v-if="has.orga">Veranstalter</label>
+                  <label v-if="has.parentOrga">{{ $t('headlines.parentOrga')}}</label>
+                  <label v-if="has.orga">{{ $t('headlines.organizer')}}</label>
                   <multiselect
                     v-model="parentOrgaSimplified"
                     :options="orgasSimplified"

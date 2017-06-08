@@ -107,12 +107,12 @@ export default {
   },
   checkboxes: {
     show_past_events: 'Zeige vergangene Veranstaltungen',
-    short_description_inheritance_orga: 'Zeige Beschreibung der Übergordneten Orga',
+    short_description_inheritance_orga: 'Zeige Beschreibung der Übergeordneten Orga',
     short_description_inheritance_event: 'Zeige Beschreibung des Veranstaltenden',
-    locations_inheritance_orga: 'Zeige Ortsbeschreibung der Übergordneten Orga',
-    locations_inheritance_event: 'Zeige Ortsbeschreibung des Veranstaltenden',
-    contact_infos_inheritance_orga: 'Zeige Kontaktbeschreibung der Übergordneten Orga',
-    contact_infos_inheritance_event: 'Zeige Kontaktbeschreibung des Veranstaltenden'
+    locations_inheritance_orga: 'Zeige Ort der Übergeordneten Orga als Alternative an',
+    locations_inheritance_event: 'Zeige Ort des Veranstaltenden als Alternative an',
+    contact_infos_inheritance_orga: 'Zeige Kontakt der übergeordneten Orga als Alternative an',
+    contact_infos_inheritance_event: 'Zeige Kontakt des Veranstaltenden als Alternative an'
   },
   infos: {
     mandatory_field: 'Pflichtfeld',
