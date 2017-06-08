@@ -107,9 +107,12 @@ export default {
   },
   checkboxes: {
     show_past_events: 'Zeige vergangene Veranstaltungen',
-    short_description_inheritance: 'Zeige Beschreibung der Übergordneten Orga',
-    locations_inheritance: 'Zeige Ortsbeschreibung der Übergordneten Orga',
-    contact_infos_inheritance: 'Zeige Kontaktbeschreibung der Übergordneten Orga'
+    short_description_inheritance_orga: 'Zeige Beschreibung der Übergordneten Orga',
+    short_description_inheritance_event: 'Zeige Beschreibung des Veranstaltenden',
+    locations_inheritance_orga: 'Zeige Ortsbeschreibung der Übergordneten Orga',
+    locations_inheritance_event: 'Zeige Ortsbeschreibung des Veranstaltenden',
+    contact_infos_inheritance_orga: 'Zeige Kontaktbeschreibung der Übergordneten Orga',
+    contact_infos_inheritance_event: 'Zeige Kontaktbeschreibung des Veranstaltenden'
   },
   infos: {
     mandatory_field: 'Pflichtfeld',

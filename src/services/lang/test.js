@@ -107,9 +107,12 @@ export default {
   },
   checkboxes: {
     show_past_events: '*',
-    short_description_inheritance: '*',
-    locations_inheritance: '*',
-    contact_infos_inheritance: '*'
+    short_description_inheritance_orga: '*',
+    short_description_inheritance_event: '*',
+    locations_inheritance_orga: '*',
+    locations_inheritance_event: '*',
+    contact_infos_inheritance_orga: '*',
+    contact_infos_inheritance_event: '*'
   },
   infos: {
     mandatory_field: '*',

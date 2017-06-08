@@ -39,7 +39,8 @@
             <entry-detail-property v-if="entry.description"  :name="$t('entries.description')" :iconName="'info_outline'" :isMultiline="true">{{ entry.description }}</entry-detail-property>
 
             <entry-detail-property v-if="entry.inheritance.short_description" :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
-              {{ $t('checkboxes.short_description_inheritance') }}
+              <template v-if="entry.type === 'orgas'"> {{ $t('checkboxes.short_description_inheritance_orga') }} </template>
+              <template v-else> {{ $t('checkboxes.short_description_inheritance_event') }} </template>
             </entry-detail-property>
 
             <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'">
@@ -125,7 +126,8 @@
               </li>
 
               <entry-detail-property v-if="entry.inheritance.locations" :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
-                {{ $t('checkboxes.locations_inheritance') }}
+                <template v-if="entry.type === 'orgas'"> {{ $t('checkboxes.locations_inheritance_orga') }} </template>
+                <template v-else> {{ $t('checkboxes.locations_inheritance_event') }} </template>
               </entry-detail-property>
             </li>
           </ul>
@@ -155,7 +157,8 @@
               </entry-detail-property>
 
               <entry-detail-property v-if="entry.inheritance.contact_infos" :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
-                {{ $t('checkboxes.contact_infos_inheritance') }}
+                <template v-if="entry.type === 'orgas'"> {{ $t('checkboxes.contact_infos_inheritance_orga') }} </template>
+                <template v-else> {{ $t('checkboxes.contact_infos_inheritance_event') }} </template>
               </entry-detail-property>
 
             </li>

@@ -56,7 +56,8 @@
                 <div v-if="item" class="input-field">
                   <h2>{{ $t("entries.additionally_informations") }}</h2>
                   <input class="filled-in" id="inhShortDesc" type="checkbox" v-model="item.inheritance.short_description">
-                  <label for="inhShortDesc">{{$t('checkboxes.short_description_inheritance')}}</label>
+                  <label v-if="item.type === 'orgas'" for="inhShortDesc">{{$t('checkboxes.short_description_inheritance_orga')}}</label>
+                  <label v-else for="inhShortDesc">{{$t('checkboxes.short_description_inheritance_event')}}</label>
                 </div>
                 <br>
 
@@ -209,7 +210,8 @@
                 <div v-if="item" class="input-field">
                   <h2>{{ $t("entries.additionally_informations") }}</h2>
                   <input class="filled-in" id="inhLocations" type="checkbox" v-model="item.inheritance.locations">
-                  <label for="inhLocations">{{$t('checkboxes.locations_inheritance')}}</label>
+                  <label v-if="item.type === 'orgas'" for="inhLocations">{{$t('checkboxes.locations_inheritance_orga')}}</label>
+                  <label v-else for="inhLocations">{{$t('checkboxes.locations_inheritance_event')}}</label>
                 </div>
                 <br>
               </section>
@@ -275,7 +277,8 @@
                 <div v-if="item" class="input-field">
                   <h2>{{ $t("entries.additionally_informations") }}</h2>
                   <input class="filled-in" id="inhContact" type="checkbox" v-model="item.inheritance.contact_infos">
-                  <label for="inhContact">{{$t('checkboxes.contact_infos_inheritance')}}</label>
+                  <label v-if="item.type === 'orgas'" for="inhContact">{{$t('checkboxes.contact_infos_inheritance_orga')}}</label>
+                  <label v-else for="inhContact">{{$t('checkboxes.contact_infos_inheritance_event')}}</label>
                 </div>
                 <br>
               </section>
