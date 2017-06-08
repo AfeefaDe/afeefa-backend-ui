@@ -35,7 +35,7 @@
             </entry-detail-property>
 
             <entry-detail-property v-if="entry.short_description || entry.inheritance.short_description" :name="$t('entries.short_description')" :iconName="'more_horiz'" :isMultiline="true">
-              <p class="inheritedValue" v-if="entry.inheritance.short_description">{{entry.parent_orga.short_description}}</p>
+              <p class="inheritedValue" v-if="entry.inheritance.short_description && entry.parent_orga">{{entry.parent_orga.short_description}}</p>
               <span v-if="entry.short_description">{{ entry.short_description }}</span>
             </entry-detail-property>
 

@@ -36,6 +36,13 @@
                   <span v-if="imageError" class="validation-error">Die Bild-URL ist fehlerhaft.</span>
                 </div>
 
+
+                <div class="inheritance-field input-field" v-if="item.parent_orga">
+                  <input class="filled-in" id="inheritDescription" type="checkbox" v-model="item.inheritance.short_description"/>
+                  <label for="inheritDescription">Kurze Beschreibung des Parents anzeigen</label>
+                  <p :class="{ active: item.inheritance.short_description }">{{item.parent_orga.short_description}}</p>
+                </div>
+
                 <div class="inputField__spacing input-field">
                   <label for="short_description" :class="{active: item.short_description}">
                     {{ $t('entries.short_description') }}
@@ -52,13 +59,14 @@
                   <textarea v-model="item.description" id="description"
                     class="materialize-textarea"></textarea>
                 </div>
-
+<!--
                 <div v-if="item  && item.parent_orga" class="input-field">
                   <h2>{{ $t("entries.additionally_informations") }}</h2>
                   <input class="filled-in" id="inhShortDesc" type="checkbox" v-model="item.inheritance.short_description">
                   <label v-if="item.type === 'orgas'" for="inhShortDesc">{{$t('checkboxes.short_description_inheritance_orga')}}</label>
                   <label v-else for="inhShortDesc">{{$t('checkboxes.short_description_inheritance_event')}}</label>
                 </div>
+                -->
                 <br>
 
                <div class="inputField__spacing input-field">
@@ -741,6 +749,24 @@ export default {
 
 <style lang="scss" scoped>
 @import "~variables";
+
+.inheritance-field {
+  padding-bottom: 1em;
+  label {
+    color: $gray90;
+  }
+  p {
+    margin-top: 1.5em;
+    padding-left: 1em;
+    border-left: 3px solid $gray50;
+    font-style: italic;
+    color: $gray50;
+  }
+  p.active {
+    color: $gray90;
+    border-left-color: $turquoise;
+  }
+}
 
 .entryForm {
   h2 {
