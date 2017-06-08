@@ -107,8 +107,7 @@ export default {
   },
   checkboxes: {
     show_past_events: 'Zeige vergangene Veranstaltungen',
-    short_description_inheritance_orga: 'Zeige Beschreibung der Übergeordneten Orga',
-    short_description_inheritance_event: 'Zeige Beschreibung des Veranstaltenden',
+    short_description_inheritance: 'Kurze Beschreibung des übergeordneten Eintrags anzeigen',
     locations_inheritance_orga: 'Zeige Ort der Übergeordneten Orga als Alternative an',
     locations_inheritance_event: 'Zeige Ort des Veranstaltenden als Alternative an',
     contact_infos_inheritance_orga: 'Zeige Kontakt der übergeordneten Orga als Alternative an',

@@ -108,8 +108,7 @@ export default {
   },
   checkboxes: {
     show_past_events: 'Show past events',
-    short_description_inheritance_orga: 'Show short description of parent orga',
-    short_description_inheritance_event: 'Show short description of organizer',
+    short_description_inheritance: 'Show short description of parent entry',
     locations_inheritance_orga: 'Show locations of parent orga',
     locations_inheritance_event: 'Show locations of organizer',
     contact_infos_inheritance_orga: 'Show contact infos of parent orga',

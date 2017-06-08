@@ -4,7 +4,14 @@
       <div class="mainCard">
 
         <div class="mainCard__header mainCard__headerGreen" v-if="item">
-          <h2 class="mainCard__headerTitle"> {{item.title || 'Kein Titel'}}</h2>
+          <div class="mainCard__headerTitle">
+            <h2 class="mainCard__headerTitle"> {{item.title || 'Kein Titel'}}</h2>
+            <span v-if="item.parent_orga" class="mainCard__headerSubtitle">
+              <router-link :to="{name: item.parent_orga.type + '.show', params: {id: item.parent_orga.id}}">
+                <u> {{ item.parent_orga.title }}</u>
+              </router-link>
+            </span>
+          </div>
           <a href="" @click.prevent="cancel" class="mainCard__headerAction"><i class="material-icons">cancel</i></a>
         </div>
 
@@ -39,7 +46,7 @@
 
                 <div class="inheritance-field input-field" v-if="item.parent_orga">
                   <input class="filled-in" id="inheritDescription" type="checkbox" v-model="item.inheritance.short_description"/>
-                  <label for="inheritDescription">Kurze Beschreibung des Parents anzeigen</label>
+                  <label for="inheritDescription">{{ $t('checkboxes.short_description_inheritance') }}</label>
                   <p :class="{ active: item.inheritance.short_description }">{{item.parent_orga.short_description}}</p>
                 </div>
 
