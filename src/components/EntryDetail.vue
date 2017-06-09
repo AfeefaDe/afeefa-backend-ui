@@ -383,7 +383,11 @@ export default {
       }
     },
     previewLink () {
-      return `${process.env.FRONTEND_URL}${this.entry.type}/${this.entry.id}`
+      if (this.entry.type === 'orgas') {
+        return `${process.env.FRONTEND_URL}project/${this.entry.id}`
+      } else if (this.entry.type === 'events') {
+        return `${process.env.FRONTEND_URL}event/${this.entry.id}`
+      }
     }
   },
 
