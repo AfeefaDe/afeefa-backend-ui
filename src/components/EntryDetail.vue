@@ -126,49 +126,68 @@
                 <location-map :map-center="mapCenter" :location="entry.location"></location-map>
               </li>
             </li>
-
-            <li v-if="entry.inheritance.locations && entry.parent_orga">
-              <entry-detail-property :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
-                <template v-if="entry.type === 'orgas'"> {{ $t('checkboxes.locations_inheritance_orga') }} </template>
-                <template v-else> {{ $t('checkboxes.locations_inheritance_event') }} </template>
-              </entry-detail-property>
-            </li>
           </ul>
         </section>
 
         <section slot="contactTab">
           <ul class="entryDetail" v-if="entry.contact">
-            <li v-if="entry.contact.isEmpty()" class="entryDetail__error">
-              <template v-if="entry.inheritance.contact_infos && entry.parent_orga"></template>
-              <template v-else>
+
+            <li v-if="entry.contact.isEmpty() && !(entry.inheritance.contact_infos && entry.parent_orga)" class="entryDetail__error">
                 {{ $t('errors.noContactPresent') }}
-              </template>
             </li>
+
             <li v-else>
-              <entry-detail-property :name="$t('headlines.contact')" :iconName="'mail_outline'" v-if="entry.contact.person || entry.contact.phone || entry.contact.mail">
+              <entry-detail-property
+                :name="$t('headlines.contact')"
+                :iconName="'mail_outline'"
+                v-if="entry.contact.person || entry.contact.phone || entry.contact.mail || showInheritValue('person') || showInheritValue('phone') || showInheritValue('mail')">
                   <span v-if="entry.contact.person">{{ entry.contact.person }}<br></span>
+                  <span class="inheritedValue" v-else-if="showInheritValue('person')">{{ showInheritValue('person') }}<br></span>
+
                   <span v-if="entry.contact.phone">{{ entry.contact.phone }}<br></span>
+                  <span class="inheritedValue" v-else-if="showInheritValue('phone')">{{ showInheritValue('phone')}}<br></span>
+
                   <a v-if="entry.contact.mail" :href="'mailto:' + entry.contact.mail">{{ entry.contact.mail }}</a>
+                  <a class="inheritedValue" v-else-if="showInheritValue('mail')" :href="'mailto:'+ showInheritValue('mail')">{{ showInheritValue('mail')}}</a>
               </entry-detail-property>
 
-              <entry-detail-property v-if="entry.contact.openingHours" :name="$t('entries.openingHours')" :iconName="'access_time'" :isMultiline="true">{{ entry.contact.openingHours }}</entry-detail-property>
-
-              <entry-detail-property :name="'Links'" :iconName="'link'" v-if="entry.contact.web || entry.contact.socialMedia">
-                <span v-if="entry.contact.web"><a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a><br></span>
-                <span v-if="entry.contact.socialMedia"><a :href="entry.contact.socialMedia" target="_blank">{{ entry.contact.socialMedia }}</a></span>
+              <entry-detail-property
+                v-if="entry.contact.openingHours || showInheritValue('openingHours')"
+                :name="$t('entries.openingHours')"
+                :iconName="'access_time'"
+                :isMultiline="true">
+                <div v-if="entry.contact.openingHours">{{ entry.contact.openingHours }}</div>
+                <div class="inheritedValue" v-else-if="showInheritValue('openingHours')">{{showInheritValue('openingHours')}}</div>
               </entry-detail-property>
 
-              <entry-detail-property :name="$tc('headlines.spokenLanguages', entry.contact.spokenLanguages.split(',').length)" :iconName="'translate'" v-if="entry.contact.spokenLanguages">
-                {{spokenLanguages}}
+              <entry-detail-property
+                :name="'Links'"
+                :iconName="'link'"
+                v-if="entry.contact.web || entry.contact.socialMedia || showInheritValue('web') || showInheritValue('socialMedia')">
+                  <span v-if="entry.contact.web"><a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a><br></span>
+                  <span class="inheritedValue" v-if-else="showInheritValue('web')"><a :href="showInheritValue('web')" target="_blank">{{ showInheritValue('web') }}</a><br></span>
+
+                  <span v-if="entry.contact.socialMedia"><a :href="entry.contact.socialMedia" target="_blank">{{ entry.contact.socialMedia }}</a></span>
+                  <span class="inheritedValue" v-if="showInheritValue('socialMedia')"><a :href="showInheritValue('socialMedia')" target="_blank">{{ showInheritValue('socialMedia') }}</a></span>
+              </entry-detail-property>
+
+              <!-- if have no idea, why v-if-else is not working here -->
+              <entry-detail-property
+                v-if="entry.contact.spokenLanguages"
+                :name="$tc('headlines.spokenLanguages', entry.contact.spokenLanguages.split(',').length)"
+                :iconName="'translate'">
+                  {{stringifySpokenLanguages(entry.contact.spokenLanguages)}}
+              </entry-detail-property>
+              <entry-detail-property
+                v-if="showInheritValue('spokenLanguages') && !entry.contact.spokenLanguages"
+                :name="$tc('headlines.spokenLanguages', showInheritValue('spokenLanguages').split(',').length)"
+                :iconName="'translate'">
+                  <div class="inheritedValue">
+                    {{stringifySpokenLanguages(showInheritValue('spokenLanguages'))}}
+                  </div>
               </entry-detail-property>
             </li>
 
-            <li v-if="entry.inheritance.contact_infos && entry.parent_orga">
-              <entry-detail-property :name="$t('entries.additionally_informations')" :iconName="'picture_in_picture'">
-                <template v-if="entry.type === 'orgas'"> {{ $t('checkboxes.contact_infos_inheritance_orga') }} </template>
-                <template v-else> {{ $t('checkboxes.contact_infos_inheritance_event') }} </template>
-              </entry-detail-property>
-            </li>
           </ul>
         </section>
         <section slot="linkTab">
@@ -322,6 +341,33 @@ export default {
         }
       })
     },
+    /*
+     * decide whereever to output the inheritaded attribute for the contact object
+     */
+    showInheritValue (attribute) {
+      console.log('Check for; ', attribute)
+      if (this.entry.inheritance.contact_infos && this.entry.parent_orga && this.entry.parent_orga.contact && this.entry.parent_orga.contact[attribute]) {
+        console.log(this.entry.parent_orga.contact[attribute])
+        return this.entry.parent_orga.contact[attribute]
+      } else {
+        return false
+      }
+    },
+    /*
+     * Stringify spoken languages depending on current UI langugage
+     */
+    stringifySpokenLanguages (spokenLanguages) {
+      const languageKey = this.$i18n.locale
+      let spokenLanguagesResult = []
+      if (spokenLanguages && spokenLanguages.split(',')) {
+        const langCodes = spokenLanguages.split(',')
+        for (let langCode of langCodes) {
+          const langObject = Languages.getLanguageFromCode(langCode)
+          spokenLanguagesResult.push(langObject[languageKey])
+        }
+      }
+      return spokenLanguagesResult.join(', ')
+    },
     setCurrentTab (newCurrentTab) {
       this.currentTab = newCurrentTab
     },
@@ -340,23 +386,6 @@ export default {
     },
     previewLink () {
       return `${process.env.FRONTEND_URL}${this.entry.type}/${this.entry.id}`
-    },
-    /*
-     * Stringify spoken languages depending on current UI langugage
-     */
-    spokenLanguages () {
-      const languageKey = this.$i18n.locale
-      let spokenLanguagesString = ''
-      if (this.entry.contact.spokenLanguages && this.entry.contact.spokenLanguages.split(',')) {
-        const langCodes = this.entry.contact.spokenLanguages.split(',')
-        for (let langCode of langCodes) {
-          const langObject = Languages.getLanguageFromCode(langCode)
-          spokenLanguagesString += langObject[languageKey] + ', '
-        }
-        // remove last ','
-        spokenLanguagesString = spokenLanguagesString.substring(0, spokenLanguagesString.length - 2)
-      }
-      return spokenLanguagesString
     }
   },
 
