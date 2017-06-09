@@ -139,7 +139,7 @@ export default {
     noSelection: 'Nothing selected'
   },
   categories: {
-    'asylum-counselling': 'Asylum counselling',
+    'asylum-counselling': 'Migration counselling',
     'authority': 'Authorities',
     'childcare': 'Child care',
     'christian': 'Christian Community',

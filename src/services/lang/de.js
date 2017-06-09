@@ -138,7 +138,7 @@ export default {
     noSelection: 'Kein Eintag ausgewählt'
   },
   categories: {
-    'asylum-counselling': 'Asylberatung',
+    'asylum-counselling': 'Migrationsberatung',
     'authority': 'Behörden',
     'childcare': 'Kinderbetreuung',
     'christian': 'Christliche Gemeinschaft',
