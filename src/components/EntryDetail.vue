@@ -345,9 +345,7 @@ export default {
      * decide whereever to output the inheritaded attribute for the contact object
      */
     showInheritValue (attribute) {
-      console.log('Check for; ', attribute)
       if (this.entry.inheritance.contact_infos && this.entry.parent_orga && this.entry.parent_orga.contact && this.entry.parent_orga.contact[attribute]) {
-        console.log(this.entry.parent_orga.contact[attribute])
         return this.entry.parent_orga.contact[attribute]
       } else {
         return false
