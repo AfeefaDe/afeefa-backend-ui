@@ -350,6 +350,7 @@ import Vue from 'vue'
 import autosize from 'autosize'
 import { BASE } from '@/store/api'
 import Orgas from '@/resources/Orgas'
+import Entries from '@/resources/base/Entries'
 import Categories from '@/resources/Categories'
 import Annotations from '@/resources/Annotations'
 import AnnotationCategories from '@/resources/AnnotationCategories'
@@ -515,7 +516,8 @@ export default {
         this.item.parent_orga = null
       } else {
         const parentOrga = this.orgas.find(x => x.id === this.parentOrgaSimplified[0].id)
-        this.item.parent_orga = parentOrga
+        this.item._relationIds.parent_orga = parentOrga.id
+        Entries.fetchParentOrga(this.item)
       }
     },
     /*
