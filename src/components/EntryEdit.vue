@@ -655,7 +655,7 @@ export default {
         return
       }
 
-      if (!this.entry) { // loading error
+      if (!this.item) { // loading error
         next()
         return
       }
