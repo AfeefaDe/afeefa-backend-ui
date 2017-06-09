@@ -25,6 +25,7 @@
 
             <entry-tabbed-content v-on:setCurrentTab="setCurrentTab">
               <section slot="generalTab">
+                <br>
                 <div class="inputField__spacing input-field">
                   <label for="title" :class="{active: item.title}">
                     {{ $t('entries.title') }}
@@ -43,23 +44,25 @@
                   <span v-if="imageError" class="validation-error">Die Bild-URL ist fehlerhaft.</span>
                 </div>
 
-
-                <div class="inheritance-field input-field" v-if="item.parent_orga">
-                  <input class="filled-in" id="inheritDescription" type="checkbox" v-model="item.inheritance.short_description"/>
-                  <label for="inheritDescription">{{ $t('checkboxes.short_description_inheritance') }}</label>
-                  <p :class="{ active: item.inheritance.short_description }">{{item.parent_orga.short_description}}</p>
-                </div>
-
+                <label for="short_description" :class="{active: item.short_description}">
+                  {{ $t('entries.short_description') }}
+                  <span class="labelCharacterCount" v-if="item.short_description.length">{{item.short_description.length}}/350</span>
+                </label>
                 <div class="inputField__spacing input-field">
-                  <label for="short_description" :class="{active: item.short_description}">
-                    {{ $t('entries.short_description') }}
-                    <span class="labelCharacterCount" v-if="item.short_description.length">{{item.short_description.length}}/350</span>
-                  </label>
+                  <p v-if="item.parent_orga && item.inheritance.short_description" class="inheritance-output">
+                    {{item.parent_orga.short_description}}
+                  </p>
                   <textarea v-model="item.short_description" id="short_description"
                   name="short_description" :data-vv-as="$t('entries.short_description')" v-validate.initial="'required|max: 350'"
                   :class="['materialize-textarea', {'validation-error': errors.has('short_description') }]"></textarea>
                   <span v-show="errors.has('short_description')" class="validation-error">{{ errors.first('short_description') }}</span>
                 </div>
+
+                <div class="inheritance-field input-field" v-if="item.parent_orga && item.parent_orga.short_description">
+                  <input class="filled-in" id="inheritDescription" type="checkbox" v-model="item.inheritance.short_description"/>
+                  <label for="inheritDescription">{{ $t('checkboxes.short_description_inheritance') }}</label>
+                </div>
+
 
                 <div class="inputField__spacing input-field">
                   <label for="description" :class="{active: item.description}">{{ $t('entries.description') }}</label>
@@ -166,12 +169,10 @@
 
 
               <section slot="placeTab">
-                <br>
                 <div class="inputField__spacing" v-if="item.location">
-
                   <div class="input-field">
-                    <label for="placename" :class="{active: item.location.placename}">Ortsbezeichnung (z.B. Hinterhof)</label>
-                    <input v-model="item.location.placename" id="placename" type="text" class="validate" />
+                    <label for="placename" :class="{active: (item.location.placename)}">Ortsbezeichnung (z.B. Hinterhof)</label>
+                    <input  v-model="item.location.placename" id="placename" type="text" class="validate" />
                   </div>
 
                   <div class="input-field">
@@ -214,80 +215,80 @@
                   </div>
                 </div>
 
-                <div v-if="item  && item.parent_orga" class="input-field">
-                  <h2>{{ $t("entries.additionally_informations") }}</h2>
-                  <input class="filled-in" id="inhLocations" type="checkbox" v-model="item.inheritance.locations">
-                  <label v-if="item.type === 'orgas'" for="inhLocations">{{$t('checkboxes.locations_inheritance_orga')}}</label>
-                  <label v-else for="inhLocations">{{$t('checkboxes.locations_inheritance_event')}}</label>
-                </div>
-                <br>
               </section>
 
 
               <section slot="contactTab">
-                <br>
                 <div class="inputField__spacing" v-if="item.contact">
+
+                  <div v-if="item  && item.parent_orga" class="input-field">
+                    <input class="filled-in" id="inhContact" type="checkbox" v-model="item.inheritance.contact_infos">
+                    <label v-if="item.type === 'orgas'" for="inhContact">{{$t('checkboxes.contact_infos_inheritance_orga')}}</label>
+                    <label v-else for="inhContact">{{$t('checkboxes.contact_infos_inheritance_event')}}</label>
+                  </div>
+                  <br>
+
                   <div class="input-field">
-                    <label for="mail" :class="{active: item.contact.mail}">E-Mail</label>
-                    <input v-model="item.contact.mail" id="mail" type="email"
-                      name="email" data-vv-validate-on="blur" v-validate="'email'"
-                      :class="{'validation-error': errors.has('email') }"/>
+                    <label for="mail" :class="{active: item.contact.mail || showInheritValue('mail')}">E-Mail</label>
+                    <input id="mail" type="email"
+                      v-model="item.contact.mail"
+                      name="email"
+                      data-vv-validate-on="blur"
+                      v-validate="'email'"
+                      :class="{'validation-error': errors.has('email') }"
+                      :placeholder="showInheritValue('mail')"/>
                     <span v-show="errors.has('email')" class="validation-error">{{ errors.first('email') }}</span>
                   </div>
 
                   <div class="input-field">
-                    <label for="phone" :class="{active: item.contact.phone}">Telefon</label>
-                    <input v-model="item.contact.phone" id="phone" type="text" />
+                    <label for="phone" :class="{active: item.contact.phone || showInheritValue('phone')}">Telefon</label>
+                    <input v-model="item.contact.phone" :placeholder="showInheritValue('phone')" id="phone" type="text" />
                   </div>
 
                   <div class="input-field">
-                    <label for="contactPerson" :class="{active: item.contact.person}">Kontaktperson</label>
-                    <input v-model="item.contact.person" id="contactPerson" type="text"/>
+                    <label for="contactPerson" :class="{active: item.contact.person || showInheritValue('person')}">Kontaktperson</label>
+                    <input v-model="item.contact.person" :placeholder="showInheritValue('person')" id="contactPerson" type="text"/>
                   </div>
 
                   <div class="inputField__spacing input-field" v-if="item.type === 'orgas'">
-                    <label for="openingHours" :class="{active: item.contact.openingHours}">
+                    <label for="openingHours" :class="{active: item.contact.openingHours || showInheritValue('openingHours')}">
                       {{ $t('entries.openingHours') }}
                     </label>
-                    <textarea v-model="item.contact.openingHours" id="openingHours"
+                    <textarea v-model="item.contact.openingHours" :placeholder="showInheritValue('openingHours')" id="openingHours"
                       class="materialize-textarea"></textarea>
                   </div>
 
                   <div class="input-field">
-                    <label for="web" :class="{active: item.contact.web}">{{ $t('entries.web') }}</label>
+                    <label for="web" :class="{active: item.contact.web || showInheritValue('web')}">{{ $t('entries.web') }}</label>
                     <input id="web"
                           type="text"
                           v-model="item.contact.web"
                           name="web"
                           data-vv-validate-on="blur"
                           v-validate="'url-with-protocol'"
-                          :class="{'validation-error': errors.has('web') }"/>
+                          :class="{'validation-error': errors.has('web') }"
+                          :placeholder="showInheritValue('web')"/>
                     <span v-show="errors.has('web')" class="validation-error">{{ errors.first('web') }}</span>
                   </div>
 
                   <div class="input-field">
-                    <label for="socialMedia" :class="{active: item.contact.socialMedia}">{{ $t('entries.socialMedia') }}</label>
+                    <label for="socialMedia" :class="{active: item.contact.socialMedia || showInheritValue('socialMedia')}">
+                      {{ $t('entries.socialMedia') }}
+                    </label>
                     <input id="socialMedia"
                           type="text"
                           v-model="item.contact.socialMedia"
                           name="socialMedia"
                           data-vv-validate-on="blur"
                           v-validate="'url-with-protocol'"
-                          :class="{'validation-error': errors.has('socialMedia') }"/>
+                          :class="{'validation-error': errors.has('socialMedia') }"
+                          :placeholder="showInheritValue('socialMedia')"/>
                   </div>
                   <span v-show="errors.has('socialMedia')" class="validation-error">{{ errors.first('socialMedia') }}</span>
 
-                  <lang-select-input  @input="updateSpokenLanguages" :entryValue="item.contact.spokenLanguages"></lang-select-input>
+                  <lang-select-input  @input="updateSpokenLanguages" :inheritedValues="showInheritValue('spokenLanguages')" :entryValue="item.contact.spokenLanguages"></lang-select-input>
 
                 </div>
-                <br>
-                <div v-if="item  && item.parent_orga" class="input-field">
-                  <h2>{{ $t("entries.additionally_informations") }}</h2>
-                  <input class="filled-in" id="inhContact" type="checkbox" v-model="item.inheritance.contact_infos">
-                  <label v-if="item.type === 'orgas'" for="inhContact">{{$t('checkboxes.contact_infos_inheritance_orga')}}</label>
-                  <label v-else for="inhContact">{{$t('checkboxes.contact_infos_inheritance_event')}}</label>
-                </div>
-                <br>
               </section>
 
               <section slot="linkTab">
@@ -515,6 +516,16 @@ export default {
       } else {
         const parentOrga = this.orgas.find(x => x.id === this.parentOrgaSimplified[0].id)
         this.item.parent_orga = parentOrga
+      }
+    },
+    /*
+     * decide whereever to output the inheritaded attribute for the contact object
+     */
+    showInheritValue (attribute) {
+      if (this.item.inheritance.contact_infos && this.item.parent_orga && this.item.parent_orga.contact && this.item.parent_orga.contact[attribute]) {
+        return this.item.parent_orga.contact[attribute]
+      } else {
+        return false
       }
     },
 
@@ -750,21 +761,11 @@ export default {
 @import "~variables";
 
 .inheritance-field {
-  padding-bottom: 1em;
-  label {
-    color: $gray90;
-  }
-  p {
-    margin-top: 1.5em;
-    padding-left: 1em;
-    border-left: 3px solid $gray50;
-    font-style: italic;
-    color: $gray50;
-  }
-  p.active {
-    color: $gray90;
-    border-left-color: $turquoise;
-  }
+  margin-top: -1.4em;
+  padding-bottom: 2em;
+}
+ .inheritance-output {
+  color: $gray50;
 }
 
 .entryForm {

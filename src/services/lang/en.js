@@ -111,8 +111,8 @@ export default {
     short_description_inheritance: 'Show short description of parent entry',
     locations_inheritance_orga: 'Show locations of parent orga',
     locations_inheritance_event: 'Show locations of organizer',
-    contact_infos_inheritance_orga: 'Show contact infos of parent orga',
-    contact_infos_inheritance_event: 'Show contact infos of organizer'
+    contact_infos_inheritance_orga: 'Fill missing fields with properties from parent orga',
+    contact_infos_inheritance_event: 'Fill missing fields with properties from organzier'
   },
   infos: {
     mandatory_field: 'mandatory',

@@ -110,8 +110,8 @@ export default {
     short_description_inheritance: 'Kurze Beschreibung des übergeordneten Eintrags anzeigen',
     locations_inheritance_orga: 'Zeige Ort der Übergeordneten Orga als Alternative an',
     locations_inheritance_event: 'Zeige Ort des Veranstaltenden als Alternative an',
-    contact_infos_inheritance_orga: 'Zeige Kontakt der übergeordneten Orga als Alternative an',
-    contact_infos_inheritance_event: 'Zeige Kontakt des Veranstaltenden als Alternative an'
+    contact_infos_inheritance_orga: 'Fehlende Felder mit Angaben der Elternorga ergänzen',
+    contact_infos_inheritance_event: 'Fehlende Felder mit Angaben des Veranstalters ergänzen'
   },
   infos: {
     mandatory_field: 'Pflichtfeld',

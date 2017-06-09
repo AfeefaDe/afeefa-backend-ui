@@ -14,7 +14,7 @@
       :selectLabel="$t('multiselect.selectLabel')"
       :selectedLabel="$t('multiselect.selectedLabel')"
       :deselectLabel="$t('multiselect.deselectLabel')"
-      :placeholder="$tc('headlines.spokenLanguages', 2)"
+      :placeholder="placeholder"
       >
       <span slot="noResult">{{$t('multiselect.noResult')}}</span>
     </multiselect>
@@ -26,14 +26,15 @@ import Multiselect from 'vue-multiselect'
 import Languages from '@/helpers/iso_639_languages.js'
 
 export default {
-  props: ['entryValue'],
+  props: ['entryValue', 'inheritedValues'],
   components: {
     Multiselect
   },
   data () {
     return {
       chosenLanguages: [],
-      possibleLanguages: Languages.data
+      possibleLanguages: Languages.data,
+      placeholder: ''
     }
   },
   created () {
@@ -46,9 +47,31 @@ export default {
         }
       }
     }
+    this.updatePlaceholderText()
+  },
+  watch: {
+    inheritedValues () {
+      this.updatePlaceholderText()
+    }
   },
   methods: {
+    /*
+     * sets the placeholder value depending on the inherited values and the chosen languages
+     */
+    updatePlaceholderText () {
+      if (this.inheritedValues && this.chosenLanguages.length === 0) {
+        let result = []
+        for (let langCode of this.inheritedValues.split(',')) {
+          result.push(Languages.getLanguageFromCode(langCode)[this.$i18n.locale])
+        }
+        this.placeholder = result.join(', ')
+      } else {
+        this.placeholder = this.$tc('headlines.spokenLanguages', 2)
+      }
+    },
     chosenLanguagesChanged () {
+      // the chosenLanguages could change to [] so we have to update our placeholder text
+      this.updatePlaceholderText()
       let langs = []
       for (let language of this.chosenLanguages) {
         langs.push(language.iso639v1)
