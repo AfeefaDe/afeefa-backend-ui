@@ -14,7 +14,9 @@
           </router-link>
 
         </div>
-
+        <div>
+          <slot></slot>
+        </div>
         <entry-list-items
           :items="items"
           :sort-function="sortFunction"
