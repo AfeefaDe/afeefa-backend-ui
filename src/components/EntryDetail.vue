@@ -108,10 +108,7 @@
         <section slot="placeTab">
           <ul class="entryDetail" v-if="entry.location">
             <li v-if="entry.location.isEmpty()" class="entryDetail__error">
-              <template v-if="entry.inheritance.locations && entry.parent_orga"></template>
-              <template v-else>
                 {{ $t('errors.noLocationPresent') }}
-              </template>
             </li>
             <li v-else>
               <entry-detail-property v-if="!entry.location.isEmpty()" :name="$t('entries.address')" :iconName="'location_on'">
@@ -131,9 +128,11 @@
 
         <section slot="contactTab">
           <ul class="entryDetail" v-if="entry.contact">
-
-            <li v-if="entry.contact.isEmpty() && !(entry.inheritance.contact_infos && entry.parent_orga)" class="entryDetail__error">
-                {{ $t('errors.noContactPresent') }}
+            <li v-if="entry.contact.isEmpty() && !entry.inheritance.contact_infos" class="entryDetail__error">
+              {{ $t('errors.noLocationPresent') /* not inherited and empty */}}
+            </li>
+            <li v-if="entry.inheritance.contact_infos && entry.contact.isEmpty() && entry.parent_orga.contact.isEmpty()"  class="entryDetail__error">
+              {{ $t('errors.noLocationPresent') /* inherited but parent and child are empty */}}
             </li>
 
             <li v-else>

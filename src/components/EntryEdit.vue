@@ -221,12 +221,11 @@
               <section slot="contactTab">
                 <div class="inputField__spacing" v-if="item.contact">
 
-                  <div v-if="item  && item.parent_orga" class="input-field">
+                  <div v-if="item && item.parent_orga && !item.parent_orga.contact.isEmpty()" class="input-field">
                     <input class="filled-in" id="inhContact" type="checkbox" v-model="item.inheritance.contact_infos">
                     <label v-if="item.type === 'orgas'" for="inhContact">{{$t('checkboxes.contact_infos_inheritance_orga')}}</label>
                     <label v-else for="inhContact">{{$t('checkboxes.contact_infos_inheritance_event')}}</label>
                   </div>
-                  <br>
 
                   <div class="input-field">
                     <label for="mail" :class="{active: item.contact.mail || showInheritValue('mail')}">E-Mail</label>
@@ -764,7 +763,7 @@ export default {
 
 .inheritance-field {
   margin-top: -1.4em;
-  padding-bottom: 2em;
+  padding-bottom: 1em;
 }
  .inheritance-output {
   color: $gray50;
