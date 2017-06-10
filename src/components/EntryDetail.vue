@@ -157,21 +157,28 @@
                 :iconName="'access_time'"
                 :isMultiline="true">
                 <div v-if="entry.contact.openingHours">{{ entry.contact.openingHours }}</div>
-                <div class="inheritedValue" v-else-if="showInheritValue('openingHours')">{{showInheritValue('openingHours')}}</div>
+                <div v-else class="inheritedValue">{{showInheritValue('openingHours')}}</div>
               </entry-detail-property>
 
               <entry-detail-property
                 :name="'Links'"
                 :iconName="'link'"
                 v-if="entry.contact.web || entry.contact.socialMedia || showInheritValue('web') || showInheritValue('socialMedia')">
-                  <span v-if="entry.contact.web"><a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a><br></span>
-                  <span class="inheritedValue" v-if-else="showInheritValue('web')"><a :href="showInheritValue('web')" target="_blank">{{ showInheritValue('web') }}</a><br></span>
+                  <span v-if="entry.contact.web">
+                    <a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a><br>
+                  </span>
+                  <span v-else-if="showInheritValue('web')" class="inheritedValue">
+                    <a :href="showInheritValue('web')" target="_blank">{{ showInheritValue('web') }}</a><br>
+                  </span>
 
-                  <span v-if="entry.contact.socialMedia"><a :href="entry.contact.socialMedia" target="_blank">{{ entry.contact.socialMedia }}</a></span>
-                  <span class="inheritedValue" v-if="showInheritValue('socialMedia')"><a :href="showInheritValue('socialMedia')" target="_blank">{{ showInheritValue('socialMedia') }}</a></span>
+                  <span v-if="entry.contact.socialMedia">
+                    <a :href="entry.contact.socialMedia" target="_blank">{{ entry.contact.socialMedia }}</a>
+                  </span>
+                  <span v-else-if="showInheritValue('socialMedia')" class="inheritedValue" >
+                    <a :href="showInheritValue('socialMedia')" target="_blank">{{ showInheritValue('socialMedia') }}</a>
+                  </span>
               </entry-detail-property>
 
-              <!-- if have no idea, why v-if-else is not working here -->
               <entry-detail-property
                 v-if="entry.contact.spokenLanguages"
                 :name="$tc('headlines.spokenLanguages', entry.contact.spokenLanguages.split(',').length)"
@@ -179,7 +186,7 @@
                   {{stringifySpokenLanguages(entry.contact.spokenLanguages)}}
               </entry-detail-property>
               <entry-detail-property
-                v-if="showInheritValue('spokenLanguages') && !entry.contact.spokenLanguages"
+                v-else-if="showInheritValue('spokenLanguages')"
                 :name="$tc('headlines.spokenLanguages', showInheritValue('spokenLanguages').split(',').length)"
                 :iconName="'translate'">
                   <div class="inheritedValue">
