@@ -28,8 +28,7 @@ export default class Entry extends BaseModel {
 
     this.inheritance = {
       short_description: false,
-      contact_infos: false,
-      locations: false
+      contact_infos: false
     }
 
     this._relationIds = {
@@ -126,9 +125,6 @@ export default class Entry extends BaseModel {
         }
         if (inheritanceArray[i] === 'contact_infos') {
           this.inheritance.contact_infos = true
-        }
-        if (inheritanceArray[i] === 'locations') {
-          this.inheritance.locations = true
         }
       }
     }
