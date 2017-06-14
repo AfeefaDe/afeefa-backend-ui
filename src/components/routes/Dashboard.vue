@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div class="col s12 m12">
+    <div class="col s12 m6">
       <div class="mainCard">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">
@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <div class="col s12 m12">
+    <div class="col s12 m6">
       <div class="mainCard">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">
