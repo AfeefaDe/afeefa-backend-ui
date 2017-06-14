@@ -129,10 +129,9 @@
             <li v-if="entry.contact.isEmpty() && !entry.inheritance.contact_infos" class="entryDetail__error">
               {{ $t('errors.noLocationPresent') /* not inherited and empty */}}
             </li>
-            <li v-if="entry.inheritance.contact_infos && entry.contact.isEmpty() && entry.parent_orga.contact.isEmpty()"  class="entryDetail__error">
+            <li v-else-if="entry.inheritance.contact_infos && entry.contact.isEmpty() && entry.parent_orga && entry.parent_orga.contact && entry.parent_orga.contact.isEmpty()"  class="entryDetail__error">
               {{ $t('errors.noLocationPresent') /* inherited but parent and child are empty */}}
             </li>
-
             <li v-else>
               <entry-detail-property
                 :name="$t('headlines.contact')"
