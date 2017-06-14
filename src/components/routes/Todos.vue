@@ -51,7 +51,7 @@ export default {
   methods: {
     getQueryParams () {
       if (this.selectedCategory !== 'all') {
-        return {'filter[category]': this.selectedCategory}
+        return {'filter[annotation_category_id]': this.selectedCategory}
       }
     }
   }
