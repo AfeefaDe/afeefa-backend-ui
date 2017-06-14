@@ -6,11 +6,13 @@ export default class AnnotionCategory extends BaseModel {
 
     this.id = null
     this.type = 'annotationCategories'
+    this.generatedBySystem = false
     this.title = ''
   }
 
   deserialize (json) {
     this.id = json.id
+    this.generatedBySystem = json.attributes.generated_by_system
     this.title = json.attributes.title
   }
 }

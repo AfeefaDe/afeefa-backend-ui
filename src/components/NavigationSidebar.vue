@@ -24,7 +24,7 @@
         <div class="navigationSidebar__footerSeperator"></div>
         <div class="navigationSidebar__footerRow">
           <span class="navigationSidebar__footerItem" :title="$t('hints.user_status')">
-            <i class="material-icons spacing-right">account_circle</i>{{username}}
+            <i class="navigationSidebar__userIcon material-icons spacing-right">account_circle</i>{{username}}
           </span>
           <a href="" @click.prevent="logout()" class="cursor navigationSidebar__footerItem">
             {{ $t('headlines.logout') }}<i class="material-icons spacing-left">exit_to_app</i>
@@ -116,6 +116,9 @@ export default {
   &__footerItem {
     display: flex;
     align-items: center;
+  }
+  &__userIcon {
+    color: $turquoise;
   }
 }
 </style>
