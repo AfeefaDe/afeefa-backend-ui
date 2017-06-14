@@ -83,12 +83,10 @@
 
             <entry-detail-property
               :name="$tc('headlines.annotations', entry.annotations.length)"
-              :iconName="'label_outline'">
-              <div v-if="entry.annotations.length">
+              :iconName="'label_outline'"
+              v-if="entry.annotations.length">
+              <div>
                 <annotation-tag v-for="annotation in entry.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
-              </div>
-              <div v-else class="entryDetail__error">
-                {{ $t('errors.noAnnotationPresent') }}
               </div>
             </entry-detail-property>
 
