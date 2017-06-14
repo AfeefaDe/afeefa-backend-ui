@@ -1,4 +1,6 @@
 import BaseModel from './BaseModel'
+import Annotation from '@/models/Annotation'
+import AnnotationCategories from '@/resources/AnnotationCategories'
 
 export default class Entry extends BaseModel {
   init () {
@@ -36,8 +38,7 @@ export default class Entry extends BaseModel {
       category: null,
       sub_category: null,
       location: null,
-      contact: null,
-      annotations: []
+      contact: null
     }
   }
 
@@ -154,12 +155,16 @@ export default class Entry extends BaseModel {
       this._relationIds.sub_category = rels.sub_category.data.id
     }
 
-    // annotations
+    // @todo: not working for response of PATCH request cause data is empty
     if (rels.annotations.data.length) {
       for (let jsonAnnotation of rels.annotations.data) {
-        if (!this._relationIds.annotations.includes(jsonAnnotation.id)) {
-          this._relationIds.annotations.push(jsonAnnotation.id)
-        }
+        let annotation = new Annotation()
+        annotation.deserialize(jsonAnnotation)
+        let annotationCategoryId = jsonAnnotation.relationships.annotation_category.data.id
+        AnnotationCategories.get(annotationCategoryId).then(annotationCategory => {
+          annotation.annotationCategory = annotationCategory
+          this.annotations.push(annotation)
+        })
       }
     }
 
@@ -186,6 +191,7 @@ export default class Entry extends BaseModel {
     entry.certified_sfr = this.certified_sfr
     entry.tags = this.tags
     entry.inheritance = this.inheritance
+    entry.annotations = this.annotations
 
     entry.active = this.active
     entry.created_at = this.created_at

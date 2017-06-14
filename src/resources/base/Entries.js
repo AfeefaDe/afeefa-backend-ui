@@ -1,6 +1,4 @@
 import Categories from '@/resources/Categories'
-import AnnotationCategories from '@/resources/AnnotationCategories'
-import Annotations from '@/resources/Annotations'
 import Contacts from '@/resources/Contacts'
 import Locations from '@/resources/Locations'
 import Orgas from '@/resources/Orgas'
@@ -92,25 +90,6 @@ export default {
     }
   },
 
-  fetchAnnotations (entry) {
-    // do not fetch annotations multiple times
-    if (entry.annotations.__isLoading) {
-      return
-    }
-
-    for (let id of entry._relationIds.annotations) {
-      Annotations.get(id).then(annotation => {
-        if (annotation) {
-          AnnotationCategories.get(annotation._relationIds.annotationCategory).then(annotationCategory => {
-            annotation.annotationCategory = annotationCategory
-            entry.annotations.push(annotation)
-          })
-        }
-      })
-    }
-    entry.annotations.__isLoading = true
-  },
-
   create (entry) {
     entry.location = new Location()
     entry.contact = new Contact()
@@ -124,7 +103,6 @@ export default {
     this.fetchSubCategory(clone)
     this.fetchLocation(clone, true) // true => location.clone()
     this.fetchContact(clone, true) // true => contact.clone()
-    this.fetchAnnotations(clone)
     return clone
   },
 

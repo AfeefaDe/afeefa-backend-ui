@@ -13,14 +13,15 @@ class TodosResource extends BaseResource {
   }
 
   getItemCacheKey (json) {
+    // @question: what should be returned here ? json.type used to be 'todo'
     return json.type
   }
 
   createItem (json) {
     // workaround for issue #149
-    if (!json.relationships.entry.data) {
+    if (!json) {
       return null
-    } else if (json.relationships.entry.data.type === 'orgas') {
+    } else if (json.type === 'orgas') {
       return new Orga()
     } else {
       return new Event()
@@ -30,7 +31,7 @@ class TodosResource extends BaseResource {
   deserialize (item, json) {
     // workaround for issue #149
     if (item) {
-      item.deserialize(json.relationships.entry.data)
+      item.deserialize(json)
     }
   }
 }
@@ -42,7 +43,6 @@ export default {
       for (let entry of entries) {
         Entries.fetchCategory(entry)
         Entries.fetchSubCategory(entry)
-        Entries.fetchAnnotations(entry)
       }
       return entries
     })

@@ -66,7 +66,6 @@ const Orgas = {
     'fetchSubCategory',
     'fetchLocation',
     'fetchContact',
-    'fetchAnnotations',
     'fetchSubOrgas'
   ]) {
     if (!id) {

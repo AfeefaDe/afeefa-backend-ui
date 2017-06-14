@@ -85,7 +85,6 @@ export default {
         Entries.fetchSubCategory(event)
         Entries.fetchLocation(event)
         Entries.fetchContact(event)
-        Entries.fetchAnnotations(event)
       }
       return event
     })
