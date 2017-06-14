@@ -47,17 +47,9 @@ export default class Entry extends BaseModel {
       annotations.push(annotation.serialize())
     }
 
-    // create array of inheritance properties
-    let inheritanceArray = []
-    Object.keys(this.inheritance).forEach((key) => {
-      if (this.inheritance[key] === true) {
-        inheritanceArray.push(key)
-      }
-    })
-    let inheritance = null
-    if (inheritanceArray.length > 0) {
-      inheritance = inheritanceArray.join('|')
-    }
+    const inheritance = Object.keys(this.inheritance).filter(key => {
+      return this.inheritance[key] === true
+    }).join('|') || null
 
     const data = {
       type: this.type,
@@ -118,15 +110,9 @@ export default class Entry extends BaseModel {
 
     // feed inheritance object with values
     if (json.attributes.inheritance) {
-      const inheritanceArray = json.attributes.inheritance.split('|')
-      for (let i in inheritanceArray) {
-        if (inheritanceArray[i] === 'short_description') {
-          this.inheritance.short_description = true
-        }
-        if (inheritanceArray[i] === 'contact_infos') {
-          this.inheritance.contact_infos = true
-        }
-      }
+      json.attributes.inheritance.split('|').forEach(key => {
+        this.inheritance[key] = true
+      })
     }
 
     this.active = json.attributes.active === true
