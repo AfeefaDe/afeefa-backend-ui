@@ -67,7 +67,7 @@ import AnnotationTag from '@/components/AnnotationTag'
 import Spinner from '@/components/Spinner'
 
 export default {
-  props: ['items', 'limit', 'sortFunction', 'sortOrder', 'showIcon', 'options'],
+  props: {items: {}, limit: {}, sortFunction: {}, sortOrder: {}, showIcon: {}, options: {}, modifyRoute: {default: true}},
 
   data () {
     const options = this.options || {}
@@ -118,11 +118,12 @@ export default {
     setPage (config) {
       this.currentPage = config.page
       this.currentPageSize = config.pageSize
-
-      const query = {...this.$route.query}
-      query.page = config.page === 1 ? undefined : config.page
-      query.pageSize = config.pageSize === 15 ? undefined : config.pageSize
-      this.$router.push({query: query})
+      if (this.modifyRoute) {
+        const query = {...this.$route.query}
+        query.page = config.page === 1 ? undefined : config.page
+        query.pageSize = config.pageSize === 15 ? undefined : config.pageSize
+        this.$router.push({query: query})
+      }
     }
   },
 

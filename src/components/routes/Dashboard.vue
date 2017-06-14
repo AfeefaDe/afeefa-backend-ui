@@ -2,6 +2,12 @@
   <div class="row">
     <div class="col s12 m12">
       <div class="mainCard">
+        <search-items :modifyRoute="false"></search-items>
+      </div>
+    </div>
+
+    <div class="col s12 m12">
+      <div class="mainCard">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">
             <router-link :to="{name: 'todos'}">{{ $t('headlines.todos') }} ({{ numTodos }})</router-link>
@@ -71,6 +77,7 @@
 
 <script>
 import EntryListItems from '@/components/EntryListItems'
+import SearchItems from '@/components/SearchItems'
 import sortByUpdatedAt from '@/helpers/sort-by-updated-at'
 import sortByCreatedAt from '@/helpers/sort-by-created-at'
 import { mapState } from 'vuex'
@@ -111,7 +118,7 @@ export default {
   },
 
   components: {
-    EntryListItems
+    EntryListItems, SearchItems
   }
 }
 </script>

@@ -8,6 +8,7 @@ export default {
     contact: '*',
     annotations: '*',
     search: '*',
+    searchPlaceholder: '*',
     logout: '*',
     new: '*',
     edit: '*',
@@ -103,7 +104,8 @@ export default {
     activate: '*',
     deactivate: '*',
     edit: '*',
-    add: '*'
+    add: '*',
+    search: '*'
   },
   checkboxes: {
     show_past_events: '*',

@@ -8,6 +8,7 @@ export default {
     contact: 'Contact Info',
     annotations: 'Annotation | Annotations',
     search: 'Search',
+    searchPlaceholder: 'Search in title',
     logout: 'Logout',
     new: 'New',
     edit: 'Edit',
@@ -104,7 +105,8 @@ export default {
     activate: 'Publish',
     deactivate: 'Unpublish',
     edit: 'Edit',
-    add: 'Add'
+    add: 'Add',
+    search: 'Search'
   },
   checkboxes: {
     show_past_events: 'Show past events',
