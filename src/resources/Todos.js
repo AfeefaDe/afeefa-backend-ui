@@ -37,7 +37,6 @@ class TodosResource extends BaseResource {
 
 export default {
   getAll (params) {
-    console.log('Load Todos with filter: ', params)
     const resource = new TodosResource()
     return store.dispatch('api/getList', {resource, params}).then(entries => {
       for (let entry of entries) {
