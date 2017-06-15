@@ -15,9 +15,9 @@ export default class Event extends Entry {
   deserialize (json) {
     super.deserialize(json)
 
-    this.date_start = new Date(json.attributes.date_start)
+    this.date_start = (json.attributes.date_start === null) ? null : new Date(json.attributes.date_start)
     this.has_time_start = json.attributes.has_time_start === true
-    this.date_end = json.attributes.date_end ? new Date(json.attributes.date_end) : new Date(json.attributes.date_start)
+    this.date_end = json.attributes.date_end ? new Date(json.attributes.date_end) : this.date_start
     this.has_time_end = json.attributes.has_time_end === true
   }
 
