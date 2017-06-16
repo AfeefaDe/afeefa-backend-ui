@@ -107,6 +107,11 @@ export default {
     this.hasStartTime = this.hasTimeStart
     this.hasEndTime = this.hasTimeEnd
     this.checkSameDay()
+
+    // set new start date if not existing
+    if (this.dateStart === null) {
+      this.$emit('input', {dateStart: this.currentDateStart, dateEnd: this.dateEnd, hasTimeStart: this.hasTimeStart, hasTimeEnd: this.hasTimeEnd})
+    }
   },
 
   mounted () {
