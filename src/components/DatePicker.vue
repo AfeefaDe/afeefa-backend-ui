@@ -319,6 +319,9 @@ export default {
     padding-right: 0.45em;
     margin: 0em 1em 0em 2em;
   }
+  div.flatpickr-calendar {
+    background-color: inherit;
+  }
   #startDate {
     cursor: pointer; cursor: hand;
     border-bottom: none;
