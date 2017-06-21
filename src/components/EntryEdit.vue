@@ -474,17 +474,11 @@ export default {
   },
 
   computed: {
-    /*
-     * selecteable annotations: hide already used annotaionCategories
-     */
     selectableAnnotations () {
       return this.annotationCategories.filter(
         (annotationCategory) => {
           // only allow editor annotationCategories
           if (!annotationCategory.generatedBySystem) {
-            for (let annotation of this.item.annotations) {
-              if (annotation.annotationCategory.id === annotationCategory.id) return false
-            }
             return true
           }
         }
