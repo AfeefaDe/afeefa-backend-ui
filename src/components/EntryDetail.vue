@@ -34,7 +34,7 @@
               {{ entry.title }}
             </entry-detail-property>
 
-            <entry-detail-property v-if="entry.short_description || entry.inheritance.short_description" :name="$t('entries.short_description')" :iconName="'more_horiz'" :isMultiline="true">
+            <entry-detail-property v-if="entry.short_description || entry.inheritance.short_description && entry.parent_orga && entry.parent_orga.short_description" :name="$t('entries.short_description')" :iconName="'more_horiz'" :isMultiline="true">
               <div class="inheritedValue" v-if="entry.inheritance.short_description && entry.parent_orga">{{entry.parent_orga.short_description}}</div>
               <div v-if="entry.short_description">{{entry.short_description}}</div>
             </entry-detail-property>
@@ -49,7 +49,7 @@
             <entry-detail-property
               :name="$tc('entries.date')"
               :iconName="'date_range'"
-              v-if="has.date">
+              v-if="has.date && entry.date_start">
                 {{ entry | formatEventDate }}
             </entry-detail-property>
 
