@@ -15,7 +15,8 @@ export default {
       if (id) {
         Orgas.get(id, [
           'fetchCategory',
-          'fetchSubCategory'
+          'fetchSubCategory',
+          'fetchContact'
         ]).then(orga => {
           entry.parent_orga = orga
         })

@@ -1,5 +1,6 @@
 <template>
-  <p v-bind:class="['annotationTag', editMode ? 'annotationTag--editMode' : '']" :title= "$t('hints.edit_annotations')">
+  <p
+  v-bind:class="['annotationTag', annotation.annotationCategory.generatedBySystem ? 'annotationTag--system' : '', editMode ? 'annotationTag--editMode' : '']" :title= "$t('hints.edit_annotations')">
     <span>
       {{annotation.annotationCategory.title}}
       <span v-if="annotation.detail" class="annotation-detail"><br>{{annotation.detail}}</span>
@@ -26,10 +27,11 @@ export default {
 <style lang="scss" scoped>
 @import "~variables";
 
+$annotationUserColor: $turquoise;
 .annotationTag {
     background: $white;
     border-radius: 2px;
-    border-left: 5px solid $blueHightlight;
+    border-left: 5px solid $annotationUserColor;
     max-width: 100%;
     line-height: 140%;
     word-break: break-word;
@@ -42,7 +44,7 @@ export default {
       font-size: 12px;
     }
     &--editMode {
-      background: $blueHightlight;
+      background: $annotationUserColor;
       color: #fff;
       margin: 0.4em 0.3em;
       padding: 0.5em 0.8em;
@@ -65,6 +67,13 @@ export default {
         vertical-align: sub;
       }
     }
+}
+$annotationSystemColor: $gray90;
+.annotationTag--system {
+  border-left-color: $annotationSystemColor;
+}
+.annotationTag--system.annotationTag--editMode {
+  background: $annotationSystemColor;
 }
 
 

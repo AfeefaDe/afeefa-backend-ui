@@ -6,6 +6,7 @@
           <h2 class="mainCard__headerTitle">{{ $t('headlines.translations') }}</h2>
         </div>
         <div>
+          <p v-if="lastRefresh">Letzte Auslösung: {{lastRefresh | formatDateAbsolute}}</p>
           <form @submit.prevent="syncTranslations">
             <button class="btn waves-effect waves-light" type="submit">Übersetzungen auslösen</button>
           </form>
@@ -15,7 +16,8 @@
             <spinner :show="true" :width="1" :radius="5" :length="3" /> Löse Übersetzungen aus
           </p>
           <div v-else-if="loaded">
-            Die Übersetzungen wurden erfolgreich ausgelöst.
+            Die Übersetzungen wurden erfolgreich ausgelöst:<br>
+            <b>{{responseMessage}}</b>
           </div>
           <div v-else-if="error">
             Die Übersetzungen konnten leider nicht ausgelöst werden.
@@ -41,24 +43,41 @@ export default {
     return {
       loaded: false,
       error: false,
-      loading: false
+      loading: false,
+      responseMessage: '',
+      lastRefresh: null,
+      url: BASE + 'translations'
     }
+  },
+
+  created () {
+    let request = Vue.http.get(this.url, {token: 'MapCat_050615'})
+    request.then(result => {
+      if (result.body.updated_at) {
+        const date = new Date(result.body.updated_at)
+        this.lastRefresh = date
+      }
+    }).catch(error => {
+      console.log('sync translations error', error)
+    })
   },
 
   methods: {
     syncTranslations () {
-      let url = BASE + 'translations'
       this.loading = true
       this.loaded = false
       this.error = false
-      let request = Vue.http.post(url, {token: 'MapCat_050615'})
+      let request = Vue.http.post(this.url, {token: 'MapCat_050615'})
       request.then(result => {
+        if (result.body.msg) {
+          this.responseMessage = result.body.msg
+        }
         this.loading = false
         this.loaded = true
-      }).catch(e => {
+      }).catch(error => {
         this.loading = false
         this.error = true
-        console.log('sync translations error', e)
+        console.log('sync translations error', error)
       })
     }
   },

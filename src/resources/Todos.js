@@ -36,9 +36,9 @@ class TodosResource extends BaseResource {
 }
 
 export default {
-  getAll () {
+  getAll (params) {
     const resource = new TodosResource()
-    return store.dispatch('api/getList', {resource}).then(entries => {
+    return store.dispatch('api/getList', {resource, params}).then(entries => {
       for (let entry of entries) {
         Entries.fetchCategory(entry)
         Entries.fetchSubCategory(entry)

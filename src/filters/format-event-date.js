@@ -7,8 +7,10 @@ export default function (event) {
     weekdaysShort: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So']
   })
 
+  let dateString
   const currentYear = moment().year()
 
+  // check if same day
   let isSameDay = false
   if (event.date_end) {
     const sD = moment(event.date_start).startOf('day')
@@ -16,36 +18,57 @@ export default function (event) {
     isSameDay = sD.isSame(eD)
   }
 
+  // create date start string
   let format = 'dddd DD. MMMM'
   const startYear = moment(event.date_start).year()
   if (currentYear !== startYear) {
     format += ' YYYY'
   }
-  let dateString = moment(event.date_start).format(format)
+  const dateStart = moment(event.date_start).format(format)
 
-  if (event.has_time_start) {
-    dateString += moment(event.date_start).format(' HH:mm')
-    if (!isSameDay) {
-      dateString += ' Uhr'
+  // create date end string
+  let dateEnd
+  if (event.date_end) {
+    format = 'dddd DD. MMMM'
+    const endYear = moment(event.date_end).year()
+    if (currentYear !== endYear) {
+      format += ' YYYY'
     }
+    dateEnd = moment(event.date_end).format(format)
   }
 
-  if (event.date_end) {
-    if (!isSameDay || event.has_time_end) {
-      dateString += ' - '
-    }
+  // create time start string
+  let timeStart
+  if (event.has_time_start) {
+    timeStart = moment(event.date_start).format(' HH:mm') + ' Uhr'
+  }
 
-    if (!isSameDay) {
-      format = 'dddd DD. MMMM'
-      const endYear = moment(event.date_end).year()
-      if (currentYear !== endYear) {
-        format += ' YYYY'
-      }
-      dateString += moment(event.date_end).format(format)
-    }
+  // create time end string
+  let timeEnd
+  if (event.has_time_end) {
+    timeEnd = moment(event.date_end).format(' HH:mm') + ' Uhr'
+  }
 
+  // build date string depending on date
+  dateString = dateStart
+  // same day
+  if (isSameDay) {
+    if (event.has_time_start && event.has_time_end) {
+      dateString += ' von ' + timeStart
+      dateString += ' bis ' + timeEnd
+    } else if (event.has_time_start) {
+      dateString += ' um ' + timeStart
+    } else if (event.has_time_end) {
+      dateString += ' bis ' + timeEnd
+    }
+  // different date
+  } else {
+    if (event.has_time_start) {
+      dateString += timeStart
+    }
+    dateString += ' bis ' + dateEnd
     if (event.has_time_end) {
-      dateString += moment(event.date_end).format(' HH:mm') + ' Uhr'
+      dateString += timeEnd
     }
   }
 

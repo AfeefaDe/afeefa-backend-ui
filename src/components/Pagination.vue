@@ -2,8 +2,12 @@
   <div class="list-pagination">
     <div class="list-pagination__info">
 
-      <p class="list-pagination__infoText">{{ currentNumItems }} {{ $tc('pagination.entries', currentNumItems) }}
-      ({{ $t('pagination.page') }} {{ currentPage }} {{ $t('pagination.of') }} {{ currentNumPages }})</p>
+      <p class="list-pagination__infoText">
+        {{ currentNumItems }} {{ $tc('pagination.entries', currentNumItems) }}
+        <template v-if="currentNumItems > 0">
+          ({{ $t('pagination.page') }} {{ currentPage }} {{ $t('pagination.of') }} {{ currentNumPages }})
+        </template>
+      </p>
       <label class="list-pagination__pagesizeSelectLabel" for="pageSizeSelect" v-if="currentNumItems > 15">{{ $t('pagination.set_page_size') }}:</label>
       <select v-model="currentPageSize"
         @change="pageSizeChanged"

@@ -8,6 +8,7 @@ export default {
     contact: '*',
     annotations: '*',
     search: '*',
+    searchPlaceholder: '*',
     logout: '*',
     new: '*',
     edit: '*',
@@ -27,6 +28,7 @@ export default {
     linkTab: '*',
     preview: '*',
     support_wanted: '*',
+    certified_sfr: '*',
     for_children: '*',
     translations: '*',
     spokenLanguages: '*',
@@ -77,7 +79,10 @@ export default {
     for_children_yes: '*',
     support_wanted: '*',
     support_wanted_yes: '*',
-    tags: '*'
+    certified_sfr: '*',
+    certified_sfr_yes: '*',
+    tags: '*',
+    additionally_informations: '*'
   },
   status: {
     load_event: '*',
@@ -99,10 +104,16 @@ export default {
     activate: '*',
     deactivate: '*',
     edit: '*',
-    add: '*'
+    add: '*',
+    search: '*'
   },
   checkboxes: {
-    show_past_events: '*'
+    show_past_events: '*',
+    short_description_inheritance: '*',
+    locations_inheritance_orga: '*',
+    locations_inheritance_event: '*',
+    contact_infos_inheritance_orga: '*',
+    contact_infos_inheritance_event: '*'
   },
   infos: {
     mandatory_field: '*',

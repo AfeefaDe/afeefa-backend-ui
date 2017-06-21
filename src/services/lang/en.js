@@ -8,6 +8,7 @@ export default {
     contact: 'Contact Info',
     annotations: 'Annotation | Annotations',
     search: 'Search',
+    searchPlaceholder: 'Search in title',
     logout: 'Logout',
     new: 'New',
     edit: 'Edit',
@@ -27,6 +28,7 @@ export default {
     linkTab: 'Links',
     preview: 'Preview',
     support_wanted: 'Support wanted',
+    certified_sfr: 'Certified by Sächsischer Flüchtlingsrat',
     for_children: 'Qualified for children',
     translations: 'Translations',
     spokenLanguages: 'Spoken Language | Spoken Languages',
@@ -52,7 +54,7 @@ export default {
     date: 'Date',
     title: 'Title',
     image_link: 'Image link',
-    description: 'More informations',
+    description: 'Detailed description',
     active: 'Active',
     created_at: 'Created at',
     updated_at: 'Updated at',
@@ -73,12 +75,15 @@ export default {
     web: 'Webpage',
     socialMedia: 'Social Media',
     directions: 'Directions',
-    short_description: 'Description',
+    short_description: 'Short description',
     for_children: 'For children',
     for_children_yes: 'Verfified',
     support_wanted: 'Support',
     support_wanted_yes: 'Wanted',
-    tags: 'Tag | Tags'
+    certified_sfr: 'Certification',
+    certified_sfr_yes: 'Certified',
+    tags: 'Tag | Tags',
+    additionally_informations: 'Additionally informations from parent entry'
   },
   status: {
     load_event: 'Load Event',
@@ -100,10 +105,16 @@ export default {
     activate: 'Publish',
     deactivate: 'Unpublish',
     edit: 'Edit',
-    add: 'Add'
+    add: 'Add',
+    search: 'Search'
   },
   checkboxes: {
-    show_past_events: 'Show past events'
+    show_past_events: 'Show past events',
+    short_description_inheritance: 'Show short description of parent entry',
+    locations_inheritance_orga: 'Show locations of parent orga',
+    locations_inheritance_event: 'Show locations of organizer',
+    contact_infos_inheritance_orga: 'Fill missing fields with properties from parent orga',
+    contact_infos_inheritance_event: 'Fill missing fields with properties from organzier'
   },
   infos: {
     mandatory_field: 'mandatory',
@@ -130,7 +141,7 @@ export default {
     noSelection: 'Nothing selected'
   },
   categories: {
-    'asylum-counselling': 'Asylum counselling',
+    'asylum-counselling': 'Migration counselling',
     'authority': 'Authorities',
     'childcare': 'Child care',
     'christian': 'Christian Community',

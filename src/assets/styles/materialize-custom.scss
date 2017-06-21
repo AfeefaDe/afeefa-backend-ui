@@ -5,3 +5,7 @@
 .inputField__indented {
   margin-left: 2em;
 }
+
+[type="checkbox"]+label {
+  margin-bottom: 1.3em;
+}

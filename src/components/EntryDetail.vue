@@ -34,7 +34,10 @@
               {{ entry.title }}
             </entry-detail-property>
 
-            <entry-detail-property v-if="entry.short_description" :name="$t('entries.short_description')" :iconName="'more_horiz'" :isMultiline="true">{{ entry.short_description }}</entry-detail-property>
+            <entry-detail-property v-if="entry.short_description || entry.inheritance.short_description && entry.parent_orga && entry.parent_orga.short_description" :name="$t('entries.short_description')" :iconName="'more_horiz'" :isMultiline="true">
+              <div class="inheritedValue" v-if="entry.inheritance.short_description && entry.parent_orga">{{entry.parent_orga.short_description}}</div>
+              <div v-if="entry.short_description">{{entry.short_description}}</div>
+            </entry-detail-property>
 
             <entry-detail-property v-if="entry.description"  :name="$t('entries.description')" :iconName="'info_outline'" :isMultiline="true">{{ entry.description }}</entry-detail-property>
 
@@ -46,7 +49,7 @@
             <entry-detail-property
               :name="$tc('entries.date')"
               :iconName="'date_range'"
-              v-if="has.date">
+              v-if="has.date && entry.date_start">
                 {{ entry | formatEventDate }}
             </entry-detail-property>
 
@@ -65,6 +68,13 @@
             </entry-detail-property>
 
             <entry-detail-property
+              :name="$t('entries.certified_sfr')"
+              :iconName="'check_circle'"
+              v-if="entry.certified_sfr">
+                 {{$t('entries.certified_sfr_yes')}}
+            </entry-detail-property>
+
+            <entry-detail-property
               v-if="entry.tags"
               :name="$tc('entries.tags', entry.tags.split(',').length)"
               :iconName="'more_vert'">
@@ -73,12 +83,10 @@
 
             <entry-detail-property
               :name="$tc('headlines.annotations', entry.annotations.length)"
-              :iconName="'label_outline'">
-              <div v-if="entry.annotations.length">
+              :iconName="'label_outline'"
+              v-if="entry.annotations.length">
+              <div>
                 <annotation-tag v-for="annotation in entry.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
-              </div>
-              <div v-else class="entryDetail__error">
-                {{ $t('errors.noAnnotationPresent') }}
               </div>
             </entry-detail-property>
 
@@ -98,10 +106,10 @@
         <section slot="placeTab">
           <ul class="entryDetail" v-if="entry.location">
             <li v-if="entry.location.isEmpty()" class="entryDetail__error">
-              {{ $t('errors.noLocationPresent') }}
+                {{ $t('errors.noLocationPresent') }}
             </li>
             <li v-else>
-              <entry-detail-property :name="$t('entries.address')" :iconName="'location_on'">
+              <entry-detail-property v-if="!entry.location.isEmpty()" :name="$t('entries.address')" :iconName="'location_on'">
                   <span v-if="entry.location.placename">{{ entry.location.placename }}<br></span>
                   <span v-if="entry.location.street">{{ entry.location.street }}<br></span>
                   <span v-if="entry.location.zip || entry.location.city">{{ entry.location.zip }} {{ entry.location.city }}</span>
@@ -118,28 +126,71 @@
 
         <section slot="contactTab">
           <ul class="entryDetail" v-if="entry.contact">
-            <li v-if="entry.contact.isEmpty()" class="entryDetail__error">
-              {{ $t('errors.noContactPresent') }}
+            <li v-if="entry.contact.isEmpty() && !entry.inheritance.contact_infos" class="entryDetail__error">
+              {{ $t('errors.noLocationPresent') /* not inherited and empty */}}
+            </li>
+            <li v-else-if="entry.inheritance.contact_infos && entry.contact.isEmpty() && entry.parent_orga && entry.parent_orga.contact && entry.parent_orga.contact.isEmpty()"  class="entryDetail__error">
+              {{ $t('errors.noLocationPresent') /* inherited but parent and child are empty */}}
             </li>
             <li v-else>
-              <entry-detail-property :name="$t('headlines.contact')" :iconName="'mail_outline'" v-if="entry.contact.person || entry.contact.phone || entry.contact.mail">
+              <entry-detail-property
+                :name="$t('headlines.contact')"
+                :iconName="'mail_outline'"
+                v-if="entry.contact.person || entry.contact.phone || entry.contact.mail || showInheritValue('person') || showInheritValue('phone') || showInheritValue('mail')">
                   <span v-if="entry.contact.person">{{ entry.contact.person }}<br></span>
+                  <span class="inheritedValue" v-else-if="showInheritValue('person')">{{ showInheritValue('person') }}<br></span>
+
                   <span v-if="entry.contact.phone">{{ entry.contact.phone }}<br></span>
+                  <span class="inheritedValue" v-else-if="showInheritValue('phone')">{{ showInheritValue('phone')}}<br></span>
+
                   <a v-if="entry.contact.mail" :href="'mailto:' + entry.contact.mail">{{ entry.contact.mail }}</a>
+                  <a class="inheritedValue" v-else-if="showInheritValue('mail')" :href="'mailto:'+ showInheritValue('mail')">{{ showInheritValue('mail')}}</a>
               </entry-detail-property>
 
-              <entry-detail-property v-if="entry.contact.openingHours" :name="$t('entries.openingHours')" :iconName="'access_time'" :isMultiline="true">{{ entry.contact.openingHours }}</entry-detail-property>
-
-              <entry-detail-property :name="'Links'" :iconName="'link'" v-if="entry.contact.web || entry.contact.socialMedia">
-                <span v-if="entry.contact.web"><a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a><br></span>
-                <span v-if="entry.contact.socialMedia"><a :href="entry.contact.socialMedia" target="_blank">{{ entry.contact.socialMedia }}</a></span>
+              <entry-detail-property
+                v-if="entry.contact.openingHours || showInheritValue('openingHours')"
+                :name="$t('entries.openingHours')"
+                :iconName="'access_time'"
+                :isMultiline="true">
+                <div v-if="entry.contact.openingHours">{{ entry.contact.openingHours }}</div>
+                <div v-else class="inheritedValue">{{showInheritValue('openingHours')}}</div>
               </entry-detail-property>
 
-              <entry-detail-property :name="$tc('headlines.spokenLanguages', entry.contact.spokenLanguages.split(',').length)" :iconName="'translate'" v-if="entry.contact.spokenLanguages">
-                {{spokenLanguages}}
+              <entry-detail-property
+                :name="'Links'"
+                :iconName="'link'"
+                v-if="entry.contact.web || entry.contact.socialMedia || showInheritValue('web') || showInheritValue('socialMedia')">
+                  <span v-if="entry.contact.web">
+                    <a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a><br>
+                  </span>
+                  <span v-else-if="showInheritValue('web')" class="inheritedValue">
+                    <a :href="showInheritValue('web')" target="_blank">{{ showInheritValue('web') }}</a><br>
+                  </span>
+
+                  <span v-if="entry.contact.socialMedia">
+                    <a :href="entry.contact.socialMedia" target="_blank">{{ entry.contact.socialMedia }}</a>
+                  </span>
+                  <span v-else-if="showInheritValue('socialMedia')" class="inheritedValue" >
+                    <a :href="showInheritValue('socialMedia')" target="_blank">{{ showInheritValue('socialMedia') }}</a>
+                  </span>
               </entry-detail-property>
 
+              <entry-detail-property
+                v-if="entry.contact.spokenLanguages"
+                :name="$tc('headlines.spokenLanguages', entry.contact.spokenLanguages.split(',').length)"
+                :iconName="'translate'">
+                  {{stringifySpokenLanguages(entry.contact.spokenLanguages)}}
+              </entry-detail-property>
+              <entry-detail-property
+                v-else-if="showInheritValue('spokenLanguages')"
+                :name="$tc('headlines.spokenLanguages', showInheritValue('spokenLanguages').split(',').length)"
+                :iconName="'translate'">
+                  <div class="inheritedValue">
+                    {{stringifySpokenLanguages(showInheritValue('spokenLanguages'))}}
+                  </div>
+              </entry-detail-property>
             </li>
+
           </ul>
         </section>
         <section slot="linkTab">
@@ -293,6 +344,31 @@ export default {
         }
       })
     },
+    /*
+     * decide whereever to output the inheritaded attribute for the contact object
+     */
+    showInheritValue (attribute) {
+      if (this.entry.inheritance.contact_infos && this.entry.parent_orga && this.entry.parent_orga.contact && this.entry.parent_orga.contact[attribute]) {
+        return this.entry.parent_orga.contact[attribute]
+      } else {
+        return false
+      }
+    },
+    /*
+     * Stringify spoken languages depending on current UI langugage
+     */
+    stringifySpokenLanguages (spokenLanguages) {
+      const languageKey = this.$i18n.locale
+      let spokenLanguagesResult = []
+      if (spokenLanguages && spokenLanguages.split(',')) {
+        const langCodes = spokenLanguages.split(',')
+        for (let langCode of langCodes) {
+          const langObject = Languages.getLanguageFromCode(langCode)
+          spokenLanguagesResult.push(langObject[languageKey])
+        }
+      }
+      return spokenLanguagesResult.join(', ')
+    },
     setCurrentTab (newCurrentTab) {
       this.currentTab = newCurrentTab
     },
@@ -310,24 +386,11 @@ export default {
       }
     },
     previewLink () {
-      return `${process.env.FRONTEND_URL}${this.entry.type}/${this.entry.id}`
-    },
-    /*
-     * Stringify spoken languages depending on current UI langugage
-     */
-    spokenLanguages () {
-      const languageKey = this.$i18n.locale
-      let spokenLanguagesString = ''
-      if (this.entry.contact.spokenLanguages && this.entry.contact.spokenLanguages.split(',')) {
-        const langCodes = this.entry.contact.spokenLanguages.split(',')
-        for (let langCode of langCodes) {
-          const langObject = Languages.getLanguageFromCode(langCode)
-          spokenLanguagesString += langObject[languageKey] + ', '
-        }
-        // remove last ','
-        spokenLanguagesString = spokenLanguagesString.substring(0, spokenLanguagesString.length - 2)
+      if (this.entry.type === 'orgas') {
+        return `${process.env.FRONTEND_URL}project/${this.entry.id}`
+      } else if (this.entry.type === 'events') {
+        return `${process.env.FRONTEND_URL}event/${this.entry.id}`
       }
-      return spokenLanguagesString
     }
   },
 
@@ -351,6 +414,11 @@ export default {
   margin-left: -6px;
   font-weight: bold;
   width: 28px;
+}
+.inheritedValue {
+  padding-left: 1em;
+  border-left: 3px solid $turquoise;
+  font-style: italic;
 }
 
 .entryDetail {

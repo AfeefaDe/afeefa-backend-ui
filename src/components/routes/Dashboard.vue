@@ -2,6 +2,12 @@
   <div class="row">
     <div class="col s12 m12">
       <div class="mainCard">
+        <search-items :modifyRoute="false"></search-items>
+      </div>
+    </div>
+
+    <div class="col s12 m12">
+      <div class="mainCard">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">
             <router-link :to="{name: 'todos'}">{{ $t('headlines.todos') }} ({{ numTodos }})</router-link>
@@ -19,7 +25,7 @@
       </div>
     </div>
 
-    <div class="col s12 m12">
+    <div class="col s12 m6">
       <div class="mainCard">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">
@@ -42,11 +48,11 @@
       </div>
     </div>
 
-    <div class="col s12 m12">
+    <div class="col s12 m6">
       <div class="mainCard">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">
-            <router-link :to="{name: 'events.list'}">{{ $tc('headlines.events', 2) }} ({{numEvents}})</router-link>
+            <router-link :to="{name: 'events.list'}">{{ $tc('headlines.events', numEvents) }} ({{numEvents}})</router-link>
           </h2>
           <router-link :to="{name: 'events.new'}"  class="mainCard__headerButton">
             {{$t('buttons.add')}}
@@ -71,6 +77,7 @@
 
 <script>
 import EntryListItems from '@/components/EntryListItems'
+import SearchItems from '@/components/SearchItems'
 import sortByUpdatedAt from '@/helpers/sort-by-updated-at'
 import sortByCreatedAt from '@/helpers/sort-by-created-at'
 import { mapState } from 'vuex'
@@ -93,7 +100,7 @@ export default {
   computed: mapState({
     numTodos: state => state.navigation.numTodos,
     numOrgas: state => state.navigation.numOrgas,
-    numEvents: state => state.navigation.numEvents
+    numEvents: state => state.navigation.numEvents ? state.navigation.numEvents.all : 0
   }),
 
   created () {
@@ -111,7 +118,7 @@ export default {
   },
 
   components: {
-    EntryListItems
+    EntryListItems, SearchItems
   }
 }
 </script>

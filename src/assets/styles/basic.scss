@@ -3,6 +3,7 @@ body {
 	background-color: $white;
 	color: $black;
   min-width: 320px;
+  font-size: 14px;
 }
 
 * {
@@ -11,13 +12,13 @@ body {
 .hideDesktop {
   display: inherit;
   @media screen and (min-width: $break-medium) {
-    display: none;
+    display: none!important;
   }
 }
 .hideMobile {
   display: inherit;
   @media screen and (max-width: $break-medium) {
-    display: none;
+    display: none!important;
   }
 }
 

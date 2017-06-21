@@ -8,6 +8,7 @@ export default {
     contact: 'Kontakt',
     annotations: 'Anmerkung | Anmerkungen',
     search: 'Suche',
+    searchPlaceholder: 'Suche im Titel',
     logout: 'Logout',
     new: 'Neu',
     edit: 'Ändern',
@@ -27,6 +28,7 @@ export default {
     linkTab: 'Verweise',
     preview: 'Vorschau',
     support_wanted: 'Unterstützung wird benötigt',
+    certified_sfr: 'Zertifiziert vom Sächsischen Flüchtlingsrat',
     for_children: 'Für Kinder geeignet',
     translations: 'Übersetzungen',
     spokenLanguages: 'Gesprochene Sprache | Gesprochene Sprachen',
@@ -51,7 +53,7 @@ export default {
     date: 'Datum',
     title: 'Titel',
     image_link: 'Link zum Bild',
-    description: 'Mehr Informationen',
+    description: 'Ausführliche Beschreibung',
     active: 'Aktiv',
     created_at: 'Erstellt',
     updated_at: 'Geändert',
@@ -72,12 +74,15 @@ export default {
     web: 'Homepage',
     socialMedia: 'Social Media',
     directions: 'Anfahrtsweg',
-    short_description: 'Beschreibung',
+    short_description: 'Kurze Beschreibung',
     for_children: 'Für Kinder',
     for_children_yes: 'Geeignet',
     support_wanted: 'Unterstützung',
     support_wanted_yes: 'Wird benötigt',
-    tags: 'Tag | Tags'
+    certified_sfr: 'Zertifizierung',
+    certified_sfr_yes: 'Zertifiziert',
+    tags: 'Tag | Tags',
+    additionally_informations: 'Zusätzliche Informationen vom übergeordneten Eintrag'
   },
   status: {
     load_event: 'Lade Event',
@@ -99,10 +104,16 @@ export default {
     activate: 'Veröffentlichen',
     deactivate: 'Verbergen',
     edit: 'Bearbeiten',
-    add: 'Hinzufügen'
+    add: 'Hinzufügen',
+    search: 'Suche'
   },
   checkboxes: {
-    show_past_events: 'Zeige vergangene Veranstaltungen'
+    show_past_events: 'Zeige vergangene Veranstaltungen',
+    short_description_inheritance: 'Kurze Beschreibung des übergeordneten Eintrags anzeigen',
+    locations_inheritance_orga: 'Zeige Ort der Übergeordneten Orga als Alternative an',
+    locations_inheritance_event: 'Zeige Ort des Veranstaltenden als Alternative an',
+    contact_infos_inheritance_orga: 'Fehlende Felder mit Angaben der Elternorga ergänzen',
+    contact_infos_inheritance_event: 'Fehlende Felder mit Angaben des Veranstalters ergänzen'
   },
   infos: {
     mandatory_field: 'Pflichtfeld',
@@ -129,7 +140,7 @@ export default {
     noSelection: 'Kein Eintag ausgewählt'
   },
   categories: {
-    'asylum-counselling': 'Asylberatung',
+    'asylum-counselling': 'Migrationsberatung',
     'authority': 'Behörden',
     'childcare': 'Kinderbetreuung',
     'christian': 'Christliche Gemeinschaft',

@@ -107,6 +107,11 @@ export default {
     this.hasStartTime = this.hasTimeStart
     this.hasEndTime = this.hasTimeEnd
     this.checkSameDay()
+
+    // set new start date if not existing
+    if (this.dateStart === null) {
+      this.$emit('input', {dateStart: this.currentDateStart, dateEnd: this.dateEnd, hasTimeStart: this.hasTimeStart, hasTimeEnd: this.hasTimeEnd})
+    }
   },
 
   mounted () {
@@ -313,6 +318,9 @@ export default {
     padding-left: 0.5em;
     padding-right: 0.45em;
     margin: 0em 1em 0em 2em;
+  }
+  div.flatpickr-calendar {
+    background-color: inherit;
   }
   #startDate {
     cursor: pointer; cursor: hand;
