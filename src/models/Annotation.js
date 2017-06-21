@@ -14,23 +14,18 @@ export default class Annotion extends BaseModel {
   }
 
   serialize () {
-    let data
-    // new annotation: send full annotation object
+    // always send full annotation cause the title could have changed
+    let data = {
+      type: this.type,
+      id: this.id,
+      attributes: {
+        detail: this.detail,
+        annotation_category_id: this.annotationCategory.id
+      }
+    }
+    // in case we are creating a new annotation strip away the id attribute
     if (this.id === null) {
-      data = {
-        type: this.type,
-        attributes: {
-          detail: this.detail,
-          annotation_category_id: this.annotationCategory.id
-        }
-      }
-      return data
-    } else {
-      // annotation exists: only send id and type
-      data = {
-        type: this.type,
-        id: this.id
-      }
+      delete data['id']
     }
     return data
   }
