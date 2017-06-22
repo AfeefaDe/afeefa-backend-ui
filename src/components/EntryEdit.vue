@@ -221,7 +221,7 @@
               <section slot="contactTab">
                 <div class="inputField__spacing" v-if="item.contact">
 
-                  <div v-if="item && item.parent_orga && !item.parent_orga.contact.isEmpty()" class="input-field">
+                  <div v-if="item && item.parent_orga && item.parent_orga.contact && !item.parent_orga.contact.isEmpty()" class="input-field">
                     <input class="filled-in" id="inhContact" type="checkbox" v-model="item.inheritance.contact_infos">
                     <label v-if="item.type === 'orgas'" for="inhContact">{{$t('checkboxes.contact_infos_inheritance_orga')}}</label>
                     <label v-else for="inhContact">{{$t('checkboxes.contact_infos_inheritance_event')}}</label>
@@ -411,6 +411,7 @@ export default {
       }
     })
 
+
     Categories.getAll().then(categories => {
       this.categories = categories.filter(
         category => category.parent_category === null
@@ -474,17 +475,11 @@ export default {
   },
 
   computed: {
-    /*
-     * selecteable annotations: hide already used annotaionCategories
-     */
     selectableAnnotations () {
       return this.annotationCategories.filter(
         (annotationCategory) => {
           // only allow editor annotationCategories
           if (!annotationCategory.generatedBySystem) {
-            for (let annotation of this.item.annotations) {
-              if (annotation.annotationCategory.id === annotationCategory.id) return false
-            }
             return true
           }
         }
@@ -683,7 +678,6 @@ export default {
 
       const hashOrig = JSON.stringify(this.origItem.serialize())
       const hashItem = JSON.stringify(this.item.serialize())
-
       if (hashOrig === hashItem) {
         next()
         return

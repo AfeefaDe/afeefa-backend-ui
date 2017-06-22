@@ -35,6 +35,8 @@ export default class Orga extends Entry {
   }
 
   clone () {
-    return super.clone(new Orga())
+    let clonedOrga = super.clone(new Orga())
+    clonedOrga._relationIds.sub_orgas = this._relationIds.sub_orgas
+    return clonedOrga
   }
 }
