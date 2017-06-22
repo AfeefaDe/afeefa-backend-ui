@@ -185,14 +185,25 @@ export default class Entry extends BaseModel {
     entry.support_wanted = this.support_wanted
     entry.certified_sfr = this.certified_sfr
     entry.tags = this.tags
-    entry.inheritance = this.inheritance
-
+    // use deep clone for nested inheritance object
+    entry.inheritance = {
+      short_description: this.inheritance.short_description,
+      contact_infos: this.inheritance.contact_infos
+    }
     entry.active = this.active
     entry.created_at = this.created_at
     entry.updated_at = this.updated_at
     entry.state_changed_at = this.state_changed_at
 
-    entry._relationIds = this._relationIds
+    // use deep clone ‼️ please mind Orga.js and the sub_orgas attribute
+    entry._relationIds = {
+      parent_orga: this._relationIds.parent_orga,
+      category: this._relationIds.category,
+      sub_category: this._relationIds.sub_category,
+      location: this._relationIds.location,
+      contact: this._relationIds.contact,
+      annotations: this._relationIds.annotations
+    }
 
     return entry
   }
