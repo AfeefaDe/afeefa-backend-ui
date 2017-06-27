@@ -128,6 +128,13 @@ export default {
       router.push({name: 'login'})
     },
 
+    updateAuthHeaderFromStorage ({commit, dispatch}) {
+      let session = localStorage.getItem(STORAGE_KEY)
+      if (session) {
+        let updatedAuthHeader = JSON.parse(session)
+        commit('setLastAuthHeader', updatedAuthHeader)
+      }
+    },
 
     login ({state, commit, dispatch}, loginData) {
       const url = BASE + 'users/sign_in'
