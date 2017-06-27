@@ -22,6 +22,10 @@ Vue.use(VueResource)
 Vue.config.productionTip = false
 
 store.dispatch('initApp')
+/* listen to changes on the local storage; this can be caused by other tabs updating the token */
+window.addEventListener('storage', function () {
+  store.dispatch('auth/updateAuthHeaderFromStorage')
+})
 
 /* eslint-disable no-new */
 new Vue({
