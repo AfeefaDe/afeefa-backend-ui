@@ -118,7 +118,7 @@
               <entry-detail-property v-if="entry.location.directions" :name="$t('entries.directions')" :iconName="'train'" :isMultiline="true">{{ entry.location.directions }}</entry-detail-property>
 
               <li v-if="!entry.location.isEmpty()">
-                <location-map :map-center="mapCenter" :location="entry.location"></location-map>
+                <location-map :map-center="mapCenter" :location="entry.location" :currentTab="currentTab"></location-map>
               </li>
             </li>
           </ul>

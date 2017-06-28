@@ -16,7 +16,7 @@
 import Vue2Leaflet from 'vue2-leaflet'
 
 export default {
-  props: ['mapCenter', 'location', 'draggable'],
+  props: ['mapCenter', 'location', 'draggable', 'currentTab'],
 
   data () {
     return {
@@ -32,6 +32,16 @@ export default {
     'location.lat' (lat) {
       this.resetCenter()
       this.setMarker()
+    },
+    /*
+     * this recalculates the size of the map after every tab change
+     * allows us to use v-show in the EntryTabbedContent Component
+     */
+    currentTab: function (currentTab) {
+      const map = this.$refs.map.mapObject
+      if (map) {
+        map.invalidateSize()
+      }
     }
   },
 
