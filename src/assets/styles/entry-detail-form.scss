@@ -1,0 +1,49 @@
+.go-back {
+  color: white;
+  margin-left: -6px;
+  font-weight: bold;
+  width: 28px;
+}
+.inheritedValue {
+  padding-left: 1em;
+  border-left: 3px solid $turquoise;
+  font-style: italic;
+}
+
+.entryDetail {
+  margin: 0;
+  margin-bottom: 3em;
+  padding: 0;
+  h2 {
+    margin-top: 2em;
+    font-size: 1.4em;
+    font-weight: 500;
+  }
+
+  li.align-status-items {
+    margin-left: 4.5em;
+  }
+  .entryDetail__error {
+    margin-bottom: 1em;
+  }
+
+  &__meta {
+    color: $gray50;
+    margin-right: 0.4em;
+    /*@todo: better solution: #138*/
+    text-transform: capitalize;
+  }
+  &__meta:after {
+    content: ':';
+  }
+  &__inlineInput {
+    flex-grow: 2;
+    width: auto;
+  }
+  &__error {
+    color: $red;
+  }
+  &__error_white_space {
+    margin-bottom: 3em;
+  }
+}
