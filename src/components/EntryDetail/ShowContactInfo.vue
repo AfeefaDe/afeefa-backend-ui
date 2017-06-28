@@ -69,7 +69,7 @@
 
 <script>
 import Languages from '@/helpers/iso_639_languages.js'
-import EntryDetailProperty from '@/components/EntryDetailProperty'
+import EntryDetailProperty from './EntryDetailProperty'
 
 export default {
   props: ['contactInfo', 'inheritedContactInfo', 'parentOrga'],

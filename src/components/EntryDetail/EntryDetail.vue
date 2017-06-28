@@ -219,16 +219,18 @@
 
 
 <script>
+import Events from '@/resources/Events'
+import sortByDateStart from '@/helpers/sort-by-date-start'
+
 import EntryListItems from '@/components/EntryListItems'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
-import EntryDetailProperty from '@/components/EntryDetailProperty'
 import EntryTabbedContent from '@/components/EntryTabbedContent'
-import EntryListDropDownMenu from '@/components/EntryListDropDownMenu'
 import AnnotationTag from '@/components/AnnotationTag'
-import Events from '@/resources/Events'
-import sortByDateStart from '@/helpers/sort-by-date-start'
-import ShowContactInfo from '@/components/ShowContactInfo'
+
+import EntryDetailProperty from './EntryDetailProperty'
+import EntryListDropDownMenu from './EntryListDropDownMenu'
+import ShowContactInfo from './ShowContactInfo'
 
 export default {
   props: ['entry', 'entryLoadingError', 'routeName', 'Resource', 'messages', 'options'],

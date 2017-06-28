@@ -292,7 +292,6 @@ import Categories from '@/resources/Categories'
 import Annotations from '@/resources/Annotations'
 import AnnotationCategories from '@/resources/AnnotationCategories'
 import sortByTitle from '@/helpers/sort-by-title'
-import DatePicker from '@/components/DatePicker'
 import AnnotationTag from '@/components/AnnotationTag'
 import EventBus from '@/services/event-bus'
 import Spinner from '@/components/Spinner'
@@ -300,7 +299,10 @@ import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
 import EntryTabbedContent from '@/components/EntryTabbedContent'
 import Multiselect from 'vue-multiselect'
-import EditContactInfo from '@/components/EditContactInfo'
+
+import DatePicker from './Datepicker/DatePicker'
+import EditContactInfo from './EditContactInfo'
+
 
 export default {
   props: ['id', 'routeName', 'Resource', 'messages', 'options'],

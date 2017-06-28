@@ -60,8 +60,8 @@
 </template>
 
 <script>
-import TimePicker from '@/components/TimePicker'
-import DayPicker from '@/components/DayPicker'
+import TimePicker from './TimePicker'
+import DayPicker from './DayPicker'
 import moment from 'moment'
 
 export default {

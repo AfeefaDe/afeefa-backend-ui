@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import LangSelectInput from '@/components/LangSelectInput'
+import LangSelectInput from './LangSelectInput'
 
 export default {
   props: ['contactInfo', 'inheritanceState', 'type', 'parentOrga'],
