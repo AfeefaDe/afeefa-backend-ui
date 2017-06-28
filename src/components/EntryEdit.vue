@@ -204,7 +204,7 @@
                     </span>
                   </div>
 
-                  <location-map :map-center="mapCenter" :location="item.location" :draggable="true" @bibbelDrag="bibbelDrag"></location-map>
+                  <location-map :map-center="mapCenter" :location="item.location" :draggable="true" @bibbelDrag="bibbelDrag" :currentTab="currentTab"></location-map>
 
                   <div class="input-field">
                     <label for="directions" :class="{active: item.location.directions}">
