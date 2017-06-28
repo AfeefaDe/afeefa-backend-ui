@@ -19,6 +19,8 @@
 <script>
 import NavigationSidebar from '@/components/NavigationSidebar'
 import NavigationMobile from '@/components/NavigationMobile'
+import Categories from '@/resources/Categories'
+import AnnotationCategories from '@/resources/AnnotationCategories'
 
 export default {
   components: {
@@ -28,6 +30,9 @@ export default {
 
   created () {
     this.$store.dispatch('api/getMetaInformation')
+    // categoris and annotationsCategories should be loaded initially
+    Categories.getAll()
+    AnnotationCategories.getAll()
   }
 }
 

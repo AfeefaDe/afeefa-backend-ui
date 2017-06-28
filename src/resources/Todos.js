@@ -5,6 +5,7 @@ import Event from '@/models/Event'
 import Orga from '@/models/Orga'
 import Entries from './base/Entries'
 import BaseResource from './base/BaseResource'
+import Annotations from './Annotations'
 
 class TodosResource extends BaseResource {
   init () {
@@ -38,6 +39,9 @@ class TodosResource extends BaseResource {
 export default {
   getAll (params) {
     const resource = new TodosResource()
+    // loading all todos should trigger loading all annotations
+    // this allows the requests to be processed in parallel
+    Annotations.getAll()
     return store.dispatch('api/getList', {resource, params}).then(entries => {
       for (let entry of entries) {
         Entries.fetchCategory(entry)

@@ -23,9 +23,7 @@ export default {
 
   get (id) {
     const resource = new AnnotationsResource()
-    return this.getAll().then(() => {
-      return store.dispatch('api/getItem', {resource, id})
-    })
+    return store.dispatch('api/getItem', {resource, id})
   },
   /*
    * public method to create new annoation in editentry form
