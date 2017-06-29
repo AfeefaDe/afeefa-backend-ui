@@ -204,7 +204,7 @@
                     </span>
                   </div>
 
-                  <location-map :map-center="mapCenter" :location="item.location" :draggable="true" @bibbelDrag="bibbelDrag"></location-map>
+                  <location-map :map-center="mapCenter" :location="item.location" :draggable="true" @bibbelDrag="bibbelDrag" :currentTab="currentTab"></location-map>
 
                   <div class="input-field">
                     <label for="directions" :class="{active: item.location.directions}">
@@ -219,75 +219,13 @@
 
 
               <section slot="contactTab">
-                <div class="inputField__spacing" v-if="item.contact">
-
-                  <div v-if="item && item.parent_orga && item.parent_orga.contact && !item.parent_orga.contact.isEmpty()" class="input-field">
-                    <input class="filled-in" id="inhContact" type="checkbox" v-model="item.inheritance.contact_infos">
-                    <label v-if="item.type === 'orgas'" for="inhContact">{{$t('checkboxes.contact_infos_inheritance_orga')}}</label>
-                    <label v-else for="inhContact">{{$t('checkboxes.contact_infos_inheritance_event')}}</label>
-                  </div>
-
-                  <div class="input-field">
-                    <label for="mail" :class="{active: item.contact.mail || showInheritValue('mail')}">E-Mail</label>
-                    <input id="mail" type="email"
-                      v-model="item.contact.mail"
-                      name="email"
-                      data-vv-validate-on="blur"
-                      v-validate="'email'"
-                      :class="{'validation-error': errors.has('email') }"
-                      :placeholder="showInheritValue('mail')"/>
-                    <span v-show="errors.has('email')" class="validation-error">{{ errors.first('email') }}</span>
-                  </div>
-
-                  <div class="input-field">
-                    <label for="phone" :class="{active: item.contact.phone || showInheritValue('phone')}">Telefon</label>
-                    <input v-model="item.contact.phone" :placeholder="showInheritValue('phone')" id="phone" type="text" />
-                  </div>
-
-                  <div class="input-field">
-                    <label for="contactPerson" :class="{active: item.contact.person || showInheritValue('person')}">Kontaktperson</label>
-                    <input v-model="item.contact.person" :placeholder="showInheritValue('person')" id="contactPerson" type="text"/>
-                  </div>
-
-                  <div class="inputField__spacing input-field" v-if="item.type === 'orgas'">
-                    <label for="openingHours" :class="{active: item.contact.openingHours || showInheritValue('openingHours')}">
-                      {{ $t('entries.openingHours') }}
-                    </label>
-                    <textarea v-model="item.contact.openingHours" :placeholder="showInheritValue('openingHours')" id="openingHours"
-                      class="materialize-textarea"></textarea>
-                  </div>
-
-                  <div class="input-field">
-                    <label for="web" :class="{active: item.contact.web || showInheritValue('web')}">{{ $t('entries.web') }}</label>
-                    <input id="web"
-                          type="text"
-                          v-model="item.contact.web"
-                          name="web"
-                          data-vv-validate-on="blur"
-                          v-validate="'url-with-protocol'"
-                          :class="{'validation-error': errors.has('web') }"
-                          :placeholder="showInheritValue('web')"/>
-                    <span v-show="errors.has('web')" class="validation-error">{{ errors.first('web') }}</span>
-                  </div>
-
-                  <div class="input-field">
-                    <label for="socialMedia" :class="{active: item.contact.socialMedia || showInheritValue('socialMedia')}">
-                      {{ $t('entries.socialMedia') }}
-                    </label>
-                    <input id="socialMedia"
-                          type="text"
-                          v-model="item.contact.socialMedia"
-                          name="socialMedia"
-                          data-vv-validate-on="blur"
-                          v-validate="'url-with-protocol'"
-                          :class="{'validation-error': errors.has('socialMedia') }"
-                          :placeholder="showInheritValue('socialMedia')"/>
-                  </div>
-                  <span v-show="errors.has('socialMedia')" class="validation-error">{{ errors.first('socialMedia') }}</span>
-
-                  <lang-select-input  @input="updateSpokenLanguages" :inheritedValues="showInheritValue('spokenLanguages')" :entryValue="item.contact.spokenLanguages"></lang-select-input>
-
-                </div>
+                <edit-contact-info v-if="item"
+                  :contact-info="item.contact"
+                  :inheritance-state="item.inheritance.contact_infos"
+                  :type="item.type"
+                  :parent-orga="item.parent_orga"
+                  @input="updateInheritedContactInfo">
+                </edit-contact-info>
               </section>
 
               <section slot="linkTab">
@@ -354,15 +292,17 @@ import Categories from '@/resources/Categories'
 import Annotations from '@/resources/Annotations'
 import AnnotationCategories from '@/resources/AnnotationCategories'
 import sortByTitle from '@/helpers/sort-by-title'
-import DatePicker from '@/components/DatePicker'
 import AnnotationTag from '@/components/AnnotationTag'
 import EventBus from '@/services/event-bus'
 import Spinner from '@/components/Spinner'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
 import EntryTabbedContent from '@/components/EntryTabbedContent'
-import LangSelectInput from '@/components/LangSelectInput'
 import Multiselect from 'vue-multiselect'
+
+import DatePicker from './Datepicker/DatePicker'
+import EditContactInfo from './EditContactInfo'
+
 
 export default {
   props: ['id', 'routeName', 'Resource', 'messages', 'options'],
@@ -517,17 +457,6 @@ export default {
         Entries.fetchParentOrga(this.item)
       }
     },
-    /*
-     * decide whereever to output the inheritaded attribute for the contact object
-     */
-    showInheritValue (attribute) {
-      if (this.item.inheritance.contact_infos && this.item.parent_orga && this.item.parent_orga.contact && this.item.parent_orga.contact[attribute]) {
-        return this.item.parent_orga.contact[attribute]
-      } else {
-        return false
-      }
-    },
-
     categoryChanged () {
       this.item.sub_category = null
     },
@@ -590,8 +519,8 @@ export default {
       this.item.has_time_end = hasTimeEnd
     },
 
-    updateSpokenLanguages (spokenLanguages) {
-      this.item.contact.spokenLanguages = spokenLanguages
+    updateInheritedContactInfo (inheritanceState) {
+      this.item.inheritance.contact_infos = inheritanceState
     },
 
     updateImageContainerState ({mediaImageError}) {
@@ -748,118 +677,8 @@ export default {
     ImageContainer,
     AnnotationTag,
     EntryTabbedContent,
-    LangSelectInput,
-    Multiselect
+    Multiselect,
+    EditContactInfo
   }
 }
 </script>
-
-
-<style lang="scss" scoped>
-@import "~variables";
-
-.inheritance-field {
-  margin-top: -1.4em;
-  padding-bottom: 1em;
-}
- .inheritance-output {
-  color: $gray50;
-}
-
-.entryForm {
-  h2 {
-    margin-top: 2em;
-    margin-bottom: 0.5em;
-    font-size: 1.4em;
-    font-weight: 500;
-  }
-  &__actionFooter {
-    margin-top: 1.2em;
-    display: flex;
-    justify-content: space-between;
-    @media screen and (max-width: $break-medium) {
-      flex-wrap: wrap;
-      button {
-        flex-grow: 2;
-        margin-bottom: 1.5em;
-      }
-    }
-  }
-  .mandatory-field {
-    color: #26a69a;
-  }
-}
-.input-field {
-  .flatpickr-input {
-    color: inherit !important;
-  }
-  label {
-    display: inline-block;
-    width: 100%;
-  }
-  .labelCharacterCount {
-    float: right;
-  }
-}
-
-select.validation-error, textarea.validation-error, input.validation-error, div.validation-error {
-  margin-top: 2px;
-  background-color: #ffeeee;
-  border-bottom-color: red;
-  box-shadow: 0 1px 0 0 red;
-  &:focus {
-    background-color: #ffeeee;
-    border-bottom-color: red;
-    box-shadow: 0 1px 0 0 red;
-  }
-}
-
-.datePicker.validation-error {
-  background-color: #ffeeee;
-}
-
-span.validation-error {
-  display: block;
-  margin-top: -16px;
-  margin-bottom: 2em;
-  color: #cc6666;
-  font-size: .9em;
-
-  &.geodata-not-found {
-    margin-bottom: 0;
-  }
-}
-
-span.validation-hint {
-  font-size: .9em;
-  color: #999;
-  i {
-    vertical-align: middle;
-    font-size: 1.4em;
-  }
-}
-
-select + span.validation-error, .datePicker + span.validation-error {
-  margin-top: .4em;
-}
-
-.annotationEditArea {
-  background: $white;
-  padding: 0.5em;
-  border-radius: 5px;
-  margin-top: 0.5em;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  &__error {
-    color: $gray50;
-    margin-left: 0.3em;
-  }
-  .annotationNew {
-    display: block;
-    width: 100%;
-    margin-top: 0.4em;
-  }
-}
-
-</style>

@@ -1,19 +1,19 @@
 <template>
 <div class="tabbedSection">
-    <ul class="tabbedSection__navItemContainer">
-      <li :class="['tabbedSection__navItem', {active: activeTab === 'generalTab'}]">
-        <a href="#" @click.prevent="setActiveTab('generalTab')">{{$t('headlines.generalTab')}}</a>
-      </li>
-      <li :class="['tabbedSection__navItem', {active: activeTab === 'placeTab'}]">
-        <a href="#" @click.prevent="setActiveTab('placeTab')">{{$t('headlines.placeTab')}}</a>
-      </li>
-      <li :class="['tabbedSection__navItem', {active: activeTab === 'contactTab'}]">
-        <a href="#" @click.prevent="setActiveTab('contactTab')">{{$t('headlines.contactTab')}}</a>
-      </li>
-      <li :class="['tabbedSection__navItem', {active: activeTab === 'linkTab'}]">
-        <a href="#" @click.prevent="setActiveTab('linkTab')">{{$t('headlines.linkTab')}}</a>
-      </li>
-    </ul>
+  <ul class="tabbedSection__navItemContainer">
+    <li :class="['tabbedSection__navItem', {active: activeTab === 'generalTab'}]">
+      <a href="#" @click.prevent="setActiveTab('generalTab')">{{$t('headlines.generalTab')}}</a>
+    </li>
+    <li :class="['tabbedSection__navItem', {active: activeTab === 'placeTab'}]">
+      <a href="#" @click.prevent="setActiveTab('placeTab')">{{$t('headlines.placeTab')}}</a>
+    </li>
+    <li :class="['tabbedSection__navItem', {active: activeTab === 'contactTab'}]">
+      <a href="#" @click.prevent="setActiveTab('contactTab')">{{$t('headlines.contactTab')}}</a>
+    </li>
+    <li :class="['tabbedSection__navItem', {active: activeTab === 'linkTab'}]">
+      <a href="#" @click.prevent="setActiveTab('linkTab')">{{$t('headlines.linkTab')}}</a>
+    </li>
+  </ul>
 
   <section v-show="activeTab === 'generalTab'">
     <slot name="generalTab"></slot>

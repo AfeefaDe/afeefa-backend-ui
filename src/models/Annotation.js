@@ -33,6 +33,6 @@ export default class Annotion extends BaseModel {
   deserialize (json) {
     this.id = json.id
     this.detail = json.attributes.detail
-    this._relationIds.annotationCategory = json.relationships.annotation_category.data.id
+    this._relationIds.annotationCategory = json.attributes.annotation_category_id
   }
 }

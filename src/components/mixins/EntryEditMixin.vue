@@ -1,5 +1,5 @@
 <script>
-import EntryEdit from '@/components/EntryEdit'
+import EntryEdit from '@/components/EntryEdit/EntryEdit'
 import EventBus from '@/services/event-bus'
 
 export default {

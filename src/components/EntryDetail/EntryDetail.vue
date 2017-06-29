@@ -118,81 +118,21 @@
               <entry-detail-property v-if="entry.location.directions" :name="$t('entries.directions')" :iconName="'train'" :isMultiline="true">{{ entry.location.directions }}</entry-detail-property>
 
               <li v-if="!entry.location.isEmpty()">
-                <location-map :map-center="mapCenter" :location="entry.location"></location-map>
+                <location-map :map-center="mapCenter" :location="entry.location" :currentTab="currentTab"></location-map>
               </li>
             </li>
           </ul>
         </section>
 
         <section slot="contactTab">
-          <ul class="entryDetail" v-if="entry.contact">
-            <li v-if="entry.contact.isEmpty() && !entry.inheritance.contact_infos" class="entryDetail__error">
-              {{ $t('errors.noLocationPresent') /* not inherited and empty */}}
-            </li>
-            <li v-else-if="entry.inheritance.contact_infos && entry.contact.isEmpty() && entry.parent_orga && entry.parent_orga.contact && entry.parent_orga.contact.isEmpty()"  class="entryDetail__error">
-              {{ $t('errors.noLocationPresent') /* inherited but parent and child are empty */}}
-            </li>
-            <li v-else>
-              <entry-detail-property
-                :name="$t('headlines.contact')"
-                :iconName="'mail_outline'"
-                v-if="entry.contact.person || entry.contact.phone || entry.contact.mail || showInheritValue('person') || showInheritValue('phone') || showInheritValue('mail')">
-                  <span v-if="entry.contact.person">{{ entry.contact.person }}<br></span>
-                  <span class="inheritedValue" v-else-if="showInheritValue('person')">{{ showInheritValue('person') }}<br></span>
-
-                  <span v-if="entry.contact.phone">{{ entry.contact.phone }}<br></span>
-                  <span class="inheritedValue" v-else-if="showInheritValue('phone')">{{ showInheritValue('phone')}}<br></span>
-
-                  <a v-if="entry.contact.mail" :href="'mailto:' + entry.contact.mail">{{ entry.contact.mail }}</a>
-                  <a class="inheritedValue" v-else-if="showInheritValue('mail')" :href="'mailto:'+ showInheritValue('mail')">{{ showInheritValue('mail')}}</a>
-              </entry-detail-property>
-
-              <entry-detail-property
-                v-if="entry.contact.openingHours || showInheritValue('openingHours')"
-                :name="$t('entries.openingHours')"
-                :iconName="'access_time'"
-                :isMultiline="true">
-                <div v-if="entry.contact.openingHours">{{ entry.contact.openingHours }}</div>
-                <div v-else class="inheritedValue">{{showInheritValue('openingHours')}}</div>
-              </entry-detail-property>
-
-              <entry-detail-property
-                :name="'Links'"
-                :iconName="'link'"
-                v-if="entry.contact.web || entry.contact.socialMedia || showInheritValue('web') || showInheritValue('socialMedia')">
-                  <span v-if="entry.contact.web">
-                    <a :href="entry.contact.web" target="_blank">{{ entry.contact.web }}</a><br>
-                  </span>
-                  <span v-else-if="showInheritValue('web')" class="inheritedValue">
-                    <a :href="showInheritValue('web')" target="_blank">{{ showInheritValue('web') }}</a><br>
-                  </span>
-
-                  <span v-if="entry.contact.socialMedia">
-                    <a :href="entry.contact.socialMedia" target="_blank">{{ entry.contact.socialMedia }}</a>
-                  </span>
-                  <span v-else-if="showInheritValue('socialMedia')" class="inheritedValue" >
-                    <a :href="showInheritValue('socialMedia')" target="_blank">{{ showInheritValue('socialMedia') }}</a>
-                  </span>
-              </entry-detail-property>
-
-              <entry-detail-property
-                v-if="entry.contact.spokenLanguages"
-                :name="$tc('headlines.spokenLanguages', entry.contact.spokenLanguages.split(',').length)"
-                :iconName="'translate'">
-                  {{stringifySpokenLanguages(entry.contact.spokenLanguages)}}
-              </entry-detail-property>
-              <entry-detail-property
-                v-else-if="showInheritValue('spokenLanguages')"
-                :name="$tc('headlines.spokenLanguages', showInheritValue('spokenLanguages').split(',').length)"
-                :iconName="'translate'">
-                  <div class="inheritedValue">
-                    {{stringifySpokenLanguages(showInheritValue('spokenLanguages'))}}
-                  </div>
-              </entry-detail-property>
-            </li>
-
-          </ul>
+          <show-contact-info
+            :contact-info="entry.contact"
+            :inherited-contact-info="entry.inheritance.contact_infos"
+            :parent-orga="entry.parent_orga">
+          </show-contact-info>
         </section>
+
+
         <section slot="linkTab">
           <ul v-if="entry.type === 'events' && !entry.parent_orga" class="entryDetail__error entryDetail__error_white_space">
               {{ $t('errors.noLinksPresent') }}
@@ -279,16 +219,18 @@
 
 
 <script>
+import Events from '@/resources/Events'
+import sortByDateStart from '@/helpers/sort-by-date-start'
+
 import EntryListItems from '@/components/EntryListItems'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
-import EntryDetailProperty from '@/components/EntryDetailProperty'
 import EntryTabbedContent from '@/components/EntryTabbedContent'
-import EntryListDropDownMenu from '@/components/EntryListDropDownMenu'
 import AnnotationTag from '@/components/AnnotationTag'
-import Events from '@/resources/Events'
-import sortByDateStart from '@/helpers/sort-by-date-start'
-import Languages from '@/helpers/iso_639_languages.js'
+
+import EntryDetailProperty from './EntryDetailProperty'
+import EntryListDropDownMenu from './EntryListDropDownMenu'
+import ShowContactInfo from './ShowContactInfo'
 
 export default {
   props: ['entry', 'entryLoadingError', 'routeName', 'Resource', 'messages', 'options'],
@@ -344,31 +286,6 @@ export default {
         }
       })
     },
-    /*
-     * decide whereever to output the inheritaded attribute for the contact object
-     */
-    showInheritValue (attribute) {
-      if (this.entry.inheritance.contact_infos && this.entry.parent_orga && this.entry.parent_orga.contact && this.entry.parent_orga.contact[attribute]) {
-        return this.entry.parent_orga.contact[attribute]
-      } else {
-        return false
-      }
-    },
-    /*
-     * Stringify spoken languages depending on current UI langugage
-     */
-    stringifySpokenLanguages (spokenLanguages) {
-      const languageKey = this.$i18n.locale
-      let spokenLanguagesResult = []
-      if (spokenLanguages && spokenLanguages.split(',')) {
-        const langCodes = spokenLanguages.split(',')
-        for (let langCode of langCodes) {
-          const langObject = Languages.getLanguageFromCode(langCode)
-          spokenLanguagesResult.push(langObject[languageKey])
-        }
-      }
-      return spokenLanguagesResult.join(', ')
-    },
     setCurrentTab (newCurrentTab) {
       this.currentTab = newCurrentTab
     },
@@ -401,61 +318,8 @@ export default {
     EntryDetailProperty,
     EntryTabbedContent,
     EntryListDropDownMenu,
-    AnnotationTag
+    AnnotationTag,
+    ShowContactInfo
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@import "~variables";
-
-.go-back {
-  color: white;
-  margin-left: -6px;
-  font-weight: bold;
-  width: 28px;
-}
-.inheritedValue {
-  padding-left: 1em;
-  border-left: 3px solid $turquoise;
-  font-style: italic;
-}
-
-.entryDetail {
-  margin: 0;
-  margin-bottom: 3em;
-  padding: 0;
-  h2 {
-    margin-top: 2em;
-    font-size: 1.4em;
-    font-weight: 500;
-  }
-
-  li.align-status-items {
-    margin-left: 4.5em;
-  }
-  .entryDetail__error {
-    margin-bottom: 1em;
-  }
-
-  &__meta {
-    color: $gray50;
-    margin-right: 0.4em;
-    /*@todo: better solution: #138*/
-    text-transform: capitalize;
-  }
-  &__meta:after {
-    content: ':';
-  }
-  &__inlineInput {
-    flex-grow: 2;
-    width: auto;
-  }
-  &__error {
-    color: $red;
-  }
-  &__error_white_space {
-    margin-bottom: 3em;
-  }
-}
-</style>
