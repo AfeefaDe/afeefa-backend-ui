@@ -43,12 +43,12 @@ export default {
             if (session) {
               console.log('AUTH: Credentials found. Validate on API.')
               let storedAuthHeader = JSON.parse(session)
-              commit('setLastAuthHeader', storedAuthHeader)
               let url = BASE + 'users/validate_token'
               let request = Vue.http.get(url, {headers: storedAuthHeader})
 
               request.then(response => {
                 console.log('AUTH: Validate credentials on API succeeded.')
+                commit('setLastAuthHeader', storedAuthHeader)
                 commit('setCurrentUser', response.body.data)
                 next() // commit route change
               }).catch(response => {
