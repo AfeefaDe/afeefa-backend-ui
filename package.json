@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "autosize": "^3.0.20",
+    "css-toggle-switch": "^4.0.2",
     "flatpickr": "^2.4.8",
     "materialize-css": "^0.98.2",
     "moment": "^2.18.1",
@@ -49,6 +50,7 @@
     "cross-env": "^3.1.4",
     "cross-spawn": "^5.0.1",
     "css-loader": "^0.26.1",
+    "css-toggle-switch": "^4.0.2",
     "es6-promise": "^4.1.0",
     "eslint": "^3.14.1",
     "eslint-config-standard": "^6.2.1",
