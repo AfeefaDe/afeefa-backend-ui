@@ -24,12 +24,18 @@
         <div class="navigationSidebar__footerSeperator"></div>
         <div class="navigationSidebar__footerRow">
           <span class="navigationSidebar__footerItem" :title="$t('hints.user_status')">
-            <i class="navigationSidebar__userIcon material-icons spacing-right">account_circle</i>{{username}}
+            <i class="navigationSidebar__userIcon material-icons spacing-right" @click="toggleMusic">
+              <template v-if="playing">play_arrow</template>
+              <template v-else>account_circle</template>
+            </i>{{username}}
           </span>
           <a href="" @click.prevent="logout()" class="cursor navigationSidebar__footerItem">
             {{ $t('headlines.logout') }}<i class="material-icons spacing-left">exit_to_app</i>
           </a>
         </div>
+      </div>
+      <div class="sound-chillout-zone">
+        <div id='video-player'></div>
       </div>
 
     </div>
@@ -39,9 +45,21 @@
 
 <script>
 import NavigationMixin from './mixins/NavigationMixin'
+import YouTubePlayer from 'youtube-player'
+
 
 export default {
   mixins: [NavigationMixin],
+  data () {
+    return {
+      playing: false,
+      player: null,
+      possibleVideos: ['YCoLUMURunQ']
+    }
+  },
+  mounted () {
+    this.player = YouTubePlayer('video-player')
+  },
   methods: {
     changeLanguage () {
       if (this.$i18n.locale === 'de') {
@@ -50,6 +68,17 @@ export default {
       } else {
         this.$i18n.locale = 'de'
         this.$validator.setLocale('de')
+      }
+    },
+    toggleMusic () {
+      if (!this.playing) {
+        const id = this.possibleVideos[Math.floor(Math.random() * this.possibleVideos.length)]
+        this.player.loadVideoById(id)
+        this.player.playVideo()
+        this.playing = true
+      } else {
+        this.player.stopVideo()
+        this.playing = false
       }
     }
   }
@@ -120,5 +149,11 @@ export default {
   &__userIcon {
     color: $turquoise;
   }
+}
+.sound-chillout-zone {
+  position: fixed;
+  left: -99999px;
+  top: -9999px;
+  visibility: hidden;
 }
 </style>
