@@ -163,7 +163,7 @@
                 </div>
                 <span class="validation-hint">
                   <i class="material-icons">error_outline</i>
-                  Annmerkungen sind nicht öffentlich sichtbar und dienen nur den Redakteur*innen.
+                  Anmerkungen sind nicht öffentlich sichtbar und dienen nur den Redakteur*innen.
                 </span>
               </section>
 
