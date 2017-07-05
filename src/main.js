@@ -14,6 +14,8 @@ import 'materialize-css/dist/js/materialize.min.js'
 import 'materialize-css/dist/css/materialize.min.css'
 // import vue multiselect style
 import 'vue-multiselect/dist/vue-multiselect.min.css'
+// import css-toggle-switch
+import 'css-toggle-switch/dist/toggle-switch.css'
 
 Vue.use(VeeValidate, {delay: 0, locale: 'de'})
 Vue.use(Filters)
