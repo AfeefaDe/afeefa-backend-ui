@@ -18,6 +18,7 @@
       <entry-list-items
         :items="items"
         :sort-function="sortByTitle"
+        :typeFilter="typeFilter"
         :options="{pagination: true}"
         v-else-if="items"
         :modifyRoute="modifyRoute">
@@ -36,7 +37,7 @@ import Search from '@/resources/Search'
 import Spinner from '@/components/Spinner'
 
 export default {
-  props: ['modifyRoute'],
+  props: ['modifyRoute', 'typeFilter'],
   data () {
     return {
       items: null,

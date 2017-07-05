@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar-element">
-    <input class="filled-in" id="titel" type="checkbox" @click="" v-model="titel">
+    <input class="filled-in" id="titel" type="checkbox" @click="">
     <label for="titel">Titel</label>
   </div>
 </template>
