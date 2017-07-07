@@ -149,11 +149,14 @@ export default {
         } else {
           router.push({name: 'dashboard'})
         }
-      }).catch(response => {
+      }, response => {
+        console.log('error login', response)
+        // weird bug: body and bodyText seem to be different
+        const body = JSON.parse(response.bodyText)
         dispatch('messages/showAlert', {
           isError: true,
           title: 'Anmeldung fehlgeschlagen',
-          description: response.body.errors ? response.body.errors[0] : response.statusText,
+          description: body.errors ? body.errors[0] : response.statusText,
           autoHide: false
         }, {root: true})
         console.log('error login', response)

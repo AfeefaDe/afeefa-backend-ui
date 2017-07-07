@@ -15,6 +15,7 @@ export default {
   methods: {
     logout () {
       this.$store.dispatch('auth/logout').then(result => {
+        window.stop() // cancel all requests
         this.$router.push({name: 'login'})
       })
     }
