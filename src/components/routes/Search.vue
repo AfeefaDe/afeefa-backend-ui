@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="search-sidebar mainCard">
+    <!-- <div class="search-sidebar mainCard">
       <div>
           <div class="switch-toggle switch-candy switch-candy-blue">
             <input id="orgas" name="view" type="radio" value="orgas" v-model="typeFilterState">
@@ -32,10 +32,10 @@
             <a></a>
           </div>
       </div>
-      <!-- <div>
+      <div>
         <search-sidebar-element> </search-sidebar-element>
-      </div> -->
-    </div>
+      </div>
+    </div> -->
   </div>
 </template>
 
