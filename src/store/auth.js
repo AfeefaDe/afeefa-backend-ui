@@ -23,6 +23,10 @@ export default {
       state.redirectAfterLogin = route
     },
     setLastAuthHeader (state, header) {
+      // keep localStorage in Sync with internal authHeader
+      if (header) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(header))
+      }
       state.lastAuthHeader = header
     }
   },
@@ -48,7 +52,18 @@ export default {
 
               request.then(response => {
                 console.log('AUTH: Validate credentials on API succeeded.')
-                commit('setLastAuthHeader', storedAuthHeader)
+                let newAuthHeader
+                if (response.headers.get('access-token')) {
+                  newAuthHeader = {
+                    'access-token': response.headers.get('access-token'),
+                    'expiry': response.headers.get('expiry'),
+                    'token-type': response.headers.get('token-type'),
+                    'uid': response.headers.get('uid'),
+                    'client': response.headers.get('client')}
+                } else {
+                  newAuthHeader = storedAuthHeader
+                }
+                commit('setLastAuthHeader', newAuthHeader)
                 commit('setCurrentUser', response.body.data)
                 next() // commit route change
               }).catch(response => {
@@ -111,7 +126,6 @@ export default {
                 'client': headers.get('client')
               }
               commit('setLastAuthHeader', authHeader)
-              localStorage.setItem(STORAGE_KEY, JSON.stringify(authHeader))
             }
           }
         })
@@ -121,7 +135,6 @@ export default {
 
     forwardToLogin ({commit, dispatch}) {
       console.log('AUTH: Clear all auth info and forward to login.')
-      localStorage.removeItem(STORAGE_KEY)
       commit('setCurrentUser', null)
       commit('setLastAuthHeader', {})
       dispatch('api/logout', '', {root: true})
@@ -165,7 +178,7 @@ export default {
 
 
     logout ({state, commit, dispatch}) {
-      localStorage.removeItem(STORAGE_KEY)
+      commit('setLastAuthHeader', {})
       const url = BASE + 'users/sign_out'
       const request = Vue.http.delete(url, {headers: state.lastAuthHeader})
       request.then(response => {
