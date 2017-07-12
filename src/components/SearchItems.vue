@@ -1,5 +1,10 @@
 <template>
 <div>
+  <div>
+    <label class="typo__label">Suche im Feld</label>
+    <multiselect v-model="filterCriterion" @input="filterChanged" :options="filterOptions" :allow-empty="false" :searchable="false" :close-on-select="true" :show-labels="false" label="name"></multiselect>
+  </div>
+
   <form autocomplete="off" @submit.prevent="search" class="searchForm">
     <div class="input-field searchForm__input">
       <input autofocus :class="[{active: keyword}, 'validate']" type="text" id="searchterm" ref="search" v-model="keyword" @input="livesearch">
@@ -35,6 +40,7 @@ import EntryListItems from '@/components/EntryListItems'
 import sortByTitle from '@/helpers/sort-by-title'
 import Search from '@/resources/Search'
 import Spinner from '@/components/Spinner'
+import Multiselect from 'vue-multiselect'
 
 export default {
   props: ['modifyRoute', 'typeFilter'],
@@ -45,7 +51,13 @@ export default {
       keyword: '',
       sortByTitle,
       loading: false,
-      debounceTimeout: null
+      debounceTimeout: null,
+      filterCriterion: { name: 'Titel', value: 'title' },
+      filterOptions: [
+        { name: 'Titel', value: 'title' },
+        { name: 'Kurzbeschreibung', value: 'short_description' },
+        { name: 'ID', value: 'id' }
+      ]
     }
   },
 
@@ -69,7 +81,7 @@ export default {
       if (this.keyWordIsValid()) {
         this.loading = true
         this.status = 'Suche Einträge'
-        Search.find(this.keyword).then(result => {
+        Search.find([{keyword: this.keyword, filterCriterion: this.filterCriterion.value}]).then(result => {
           this.status = result.length ? null : '0 Ergebnisse'
           this.items = result
           this.loading = false
@@ -108,6 +120,10 @@ export default {
 
     keyWordIsValid () {
       return this.keyword.length >= 2 && this.keyword.trim().length > 0
+    },
+
+    filterChanged () {
+      this.search()
     }
   },
 
@@ -119,7 +135,8 @@ export default {
 
   components: {
     EntryListItems,
-    Spinner
+    Spinner,
+    Multiselect
   }
 }
 

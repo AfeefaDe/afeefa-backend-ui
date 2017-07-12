@@ -82,7 +82,8 @@ export default {
     certified_sfr: '*',
     certified_sfr_yes: '*',
     tags: '*',
-    additionally_informations: '*'
+    additionally_informations: '*',
+    media_url: '*'
   },
   status: {
     load_event: '*',

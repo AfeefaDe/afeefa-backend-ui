@@ -8,7 +8,7 @@ export default {
     contact: 'Contact Info',
     annotations: 'Annotation | Annotations',
     search: 'Search',
-    searchPlaceholder: 'Search in title',
+    searchPlaceholder: 'Search for',
     logout: 'Logout',
     new: 'New',
     edit: 'Edit',
@@ -83,7 +83,8 @@ export default {
     certified_sfr: 'Certification',
     certified_sfr_yes: 'Certified',
     tags: 'Tag | Tags',
-    additionally_informations: 'Additionally informations from parent entry'
+    additionally_informations: 'Additionally informations from parent entry',
+    media_url: 'url to image'
   },
   status: {
     load_event: 'Load Event',
