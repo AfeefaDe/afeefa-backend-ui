@@ -23,10 +23,6 @@ export default {
       state.redirectAfterLogin = route
     },
     setLastAuthHeader (state, header) {
-      // keep localStorage in Sync with internal authHeader
-      if (header) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(header))
-      }
       state.lastAuthHeader = header
     }
   },
@@ -64,6 +60,7 @@ export default {
                   newAuthHeader = storedAuthHeader
                 }
                 commit('setLastAuthHeader', newAuthHeader)
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(newAuthHeader))
                 commit('setCurrentUser', response.body.data)
                 next() // commit route change
               }).catch(response => {
@@ -126,6 +123,7 @@ export default {
                 'client': headers.get('client')
               }
               commit('setLastAuthHeader', authHeader)
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(authHeader))
             }
           }
         })
@@ -137,14 +135,15 @@ export default {
       console.log('AUTH: Clear all auth info and forward to login.')
       commit('setCurrentUser', null)
       commit('setLastAuthHeader', {})
+      localStorage.removeItem(STORAGE_KEY)
       dispatch('api/logout', '', {root: true})
       router.push({name: 'login'})
     },
 
-    updateAuthHeaderFromStorage ({commit, dispatch}) {
-      let session = localStorage.getItem(STORAGE_KEY)
-      if (session) {
-        let updatedAuthHeader = JSON.parse(session)
+    updateAuthHeaderFromStorage ({commit, dispatch}, storageArea) {
+      console.log('Got new headers: ', storageArea)
+      if (storageArea.session) {
+        let updatedAuthHeader = JSON.parse(storageArea.session)
         commit('setLastAuthHeader', updatedAuthHeader)
       }
     },
@@ -162,7 +161,7 @@ export default {
         } else {
           router.push({name: 'dashboard'})
         }
-      }, response => {
+      }).catch(response => {
         console.log('error login', response)
         // weird bug: body and bodyText seem to be different
         const body = JSON.parse(response.bodyText)
@@ -179,6 +178,7 @@ export default {
 
     logout ({state, commit, dispatch}) {
       commit('setLastAuthHeader', {})
+      localStorage.removeItem(STORAGE_KEY)
       const url = BASE + 'users/sign_out'
       const request = Vue.http.delete(url, {headers: state.lastAuthHeader})
       request.then(response => {
