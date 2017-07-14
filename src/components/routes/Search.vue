@@ -5,7 +5,7 @@
       <div class="col s12 m12">
         <div class="mainCard">
           <div class="mainCard__header">
-            <h2 class="mainCard__headerTitle">Search </h2>
+            <h2 class="mainCard__headerTitle"> {{$t('headlines.search')}} </h2>
           </div>
           <div>
             <search-items

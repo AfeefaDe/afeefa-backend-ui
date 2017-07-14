@@ -8,7 +8,7 @@ export default {
     contact: 'Contact Info',
     annotations: 'Annotation | Annotations',
     search: 'Search',
-    searchPlaceholder: 'Search for',
+    searchPlaceholder: 'search for',
     logout: 'Logout',
     new: 'New',
     edit: 'Edit',
@@ -84,7 +84,8 @@ export default {
     certified_sfr_yes: 'Certified',
     tags: 'Tag | Tags',
     additionally_informations: 'Additionally informations from parent entry',
-    media_url: 'url to image'
+    media_url: 'url to image',
+    id: 'ID'
   },
   status: {
     load_event: 'Load Event',
@@ -120,7 +121,8 @@ export default {
   infos: {
     mandatory_field: 'mandatory',
     no_category: 'No category existing',
-    no_subcategory: 'No subcategory existing'
+    no_subcategory: 'No subcategory existing',
+    search_field: 'search on field'
   },
   languages: {
     de: 'German',
