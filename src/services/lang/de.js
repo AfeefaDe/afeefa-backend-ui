@@ -83,7 +83,8 @@ export default {
     certified_sfr_yes: 'Zertifiziert',
     tags: 'Tag | Tags',
     additionally_informations: 'Zusätzliche Informationen vom übergeordneten Eintrag',
-    media_url: 'Link zum Bild'
+    media_url: 'Link zum Bild',
+    id: 'ID'
   },
   status: {
     load_event: 'Lade Event',
@@ -119,7 +120,8 @@ export default {
   infos: {
     mandatory_field: 'Pflichtfeld',
     no_category: 'Keine Kategorie angegeben',
-    no_subcategory: 'Keine Unterkategorie angegeben'
+    no_subcategory: 'Keine Unterkategorie angegeben',
+    search_field: 'Suche im Feld'
   },
   languages: {
     de: 'Deutsch',

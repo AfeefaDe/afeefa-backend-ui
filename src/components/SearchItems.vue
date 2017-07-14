@@ -2,7 +2,7 @@
 <div>
   <div class="searchBar">
     <div class="searchFilter">
-      <label class="typo__label">Suche im Feld</label>
+      <label class="typo__label">{{ $t('infos.search_field')}}</label>
       <multiselect v-model="filterCriterion" @input="filterChanged" :options="filterOptions" :allow-empty="false" :searchable="false" :close-on-select="true" :show-labels="false" label="name"></multiselect>
     </div>
 
@@ -62,11 +62,12 @@ export default {
       sortByTitle,
       loading: false,
       debounceTimeout: null,
-      filterCriterion: { name: 'Titel', value: 'title' },
+      filterCriterion: { name: this.$t('entries.title'), value: 'title' },
       filterOptions: [
-        { name: 'Titel', value: 'title' },
-        { name: 'Kurzbeschreibung', value: 'short_description' },
-        { name: 'ID', value: 'id' }
+        { name: this.$t('entries.title'), value: 'title' },
+        { name: this.$t('entries.short_description'), value: 'short_description' },
+        { name: this.$t('entries.description'), value: 'description' },
+        { name: this.$t('entries.id'), value: 'id' }
       ]
     }
   },
@@ -195,7 +196,7 @@ export default {
 }
 
 .searchFilter {
-  width: 15em;
+  width: 16em;
   margin-bottom: 10px;
   margin-right: 20px;
 }

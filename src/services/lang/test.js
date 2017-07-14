@@ -83,7 +83,8 @@ export default {
     certified_sfr_yes: '*',
     tags: '*',
     additionally_informations: '*',
-    media_url: '*'
+    media_url: '*',
+    id: '*'
   },
   status: {
     load_event: '*',
@@ -119,7 +120,8 @@ export default {
   infos: {
     mandatory_field: '*',
     no_category: '*',
-    no_subcategory: '*'
+    no_subcategory: '*',
+    search_field: '*'
   },
   languages: {
     de: '*',
