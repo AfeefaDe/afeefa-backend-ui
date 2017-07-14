@@ -1,18 +1,28 @@
 <template>
 <div>
-  <div>
-    <label class="typo__label">Suche im Feld</label>
-    <multiselect v-model="filterCriterion" @input="filterChanged" :options="filterOptions" :allow-empty="false" :searchable="false" :close-on-select="true" :show-labels="false" label="name"></multiselect>
-  </div>
-
-  <form autocomplete="off" @submit.prevent="search" class="searchForm">
-    <div class="input-field searchForm__input">
-      <input autofocus :class="[{active: keyword}, 'validate']" type="text" id="searchterm" ref="search" v-model="keyword" @input="livesearch">
-      <label for="searchterm">{{$t('headlines.searchPlaceholder')}}</label>
+  <div class="searchBar">
+    <div class="searchFilter">
+      <label class="typo__label">Suche im Feld</label>
+      <multiselect v-model="filterCriterion" @input="filterChanged" :options="filterOptions" :allow-empty="false" :searchable="false" :close-on-select="true" :show-labels="false" label="name"></multiselect>
     </div>
-    <a v-if="keyword" @click.prevent="clearSearch" href="#"><i class="material-icons searchForm__icon">cancel</i></a>
-    <button class="btn waves-effect waves-light hideDesktop" type="submit">{{$t('buttons.search')}}</button>
-  </form>
+
+    <div class="searchFormContainer">
+      <div class="searchForm">
+        <form autocomplete="off" @submit.prevent="search" class="searchForm">
+          <div class="input-field searchForm__input">
+            <input autofocus :class="[{active: keyword}, 'validate']" type="text" id="searchterm" ref="search" v-model="keyword" @input="livesearch">
+            <label for="searchterm">{{$t('headlines.searchPlaceholder')}}</label>
+          </div>
+        </form>
+      </div>
+
+      <div class="searchButtons">
+        <a v-if="keyword" @click.prevent="clearSearch" href="#"><i class="material-icons searchForm__icon">cancel</i></a>
+        <button class="btn waves-effect waves-light hideDesktop" type="submit">{{$t('buttons.search')}}</button>
+      </div>
+    </div>
+
+  </div>
 
   <div>
     <p v-if="loading">
@@ -148,16 +158,45 @@ export default {
 @import "~variables";
 
 .searchForm {
-  display: flex;
-  align-items: center;
+  flex-grow: 1;
   &__input {
-    flex-grow: 2;
     input {
       margin-bottom: 1em;
     }
   }
   &__icon {
     color: $black;
+    margin-right: 20px;
   }
+}
+
+.searchFormContainer {
+  flex-grow: 2;
+  display: flex;
+  flex-wrap: nowrap;
+  margin-right: 20px;
+}
+
+.searchButtons {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  /*margin-right: 5px;*/
+  flex-grow: 1;
+  button {
+    margin-left: 10px;
+  }
+}
+
+.searchBar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.searchFilter {
+  width: 15em;
+  margin-bottom: 10px;
+  margin-right: 20px;
 }
 </style>
