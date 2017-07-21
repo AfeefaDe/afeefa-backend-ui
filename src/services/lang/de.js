@@ -91,6 +91,7 @@ export default {
     load_orga: 'Lade Orga',
     no: 'Keine',
     all: 'Alle',
+    everything: 'Alles',
     added: 'Hinzugefügt am',
     changed: 'Zuletzt geändert am',
     time: 'Zeitpunkt'
