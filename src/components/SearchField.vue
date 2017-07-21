@@ -116,7 +116,8 @@ export default {
 }
 
 .searchFormContainer {
-  flex-grow: 2;
+  flex-grow: 1;
+  max-width: 30em;
   display: flex;
   flex-wrap: nowrap;
   margin-right: 20px;
@@ -125,8 +126,8 @@ export default {
 .searchButtons {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   margin-bottom: 10px;
-  flex-grow: 1;
   button {
     margin-left: 10px;
   }
@@ -136,6 +137,7 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .searchFilter {
