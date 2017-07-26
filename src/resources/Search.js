@@ -14,15 +14,8 @@ class SearchResource extends BaseResource {
   }
 
   generateFilterUrl (searchRequest) {
-    let url = 'entries'
-    for (let i in searchRequest) {
-      const filter = 'filter[' + searchRequest[i].filterCriterion + ']=' + searchRequest[i].keyword
-      if (i === '0') {
-        url += '?' + filter
-      } else {
-        url += '&' + filter
-      }
-    }
+    const filter = 'filter[' + searchRequest.filterCriterion + ']=' + searchRequest.keyword
+    const url = 'entries?' + filter
     return url
   }
 

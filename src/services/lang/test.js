@@ -91,7 +91,7 @@ export default {
     load_orga: '*',
     no: '*',
     all: '*',
-    everything: '*',
+    any: '*',
     added: '*',
     changed: '*',
     time: '*'
