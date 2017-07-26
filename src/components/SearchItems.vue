@@ -3,7 +3,7 @@
   <div>
     <search-field
       :filterOptions="filterOptions"
-      filterDefault="all"
+      filterDefault="any"
       @input="updateItems">
     </search-field>
   </div>
@@ -47,10 +47,11 @@ export default {
       debounceTimeout: null,
       resetPageQueryParams: true,
       filterOptions: [
-        { name: this.$t('status.everything'), value: 'all' },
+        { name: this.$t('status.any'), value: 'any' },
         { name: this.$t('entries.title'), value: 'title' },
         { name: this.$t('entries.short_description'), value: 'short_description' },
         { name: this.$t('entries.description'), value: 'description' },
+        { name: this.$t('entries.address'), value: 'address' },
         { name: this.$t('entries.id'), value: 'id' }
       ]
     }

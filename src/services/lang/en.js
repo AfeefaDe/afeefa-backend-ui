@@ -92,7 +92,7 @@ export default {
     load_orga: 'Load Orga',
     no: 'No',
     all: 'All',
-    everything: 'everything',
+    any: 'Any',
     added: 'Added on',
     changed: 'Last change on',
     time: 'Time'

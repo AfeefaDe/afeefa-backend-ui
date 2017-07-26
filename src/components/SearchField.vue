@@ -22,6 +22,19 @@
       <multiselect v-model="filterCriterion" @input="filterChanged" :options="filterOptions" :allow-empty="false" :searchable="false" :close-on-select="true" :show-labels="false" label="name"></multiselect>
     </div>
 
+    <!-- <div class="switch-toggle switch-ios toggleButton">
+      <input id="orgas" name="view" type="radio" value="orgas" v-model="typeFilterState">
+      <label for="orgas" onclick="">Orgas</label>
+
+      <input id="both-type" name="view" type="radio" value="none" v-model="typeFilterState">
+      <label for="both-type" onclick="">Beides</label>
+
+      <input id="events" name="view" type="radio" value="events" v-model="typeFilterState">
+      <label for="events" onclick="">Events</label>
+
+      <a></a>
+    </div> -->
+
   </div>
 </template>
 
@@ -74,22 +87,8 @@ export default {
     },
     updateSearchItems () {
       if (this.keyWordIsValid()) {
-        const request = this.composeRequest()
-        this.$emit('input', request)
+        this.$emit('input', {keyword: this.keyword, filterCriterion: this.filterCriterion.value})
       }
-    },
-    composeRequest () {
-      let request = []
-
-      // match all terms between " " otherwise use whitespace as seperator
-      let regex = /("[^"]+"|[^"\s]+)/g
-      const keys = this.keyword.match(regex)
-
-      for (let i in keys) {
-        keys[i] = keys[i].replace(/["]/g, '') // eliminate all "
-        request.push({keyword: keys[i], filterCriterion: this.filterCriterion.value})
-      }
-      return request
     }
   },
 
@@ -144,5 +143,23 @@ export default {
   width: 16em;
   margin-bottom: 10px;
   margin-right: 20px;
+}
+
+.toggleButton {
+  margin-top: 10px;
+  align-self: center;
+}
+
+/* hide radio button circles from materialize */
+[type="radio"]:not(:checked)+label, [type="radio"]:checked+label {
+  padding-left: 5px;
+  border: none;
+  outline:none;
+}
+label::before {
+  display: none;
+}
+label::after {
+  display: none;
 }
 </style>
