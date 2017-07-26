@@ -113,7 +113,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 10px;
   button {
     margin-left: 10px;
   }
@@ -128,8 +127,8 @@ export default {
 
 .searchFilter {
   width: 16em;
-  margin-bottom: 10px;
   margin-right: 20px;
+  margin-bottom: 20px;
 }
 
 </style>
