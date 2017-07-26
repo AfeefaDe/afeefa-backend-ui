@@ -22,19 +22,6 @@
       <multiselect v-model="filterCriterion" @input="filterChanged" :options="filterOptions" :allow-empty="false" :searchable="false" :close-on-select="true" :show-labels="false" label="name"></multiselect>
     </div>
 
-    <!-- <div class="switch-toggle switch-ios toggleButton">
-      <input id="orgas" name="view" type="radio" value="orgas" v-model="typeFilterState">
-      <label for="orgas" onclick="">Orgas</label>
-
-      <input id="both-type" name="view" type="radio" value="none" v-model="typeFilterState">
-      <label for="both-type" onclick="">Beides</label>
-
-      <input id="events" name="view" type="radio" value="events" v-model="typeFilterState">
-      <label for="events" onclick="">Events</label>
-
-      <a></a>
-    </div> -->
-
   </div>
 </template>
 
@@ -145,21 +132,4 @@ export default {
   margin-right: 20px;
 }
 
-.toggleButton {
-  margin-top: 10px;
-  align-self: center;
-}
-
-/* hide radio button circles from materialize */
-[type="radio"]:not(:checked)+label, [type="radio"]:checked+label {
-  padding-left: 5px;
-  border: none;
-  outline:none;
-}
-label::before {
-  display: none;
-}
-label::after {
-  display: none;
-}
 </style>
