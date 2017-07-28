@@ -21,9 +21,8 @@
 
 <script>
 import SearchItems from '@/components/SearchItems'
-import SearchSidebarElement from '@/components/SearchSidebarElement'
 
 export default {
-  components: { SearchItems, SearchSidebarElement }
+  components: { SearchItems }
 }
 </script>

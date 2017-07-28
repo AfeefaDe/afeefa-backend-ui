@@ -51,7 +51,7 @@ export default {
         { name: this.$t('entries.short_description'), value: 'short_description' },
         { name: this.$t('entries.description'), value: 'description' },
         { name: this.$t('entries.address'), value: 'address' },
-        { name: this.$t('entries.id'), value: 'id' }
+        { name: this.$t('headlines.contact'), value: 'contact_info' }
       ]
     }
   },
