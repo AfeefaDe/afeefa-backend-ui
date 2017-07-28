@@ -20,8 +20,14 @@
 
     <div class="input-field">
       <label for="phone" :class="{active: contactInfo.phone || showInheritValue('phone')}">Telefon</label>
-      <input v-model="contactInfo.phone" name="phone" data-vv-as="Telefon" v-validate.initial="'max: 1000'" :placeholder="showInheritValue('phone')" id="phone" type="text" />
+      <input v-model="contactInfo.phone" name="phone" data-vv-as="Telefon" v-validate.initial="'max: 255'" :placeholder="showInheritValue('phone')" id="phone" type="text" />
       <span v-show="errors.has('phone')" class="validation-error">{{ errors.first('phone') }}</span>
+    </div>
+
+    <div class="input-field">
+      <label for="fax" :class="{active: contactInfo.fax || showInheritValue('fax')}">Fax</label>
+      <input v-model="contactInfo.fax" name="fax" data-vv-as="Fax" v-validate.initial="'max: 255'" :placeholder="showInheritValue('fax')" id="fax" type="text" />
+      <span v-show="errors.has('fax')" class="validation-error">{{ errors.first('fax') }}</span>
     </div>
 
     <div class="input-field">

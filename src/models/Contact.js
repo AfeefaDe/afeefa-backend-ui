@@ -9,6 +9,7 @@ export default class Contact extends BaseModel {
     this.person = ''
     this.mail = ''
     this.phone = ''
+    this.fax = ''
     this.openingHours = ''
     this.web = ''
     this.socialMedia = ''
@@ -20,6 +21,7 @@ export default class Contact extends BaseModel {
     this.person = json.attributes.contact_person || ''
     this.mail = json.attributes.mail || ''
     this.phone = json.attributes.phone || ''
+    this.fax = json.attributes.fax || ''
     this.openingHours = json.attributes.opening_hours || ''
     this.web = json.attributes.web || ''
     this.socialMedia = json.attributes.social_media || ''
@@ -33,6 +35,7 @@ export default class Contact extends BaseModel {
         contact_person: this.person,
         mail: this.mail,
         phone: this.phone,
+        fax: this.fax,
         opening_hours: this.openingHours,
         web: this.web,
         social_media: this.socialMedia,
@@ -46,6 +49,6 @@ export default class Contact extends BaseModel {
   }
 
   isEmpty () {
-    return !this.person && !this.mail && !this.phone && !this.openingHours && !this.web && !this.socialMedia && !this.spokenLanguages
+    return !this.person && !this.mail && !this.phone && !this.fax && !this.openingHours && !this.web && !this.socialMedia && !this.spokenLanguages
   }
 }

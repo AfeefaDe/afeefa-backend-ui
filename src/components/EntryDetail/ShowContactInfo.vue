@@ -10,12 +10,15 @@
       <entry-detail-property
         :name="$t('headlines.contact')"
         :iconName="'mail_outline'"
-        v-if="contactInfo.person || contactInfo.phone || contactInfo.mail || showInheritValue('person') || showInheritValue('phone') || showInheritValue('mail')">
+        v-if="contactInfo.person || contactInfo.phone || contactInfo.fax || contactInfo.mail || showInheritValue('person') || showInheritValue('phone') || showInheritValue('mail')">
           <span v-if="contactInfo.person">{{ contactInfo.person }}<br></span>
           <span class="inheritedValue" v-else-if="showInheritValue('person')">{{ showInheritValue('person') }}<br></span>
 
-          <span v-if="contactInfo.phone">{{ contactInfo.phone }}<br></span>
-          <span class="inheritedValue" v-else-if="showInheritValue('phone')">{{ showInheritValue('phone')}}<br></span>
+          <span v-if="contactInfo.phone">{{ contactInfo.phone }} (Telefon)<br></span>
+          <span class="inheritedValue" v-else-if="showInheritValue('phone')">{{ showInheritValue('phone')}} (Telefon)<br></span>
+
+          <span v-if="contactInfo.fax">{{ contactInfo.fax }} (Fax)<br></span>
+          <span class="inheritedValue" v-else-if="showInheritValue('fax')">{{ showInheritValue('fax')}} (Fax)<br></span>
 
           <a v-if="contactInfo.mail" :href="'mailto:' + contactInfo.mail">{{ contactInfo.mail }}</a>
           <a class="inheritedValue" v-else-if="showInheritValue('mail')" :href="'mailto:'+ showInheritValue('mail')">{{ showInheritValue('mail')}}</a>
