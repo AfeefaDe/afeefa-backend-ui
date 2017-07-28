@@ -15,7 +15,7 @@
     </div>
 
     <ul class="entryList">
-      <li v-for="item in itemsSorted" v-if="typeFilter==='none' || item.type==typeFilter">
+      <li v-for="item in itemsSorted">
         <div v-if="!showIcon" class="entryList__icon">
           <span :class="['entryType-icon',  'entryType-icon--' + item.type, 'entryType-icon--' + (item.active ? 'active' : 'inactive')]"></span>
         </div>
@@ -67,7 +67,7 @@ import AnnotationTag from '@/components/AnnotationTag'
 import Spinner from '@/components/Spinner'
 
 export default {
-  props: {items: {}, limit: {}, sortFunction: {}, sortOrder: {}, showIcon: {}, options: {}, modifyRoute: {default: true}, typeFilter: {default: 'none'}},
+  props: {items: {}, limit: {}, sortFunction: {}, sortOrder: {}, showIcon: {}, options: {}, modifyRoute: {default: true}},
 
   data () {
     const options = this.options || {}
