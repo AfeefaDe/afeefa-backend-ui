@@ -131,7 +131,8 @@ export default {
   },
   hints: {
     edit_annotations: 'Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden.',
-    user_status: 'Der Name des aktuell eingeloggten Nutzers.'
+    user_status: 'Der Name der aktuell eingeloggten Nutzer:in.',
+    area_status: 'Zeigt dir zugeordnete Region der eingeloggten Nutzer:in.'
   },
   messages: {
     loading: 'Lädt'

@@ -18,8 +18,13 @@
         </router-link>
       </div>
 
+      <div class="navigation-mobile__footerSeperator"></div>
+      <div :title="$t('hints.area_status')">
+        <i class="material-icons spacing-right">location_city</i>
+        {{currentUser.area}}
+      </div>
       <section class="navigation-mobile__footer">
-        <span><i class="material-icons">account_circle</i> {{username}}</span>
+        <span><i class="material-icons spacing-right">account_circle</i> {{username}}</span>
         <a href="" @click.prevent="logout()"> {{ $t('headlines.logout') }}<i class="material-icons spacing-left">exit_to_app</i></a>
       </section>
     </div>
@@ -93,6 +98,12 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
+  &__footerSeperator {
+    border-top: 1px solid $gray20;
+    padding-top: 0.8em;
+    width: 100%;
+    height: 0;
+  }
 
   #btn-sandwich {
     cursor: pointer;
@@ -110,6 +121,7 @@ export default {
       cursor: pointer;
       margin: 0.6em 0;
       vertical-align: middle;
+      color: navajowhite;
     }
     i {
       vertical-align: middle;

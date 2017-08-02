@@ -131,7 +131,8 @@ export default {
   },
   hints: {
     edit_annotations: '*',
-    user_status: '*'
+    user_status: '*',
+    area_status: '*'
   },
   messages: {
     loading: '*'

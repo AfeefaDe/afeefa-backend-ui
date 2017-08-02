@@ -132,7 +132,8 @@ export default {
   },
   hints: {
     edit_annotations: 'You can add and delete annotations if you edit the entry.',
-    user_status: 'Shows the name of the current user.'
+    user_status: 'Shows the name of the current user.',
+    area_status: 'Shows the associated area of the current user.'
   },
   messages: {
     loading: 'Loading'

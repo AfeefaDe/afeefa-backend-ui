@@ -16,6 +16,10 @@
 
       <div class="navigationSidebar__footer">
         <div class="navigationSidebar__footerRow">
+          <div class="navigationSidebar__footerItem" :title="$t('hints.area_status')">
+            <i class="navigationSidebar__userIcon material-icons spacing-right">location_city</i>
+            {{currentUser.area}}
+          </div>
           <span class="navigationSidebar__footerItem">
             {{ $t('headlines.systemLanguage') }}:
             <a href="#" class="navigationSidebar__footerItemSpacing spacing-left" @click="changeLanguage()">{{ $t('languages.'+$i18n.locale) }}</a>
