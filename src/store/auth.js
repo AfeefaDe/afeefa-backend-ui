@@ -122,6 +122,7 @@ export default {
                 'uid': headers.get('uid'),
                 'client': headers.get('client')
               }
+              console.log('New token from API [trough request]: ', authHeader['access-token'])
               commit('setLastAuthHeader', authHeader)
               localStorage.setItem(STORAGE_KEY, JSON.stringify(authHeader))
             }
@@ -141,9 +142,9 @@ export default {
     },
 
     updateAuthHeaderFromStorage ({commit, dispatch}, storageArea) {
-      console.log('Got new headers: ', storageArea)
       if (storageArea.session) {
         let updatedAuthHeader = JSON.parse(storageArea.session)
+        console.log('New token from other tab: ', updatedAuthHeader['access-token'])
         commit('setLastAuthHeader', updatedAuthHeader)
       }
     },

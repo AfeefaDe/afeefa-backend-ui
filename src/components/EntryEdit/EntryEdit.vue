@@ -256,7 +256,7 @@
 
             <br>
             <section class="entryForm__actionFooter">
-              <button class="btn waves-effect waves-light" type="submit">
+              <button v-bind:class="[{disabled: currentlySaving}, 'btn', 'waves-effect', 'waves-light']" type="submit">
                 <i class="material-icons left">done</i>
                 Speichern
               </button>
@@ -330,7 +330,7 @@ export default {
       geocodeError: false,
 
       currentTab: '',
-
+      currentlySaving: false,
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
@@ -538,12 +538,14 @@ export default {
         if (this.imageError) {
           throw new Error()
         }
+        this.currentlySaving = true
         this.Resource.save(this.item).then(entry => {
           if (entry) {
             this.$store.dispatch('messages/showAlert', {
               description: this.messages.saved()
             })
             this.saved = true
+            this.currentlySaving = false
             this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}, query: {tab: this.currentTab}})
           }
         })
@@ -566,6 +568,7 @@ export default {
           autoHide: false,
           description: 'Es sind leider noch Fehler im Formular!' + errorString
         })
+        this.currentlySaving = false
       })
     },
 
