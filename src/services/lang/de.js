@@ -94,7 +94,9 @@ export default {
     any: 'Alles',
     added: 'Hinzugefügt am',
     changed: 'Zuletzt geändert am',
-    time: 'Zeitpunkt'
+    time: 'Zeitpunkt',
+    searching: 'Suche Einträge',
+    noResults: '0 Einträge'
   },
   pagination: {
     entries: 'Eintrag | Einträge',

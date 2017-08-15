@@ -94,7 +94,9 @@ export default {
     any: '*',
     added: '*',
     changed: '*',
-    time: '*'
+    time: '*',
+    searching: '*',
+    noResults: '*'
   },
   pagination: {
     entries: '*',

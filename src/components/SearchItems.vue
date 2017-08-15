@@ -66,9 +66,9 @@ export default {
   methods: {
     search (request) {
       this.loading = true
-      this.status = 'Suche Einträge'
+      this.status = this.$t('status.searching')
       Search.find(request).then(result => {
-        this.status = result.length ? null : '0 Ergebnisse'
+        this.status = result.length ? null : this.$t('status.noResults')
         this.items = result
         this.loading = false
 
@@ -95,12 +95,6 @@ export default {
       } else {
         this.search(request)
       }
-    }
-  },
-
-  computed: {
-    numResultsString () {
-      return this.items ? `(${this.items.length} Treffer)` : ''
     }
   },
 

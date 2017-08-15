@@ -1,6 +1,5 @@
 <template>
   <div class="search-container">
-
     <div class="search-field row">
       <div class="col s12 m12">
         <div class="mainCard">
@@ -17,7 +16,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 import SearchItems from '@/components/SearchItems'

@@ -95,7 +95,9 @@ export default {
     any: 'Any',
     added: 'Added on',
     changed: 'Last change on',
-    time: 'Time'
+    time: 'Time',
+    searching: 'Looking for Entries',
+    noResults: '0 Entries'
   },
   pagination: {
     entries: 'Entry | Entries',

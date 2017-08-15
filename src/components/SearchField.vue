@@ -1,6 +1,5 @@
 <template>
   <div class="searchBar">
-
     <div class="searchFormContainer">
       <div class="searchForm">
         <form autocomplete="off" @submit.prevent="search" class="searchForm">
@@ -10,18 +9,15 @@
           </div>
         </form>
       </div>
-
       <div class="searchButtons">
         <a v-if="keyword" @click.prevent="clearSearch" href="#"><i class="material-icons searchForm__icon">cancel</i></a>
         <button class="btn waves-effect waves-light hideDesktop" type="submit">{{$t('buttons.search')}}</button>
       </div>
     </div>
-
     <div class="searchFilter">
       <label class="typo__label">{{ $t('infos.search_field')}}</label>
       <multiselect v-model="filterCriterion" @input="filterChanged" :options="filterOptions" :allow-empty="false" :searchable="false" :close-on-select="true" :show-labels="false" label="name"></multiselect>
     </div>
-
   </div>
 </template>
 
@@ -100,15 +96,19 @@ export default {
     margin-right: 20px;
   }
 }
-
+.searchBar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
 .searchFormContainer {
-  flex-grow: 1;
-  max-width: 30em;
+  flex-grow: 2;
+  max-width: 40em;
   display: flex;
   flex-wrap: nowrap;
-  margin-right: 20px;
+  margin-right: 1em;
 }
-
 .searchButtons {
   display: flex;
   align-items: center;
@@ -117,18 +117,8 @@ export default {
     margin-left: 10px;
   }
 }
-
-.searchBar {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
 .searchFilter {
   width: 16em;
-  margin-right: 20px;
-  margin-bottom: 20px;
 }
 
 </style>
