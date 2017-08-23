@@ -29,7 +29,7 @@ export default {
   data () {
     return {
       chosenTags: [],
-      possibleTags: ['Asyl', 'Jugendliche', 'Rassismus']
+      possibleTags: ['asylum', 'youth', 'racism', 'homework']
     }
   },
   /*
