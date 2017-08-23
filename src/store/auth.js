@@ -176,12 +176,12 @@ export default {
 
 
     logout ({state, commit, dispatch}) {
-      commit('setLastAuthHeader', {})
-      localStorage.removeItem(STORAGE_KEY)
       const url = BASE + 'users/sign_out'
       const request = Vue.http.delete(url, {headers: state.lastAuthHeader})
       request.then(response => {
         commit('setCurrentUser', null)
+        commit('setLastAuthHeader', {})
+        localStorage.removeItem(STORAGE_KEY)
       }, response => {
         console.log('error logout', response)
       })
