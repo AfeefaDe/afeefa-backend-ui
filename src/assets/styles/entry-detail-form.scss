@@ -26,7 +26,14 @@
   .entryDetail__error {
     margin-bottom: 1em;
   }
-
+  .singleTag {
+    display: inline-block;
+    background: $turquoise;
+    padding: 5px 12px;
+    margin-right: 0.5em;
+    color: white;
+    border-radius: 3px;
+  }
   &__meta {
     color: $gray50;
     margin-right: 0.4em;

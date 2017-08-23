@@ -78,7 +78,11 @@
               v-if="entry.tags"
               :name="$tc('entries.tags', entry.tags.split(',').length)"
               :iconName="'more_vert'">
-                 {{entry.tags}}
+                <ul>
+                  <li v-for="tag in entry.tags.split(',')" class="singleTag">
+                    {{tag}}
+                  </li>
+                </ul>
             </entry-detail-property>
 
             <entry-detail-property

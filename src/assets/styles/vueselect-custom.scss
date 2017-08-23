@@ -25,6 +25,17 @@
     z-index: 10000;
   }
 }
+/* another variant of the custom sytle with borders and a background color — used for tag input*/
+.customMultiselect--border {
+  .multiselect__tags {
+    border: 1px solid #e8e8e8;
+    background: $gray20;
+    padding: 8px 40px 0 8px;
+  }
+  .multiselect__single {
+    background: $gray20;
+  }
+}
 /*
  * this class gets applied after the selection of one parentOrga
  * ist hides the corresponding inputs to prevent the ability to select another parentOrga

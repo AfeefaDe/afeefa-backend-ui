@@ -71,24 +71,15 @@
                 </div>
                 <br>
 
-               <div class="inputField__spacing input-field">
-                 <h2>{{ $tc("entries.tags", 2) }}</h2>
+                <div class="inputField__spacing input-field">
+                  <h2>{{ $tc("entries.tags", 2) }}</h2>
                   <div class="input-field">
-                    <label for="tags" :class="{active: item.tags}">{{$t("headlines.tags")}}</label>
-                    <input
-                      type="text"
-                      name="tags"
-                      id="tags"
-                      v-model="item.tags"
-                      :data-vv-as="$tc('entries.tags', 2)"
-                      :class="{'validation-error': errors.has('tags') }"
-                      v-validate="'tag-without-spaces'" />
-                    <span v-show="errors.has('tags')" class="validation-error">{{ errors.first('tags') }}</span>
+                    <tags-select-input @input="tagsChanged" :entryValue='item.tags'></tags-select-input>
                   </div>
-                   <span class="validation-hint">
-                  <i class="material-icons">error_outline</i>
-                  Tags können mehrere Orgas und Veranstaltungen gruppieren. Mehrere Tags werden mit Kommas separiert. Leerzeichen sind nicht erlaubt.
-                </span>
+                  <span class="validation-hint">
+                    <i class="material-icons">error_outline</i>
+                    Tags können mehrere Orgas und Veranstaltungen gruppieren. Mehrere Tags werden mit Kommas separiert. Leerzeichen sind nicht erlaubt.
+                  </span>
                 </div>
 
                 <h2>Kategorien</h2>
@@ -302,7 +293,7 @@ import Multiselect from 'vue-multiselect'
 
 import DatePicker from './Datepicker/DatePicker'
 import EditContactInfo from './EditContactInfo'
-
+import TagsSelectInput from './TagsSelectInput'
 
 export default {
   props: ['id', 'routeName', 'Resource', 'messages', 'options'],
@@ -456,6 +447,13 @@ export default {
         this.item._relationIds.parent_orga = parentOrga.id
         Entries.fetchParentOrga(this.item)
       }
+    },
+    /*
+     * called by TagsSelectInput
+     * sets the comma-sparated list on the tag attribute
+     */
+    tagsChanged (newTags) {
+      this.item.tags = newTags
     },
     categoryChanged () {
       this.item.sub_category = null
@@ -681,7 +679,8 @@ export default {
     AnnotationTag,
     EntryTabbedContent,
     Multiselect,
-    EditContactInfo
+    EditContactInfo,
+    TagsSelectInput
   }
 }
 </script>
