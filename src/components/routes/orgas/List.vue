@@ -2,7 +2,7 @@
   <entry-list
     :items="items"
     addEntryButton="orgas.new"
-    :sort-function="sortByTitle"
+    :sort-function="sortByCreatedAt"
     :options="{pagination: true, created_at: true}"
     :messages="messages">
   </entry-list>
@@ -11,7 +11,7 @@
 
 <script>
 import EntryListMixin from '@/components/mixins/EntryListMixin'
-import sortByTitle from '@/helpers/sort-by-title'
+import sortByCreatedAt from '@/helpers/sort-by-created-at'
 import Orgas from '@/resources/Orgas'
 
 export default {
@@ -20,7 +20,7 @@ export default {
   data () {
     return {
       Resource: Orgas,
-      sortByTitle,
+      sortByCreatedAt,
       messages: {
         headline: () => this.$t('status.all') + ' ' + this.$tc('headlines.organisations', 2)
       }
