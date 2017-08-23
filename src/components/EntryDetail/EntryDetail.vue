@@ -54,13 +54,6 @@
             </entry-detail-property>
 
             <entry-detail-property
-              :name="$t('entries.for_children')"
-              :iconName="'child_friendly'"
-              v-if="entry.for_children">
-                 {{$t('entries.for_children_yes')}}
-            </entry-detail-property>
-
-            <entry-detail-property
               :name="$t('entries.support_wanted')"
               :iconName="'pan_tool'"
               v-if="entry.support_wanted">

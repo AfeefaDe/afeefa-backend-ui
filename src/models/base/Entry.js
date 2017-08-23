@@ -9,7 +9,6 @@ export default class Entry extends BaseModel {
     this.description = ''
     this.short_description = ''
     this.media_url = ''
-    this.for_children = false
     this.support_wanted = false
     this.support_wanted_detail = ''
     this.certified_sfr = false
@@ -60,7 +59,6 @@ export default class Entry extends BaseModel {
         short_description: this.short_description,
         active: this.active,
         media_url: this.media_url,
-        for_children: this.for_children,
         support_wanted: this.support_wanted,
         support_wanted_detail: this.support_wanted_detail,
         certified_sfr: this.certified_sfr,
@@ -105,7 +103,6 @@ export default class Entry extends BaseModel {
     this.description = json.attributes.description || ''
     this.short_description = json.attributes.short_description || ''
     this.media_url = json.attributes.media_url || ''
-    this.for_children = json.attributes.for_children
     this.support_wanted = json.attributes.support_wanted
     this.support_wanted_detail = json.attributes.support_wanted_detail
     this.certified_sfr = json.attributes.certified_sfr
@@ -170,7 +167,6 @@ export default class Entry extends BaseModel {
     entry.description = this.description
     entry.short_description = this.short_description
     entry.media_url = this.media_url
-    entry.for_children = this.for_children
     entry.support_wanted = this.support_wanted
     entry.support_wanted_detail = this.support_wanted_detail
     entry.certified_sfr = this.certified_sfr

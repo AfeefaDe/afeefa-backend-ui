@@ -29,7 +29,6 @@ export default {
     preview: 'Vorschau',
     support_wanted: 'Unterstützung wird benötigt',
     certified_sfr: 'Zertifiziert vom Sächsischen Flüchtlingsrat',
-    for_children: 'Für Kinder geeignet',
     translations: 'Übersetzungen',
     spokenLanguages: 'Gesprochene Sprache | Gesprochene Sprachen',
     tags: 'Tags'
@@ -75,8 +74,6 @@ export default {
     socialMedia: 'Social Media',
     directions: 'Anfahrtsweg',
     short_description: 'Kurze Beschreibung',
-    for_children: 'Für Kinder',
-    for_children_yes: 'Geeignet',
     support_wanted: 'Unterstützung',
     support_wanted_yes: 'Wird benötigt',
     support_wanted_detail: 'Beschreibung der benötigten Unterstützung',
