@@ -1,0 +1,51 @@
+@mixin categoryColors($alpha_background: 1, $alpha_border: 1) {
+  /* colors copied from frontend code base */
+  $gray50: #999999;
+  $yellow: #E4B100;
+  $red: #a21c15;
+  $blue_dark: #085272;
+  $olive: #5e6823;
+  $turquoise: #318B86;
+  $violet: #693e75;
+  $orange: #CA7311;
+
+  &.cat-general   {
+    background-color: rgba($gray50, $alpha_background);
+    border-color: rgba($gray50, $alpha_border);
+  }
+
+  &.cat-language  {
+    background-color: rgba($yellow, $alpha_background);
+    border-color: rgba($yellow, $alpha_border);
+  }
+
+  &.cat-medic {
+    background-color: rgba($red,$alpha_background);
+    border-color: rgba($red, $alpha_border);
+  }
+
+  &.cat-jobs {
+    background-color: rgba($blue_dark,$alpha_background);
+    border-color: rgba($blue_dark, $alpha_border);
+  }
+
+  &.cat-consultation {
+    background-color: rgba($olive,$alpha_background);
+    border-color: rgba($olive, $alpha_border);
+  }
+
+  &.cat-leisure {
+    background-color: rgba($turquoise,$alpha_background);
+    border-color: rgba($turquoise, $alpha_border);
+  }
+
+  &.cat-community {
+    background-color: rgba($violet,$alpha_background);
+    border-color: rgba($violet, $alpha_border);
+  }
+
+  &.cat-donation {
+    background-color: rgba($orange,$alpha_background);
+    border-color: rgba($orange, $alpha_border);
+  }
+}
