@@ -95,12 +95,16 @@ $sidebarWidth: 350px;
 		}
   }
   &__headerGreen {
-    background-color: $turquoise;
+    background-color: $secondaryBlue;
     color: white;
     h2 {
       font-size: 1.4em;
       font-weight: normal;
     }
+  }
+  /* output background color depending on category */
+  &__headerCategories {
+    @include categoryColors($alpha_background: 1, $alpha_border: 0);
   }
   &__headerTitle {
     flex-grow: 2;
@@ -174,8 +178,12 @@ $sidebarWidth: 350px;
   &--events {
     transform: rotate(45deg) scale(0.9);
   }
+  &--categoryColors {
+    @include categoryColors($alpha_background: 1, $alpha_border: 1);
+  }
   &--inactive {
-    background-color: transparent;
+    /* important is neccesary cause the inactive information is way more important than the category cclor */
+    background-color: transparent!important;
   }
 }
 

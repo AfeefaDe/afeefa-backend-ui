@@ -4,10 +4,10 @@
     padding-left: 0;
   }
   .multiselect__option--highlight, .multiselect__option--highlight:after {
-    background: $turquoise;
+    background: $secondaryBlue;
   }
   .multiselect__tag {
-    background: $turquoise;
+    background: $secondaryBlue;
     padding: 8px 26px 8px 14px;
     i:after {
       line-height: 30px;
@@ -15,7 +15,7 @@
     }
   }
   .multiselect__tag-icon:focus, .multiselect__tag-icon:hover {
-    background: $turquoise;
+    background: $secondaryBlue;
   }
   .multiselect--active {
     z-index: 10;

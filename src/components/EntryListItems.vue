@@ -4,20 +4,10 @@
       <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Liste
     </div>
 
-    <div v-else>
-      <pagination
-      :num-items="currentNumItems"
-      :page-size="currentPageSize"
-      :page="currentPage"
-      @changed="setPage"
-      v-if="has.pagination">
-    </pagination>
-    </div>
-
     <ul class="entryList">
       <li v-for="item in itemsSorted">
         <div v-if="!showIcon" class="entryList__icon">
-          <span :class="['entryType-icon',  'entryType-icon--' + item.type, 'entryType-icon--' + (item.active ? 'active' : 'inactive')]"></span>
+          <span :class="['entryType-icon',  'entryType-icon--' + item.type, 'entryType-icon--' + (item.active ? 'active' : 'inactive'), 'entryType-icon--categoryColors', categoryClass(item)]"></span>
         </div>
 
         <div class="entryList__content">
@@ -57,6 +47,17 @@
         </div>
       </li>
     </ul>
+
+    <div v-if="items">
+      <pagination
+      :num-items="currentNumItems"
+      :page-size="currentPageSize"
+      :page="currentPage"
+      @changed="setPage"
+      v-if="has.pagination">
+    </pagination>
+    </div>
+
   </div>
 </template>
 
@@ -123,6 +124,11 @@ export default {
         query.page = config.page === 1 ? undefined : config.page
         query.pageSize = config.pageSize === 15 ? undefined : config.pageSize
         this.$router.push({query: query})
+      }
+    },
+    categoryClass (item) {
+      if (item.category && item.category.title) {
+        return 'cat-' + item.category.title
       }
     }
   },

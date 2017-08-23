@@ -28,7 +28,7 @@ export default {
 <style lang="scss" scoped>
 @import "~variables";
 
-$annotationUserColor: $turquoise;
+$annotationUserColor: $secondaryBlue;
 .annotationTag {
     background: $white;
     border-radius: 2px;
@@ -46,7 +46,7 @@ $annotationUserColor: $turquoise;
     }
     &__detailInput {
       margin-bottom: 0;
-      background: rgb(26, 107, 102);
+      background: darken($secondaryBlue, 20);
       border: 0;
       padding-left: 0.5em;
       padding-top: 0.5em;

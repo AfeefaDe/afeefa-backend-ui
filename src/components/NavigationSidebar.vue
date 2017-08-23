@@ -151,7 +151,7 @@ export default {
     align-items: center;
   }
   &__userIcon {
-    color: $turquoise;
+    color: $secondaryBlue;
   }
 }
 .sound-chillout-zone {

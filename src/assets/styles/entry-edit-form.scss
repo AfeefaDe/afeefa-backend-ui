@@ -26,7 +26,10 @@
     }
   }
   .mandatory-field {
-    color: #26a69a;
+    color: darken($secondaryBlue, 15);
+  }
+  .saveButton {
+    background: $green;
   }
 }
 .input-field {

@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col s12 m12">
     <div class="mainCard" v-if="entry">
-      <div class="mainCard__header mainCard__headerGreen">
+      <div v-bind:class="['mainCard__header', 'mainCard__headerCategories', categoryClass]">
         <a href="" @click.prevent="goBack"><i class="material-icons go-back">chevron_left</i></a>
         <div class="mainCard__headerTitle">
           <h2 class="mainCard__headerTitleHeading">{{ entry.title || 'Kein Titel' }}</h2>
@@ -13,7 +13,7 @@
           </span>
         </div>
         <div class="mainCard__headerButtonContainer">
-          <a v-if="entry.active && eventIsUpcoming" :href="previewLink" target="_blank" class="mainCard__headerButton">
+          <a v-if="entry.active" :href="previewLink" target="_blank" class="mainCard__headerButton">
             {{$t('headlines.preview')}}
           </a>
           <router-link :to="{name: routeName + '.edit', params: {id: entry.id}, query:{tab: currentTab}}" class="mainCard__headerButton">
@@ -30,7 +30,7 @@
       <entry-tabbed-content v-on:setCurrentTab="setCurrentTab">
         <section slot="generalTab">
           <ul class="entryDetail">
-            <entry-detail-property v-if="entry.title" :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' >
+            <entry-detail-property v-if="entry.title" :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' :entryIconClass="categoryClass">
               {{ entry.title }}
             </entry-detail-property>
 
@@ -102,7 +102,7 @@
             <entry-detail-property
               :name="$tc('headlines.status')"
               :iconName= "entry.active ? 'visibility' : 'visibility_off'">
-              <button @click="togglePublishState" :class="['btn', 'publishButton', 'waves-effect', {green: entry.active}]" type="submit">
+              <button @click="togglePublishState" :class="[{disabled: currentlyPublishing}, 'btn', 'publishButton', 'waves-effect',]" type="submit">
                 {{ entry.active ? $t('buttons.deactivate') : $t('buttons.activate') }}
               </button><br><br>
               <span>{{ $t('entries.created_at') }}: {{ entry.created_at | formatDateAbsolute }} ({{ entry.created_at | formatDateRelative }})</span><br>
@@ -223,10 +223,6 @@
 </div>
 </template>
 
-
-
-
-
 <script>
 import Events from '@/resources/Events'
 import sortByDateStart from '@/helpers/sort-by-date-start'
@@ -253,6 +249,7 @@ export default {
       orgaEventsSortOrder: 'ASC',
       sortByDateStart,
       currentTab: '',
+      currentlyPublishing: false,
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
@@ -282,10 +279,12 @@ export default {
         message: this.messages.activate(this.entry.active)
       }).then(result => {
         if (result === 'yes') {
+          this.currentlyPublishing = true
           const attributes = {
             active: !this.entry.active
           }
           this.Resource.updateAttributes(this.entry, attributes).then(attributes => {
+            this.currentlyPublishing = false
             if (attributes) {
               this.$store.dispatch('messages/showAlert', {
                 description: this.messages.activated(attributes.active)
@@ -316,6 +315,11 @@ export default {
         return `${process.env.FRONTEND_URL}project/${this.entry.id}`
       } else if (this.entry.type === 'events') {
         return `${process.env.FRONTEND_URL}event/${this.entry.id}`
+      }
+    },
+    categoryClass () {
+      if (this.entry.category && this.entry.category.title) {
+        return 'cat-' + this.entry.category.title
       }
     }
   },

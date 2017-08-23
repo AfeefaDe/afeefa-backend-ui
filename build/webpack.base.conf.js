@@ -24,6 +24,7 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
       'variables': resolve('src/assets/styles/variables.scss'),
+      'materialize': resolve('/node_modules/materialize-css/sass'),
       'jquery': resolve('node_modules/jquery/dist/jquery')
     }
   },

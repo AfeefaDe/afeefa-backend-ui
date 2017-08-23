@@ -90,7 +90,7 @@
       background: $gray20;
     }
     a.active {
-      background: $pink;
+      background: $secondaryBlue;
       color: white;
     }
   }

@@ -23,7 +23,12 @@ $blue_dark: #085272;
 $olive: #5e6823;
 $violet: #693e75;
 $orange: #CA7311;
-$turquoise: #318B86;
+$turquoise: #19a79a;
+$secondaryBlue: #5B8FD2;
+
+/* this overwrites the internal materialize variable */
+$teal: $secondaryBlue;
+$cyan: $secondaryBlue;
 
 /*Sizes*/
 $header-height: 3.5em;

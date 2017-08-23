@@ -1,7 +1,7 @@
 <template>
   <li class="detailProperty">
     <div v-if="hasEntryIcon" class="detailProperty__propertyEntryIcon">
-      <span :class="['entryType-icon', 'entryType-icon--' + this.entryIconType, 'entryType-icon--' + (entryIconStatus ? 'active' : 'inactive')]"></span>
+      <span :class="['entryType-icon', 'entryType-icon--' + this.entryIconType, 'entryType-icon--' + (entryIconStatus ? 'active' : 'inactive'), 'entryType-icon--categoryColors', entryIconClass]"></span>
     </div>
 
     <span v-else class="detailProperty__propertyIcon">
@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  props: ['name', 'iconName', 'isMultiline', 'hasEntryIcon', 'entryIconType', 'entryIconStatus']
+  props: ['name', 'iconName', 'isMultiline', 'hasEntryIcon', 'entryIconType', 'entryIconStatus', 'entryIconClass']
 }
 </script>
 

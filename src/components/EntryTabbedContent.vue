@@ -71,6 +71,7 @@ export default {
 @import "~variables";
 
 .tabbedSection {
+  $activeBorderWidth: 3px;
   &__navItemContainer {
     width: 100%;
     // fixes strange chrome bug (#200)
@@ -78,7 +79,7 @@ export default {
     background: transparent;
     color: inherit;
     box-shadow: none;
-    border-bottom: 4px solid $turquoise;
+    border-bottom: 1px solid $black;
     display: flex;
     justify-content: space-around;
   }
@@ -86,20 +87,19 @@ export default {
     flex-grow: 2;
     text-align: center;
     line-height: 150%;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
     a {
       padding: 0.8em 0 0.6em 0;
       display: block;
       color: inherit;
     }
-  }
-  &__navItem:hover {
-    background: $gray20;
+    &:hover {
+      border-bottom: $activeBorderWidth solid $black;
+      transition: all 0.2s ease;
+    }
   }
   &__navItem.active {
-    background: $turquoise;
-    color: white;
+    font-weight: bold;
+    border-bottom: $activeBorderWidth solid $black;
   }
 }
 

@@ -6,7 +6,7 @@
 }
 .inheritedValue {
   padding-left: 1em;
-  border-left: 3px solid $turquoise;
+  border-left: 3px solid $secondaryBlue;
   font-style: italic;
 }
 
@@ -28,11 +28,14 @@
   }
   .singleTag {
     display: inline-block;
-    background: $turquoise;
+    background: $secondaryBlue;
     padding: 5px 12px;
     margin-right: 0.5em;
     color: white;
     border-radius: 3px;
+  }
+  .publishButton:hover {
+    background: $secondaryBlue;
   }
   &__meta {
     color: $gray50;

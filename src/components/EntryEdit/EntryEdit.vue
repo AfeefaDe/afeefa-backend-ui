@@ -2,8 +2,7 @@
   <div class="row">
     <div class="col s12 m12">
       <div class="mainCard">
-
-        <div class="mainCard__header mainCard__headerGreen" v-if="item">
+        <div v-bind:class="['mainCard__header', 'mainCard__headerCategories', categoryClass]" v-if="item">
           <div class="mainCard__headerTitle">
             <h2 class="mainCard__headerTitle"> {{item.title || 'Kein Titel'}}</h2>
             <span v-if="item.parent_orga" class="mainCard__headerSubtitle">
@@ -261,7 +260,7 @@
 
             <br>
             <section class="entryForm__actionFooter">
-              <button v-bind:class="[{disabled: currentlySaving}, 'btn', 'waves-effect', 'waves-light']" type="submit">
+              <button v-bind:class="[{disabled: currentlySaving}, 'btn', 'waves-effect', 'waves-light', 'saveButton']" type="submit">
                 <i class="material-icons left">done</i>
                 Speichern
               </button>
@@ -449,6 +448,11 @@ export default {
         return [this.item.location.lat, this.item.location.lon]
       } else {
         return [51.0571904, 13.7154319]
+      }
+    },
+    categoryClass () {
+      if (this.item.category && this.item.category.title) {
+        return 'cat-' + this.item.category.title
       }
     }
   },
