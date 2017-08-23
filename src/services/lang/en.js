@@ -80,6 +80,7 @@ export default {
     for_children_yes: 'Verfified',
     support_wanted: 'Support',
     support_wanted_yes: 'Wanted',
+    support_wanted_detail: 'Description of Support',
     certified_sfr: 'Certification',
     certified_sfr_yes: 'Certified',
     tags: 'Tag | Tags',

@@ -64,7 +64,12 @@
               :name="$t('entries.support_wanted')"
               :iconName="'pan_tool'"
               v-if="entry.support_wanted">
-                 {{$t('entries.support_wanted_yes')}}
+                <template v-if="entry.support_wanted_detail">
+                  {{entry.support_wanted_detail}}
+                </template>
+                <template v-else>
+                  {{$t('entries.support_wanted_yes')}}
+                </template>
             </entry-detail-property>
 
             <entry-detail-property

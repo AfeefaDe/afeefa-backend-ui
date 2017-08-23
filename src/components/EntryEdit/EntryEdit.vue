@@ -113,6 +113,20 @@
                   <input type="checkbox" id="support_wanted" class="filled-in" v-model="item.support_wanted"/>
                   <label for="support_wanted">{{$t("entries.support_wanted_yes")}}</label>
                 </div>
+                <div class="input-field" v-if="item.support_wanted">
+                  <textarea
+                    id="supportWantedDetail"
+                    name="support_wanted_detail"
+                    v-model="item.support_wanted_detail"
+                    :data-vv-as="$t('entries.support_wanted_detail')"
+                    v-validate.initial="'max: 350'"
+                    v-bind:class="[{'validation-error': errors.has('support_wanted_detail')}, 'materialize-textarea']"></textarea>
+                  <label for="supportWantedDetail" :class="{active: item.support_wanted_detail}">
+                    {{$t("entries.support_wanted_detail")}}
+                    <span class="labelCharacterCount" v-if="item.support_wanted_detail">{{item.support_wanted_detail.length}}/350</span>
+                  </label>
+                  <span v-show="errors.has('support_wanted_detail')" class="validation-error">{{ errors.first('support_wanted_detail') }}</span>
+                </div>
 
                 <div class="input-field">
                   <h2>{{ $t("headlines.certified_sfr") }}</h2>
@@ -370,6 +384,11 @@ export default {
         this.checkAutosizeFields()
       }
     },
+    'item.support_wanted_detail' (supportWantedDetail) {
+      if (supportWantedDetail) {
+        this.checkAutosizeFields()
+      }
+    },
     'item.location' (location) {
       if (location) {
         if (!location.isEmpty()) {
@@ -481,6 +500,11 @@ export default {
         const openingHours = this.$el.querySelector('#openingHours')
         if (openingHours) {
           autosize(this.$el.querySelector('#openingHours'))
+        }
+
+        const supportWantedDetail = this.$el.querySelector('#supportWantedDetail')
+        if (supportWantedDetail) {
+          autosize(this.$el.querySelector('#supportWantedDetail'))
         }
       })
     },

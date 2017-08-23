@@ -79,6 +79,7 @@ export default {
     for_children_yes: 'Geeignet',
     support_wanted: 'Unterstützung',
     support_wanted_yes: 'Wird benötigt',
+    support_wanted_detail: 'Beschreibung der benötigten Unterstützung',
     certified_sfr: 'Zertifizierung',
     certified_sfr_yes: 'Zertifiziert',
     tags: 'Tag | Tags',
