@@ -180,7 +180,7 @@
 
                   <div class="input-field">
                     <label for="zip" :class="{active: item.location.zip}">Postleitzahl</label>
-                    <input v-model="item.location.zip" id="number" type="text" class="validate" @change="getGeocode(true)" />
+                    <input v-model="item.location.zip" id="zip" type="text" class="validate" @change="getGeocode(true)" />
                   </div>
 
                   <div class="input-field">
