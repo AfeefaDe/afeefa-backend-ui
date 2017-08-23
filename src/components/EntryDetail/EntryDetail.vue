@@ -13,7 +13,7 @@
           </span>
         </div>
         <div class="mainCard__headerButtonContainer">
-          <a v-if="entry.active" :href="previewLink" target="_blank" class="mainCard__headerButton">
+          <a v-if="entry.active && eventIsUpcoming" :href="previewLink" target="_blank" class="mainCard__headerButton">
             {{$t('headlines.preview')}}
           </a>
           <router-link :to="{name: routeName + '.edit', params: {id: entry.id}, query:{tab: currentTab}}" class="mainCard__headerButton">
