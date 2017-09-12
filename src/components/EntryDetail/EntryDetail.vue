@@ -298,6 +298,9 @@ export default {
   },
 
   computed: {
+    currentUser () {
+      return this.$store.state.auth.currentUser
+    },
     mapCenter () {
       if (this.entry.location && this.entry.location.lat) {
         return [this.entry.location.lat, this.entry.location.lon]
@@ -305,11 +308,18 @@ export default {
         return [51.0571904, 13.7154319]
       }
     },
+    /*
+     * shitty implementation of preview links, not working for areas!=dresden in dev mode (#338)
+     */
     previewLink () {
+      let previewLink = '//'
+      if (this.currentUser && this.currentUser.area.toLowerCase() !== 'Dresden'.toLowerCase()) {
+        previewLink += this.currentUser.area + '.'
+      }
       if (this.entry.type === 'orgas') {
-        return `${process.env.FRONTEND_URL}project/${this.entry.id}`
+        return previewLink + `${process.env.FRONTEND_URL}project/${this.entry.id}`
       } else if (this.entry.type === 'events') {
-        return `${process.env.FRONTEND_URL}event/${this.entry.id}`
+        return previewLink + `${process.env.FRONTEND_URL}event/${this.entry.id}`
       }
     },
     categoryClass () {

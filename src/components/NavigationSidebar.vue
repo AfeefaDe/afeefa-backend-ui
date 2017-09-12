@@ -16,7 +16,7 @@
 
       <div class="navigationSidebar__footer">
         <div class="navigationSidebar__footerRow">
-          <div class="navigationSidebar__footerItem" :title="$t('hints.area_status')">
+          <div class="navigationSidebar__footerItem" :title="$t('hints.area_status')" v-if="currentUser">
             <i class="navigationSidebar__userIcon material-icons spacing-right">location_city</i>
             {{currentUser.area}}
           </div>
