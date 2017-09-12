@@ -205,6 +205,7 @@ export default {
     'sponsorship': '*',
     'sports': '*',
     'stage': '*',
+    'swimming': '*',
     'tandem': '*',
     'tram': '*',
     'volunteer-coordination': '*',

@@ -205,6 +205,7 @@ export default {
     'sponsorship': 'Patenschaften',
     'sports': 'Sport',
     'stage': 'Bühne',
+    'swimming': 'Schwimmen',
     'tandem': 'Tandem',
     'tram': 'Straßenbahn',
     'volunteer-coordination': 'Ehrenamtskoordination',

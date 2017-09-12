@@ -206,6 +206,7 @@ export default {
     'sponsorship': 'Sponsorship',
     'sports': 'Sports',
     'stage': 'Stage',
+    'swimming': 'Swimming',
     'tandem': 'Tandem',
     'tram': 'Tram',
     'volunteer-coordination': 'Volunteers\' coordination',
