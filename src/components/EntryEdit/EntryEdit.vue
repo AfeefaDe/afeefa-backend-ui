@@ -418,6 +418,10 @@ export default {
   },
 
   computed: {
+    currentUser () {
+      return this.$store.state.auth.currentUser
+    },
+
     selectableAnnotations () {
       return this.annotationCategories.filter(
         (annotationCategory) => {
