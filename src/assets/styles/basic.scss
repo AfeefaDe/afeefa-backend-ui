@@ -134,10 +134,6 @@ $sidebarWidth: 350px;
     display: flex;
     @media screen and (max-width: $break-medium) {
       display: block;
-      & > *:first-child {
-        margin-right: 0;
-        margin-bottom: 0.5em;
-      }
     }
   }
   &__headerButton {
@@ -146,6 +142,10 @@ $sidebarWidth: 350px;
     border-radius: 2px;
     padding: 0.3em 0.5em;
     margin-right: 1em;
+    @media screen and (max-width: $break-medium) {
+      margin-right: 0;
+      margin-bottom: 0.5em;
+    }
     &:last-child {
       margin-right: 0;
     }
