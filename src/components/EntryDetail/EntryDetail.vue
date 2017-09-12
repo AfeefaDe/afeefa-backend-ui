@@ -15,6 +15,11 @@
         <div class="mainCard__headerButtonContainer">
           <a v-if="entry.active" :href="previewLink" target="_blank" class="mainCard__headerButton">
             {{$t('headlines.preview')}}
+            <i class="material-icons">link</i>
+          </a>
+          <a class="mainCard__headerButton" @click="togglePublishState">
+            {{ entry.active ? $t('buttons.deactivate') : $t('buttons.activate') }}
+            <i class="material-icons"><template v-if="entry.active">visibility</template><template v-else>visibility_off</template></i>
           </a>
           <router-link :to="{name: routeName + '.edit', params: {id: entry.id}, query:{tab: currentTab}}" class="mainCard__headerButton">
             Bearbeiten
@@ -95,9 +100,6 @@
             <entry-detail-property
               :name="$tc('headlines.status')"
               :iconName= "entry.active ? 'visibility' : 'visibility_off'">
-              <button @click="togglePublishState" :class="[{disabled: currentlyPublishing}, 'btn', 'publishButton', 'waves-effect',]" type="submit">
-                {{ entry.active ? $t('buttons.deactivate') : $t('buttons.activate') }}
-              </button><br><br>
               <span>{{ $t('entries.created_at') }}: {{ entry.created_at | formatDateAbsolute }} ({{ entry.created_at | formatDateRelative }})</span><br>
               <span>{{ $t('entries.updated_at') }}: {{ entry.updated_at | formatDateAbsolute }} ({{ entry.updated_at | formatDateRelative }})</span><br>
               <span>{{ $t('entries.state_changed_at') }}: {{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }})</span><br>

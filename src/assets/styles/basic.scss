@@ -152,6 +152,7 @@ $sidebarWidth: 350px;
     white-space: nowrap;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     &:hover {
       background-color: $gray80;
     }
