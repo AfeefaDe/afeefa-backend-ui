@@ -15,8 +15,7 @@ class CategoriesResource extends BaseResource {
   }
 }
 
-let categoriesLoaded = false
-
+let categoriesCached = null
 
 const createCategoryTree = categories => {
   const categoriesMap = {}
@@ -39,11 +38,11 @@ export default {
   getAll () {
     const resource = new CategoriesResource()
     return store.dispatch('api/getList', {resource}).then(categories => {
-      if (!categoriesLoaded) {
+      if (!categoriesCached) {
         createCategoryTree(categories)
-        categoriesLoaded = true
+        categoriesCached = categories
       }
-      return categories
+      return categoriesCached
     })
   },
 
