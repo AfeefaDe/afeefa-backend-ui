@@ -121,7 +121,6 @@ export default {
       cursor: pointer;
       margin: 0.6em 0;
       vertical-align: middle;
-      color: navajowhite;
     }
     i {
       vertical-align: middle;

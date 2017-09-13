@@ -196,7 +196,7 @@ export default {
       }
     }
     .item .material-icons {
-      vertical-align: bottom;
+      vertical-align: middle;
       font-size: 1.4em;
       margin-left: -0.3em;
       margin-right: -0.1em;
