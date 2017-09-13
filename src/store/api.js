@@ -123,6 +123,8 @@ export default {
           }
         }
 
+        resource.transformList(items)
+
         resourceCache.addList(listCacheKey, cacheUrl, items)
 
         return items
@@ -135,7 +137,6 @@ export default {
       promiseCache.addItem(resource.listCacheKey + cacheUrl, promise)
       return promise
     },
-
 
     getItem: ({dispatch}, {resource, id}) => {
       const itemCacheKey = resource.getItemCacheKey()
