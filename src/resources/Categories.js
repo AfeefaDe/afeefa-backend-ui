@@ -13,38 +13,29 @@ class CategoriesResource extends BaseResource {
   createItem () {
     return new Category()
   }
-}
 
-let categoriesLoaded = false
+  transformList (items) {
+    const categoriesMap = {}
+    for (let category of items) {
+      categoriesMap[category.id] = category
+    }
 
-
-const createCategoryTree = categories => {
-  const categoriesMap = {}
-  for (let category of categories) {
-    categoriesMap[category.id] = category
-  }
-
-  for (let category of categories) {
-    const parentId = category._relationIds.parent_category
-    const parentCategory = categoriesMap[parentId]
-    if (parentCategory) {
-      category.parent_category = parentCategory
-      parentCategory.sub_categories.push(category)
+    for (let category of items) {
+      const parentId = category._relationIds.parent_category
+      const parentCategory = categoriesMap[parentId]
+      if (parentCategory) {
+        category.parent_category = parentCategory
+        parentCategory.sub_categories.push(category)
+      }
     }
   }
-}
 
+}
 
 export default {
   getAll () {
     const resource = new CategoriesResource()
-    return store.dispatch('api/getList', {resource}).then(categories => {
-      if (!categoriesLoaded) {
-        createCategoryTree(categories)
-        categoriesLoaded = true
-      }
-      return categories
-    })
+    return store.dispatch('api/getList', {resource})
   },
 
   get (id) {

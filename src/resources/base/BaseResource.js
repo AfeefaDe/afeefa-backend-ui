@@ -21,6 +21,10 @@ export default class BaseResource {
   createItem (json) {
   }
 
+
+  transformList (items) {
+  }
+
   // deserialized the current item
   // @see Search
   // @see Todos or Search
