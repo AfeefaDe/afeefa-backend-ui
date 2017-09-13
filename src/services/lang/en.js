@@ -133,7 +133,8 @@ export default {
   hints: {
     edit_annotations: 'You can add and delete annotations if you edit the entry.',
     user_status: 'Shows the name of the current user.',
-    area_status: 'Shows the associated area of the current user.'
+    area_status: 'Shows the associated area of the current user.',
+    annotation_detail: 'Please enter Detail information'
   },
   messages: {
     loading: 'Loading'
@@ -143,7 +144,8 @@ export default {
     selectedLabel: 'Selected',
     deselectLabel: 'Press enter to remove',
     noResult: 'No elements found. Consider changing the search query.',
-    noSelection: 'Nothing selected'
+    noSelection: 'Nothing selected',
+    addTag: 'Add Tag'
   },
   categories: {
     'asylum-counselling': 'Migration counselling',

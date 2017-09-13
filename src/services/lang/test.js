@@ -132,7 +132,8 @@ export default {
   hints: {
     edit_annotations: '*',
     user_status: '*',
-    area_status: '*'
+    area_status: '*',
+    annotation_detail: '*'
   },
   messages: {
     loading: '*'
@@ -142,7 +143,8 @@ export default {
     selectedLabel: '*',
     deselectLabel: '*',
     noResult: '*',
-    noSelection: '*'
+    noSelection: '*',
+    addTag: '*'
   },
   categories: {
     'asylum-counselling': '*',

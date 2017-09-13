@@ -132,7 +132,8 @@ export default {
   hints: {
     edit_annotations: 'Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden.',
     user_status: 'Der Name der aktuell eingeloggten Nutzer:in.',
-    area_status: 'Zeigt dir zugeordnete Region der eingeloggten Nutzer:in.'
+    area_status: 'Zeigt dir zugeordnete Region der eingeloggten Nutzer:in.',
+    annotation_detail: 'Detaillierte Informationen'
   },
   messages: {
     loading: 'Lädt'
@@ -142,7 +143,8 @@ export default {
     selectedLabel: 'Ausgewählt',
     deselectLabel: 'Zum Entfernen Enter drücken',
     noResult: 'Keine Einträge gefunden. Bitte Suchanfrage ändern.',
-    noSelection: 'Kein Eintag ausgewählt'
+    noSelection: 'Kein Eintag ausgewählt',
+    addTag: 'Tag hinzufügen'
   },
   categories: {
     'asylum-counselling': 'Migrationsberatung',

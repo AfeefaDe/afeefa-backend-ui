@@ -13,7 +13,7 @@
           </span>
         </div>
         <div class="mainCard__headerButtonContainer">
-          <a v-if="entry.active" :href="previewLink" target="_blank" class="mainCard__headerButton">
+          <a v-if="entryVisibleInFrontend" :href="previewLink" target="_blank" class="mainCard__headerButton">
             {{$t('headlines.preview')}}
             <i class="material-icons">link</i>
           </a>
@@ -300,6 +300,9 @@ export default {
   computed: {
     currentUser () {
       return this.$store.state.auth.currentUser
+    },
+    entryVisibleInFrontend () {
+      return this.entry.active && ((this.entry.type === 'events' && this.entry.upcoming) || (this.entry.type === 'orgas'))
     },
     mapCenter () {
       if (this.entry.location && this.entry.location.lat) {
