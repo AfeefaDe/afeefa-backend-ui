@@ -38,8 +38,7 @@ export default class Event extends Entry {
       date_start: this.date_start,
       has_time_start: this.has_time_start,
       date_end: dateEnd,
-      has_time_end: this.has_time_end,
-      upcoming: this.upcoming
+      has_time_end: this.has_time_end
     }
 
     data.relationships.orga = this.parent_orga
