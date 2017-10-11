@@ -25,7 +25,7 @@
       <div class="navigation-mobile__footerSeperator"></div>
       <div :title="$t('hints.area_status')">
         <i class="material-icons spacing-right">location_city</i>
-        {{currentUser.area}}
+        <span class="navigation-mobile__areaName">{{currentUser.area}}</span>
       </div>
       <section class="navigation-mobile__footer">
         <span><i class="material-icons spacing-right">account_circle</i> {{username}}</span>
@@ -107,6 +107,9 @@ export default {
     padding-top: 0.8em;
     width: 100%;
     height: 0;
+  }
+  &__areaName {
+    text-transform: capitalize;
   }
 
   #btn-sandwich {
