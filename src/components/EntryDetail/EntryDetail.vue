@@ -22,7 +22,7 @@
             <i class="material-icons"><template v-if="entry.active">visibility</template><template v-else>visibility_off</template></i>
           </a>
           <router-link :to="{name: routeName + '.edit', params: {id: entry.id}, query:{tab: currentTab}}" class="mainCard__headerButton">
-            Bearbeiten
+            {{$t('buttons.edit')}}
             <i class="material-icons">mode_edit</i>
           </router-link>
         </div>
