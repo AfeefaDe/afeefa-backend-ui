@@ -212,12 +212,11 @@
                       class="materialize-textarea"></textarea>
                   </div>
                 </div>
-
               </section>
 
 
               <section slot="contactTab">
-                <edit-contact-info v-if="item"
+                <edit-contact-info ref="EditContactInfo" v-if="item"
                   :contact-info="item.contact"
                   :inheritance-state="item.inheritance.contact_infos"
                   :type="item.type"
@@ -302,8 +301,11 @@ import DatePicker from './Datepicker/DatePicker'
 import EditContactInfo from './EditContactInfo'
 import TagsSelectInput from './TagsSelectInput'
 
+import ValidationMixin from '../mixins/ValidationMixin'
+
 export default {
   props: ['id', 'routeName', 'Resource', 'messages', 'options'],
+  mixins: [ValidationMixin],
 
   data () {
     const options = this.options || {}
@@ -553,46 +555,56 @@ export default {
 
     save () {
       this.$validator.setLocale(this.$i18n.locale)
-      this.$validator.validateAll().then(result => {
-        // fix for vee-validator which is currently not
-        // able to deal with async validations:
-        // https://github.com/logaretm/vee-validate/issues/356
-        // using an async validator for image url, we always would
-        // land in this block rather than in 'catch'
-        if (this.imageError) {
-          throw new Error()
-        }
-        this.currentlySaving = true
-        this.Resource.save(this.item).then(entry => {
-          if (entry) {
-            this.$store.dispatch('messages/showAlert', {
-              description: this.messages.saved()
-            })
-            this.saved = true
-            this.currentlySaving = false
-            this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}, query: {tab: this.currentTab}})
-          }
-        })
-      }).catch(() => {
-        const errors = this.$validator.getErrors().errors
 
-        // fix for vee-validator async validation bug see above
-        if (this.imageError) {
-          this.errors.add('imageurl', 'Die Bild-URL ist fehlerhaft.')
-        } else {
-          this.errors.remove('imageurl')
-        }
+      const contactInfoEditValidation = this.$refs.EditContactInfo.validateForm()
+      const entryEditValidation = this.validateForm()
 
+      Promise.all([contactInfoEditValidation, entryEditValidation]).then(validations => {
+        let throwError = false
         let errorString = '\n\n'
-        for (let error of errors) {
-          errorString += error.msg + '\n'
+        // fix for vee-validator async validation bug see below
+        if (this.imageError) {
+          validations.push([{msg: 'Die Bild-URL ist fehlerhaft.'}])
         }
-        this.$store.dispatch('messages/showAlert', {
-          isError: true,
-          autoHide: false,
-          description: 'Es sind leider noch Fehler im Formular!' + errorString
-        })
-        this.currentlySaving = false
+        // prepare errorString from all validations
+        for (let validation of validations) {
+          if (validation) {
+            throwError = true
+            for (let error of validation) {
+              errorString += error.msg + '\n'
+            }
+          }
+        }
+        // at least one error occured during the validation
+        if (throwError) {
+          this.$store.dispatch('messages/showAlert', {
+            isError: true,
+            autoHide: false,
+            description: 'Es sind leider noch Fehler im Formular!' + errorString
+          })
+          this.currentlySaving = false
+        } else {
+          // fix for vee-validator which is currently not
+          // able to deal with async validations:
+          // https://github.com/logaretm/vee-validate/issues/356
+          // using an async validator for image url, we always would
+          // land in this block rather than in 'catch'
+          if (this.imageError) {
+            throw new Error()
+          }
+          this.currentlySaving = true
+          // actual save routine on the resource
+          this.Resource.save(this.item).then(entry => {
+            if (entry) {
+              this.$store.dispatch('messages/showAlert', {
+                description: this.messages.saved()
+              })
+              this.saved = true
+              this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}, query: {tab: this.currentTab}})
+            }
+            this.currentlySaving = false
+          })
+        }
       })
     },
 

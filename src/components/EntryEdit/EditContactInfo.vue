@@ -12,6 +12,7 @@
         v-model="contactInfo.mail"
         name="email"
         data-vv-validate-on="blur"
+        data-vv-as="E-Mail"
         v-validate="'email'"
         :class="{'validation-error': errors.has('email') }"
         :placeholder="showInheritValue('mail')"/>
@@ -50,6 +51,7 @@
             v-model="contactInfo.web"
             name="web"
             data-vv-validate-on="blur"
+            data-vv-as="Homepage"
             v-validate="'url-with-protocol'"
             :class="{'validation-error': errors.has('web') }"
             :placeholder="showInheritValue('web')"/>
@@ -66,6 +68,7 @@
             name="socialMedia"
             data-vv-validate-on="blur"
             v-validate="'url-with-protocol'"
+            data-vv-as="Social Media"
             :class="{'validation-error': errors.has('socialMedia') }"
             :placeholder="showInheritValue('socialMedia')"/>
     </div>
@@ -78,9 +81,12 @@
 
 <script>
 import LangSelectInput from './LangSelectInput'
+import ValidationMixin from '../mixins/ValidationMixin'
+
 
 export default {
   props: ['contactInfo', 'inheritanceState', 'type', 'parentOrga'],
+  mixins: [ValidationMixin],
   data () {
     return {
       inheritedContactInfo: false

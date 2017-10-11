@@ -59,10 +59,10 @@ Validator.extend('date-end-not-start', rule)
 rule = {
   messages: {
     en: (field, args) => {
-      return 'Url is not validate. (http:// is needed)'
+      return `${field} – The URL is not valid. (http:// is needed)`
     },
     de: (field, args) => {
-      return 'Die eingegebene URL ist nicht gültig. (http:// wird gefordert)'
+      return `${field} – Die eingegebene URL ist nicht gültig. (http:// wird gefordert)`
     }
   },
   validate (value) {
