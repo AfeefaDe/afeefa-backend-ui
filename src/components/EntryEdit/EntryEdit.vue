@@ -212,7 +212,6 @@
                       class="materialize-textarea"></textarea>
                   </div>
                 </div>
-
               </section>
 
 
@@ -594,15 +593,16 @@ export default {
             throw new Error()
           }
           this.currentlySaving = true
+          // actual save routine on the resource
           this.Resource.save(this.item).then(entry => {
             if (entry) {
               this.$store.dispatch('messages/showAlert', {
                 description: this.messages.saved()
               })
               this.saved = true
-              this.currentlySaving = false
               this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}, query: {tab: this.currentTab}})
             }
+            this.currentlySaving = false
           })
         }
       })
