@@ -162,12 +162,16 @@ export default {
         }
       }).catch(response => {
         console.log('error login', response)
-        // weird bug: body and bodyText seem to be different
-        const body = JSON.parse(response.bodyText)
+        let error
+        try {
+          error = JSON.parse(response.bodyText).errors[0]
+        } catch (e) {
+          error = response.statusText
+        }
         dispatch('messages/showAlert', {
           isError: true,
           title: 'Anmeldung fehlgeschlagen',
-          description: body.errors ? body.errors[0] : response.statusText,
+          description: error,
           autoHide: false
         }, {root: true})
         console.log('error login', response)
