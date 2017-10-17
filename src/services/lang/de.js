@@ -19,6 +19,7 @@ export default {
     subOrgas: 'Untergeordnete Orgas',
     organizer: 'Veranstaltende',
     upcomingEvents: 'Kommende Veranstaltungen',
+    upcomingEventsShort: 'Kommende',
     pastEvents: 'Vergangene Veranstaltungen',
     pastEventsShort: 'Vergangene',
     systemLanguage: 'Systemsprache',

@@ -107,7 +107,7 @@ export default {
     margin-left: 1.5em;
   }
   &__navItem.level3 {
-    margin-left: 4em;
+    margin-left: 3em;
   }
   &__navItem .active {
     font-weight: bold;

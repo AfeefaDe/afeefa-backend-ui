@@ -38,8 +38,14 @@ const menuTree = {
         route: 'events.new'
       },
       level: 2,
-      hint: state => state.numEvents.upcoming,
+      hint: state => { return state.numEvents.upcoming + state.numEvents.past },
       children: [
+        {
+          route: 'events.upcoming',
+          title: 'headlines.upcomingEventsShort',
+          level: 3,
+          hint: state => state.numEvents.upcoming
+        },
         {
           route: 'events.past',
           title: 'headlines.pastEventsShort',

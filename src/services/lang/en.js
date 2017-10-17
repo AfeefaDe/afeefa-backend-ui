@@ -19,6 +19,7 @@ export default {
     subOrgas: 'Sub Organizations',
     organizer: 'Organizer',
     upcomingEvents: 'Upcoming Events',
+    upcomingEventsShort: 'Upcoming',
     pastEvents: 'Past Events',
     pastEventsShort: 'Past',
     systemLanguage: 'System language',

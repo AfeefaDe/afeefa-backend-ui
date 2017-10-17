@@ -76,6 +76,11 @@ const routes = [
             component: ListEvents,
             children: [
               {
+                path: 'upcoming',
+                name: 'events.upcoming',
+                component: ListEvents
+              },
+              {
                 path: 'past',
                 name: 'events.past',
                 component: ListEvents

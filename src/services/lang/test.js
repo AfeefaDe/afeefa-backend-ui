@@ -19,6 +19,7 @@ export default {
     subOrgas: '*',
     organizer: '*',
     upcomingEvents: '*',
+    upcomingEventsSsort: '*',
     pastEvents: '*',
     pastEventsShort: '*',
     systemLanguage: '*',
