@@ -1,4 +1,4 @@
-import DatePicker from '@/components/DatePicker'
+import DatePicker from '@/components/EntryEdit/Datepicker/DatePicker'
 import avoriaz, { mount } from 'avoriaz'
 import { updateNow } from '../../helpers'
 
