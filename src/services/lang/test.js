@@ -19,6 +19,7 @@ export default {
     subOrgas: '*',
     organizer: '*',
     upcomingEvents: '*',
+    upcomingEventsSsort: '*',
     pastEvents: '*',
     pastEventsShort: '*',
     systemLanguage: '*',
@@ -133,8 +134,7 @@ export default {
     edit_annotations: '*',
     annotation_detail: '*',
     user_status: '*',
-    area_status: '*',
-    add_tag: '*'
+    area_status: '*'
   },
   messages: {
     loading: '*'
@@ -144,7 +144,8 @@ export default {
     selectedLabel: '*',
     deselectLabel: '*',
     noResult: '*',
-    noSelection: '*'
+    noSelection: '*',
+    addTag: '*'
   },
   categories: {
     'asylum-counselling': '*',

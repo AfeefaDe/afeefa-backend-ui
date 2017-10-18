@@ -1,4 +1,4 @@
-import LangSelectInput from '@/components/LangSelectInput'
+import LangSelectInput from '@/components/EntryEdit/LangSelectInput'
 import LangResource from '@/helpers/iso_639_languages'
 import avoriaz, { mount } from 'avoriaz'
 

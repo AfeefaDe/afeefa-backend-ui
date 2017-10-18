@@ -28,8 +28,11 @@ export default {
         headline: () => {
           if (this.$route.name === 'events.past') {
             return this.$t('headlines.pastEvents')
+          } else if (this.$route.name === 'events.upcoming') {
+            return this.$t('headlines.upcomingEvents')
+          } else {
+            return this.$tc('headlines.events', 2)
           }
-          return this.$t('headlines.upcomingEvents')
         }
       }
     }
@@ -49,8 +52,9 @@ export default {
 
       if (this.$route.name === 'events.past') {
         return {'filter[date]': 'past'}
+      } else if (this.$route.name === 'events.upcoming') {
+        return {'filter[date]': 'upcoming'}
       }
-      return {'filter[date]': 'upcoming'}
     }
   }
 }

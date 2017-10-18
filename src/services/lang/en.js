@@ -19,6 +19,7 @@ export default {
     subOrgas: 'Sub Organizations',
     organizer: 'Organizer',
     upcomingEvents: 'Upcoming Events',
+    upcomingEventsShort: 'Upcoming',
     pastEvents: 'Past Events',
     pastEventsShort: 'Past',
     systemLanguage: 'System language',
@@ -134,8 +135,7 @@ export default {
     edit_annotations: 'You can add and delete annotations if you edit the entry.',
     annotation_detail: 'Please enter detailed information',
     user_status: 'Shows the name of the current user.',
-    area_status: 'Shows the associated area of the current user.',
-    add_tag: 'Add Tag'
+    area_status: 'Shows the associated area of the current user.'
   },
   messages: {
     loading: 'Loading'
@@ -145,7 +145,8 @@ export default {
     selectedLabel: 'Selected',
     deselectLabel: 'Press enter to remove',
     noResult: 'No elements found. Consider changing the search query.',
-    noSelection: 'Nothing selected'
+    noSelection: 'Nothing selected',
+    addTag: 'Add Tag'
   },
   categories: {
     'asylum-counselling': 'Migration counselling',

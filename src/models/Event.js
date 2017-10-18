@@ -10,6 +10,7 @@ export default class Event extends Entry {
     this.has_time_start = false
     this.date_end = moment(new Date()).startOf('day').toDate()
     this.has_time_end = false
+    this.upcoming = false
   }
 
   deserialize (json) {
@@ -19,6 +20,7 @@ export default class Event extends Entry {
     this.has_time_start = json.attributes.has_time_start === true
     this.date_end = json.attributes.date_end ? new Date(json.attributes.date_end) : this.date_start
     this.has_time_end = json.attributes.has_time_end === true
+    this.upcoming = json.attributes.upcoming
   }
 
   serialize () {
@@ -53,7 +55,7 @@ export default class Event extends Entry {
     event.has_time_start = this.has_time_start
     event.date_end = this.date_end
     event.has_time_end = this.has_time_end
-
+    event.upcoming = this.upcoming
     return event
   }
 }

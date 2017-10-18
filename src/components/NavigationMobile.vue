@@ -11,17 +11,21 @@
 
     <div id="menu" v-if="visible">
       <div v-for="item in items" :class="['navigation-mobile__item', 'level' + item.level]">
-        <router-link :to="{name: item.route}"> {{ $tc(item.title, 2) }} </router-link>
+        <router-link :to="{name: item.route}">
+          {{ $tc(item.title, 2) }}
+          <template v-if="item.hint || item.hint === 0">({{item.hint}})</template>
+        </router-link>
 
         <router-link :to="{name: item.action.route}" class="navigation-mobile__itemAction" v-if="item.action">
           <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
         </router-link>
+
       </div>
 
       <div class="navigation-mobile__footerSeperator"></div>
       <div :title="$t('hints.area_status')">
         <i class="material-icons spacing-right">location_city</i>
-        {{currentUser.area}}
+        <span class="navigation-mobile__areaName">{{currentUser.area}}</span>
       </div>
       <section class="navigation-mobile__footer">
         <span><i class="material-icons spacing-right">account_circle</i> {{username}}</span>
@@ -80,10 +84,10 @@ export default {
     justify-content: space-between;
   }
   &__item.level2 {
-    margin-left: 2em;
+    margin-left: 1em;
   }
   &__item.level3 {
-    margin-left: 4em;
+    margin-left: 2em;
   }
   &__itemAction i {
     font-size: 1.3em;
@@ -104,6 +108,9 @@ export default {
     width: 100%;
     height: 0;
   }
+  &__areaName {
+    text-transform: capitalize;
+  }
 
   #btn-sandwich {
     cursor: pointer;
@@ -121,7 +128,6 @@ export default {
       cursor: pointer;
       margin: 0.6em 0;
       vertical-align: middle;
-      color: navajowhite;
     }
     i {
       vertical-align: middle;

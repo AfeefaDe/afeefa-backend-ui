@@ -19,6 +19,7 @@ export default {
     subOrgas: 'Untergeordnete Orgas',
     organizer: 'Veranstaltende',
     upcomingEvents: 'Kommende Veranstaltungen',
+    upcomingEventsShort: 'Kommende',
     pastEvents: 'Vergangene Veranstaltungen',
     pastEventsShort: 'Vergangene',
     systemLanguage: 'Systemsprache',
@@ -133,8 +134,7 @@ export default {
     edit_annotations: 'Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden.',
     annotation_detail: 'Bitte Beschreibung angeben',
     user_status: 'Der Name der aktuell eingeloggten Nutzer:in.',
-    area_status: 'Zeigt dir zugeordnete Region der eingeloggten Nutzer:in.',
-    add_tag: 'Tag hinzufügen'
+    area_status: 'Zeigt dir zugeordnete Region der eingeloggten Nutzer:in.'
   },
   messages: {
     loading: 'Lädt'
@@ -144,7 +144,8 @@ export default {
     selectedLabel: 'Ausgewählt',
     deselectLabel: 'Zum Entfernen Enter drücken',
     noResult: 'Keine Einträge gefunden. Bitte Suchanfrage ändern.',
-    noSelection: 'Kein Eintag ausgewählt'
+    noSelection: 'Kein Eintag ausgewählt',
+    addTag: 'Tag hinzufügen'
   },
   categories: {
     'asylum-counselling': 'Migrationsberatung',

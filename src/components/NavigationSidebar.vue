@@ -18,7 +18,7 @@
         <div class="navigationSidebar__footerRow">
           <div class="navigationSidebar__footerItem" :title="$t('hints.area_status')" v-if="currentUser">
             <i class="navigationSidebar__userIcon material-icons spacing-right">location_city</i>
-            {{currentUser.area}}
+            <span class="navigationSidebar__areaName">{{currentUser.area}}</span>
           </div>
           <span class="navigationSidebar__footerItem">
             {{ $t('headlines.systemLanguage') }}:
@@ -107,7 +107,7 @@ export default {
     margin-left: 1.5em;
   }
   &__navItem.level3 {
-    margin-left: 4em;
+    margin-left: 3em;
   }
   &__navItem .active {
     font-weight: bold;
@@ -149,6 +149,9 @@ export default {
   &__footerItem {
     display: flex;
     align-items: center;
+  }
+  &__areaName {
+    text-transform: capitalize;
   }
   &__userIcon {
     color: $secondaryBlue;

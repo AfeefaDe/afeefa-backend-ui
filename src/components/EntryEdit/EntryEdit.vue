@@ -77,7 +77,7 @@
                   </div>
                   <span class="validation-hint">
                     <i class="material-icons">error_outline</i>
-                    Tags können mehrere Orgas und Veranstaltungen gruppieren. Mehrere Tags werden mit Kommas separiert. Leerzeichen sind nicht erlaubt.
+                    Tags können mehrere Orgas und Veranstaltungen gruppieren.
                   </span>
                 </div>
 
