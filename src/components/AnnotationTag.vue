@@ -3,7 +3,7 @@
   v-bind:class="['annotationTag', annotation.annotationCategory.generatedBySystem ? 'annotationTag--system' : '', editMode ? 'annotationTag--editMode' : '']" :title= "$t('hints.edit_annotations')">
     <span>
       {{annotation.annotationCategory.title}}
-        <input v-if="editMode && !annotation.annotationCategory.generatedBySystem" class="annotationTag__detailInput" type="text" placeholder="Please enter Detail information" :value="annotation.detail" v-model="annotation.detail">
+        <input v-if="editMode && !annotation.annotationCategory.generatedBySystem" class="annotationTag__detailInput" type="text" :placeholder="$t('hints.annotation_detail')" :value="annotation.detail" v-model="annotation.detail">
         <span v-else class="annotation-detail"><br>{{annotation.detail}}</span>
     </span>
     <a v-if="editMode" href="" @click.prevent="removeAnnotation(annotation)" class="annotationTag__icon">
@@ -45,7 +45,7 @@ $annotationUserColor: $secondaryBlue;
       font-size: 12px;
     }
     &__detailInput {
-      margin-bottom: 0;
+      margin-bottom: 0!important;
       background: darken($secondaryBlue, 20);
       border: 0;
       padding-left: 0.5em;

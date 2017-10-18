@@ -1,10 +1,10 @@
 /* Main scss file */
 @charset "UTF-8";
 
-$roboto-font-path: "../../../node_modules/materialize-css/fonts/roboto/" !default;
+$roboto-font-path: "../../../node_modules/materialize-css/dist/fonts/roboto/" !default;
 // Mixins
 // @import "components/prefixer";
-@import "~materialize/components/mixins";
+//@import "~materialize/components/mixins";
 @import "~materialize/components/color";
 
 

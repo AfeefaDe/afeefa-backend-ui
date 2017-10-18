@@ -131,6 +131,7 @@ export default {
   },
   hints: {
     edit_annotations: '*',
+    annotation_detail: '*',
     user_status: '*',
     area_status: '*'
   },

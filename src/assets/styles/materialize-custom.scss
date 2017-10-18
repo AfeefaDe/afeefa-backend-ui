@@ -22,3 +22,13 @@ input:not([type]).valid, input:not([type]):focus.valid, input[type=text].valid, 
   border-bottom: 1px solid $secondaryBlue;
   box-shadow: 0 1px 0 0 $secondaryBlue;
 }
+
+// fix for https://github.com/Dogfalo/materialize/pull/5061
+// should be removed after the official fix is released
+.input-field {
+  [type="checkbox"] + label,
+  [type="radio"]:not(:checked) + label,
+  [type="radio"]:checked + label {
+    pointer-events: auto;
+  }
+}

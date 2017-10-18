@@ -17,7 +17,7 @@
     "autosize": "^3.0.20",
     "css-toggle-switch": "^4.0.2",
     "flatpickr": "^2.4.8",
-    "materialize-css": "^0.98.2",
+    "materialize-css": "^0.100.2",
     "moment": "^2.18.1",
     "spin.js": "^2.3.2",
     "timeago.js": "^2.0.5",
