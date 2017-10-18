@@ -1,5 +1,5 @@
 {
-  "name": "ui",
+  "name": "backend-ui",
   "version": "1.0.0",
   "description": "afeefa backend ui",
   "author": "Jens Struwe <jens@struwe.net>",
@@ -22,13 +22,13 @@
     "spin.js": "^2.3.2",
     "timeago.js": "^2.0.5",
     "vee-validate": "2.0.0-rc.18",
-    "vue": "^2.2.1",
+    "vue": "^2.5.2",
     "vue-i18n": "^6.0.0-beta.1",
     "vue-multiselect": "^2.0.0-beta.15",
     "vue-resource": "^1.2.1",
-    "vue-router": "^2.2.0",
+    "vue-router": "^3.0.1",
     "vue2-leaflet": "0.0.44",
-    "vuex": "^2.2.1"
+    "vuex": "^3.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
@@ -95,7 +95,7 @@
     "url-loader": "^0.5.7",
     "vue-loader": "^11.1.4",
     "vue-style-loader": "^2.0.0",
-    "vue-template-compiler": "^2.2.1",
+    "vue-template-compiler": "^2.5.2",
     "webpack": "^2.2.1",
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-middleware": "^1.10.0",

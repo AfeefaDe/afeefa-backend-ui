@@ -2,8 +2,6 @@
 import EntryList from '@/components/EntryList'
 
 export default {
-  props: ['Resource'],
-
   data () {
     return {
       items: null
