@@ -133,7 +133,8 @@ export default {
     edit_annotations: '*',
     annotation_detail: '*',
     user_status: '*',
-    area_status: '*'
+    area_status: '*',
+    add_tag: '*'
   },
   messages: {
     loading: '*'

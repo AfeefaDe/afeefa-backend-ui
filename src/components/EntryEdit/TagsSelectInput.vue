@@ -9,6 +9,7 @@
       :close-on-select="true"
       @input="chosenTagsChanged"
 
+      :placeholder="$t('hints.add_tag')"
       :selectLabel="$t('multiselect.selectLabel')"
       :selectedLabel="$t('multiselect.selectedLabel')"
       :deselectLabel="$t('multiselect.deselectLabel')"
