@@ -137,7 +137,8 @@
         </section>
 
         <section slot="resourceTab" v-if="entry.type === 'orgas' && entry.resource_items.length">
-          <show-resource-item v-for="resourceItem in entry.resource_items" :key="resourceItem.id" :resourceItem="resourceItem"></show-resource-item>
+          <resource-item v-for="resourceItem in entry.resource_items" :key="resourceItem.id" :resourceItem="resourceItem"
+          :editEnabled="false"></resource-item>
         </section>
 
 
@@ -231,11 +232,11 @@ import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
 import EntryTabbedContent from '@/components/EntryTabbedContent'
 import AnnotationTag from '@/components/AnnotationTag'
+import ResourceItem from '@/components/ResourceItem'
 
 import EntryDetailProperty from './EntryDetailProperty'
 import EntryListDropDownMenu from './EntryListDropDownMenu'
 import ShowContactInfo from './ShowContactInfo'
-import ShowResourceItem from './ShowResourceItem'
 
 export default {
   props: ['entry', 'entryLoadingError', 'routeName', 'Resource', 'messages', 'options'],
@@ -357,7 +358,7 @@ export default {
     EntryListDropDownMenu,
     AnnotationTag,
     ShowContactInfo,
-    ShowResourceItem
+    ResourceItem
   }
 }
 </script>

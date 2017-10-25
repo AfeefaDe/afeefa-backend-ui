@@ -226,12 +226,13 @@
               </section>
 
               <section slot="resourceTab" v-if="item.type === 'orgas'">
-                  <edit-resource-item
+                  <resource-item
                     v-for="resourceItem in item.resource_items"
                     :key="resourceItem.id"
                     :resourceItem="resourceItem"
-                    v-on:remove="removeResourceItem">
-                  </edit-resource-item>
+                    v-on:remove="removeResourceItem"
+                    :editEnabled="true">
+                  </resource-item>
                   <a href="" @click.prevent="addResourceItem">Neues Resource hinzufügen</a>
               </section>
 
@@ -292,6 +293,7 @@
 <script>
 import Vue from 'vue'
 import autosize from 'autosize'
+import Multiselect from 'vue-multiselect'
 import { BASE } from '@/store/api'
 import Orgas from '@/resources/Orgas'
 import Entries from '@/resources/base/Entries'
@@ -306,12 +308,11 @@ import Spinner from '@/components/Spinner'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
 import EntryTabbedContent from '@/components/EntryTabbedContent'
-import Multiselect from 'vue-multiselect'
+import ResourceItem from '@/components/ResourceItem'
 
 import DatePicker from './Datepicker/DatePicker'
 import EditContactInfo from './EditContactInfo'
 import TagsSelectInput from './TagsSelectInput'
-import EditResourceItem from './EditResourceItem'
 
 import ValidationMixin from '../mixins/ValidationMixin'
 
@@ -672,20 +673,17 @@ export default {
         next()
         return
       }
-
       // goto login form after api/logout click
       if (to.name === 'login') {
         next()
         return
       }
-
       const hashOrig = JSON.stringify(this.origItem.serialize())
       const hashItem = JSON.stringify(this.item.serialize())
       if (hashOrig === hashItem) {
         next()
         return
       }
-
       this.$store.dispatch('messages/showDialog', {
         title: 'Abbrechen?',
         message: 'Soll das Editieren beendet werden?'
@@ -754,7 +752,7 @@ export default {
     Multiselect,
     EditContactInfo,
     TagsSelectInput,
-    EditResourceItem
+    ResourceItem
   }
 }
 </script>

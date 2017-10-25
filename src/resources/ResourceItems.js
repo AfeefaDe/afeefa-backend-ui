@@ -7,7 +7,7 @@ import BaseResource from './base/BaseResource'
 class ResourceItemsResource extends BaseResource {
   init () {
     this.http = Vue.resource(BASE + 'resource_items{/id}')
-    this.listCacheKey = 'resourceItem'
+    this.listCacheKey = 'resource_items'
   }
 
   createItem () {

@@ -124,7 +124,6 @@ export default {
         }
 
         resource.transformList(items)
-
         resourceCache.addList(listCacheKey, cacheUrl, items)
 
         return items

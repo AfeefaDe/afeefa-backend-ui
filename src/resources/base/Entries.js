@@ -113,10 +113,14 @@ export default {
   },
 
   fetchResources (orga) {
-    ResourceItems.getAllForOrga(orga.id).then(resourceItems => {
-      // overwrite the internal state with new resourceItems
-      orga.resource_items = resourceItems
-    })
+    if (orga.resource_items.__isLoading) {
+      return
+    }
+    for (let id of orga._relationIds.resource_items) {
+      ResourceItems.get(id).then(resourceItem => {
+        orga.resource_items.push(resourceItem)
+      })
+    }
 
     orga.resource_items.__isLoading = true
   },
