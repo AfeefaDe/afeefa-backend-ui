@@ -32,7 +32,7 @@
         :image-url="entry.media_url">
       </image-container>
 
-      <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="['generalTab', 'placeTab', 'contactTab', 'resourceTab','linkTab']">
+      <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="tabNames">
         <section slot="generalTab">
           <ul class="entryDetail">
             <entry-detail-property v-if="entry.title" :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' :entryIconClass="categoryClass">
@@ -136,8 +136,8 @@
           </show-contact-info>
         </section>
 
-        <section slot="resourceTab">
-
+        <section slot="resourceTab" v-if="entry.type === 'orgas' && entry.resource_items.length">
+          <show-resource-item v-for="resourceItem in entry.resource_items" :key="resourceItem.id" :resourceItem="resourceItem"></show-resource-item>
         </section>
 
 
@@ -235,6 +235,7 @@ import AnnotationTag from '@/components/AnnotationTag'
 import EntryDetailProperty from './EntryDetailProperty'
 import EntryListDropDownMenu from './EntryListDropDownMenu'
 import ShowContactInfo from './ShowContactInfo'
+import ShowResourceItem from './ShowResourceItem'
 
 export default {
   props: ['entry', 'entryLoadingError', 'routeName', 'Resource', 'messages', 'options'],
@@ -333,6 +334,17 @@ export default {
       if (this.entry.category && this.entry.category.title) {
         return 'cat-' + this.entry.category.title
       }
+    },
+    /*
+     * define tabNames according to the entry type
+     */
+    tabNames () {
+      let tabNames = ['generalTab', 'placeTab', 'contactTab']
+      if (this.entry.type === 'orgas' && this.entry.resource_items.length) {
+        tabNames.push('resourceTab')
+      }
+      tabNames.push('linkTab')
+      return tabNames
     }
   },
 
@@ -344,7 +356,8 @@ export default {
     EntryTabbedContent,
     EntryListDropDownMenu,
     AnnotationTag,
-    ShowContactInfo
+    ShowContactInfo,
+    ShowResourceItem
   }
 }
 </script>

@@ -1,6 +1,7 @@
 import Categories from '@/resources/Categories'
 import AnnotationCategories from '@/resources/AnnotationCategories'
 import Annotations from '@/resources/Annotations'
+import ResourceItems from '@/resources/ResourceItems'
 import Contacts from '@/resources/Contacts'
 import Locations from '@/resources/Locations'
 import Orgas from '@/resources/Orgas'
@@ -109,6 +110,15 @@ export default {
       })
     }
     entry.annotations.__isLoading = true
+  },
+
+  fetchResources (orga) {
+    ResourceItems.getAllForOrga(orga.id).then(resourceItems => {
+      // overwrite the internal state with new resourceItems
+      orga.resource_items = resourceItems
+    })
+
+    orga.resource_items.__isLoading = true
   },
 
   create (entry) {

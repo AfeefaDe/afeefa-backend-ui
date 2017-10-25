@@ -22,7 +22,7 @@
         <div v-if="item">
           <form @submit.prevent="save" class="entryForm" novalidate>
 
-            <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="['generalTab', 'placeTab', 'contactTab', 'resourceTab','linkTab']">
+            <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="tabNames">
               <section slot="generalTab">
                 <br>
                 <div class="inputField__spacing input-field">
@@ -225,7 +225,14 @@
                 </edit-contact-info>
               </section>
 
-              <section slot="resourceTab">
+              <section slot="resourceTab" v-if="item.type === 'orgas'">
+                  <edit-resource-item
+                    v-for="resourceItem in item.resource_items"
+                    :key="resourceItem.id"
+                    :resourceItem="resourceItem"
+                    v-on:remove="removeResourceItem">
+                  </edit-resource-item>
+                  <a href="" @click.prevent="addResourceItem">Neues Resource hinzufügen</a>
               </section>
 
               <section slot="linkTab">
@@ -291,6 +298,7 @@ import Entries from '@/resources/base/Entries'
 import Categories from '@/resources/Categories'
 import Annotations from '@/resources/Annotations'
 import AnnotationCategories from '@/resources/AnnotationCategories'
+import ResourceItems from '@/resources/ResourceItems'
 import sortByTitle from '@/helpers/sort-by-title'
 import AnnotationTag from '@/components/AnnotationTag'
 import EventBus from '@/services/event-bus'
@@ -303,6 +311,7 @@ import Multiselect from 'vue-multiselect'
 import DatePicker from './Datepicker/DatePicker'
 import EditContactInfo from './EditContactInfo'
 import TagsSelectInput from './TagsSelectInput'
+import EditResourceItem from './EditResourceItem'
 
 import ValidationMixin from '../mixins/ValidationMixin'
 
@@ -457,6 +466,17 @@ export default {
       if (this.item.category && this.item.category.title) {
         return 'cat-' + this.item.category.title
       }
+    },
+    /*
+     * define tabNames according to the entry type
+     */
+    tabNames () {
+      let tabNames = ['generalTab', 'placeTab', 'contactTab']
+      if (this.item.type === 'orgas') {
+        tabNames.push('resourceTab')
+      }
+      tabNames.push('linkTab')
+      return tabNames
     }
   },
 
@@ -526,10 +546,22 @@ export default {
       this.selectedAnnotation = null
     },
 
+    addResourceItem () {
+      let newResource = ResourceItems.createItem()
+      this.item.resource_items.push(newResource)
+    },
+
     removeAnnotation (annotation) {
       const index = this.item.annotations.indexOf(annotation)
       if (index !== -1) {
         this.item.annotations.splice(index, 1)
+      }
+    },
+
+    removeResourceItem (resourceItem) {
+      const index = this.item.resource_items.indexOf(resourceItem)
+      if (index !== -1) {
+        this.item.resource_items.splice(index, 1)
       }
     },
 
@@ -721,7 +753,8 @@ export default {
     EntryTabbedContent,
     Multiselect,
     EditContactInfo,
-    TagsSelectInput
+    TagsSelectInput,
+    EditResourceItem
   }
 }
 </script>

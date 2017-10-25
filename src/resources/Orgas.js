@@ -76,6 +76,10 @@ const Orgas = {
     const resource = new OrgasResource()
     return store.dispatch('api/getItem', {resource, id}).then(orga => {
       if (orga) {
+        // only fetch Resources when there are unloaded id's in the _relationIds attribute
+        if (orga._relationIds.resource_items.length) {
+          fetchRelationsWhiteList.push('fetchResources')
+        }
         for (let fetchRelation of fetchRelationsWhiteList) {
           Entries[fetchRelation](orga)
         }
@@ -87,6 +91,7 @@ const Orgas = {
   clone (orga) {
     const clone = Entries.clone(orga)
     Entries.fetchSubOrgas(clone)
+    Entries.fetchResources(clone)
     return clone
   },
 

@@ -6,7 +6,10 @@ export default class Orga extends Entry {
 
     this.type = 'orgas'
     this.sub_orgas = []
+    this.resource_items = []
+    // extend _relationIds
     this._relationIds.sub_orgas = []
+    this._relationIds.resource_items = []
   }
 
   deserialize (json) {
@@ -22,6 +25,15 @@ export default class Orga extends Entry {
         }
       }
     }
+
+    // resourceItems
+    if (rels.resource_items && rels.resource_items.data.length) {
+      for (let jsonResource of rels.resource_items.data) {
+        if (!this._relationIds.resource_items.includes(jsonResource.id)) {
+          this._relationIds.resource_items.push(jsonResource.id)
+        }
+      }
+    }
   }
 
   serialize () {
@@ -31,12 +43,20 @@ export default class Orga extends Entry {
       ? { data: {id: this.parent_orga.id, type: 'orgas'} }
       : null
 
+    const resourceItemsSerialized = []
+    for (let resourceItem of this.resource_items) {
+      resourceItemsSerialized.push(resourceItem.serialize())
+    }
+
+    data.relationships.resource_items = {data: resourceItemsSerialized}
+
     return data
   }
 
   clone () {
     let clonedOrga = super.clone(new Orga())
     clonedOrga._relationIds.sub_orgas = this._relationIds.sub_orgas
+    clonedOrga._relationIds.resource_items = this._relationIds.resource_items
     return clonedOrga
   }
 }
