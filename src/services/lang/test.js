@@ -23,16 +23,19 @@ export default {
     pastEvents: '*',
     pastEventsShort: '*',
     systemLanguage: '*',
-    generalTab: '*',
-    placeTab: '*',
-    contactTab: '*',
-    linkTab: '*',
     preview: '*',
     support_wanted: '*',
     certified_sfr: '*',
     translations: '*',
     spokenLanguages: '*',
     tags: '*'
+  },
+  tabs: {
+    generalTab: '*',
+    placeTab: '*',
+    contactTab: '*',
+    linkTab: '*',
+    resourceTab: '*'
   },
   errors: {
     noContactPresent: '*',

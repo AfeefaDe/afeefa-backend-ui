@@ -23,16 +23,19 @@ export default {
     pastEvents: 'Vergangene Veranstaltungen',
     pastEventsShort: 'Vergangene',
     systemLanguage: 'Systemsprache',
-    generalTab: 'Allgemeines',
-    placeTab: 'Ort',
-    contactTab: 'Kontakt',
-    linkTab: 'Verweise',
     preview: 'Vorschau',
     support_wanted: 'Unterstützung wird benötigt',
     certified_sfr: 'Zertifiziert vom Sächsischen Flüchtlingsrat',
     translations: 'Übersetzungen',
     spokenLanguages: 'Gesprochene Sprache | Gesprochene Sprachen',
     tags: 'Tags'
+  },
+  tabs: {
+    generalTab: 'Allgemeines',
+    placeTab: 'Ort',
+    contactTab: 'Kontakt',
+    linkTab: 'Verweise',
+    resourceTab: 'Ressourcen'
   },
   errors: {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',

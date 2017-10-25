@@ -22,7 +22,7 @@
         <div v-if="item">
           <form @submit.prevent="save" class="entryForm" novalidate>
 
-            <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="['generalTab', 'placeTab', 'contactTab', 'linkTab']">
+            <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="['generalTab', 'placeTab', 'contactTab', 'resourceTab','linkTab']">
               <section slot="generalTab">
                 <br>
                 <div class="inputField__spacing input-field">
@@ -223,6 +223,9 @@
                   :parent-orga="item.parent_orga"
                   @input="updateInheritedContactInfo">
                 </edit-contact-info>
+              </section>
+
+              <section slot="resourceTab">
               </section>
 
               <section slot="linkTab">

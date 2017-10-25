@@ -32,7 +32,7 @@
         :image-url="entry.media_url">
       </image-container>
 
-      <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="['generalTab', 'placeTab', 'contactTab', 'linkTab']">
+      <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="['generalTab', 'placeTab', 'contactTab', 'resourceTab','linkTab']">
         <section slot="generalTab">
           <ul class="entryDetail">
             <entry-detail-property v-if="entry.title" :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' :entryIconClass="categoryClass">
@@ -134,6 +134,10 @@
             :inherited-contact-info="entry.inheritance.contact_infos"
             :parent-orga="entry.parent_orga">
           </show-contact-info>
+        </section>
+
+        <section slot="resourceTab">
+
         </section>
 
 

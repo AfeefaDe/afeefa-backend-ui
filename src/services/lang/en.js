@@ -23,16 +23,19 @@ export default {
     pastEvents: 'Past Events',
     pastEventsShort: 'Past',
     systemLanguage: 'System language',
-    generalTab: 'General',
-    placeTab: 'Place',
-    contactTab: 'Contact',
-    linkTab: 'Links',
     preview: 'Preview',
     support_wanted: 'Support wanted',
     certified_sfr: 'Certified by Sächsischer Flüchtlingsrat',
     translations: 'Translations',
     spokenLanguages: 'Spoken Language | Spoken Languages',
     tags: 'Tags'
+  },
+  tabs: {
+    generalTab: 'General',
+    placeTab: 'Place',
+    contactTab: 'Contact',
+    linkTab: 'Links',
+    resourceTab: 'Resources'
   },
   errors: {
     noContactPresent: 'No contact information present',
