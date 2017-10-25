@@ -1,43 +1,28 @@
 <template>
 <div class="tabbedSection">
   <ul class="tabbedSection__navItemContainer">
-    <li :class="['tabbedSection__navItem', {active: activeTab === 'generalTab'}]">
-      <a href="#" @click.prevent="setActiveTab('generalTab')">{{$t('headlines.generalTab')}}</a>
-    </li>
-    <li :class="['tabbedSection__navItem', {active: activeTab === 'placeTab'}]">
-      <a href="#" @click.prevent="setActiveTab('placeTab')">{{$t('headlines.placeTab')}}</a>
-    </li>
-    <li :class="['tabbedSection__navItem', {active: activeTab === 'contactTab'}]">
-      <a href="#" @click.prevent="setActiveTab('contactTab')">{{$t('headlines.contactTab')}}</a>
-    </li>
-    <li :class="['tabbedSection__navItem', {active: activeTab === 'linkTab'}]">
-      <a href="#" @click.prevent="setActiveTab('linkTab')">{{$t('headlines.linkTab')}}</a>
+    <li v-for="tabName in tabNames" :class="['tabbedSection__navItem', {active: activeTab === tabName}]">
+      <a href="#" @click.prevent="setActiveTab(tabName)">{{$t('tabs.'+tabName)}}</a>
     </li>
   </ul>
 
-  <section v-show="activeTab === 'generalTab'">
-    <slot name="generalTab"></slot>
+  <section v-for="tabName in tabNames" v-show="activeTab === tabName">
+    <slot :name="tabName"></slot>
   </section>
 
-  <section v-show="activeTab === 'placeTab'">
-    <slot name="placeTab"></slot>
-  </section>
-
-  <section v-show="activeTab === 'contactTab'">
-    <slot name="contactTab"></slot>
-  </section>
-
-  <section v-show="activeTab === 'linkTab'">
-    <slot name="linkTab"></slot>
-  </section>
 </div>
 </template>
 
 <script>
 export default {
+  /*
+   * the tabNames should be handled as a generic identifier for the tab
+   * the translation i stored in 'tabs'.tabName
+   */
+  props: ['tabNames'],
   data () {
     return {
-      activeTab: 'generalTab'
+      activeTab: this.tabNames[0]
     }
   },
   created () {
@@ -52,7 +37,7 @@ export default {
 
   methods: {
     initPageProperties () {
-      this.activeTab = this.$route.query.tab || 'generalTab'
+      this.activeTab = this.$route.query.tab || this.tabNames[0]
       this.$emit('setCurrentTab', this.activeTab)
     },
     setActiveTab (tab) {
@@ -60,7 +45,7 @@ export default {
       // set active tab to parent (used to switch between edit/view mode consistently)
       this.$emit('setCurrentTab', this.activeTab)
       const query = {...this.$route.query}
-      query.tab = tab === 'generalTab' ? undefined : tab
+      query.tab = tab === this.tabNames[0] ? undefined : tab
       this.$router.replace({query: query})
     }
   }

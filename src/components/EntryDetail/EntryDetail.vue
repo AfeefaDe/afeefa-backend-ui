@@ -32,7 +32,7 @@
         :image-url="entry.media_url">
       </image-container>
 
-      <entry-tabbed-content v-on:setCurrentTab="setCurrentTab">
+      <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="['generalTab', 'placeTab', 'contactTab', 'linkTab']">
         <section slot="generalTab">
           <ul class="entryDetail">
             <entry-detail-property v-if="entry.title" :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' :entryIconClass="categoryClass">

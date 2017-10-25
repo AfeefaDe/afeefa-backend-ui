@@ -22,7 +22,7 @@
         <div v-if="item">
           <form @submit.prevent="save" class="entryForm" novalidate>
 
-            <entry-tabbed-content v-on:setCurrentTab="setCurrentTab">
+            <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="['generalTab', 'placeTab', 'contactTab', 'linkTab']">
               <section slot="generalTab">
                 <br>
                 <div class="inputField__spacing input-field">
