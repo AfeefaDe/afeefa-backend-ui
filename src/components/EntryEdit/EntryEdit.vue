@@ -233,7 +233,15 @@
                     v-on:remove="removeResourceItem"
                     :editEnabled="true">
                   </resource-item>
-                  <a href="" @click.prevent="addResourceItem">Neues Resource hinzufügen</a>
+                  <div class="newResource">
+                    <div>
+                      <a href="" @click.prevent="addResourceItem"><i class="material-icons">add_circle</i></a>
+                    </div>
+                    <h2>
+                      Neue Ressource hinzufügen
+                    </h2>
+                  </div>
+
               </section>
 
               <section slot="linkTab">

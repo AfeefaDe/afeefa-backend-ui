@@ -2,7 +2,7 @@
 <div class="resourceItem">
   <div class="resourceItem__header">
     <span class="resourceItem__heading">
-        <input v-if="editEnabled" v-model="resourceItem.title" id="title" type="text" name="title" placeholder="Titel"/>
+        <input v-if="editEnabled" v-model="resourceItem.title" id="title" type="text" name="title" placeholder="Titel" autofocus />
         <template v-else>{{resourceItem.title}}</template>
     </span>
     <a href="" @click.prevent="removeResourceItem" v-if="editEnabled"><i class="material-icons">delete</i></a>
@@ -54,6 +54,7 @@ export default {
   }
   &__header {
     display: flex;
+    align-items: center;
     i {
       color: $black;
       margin-left: 0.4em;
