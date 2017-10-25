@@ -37,7 +37,11 @@ export default {
 
   methods: {
     initPageProperties () {
-      this.activeTab = this.$route.query.tab || this.tabNames[0]
+      if (this.tabNames.includes(this.$route.query.tab)) {
+        this.activeTab = this.$route.query.tab
+      } else {
+        this.activeTab = this.tabNames[0]
+      }
       this.$emit('setCurrentTab', this.activeTab)
     },
     setActiveTab (tab) {
