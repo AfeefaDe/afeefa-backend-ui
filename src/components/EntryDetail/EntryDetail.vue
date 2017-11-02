@@ -226,6 +226,7 @@
 <script>
 import Events from '@/resources/Events'
 import sortByDateStart from '@/helpers/sort-by-date-start'
+import slugify from '@/helpers/slugify'
 
 import EntryListItems from '@/components/EntryListItems'
 import LocationMap from '@/components/Map'
@@ -326,11 +327,13 @@ export default {
         previewLink += this.currentUser.area + '.'
       }
       if (this.entry.type === 'orgas') {
-        return previewLink + `${process.env.FRONTEND_URL}project/${this.entry.id}`
+        return previewLink + `${process.env.FRONTEND_URL}project/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
       } else if (this.entry.type === 'events') {
-        return previewLink + `${process.env.FRONTEND_URL}event/${this.entry.id}`
+        return previewLink + `${process.env.FRONTEND_URL}event/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
       }
     },
+
+
     categoryClass () {
       if (this.entry.category && this.entry.category.title) {
         return 'cat-' + this.entry.category.title
