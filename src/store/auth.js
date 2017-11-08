@@ -41,15 +41,18 @@ export default {
             console.log('AUTH: No auth user found. Load credentials from local storage.')
             let session = localStorage.getItem(STORAGE_KEY)
             if (session) {
-              console.log('AUTH: Credentials found. Validate on API.')
+              console.log('AUTH: Credentials found in local storage. Validate on API: ', session)
               let storedAuthHeader = JSON.parse(session)
               let url = BASE + 'users/validate_token'
               let request = Vue.http.get(url, {headers: storedAuthHeader})
 
+              console.log('AUTH: Validate token against API: ', storedAuthHeader)
+
               request.then(response => {
-                console.log('AUTH: Validate credentials on API succeeded.')
+                console.log('AUTH: Validate credentials on API succeeded this is the response: ', response)
                 let newAuthHeader
                 if (response.headers.get('access-token')) {
+                  console.log('AUTH: Validate credentials on API succeeded: ', response.headers.get('access-token'))
                   newAuthHeader = {
                     'access-token': response.headers.get('access-token'),
                     'expiry': response.headers.get('expiry'),
@@ -57,9 +60,12 @@ export default {
                     'uid': response.headers.get('uid'),
                     'client': response.headers.get('client')}
                 } else {
-                  newAuthHeader = storedAuthHeader
+                  console.log('AUTH: Validate credentials on API failed (request went through). Using old headers: ', storedAuthHeader, response)
+                  // @new: instead of storedAuthHeader
+                  newAuthHeader = JSON.parse(session)
                 }
                 commit('setLastAuthHeader', newAuthHeader)
+                console.log('AUTH: Commiting new AuthHeader: ', newAuthHeader)
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(newAuthHeader))
                 commit('setCurrentUser', response.body.data)
                 next() // commit route change
