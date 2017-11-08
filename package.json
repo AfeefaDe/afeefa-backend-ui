@@ -21,7 +21,7 @@
     "moment": "^2.18.1",
     "spin.js": "^2.3.2",
     "timeago.js": "^2.0.5",
-    "vee-validate": "2.0.0-rc.18",
+    "vee-validate": "2.0.0-rc.21",
     "vue": "^2.5.2",
     "vue-i18n": "^7.3.1",
     "vue-multiselect": "^2.0.3",
