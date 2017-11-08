@@ -340,11 +340,11 @@ export default {
       }
     },
     /*
-     * define tabNames according to the entry type
+     * define tabNames according to the entry type and the area of the current user
      */
     tabNames () {
       let tabNames = ['generalTab', 'placeTab', 'contactTab']
-      if (this.entry.type === 'orgas' && this.entry.resource_items.length) {
+      if (this.entry.type === 'orgas' && this.entry.resource_items.length && this.currentUser.area === 'dresden') {
         tabNames.push('resourceTab')
       }
       tabNames.push('linkTab')
