@@ -93,7 +93,7 @@
                   <span v-show="errors.has('category')" class="validation-error">{{ errors.first('category') }}</span>
                 </div>
 
-                <div class="inputField__spacing inputField__indented" v-if="item.category">
+                <div class="inputField__spacing inputField__indented" v-if="item.category && item.category.sub_categories && item.category.sub_categories.length">
                   <label>Unterkategorie</label>
                   <select class="browser-default categoriesForm" v-model="item.sub_category">
                     <option selected :value="null">Keine Kategorie ausgewählt</option>
