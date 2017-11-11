@@ -62,12 +62,6 @@ const menuTree = {
       title: 'headlines.search',
       action: null,
       level: 1
-    },
-    {
-      route: 'translations',
-      title: 'headlines.translations',
-      action: null,
-      level: 1
     }
   ]
 }
