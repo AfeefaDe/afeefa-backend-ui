@@ -220,6 +220,21 @@ export default {
     'women-counselling': 'Frauenberatung',
     'workshop': 'Workshop',
     'workspace': 'Räume + Werkstätten',
-    'youth-club': 'Jugendtreff'
+    'youth-club': 'Jugendtreff',
+
+    // LEIPZIG
+    'hotspots': 'Hot Spots',
+    'legal-advice': 'Rechtsberatung',
+    'social-advice': 'Sozialberatung',
+    'family': 'Kinder, Familie & Co',
+    'health':  'Gesundheit',
+    'housing': 'Wohnen',
+    'religion': 'Religion',
+    'mobility': 'Mobil sein',
+    'daily-life': 'Alltag',
+    'leisure': 'Freizeit',
+    'learning-german': 'Deutsch lernen',
+    'kita-and-school': 'Kindergarten und Schule',
+    'work-and-education': 'Arbeit, Ausbildung, Studium'
   }
 }
