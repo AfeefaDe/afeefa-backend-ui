@@ -70,7 +70,7 @@
                 </div>
                 <br>
 
-                <div class="inputField__spacing input-field">
+                <div class="inputField__spacing input-field" v-if="currentUser && currentUser.area=='dresden'">
                   <h2>{{ $tc("entries.tags", 2) }}</h2>
                   <div class="input-field">
                     <tags-select-input @input="tagsChanged" :entryValue='item.tags'></tags-select-input>
