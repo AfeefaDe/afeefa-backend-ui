@@ -221,6 +221,18 @@ export default {
     'women-counselling': 'Women counselling',
     'workshop': 'Workshop',
     'workspace': 'Rooms + Workplaces',
-    'youth-club': 'Youth club'
+    'youth-club': 'Youth club',
+    // LEIPZIG
+    'hotspots': 'Hotspots',
+    'social-advice': 'Social Advice',
+    'family': 'Family, Children & Co',
+    'health': 'Health',
+    'housing': 'Housing',
+    'religion': 'Religion',
+    'mobility': 'Mobility',
+    'daily-life': 'Daily Life',
+    'learning-german': 'Learning German',
+    'kita-and-school': 'Kindergarten und School',
+    'work-and-education': 'Work and Education'
   }
 }

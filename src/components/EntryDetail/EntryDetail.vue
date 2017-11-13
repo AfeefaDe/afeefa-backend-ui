@@ -47,8 +47,8 @@
             <entry-detail-property v-if="entry.description"  :name="$t('entries.description')" :iconName="'info_outline'" :isMultiline="true">{{ entry.description }}</entry-detail-property>
 
             <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'">
-              {{ entry.category ? entry.category.title : 'Keine Kategorie angegeben' }} >
-              {{ entry.sub_category ? entry.sub_category.title : 'Keine Unterkategorie angegeben' }}
+              {{ entry.category ? $t('categories.' + entry.category.title) : 'Keine Kategorie angegeben' }}
+              <span v-if="entry.sub_category">> {{ $t('categories.' + entry.sub_category.title) }}</span>
             </entry-detail-property>
 
             <entry-detail-property

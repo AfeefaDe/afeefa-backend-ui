@@ -19,7 +19,7 @@ export default {
     subOrgas: '*',
     organizer: '*',
     upcomingEvents: '*',
-    upcomingEventsSsort: '*',
+    upcomingEventsShort: '*',
     pastEvents: '*',
     pastEventsShort: '*',
     systemLanguage: '*',
@@ -64,7 +64,7 @@ export default {
     category: '*',
     sub_category: '*',
     geo_coordinates: '*',
-    adress: '*',
+    address: '*',
     lat: '*',
     lon: '*',
     street: '*',
@@ -220,6 +220,19 @@ export default {
     'women-counselling': '*',
     'workshop': '*',
     'workspace': '*',
-    'youth-club': '*'
+    'youth-club': '*',
+
+    // LEIPZIG
+    'hotspots': '*',
+    'social-advice': '*',
+    'family': '*',
+    'health': '*',
+    'housing': '*',
+    'religion': '*',
+    'mobility': '*',
+    'daily-life': '*',
+    'learning-german': '*',
+    'kita-and-school': '*',
+    'work-and-education': '*'
   }
 }
