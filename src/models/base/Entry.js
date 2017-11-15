@@ -1,4 +1,5 @@
 import BaseModel from './BaseModel'
+import User from '../User'
 
 export default class Entry extends BaseModel {
   init () {
@@ -25,6 +26,8 @@ export default class Entry extends BaseModel {
     this.location = null
     this.contact = null
     this.annotations = []
+    this.creator = null
+    this.lastEditor = null
 
     this.inheritance = {
       short_description: false,
@@ -157,6 +160,16 @@ export default class Entry extends BaseModel {
     // contact
     if (rels.contact_infos && rels.contact_infos.data.length) {
       this._relationIds.contact = rels.contact_infos.data[0].id
+    }
+
+    // creator, last editor
+    if (rels.creator.data) {
+      this.creator = new User()
+      this.creator.deserialize(rels.creator.data)
+    }
+    if (rels.last_editor.data) {
+      this.lastEditor = new User()
+      this.lastEditor.deserialize(rels.last_editor.data)
     }
   }
 

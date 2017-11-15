@@ -100,8 +100,10 @@
             <entry-detail-property
               :name="$tc('headlines.status')"
               :iconName= "entry.active ? 'visibility' : 'visibility_off'">
-              <span>{{ $t('entries.created_at') }}: {{ entry.created_at | formatDateAbsolute }} ({{ entry.created_at | formatDateRelative }})</span><br>
-              <span>{{ $t('entries.updated_at') }}: {{ entry.updated_at | formatDateAbsolute }} ({{ entry.updated_at | formatDateRelative }})</span><br>
+              <span>{{ $t('entries.created_at') }}: {{ entry.created_at | formatDateAbsolute }} ({{ entry.created_at | formatDateRelative }})</span>
+              <span v-if="entry.creator"> von {{ entry.creator.name }}</span><br>
+              <span>{{ $t('entries.updated_at') }}: {{ entry.updated_at | formatDateAbsolute }} ({{ entry.updated_at | formatDateRelative }})</span>
+              <span v-if="entry.lastEditor">von {{ entry.lastEditor.name }}</span><br>
               <span>{{ $t('entries.state_changed_at') }}: {{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }})</span><br>
             </entry-detail-property>
           </ul>
@@ -323,7 +325,7 @@ export default {
      */
     previewLink () {
       let previewLink = '//'
-      if (this.currentUser && this.currentUser.area.toLowerCase() !== 'Dresden'.toLowerCase()) {
+      if (this.currentUser && this.currentUser.area && this.currentUser.area.toLowerCase() !== 'Dresden'.toLowerCase()) {
         previewLink += this.currentUser.area + '.'
       }
       if (this.entry.type === 'orgas') {

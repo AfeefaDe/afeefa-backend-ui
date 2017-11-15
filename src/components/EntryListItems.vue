@@ -36,12 +36,14 @@
               {{ $t('status.changed') }}
               {{item.updated_at | formatDateAbsolute}}
               <span>({{item.updated_at | formatDateRelative}})</span>
+              <span v-if="item.lastEditor"> von {{ item.lastEditor.name }}</span>
             </p>
 
             <p class="item entryList--lightColor" v-if="has.created_at">
               {{ $t('status.added') }}
               {{item.created_at | formatDateAbsolute}}
               <span>({{item.created_at | formatDateRelative}})</span>
+              <span v-if="item.creator"> von {{ item.creator.name }}</span>
             </p>
           </div>
         </div>
