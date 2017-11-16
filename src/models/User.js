@@ -7,12 +7,14 @@ export default class User extends BaseModel {
     this.id = null
     this.type = 'users'
     this.name = ''
+    this.area = ''
     this.organization = ''
   }
 
   deserialize (json) {
     this.id = json.id
     this.name = json.attributes.forename + ' ' + json.attributes.surname
+    this.area = json.attributes.area
     this.organization = json.attributes.organization
   }
 }

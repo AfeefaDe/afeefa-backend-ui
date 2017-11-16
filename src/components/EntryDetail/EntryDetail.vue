@@ -325,7 +325,7 @@ export default {
      */
     previewLink () {
       let previewLink = '//'
-      if (this.currentUser && this.currentUser.area && this.currentUser.area.toLowerCase() !== 'Dresden'.toLowerCase()) {
+      if (this.currentUser && this.currentUser.area && this.currentUser.area.toLowerCase() !== 'dresden') {
         previewLink += this.currentUser.area + '.'
       }
       if (this.entry.type === 'orgas') {

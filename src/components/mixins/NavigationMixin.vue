@@ -9,7 +9,7 @@ export default {
       items: state => state.navigation.level1Navigation
     }),
     username () {
-      return this.currentUser ? this.currentUser.forename + ' ' + this.currentUser.surname : ''
+      return this.currentUser ? this.currentUser.name : ''
     }
   },
   methods: {

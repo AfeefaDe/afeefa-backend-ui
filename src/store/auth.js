@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { BASE } from '@/store/api'
 import router from '@/services/router'
+import User from '@/models/User'
 
 const STORAGE_KEY = 'session'
 
@@ -61,7 +62,9 @@ export default {
                 }
                 commit('setLastAuthHeader', newAuthHeader)
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(newAuthHeader))
-                commit('setCurrentUser', response.body.data)
+                const user = new User()
+                user.deserialize(response.body.data)
+                commit('setCurrentUser', user)
                 next() // commit route change
               }).catch(response => {
                 console.log('AUTH: Validate credentials on API failed.', response)
@@ -151,7 +154,9 @@ export default {
       const url = BASE + 'users/sign_in'
       const request = Vue.http.post(url, loginData)
       return request.then(response => {
-        commit('setCurrentUser', response.body.data)
+        const user = new User()
+        user.deserialize(response.body.data)
+        commit('setCurrentUser', user)
         if (state.redirectAfterLogin) {
           // navigate to safed location
           router.push(state.redirectAfterLogin.fullPath)
