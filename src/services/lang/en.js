@@ -27,6 +27,7 @@ export default {
     support_wanted: 'Support wanted',
     certified_sfr: 'Certified by Sächsischer Flüchtlingsrat',
     translations: 'Translations',
+    usersettings: 'Preferences',
     spokenLanguages: 'Spoken Language | Spoken Languages',
     tags: 'Tags'
   },

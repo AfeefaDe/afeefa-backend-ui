@@ -19,7 +19,6 @@ export default {
 
   data () {
     return {
-      beforeRouteleaveCallback: null,
       Resource: Orgas,
       messages: {
         loading: () => this.$t('status.load_orga') + ' ' + this.id,

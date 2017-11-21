@@ -6,6 +6,8 @@ export default class User extends BaseModel {
 
     this.id = null
     this.type = 'users'
+    this.first_name = ''
+    this.last_name = ''
     this.name = ''
     this.area = ''
     this.organization = ''
@@ -13,8 +15,32 @@ export default class User extends BaseModel {
 
   deserialize (json) {
     this.id = json.id
+    this.first_name = json.attributes.forename
+    this.last_name = json.attributes.surname
     this.name = json.attributes.forename + ' ' + json.attributes.surname
     this.area = json.attributes.area
     this.organization = json.attributes.organization
+  }
+
+  serialize () {
+    const data = {
+      id: this.id,
+      type: this.type,
+      attributes: {
+        forename: this.first_name,
+        surname: this.last_name,
+        organization: this.organization
+      }
+    }
+    return data
+  }
+
+  clone () {
+    const user = new User()
+    user.id = this.id
+    user.first_name = this.first_name
+    user.last_name = this.last_name
+    user.organization = this.organization
+    return user
   }
 }

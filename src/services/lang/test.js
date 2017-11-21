@@ -27,6 +27,7 @@ export default {
     support_wanted: '*',
     certified_sfr: '*',
     translations: '*',
+    usersettings: '*',
     spokenLanguages: '*',
     tags: '*'
   },

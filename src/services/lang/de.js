@@ -27,6 +27,7 @@ export default {
     support_wanted: 'Unterstützung wird benötigt',
     certified_sfr: 'Zertifiziert vom Sächsischen Flüchtlingsrat',
     translations: 'Übersetzungen',
+    usersettings: 'Einstellungen',
     spokenLanguages: 'Gesprochene Sprache | Gesprochene Sprachen',
     tags: 'Tags'
   },
@@ -87,6 +88,11 @@ export default {
     additionally_informations: 'Zusätzliche Informationen vom übergeordneten Eintrag',
     media_url: 'Link zum Bild',
     id: 'ID'
+  },
+  usersettings: {
+    first_name: 'Vorname',
+    last_name: 'Nachname',
+    organization: 'Organisation'
   },
   status: {
     load_event: 'Lade Event',

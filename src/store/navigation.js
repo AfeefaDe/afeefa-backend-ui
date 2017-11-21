@@ -68,6 +68,12 @@ const menuTree = {
       title: 'headlines.translations',
       action: null,
       level: 1
+    },
+    {
+      route: 'usersettings',
+      title: 'headlines.usersettings',
+      action: null,
+      level: 1
     }
   ]
 }
