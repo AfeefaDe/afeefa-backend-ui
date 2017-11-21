@@ -45,7 +45,7 @@
   }
 }
 
-select.validation-error, textarea.validation-error, input.validation-error, div.validation-error {
+select.validation-error, textarea.validation-error, input.validation-error, input:not(.browser-default).validation-error, div.validation-error {
   margin-top: 2px;
   background-color: #ffeeee;
   border-bottom-color: red;
