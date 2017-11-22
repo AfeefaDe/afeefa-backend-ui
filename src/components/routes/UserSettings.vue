@@ -7,35 +7,45 @@
         </div>
         <div>
           <form @submit.prevent="save" class="entryForm" novalidate>
-            <div class="inputField__spacing input-field">
-              <label for="first_name" :class="{active: user.first_name}">
-                {{ $t('usersettings.first_name') }}
-              </label>
-              <input v-model="user.first_name" id="first_name" type="text"
-                name="first_name" :data-vv-as="$t('usersettings.first_name')" v-validate.initial="'required|max: 150'"
-                :class="{'validation-error': errors.has('first_name') }"/>
-              <span v-show="errors.has('first_name')" class="validation-error">{{ errors.first('first_name') }}</span>
-            </div>
 
-            <div class="inputField__spacing input-field">
-              <label for="last_name" :class="{active: user.last_name}">
-                {{ $t('usersettings.last_name') }}
-              </label>
-              <input v-model="user.last_name" id="last_name" type="text"
-                name="last_name" :data-vv-as="$t('usersettings.last_name')" v-validate.initial="'required|max: 150'"
-                :class="{'validation-error': errors.has('last_name') }"/>
-              <span v-show="errors.has('last_name')" class="validation-error">{{ errors.first('last_name') }}</span>
-            </div>
+            <input-field
+              field-name="first_name"
+              v-model="user.first_name"
+              validation="required|max:20"
+              :label="$t('usersettings.first_name')">
+            </input-field>
 
-            <div class="inputField__spacing input-field">
-              <label for="organization" :class="{active: user.organization}">
-                {{ $t('usersettings.organization') }}
-              </label>
-              <input v-model="user.organization" id="organization" type="text"
-                name="organization" :data-vv-as="$t('usersettings.organization')" v-validate.initial="'required|max: 150'"
-                :class="{'validation-error': errors.has('organization') }"/>
-              <span v-show="errors.has('organization')" class="validation-error">{{ errors.first('organization') }}</span>
-            </div>
+            <input-field
+              field-name="last_name"
+              v-model="user.last_name"
+              validation="required|max:20"
+              :label="$t('usersettings.last_name')">
+            </input-field>
+
+            <input-field
+              field-name="organization"
+              v-model="user.organization"
+              validation="required|max:20"
+              :label="$t('usersettings.organization')">
+            </input-field>
+
+            <h2>Passwort ändern</h2>
+
+            <input-field
+              field-name="password"
+              type="password"
+              v-model="user.password"
+              validation="min:8|max:40"
+              label="Neues Passwort">
+            </input-field>
+
+            <input-field
+              field-name="password_confirm"
+              type="password"
+              v-model="passwordConfirm"
+              validation="password-confirm:#password"
+              label="Passwortbestätigung">
+            </input-field>
 
             <section class="entryForm__actionFooter">
               <button v-bind:class="[{disabled: currentlySaving}, 'btn', 'waves-effect', 'waves-light', 'saveButton']" type="submit">
@@ -52,6 +62,7 @@
 
 
 <script>
+import InputField from '@/components/InputField'
 import Users from '@/resources/Users'
 
 export default {
@@ -59,7 +70,8 @@ export default {
     return {
       userOrig: null,
       user: null,
-      currentlySaving: false
+      currentlySaving: false,
+      passwordConfirm: null
     }
   },
 
@@ -83,11 +95,21 @@ export default {
   created () {
     this.initCurrentUser()
   },
+
+  watch: {
+    'user.password' () {
+      const passwordConfirmField = this.$validator.fields.find({name: 'password_confirm'})
+      passwordConfirmField.rules.required = !!this.user.password
+      this.$validator.validate('password_confirm', this.passwordConfirm)
+    }
+  },
+
   methods: {
     initCurrentUser () {
       this.userOrig = Users.getCurrentUser()
       this.user = this.userOrig.clone()
     },
+
     save () {
       this.$validator.setLocale(this.$i18n.locale)
 
@@ -117,6 +139,10 @@ export default {
         })
       })
     }
+  },
+
+  components: {
+    InputField
   }
 }
 </script>

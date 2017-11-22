@@ -71,3 +71,20 @@ rule = {
   }
 }
 Validator.extend('url-with-protocol', rule)
+
+
+rule = {
+  messages: {
+    en: (field, args) => {
+      return `Passwords don't match.`
+    },
+    de: (field, args) => {
+      return `Passwörter stimmen nicht überein.`
+    }
+  },
+  validate (value, args) {
+    const otherValue = document.querySelector(args[0]).value
+    return value === otherValue
+  }
+}
+Validator.extend('password-confirm', rule)

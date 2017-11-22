@@ -10,6 +10,7 @@ export default class User extends BaseModel {
     this.last_name = ''
     this.area = ''
     this.organization = ''
+    this.password = ''
   }
 
   get name () {
@@ -34,6 +35,9 @@ export default class User extends BaseModel {
         organization: this.organization
       }
     }
+    if (this.password) {
+      data.attributes.password = this.password
+    }
     return data
   }
 
@@ -42,6 +46,7 @@ export default class User extends BaseModel {
     user.id = this.id
     user.first_name = this.first_name
     user.last_name = this.last_name
+    user.area = this.area
     user.organization = this.organization
     return user
   }
