@@ -22,12 +22,12 @@ export default {
     upcomingEventsShort: 'Upcoming',
     pastEvents: 'Past Events',
     pastEventsShort: 'Past',
-    systemLanguage: 'System language',
+    systemLanguage: 'Language',
     preview: 'Preview',
     support_wanted: 'Support wanted',
     certified_sfr: 'Certified by Sächsischer Flüchtlingsrat',
     translations: 'Translations',
-    usersettings: 'Preferences',
+    usersettings: 'My Account',
     spokenLanguages: 'Spoken Language | Spoken Languages',
     tags: 'Tags'
   },
@@ -89,6 +89,11 @@ export default {
     additionally_informations: 'Additionally informations from parent entry',
     media_url: 'url to image',
     id: 'ID'
+  },
+  usersettings: {
+    first_name: 'First name',
+    last_name: 'Last name',
+    organization: 'Organization'
   },
   status: {
     load_event: 'Load Event',

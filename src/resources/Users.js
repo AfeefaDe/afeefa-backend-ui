@@ -16,21 +16,28 @@ class UsersResource extends BaseResource {
 }
 
 export default {
-  getCurrentUser () {
-    return store.state.auth.currentUser
+  get _resourceCache () {
+    return store.state.api.resourceCache
   },
-  save (user) {
-    // workaround, since the current user is not loaded via api
-    // and hence not added to cache -> we add it here ...
-    const resourceCache = store.state.api.resourceCache
-    resourceCache.addItem('users', user)
 
+  // current user is not delivered by api but by auth service
+  // and must hence be added manually
+  setCurrentUser (user, id) {
+    this._resourceCache.addItem('users', user)
+  },
+
+  removeCurrentUser (id) {
+    this._resourceCache.purgeItem('users', id)
+  },
+
+  getCurrentUser () {
+    return this._resourceCache.getItem('users', store.state.auth.currentUserId)
+  },
+
+  save (user) {
     return store.dispatch('api/saveItem', {
       resource: new UsersResource(),
       item: user
-    }).then(user => {
-      // ... and we override the auth user
-      store.commit('auth/setCurrentUser', user)
     })
   }
 }

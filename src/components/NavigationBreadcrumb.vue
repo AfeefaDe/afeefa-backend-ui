@@ -1,9 +1,9 @@
 <template>
   <div class="navigationBreadcrumb">
-    <span v-for="(item, index) in items">
+    <span v-for="(item, index) in items" :key="item.title">
       <i class="material-icons" v-if="index">&nbsp;chevron_right</i>
-      <router-link :to="{name: item.route}" v-if="item.route"> {{ $tc(item.title, 2) }} </router-link>
-      <span v-else> {{ $tc(item.title, 2) }} </span>
+      <router-link :to="{name: item.route}" v-if="item.route"> {{ translateTitle(item) }} </router-link>
+      <span v-else> {{ translateTitle(item) }} </span>
     </span>
   </div>
 </template>
@@ -13,6 +13,7 @@
 import { mapState } from 'vuex'
 
 export default {
+  props: ['translateTitle'],
   computed: {
     ...mapState({
       items: state => state.navigation.pathNavigation

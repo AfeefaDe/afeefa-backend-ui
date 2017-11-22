@@ -89,6 +89,11 @@ export default {
     media_url: '*',
     id: '*'
   },
+  usersettings: {
+    first_name: '*',
+    last_name: '*',
+    organization: '*'
+  },
   status: {
     load_event: '*',
     load_orga: '*',

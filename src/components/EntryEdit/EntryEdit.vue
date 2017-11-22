@@ -308,6 +308,7 @@ import Entries from '@/resources/base/Entries'
 import Categories from '@/resources/Categories'
 import Annotations from '@/resources/Annotations'
 import AnnotationCategories from '@/resources/AnnotationCategories'
+import Users from '@/resources/Users'
 import ResourceItems from '@/resources/ResourceItems'
 import sortByTitle from '@/helpers/sort-by-title'
 import AnnotationTag from '@/components/AnnotationTag'
@@ -336,6 +337,7 @@ export default {
       categories: [],
       annotationCategories: [],
       orgas: [],
+      currentUser: null,
 
       imageError: false,
       loadingError: false,
@@ -386,6 +388,8 @@ export default {
     Orgas.getAll().then(orgas => {
       this.orgas = sortByTitle(orgas)
     })
+
+    this.currentUser = Users.getCurrentUser()
 
     EventBus.$on('beforeRouteLeave', this.beforeRouteLeave)
   },
@@ -441,10 +445,6 @@ export default {
   },
 
   computed: {
-    currentUser () {
-      return this.$store.state.auth.currentUser
-    },
-
     selectableAnnotations () {
       return this.annotationCategories.filter(
         (annotationCategory) => {

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { BASE } from '@/store/api'
 import router from '@/services/router'
 import User from '@/models/User'
+import Users from '@/resources/Users'
 
 const STORAGE_KEY = 'session'
 
@@ -10,7 +11,7 @@ export default {
 
 
   state: {
-    currentUser: null,
+    currentUserId: null,
     redirectAfterLogin: null,
     lastAuthHeader: {}
   },
@@ -18,7 +19,14 @@ export default {
 
   mutations: {
     setCurrentUser (state, user) {
-      state.currentUser = user
+      if (user) {
+        state.currentUserId = user.id
+        Users.setCurrentUser(user)
+      } else {
+        const id = state.currentUserId
+        state.currentUserId = null
+        Users.removeCurrentUser(id)
+      }
     },
     setRedirectAfterLogin (state, route) {
       state.redirectAfterLogin = route
@@ -37,7 +45,7 @@ export default {
        * if the user is not authenticated yet, forward it to login
        */
       router.beforeEach((to, from, next) => {
-        if (!state.currentUser) { // not authenticated
+        if (!state.currentUserId) { // not authenticated
           if (to.matched.some(route => route.meta.requiresAuth)) { // any protected route
             console.log('AUTH: No auth user found. Load credentials from local storage.')
             let session = localStorage.getItem(STORAGE_KEY)
