@@ -26,7 +26,7 @@
       <div class="navigation-mobile__footerSeperator"></div>
       <section class="navigation-mobile__footer">
         <span>
-          <i class="material-icons spacing-right">account_circle</i> {{currentUser.name}} ({{ currentUser.organization }})
+          <i class="material-icons spacing-right">account_circle</i> {{currentUser.name}} <span v-if="currentUser.organization">({{ currentUser.organization }})</span>
         </span>
       </section>
       <section class="navigation-mobile__footer">

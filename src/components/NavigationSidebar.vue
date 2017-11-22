@@ -20,7 +20,7 @@
             <i class="navigationSidebar__userIcon material-icons spacing-right">account_circle</i>
             <div>
               <strong>{{currentUser.name}}</strong><br>
-              {{ currentUser.organization }}<br>
+              <span v-if="currentUser.organization">{{ currentUser.organization }}</span>
             </div>
           </span>
         </div>
