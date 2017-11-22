@@ -42,13 +42,10 @@ export default {
             console.log('AUTH: No auth user found. Load credentials from local storage.')
             let session = localStorage.getItem(STORAGE_KEY)
             if (session) {
-              console.log('AUTH: Credentials found. Validate on API.')
               let storedAuthHeader = JSON.parse(session)
               let url = BASE + 'users/validate_token'
               let request = Vue.http.get(url, {headers: storedAuthHeader})
-
               request.then(response => {
-                console.log('AUTH: Validate credentials on API succeeded.')
                 let newAuthHeader
                 if (response.headers.get('access-token')) {
                   newAuthHeader = {
@@ -58,7 +55,8 @@ export default {
                     'uid': response.headers.get('uid'),
                     'client': response.headers.get('client')}
                 } else {
-                  newAuthHeader = storedAuthHeader
+                  // @new: instead of storedAuthHeader
+                  newAuthHeader = JSON.parse(session)
                 }
                 commit('setLastAuthHeader', newAuthHeader)
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(newAuthHeader))
@@ -67,7 +65,6 @@ export default {
                 commit('setCurrentUser', user)
                 next() // commit route change
               }).catch(response => {
-                console.log('AUTH: Validate credentials on API failed.', response)
                 if (response.status !== 401) {
                   // a possibly 401 of 'validate_token' will be auto-forwarded
                   // to login page with http interceptor below
@@ -166,7 +163,6 @@ export default {
           router.push({name: 'dashboard'})
         }
       }).catch(response => {
-        console.log('error login', response)
         let error
         try {
           error = JSON.parse(response.bodyText).errors[0]
@@ -179,7 +175,6 @@ export default {
           description: error,
           autoHide: false
         }, {root: true})
-        console.log('error login', response)
       })
     },
 
