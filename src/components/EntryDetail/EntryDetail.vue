@@ -227,6 +227,7 @@
 
 <script>
 import Events from '@/resources/Events'
+import Users from '@/resources/Users'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 import slugify from '@/helpers/slugify'
 
@@ -254,6 +255,7 @@ export default {
       sortByDateStart,
       currentTab: '',
       currentlyPublishing: false,
+      currentUser: null,
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
@@ -261,6 +263,9 @@ export default {
         events: options.hasEvents
       }
     }
+  },
+  created () {
+    this.currentUser = Users.getCurrentUser()
   },
   watch: {
     entry () {
@@ -307,9 +312,6 @@ export default {
   },
 
   computed: {
-    currentUser () {
-      return this.$store.state.auth.currentUser
-    },
     entryVisibleInFrontend () {
       return this.entry.active && ((this.entry.type === 'events' && this.entry.upcoming) || (this.entry.type === 'orgas'))
     },

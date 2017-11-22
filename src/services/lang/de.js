@@ -1,6 +1,6 @@
 export default {
   headlines: {
-    dashboard: 'Dashboard',
+    dashboard: 'Übersicht',
     todos: 'Todos',
     organisations: 'Organisation | Organisationen',
     events: 'Veranstaltung | Veranstaltungen',
@@ -22,12 +22,12 @@ export default {
     upcomingEventsShort: 'Kommende',
     pastEvents: 'Vergangene Veranstaltungen',
     pastEventsShort: 'Vergangene',
-    systemLanguage: 'Systemsprache',
+    systemLanguage: 'Sprache',
     preview: 'Vorschau',
     support_wanted: 'Unterstützung wird benötigt',
     certified_sfr: 'Zertifiziert vom Sächsischen Flüchtlingsrat',
     translations: 'Übersetzungen',
-    usersettings: 'Einstellungen',
+    usersettings: 'Meine Einstellungen',
     spokenLanguages: 'Gesprochene Sprache | Gesprochene Sprachen',
     tags: 'Tags'
   },

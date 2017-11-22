@@ -1,7 +1,7 @@
 <template>
   <div class="navigation-mobile">
     <div class="navigation-mobile__header">
-      <navigation-breadcrumb></navigation-breadcrumb>
+      <navigation-breadcrumb :translate-title="translateTitle"></navigation-breadcrumb>
 
       <div id="btn-sandwich" @click="toggleMenu()">
         <i class="material-icons" v-if="visible">close</i>
@@ -10,25 +10,36 @@
     </div>
 
     <div id="menu" v-if="visible">
-      <div v-for="item in items" :class="['navigation-mobile__item', 'level' + item.level]">
+      <div v-for="item in items" :class="['navigation-mobile__item', 'level' + item.level]" :key="item.title">
         <router-link :to="{name: item.route}">
-          {{ $tc(item.title, 2) }}
+          {{ translateTitle(item) }}
           <template v-if="item.hint || item.hint === 0">({{item.hint}})</template>
         </router-link>
 
         <router-link :to="{name: item.action.route}" class="navigation-mobile__itemAction" v-if="item.action">
           <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
         </router-link>
-
       </div>
+    </div>
 
+    <div id="footer" v-if="visible">
       <div class="navigation-mobile__footerSeperator"></div>
-      <div :title="$t('hints.area_status')">
-        <i class="material-icons spacing-right">location_city</i>
-        <span class="navigation-mobile__areaName">{{currentUser.area}}</span>
-      </div>
       <section class="navigation-mobile__footer">
-        <span><i class="material-icons spacing-right">account_circle</i> {{username}}</span>
+        <span>
+          <i class="material-icons spacing-right">account_circle</i> {{currentUser.name}} <span v-if="currentUser.organization">({{ currentUser.organization }})</span>
+        </span>
+      </section>
+      <section class="navigation-mobile__footer">
+        <div>
+          <router-link :to="{name: 'usersettings'}">Meine Einstellungen</router-link><br>
+          <div>
+            {{ $t('headlines.systemLanguage') }}:
+            <span v-for="(lang, index) in ['de', 'en']" :key="lang">
+              <span v-if="lang === $i18n.locale"><strong class="spacing-left">{{ $t('languages.'+lang) }}</strong></span>
+              <span v-else><a href="#" class="spacing-left" @click="changeLanguage()">{{ $t('languages.'+lang) }}</a></span>
+            </span>
+          </div>
+        </div>
         <a href="" @click.prevent="logout()"> {{ $t('headlines.logout') }}<i class="material-icons spacing-left">exit_to_app</i></a>
       </section>
     </div>
@@ -125,9 +136,19 @@ export default {
     text-align: left;
     a {
       display: block;
-      cursor: pointer;
       margin: 0.6em 0;
+    }
+    i {
       vertical-align: middle;
+      margin-top: -3px;
+    }
+  }
+
+  #footer {
+    margin-top: 1em;
+    a {
+      display: inline-block;
+      margin-top: 0.2em;
     }
     i {
       vertical-align: middle;
