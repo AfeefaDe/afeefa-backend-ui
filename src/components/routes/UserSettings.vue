@@ -29,7 +29,9 @@
               :label="$t('usersettings.organization')">
             </input-field>
 
-            <h2>Passwort ändern</h2>
+            <h2>Passwort ändern (optional)</h2>
+
+            Um das Passwort zu ändern, bitte beide Felder ausfüllen. Andernfalls einfach leer lassen.
 
             <input-field
               field-name="password"
@@ -97,6 +99,9 @@ export default {
   },
 
   watch: {
+    // hack to trigger pw_confirm validation on each pw change
+    // pw_confirm validation get triggered by vee-validate only if set to required
+    // and we do not require pw_confirm if no pw is typed
     'user.password' () {
       const passwordConfirmField = this.$validator.fields.find({name: 'password_confirm'})
       passwordConfirmField.rules.required = !!this.user.password
@@ -130,10 +135,12 @@ export default {
 
         this.currentlySaving = true
         Users.save(this.user).then(() => {
-          this.initCurrentUser()
+          const pwChanged = this.passwordConfirm ? 'und das Passwort ' : ''
           this.$store.dispatch('messages/showAlert', {
-            description: 'Die Nutzerdaten wurden geändert.'
+            description: `Die Nutzerdaten ${pwChanged}wurden geändert.`
           })
+          this.initCurrentUser()
+          this.passwordConfirm = null
         }).finally(() => {
           this.currentlySaving = false
         })

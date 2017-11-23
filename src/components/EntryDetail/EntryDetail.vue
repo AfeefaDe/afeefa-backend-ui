@@ -101,9 +101,9 @@
               :name="$tc('headlines.status')"
               :iconName= "entry.active ? 'visibility' : 'visibility_off'">
               <span>{{ $t('entries.created_at') }}: {{ entry.created_at | formatDateAbsolute }} ({{ entry.created_at | formatDateRelative }})</span>
-              <span v-if="entry.creator"> von {{ entry.creator.name }}</span><br>
+              <span v-if="entry.creator"> von {{ entry.creator.name }} <span v-if="entry.creator.organization">({{ entry.creator.organization }})</span></span><br>
               <span>{{ $t('entries.updated_at') }}: {{ entry.updated_at | formatDateAbsolute }} ({{ entry.updated_at | formatDateRelative }})</span>
-              <span v-if="entry.lastEditor">von {{ entry.lastEditor.name }}</span><br>
+              <span v-if="entry.lastEditor">von {{ entry.lastEditor.name }} <span v-if="entry.lastEditor.organization">({{ entry.lastEditor.organization }})</span></span><br>
               <span>{{ $t('entries.state_changed_at') }}: {{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }})</span><br>
             </entry-detail-property>
           </ul>
