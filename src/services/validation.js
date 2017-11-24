@@ -34,7 +34,9 @@ let rule = {
     return true
   }
 }
-Validator.extend('date-end-not-before-start', rule)
+// cannot use 'before' oder 'after' in custom rule names,
+// see vee-validate.js Field.prototype.updateDependencies
+Validator.extend('date-end-not-earlier-than-start', rule)
 
 
 rule = {

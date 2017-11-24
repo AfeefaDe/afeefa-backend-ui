@@ -29,6 +29,8 @@ export default class Entry extends BaseModel {
     this.creator = null
     this.lastEditor = null
 
+    this.facebook_id = null
+
     this.inheritance = {
       short_description: false,
       contact_infos: false
@@ -111,7 +113,9 @@ export default class Entry extends BaseModel {
     this.certified_sfr = json.attributes.certified_sfr
     this.tags = json.attributes.tags
 
-    // feed inheritance object with values
+    this.facebook_id = json.attributes.facebook_id
+
+        // feed inheritance object with values
     if (json.attributes.inheritance) {
       json.attributes.inheritance.split('|').forEach(key => {
         this.inheritance[key] = true
@@ -184,6 +188,7 @@ export default class Entry extends BaseModel {
     entry.support_wanted_detail = this.support_wanted_detail
     entry.certified_sfr = this.certified_sfr
     entry.tags = this.tags
+    entry.facebook_id = this.facebook_id
     // use deep clone for nested inheritance object
     entry.inheritance = {
       short_description: this.inheritance.short_description,

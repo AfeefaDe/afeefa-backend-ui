@@ -20,6 +20,9 @@ export default {
    * the translation i stored in 'tabs'.tabName
    */
   props: ['tabNames'],
+
+  inject: ['$validator'],
+
   data () {
     return {
       activeTab: this.tabNames[0]

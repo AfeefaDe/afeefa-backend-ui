@@ -135,7 +135,7 @@
                     :has-time-start="item.has_time_start"
                     :has-time-end="item.has_time_end"
                     @input="updateDatePickerValues"
-                    name="date" v-validate="'date-end-not-before-start|date-end-not-start'"
+                    name="date" v-validate="'date-end-not-earlier-than-start|date-end-not-start'"
                     :class="['inputField__spacing', {'validation-error': errors.has('date') }]"
                     >
                   </date-picker>
@@ -267,6 +267,16 @@
                   >
                   </multiselect>
                 </div>
+
+                <div v-if="item.type === 'orgas'">
+                  <input-field
+                    field-name="facebook_id"
+                    v-model="item.facebook_id"
+                    validation="min:15|max:64"
+                    label="Facebook ID für Events">
+                  </input-field>
+                </div>
+
               </section>
             </entry-tabbed-content>
 
@@ -322,6 +332,7 @@ import ResourceItem from '@/components/ResourceItem'
 import DatePicker from './Datepicker/DatePicker'
 import EditContactInfo from './EditContactInfo'
 import TagsSelectInput from './TagsSelectInput'
+import InputField from '@/components/InputField'
 
 import ValidationMixin from '../mixins/ValidationMixin'
 
@@ -599,7 +610,6 @@ export default {
 
     save () {
       this.$validator.setLocale(this.$i18n.locale)
-
       const contactInfoEditValidation = this.$refs.EditContactInfo.validateForm()
       const entryEditValidation = this.validateForm()
 
@@ -760,7 +770,8 @@ export default {
     Multiselect,
     EditContactInfo,
     TagsSelectInput,
-    ResourceItem
+    ResourceItem,
+    InputField
   }
 }
 </script>

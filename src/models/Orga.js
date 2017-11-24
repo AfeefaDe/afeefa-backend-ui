@@ -39,6 +39,8 @@ export default class Orga extends Entry {
   serialize () {
     const data = super.serialize()
 
+    data.attributes.facebook_id = this.facebook_id
+
     data.relationships.parent_orga = this.parent_orga
       ? { data: {id: this.parent_orga.id, type: 'orgas'} }
       : null
