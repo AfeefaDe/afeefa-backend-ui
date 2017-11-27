@@ -1,7 +1,7 @@
 export default {
   headlines: {
     dashboard: 'Übersicht',
-    todos: 'Todos',
+    todos: 'Aufgaben',
     organisations: 'Organisation | Organisationen',
     events: 'Veranstaltung | Veranstaltungen',
     location: 'Ort',
@@ -35,14 +35,14 @@ export default {
     generalTab: 'Allgemeines',
     placeTab: 'Ort',
     contactTab: 'Kontakt',
-    linkTab: 'Verweise',
+    linkTab: 'Zugehörigkeiten',
     resourceTab: 'Ressourcen'
   },
   errors: {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',
     noLocationPresent: 'Keine Ortsinformation vorhanden',
     noAnnotationPresent: 'Keine Annoation vorhanden',
-    noLinksPresent: 'Keine Verweise vorhanden',
+    noLinksPresent: 'Keine Zugehörigkeiten vorhanden',
     noParentOrgaPresent: 'Keine übergeordnete Orga vorhanden',
     noSubOrgaPresent: 'Keine untergeordneten Orgas vorhanden',
     noEventsForOrga: 'Keine Events zu dieser Orga vorhanden',
