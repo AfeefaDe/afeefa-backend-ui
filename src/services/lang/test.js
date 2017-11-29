@@ -29,7 +29,8 @@ export default {
     translations: '*',
     usersettings: '*',
     spokenLanguages: '*',
-    tags: '*'
+    tags: '*',
+    chapters: '*'
   },
   tabs: {
     generalTab: '*',

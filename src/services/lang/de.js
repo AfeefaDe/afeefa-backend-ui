@@ -29,7 +29,8 @@ export default {
     translations: 'Übersetzungen',
     usersettings: 'Meine Einstellungen',
     spokenLanguages: 'Gesprochene Sprache | Gesprochene Sprachen',
-    tags: 'Tags'
+    tags: 'Tags',
+    chapters: 'Wissensportal'
   },
   tabs: {
     generalTab: 'Allgemeines',

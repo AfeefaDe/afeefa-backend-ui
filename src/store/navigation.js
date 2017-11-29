@@ -58,6 +58,21 @@ const menuTree = {
       ]
     },
     {
+      route: 'chapters.list',
+      title: 'headlines.chapters',
+      action: {
+        name: 'Neues Kapitel erstellen',
+        icon: 'add_circle_outline',
+        route: 'chapters.new'
+      },
+      level: 2,
+      children: [
+        { route: 'chapters.show', title: 'headlines.show', level: 4 },
+        { route: 'chapters.edit', title: 'headlines.edit', level: 4 },
+        { route: 'chapters.new', title: 'headlines.new', level: 4 }
+      ]
+    },
+    {
       route: 'search',
       title: 'headlines.search',
       action: null,

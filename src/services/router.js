@@ -16,6 +16,12 @@ import NewEvent from '@/components/routes/events/New'
 import EditEvent from '@/components/routes/events/Edit'
 import ShowEvent from '@/components/routes/events/Show'
 
+import ListChapters from '@/components/routes/chapters/List'
+import NewChapter from '@/components/routes/chapters/New'
+import EditChapter from '@/components/routes/chapters/Edit'
+import ShowChapter from '@/components/routes/chapters/Show'
+
+
 import Search from '@/components/routes/Search'
 import UserSettings from '@/components/routes/UserSettings'
 
@@ -68,7 +74,7 @@ const routes = [
         ]
       },
       {
-        path: 'events',
+        path: 'chapters',
         component: { template: '<router-view></router-view>' },
         children: [
           {
@@ -103,6 +109,34 @@ const routes = [
             path: ':id/edit',
             name: 'events.edit',
             component: EditEvent,
+            props: true
+          }
+        ]
+      },
+      {
+        path: 'chapters',
+        component: { template: '<router-view></router-view>' },
+        children: [
+          {
+            path: '',
+            name: 'chapters.list',
+            component: ListChapters
+          },
+          {
+            path: 'new',
+            name: 'chapters.new',
+            component: NewChapter
+          },
+          {
+            path: ':id',
+            name: 'chapters.show',
+            component: ShowChapter,
+            props: true
+          },
+          {
+            path: ':id/edit',
+            name: 'chapters.edit',
+            component: EditChapter,
             props: true
           }
         ]
