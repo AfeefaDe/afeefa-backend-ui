@@ -30,7 +30,8 @@ export default {
     usersettings: 'My Account',
     spokenLanguages: 'Spoken Language | Spoken Languages',
     tags: 'Tags',
-    chapters: 'Wiki'
+    chapters: 'Wiki',
+    singleChapter: 'Chapter'
   },
   tabs: {
     generalTab: 'General',

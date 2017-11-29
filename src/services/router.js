@@ -74,7 +74,7 @@ const routes = [
         ]
       },
       {
-        path: 'chapters',
+        path: 'events',
         component: { template: '<router-view></router-view>' },
         children: [
           {

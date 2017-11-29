@@ -5,8 +5,8 @@ import BaseResource from './base/BaseResource'
 
 class ChaptersResource extends BaseResource {
   init () {
-    this.http = Vue.resource(BASE + 'chapter{/id}')
-    this.listCacheKey = 'chapter'
+    this.http = Vue.resource(BASE + 'chapters{/id}')
+    this.listCacheKey = 'chapters'
   }
 
   createItem () {
@@ -23,12 +23,5 @@ export default {
   get (id) {
     const resource = new ChaptersResource()
     return store.dispatch('api/getItem', {resource, id})
-  },
-  /*
-   * public method to create new ResourceItem in EditEntry component
-   */
-  createItem () {
-    const resource = new ChaptersResource()
-    return resource.createItem()
   }
 }

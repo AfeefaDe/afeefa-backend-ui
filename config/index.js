@@ -37,6 +37,13 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      '/api/v1/chapter': {
+        target: 'http://localhost:3020',
+        secure: false,
+        pathRewrite: {
+          '^/api/v1/chapters': '/chapters'
+        },
+      },
       '/api': {
         target: local.proxy || 'http://localhost:3000',
         secure: false

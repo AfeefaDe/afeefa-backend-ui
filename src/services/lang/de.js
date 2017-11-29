@@ -30,7 +30,8 @@ export default {
     usersettings: 'Meine Einstellungen',
     spokenLanguages: 'Gesprochene Sprache | Gesprochene Sprachen',
     tags: 'Tags',
-    chapters: 'Wissensportal'
+    chapters: 'Wissensportal',
+    singleChapter: 'Kapitel'
   },
   tabs: {
     generalTab: 'Allgemeines',

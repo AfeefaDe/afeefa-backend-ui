@@ -30,7 +30,8 @@ export default {
     usersettings: '*',
     spokenLanguages: '*',
     tags: '*',
-    chapters: '*'
+    chapters: '*',
+    singleChapter: '*'
   },
   tabs: {
     generalTab: '*',
