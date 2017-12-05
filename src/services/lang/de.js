@@ -239,6 +239,7 @@ export default {
     'daily-life': 'Alltag',
     'learning-german': 'Deutsch lernen',
     'kita-and-school': 'Kindergarten und Schule',
-    'work-and-education': 'Arbeit, Ausbildung, Studium'
+    'work-and-education': 'Arbeit, Ausbildung, Studium',
+    'participate': 'Mitwirken und sich einmischen'
   }
 }
