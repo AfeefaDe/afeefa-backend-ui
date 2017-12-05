@@ -229,17 +229,21 @@ export default {
     'youth-club': 'Jugendtreff',
 
     // LEIPZIG
-    'hotspots': 'Hot Spots',
-    'social-advice': 'Sozialberatung',
+    'advice-and-support': 'Rat und Begleitung',
+    'buddy-programme': 'Patenschaften',
+    'daily-life': 'Alltag',
     'family': 'Kinder, Familie & Co',
     'health': 'Gesundheit',
+    'hotspots': 'Hot Spots',
     'housing': 'Wohnen',
-    'religion': 'Religion',
-    'mobility': 'Mobil sein',
-    'daily-life': 'Alltag',
-    'learning-german': 'Deutsch lernen',
     'kita-and-school': 'Kindergarten und Schule',
-    'work-and-education': 'Arbeit, Ausbildung, Studium',
-    'participate': 'Mitwirken und sich einmischen'
+    'learning-german': 'Deutsch lernen',
+    'living-in-leipzig': 'Leben in Leipzig',
+    'mobility': 'Mobil sein',
+    'participate': 'Mitwirken und sich einmischen',
+    'religion': 'Religion',
+    'social-advice': 'Sozialberatung',
+    'work-and-education': 'Bildung + Arbeit',
+    'work-learn-study': 'Arbeit, Ausbildung, Studium'
   }
 }
