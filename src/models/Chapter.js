@@ -3,7 +3,8 @@ import BaseModel from './base/BaseModel'
 export default class Chapter extends BaseModel {
   init () {
     this._fullyLoaded = true // there is no half-loaded-state
-    this.type='chapter'
+
+    this.type = 'chapters'
     this.id = null
     this.title = ''
     this.content = ''
@@ -30,8 +31,7 @@ export default class Chapter extends BaseModel {
     this.id = json.id
     this.title = json.title
     this.content = json.content
-    this.order = json.order
-    this.type = 'chapter'
+    this.order = json.order || 0
     // this.created_at = new Date(json.created_at)
     // this.updated_at = new Date(json.updated_at)
   }

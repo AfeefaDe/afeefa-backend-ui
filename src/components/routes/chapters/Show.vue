@@ -1,32 +1,70 @@
 <template>
-<div>Show Chapter</div>
+<div class="row">
+  <div class="col s12 m12">
+    <div class="mainCard" v-if="item">
+
+      <div v-bind:class="['mainCard__header', 'mainCard__headerCategories']">
+        <a href="" @click.prevent="goBack"><i class="material-icons go-back">chevron_left</i></a>
+        <div class="mainCard__headerTitle">
+          <h2 class="mainCard__headerTitleHeading">{{ item.title || 'Kein Titel' }}</h2>
+        </div>
+        <div class="mainCard__headerButtonContainer">
+          <router-link :to="{name: item.type + '.edit', params: {id: item.id}}" class="mainCard__headerButton">
+            {{$t('buttons.edit')}}
+            <i class="material-icons">mode_edit</i>
+          </router-link>
+        </div>
+      </div>
+
+      <div>
+        <ul class="entryDetail">
+          <entry-detail-property v-if="item.title" :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='item.type'>
+            {{ item.title }}
+          </entry-detail-property>
+
+          <entry-detail-property v-if="item.content"  :name="$t('entries.description')" :iconName="'info_outline'" :isMultiline="true">{{ item.content }}</entry-detail-property>
+        </ul>
+      </div>
+
+    </div>
+
+    <div v-else class="mainCard">
+      <div class="mainCard__header mainCard__headerLight">
+        <span v-if="loadingError">Das Kapitel konnte nicht geladen werden.</span>
+        <span v-else>Lade Kapitel ...</span>
+      </div>
+    </div>
+
+  </div>
+</div>
 </template>
 
 
 <script>
 import Chapters from '@/resources/Chapters'
 import EntryShowMixin from '@/components/mixins/EntryShowMixin'
+import EntryDetailProperty from '@/components/EntryDetail/EntryDetailProperty'
 
 export default {
   mixins: [EntryShowMixin],
 
   data () {
     return {
-      Resource: Chapters,
-      messages: {
-        loading: () => this.$t('status.load_event') + ' ' + this.id,
-        loadingError: () => this.$t('errors.loadingEntryError') + ' ' + this.id,
-        activateHeadline: active => {
-          return `Event ${active ? 'verbergen' : 'veröffentlichen'}`
-        },
-        activate: active => {
-          return `Soll das Event "${this.item.title}" ${active ? 'verborgen' : 'veröffentlicht'} werden?`
-        },
-        activated: active => {
-          return `Das Event ${active ? 'wurde veröffentlicht' : ' ist nun nicht mehr öffentlich sichtbar'}.`
-        }
-      }
+      Resource: Chapters
     }
+  },
+
+  methods: {
+    goBack () {
+      this.$router.go(-1)
+    }
+  },
+
+  components: {
+    EntryDetailProperty
   }
 }
 </script>
+
+<style lang="scss" scoped>
+</style>

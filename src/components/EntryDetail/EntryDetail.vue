@@ -200,21 +200,21 @@
               <br>
               <EntryListDropDownMenu :title="$t('headlines.pastEvents')" :numberOfItems="pastEvents.length" :isOpened="false" entryType="events">
                 <entry-list-items
-                :items="pastEvents"
-                v-if="pastEvents.length"
-                :sort-function="sortByDateStart"
-                sort-order="DESC"
-                showIcon="false"
-                :options="{date_start: true}">
-              </entry-list-items>
-            </EntryListDropDownMenu>
-          </entry-detail-property>
+                  :items="pastEvents"
+                  v-if="pastEvents.length"
+                  :sort-function="sortByDateStart"
+                  sort-order="DESC"
+                  showIcon="false"
+                  :options="{date_start: true}">
+                </entry-list-items>
+              </EntryListDropDownMenu>
+            </entry-detail-property>
 
-          <entry-detail-property name="Facebook ID für Events" iconName="share">
-            {{ entry.facebook_id || 'Keine ID angegeben'}}
-          </entry-detail-property>
-        </ul>
-      </section>
+            <entry-detail-property name="Facebook ID für Events" iconName="share">
+              {{ entry.facebook_id || 'Keine ID angegeben'}}
+            </entry-detail-property>
+          </ul>
+        </section>
       </entry-tabbed-content>
     </div>
 
