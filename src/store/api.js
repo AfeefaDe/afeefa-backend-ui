@@ -210,13 +210,16 @@ export default {
     },
 
 
-    addItem: ({dispatch}, {resource, item}) => {
+    addItem: ({dispatch}, {resource, item, options = {}}) => {
       const itemCacheKey = resource.getItemCacheKey()
 
+      const itemJson = item.serialize()
+      const body = options.wrapInDataProperty === false ? itemJson : {data: itemJson}
+
       return resource.http.save(
-        {id: item.id}, {data: item.serialize()}
+        {id: item.id}, body
       ).then(response => {
-        item.deserialize(response.body.data)
+        item.deserialize(response.body.data || response.body)
         resourceCache.addItem(itemCacheKey, item)
         resource.itemAdded(item)
         dispatch('getMetaInformation')

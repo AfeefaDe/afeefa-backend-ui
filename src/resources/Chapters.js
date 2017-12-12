@@ -13,6 +13,17 @@ class ChaptersResource extends BaseResource {
   createItem () {
     return new Chapter()
   }
+
+  itemAdded () {
+    const resourceCache = store.state.api.resourceCache
+    resourceCache.purgeList('chapters')
+  }
+
+  itemDeleted (chapter) {
+    const resourceCache = store.state.api.resourceCache
+    resourceCache.purgeItem('chapters', chapter.id)
+    resourceCache.purgeList('chapters')
+  }
 }
 
 export default {
@@ -27,12 +38,29 @@ export default {
   },
 
   save (chapter) {
-    return store.dispatch('api/saveItem', {
+    if (chapter.id) {
+      return store.dispatch('api/saveItem', {
+        resource: new ChaptersResource(),
+        item: chapter,
+        options: {
+          wrapInDataProperty: false
+        }
+      })
+    } else {
+      return store.dispatch('api/addItem', {
+        resource: new ChaptersResource(),
+        item: chapter,
+        options: {
+          wrapInDataProperty: false
+        }
+      })
+    }
+  },
+
+  delete (chapter) {
+    return store.dispatch('api/deleteItem', {
       resource: new ChaptersResource(),
-      item: chapter,
-      options: {
-        wrapInDataProperty: false
-      }
+      item: chapter
     })
   }
 }

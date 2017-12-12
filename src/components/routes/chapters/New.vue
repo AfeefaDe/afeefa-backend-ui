@@ -1,24 +1,16 @@
 <template>
-<div>Chapter Erstellen</div>
+  <edit-form ref="form" :id="null"></edit-form>
 </template>
 
 <script>
-import EntryEditMixin from '@/components/mixins/EntryEditMixin'
-import Chapters from '@/resources/Chapters'
+import EditForm from './EditForm'
+import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 
 export default {
-  mixins: [EntryEditMixin],
+  mixins: [BeforeRouteLeaveMixin],
 
-  data () {
-    return {
-      Resource: Chapters,
-      messages: {
-        loading: () => this.$t('status.load_event') + ' ' + this.id,
-        saved: () => {
-          return `Das Event wurde hinzugefügt.`
-        }
-      }
-    }
+  components: {
+    EditForm
   }
 }
 </script>
