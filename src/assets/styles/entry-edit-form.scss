@@ -40,9 +40,6 @@
     display: inline-block;
     width: 100%;
   }
-  .labelCharacterCount {
-    float: right;
-  }
 }
 
 select.validation-error, textarea.validation-error, input.validation-error, input:not(.browser-default).validation-error, div.validation-error {
@@ -87,8 +84,6 @@ select + span.validation-error, .datePicker + span.validation-error {
 }
 
 .annotationEditArea {
-  background: $white;
-  padding: 0.5em;
   border-radius: 5px;
   margin-top: 0.5em;
   list-style: none;

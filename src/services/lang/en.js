@@ -142,7 +142,7 @@ export default {
   },
   hints: {
     edit_annotations: 'You can add and delete annotations if you edit the entry.',
-    annotation_detail: 'Please enter detailed information',
+    annotation_detail: 'Click to enter detailed information',
     user_status: 'Shows the name of the current user.',
     area_status: 'Shows the associated area of the current user.'
   },
