@@ -37,6 +37,7 @@ export default {
 
 $annotationUserColor: $secondaryBlue;
 .annotationTag {
+    display: inline-block;
     background: $white;
     border-radius: 2px;
     border-left: 5px solid $annotationUserColor;
@@ -48,7 +49,6 @@ $annotationUserColor: $secondaryBlue;
     word-break: break-word;
     padding: 0.4em;
     margin: 0.5em 1em 0.5em 0;
-    display: inline-block;
     vertical-align: top;
     span.annotation-detail {
       color: grey;
@@ -96,9 +96,6 @@ $annotationUserColor: $secondaryBlue;
       }
     }
     &--editMode {
-      span.annotation-detail {
-        color: white;
-      }
       a {
         color: inherit
       }
@@ -107,9 +104,6 @@ $annotationUserColor: $secondaryBlue;
 $annotationSystemColor: $gray90;
 .annotationTag--system {
   border-left-color: $annotationSystemColor;
-}
-.annotationTag--system.annotationTag--editMode {
-  background: $annotationSystemColor;
 }
 
 

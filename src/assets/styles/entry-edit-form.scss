@@ -84,11 +84,7 @@ select + span.validation-error, .datePicker + span.validation-error {
 }
 
 .annotationEditArea {
-  border-radius: 5px;
   margin-top: 0.5em;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
   &__error {
     color: $gray50;
     margin-left: 0.3em;
