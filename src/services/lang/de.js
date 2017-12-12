@@ -1,7 +1,7 @@
 export default {
   headlines: {
     dashboard: 'Übersicht',
-    todos: 'Todos',
+    todos: 'Aufgaben',
     organisations: 'Organisation | Organisationen',
     events: 'Veranstaltung | Veranstaltungen',
     location: 'Ort',
@@ -37,14 +37,14 @@ export default {
     generalTab: 'Allgemeines',
     placeTab: 'Ort',
     contactTab: 'Kontakt',
-    linkTab: 'Verweise',
+    linkTab: 'Zugehörigkeiten',
     resourceTab: 'Ressourcen'
   },
   errors: {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',
     noLocationPresent: 'Keine Ortsinformation vorhanden',
     noAnnotationPresent: 'Keine Annoation vorhanden',
-    noLinksPresent: 'Keine Verweise vorhanden',
+    noLinksPresent: 'Keine Zugehörigkeiten vorhanden',
     noParentOrgaPresent: 'Keine übergeordnete Orga vorhanden',
     noSubOrgaPresent: 'Keine untergeordneten Orgas vorhanden',
     noEventsForOrga: 'Keine Events zu dieser Orga vorhanden',
@@ -143,7 +143,7 @@ export default {
   },
   hints: {
     edit_annotations: 'Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden.',
-    annotation_detail: 'Bitte Beschreibung angeben',
+    annotation_detail: 'Klicken um Beschreibung anzugeben',
     user_status: 'Der Name der aktuell eingeloggten Nutzer:in.',
     area_status: 'Zeigt dir zugeordnete Region der eingeloggten Nutzer:in.'
   },
@@ -231,16 +231,21 @@ export default {
     'youth-club': 'Jugendtreff',
 
     // LEIPZIG
-    'hotspots': 'Hot Spots',
-    'social-advice': 'Sozialberatung',
+    'advice-and-support': 'Rat und Begleitung',
+    'buddy-programme': 'Patenschaften',
+    'daily-life': 'Alltag',
     'family': 'Kinder, Familie & Co',
     'health': 'Gesundheit',
+    'hotspots': 'Hot Spots',
     'housing': 'Wohnen',
-    'religion': 'Religion',
-    'mobility': 'Mobil sein',
-    'daily-life': 'Alltag',
-    'learning-german': 'Deutsch lernen',
     'kita-and-school': 'Kindergarten und Schule',
-    'work-and-education': 'Arbeit, Ausbildung, Studium'
+    'learning-german': 'Deutsch lernen',
+    'living-in-leipzig': 'Leben in Leipzig',
+    'mobility': 'Mobil sein',
+    'participate': 'Mitwirken und sich einmischen',
+    'religion': 'Religion',
+    'social-advice': 'Sozialberatung',
+    'work-and-education': 'Bildung + Arbeit',
+    'work-learn-study': 'Arbeit, Ausbildung, Studium'
   }
 }
