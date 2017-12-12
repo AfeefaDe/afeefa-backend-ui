@@ -109,6 +109,12 @@ export default {
       })
     },
 
+    cancel () {
+      if (this.item.id) {
+        this.$router.push({name: 'chapters.list'})
+      }
+    },
+
     save () {
       this.$validator.setLocale(this.$i18n.locale)
 
@@ -130,9 +136,9 @@ export default {
         this.currentlySaving = true
         Chapters.save(this.item).then(() => {
           this.$store.dispatch('messages/showAlert', {
-            description: `Das Kapitel wurde geändert.`
+            description: `Das Kapitel "${this.item.title}" wurde geändert.`
           })
-          this.loadChapter()
+          this.$router.push({name: 'chapters.list'})
         }).finally(() => {
           this.currentlySaving = false
         })
