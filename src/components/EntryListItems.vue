@@ -13,7 +13,7 @@
         </div>
         <div class="entryList__content">
 
-          <router-link :to="{name: item.type + '.show', params: {id: item.id}}" class="entryList__nav">
+          <router-link :to="routerLinkObject(item)" class="entryList__nav">
             <h4 class="title">{{ item.title || 'Kein Titel' }}</h4>
             <span class="icon"><i v-if="!showIcon" class="material-icons">navigate_next</i></span>
           </router-link>
@@ -85,7 +85,9 @@ export default {
         updated_at: options.updated_at,
         created_at: options.created_at,
         event_date: options.event_date,
-        typeIcon: !options.hideTypeIcon
+        typeIcon: !options.hideTypeIcon,
+        // linkToItem specifies the router-link target: can be "show" (default) or "edit"
+        linkToItem: options.linkToItem || 'show'
       }
     }
   },
@@ -134,6 +136,9 @@ export default {
       if (item.category && item.category.title) {
         return 'cat-' + item.category.title
       }
+    },
+    routerLinkObject (item) {
+      return {name: item.type + `.${this.has.linkToItem}`, params: {id: item.id}}
     }
   },
 
