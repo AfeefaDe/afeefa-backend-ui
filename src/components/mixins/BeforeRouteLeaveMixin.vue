@@ -1,7 +1,9 @@
 <script>
 export default {
   beforeRouteLeave (to, from, next) {
-    if (this.$refs.form && this.$refs.form.$canLeaveRoute) {
+    const form = this.$refs.form || this
+
+    if (form.$canLeaveRoute) {
       // goto login form after api/logout click
       if (to.name === 'login') {
         next()
@@ -9,7 +11,7 @@ export default {
       }
 
       // form is not dirty
-      const result = this.$refs.form.$canLeaveRoute()
+      const result = form.$canLeaveRoute()
       if (result === true) {
         next()
         return

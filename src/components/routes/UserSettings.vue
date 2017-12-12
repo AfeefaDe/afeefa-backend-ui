@@ -66,8 +66,11 @@
 <script>
 import InputField from '@/components/InputField'
 import Users from '@/resources/Users'
+import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 
 export default {
+  mixins: [BeforeRouteLeaveMixin],
+
   data () {
     return {
       userOrig: null,
@@ -75,23 +78,6 @@ export default {
       currentlySaving: false,
       passwordConfirm: null
     }
-  },
-
-  beforeRouteLeave (to, from, next) {
-    const hashOrig = JSON.stringify(this.userOrig.serialize())
-    const hashItem = JSON.stringify(this.user.serialize())
-    if (hashOrig === hashItem) {
-      next()
-      return
-    }
-    this.$store.dispatch('messages/showDialog', {
-      title: 'Abbrechen?',
-      message: 'Soll das Ändern des Nutzers beendet werden?'
-    }).then(result => {
-      if (result === 'yes') {
-        next()
-      }
-    })
   },
 
   created () {
@@ -113,6 +99,15 @@ export default {
     initCurrentUser () {
       this.userOrig = Users.getCurrentUser()
       this.user = this.userOrig.clone()
+    },
+
+    $canLeaveRoute () {
+      const hashOrig = JSON.stringify(this.userOrig.serialize())
+      const hashItem = JSON.stringify(this.user.serialize())
+      if (hashOrig === hashItem) {
+        return true
+      }
+      return 'Soll das Ändern des Nutzers beendet werden?'
     },
 
     save () {
