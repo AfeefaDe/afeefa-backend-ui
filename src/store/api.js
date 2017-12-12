@@ -94,7 +94,7 @@ export default {
 
         const data = response.body.data || response.body // jsonapi vs custom api
         for (let json of data) {
-          const dupMapKey = json.type + json.id
+          const dupMapKey = (json.type || listCacheKey) + json.id // custom api does not deliver type
           if (duplicatesMap[dupMapKey]) {
             continue
           }
