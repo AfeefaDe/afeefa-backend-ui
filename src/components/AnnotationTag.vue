@@ -53,7 +53,7 @@ $annotationUserColor: $secondaryBlue;
     span.annotation-detail {
       color: grey;
       font-size: 12px;
-      white-space: pre;
+      white-space: pre-line;
     }
     &__detailInput {
       $backgroundColor: white;
