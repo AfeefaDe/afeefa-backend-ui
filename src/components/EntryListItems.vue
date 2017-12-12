@@ -6,10 +6,11 @@
 
     <ul class="entryList">
       <li v-for="item in itemsSorted">
-        <div v-if="!showIcon" class="entryList__icon">
-          <span :class="['entryType-icon',  'entryType-icon--' + item.type, 'entryType-icon--' + (item.active ? 'active' : 'inactive'), 'entryType-icon--categoryColors', categoryClass(item)]"></span>
+        <div v-if="!showIcon">
+          <div v-if="has.typeIcon" class="entryList__icon">
+            <span :class="['entryType-icon',  'entryType-icon--' + item.type, 'entryType-icon--' + (item.active ? 'active' : 'inactive'), 'entryType-icon--categoryColors', categoryClass(item)]"></span>
+          </div>
         </div>
-
         <div class="entryList__content">
 
           <router-link :to="{name: item.type + '.show', params: {id: item.id}}" class="entryList__nav">
@@ -83,7 +84,8 @@ export default {
         annotations: options.annotations,
         updated_at: options.updated_at,
         created_at: options.created_at,
-        event_date: options.event_date
+        event_date: options.event_date,
+        typeIcon: !options.hideTypeIcon
       }
     }
   },

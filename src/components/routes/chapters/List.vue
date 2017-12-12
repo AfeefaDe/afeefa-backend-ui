@@ -2,7 +2,7 @@
   <entry-list
     :items="items"
     addEntryButton="chapters.new"
-    :options="{pagination: true}"
+    :options="{pagination: true, hideTypeIcon: true}"
     :messages="messages">
   </entry-list>
 </template>
