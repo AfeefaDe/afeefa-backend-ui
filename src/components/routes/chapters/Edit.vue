@@ -1,9 +1,9 @@
 <template>
-  <edit-form ref="form" :id="id"></edit-form>
+  <chapter-edit ref="form" :id="id"></chapter-edit>
 </template>
 
 <script>
-import EditForm from './EditForm'
+import ChapterEdit from '@/components/ChapterEdit/ChapterEdit'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 
 export default {
@@ -12,7 +12,7 @@ export default {
   mixins: [BeforeRouteLeaveMixin],
 
   components: {
-    EditForm
+    ChapterEdit
   }
 }
 </script>
