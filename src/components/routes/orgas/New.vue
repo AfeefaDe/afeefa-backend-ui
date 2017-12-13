@@ -4,17 +4,22 @@
     route-name="orgas"
     :Resource="Resource"
     :messages="messages"
-    :options="{hasParentOrga: true}">
+    :options="{hasParentOrga: true}"
+    ref="form">
   </entry-edit>
 </template>
 
 <script>
-import EntryEditMixin from '@/components/mixins/EntryEditMixin'
+import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
+import EntryEdit from '@/components/EntryEdit/EntryEdit'
+
 import Orgas from '@/resources/Orgas'
 
 export default {
-  mixins: [EntryEditMixin],
-
+  mixins: [BeforeRouteLeaveMixin],
+  components: {
+    EntryEdit
+  },
   data () {
     return {
       Resource: Orgas,

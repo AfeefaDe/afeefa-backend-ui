@@ -322,7 +322,6 @@ import Users from '@/resources/Users'
 import ResourceItems from '@/resources/ResourceItems'
 import sortByTitle from '@/helpers/sort-by-title'
 import AnnotationTag from '@/components/AnnotationTag'
-import EventBus from '@/services/event-bus'
 import Spinner from '@/components/Spinner'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
@@ -401,12 +400,6 @@ export default {
     })
 
     this.currentUser = Users.getCurrentUser()
-
-    EventBus.$on('beforeRouteLeave', this.beforeRouteLeave)
-  },
-
-  destroyed () {
-    EventBus.$off('beforeRouteLeave', this.beforeRouteLeave)
   },
 
   watch: {
@@ -680,36 +673,22 @@ export default {
         }
       })
     },
-
-    beforeRouteLeave ({to, from, next}) {
+    $canLeaveRoute () {
       if (this.saved) {
-        next()
-        return
+        return true
       }
-
       if (!this.item) { // loading error
-        next()
-        return
-      }
-      // goto login form after api/logout click
-      if (to.name === 'login') {
-        next()
-        return
+        return true
       }
       const hashOrig = JSON.stringify(this.origItem.serialize())
       const hashItem = JSON.stringify(this.item.serialize())
+      console.log('Original: ', JSON.stringify(this.origItem.serialize()))
+      console.log('Hashed: ', JSON.stringify(this.item.serialize()))
       if (hashOrig === hashItem) {
-        next()
-        return
+        return true
       }
-      this.$store.dispatch('messages/showDialog', {
-        title: 'Abbrechen?',
-        message: 'Soll das Editieren beendet werden?'
-      }).then(result => {
-        if (result === 'yes') {
-          next()
-        }
-      })
+
+      return 'Soll das Editieren beendet werden?2'
     },
 
     bibbelDrag (markerEvent) {
