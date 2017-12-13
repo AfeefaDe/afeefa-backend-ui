@@ -28,11 +28,7 @@
               <span v-show="errors.has('title')" class="validation-error">{{ errors.first('title') }}</span>
             </div>
 
-            <div class="inputField__spacing input-field">
-              <label for="description" :class="{active: item.content}">{{ $t('entries.description') }}</label>
-              <textarea v-model="item.content" id="description"
-                class="materialize-textarea"></textarea>
-            </div>
+            <chapter-editor :value="item.content" v-on:input="updateContent"></chapter-editor>
 
             <br>
             <section class="entryForm__actionFooter">
@@ -61,12 +57,16 @@
 </template>
 
 <script>
+import ChapterEditor from './ChapterEditor'
+
 import Chapter from '@/models/Chapter'
 import Chapters from '@/resources/Chapters'
 
 export default {
   props: ['id'],
-
+  components: {
+    ChapterEditor
+  },
   data () {
     return {
       item: null,
@@ -81,6 +81,9 @@ export default {
   },
 
   methods: {
+    updateContent (content) {
+      this.item.content = content
+    },
     $canLeaveRoute () {
       const hashOrig = JSON.stringify(this.origItem.serialize())
       const hashItem = JSON.stringify(this.item.serialize())
