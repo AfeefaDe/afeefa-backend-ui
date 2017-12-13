@@ -673,6 +673,10 @@ export default {
         }
       })
     },
+    /*
+     * called by the BeforeRouteLeaveMixin
+     * to raise a alert in case of unsaved changes
+     */
     $canLeaveRoute () {
       if (this.saved) {
         return true
@@ -687,8 +691,7 @@ export default {
       if (hashOrig === hashItem) {
         return true
       }
-
-      return 'Soll das Editieren beendet werden?2'
+      return 'Soll das Editieren beendet werden?'
     },
 
     bibbelDrag (markerEvent) {
