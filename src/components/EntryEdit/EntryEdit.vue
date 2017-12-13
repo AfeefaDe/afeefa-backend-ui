@@ -686,8 +686,6 @@ export default {
       }
       const hashOrig = JSON.stringify(this.origItem.serialize())
       const hashItem = JSON.stringify(this.item.serialize())
-      console.log('Original: ', JSON.stringify(this.origItem.serialize()))
-      console.log('Hashed: ', JSON.stringify(this.item.serialize()))
       if (hashOrig === hashItem) {
         return true
       }
