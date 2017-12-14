@@ -72,12 +72,12 @@ export default class Entry extends BaseModel {
       },
       relationships: {
         contact_infos: {
-          data: this.contact.isEmpty()
+          data: !this.contact || this.contact.isEmpty()
             ? []
             : [this.contact.serialize()]
         },
         locations: {
-          data: this.location.isEmpty()
+          data: !this.location || this.location.isEmpty()
             ? []
             : [this.location.serialize()]
         },
