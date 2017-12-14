@@ -40,6 +40,10 @@ class OrgasResource extends BaseResource {
     // location or contact might be changed
     resourceCache.purgeItem('locations', orgaOld.location.id)
     resourceCache.purgeItem('contacts', orgaOld.contact.id)
+    // annotation detail might be changed
+    for (let annotation of orgaOld.annotations) {
+      resourceCache.purgeItem('annotations', annotation.id)
+    }
   }
 
   itemAttributesUpdated (orga, attributes) {
