@@ -724,10 +724,12 @@ export default {
             this.item.location.lon = '' + result.body.longitude
           }
         }).catch(error => {
-          this.item.location.lat = null
-          this.item.location.lon = null
-          this.geodataOfAddress = null
           this.geocodeError = 'Geodaten nicht gefunden. Bitte Adresse anpassen.'
+          this.geodataOfAddress = null
+          if (updateItemLocation) { // do not set intial lat/lon to null in order to prevent the unsaved changes dialog to appear
+            this.item.location.lat = null
+            this.item.location.lon = null
+          }
           console.log('error loading geodata', error)
         }).finally(() => {
           this.geodataLoading = false
