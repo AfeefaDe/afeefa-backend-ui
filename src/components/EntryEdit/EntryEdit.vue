@@ -352,7 +352,6 @@ export default {
       imageError: false,
       loadingError: false,
       selectedAnnotation: null,
-      saved: false,
       orgasSimplified: [],
       // implemented as array to allow the :multiple="true" option on vue-multiselect
       // the limit is set to one. so this array contains one element max
@@ -646,7 +645,7 @@ export default {
               this.$store.dispatch('messages/showAlert', {
                 description: this.messages.saved()
               })
-              this.saved = true
+              this.origItem = this.item // prevent route leave dialog after save
               this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}, query: {tab: this.currentTab}})
             }
             this.currentlySaving = false
@@ -666,7 +665,7 @@ export default {
               this.$store.dispatch('messages/showAlert', {
                 description: this.messages.deleted()
               })
-              this.saved = true
+              this.origItem = this.item // prevent route leave dialog after save
               this.$router.push({name: this.routeName + '.list'})
             }
           })
@@ -678,9 +677,6 @@ export default {
      * to raise a alert in case of unsaved changes
      */
     $canLeaveRoute () {
-      if (this.saved) {
-        return true
-      }
       if (!this.item) { // loading error
         return true
       }
