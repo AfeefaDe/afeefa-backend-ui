@@ -313,7 +313,6 @@ import autosize from 'autosize'
 import Multiselect from 'vue-multiselect'
 import { BASE } from '@/store/api'
 import Orgas from '@/resources/Orgas'
-import Entries from '@/resources/base/Entries'
 import Categories from '@/resources/Categories'
 import Annotations from '@/resources/Annotations'
 import AnnotationCategories from '@/resources/AnnotationCategories'
@@ -501,8 +500,9 @@ export default {
         this.item.parent_orga = null
       } else {
         const parentOrga = this.orgas.find(x => x.id === this.parentOrgaSimplified[0].id)
-        this.item._relationIds.parent_orga = parentOrga.id
-        Entries.fetchParentOrga(this.item)
+        Orgas.get(parentOrga.id, ['fetchContact']).then(orga => {
+          this.item.parent_orga = orga
+        })
       }
     },
     /*
