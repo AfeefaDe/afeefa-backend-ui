@@ -398,11 +398,7 @@ export default {
 
     Orgas.getAllSimplified().then(orgas => {
       // remove current orga from array
-      const index = orgas.indexOf(orgas.find(x => x.id === this.item.id))
-      if (index > -1) {
-        orgas.splice(index, 1)
-      }
-      this.orgasSimplified = orgas
+      this.orgasSimplified = orgas.filter(orga => orga.id !== this.item.id)
     })
 
     this.currentUser = Users.getCurrentUser()

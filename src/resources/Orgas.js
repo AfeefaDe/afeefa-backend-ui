@@ -73,11 +73,9 @@ const Orgas = {
 
   getAllSimplified () {
     return this.getAll().then(orgas => {
-      let result = []
-      for (let orga of orgas) {
-        result.push({title: orga.title, id: orga.id})
-      }
-      return result
+      return orgas.map((orga) => {
+        return {title: orga.title, id: orga.id}
+      })
     })
   },
 

@@ -68,7 +68,7 @@ export default {
   },
   created () {
     Orgas.getAllSimplified().then(orgas => {
-      this.orgasSimplified = sortByTitle(orgas)
+      this.entrySelector.orgasSimplified = sortByTitle(orgas)
     })
   },
   mounted () {
