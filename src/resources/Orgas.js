@@ -71,6 +71,16 @@ const Orgas = {
     })
   },
 
+  getAllSimplified () {
+    return this.getAll().then(orgas => {
+      let result = []
+      for (let orga of orgas) {
+        result.push({title: orga.title, id: orga.id})
+      }
+      return result
+    })
+  },
+
   get (id, fetchRelationsWhiteList = [
     'fetchParentOrga',
     'fetchCategory',

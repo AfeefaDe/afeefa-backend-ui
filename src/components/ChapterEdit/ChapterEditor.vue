@@ -30,9 +30,8 @@
 
 <script>
 import Multiselect from 'vue-multiselect'
-import sortByTitle from '@/helpers/sort-by-title'
 import Orgas from '@/resources/Orgas'
-
+import sortByTitle from '@/helpers/sort-by-title'
 import tinymce from 'tinymce/tinymce'
 import 'tinymce/themes/modern/theme'
 
@@ -46,7 +45,6 @@ export default {
   data: function () {
     return {
       textareaID: 'description',
-      orgas: [],
       entrySelector: {
         visible: false,
         selectedEntry: null,
@@ -69,21 +67,9 @@ export default {
     }
   },
   created () {
-    Orgas.getAll().then(orgas => {
-      this.orgas = sortByTitle(orgas)
+    Orgas.getAllSimplified().then(orgas => {
+      this.orgasSimplified = sortByTitle(orgas)
     })
-  },
-  watch: {
-    /*
-     * simplify orga list by removing circular references
-     */
-    'orgas' (orgas) {
-      let result = []
-      for (let orga of this.orgas) {
-        result.push({title: orga.title, id: orga.id})
-      }
-      this.entrySelector.orgasSimplified = result
-    }
   },
   mounted () {
     window.addEventListener('keyup', this.onKeyUp)

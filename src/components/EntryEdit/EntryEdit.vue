@@ -396,6 +396,15 @@ export default {
       this.orgas = sortByTitle(orgas)
     })
 
+    Orgas.getAllSimplified().then(orgas => {
+      // remove current orga from array
+      const index = orgas.indexOf(orgas.find(x => x.id === this.item.id))
+      if (index > -1) {
+        orgas.splice(index, 1)
+      }
+      this.orgasSimplified = orgas
+    })
+
     this.currentUser = Users.getCurrentUser()
   },
 
