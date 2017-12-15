@@ -20,6 +20,8 @@ class EventsResource extends BaseResource {
     // new event added to lists
     resourceCache.purgeList('events')
     resourceCache.purgeList('todos')
+    // parent orgas events might change
+    this._updateParentOrgasEventList(event)
   }
 
   itemDeleted (event) {
@@ -29,6 +31,8 @@ class EventsResource extends BaseResource {
     // old event not in lists any longer
     resourceCache.purgeList('events')
     resourceCache.purgeList('todos')
+    // parent orgas events might change
+    this._updateParentOrgasEventList(event)
   }
 
   itemSaved (eventOld, event) {
@@ -44,10 +48,22 @@ class EventsResource extends BaseResource {
     for (let annotation of eventOld.annotations) {
       resourceCache.purgeItem('annotations', annotation.id)
     }
+    // parent orgas events might change
+    this._updateParentOrgasEventList(eventOld)
+    this._updateParentOrgasEventList(event)
   }
 
   itemAttributesUpdated (event, attributes) {
     Entries.updateAttributes(event, attributes)
+  }
+
+  _updateParentOrgasEventList (event) {
+    const orgaId = event._relationIds.parent_orga
+    if (orgaId) {
+      const resourceCache = store.state.api.resourceCache
+      resourceCache.purgeList(`orgas/${orgaId}/events?filter[date]=upcoming`)
+      resourceCache.purgeList(`orgas/${orgaId}/events?filter[date]=past`)
+    }
   }
 }
 
@@ -101,38 +117,15 @@ export default {
 
   save (event) {
     if (event.id) {
-      const oldOrgaId = event._relationIds.parent_orga
       return store.dispatch('api/saveItem', {
         resource: new EventsResource(),
         item: event
-      }).then(event => {
-        // only update list for extisting parent_orgas
-        if (oldOrgaId) {
-          this.updateOrgaEventList(oldOrgaId)
-        }
-        const currentOrgaId = event._relationIds.parent_orga
-        if (currentOrgaId) {
-          this.updateOrgaEventList(currentOrgaId)
-        }
-        return event
       })
     } else {
       return store.dispatch('api/addItem', {
         resource: new EventsResource(),
         item: event
-      }).then(event => {
-        // purge event list of orga of the new event
-        this.updateOrgaEventList(event._relationIds.parent_orga)
-        return event
       })
-    }
-  },
-
-  updateOrgaEventList (orgaId) {
-    if (orgaId) {
-      const resourceCache = store.state.api.resourceCache
-      resourceCache.purgeList(`orgas/${orgaId}/events?filter[date]=upcoming`)
-      resourceCache.purgeList(`orgas/${orgaId}/events?filter[date]=past`)
     }
   },
 
@@ -149,11 +142,6 @@ export default {
     return store.dispatch('api/deleteItem', {
       resource: new EventsResource(),
       item: event
-    }).then(() => {
-      if (event.parent_orga) {
-        this.updateOrgaEventList(event.parent_orga.id)
-      }
-      return event
     })
   }
 }
