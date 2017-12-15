@@ -176,39 +176,4 @@ export default class Entry extends BaseModel {
       this.lastEditor.deserialize(rels.last_editor.data)
     }
   }
-
-  clone (entry) {
-    entry.id = this.id
-    entry.type = this.type
-    entry.title = this.title
-    entry.description = this.description
-    entry.short_description = this.short_description
-    entry.media_url = this.media_url
-    entry.support_wanted = this.support_wanted
-    entry.support_wanted_detail = this.support_wanted_detail
-    entry.certified_sfr = this.certified_sfr
-    entry.tags = this.tags
-    entry.facebook_id = this.facebook_id
-    // use deep clone for nested inheritance object
-    entry.inheritance = {
-      short_description: this.inheritance.short_description,
-      contact_infos: this.inheritance.contact_infos
-    }
-    entry.active = this.active
-    entry.created_at = this.created_at
-    entry.updated_at = this.updated_at
-    entry.state_changed_at = this.state_changed_at
-
-    // use deep clone ‼️ please mind Orga.js and the sub_orgas attribute
-    entry._relationIds = {
-      parent_orga: this._relationIds.parent_orga,
-      category: this._relationIds.category,
-      sub_category: this._relationIds.sub_category,
-      location: this._relationIds.location,
-      contact: this._relationIds.contact,
-      annotations: this._relationIds.annotations
-    }
-
-    return entry
-  }
 }

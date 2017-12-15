@@ -40,14 +40,4 @@ export default class User extends BaseModel {
     }
     return data
   }
-
-  clone () {
-    const user = new User()
-    user.id = this.id
-    user.first_name = this.first_name
-    user.last_name = this.last_name
-    user.area = this.area
-    user.organization = this.organization
-    return user
-  }
 }

@@ -47,15 +47,4 @@ export default class Event extends Entry {
 
     return data
   }
-
-  clone () {
-    const event = super.clone(new Event())
-
-    event.date_start = this.date_start
-    event.has_time_start = this.has_time_start
-    event.date_end = this.date_end
-    event.has_time_end = this.has_time_end
-    event.upcoming = this.upcoming
-    return event
-  }
 }
