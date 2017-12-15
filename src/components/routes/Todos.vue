@@ -9,7 +9,7 @@
       <label for="annoationCategory">Todos filtern</label>
       <select id="annotationCategory" v-model="selectedCategory" style="display: block">
         <option value="all" selected>Alle Anmerkungen</option>
-        <option v-for="cat in categories" :value="cat.id">{{cat.title}}</option>
+        <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{cat.title}}</option>
       </select>
 
     </entry-list>

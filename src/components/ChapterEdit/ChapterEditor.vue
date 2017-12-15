@@ -3,7 +3,7 @@
   <div class="inputField__spacing input-field">
     <textarea v-model="value" :id="textareaID" class="materialize-textarea"></textarea>
   </div>
-  <div class="overlay" v-if="entrySelector.visible" v-on:keyup.escape="closeOverlay">
+  <div class="overlay" v-if="entrySelector.visible" @keyup.esc="closeOverlay">
     <div class="entrySelector">
       <label>Bitte wähle eine Organisation aus</label>
       <multiselect

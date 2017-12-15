@@ -34,7 +34,7 @@
           <router-link :to="{name: 'usersettings'}">Meine Einstellungen</router-link><br>
           <div>
             {{ $t('headlines.systemLanguage') }}:
-            <span v-for="(lang, index) in ['de', 'en']" :key="lang">
+            <span v-for="lang in ['de', 'en']" :key="lang">
               <span v-if="lang === $i18n.locale"><strong class="spacing-left">{{ $t('languages.'+lang) }}</strong></span>
               <span v-else><a href="#" class="spacing-left" @click="changeLanguage()">{{ $t('languages.'+lang) }}</a></span>
             </span>

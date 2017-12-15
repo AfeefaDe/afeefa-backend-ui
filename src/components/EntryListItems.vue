@@ -5,7 +5,7 @@
     </div>
 
     <ul class="entryList">
-      <li v-for="item in itemsSorted">
+      <li v-for="item in itemsSorted" :key="item.id">
         <div v-if="!showIcon">
           <div v-if="has.typeIcon" class="entryList__icon">
             <span :class="['entryType-icon',  'entryType-icon--' + item.type, 'entryType-icon--' + (item.active ? 'active' : 'inactive'), 'entryType-icon--categoryColors', categoryClass(item)]"></span>
@@ -105,7 +105,7 @@ export default {
   computed: {
     itemsSorted () {
       let items = this.sortFunction ? this.sortFunction(this.items, this.sortOrder) : this.items || []
-      this.currentNumItems = items.length
+      this.currentNumItems = items.length // eslint-disable-line vue/no-side-effects-in-computed-properties
       if (this.limit) {
         items = items.slice(0, this.limit)
       }

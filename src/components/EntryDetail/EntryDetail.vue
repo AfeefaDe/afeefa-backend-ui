@@ -82,7 +82,7 @@
               :name="$tc('entries.tags', entry.tags.split(',').length)"
               :iconName="'more_vert'">
                 <ul>
-                  <li v-for="tag in entry.tags.split(',')" class="singleTag">
+                  <li v-for="tag in entry.tags.split(',')" :key="tag" class="singleTag">
                     {{tag}}
                   </li>
                 </ul>
@@ -123,9 +123,7 @@
 
               <entry-detail-property v-if="entry.location.directions" :name="$t('entries.directions')" :iconName="'train'" :isMultiline="true">{{ entry.location.directions }}</entry-detail-property>
 
-              <li v-if="!entry.location.isEmpty()">
-                <location-map :map-center="mapCenter" :location="entry.location" :currentTab="currentTab"></location-map>
-              </li>
+              <location-map :map-center="mapCenter" :location="entry.location" :currentTab="currentTab"></location-map>
             </li>
           </ul>
         </section>

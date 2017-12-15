@@ -29,7 +29,7 @@
         <i class="material-icons">navigate_before</i>
       </a>
       <div class="list-pagination__navigationPages">
-        <a v-for="pageNumber in currentNumPages"
+        <a v-for="pageNumber in currentNumPages" :key="pageNumber"
           href="" @click.prevent="goto(pageNumber)"
           :class="[(pageNumber == currentPage ? 'active' : 'inactive')]">
           {{ pageNumber }}

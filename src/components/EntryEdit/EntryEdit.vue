@@ -88,7 +88,7 @@
                    name="category" data-vv-validate-on="change" :data-vv-as="$t('entries.category')" v-validate.initial="'required'"
                     :class="['browser-default', 'categoriesForm', {'validation-error': errors.has('category') }]">
                     <option selected :value="null">Keine Kategorie ausgewählt</option>
-                    <option selected :value="category" v-for="category in categories">{{ $t('categories.' + category.title) }}</option>
+                    <option selected :value="category" v-for="category in categories" :key="category.id">{{ $t('categories.' + category.title) }}</option>
                   </select>
                   <span v-show="errors.has('category')" class="validation-error">{{ errors.first('category') }}</span>
                 </div>
@@ -97,7 +97,7 @@
                   <label>Unterkategorie</label>
                   <select class="browser-default categoriesForm" v-model="item.sub_category">
                     <option selected :value="null">Keine Kategorie ausgewählt</option>
-                    <option selected :value="category" v-for="category in item.category.sub_categories">{{ $t('categories.' + category.title) }}</option>
+                    <option selected :value="category" v-for="category in item.category.sub_categories" :key="category.id">{{ $t('categories.' + category.title) }}</option>
                   </select>
                 </div>
 
@@ -155,7 +155,7 @@
                   <div class="annotationNew">
                     <select class="browser-default annotationNew" v-model="selectedAnnotation" @change="addAnnotation">
                       <option :value="null" selected>Neue Anmerkung hinzufügen</option>
-                      <option :value="annotation" v-for="annotation in selectableAnnotations">{{ annotation.title }}</option>
+                      <option :value="annotation" v-for="annotation in selectableAnnotations" :key="annotation.id">{{ annotation.title }}</option>
                     </select>
                   </div>
                 </div>
@@ -305,7 +305,6 @@
     </div>
   </div>
 </template>
-
 
 
 <script>
