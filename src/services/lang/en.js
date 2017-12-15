@@ -159,6 +159,12 @@ export default {
     noSelection: 'Nothing selected',
     addTag: 'Add Tag'
   },
+  tinymce: {
+    insertOrga: 'Add Orga',
+    insertOrgaTooltip: 'This button makes the current text selection to an actual link to the Organization',
+    noSelectionTitle: 'Error while adding Orga',
+    noSelectionDescription: 'There is no text selected.'
+  },
   categories: {
     'asylum-counselling': 'Migration counselling',
     'authority': 'Authorities',

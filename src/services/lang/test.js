@@ -158,6 +158,12 @@ export default {
     noSelection: '*',
     addTag: '*'
   },
+  tinymce: {
+    insertOrga: '*',
+    insertOrgaTooltip: '*',
+    noSelectionTitle: '*',
+    noSelectionDescription: '*'
+  },
   categories: {
     'asylum-counselling': '*',
     'authority': '*',

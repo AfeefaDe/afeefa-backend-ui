@@ -158,6 +158,12 @@ export default {
     noSelection: 'Kein Eintag ausgewählt',
     addTag: 'Tag hinzufügen'
   },
+  tinymce: {
+    insertOrga: 'Orga verknüpfen',
+    insertOrgaTooltip: 'Der selektierte Text wird in einen entsprechenden Link zur Orga umgewandelt.',
+    noSelectionTitle: 'Fehler beim Einfügen',
+    noSelectionDescription: 'Du hast keinen Text selektiert.'
+  },
   categories: {
     'asylum-counselling': 'Migrationsberatung',
     'authority': 'Behörden',

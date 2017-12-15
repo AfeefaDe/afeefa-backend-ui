@@ -34,8 +34,11 @@ import Orgas from '@/resources/Orgas'
 import tinymce from 'tinymce/tinymce'
 import 'tinymce/themes/modern/theme'
 
+// TinyMCE Plugins
 import 'tinymce/plugins/lists'
 import 'tinymce/plugins/link'
+import 'tinymce/plugins/code'
+import 'tinymce/plugins/wordcount'
 
 export default {
   data: function () {
@@ -57,7 +60,7 @@ export default {
       default: ''
     },
     toolbar1: {
-      default: 'formatselect | bold italic strikethrough forecolor backcolor | bullist numlist | link  unlink | alignleft aligncenter alignright alignjustify | mybutton'
+      default: 'formatselect | bold italic strikethrough forecolor backcolor | bullist numlist | link  unlink | alignleft aligncenter alignright alignjustify | code | inserOrgaButton'
     },
     otherProps: {
       default: ''
@@ -86,14 +89,15 @@ export default {
       selector: `#${this.textareaID}`,
       skin: false,
       height: '450',
-      plugins: ['link', 'lists'],
+      plugins: ['link', 'lists', 'code', 'wordcount'],
       toolbar1: this.toolbar1,
       menubar: '',
       content_css: [],
       setup: (editor) => {
-        editor.addButton('mybutton', {
-          text: 'Insert Orga',
+        editor.addButton('inserOrgaButton', {
+          text: this.$t('tinymce.insertOrga'),
           icon: false,
+          tooltip: this.$t('tinymce.insertOrgaTooltip'),
           onclick: this.insertOrga
         })
       },
@@ -114,16 +118,36 @@ export default {
     this.closeOverlay()
   },
   methods: {
-    insertOrga: function (editor) {
-      this.entrySelector.visible = true
-    },
-    orgaSelected: function () {
+    /*
+     * returns the current selection of the active editor
+     */
+    getCurrentTextSelection () {
       let editor = tinymce.activeEditor
+      return editor.selection.getContent({'format': 'html'})
+    },
+    /*
+     * check for selected text and enable the OrgaSelect Overlay
+     */
+    insertOrga: function () {
+      if (!this.getCurrentTextSelection()) {
+        this.$store.dispatch('messages/showAlert', {
+          isError: true,
+          autoHide: true,
+          title: this.$t('tinymce.noSelectionTitle'),
+          description: this.$t('tinymce.noSelectionDescription')
+        })
+      } else {
+        this.entrySelector.visible = true
+      }
+    },
+    /*
+     * inserts the Orga link after selection from multiselect
+     */
+    orgaSelected: function () {
       const id = this.entrySelector.selectedEntry.id
-      const text = editor.selection.getContent({'format': 'html'})
+      const text = this.getCurrentTextSelection()
       if (text && text.length > 0) {
-        console.log('Text: ', text)
-        editor.execCommand('mceInsertContent', false, `<a href="afeefa://orga/${id}">` + text + '</a>')
+        tinymce.activeEditor.execCommand('mceInsertContent', false, `<a href="afeefa://orga/${id}">` + text + '</a>')
       }
       this.closeOverlay()
     },
