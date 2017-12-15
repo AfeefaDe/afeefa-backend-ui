@@ -44,6 +44,13 @@ class OrgasResource extends BaseResource {
     for (let annotation of orgaOld.annotations) {
       resourceCache.purgeItem('annotations', annotation.id)
     }
+    // parent orgas sub orgas might change
+    if (orgaOld._relationIds.parent_orga) {
+      resourceCache.purgeItem('orgas', orgaOld._relationIds.parent_orga)
+    }
+    if (orga._relationIds.parent_orga) {
+      resourceCache.purgeItem('orgas', orga._relationIds.parent_orga)
+    }
   }
 
   itemAttributesUpdated (orga, attributes) {
