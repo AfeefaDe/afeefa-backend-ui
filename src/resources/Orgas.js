@@ -3,9 +3,9 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import Orga from '@/models/Orga'
 import Entries from './base/Entries'
-import BaseResource from './base/BaseResource'
+import BaseEntriesResource from './base/BaseEntriesResource'
 
-class OrgasResource extends BaseResource {
+class OrgasResource extends BaseEntriesResource {
   init () {
     this.http = Vue.resource(BASE + 'orgas{/id}', {}, {update: {method: 'PATCH'}})
     this.listCacheKey = 'orgas'
@@ -16,45 +16,30 @@ class OrgasResource extends BaseResource {
   }
 
   itemAdded (orga) {
-    const resourceCache = store.state.api.resourceCache
-    // new orga added to lists
-    resourceCache.purgeList('orgas')
-    resourceCache.purgeList('todos')
+    super.itemAdded(orga)
+    // parent orgas sub orgas might change
+    if (orga._relationIds.parent_orga) {
+      this.cachePurgeItem('orgas', orga._relationIds.parent_orga)
+    }
   }
 
   itemDeleted (orga) {
-    const resourceCache = store.state.api.resourceCache
-    // remove old orga from cache
-    resourceCache.purgeItem('orgas', orga.id)
-    // old orga not in lists any longer
-    resourceCache.purgeList('orgas')
-    resourceCache.purgeList('todos')
+    super.itemDeleted(orga)
+    // parent orgas sub orgas might change
+    if (orga._relationIds.parent_orga) {
+      this.cachePurgeItem('orgas', orga._relationIds.parent_orga)
+    }
   }
 
   itemSaved (orgaOld, orga) {
-    const resourceCache = store.state.api.resourceCache
-    // orga date might move the orga from past to upcoming list
-    resourceCache.purgeList('orgas')
-    // annotation might be changed, entry may (disappear) in todo list
-    resourceCache.purgeList('todos')
-    // location or contact might be changed
-    resourceCache.purgeItem('locations', orgaOld.location.id)
-    resourceCache.purgeItem('contacts', orgaOld.contact.id)
-    // annotation detail might be changed
-    for (let annotation of orgaOld.annotations) {
-      resourceCache.purgeItem('annotations', annotation.id)
-    }
+    super.itemSaved(orgaOld, orga)
     // parent orgas sub orgas might change
     if (orgaOld._relationIds.parent_orga) {
-      resourceCache.purgeItem('orgas', orgaOld._relationIds.parent_orga)
+      this.cachePurgeItem('orgas', orgaOld._relationIds.parent_orga)
     }
     if (orga._relationIds.parent_orga) {
-      resourceCache.purgeItem('orgas', orga._relationIds.parent_orga)
+      this.cachePurgeItem('orgas', orga._relationIds.parent_orga)
     }
-  }
-
-  itemAttributesUpdated (orga, attributes) {
-    Entries.updateAttributes(orga, attributes)
   }
 }
 

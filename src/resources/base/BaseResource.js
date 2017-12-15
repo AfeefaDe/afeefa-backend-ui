@@ -1,3 +1,5 @@
+import store from '@/store'
+
 export default class BaseResource {
   constructor () {
     this.init(arguments)
@@ -22,6 +24,9 @@ export default class BaseResource {
   }
 
 
+  // transforms the given list prior to caching
+  // useful to create a hierachical list from a flat list
+  // e.g. for cateories
   transformList (items) {
   }
 
@@ -52,5 +57,15 @@ export default class BaseResource {
   // called after attributes of an item have been changed
   // to enable custom resource cache treatment
   itemAttributesUpdated (item, attributes) {
+  }
+
+  cachePurgeList (key) {
+    const resourceCache = store.state.api.resourceCache
+    resourceCache.purgeList(key)
+  }
+
+  cachePurgeItem (key, id) {
+    const resourceCache = store.state.api.resourceCache
+    resourceCache.purgeItem(key, id)
   }
 }

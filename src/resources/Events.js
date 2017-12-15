@@ -3,9 +3,9 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import Event from '@/models/Event'
 import Entries from './base/Entries'
-import BaseResource from './base/BaseResource'
+import BaseEntriesResource from './base/BaseEntriesResource'
 
-class EventsResource extends BaseResource {
+class EventsResource extends BaseEntriesResource {
   init () {
     this.http = Vue.resource(BASE + 'events{/id}', {}, {update: {method: 'PATCH'}})
     this.listCacheKey = 'events'
@@ -16,53 +16,29 @@ class EventsResource extends BaseResource {
   }
 
   itemAdded (event) {
-    const resourceCache = store.state.api.resourceCache
-    // new event added to lists
-    resourceCache.purgeList('events')
-    resourceCache.purgeList('todos')
+    super.itemAdded(event)
     // parent orgas events might change
     this._updateParentOrgasEventList(event)
   }
 
   itemDeleted (event) {
-    const resourceCache = store.state.api.resourceCache
-    // remove old event from cache
-    resourceCache.purgeItem('events', event.id)
-    // old event not in lists any longer
-    resourceCache.purgeList('events')
-    resourceCache.purgeList('todos')
+    super.itemDeleted(event)
     // parent orgas events might change
     this._updateParentOrgasEventList(event)
   }
 
   itemSaved (eventOld, event) {
-    const resourceCache = store.state.api.resourceCache
-    // event date might move the event from past to upcoming list
-    resourceCache.purgeList('events')
-    // annotation might be changed, entry may (disappear) in todo list
-    resourceCache.purgeList('todos')
-    // location or contact might be changed
-    resourceCache.purgeItem('locations', eventOld.location.id)
-    resourceCache.purgeItem('contacts', eventOld.contact.id)
-    // annotation detail might be changed
-    for (let annotation of eventOld.annotations) {
-      resourceCache.purgeItem('annotations', annotation.id)
-    }
+    super.itemSaved(eventOld, event)
     // parent orgas events might change
     this._updateParentOrgasEventList(eventOld)
     this._updateParentOrgasEventList(event)
   }
 
-  itemAttributesUpdated (event, attributes) {
-    Entries.updateAttributes(event, attributes)
-  }
-
   _updateParentOrgasEventList (event) {
     const orgaId = event._relationIds.parent_orga
     if (orgaId) {
-      const resourceCache = store.state.api.resourceCache
-      resourceCache.purgeList(`orgas/${orgaId}/events?filter[date]=upcoming`)
-      resourceCache.purgeList(`orgas/${orgaId}/events?filter[date]=past`)
+      this.cachePurgeList(`orgas/${orgaId}/events?filter[date]=upcoming`)
+      this.cachePurgeList(`orgas/${orgaId}/events?filter[date]=past`)
     }
   }
 }

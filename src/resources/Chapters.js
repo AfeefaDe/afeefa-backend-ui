@@ -15,14 +15,12 @@ class ChaptersResource extends BaseResource {
   }
 
   itemAdded () {
-    const resourceCache = store.state.api.resourceCache
-    resourceCache.purgeList('chapters')
+    this.cachePurgeList('chapters')
   }
 
   itemDeleted (chapter) {
-    const resourceCache = store.state.api.resourceCache
-    resourceCache.purgeItem('chapters', chapter.id)
-    resourceCache.purgeList('chapters')
+    this.cachePurgeItem('chapters', chapter.id)
+    this.cachePurgeList('chapters')
   }
 }
 
