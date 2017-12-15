@@ -1,28 +1,30 @@
 <template>
   <div>
-  <div class="inputField__spacing input-field">
-    <textarea v-model="value" :id="textareaID" class="materialize-textarea"></textarea>
-  </div>
-  <div class="overlay" v-if="entrySelector.visible" @keyup.esc="closeOverlay">
-    <div class="entrySelector">
-      <label>Bitte wähle eine Organisation aus</label>
-      <multiselect
-        v-model="entrySelector.selectedEntry"
-        :options="entrySelector.orgasSimplified"
-        label="title"
-        track-by="id"
-        @input="orgaSelected"
-        :multiple="false"
-        :searchable="true"
-
-        :placeholder="$t('multiselect.noSelection')"
-        :selectLabel="$t('multiselect.selectLabel')"
-        :selectedLabel="$t('multiselect.selectedLabel')"
-        :deselectLabel="$t('multiselect.deselectLabel')">
-      </multiselect>
-      <br><a @click="closeOverlay" href="#">Abbrechen</a>
+    <div class="inputField__spacing input-field">
+      <textarea v-model="value" :id="textareaID" class="materialize-textarea"></textarea>
     </div>
-  </div>
+    <transition name="overlay" tag="div">
+      <div class="overlay" v-if="entrySelector.visible">
+        <div class="entrySelector">
+          <label>Bitte wähle eine Organisation aus</label>
+          <multiselect
+            v-model="entrySelector.selectedEntry"
+            :options="entrySelector.orgasSimplified"
+            label="title"
+            track-by="id"
+            @input="orgaSelected"
+            :multiple="false"
+            :searchable="true"
+
+            :placeholder="$t('multiselect.noSelection')"
+            :selectLabel="$t('multiselect.selectLabel')"
+            :selectedLabel="$t('multiselect.selectedLabel')"
+            :deselectLabel="$t('multiselect.deselectLabel')">
+          </multiselect>
+          <br><a @click="closeOverlay" href="#">Abbrechen</a>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -84,6 +86,7 @@ export default {
     }
   },
   mounted () {
+    window.addEventListener('keyup', this.onKeyUp)
     // inspired by https://github.com/mbouclas/tinymce-vue-2
     tinymce.init({
       selector: `#${this.textareaID}`,
@@ -102,22 +105,28 @@ export default {
         })
       },
       init_instance_callback: (editor) => {
+        editor.setContent(this.value)
         editor.on('KeyUp', (e) => {
           this.$emit('input', editor.getContent())
         })
         editor.on('Change', (e) => {
           this.$emit('input', editor.getContent())
         })
-        editor.setContent(this.value)
       },
       ...this.otherProps
     })
   },
   destroyed () {
     tinymce.get(this.textareaID).destroy()
+    window.removeEventListener('keyup', this.onKeyUp)
     this.closeOverlay()
   },
   methods: {
+    onKeyUp () {
+      if (event.keyCode === 27) {
+        this.closeOverlay()
+      }
+    },
     /*
      * returns the current selection of the active editor
      */
@@ -148,11 +157,11 @@ export default {
       const text = this.getCurrentTextSelection()
       if (text && text.length > 0) {
         tinymce.activeEditor.execCommand('mceInsertContent', false, `<a href="afeefa://orga/${id}">` + text + '</a>')
+        this.entrySelector.selectedEntry = null
       }
       this.closeOverlay()
     },
     closeOverlay: function () {
-      this.entrySelector.selectedEntry = null
       this.entrySelector.visible = false
     }
   }
@@ -162,6 +171,7 @@ export default {
 @import "~variables";
 .overlay {
   position: fixed;
+  z-index: $z-index-overlay;
   width: 100%;
   height: 100%;
   top: 0;
@@ -169,13 +179,28 @@ export default {
   background: rgba(0, 0, 0, 0.58);
 }
 .entrySelector {
-  position: absolute;
-  top: 50%;
+  position: fixed;
+  top: 30%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0);
   max-width: 500px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  border-radius: 3px;
   width: 90%;
   background: white;
   padding: 1em;
+}
+.overlay-enter-active, .overlay-leave-active {
+  transition: opacity .3s ease
+}
+.overlay-enter, .overlay-leave-to {
+  opacity: 0
+}
+.overlay-enter-active .entrySelector, .overlay-leave-active .entrySelector{
+  transition: all .1s ease
+}
+.overlay-enter .entrySelector, .overlay-leave-to .entrySelector {
+  opacity: 0;
+  top: 100px;
 }
 </style>
