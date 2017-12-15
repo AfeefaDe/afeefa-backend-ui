@@ -4,17 +4,22 @@
     route-name="events"
     :Resource="Resource"
     :messages="messages"
-    :options="{hasDate: true, hasOrga: true, hasDelete: true}">
+    :options="{hasDate: true, hasOrga: true, hasDelete: true}"
+    ref="form">
   </entry-edit>
 </template>
 
 <script>
-import EntryEditMixin from '@/components/mixins/EntryEditMixin'
+import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
+import EntryEdit from '@/components/EntryEdit/EntryEdit'
+
 import Events from '@/resources/Events'
 
 export default {
-  mixins: [EntryEditMixin],
-
+  mixins: [BeforeRouteLeaveMixin],
+  components: {
+    EntryEdit
+  },
   props: ['id'],
 
   data () {

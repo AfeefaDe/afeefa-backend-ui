@@ -5,14 +5,15 @@
     </div>
 
     <ul class="entryList">
-      <li v-for="item in itemsSorted">
-        <div v-if="!showIcon" class="entryList__icon">
-          <span :class="['entryType-icon',  'entryType-icon--' + item.type, 'entryType-icon--' + (item.active ? 'active' : 'inactive'), 'entryType-icon--categoryColors', categoryClass(item)]"></span>
+      <li v-for="item in itemsSorted" :key="item.id">
+        <div v-if="!showIcon">
+          <div v-if="has.typeIcon" class="entryList__icon">
+            <span :class="['entryType-icon',  'entryType-icon--' + item.type, 'entryType-icon--' + (item.active ? 'active' : 'inactive'), 'entryType-icon--categoryColors', categoryClass(item)]"></span>
+          </div>
         </div>
-
         <div class="entryList__content">
 
-          <router-link :to="{name: item.type + '.show', params: {id: item.id}}" class="entryList__nav">
+          <router-link :to="routerLinkObject(item)" class="entryList__nav">
             <h4 class="title">{{ item.title || 'Kein Titel' }}</h4>
             <span class="icon"><i v-if="!showIcon" class="material-icons">navigate_next</i></span>
           </router-link>
@@ -83,7 +84,10 @@ export default {
         annotations: options.annotations,
         updated_at: options.updated_at,
         created_at: options.created_at,
-        event_date: options.event_date
+        event_date: options.event_date,
+        typeIcon: !options.hideTypeIcon,
+        // linkToItem specifies the router-link target: can be "show" (default) or "edit"
+        linkToItem: options.linkToItem || 'show'
       }
     }
   },
@@ -100,8 +104,8 @@ export default {
 
   computed: {
     itemsSorted () {
-      let items = this.sortFunction ? this.sortFunction(this.items, this.sortOrder) : this.items
-      this.currentNumItems = items.length
+      let items = this.sortFunction ? this.sortFunction(this.items, this.sortOrder) : this.items || []
+      this.currentNumItems = items.length // eslint-disable-line vue/no-side-effects-in-computed-properties
       if (this.limit) {
         items = items.slice(0, this.limit)
       }
@@ -132,6 +136,9 @@ export default {
       if (item.category && item.category.title) {
         return 'cat-' + item.category.title
       }
+    },
+    routerLinkObject (item) {
+      return {name: item.type + `.${this.has.linkToItem}`, params: {id: item.id}}
     }
   },
 

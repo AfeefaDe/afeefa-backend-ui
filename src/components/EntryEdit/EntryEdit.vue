@@ -88,7 +88,7 @@
                    name="category" data-vv-validate-on="change" :data-vv-as="$t('entries.category')" v-validate.initial="'required'"
                     :class="['browser-default', 'categoriesForm', {'validation-error': errors.has('category') }]">
                     <option selected :value="null">Keine Kategorie ausgewählt</option>
-                    <option selected :value="category" v-for="category in categories">{{ $t('categories.' + category.title) }}</option>
+                    <option selected :value="category" v-for="category in categories" :key="category.id">{{ $t('categories.' + category.title) }}</option>
                   </select>
                   <span v-show="errors.has('category')" class="validation-error">{{ errors.first('category') }}</span>
                 </div>
@@ -97,7 +97,7 @@
                   <label>Unterkategorie</label>
                   <select class="browser-default categoriesForm" v-model="item.sub_category">
                     <option selected :value="null">Keine Kategorie ausgewählt</option>
-                    <option selected :value="category" v-for="category in item.category.sub_categories">{{ $t('categories.' + category.title) }}</option>
+                    <option selected :value="category" v-for="category in item.category.sub_categories" :key="category.id">{{ $t('categories.' + category.title) }}</option>
                   </select>
                 </div>
 
@@ -155,7 +155,7 @@
                   <div class="annotationNew">
                     <select class="browser-default annotationNew" v-model="selectedAnnotation" @change="addAnnotation">
                       <option :value="null" selected>Neue Anmerkung hinzufügen</option>
-                      <option :value="annotation" v-for="annotation in selectableAnnotations">{{ annotation.title }}</option>
+                      <option :value="annotation" v-for="annotation in selectableAnnotations" :key="annotation.id">{{ annotation.title }}</option>
                     </select>
                   </div>
                 </div>
@@ -307,7 +307,6 @@
 </template>
 
 
-
 <script>
 import Vue from 'vue'
 import autosize from 'autosize'
@@ -322,7 +321,6 @@ import Users from '@/resources/Users'
 import ResourceItems from '@/resources/ResourceItems'
 import sortByTitle from '@/helpers/sort-by-title'
 import AnnotationTag from '@/components/AnnotationTag'
-import EventBus from '@/services/event-bus'
 import Spinner from '@/components/Spinner'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
@@ -353,7 +351,6 @@ export default {
       imageError: false,
       loadingError: false,
       selectedAnnotation: null,
-      saved: false,
       orgasSimplified: [],
       // implemented as array to allow the :multiple="true" option on vue-multiselect
       // the limit is set to one. so this array contains one element max
@@ -401,12 +398,6 @@ export default {
     })
 
     this.currentUser = Users.getCurrentUser()
-
-    EventBus.$on('beforeRouteLeave', this.beforeRouteLeave)
-  },
-
-  destroyed () {
-    EventBus.$off('beforeRouteLeave', this.beforeRouteLeave)
   },
 
   watch: {
@@ -653,7 +644,7 @@ export default {
               this.$store.dispatch('messages/showAlert', {
                 description: this.messages.saved()
               })
-              this.saved = true
+              this.origItem = this.item // prevent route leave dialog after save
               this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}, query: {tab: this.currentTab}})
             }
             this.currentlySaving = false
@@ -673,43 +664,27 @@ export default {
               this.$store.dispatch('messages/showAlert', {
                 description: this.messages.deleted()
               })
-              this.saved = true
+              this.origItem = this.item // prevent route leave dialog after save
               this.$router.push({name: this.routeName + '.list'})
             }
           })
         }
       })
     },
-
-    beforeRouteLeave ({to, from, next}) {
-      if (this.saved) {
-        next()
-        return
-      }
-
+    /*
+     * called by the BeforeRouteLeaveMixin
+     * to raise a alert in case of unsaved changes
+     */
+    $canLeaveRoute () {
       if (!this.item) { // loading error
-        next()
-        return
-      }
-      // goto login form after api/logout click
-      if (to.name === 'login') {
-        next()
-        return
+        return true
       }
       const hashOrig = JSON.stringify(this.origItem.serialize())
       const hashItem = JSON.stringify(this.item.serialize())
       if (hashOrig === hashItem) {
-        next()
-        return
+        return true
       }
-      this.$store.dispatch('messages/showDialog', {
-        title: 'Abbrechen?',
-        message: 'Soll das Editieren beendet werden?'
-      }).then(result => {
-        if (result === 'yes') {
-          next()
-        }
-      })
+      return 'Soll das Editieren beendet werden?'
     },
 
     bibbelDrag (markerEvent) {
@@ -748,10 +723,12 @@ export default {
             this.item.location.lon = '' + result.body.longitude
           }
         }).catch(error => {
-          this.item.location.lat = null
-          this.item.location.lon = null
-          this.geodataOfAddress = null
           this.geocodeError = 'Geodaten nicht gefunden. Bitte Adresse anpassen.'
+          this.geodataOfAddress = null
+          if (updateItemLocation) { // do not set intial lat/lon to null in order to prevent the unsaved changes dialog to appear
+            this.item.location.lat = null
+            this.item.location.lon = null
+          }
           console.log('error loading geodata', error)
         }).finally(() => {
           this.geodataLoading = false

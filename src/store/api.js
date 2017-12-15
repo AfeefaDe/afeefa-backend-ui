@@ -91,8 +91,10 @@ export default {
       const promise = resource.http.query(params).then(response => {
         const items = []
         const duplicatesMap = {}
-        for (let json of response.body.data) {
-          const dupMapKey = json.type + json.id
+
+        const data = response.body.data || response.body // jsonapi vs custom api
+        for (let json of data) {
+          const dupMapKey = (json.type || listCacheKey) + json.id // custom api does not deliver type
           if (duplicatesMap[dupMapKey]) {
             continue
           }
@@ -157,7 +159,8 @@ export default {
       }
 
       const promise = resource.http.get({id}).then(response => {
-        const json = response.body.data
+        const json = response.body.data || response.body // jsonapi vs custom api
+
         let item
         // update existing cached items but not replace them!
         if (resourceCache.hasItem(itemCacheKey, id)) {
@@ -181,14 +184,17 @@ export default {
     },
 
 
-    saveItem: ({dispatch}, {resource, item}) => {
+    saveItem: ({dispatch}, {resource, item, options = {}}) => {
       const itemCacheKey = resource.getItemCacheKey()
 
+      const itemJson = item.serialize()
+      const body = options.wrapInDataProperty === false ? itemJson : {data: itemJson}
+
       return resource.http.update(
-        {id: item.id}, {data: item.serialize()}
+        {id: item.id}, body
       ).then(response => {
         const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
-        cachedItem.deserialize(response.body.data)
+        cachedItem.deserialize(response.body.data || response.body)
         resource.itemSaved(item, cachedItem)
         dispatch('getMetaInformation') // e.g. todos may change after annotation change
         return cachedItem
@@ -204,13 +210,16 @@ export default {
     },
 
 
-    addItem: ({dispatch}, {resource, item}) => {
+    addItem: ({dispatch}, {resource, item, options = {}}) => {
       const itemCacheKey = resource.getItemCacheKey()
 
+      const itemJson = item.serialize()
+      const body = options.wrapInDataProperty === false ? itemJson : {data: itemJson}
+
       return resource.http.save(
-        {id: item.id}, {data: item.serialize()}
+        {id: item.id}, body
       ).then(response => {
-        item.deserialize(response.body.data)
+        item.deserialize(response.body.data || response.body)
         resourceCache.addItem(itemCacheKey, item)
         resource.itemAdded(item)
         dispatch('getMetaInformation')

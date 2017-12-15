@@ -29,7 +29,9 @@ export default {
     translations: 'Translations',
     usersettings: 'My Account',
     spokenLanguages: 'Spoken Language | Spoken Languages',
-    tags: 'Tags'
+    tags: 'Tags',
+    chapters: 'Wiki',
+    singleChapter: 'Chapter'
   },
   tabs: {
     generalTab: 'General',

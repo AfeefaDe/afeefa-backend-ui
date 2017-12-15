@@ -40,6 +40,10 @@ class EventsResource extends BaseResource {
     // location or contact might be changed
     resourceCache.purgeItem('locations', eventOld.location.id)
     resourceCache.purgeItem('contacts', eventOld.contact.id)
+    // annotation detail might be changed
+    for (let annotation of eventOld.annotations) {
+      resourceCache.purgeItem('annotations', annotation.id)
+    }
   }
 
   itemAttributesUpdated (event, attributes) {

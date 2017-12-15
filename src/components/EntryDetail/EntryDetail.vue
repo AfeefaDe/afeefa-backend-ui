@@ -82,7 +82,7 @@
               :name="$tc('entries.tags', entry.tags.split(',').length)"
               :iconName="'more_vert'">
                 <ul>
-                  <li v-for="tag in entry.tags.split(',')" class="singleTag">
+                  <li v-for="tag in entry.tags.split(',')" :key="tag" class="singleTag">
                     {{tag}}
                   </li>
                 </ul>
@@ -123,9 +123,7 @@
 
               <entry-detail-property v-if="entry.location.directions" :name="$t('entries.directions')" :iconName="'train'" :isMultiline="true">{{ entry.location.directions }}</entry-detail-property>
 
-              <li v-if="!entry.location.isEmpty()">
-                <location-map :map-center="mapCenter" :location="entry.location" :currentTab="currentTab"></location-map>
-              </li>
+              <location-map :map-center="mapCenter" :location="entry.location" :currentTab="currentTab"></location-map>
             </li>
           </ul>
         </section>
@@ -200,21 +198,21 @@
               <br>
               <EntryListDropDownMenu :title="$t('headlines.pastEvents')" :numberOfItems="pastEvents.length" :isOpened="false" entryType="events">
                 <entry-list-items
-                :items="pastEvents"
-                v-if="pastEvents.length"
-                :sort-function="sortByDateStart"
-                sort-order="DESC"
-                showIcon="false"
-                :options="{date_start: true}">
-              </entry-list-items>
-            </EntryListDropDownMenu>
-          </entry-detail-property>
+                  :items="pastEvents"
+                  v-if="pastEvents.length"
+                  :sort-function="sortByDateStart"
+                  sort-order="DESC"
+                  showIcon="false"
+                  :options="{date_start: true}">
+                </entry-list-items>
+              </EntryListDropDownMenu>
+            </entry-detail-property>
 
-          <entry-detail-property name="Facebook ID für Events" iconName="share">
-            {{ entry.facebook_id || 'Keine ID angegeben'}}
-          </entry-detail-property>
-        </ul>
-      </section>
+            <entry-detail-property name="Facebook ID für Events" iconName="share">
+              {{ entry.facebook_id || 'Keine ID angegeben'}}
+            </entry-detail-property>
+          </ul>
+        </section>
       </entry-tabbed-content>
     </div>
 

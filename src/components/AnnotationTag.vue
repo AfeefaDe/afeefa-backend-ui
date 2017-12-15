@@ -105,8 +105,4 @@ $annotationSystemColor: $gray90;
 .annotationTag--system {
   border-left-color: $annotationSystemColor;
 }
-
-
-
-
 </style>

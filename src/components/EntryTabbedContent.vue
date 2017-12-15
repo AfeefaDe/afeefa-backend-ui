@@ -1,12 +1,12 @@
 <template>
 <div class="tabbedSection">
   <ul class="tabbedSection__navItemContainer">
-    <li v-for="tabName in tabNames" :class="['tabbedSection__navItem', {active: activeTab === tabName}]">
+    <li v-for="tabName in tabNames" :key="tabName" :class="['tabbedSection__navItem', {active: activeTab === tabName}]">
       <a href="#" @click.prevent="setActiveTab(tabName)">{{$t('tabs.'+tabName)}}</a>
     </li>
   </ul>
 
-  <section v-for="tabName in tabNames" v-show="activeTab === tabName">
+  <section v-for="tabName in tabNames" :key="tabName" v-show="activeTab === tabName">
     <slot :name="tabName"></slot>
   </section>
 

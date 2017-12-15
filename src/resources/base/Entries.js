@@ -93,7 +93,7 @@ export default {
     }
   },
 
-  fetchAnnotations (entry) {
+  fetchAnnotations (entry, clone) {
     // do not fetch annotations multiple times
     if (entry.annotations.__isLoading) {
       return
@@ -102,6 +102,7 @@ export default {
     for (let id of entry._relationIds.annotations) {
       Annotations.get(id).then(annotation => {
         if (annotation) {
+          annotation = clone ? annotation.clone() : annotation
           AnnotationCategories.get(annotation._relationIds.annotationCategory).then(annotationCategory => {
             annotation.annotationCategory = annotationCategory
             entry.annotations.push(annotation)
@@ -138,7 +139,7 @@ export default {
     this.fetchSubCategory(clone)
     this.fetchLocation(clone, true) // true => location.clone()
     this.fetchContact(clone, true) // true => contact.clone()
-    this.fetchAnnotations(clone)
+    this.fetchAnnotations(clone, true) // true => annotation.clone()
     return clone
   },
 
