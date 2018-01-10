@@ -232,6 +232,7 @@ import Events from '@/resources/Events'
 import Users from '@/resources/Users'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 import slugify from '@/helpers/slugify'
+import GenerateFrontendLinkMixin from '@/components/mixins/GenerateFrontendLinkMixin'
 
 import EntryListItems from '@/components/EntryListItems'
 import LocationMap from '@/components/Map'
@@ -246,7 +247,7 @@ import ShowContactInfo from './ShowContactInfo'
 
 export default {
   props: ['entry', 'entryLoadingError', 'routeName', 'Resource', 'messages', 'options'],
-
+  mixins: [GenerateFrontendLinkMixin],
   data () {
     const options = this.options || {}
     return {
@@ -324,21 +325,13 @@ export default {
         return [51.0571904, 13.7154319]
       }
     },
-    /*
-     * shitty implementation of preview links, not working for areas!=dresden in dev mode (#338)
-     */
     previewLink () {
-      let previewLink = '//'
-      if (this.currentUser && this.currentUser.area && this.currentUser.area.toLowerCase() !== 'dresden') {
-        previewLink += this.currentUser.area + '.'
-      }
       if (this.entry.type === 'orgas') {
-        return previewLink + `${process.env.FRONTEND_URL}project/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
+        return `${this.frontendURL}/project/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
       } else if (this.entry.type === 'events') {
-        return previewLink + `${process.env.FRONTEND_URL}event/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
+        return `${this.frontendURL}/event/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
       }
     },
-
 
     categoryClass () {
       if (this.entry.category && this.entry.category.title) {

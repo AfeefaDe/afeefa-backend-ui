@@ -5,13 +5,14 @@
         <div v-bind:class="['mainCard__header', 'mainCard__headerCategories']" v-if="item">
           <div class="mainCard__headerTitle">
             <h2 class="mainCard__headerTitle"> {{item.title || 'Kein Titel'}}</h2>
-            <span v-if="item.parent_orga" class="mainCard__headerSubtitle">
-              <router-link :to="{name: item.parent_orga.type + '.show', params: {id: item.parent_orga.id}}">
-                <u> {{ item.parent_orga.title }}</u>
-              </router-link>
-            </span>
           </div>
-          <a href="" @click.prevent="cancel" class="mainCard__headerAction"><i class="material-icons">cancel</i></a>
+          <div class="mainCard__headerButtonContainer">
+            <a v-if="item.id" :href="previewLink" target="_blank" class="mainCard__headerButton">
+              {{$t('headlines.preview')}}
+              <i class="material-icons">link</i>
+            </a>
+            <a href="" @click.prevent="cancel" class="mainCard__headerAction"><i class="material-icons">cancel</i></a>
+          </div>
         </div>
 
         <div v-if="item">
@@ -58,12 +59,13 @@
 
 <script>
 import ChapterEditor from './ChapterEditor'
-
+import GenerateFrontendLinkMixin from '@/components/mixins/GenerateFrontendLinkMixin'
 import Chapter from '@/models/Chapter'
 import Chapters from '@/resources/Chapters'
 
 export default {
   props: ['id'],
+  mixins: [GenerateFrontendLinkMixin],
   components: {
     ChapterEditor
   },
@@ -75,7 +77,11 @@ export default {
       currentlySaving: false
     }
   },
-
+  computed: {
+    previewLink () {
+      return `${this.frontendURL}/chapter/${this.item.id}`
+    }
+  },
   created () {
     this.loadChapter()
   },
