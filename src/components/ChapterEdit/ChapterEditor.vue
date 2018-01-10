@@ -5,7 +5,7 @@
     </div>
     <transition name="overlay" tag="div">
       <div class="overlay" v-if="entrySelector.visible">
-        <div class="entrySelector">
+        <div class="selector">
           <label>Bitte wähle eine Organisation aus</label>
           <multiselect
             v-model="entrySelector.selectedEntry"
@@ -24,6 +24,27 @@
           <br><a @click="closeOverlay" href="#">Abbrechen</a>
         </div>
       </div>
+
+      <div class="overlay" v-if="chapterSelector.visible">
+        <div class="selector">
+          <label>Bitte wähle ein Kapitel aus</label>
+          <multiselect
+            v-model="chapterSelector.selectedEntry"
+            :options="chapterSelector.chapters"
+            label="title"
+            track-by="id"
+            @input="chapterSelected"
+            :multiple="false"
+            :searchable="true"
+
+            :placeholder="$t('multiselect.noSelection')"
+            :selectLabel="$t('multiselect.selectLabel')"
+            :selectedLabel="$t('multiselect.selectedLabel')"
+            :deselectLabel="$t('multiselect.deselectLabel')">
+          </multiselect>
+          <br><a @click="closeOverlay" href="#">Abbrechen</a>
+        </div>
+      </div>
     </transition>
   </div>
 </template>
@@ -31,6 +52,7 @@
 <script>
 import Multiselect from 'vue-multiselect'
 import Orgas from '@/resources/Orgas'
+import Chapters from '@/resources/Chapters'
 import sortByTitle from '@/helpers/sort-by-title'
 import tinymce from 'tinymce/tinymce'
 import 'tinymce/themes/modern/theme'
@@ -49,6 +71,11 @@ export default {
         visible: false,
         selectedEntry: null,
         orgasSimplified: []
+      },
+      chapterSelector: {
+        visible: false,
+        selectedChapter: null,
+        chapters: []
       }
     }
   },
@@ -60,7 +87,7 @@ export default {
       default: ''
     },
     toolbar1: {
-      default: 'formatselect | bold italic strikethrough forecolor backcolor | bullist numlist | link  unlink | alignleft aligncenter alignright alignjustify | code | inserOrgaButton'
+      default: 'formatselect | bold italic strikethrough forecolor backcolor | bullist numlist | link  unlink | alignleft aligncenter alignright alignjustify | code | insertOrgaButton insertChapterButton'
     },
     otherProps: {
       default: ''
@@ -69,6 +96,9 @@ export default {
   created () {
     Orgas.getAllSimplified().then(orgas => {
       this.entrySelector.orgasSimplified = sortByTitle(orgas)
+    })
+    Chapters.getAll().then(chapters => {
+      this.chapterSelector.chapters = chapters
     })
   },
   mounted () {
@@ -83,11 +113,16 @@ export default {
       menubar: '',
       content_css: [],
       setup: (editor) => {
-        editor.addButton('inserOrgaButton', {
+        editor.addButton('insertOrgaButton', {
           text: this.$t('tinymce.insertOrga'),
           icon: false,
           tooltip: this.$t('tinymce.insertOrgaTooltip'),
-          onclick: this.insertOrga
+          onclick: this.insertOrgaLink
+        })
+        editor.addButton('insertChapterButton', {
+          text: this.$t('tinymce.insertChapter'),
+          icon: false,
+          onclick: this.insertChapterLink
         })
       },
       init_instance_callback: (editor) => {
@@ -120,10 +155,19 @@ export default {
       let editor = tinymce.activeEditor
       return editor.selection.getContent({'format': 'html'})
     },
+    insertContent: function (selectedItem) {
+      const id = selectedItem.id
+      const title = selectedItem.title
+      const text = this.getCurrentTextSelection()
+      if (text && text.length > 0) {
+        tinymce.activeEditor.execCommand('mceInsertContent', false, `<a title="${title}" href="afeefa://orga/${id}">${text}</a>`)
+        this.entrySelector.selectedEntry = null
+      }
+    },
     /*
-     * check for selected text and enable the OrgaSelect Overlay
+     * checks for a valid text selection and shows error message
      */
-    insertOrga: function () {
+    selectionIsValid () {
       if (!this.getCurrentTextSelection()) {
         this.$store.dispatch('messages/showAlert', {
           isError: true,
@@ -131,24 +175,44 @@ export default {
           title: this.$t('tinymce.noSelectionTitle'),
           description: this.$t('tinymce.noSelectionDescription')
         })
+        return false
       } else {
+        return true
+      }
+    },
+    /*
+     * click on the editor button shows orga selector
+     */
+    insertOrgaLink: function () {
+      if (this.selectionIsValid()) {
         this.entrySelector.visible = true
+      }
+    },
+    /*
+     * click on the editor buttons shows chapter selector
+     */
+    insertChapterLink: function () {
+      if (this.selectionIsValid()) {
+        this.chapterSelector.visible = true
       }
     },
     /*
      * inserts the Orga link after selection from multiselect
      */
     orgaSelected: function () {
-      const id = this.entrySelector.selectedEntry.id
-      const text = this.getCurrentTextSelection()
-      if (text && text.length > 0) {
-        tinymce.activeEditor.execCommand('mceInsertContent', false, `<a href="afeefa://orga/${id}">` + text + '</a>')
-        this.entrySelector.selectedEntry = null
-      }
+      this.insertContent(this.entrySelector.selectedEntry)
+      this.closeOverlay()
+    },
+    /*
+     * inserts the Chapter link after selection from multiselect
+     */
+    chapterSelected: function () {
+      this.insertContent(this.chapterSelector.selectedEntry)
       this.closeOverlay()
     },
     closeOverlay: function () {
       this.entrySelector.visible = false
+      this.chapterSelector.visible = false
     }
   }
 }
@@ -164,7 +228,7 @@ export default {
   left: 0;
   background: rgba(0, 0, 0, 0.58);
 }
-.entrySelector {
+.selector {
   position: fixed;
   top: 30%;
   left: 50%;
@@ -182,10 +246,10 @@ export default {
 .overlay-enter, .overlay-leave-to {
   opacity: 0
 }
-.overlay-enter-active .entrySelector, .overlay-leave-active .entrySelector{
+.overlay-enter-active .selector, .overlay-leave-active .selector{
   transition: all .1s ease
 }
-.overlay-enter .entrySelector, .overlay-leave-to .entrySelector {
+.overlay-enter .selector, .overlay-leave-to .selector {
   opacity: 0;
   top: 100px;
 }

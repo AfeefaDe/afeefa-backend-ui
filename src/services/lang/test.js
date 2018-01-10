@@ -160,6 +160,7 @@ export default {
   },
   tinymce: {
     insertOrga: '*',
+    insertChapter: '*',
     insertOrgaTooltip: '*',
     noSelectionTitle: '*',
     noSelectionDescription: '*'

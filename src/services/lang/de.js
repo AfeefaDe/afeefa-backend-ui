@@ -160,9 +160,10 @@ export default {
   },
   tinymce: {
     insertOrga: 'Orga verknüpfen',
-    insertOrgaTooltip: 'Der selektierte Text wird in einen entsprechenden Link zur Orga umgewandelt.',
+    insertChapter: 'Kaptiel verknüpfen',
+    insertOrgaTooltip: 'Der ausgewählte Text wird in einen entsprechenden Link zur Orga umgewandelt.',
     noSelectionTitle: 'Fehler beim Einfügen',
-    noSelectionDescription: 'Du hast keinen Text selektiert.'
+    noSelectionDescription: 'Du hast keinen Text ausgewählt.'
   },
   categories: {
     'asylum-counselling': 'Migrationsberatung',

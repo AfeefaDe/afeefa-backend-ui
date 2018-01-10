@@ -160,7 +160,8 @@ export default {
     addTag: 'Add Tag'
   },
   tinymce: {
-    insertOrga: 'Add Orga',
+    insertOrga: 'Add Orga link',
+    insertChapter: 'Add Chapter link',
     insertOrgaTooltip: 'This button makes the current text selection to an actual link to the Organization',
     noSelectionTitle: 'Error while adding Orga',
     noSelectionDescription: 'There is no text selected.'
