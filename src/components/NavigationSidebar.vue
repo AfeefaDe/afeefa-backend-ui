@@ -5,7 +5,7 @@
     </div>
     <div>
       <ul class="navigationSidebar__navContainer">
-        <li :class="['navigationSidebar__navItem', 'level' + item.level]" v-for="item in items" :key="item.id">
+        <li :class="['navigationSidebar__navItem', 'level' + item.level]" v-for="item in items" :key="item.id" v-if="showSideBarItem(item)">
           <router-link :to="{name: item.route}" :exact="item.route==='dashboard'"> {{ translateTitle(item) }}</router-link>
           <router-link :to="{name: item.action.route}" class="navigationSidebar__navItemAction" v-if="item.action">
             <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
@@ -50,9 +50,18 @@
 <script>
 import NavigationMixin from './mixins/NavigationMixin'
 
-
 export default {
-  mixins: [NavigationMixin]
+  mixins: [NavigationMixin],
+  methods: {
+    /* hacky way to hide chapter feature in dresden */
+    showSideBarItem (item) {
+      if (this.currentUser.area === 'dresden' && item.route === 'chapters.list') {
+        return false
+      } else {
+        return true
+      }
+    }
+  }
 }
 </script>
 
