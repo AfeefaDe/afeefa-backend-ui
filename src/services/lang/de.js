@@ -156,7 +156,9 @@ export default {
     deselectLabel: 'Zum Entfernen Enter drücken',
     noResult: 'Keine Einträge gefunden. Bitte Suchanfrage ändern.',
     noSelection: 'Kein Eintag ausgewählt',
-    addTag: 'Tag hinzufügen'
+    addTag: 'Tag hinzufügen',
+    selectOrga: 'Bitte wähle eine Organisation aus',
+    selectChapter: 'Bitte wähle ein Kapitel aus'
   },
   tinymce: {
     insertOrga: 'Orga verknüpfen',

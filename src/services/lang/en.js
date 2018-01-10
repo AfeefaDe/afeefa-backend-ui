@@ -157,7 +157,9 @@ export default {
     deselectLabel: 'Press enter to remove',
     noResult: 'No elements found. Consider changing the search query.',
     noSelection: 'Nothing selected',
-    addTag: 'Add Tag'
+    addTag: 'Add Tag',
+    selectOrga: 'Please select an organization',
+    selectChapter: 'Please select a chapter'
   },
   tinymce: {
     insertOrga: 'Add Orga link',

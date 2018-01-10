@@ -156,7 +156,9 @@ export default {
     deselectLabel: '*',
     noResult: '*',
     noSelection: '*',
-    addTag: '*'
+    addTag: '*',
+    selectOrga: '*',
+    selectChapter: '*'
   },
   tinymce: {
     insertOrga: '*',

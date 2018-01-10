@@ -6,7 +6,7 @@
     <transition name="overlay" tag="div">
       <div class="overlay" v-if="entrySelector.visible">
         <div class="selector">
-          <label>Bitte wähle eine Organisation aus</label>
+          <label>{{$t('multiselect.selectOrga')}}</label>
           <multiselect
             v-model="entrySelector.selectedEntry"
             :options="entrySelector.orgasSimplified"
@@ -27,7 +27,7 @@
 
       <div class="overlay" v-if="chapterSelector.visible">
         <div class="selector">
-          <label>Bitte wähle ein Kapitel aus</label>
+          <label>{{$t('multiselect.selectChapter')}}</label>
           <multiselect
             v-model="chapterSelector.selectedEntry"
             :options="chapterSelector.chapters"
