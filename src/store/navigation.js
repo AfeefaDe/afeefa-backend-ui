@@ -66,6 +66,7 @@ const menuTree = {
         route: 'chapters.new'
       },
       level: 2,
+      hint: state => { return state.numChapters },
       children: [
         { route: 'chapters.show', title: 'headlines.show', level: 4 },
         { route: 'chapters.edit', title: 'headlines.edit', level: 4 },
@@ -133,6 +134,7 @@ export default {
     numOrgas: 0,
     numEvents: 0,
     numTodos: 0,
+    numChapters: 0,
     pathNavigation: null,
     level1Navigation: null
   },
