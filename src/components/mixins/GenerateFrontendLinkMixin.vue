@@ -1,4 +1,6 @@
 <script>
+import Users from '@/resources/Users'
+
 export default {
   computed: {
     /*
@@ -6,8 +8,9 @@ export default {
      */
     frontendURL () {
       let url = '//'
-      if (this.currentUser && this.currentUser.area && this.currentUser.area.toLowerCase() !== 'dresden') {
-        url += this.currentUser.area + '.'
+      const currentUser = Users.getCurrentUser()
+      if (currentUser && currentUser.area && currentUser.area.toLowerCase() !== 'dresden') {
+        url += currentUser.area + '.'
       }
       return url + process.env.FRONTEND_URL
     }
