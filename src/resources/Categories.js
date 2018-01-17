@@ -29,7 +29,6 @@ class CategoriesResource extends BaseResource {
       }
     }
   }
-
 }
 
 export default {

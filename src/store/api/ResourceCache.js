@@ -1,5 +1,4 @@
 export default class ResourceCache {
-
   constructor () {
     this.cache = {}
   }

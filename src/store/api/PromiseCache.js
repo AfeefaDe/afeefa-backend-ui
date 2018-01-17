@@ -4,13 +4,11 @@ export default class PromiseCache {
   addItem (key, promise) {
     _cache[key] = promise
 
-    promise.then(
-      result => {
-        delete _cache[key]
-      }).catch(e => {
-        delete _cache[key]
-      }
-    )
+    promise.then(result => {
+      delete _cache[key]
+    }).catch(e => {
+      delete _cache[key]
+    })
   }
 
   hasItem (key) {

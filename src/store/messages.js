@@ -36,8 +36,8 @@ export default {
       if (!alert.title) {
         const index = Math.round(Math.random() * 5)
         alert.title = alert.isError
-        ? ['Mist', 'Hat nicht geklappt', 'Kritischer Fehler #983-45§.v2)=', 'Kann mal passieren', 'Leider schade', 'Versuchs nochmal'][index]
-        : ['Super', 'Totalgenial', 'Geschafft', 'Hervorragend', 'Gut gemacht', 'Datenspeicherung erfolgt'][index]
+          ? ['Mist', 'Hat nicht geklappt', 'Kritischer Fehler #983-45§.v2)=', 'Kann mal passieren', 'Leider schade', 'Versuchs nochmal'][index]
+          : ['Super', 'Totalgenial', 'Geschafft', 'Hervorragend', 'Gut gemacht', 'Datenspeicherung erfolgt'][index]
       }
       commit('addAlert', alert)
       if (alert.autoHide !== false) {

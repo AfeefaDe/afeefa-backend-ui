@@ -79,7 +79,7 @@ export default {
     getList: ({dispatch}, {resource, params}) => {
       const listCacheKey = resource.listCacheKey
 
-      const cacheUrl = JSON.stringify(params || '')   // distinct different caches of filtered events
+      const cacheUrl = JSON.stringify(params || '') // distinct different caches of filtered events
       if (resourceCache.hasList(listCacheKey, cacheUrl)) {
         return Promise.resolve(resourceCache.getList(listCacheKey, cacheUrl))
       }
@@ -112,8 +112,8 @@ export default {
              * a case we would ignore the data of the latter list
              * loaded an keep the data from the first one.
              */
-             // do nothing (before was: resource.deserialize(item, json))
-           // no cached item found -> create one
+            // do nothing (before was: resource.deserialize(item, json))
+          // no cached item found -> create one
           } else {
             item = resource.createItem(json)
             resource.deserialize(item, json)

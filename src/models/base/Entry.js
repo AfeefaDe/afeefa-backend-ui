@@ -115,7 +115,7 @@ export default class Entry extends BaseModel {
 
     this.facebook_id = json.attributes.facebook_id
 
-        // feed inheritance object with values
+    // feed inheritance object with values
     if (json.attributes.inheritance) {
       json.attributes.inheritance.split('|').forEach(key => {
         this.inheritance[key] = true
