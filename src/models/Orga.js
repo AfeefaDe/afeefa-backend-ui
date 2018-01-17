@@ -1,10 +1,13 @@
 import Entry from './base/Entry'
+import OrgaType from './OrgaType'
 
 export default class Orga extends Entry {
   init () {
     super.init()
 
     this.type = 'orgas'
+    this.orga_type_id = OrgaType.ORGANIZATION
+
     this.sub_orgas = []
     this.resource_items = []
     // extend _relationIds
@@ -14,6 +17,8 @@ export default class Orga extends Entry {
 
   deserialize (json) {
     super.deserialize(json)
+
+    this.orga_type_id = json.attributes.orga_type_id
 
     const rels = json.relationships
 
@@ -39,6 +44,7 @@ export default class Orga extends Entry {
   serialize () {
     const data = super.serialize()
 
+    data.attributes.orga_type_id = this.orga_type_id
     data.attributes.facebook_id = this.facebook_id
 
     data.relationships.parent_orga = this.parent_orga

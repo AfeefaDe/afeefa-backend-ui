@@ -25,6 +25,16 @@
             <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="tabNames">
               <section slot="generalTab">
                 <br>
+
+                <div class="inputField__spacing" v-if="item.type === 'orgas'">
+                  <label for="orgaType">Typ</label>
+                  <select v-model="item.orga_type_id" id="orgaType"
+                   name="orgaType"
+                    :class="['browser-default', 'categoriesForm']">
+                    <option selected :value="orgaType.id" v-for="orgaType in orgaTypes" :key="orgaType.id">{{ orgaType.name }}</option>
+                  </select>
+                </div>
+
                 <div class="inputField__spacing input-field">
                   <label for="title" :class="{active: item.title}">
                     {{ $t('entries.title') }}
@@ -318,6 +328,7 @@ import Annotations from '@/resources/Annotations'
 import AnnotationCategories from '@/resources/AnnotationCategories'
 import Users from '@/resources/Users'
 import ResourceItems from '@/resources/ResourceItems'
+import OrgaType from '@/models/OrgaType'
 import sortByTitle from '@/helpers/sort-by-title'
 import AnnotationTag from '@/components/AnnotationTag'
 import Spinner from '@/components/Spinner'
@@ -451,6 +462,10 @@ export default {
   },
 
   computed: {
+    orgaTypes () {
+      return OrgaType.TYPES
+    },
+
     selectableAnnotations () {
       return this.annotationCategories.filter(
         (annotationCategory) => {

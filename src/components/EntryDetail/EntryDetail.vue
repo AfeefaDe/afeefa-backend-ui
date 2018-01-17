@@ -35,6 +35,10 @@
       <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="tabNames">
         <section slot="generalTab">
           <ul class="entryDetail">
+            <entry-detail-property v-if="entry.type === 'orgas'" :name="'Typ'" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' :entryIconClass="categoryClass">
+              {{ getOrgaType(entry.orga_type_id).name }}
+            </entry-detail-property>
+
             <entry-detail-property v-if="entry.title" :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' :entryIconClass="categoryClass">
               {{ entry.title }}
             </entry-detail-property>
@@ -230,6 +234,7 @@
 <script>
 import Events from '@/resources/Events'
 import Users from '@/resources/Users'
+import OrgaType from '@/models/OrgaType'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 import slugify from '@/helpers/slugify'
 import GenerateFrontendLinkMixin from '@/components/mixins/GenerateFrontendLinkMixin'
@@ -311,6 +316,9 @@ export default {
     },
     goBack () {
       this.$router.go(-1)
+    },
+    getOrgaType (id) {
+      return OrgaType.getById(id)
     }
   },
 
