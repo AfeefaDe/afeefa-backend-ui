@@ -155,12 +155,12 @@ export default {
       let editor = tinymce.activeEditor
       return editor.selection.getContent({'format': 'html'})
     },
-    insertContent: function (selectedItem) {
+    insertContent: function (selectedItem, insertType) {
       const id = selectedItem.id
       const title = selectedItem.title
       const text = this.getCurrentTextSelection()
       if (text && text.length > 0) {
-        tinymce.activeEditor.execCommand('mceInsertContent', false, `<a title="${title}" href="afeefa://orga/${id}">${text}</a>`)
+        tinymce.activeEditor.execCommand('mceInsertContent', false, `<a title="${title}" href="afeefa://${insertType}/${id}">${text}</a>`)
         this.entrySelector.selectedEntry = null
       }
     },
@@ -200,14 +200,14 @@ export default {
      * inserts the Orga link after selection from multiselect
      */
     orgaSelected: function () {
-      this.insertContent(this.entrySelector.selectedEntry)
+      this.insertContent(this.entrySelector.selectedEntry, 'orga')
       this.closeOverlay()
     },
     /*
      * inserts the Chapter link after selection from multiselect
      */
     chapterSelected: function () {
-      this.insertContent(this.chapterSelector.selectedEntry)
+      this.insertContent(this.chapterSelector.selectedEntry, 'chapter')
       this.closeOverlay()
     },
     closeOverlay: function () {
