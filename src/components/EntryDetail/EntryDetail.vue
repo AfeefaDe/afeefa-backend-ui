@@ -39,11 +39,53 @@
               {{ getOrgaType(entry.orga_type_id).name }}
             </entry-detail-property>
 
+            <entry-detail-property v-if="entry.type === 'orgas'" name="Projektträger" :iconName="'device_hub'">
+              <div v-for="projectInitiator in entry.project_initiators" :key="projectInitiator.id">
+                <router-link :to="{name: projectInitiator.type + '.show', params: {id: projectInitiator.id}}">
+                  {{ projectInitiator.title }}
+                </router-link>
+              </div>
+              <div v-if="!entry.project_initiators.length" class="entryDetail__error">Kein Projektträger angegeben</div>
+            </entry-detail-property>
+
+            <entry-detail-property v-if="entry.type === 'orgas'" name="Netzwerke" :iconName="'device_hub'">
+              <div v-for="network in entry.networks" :key="network.id">
+                <router-link :to="{name: network.type + '.show', params: {id: network.id}}">
+                  {{ network.title }}
+                </router-link>
+              </div>
+              <div v-if="!entry.networks.length" class="entryDetail__error">In keinem Netzwerk Mitglied</div>
+            </entry-detail-property>
+
+            <entry-detail-property v-if="entry.type === 'orgas'" name="Partner" :iconName="'device_hub'">
+              <div v-for="partner in entry.partners" :key="partner.id">
+                <router-link :to="{name: partner.type + '.show', params: {id: partner.id}}">
+                  {{ partner.title }}
+                </router-link>
+              </div>
+              <div v-if="!entry.partners.length" class="entryDetail__error">Keine Partner angegeben</div>
+            </entry-detail-property>
+
+            <ul v-if="entry.type === 'events'">
+              <entry-detail-property :name="$t('headlines.organizer')" :iconName="'device_hub'">
+                <entry-list-items
+                  :items="[entry.parent_orga]"
+                  v-if="entry.parent_orga"
+                  showIcon="false">
+                </entry-list-items>
+                <div v-if="!entry.parent_orga" class="entryDetail__error">Kein Veranstalter angegeben</div>
+              </entry-detail-property>
+            </ul>
+
             <entry-detail-property v-if="entry.title" :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' :entryIconClass="categoryClass">
               {{ entry.title }}
             </entry-detail-property>
 
-            <entry-detail-property v-if="entry.short_description || entry.inheritance.short_description && entry.parent_orga && entry.parent_orga.short_description" :name="$t('entries.short_description')" :iconName="'more_horiz'" :isMultiline="true">
+            <entry-detail-property
+              v-if="entry.short_description || entry.inheritance.short_description && entry.parent_orga && entry.parent_orga.short_description"
+              :name="$t('entries.short_description')"
+              :iconName="'more_horiz'"
+              :isMultiline="true">
               <div class="inheritedValue" v-if="entry.inheritance.short_description && entry.parent_orga">{{entry.parent_orga.short_description}}</div>
               <div v-if="entry.short_description">{{entry.short_description}}</div>
             </entry-detail-property>
@@ -90,6 +132,13 @@
                     {{tag}}
                   </li>
                 </ul>
+            </entry-detail-property>
+
+            <entry-detail-property
+              name="Facebook ID für Events"
+              iconName="share"
+              v-if="entry.type === 'orgas'">
+              {{ entry.facebook_id || 'Keine ID angegeben'}}
             </entry-detail-property>
 
             <entry-detail-property
@@ -145,77 +194,47 @@
           :editEnabled="false"></resource-item>
         </section>
 
+        <section slot="networkMembersTab" v-if="entry.type === 'orgas'">
+          <entry-detail-property v-if="entry.type === 'orgas'" name="Netzwerkmitglieder" :iconName="'device_hub'">
+            <div v-for="member in entry.network_members" :key="member.id">
+              <router-link :to="{name: member.type + '.show', params: {id: member.id}}">
+                {{ member.title }}
+              </router-link>
+            </div>
+            <div v-if="!entry.network_members.length" class="entryDetail__error">Keine Netzwerkmitglieder</div>
+          </entry-detail-property>
+        </section>
 
-        <section slot="linkTab">
-          <ul v-if="entry.type === 'events' && !entry.parent_orga" class="entryDetail__error entryDetail__error_white_space">
-              {{ $t('errors.noLinksPresent') }}
-          </ul>
+        <section slot="projectsTab" v-if="entry.type === 'orgas'">
+          <entry-list-items
+            :items="entry.projects"
+            v-if="entry.projects.length">
+          </entry-list-items>
+          <div v-else class="entryDetail__error">
+            Keine Projekte zugeordnet
+          </div>
+        </section>
 
-          <ul v-if="entry.type === 'events' && entry.parent_orga">
-            <entry-detail-property :name="$t('headlines.organizer')" hasEntryIcon="true" entryIconType='orgas' :entryIconStatus='false'>
-              <entry-list-items
-                :items="[entry.parent_orga]"
-                v-if="entry.parent_orga"
-                showIcon="false">
-              </entry-list-items>
-            </entry-detail-property>
-          </ul>
+        <section slot="eventsTab" v-if="entry.type === 'orgas'">
+          <h2>{{ $t('headlines.upcomingEvents') }}</h2>
 
-          <ul class="entryDetail" v-if="entry.type === 'orgas'">
-            <entry-detail-property :name="$tc('headlines.organisations', 2)" hasEntryIcon="true" entryIconType='orgas' :entryIconStatus='false'>
+          <entry-list-items
+            :items="upcomingEvents"
+            v-if="upcomingEvents.length"
+            :sort-function="sortByDateMixin"
+            sort-order="ASC"
+            :options="{event_date: true}">
+          </entry-list-items>
 
-              <div v-if="has.parentOrga">
-                <b>{{ $t('headlines.parentOrga') }}</b>
-                <entry-list-items
-                  :items="[entry.parent_orga]"
-                  v-if="entry.parent_orga"
-                  showIcon="false">
-                </entry-list-items>
-                <div v-else class="entryDetail__error">
-                  {{ $t('errors.noParentOrgaPresent') }}
-                </div>
-              </div>
+          <h2>{{ $t('headlines.pastEvents') }}</h2>
 
-              <EntryListDropDownMenu :title="$t('headlines.subOrgas')" :numberOfItems="entry.sub_orgas.length" :isOpened="false" entryType="orgas">
-                <entry-list-items
-                  :items="entry.sub_orgas"
-                  showIcon="false"
-                  v-if="entry.sub_orgas.length">
-                </entry-list-items>
-                <div v-else class="entryDetail__error">
-                  {{ $t('errors.noSubOrgaPresent') }}
-                </div>
-              </EntryListDropDownMenu>
-            </entry-detail-property>
-
-            <entry-detail-property :name="$tc('headlines.events', 2)" hasEntryIcon="true" entryIconType='events' :entryIconStatus='false'>
-              <EntryListDropDownMenu :title="$t('headlines.upcomingEvents')" :numberOfItems="upcomingEvents.length" :isOpened="false" entryType="events">
-                <entry-list-items
-                  :items="upcomingEvents"
-                  v-if="upcomingEvents.length"
-                  :sort-function="sortByDateStart"
-                  sort-order="ASC"
-                  showIcon="false"
-                  :options="{date_start: true}">
-                </entry-list-items>
-              </EntryListDropDownMenu>
-              <br>
-              <EntryListDropDownMenu :title="$t('headlines.pastEvents')" :numberOfItems="pastEvents.length" :isOpened="false" entryType="events">
-                <entry-list-items
-                  :items="pastEvents"
-                  v-if="pastEvents.length"
-                  :sort-function="sortByDateStart"
-                  sort-order="DESC"
-                  showIcon="false"
-                  :options="{date_start: true}">
-                </entry-list-items>
-              </EntryListDropDownMenu>
-            </entry-detail-property>
-
-            <entry-detail-property name="Facebook ID für Events" iconName="share">
-              {{ entry.facebook_id || 'Keine ID angegeben'}}
-            </entry-detail-property>
-          </ul>
+          <entry-list-items
+            :items="pastEvents"
+            v-if="pastEvents.length"
+            :sort-function="sortByDateStart"
+            sort-order="DESC"
+            :options="{event_date: true}">
+          </entry-list-items>
         </section>
       </entry-tabbed-content>
     </div>
@@ -236,6 +255,7 @@ import Events from '@/resources/Events'
 import Users from '@/resources/Users'
 import OrgaType from '@/models/OrgaType'
 import sortByDateStart from '@/helpers/sort-by-date-start'
+import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 import slugify from '@/helpers/slugify'
 import GenerateFrontendLinkMixin from '@/components/mixins/GenerateFrontendLinkMixin'
 
@@ -261,6 +281,7 @@ export default {
       filterOrgaEventsBy: 'upcoming',
       orgaEventsSortOrder: 'ASC',
       sortByDateStart,
+      sortByDateMixin,
       currentTab: '',
       currentlyPublishing: false,
       currentUser: null,
@@ -354,7 +375,13 @@ export default {
       if (this.entry.type === 'orgas' && this.entry.resource_items.length && this.currentUser.area === 'dresden') {
         tabNames.push('resourceTab')
       }
-      tabNames.push('linkTab')
+      if (this.entry.type === 'orgas') {
+        if (this.entry.network_members.length) {
+          tabNames.push('networkMembersTab')
+        }
+        tabNames.push('projectsTab')
+        tabNames.push('eventsTab')
+      }
       return tabNames
     }
   },

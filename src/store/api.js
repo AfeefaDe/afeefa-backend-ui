@@ -21,18 +21,31 @@ const getErrorDescription = response => {
   return description
 }
 
+let COUNT_SAVE_OPERATIONS = 0
 
 export default {
   namespaced: true,
 
 
   state: {
-    resourceCache
+    resourceCache,
+    isSaving: false
+  },
+
+
+  mutations: {
+    isSaving (state) {
+      state.isSaving = true
+    },
+
+    savingFinished (state) {
+      state.isSaving = false
+    }
   },
 
 
   actions: {
-    initApp () {
+    initApp ({commit, dispatch}) {
       Vue.http.interceptors.push((request, next) => {
         if (request.method === 'POST' || request.method === 'PATCH') {
           if (request.body && typeof request.body === 'object') {
@@ -40,7 +53,27 @@ export default {
           }
           request.headers.set('Content-Type', 'application/vnd.api+json')
         }
-        next()
+
+        if (request.method !== 'GET') {
+          if (++COUNT_SAVE_OPERATIONS === 1) {
+            commit('isSaving')
+            Vue.prototype.$Progress.start()
+          }
+        }
+
+        next(response => {
+          if (request.method !== 'GET') {
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                if (--COUNT_SAVE_OPERATIONS === 0) {
+                  Vue.prototype.$Progress.finish()
+                  commit('savingFinished')
+                  resolve(response)
+                }
+              }, 500)
+            })
+          }
+        })
       })
     },
 
@@ -190,10 +223,17 @@ export default {
       const itemJson = item.serialize()
       const body = options.wrapInDataProperty === false ? itemJson : {data: itemJson}
 
-      return resource.http.update(
+      const promise = resource.http.update(
         {id: item.id}, body
       ).then(response => {
-        const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
+        let cachedItem = resourceCache.getItem(itemCacheKey, item.id)
+        // TODO hack to force actors to re-add to cache after
+        // purge upon actor relation change @see Orgas.joinActorRelation
+        // otherwise we get a notdefined error here
+        if (!cachedItem) {
+          cachedItem = item.clone()
+          resourceCache.addItem(itemCacheKey, cachedItem)
+        }
         cachedItem.deserialize(response.body.data || response.body)
         resource.itemSaved(item, cachedItem)
         dispatch('getMetaInformation') // e.g. todos may change after annotation change
@@ -207,6 +247,8 @@ export default {
         console.log('error saving item', response)
         return null
       })
+
+      return promise
     },
 
 

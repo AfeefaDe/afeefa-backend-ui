@@ -37,7 +37,9 @@ export default {
     generalTab: 'Allgemeines',
     placeTab: 'Ort',
     contactTab: 'Kontakt',
-    linkTab: 'Zugehörigkeiten',
+    networkMembersTab: 'Netzwerkmitglieder',
+    projectsTab: 'Projekte',
+    eventsTab: 'Veranstaltungen',
     resourceTab: 'Ressourcen'
   },
   errors: {

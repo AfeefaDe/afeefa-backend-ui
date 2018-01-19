@@ -27,6 +27,9 @@ export default class BaseModel {
       const Constructor = model.constructor
       const clone = new Constructor()
       for (let key in model) {
+        if (key === '_ID') {
+          continue
+        }
         const keyVal = model[key]
         // set model associations to null
         if (keyVal instanceof BaseModel) {

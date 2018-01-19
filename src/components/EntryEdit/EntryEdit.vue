@@ -31,8 +31,111 @@
                   <select v-model="item.orga_type_id" id="orgaType"
                    name="orgaType"
                     :class="['browser-default', 'categoriesForm']">
-                    <option selected :value="orgaType.id" v-for="orgaType in orgaTypes" :key="orgaType.id">{{ orgaType.name }}</option>
+                    <option :value="orgaType.id" v-for="orgaType in orgaTypes" :key="orgaType.id">{{ orgaType.name }}</option>
                   </select>
+                </div>
+
+                <div v-if="item.type === 'orgas' && item.id">
+                  <h2>Projektträger</h2>
+
+                  <power-selector
+                    :items="orgas"
+                    :selected-items="item.project_initiators"
+                    :search-fields="['title']"
+                    @select="addProjectInitiator"
+                    @remove="removeProjectIntiator"
+                    :messages="{
+                      addButtonTitle: 'Projektträger hinzufügen',
+                      removeTitle: 'Projektträger entfernen?',
+                      removeMessage (item) {
+                        return `Soll die Orga ${item.title} kein Projektträger mehr sein?`
+                      }
+                    }"
+                    v-if="orgas.length">
+                    <div slot="selected-item" slot-scope="props">
+                      <div>{{ props.item.title }}</div>
+                    </div>
+                    <div slot="item" slot-scope="props">
+                      <div>{{ props.item.title }}</div>
+                    </div>
+                  </power-selector>
+
+                  <h2>Netzwerke</h2>
+
+                  <power-selector
+                    :items="orgas"
+                    :selected-items="item.networks"
+                    :search-fields="['title']"
+                    @select="joinNetwork"
+                    @remove="leaveNetwork"
+                    :messages="{
+                      addButtonTitle: 'Netzwerk hinzufügen',
+                      removeTitle: 'Netzwerk verlassen?',
+                      removeMessage (item) {
+                        return `Soll das Netzwerk ${item.title} verlassen werden?`
+                      }
+                    }"
+                    v-if="orgas.length">
+                    <div slot="selected-item" slot-scope="props">
+                      <div>{{ props.item.title }}</div>
+                    </div>
+                    <div slot="item" slot-scope="props">
+                      <div>{{ props.item.title }}</div>
+                    </div>
+                  </power-selector>
+
+                  <h2>Partner</h2>
+
+                  <power-selector
+                    :items="orgas"
+                    :selected-items="item.partners"
+                    :search-fields="['title']"
+                    @select="addPartner"
+                    @remove="removePartner"
+                    :messages="{
+                      addButtonTitle: 'Partner hinzufügen',
+                      removeTitle: 'Partner entfernen?',
+                      removeMessage (item) {
+                        return `Soll die Orga ${item.title} kein Partner mehr sein?`
+                      }
+                    }"
+                    v-if="orgas.length">
+                    <div slot="selected-item" slot-scope="props">
+                      <div>{{ props.item.title }}</div>
+                    </div>
+                    <div slot="item" slot-scope="props">
+                      <div>{{ props.item.title }}</div>
+                    </div>
+                  </power-selector>
+                </div>
+
+                <div
+                  v-if="item.type === 'events'"
+                  v-bind:class="[
+                    {'customMultiselect--hide': parentOrgaSimplified.length===1},
+                    'inputField__spacing',
+                    'customMultiselect'
+                  ]">
+
+                  <label>{{ $t('headlines.organizer')}}</label>
+                  <multiselect
+                    v-model="parentOrgaSimplified"
+                    :options="orgasSimplified"
+                    label="title"
+                    track-by="id"
+
+                    :multiple="true"
+                    :max="1"
+                    :searchable="true"
+                    :allow-empty="true"
+                    @input="parentOrgaChanged"
+
+                    :placeholder="$t('multiselect.noSelection')"
+                    :selectLabel="$t('multiselect.selectLabel')"
+                    :selectedLabel="$t('multiselect.selectedLabel')"
+                    :deselectLabel="$t('multiselect.deselectLabel')"
+                  >
+                  </multiselect>
                 </div>
 
                 <div class="inputField__spacing input-field">
@@ -152,6 +255,15 @@
                   <span v-show="errors.has('date')" class="validation-error">{{ errors.first('date') }}</span>
                 </div>
 
+                <div v-if="item.type === 'orgas'">
+                  <input-field
+                    field-name="facebook_id"
+                    v-model="item.facebook_id"
+                    validation="min:15|max:64"
+                    label="Facebook ID für Events">
+                  </input-field>
+                </div>
+
                 <h2>{{ $tc('headlines.annotations', 2) }}</h2>
                 <div class="annotationEditArea">
                   <annotation-tag
@@ -224,7 +336,6 @@
                 </div>
               </section>
 
-
               <section slot="contactTab">
                 <edit-contact-info ref="EditContactInfo" v-if="item"
                   :contact-info="item.contact"
@@ -233,6 +344,54 @@
                   :parent-orga="item.parent_orga"
                   @input="updateInheritedContactInfo">
                 </edit-contact-info>
+              </section>
+
+              <section slot="networkMembersTab">
+                <power-selector
+                  :items="orgas"
+                  :selected-items="item.network_members"
+                  :search-fields="['title']"
+                  @select="addNetworkMember"
+                  @remove="removeNetworkMember"
+                  :messages="{
+                    addButtonTitle: 'Zum Netzwerk hinzufügen',
+                    removeTitle: 'Aus dem Netzwerk austragen?',
+                    removeMessage (item) {
+                      return `Soll die Orga ${item.title} das Netzwerk verlassen?`
+                    }
+                  }"
+                  v-if="orgas.length">
+                  <div slot="selected-item" slot-scope="props">
+                    <div>{{ props.item.title }}</div>
+                  </div>
+                  <div slot="item" slot-scope="props">
+                    <div>{{ props.item.title }}</div>
+                  </div>
+                </power-selector>
+              </section>
+
+              <section slot="projectsTab">
+                <power-selector
+                  :items="orgas"
+                  :selected-items="item.projects"
+                  :search-fields="['title']"
+                  @select="addProject"
+                  @remove="removeProject"
+                  :messages="{
+                    addButtonTitle: 'Projekt hinzufügen',
+                    removeTitle: 'Project entfernen?',
+                    removeMessage (item) {
+                      return `Soll das Projekt ${item.title} aus der Projektliste entfernt werden?`
+                    }
+                  }"
+                  v-if="orgas.length">
+                  <div slot="selected-item" slot-scope="props">
+                    <div>{{ props.item.title }}</div>
+                  </div>
+                  <div slot="item" slot-scope="props">
+                    <div>{{ props.item.title }}</div>
+                  </div>
+                </power-selector>
               </section>
 
               <section slot="resourceTab" v-if="item.type === 'orgas'">
@@ -251,41 +410,6 @@
                       Neue Ressource hinzufügen
                     </h2>
                   </div>
-
-              </section>
-
-              <section slot="linkTab">
-                <div v-bind:class="[{'customMultiselect--hide': parentOrgaSimplified.length===1}, 'inputField__spacing', 'customMultiselect']">
-                  <label v-if="has.parentOrga">{{ $t('headlines.parentOrga')}}</label>
-                  <label v-if="has.orga">{{ $t('headlines.organizer')}}</label>
-                  <multiselect
-                    v-model="parentOrgaSimplified"
-                    :options="orgasSimplified"
-                    label="title"
-                    track-by="id"
-
-                    :multiple="true"
-                    :max="1"
-                    :searchable="true"
-                    :allow-empty="true"
-                    @input="parentOrgaChanged"
-
-                    :placeholder="$t('multiselect.noSelection')"
-                    :selectLabel="$t('multiselect.selectLabel')"
-                    :selectedLabel="$t('multiselect.selectedLabel')"
-                    :deselectLabel="$t('multiselect.deselectLabel')"
-                  >
-                  </multiselect>
-                </div>
-
-                <div v-if="item.type === 'orgas'">
-                  <input-field
-                    field-name="facebook_id"
-                    v-model="item.facebook_id"
-                    validation="min:15|max:64"
-                    label="Facebook ID für Events">
-                  </input-field>
-                </div>
 
               </section>
             </entry-tabbed-content>
@@ -336,6 +460,7 @@ import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
 import EntryTabbedContent from '@/components/EntryTabbedContent'
 import ResourceItem from '@/components/ResourceItem'
+import PowerSelector from '@/components/PowerSelector'
 
 import DatePicker from './Datepicker/DatePicker'
 import EditContactInfo from './EditContactInfo'
@@ -366,6 +491,8 @@ export default {
       // the limit is set to one. so this array contains one element max
       parentOrgaSimplified: [],
 
+      networks: [],
+
       geodataLoading: false,
       geodataOfAddress: null,
       geocodeError: false,
@@ -386,33 +513,32 @@ export default {
       if (entry) {
         this.origItem = entry
         this.item = this.Resource.clone(entry)
+
+        Categories.getAll().then(categories => {
+          this.categories = categories.filter(
+            category => category.parent_category === null
+          )
+        })
+
+        AnnotationCategories.getAll().then(annotationCategories => {
+          this.annotationCategories = annotationCategories
+        })
+
+        Orgas.getAll().then(orgas => {
+          this.orgas = sortByTitle(orgas)
+        })
+
+        Orgas.getAllSimplified().then(orgas => {
+          // remove current orga from array
+          this.orgasSimplified = orgas.filter(orga => orga.id !== this.item.id)
+        })
+
+        this.currentUser = Users.getCurrentUser()
       } else {
         console.log('error loading item')
         this.loadingError = true
       }
     })
-
-
-    Categories.getAll().then(categories => {
-      this.categories = categories.filter(
-        category => category.parent_category === null
-      )
-    })
-
-    AnnotationCategories.getAll().then(annotationCategories => {
-      this.annotationCategories = annotationCategories
-    })
-
-    Orgas.getAll().then(orgas => {
-      this.orgas = sortByTitle(orgas)
-    })
-
-    Orgas.getAllSimplified().then(orgas => {
-      // remove current orga from array
-      this.orgasSimplified = orgas.filter(orga => orga.id !== this.item.id)
-    })
-
-    this.currentUser = Users.getCurrentUser()
   },
 
   watch: {
@@ -445,12 +571,17 @@ export default {
      */
     'orgas' (orgas) {
       let result = []
+      let networks = []
       for (let orga of this.orgas) {
         if (this.item.id !== orga.id) {
           result.push({title: orga.title, id: orga.id})
+          if (orga.orga_type_id === OrgaType.NETWORK) {
+            networks.push({title: orga.title, id: orga.id})
+          }
         }
       }
       this.orgasSimplified = result
+      this.networks = networks
     },
     'item.parent_orga' (parentOrga) {
       if (parentOrga) {
@@ -505,13 +636,130 @@ export default {
       if (this.item.type === 'orgas' && this.currentUser.area === 'dresden') {
         tabNames.push('resourceTab')
       }
-      tabNames.push('linkTab')
+      if (this.item.type === 'orgas') {
+        if (this.item.network_members.length) {
+          tabNames.push('networkMembersTab')
+        }
+        tabNames.push('projectsTab')
+      }
       return tabNames
     }
   },
 
 
   methods: {
+    joinNetwork (network) {
+      Orgas.joinActorRelation('network_members', network, this.item).then(result => {
+        if (result) {
+          this.item.networks.push(network)
+          this.$store.dispatch('messages/showAlert', {
+            description: `Die Orga ist jetzt im Netzwerk ${network.title}.`
+          })
+        }
+      })
+    },
+
+    leaveNetwork (network) {
+      Orgas.leaveActorRelation('network_members', network, this.item).then(result => {
+        if (result) {
+          this.item.networks = this.item.networks.filter(n => n.id !== network.id)
+          this.$store.dispatch('messages/showAlert', {
+            description: `Das Netzwerk ${network.title} wurde verlassen.`
+          })
+        }
+      })
+    },
+
+    addNetworkMember (member) {
+      Orgas.joinActorRelation('network_members', this.item, member).then(result => {
+        if (result) {
+          this.item.network_members.push(member)
+          this.$store.dispatch('messages/showAlert', {
+            description: `Die Orga ${member.title} ist jetzt im Netzwerk.`
+          })
+        }
+      })
+    },
+
+    removeNetworkMember (member) {
+      Orgas.leaveActorRelation('network_members', this.item, member).then(result => {
+        if (result) {
+          this.item.network_members = this.item.network_members.filter(n => n.id !== member.id)
+          this.$store.dispatch('messages/showAlert', {
+            description: `Die Orga ${member.title} hat das Netzwerk verlassen.`
+          })
+        }
+      })
+    },
+
+    addProjectInitiator (initiator) {
+      Orgas.joinActorRelation('projects', initiator, this.item).then(result => {
+        if (result) {
+          this.item.project_initiators.push(initiator)
+          this.$store.dispatch('messages/showAlert', {
+            description: `Die Orga ist jetzt Projekt von ${initiator.title}.`
+          })
+        }
+      })
+    },
+
+    removeProjectIntiator (initiator) {
+      Orgas.leaveActorRelation('projects', initiator, this.item).then(result => {
+        if (result) {
+          this.item.project_initiators = this.item.project_initiators.filter(pi => pi.id !== initiator.id)
+          this.$store.dispatch('messages/showAlert', {
+            description: `Die Orga ${initiator.title} ist nicht mehr Projektträger.`
+          })
+        }
+      })
+    },
+
+    addProject (project) {
+      Orgas.joinActorRelation('projects', this.item, project).then(result => {
+        if (result) {
+          this.item.projects.push(project)
+          this.$store.dispatch('messages/showAlert', {
+            description: `Die Orga ${project.title} ist jetzt ein Projekt.`
+          })
+        }
+      })
+    },
+
+    removeProject (project) {
+      Orgas.leaveActorRelation('projects', this.item, project).then(result => {
+        if (result) {
+          this.item.projects = this.item.projects.filter(p => p.id !== project.id)
+          this.$store.dispatch('messages/showAlert', {
+            description: `Die Orga ${project.title} ist kein Projekt mehr.`
+          })
+        }
+      })
+    },
+
+    addPartner (partner) {
+      Orgas.joinActorRelation('partners', this.item, partner).then(result => {
+        if (result) {
+          this.item.partners.push(partner)
+          this.item.parent_orga = this.item.partners[0]
+          this.$store.dispatch('messages/showAlert', {
+            description: `Die Orga ${partner.title} ist jetzt Partnerorga.`
+          })
+        }
+      })
+    },
+
+    removePartner (partner) {
+      Orgas.leaveActorRelation('partners', this.item, partner).then(result => {
+        if (result) {
+          this.item.partners = this.item.partners.filter(p => p.id !== partner.id)
+          this.item.parent_orga = this.item.partners.length ? this.item.partners[0] : null
+          this.$store.dispatch('messages/showAlert', {
+            description: `Die Orga ${partner.title} ist keine Partnerorga mehr.`
+          })
+        }
+      })
+    },
+
     /*
      * match back simplified parent_orga to full orga object from this.orgas
      */
@@ -701,6 +949,10 @@ export default {
       }
       const hashOrig = JSON.stringify(this.origItem.serialize())
       const hashItem = JSON.stringify(this.item.serialize())
+
+      console.log(hashOrig)
+      console.log(hashItem)
+
       if (hashOrig === hashItem) {
         return true
       }
@@ -768,7 +1020,8 @@ export default {
     EditContactInfo,
     TagsSelectInput,
     ResourceItem,
-    InputField
+    InputField,
+    PowerSelector
   }
 }
 </script>

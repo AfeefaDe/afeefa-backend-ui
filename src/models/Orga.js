@@ -1,17 +1,23 @@
 import Entry from './base/Entry'
 import OrgaType from './OrgaType'
+import Entries from '@/resources/base/Entries'
 
 export default class Orga extends Entry {
+  static ACTOR_RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
+
   init () {
     super.init()
 
     this.type = 'orgas'
     this.orga_type_id = OrgaType.ORGANIZATION
 
-    this.sub_orgas = []
     this.resource_items = []
+
+    Orga.ACTOR_RELATIONS.forEach(actorRelation => {
+      this[actorRelation] = []
+    })
+
     // extend _relationIds
-    this._relationIds.sub_orgas = []
     this._relationIds.resource_items = []
   }
 
@@ -22,13 +28,22 @@ export default class Orga extends Entry {
 
     const rels = json.relationships
 
-    // sub orgas
-    if (rels.sub_orgas && rels.sub_orgas.data.length) {
-      for (let jsonOrga of rels.sub_orgas.data) {
-        if (!this._relationIds.sub_orgas.includes(jsonOrga.id)) {
-          this._relationIds.sub_orgas.push(jsonOrga.id)
+    Orga.ACTOR_RELATIONS.forEach(actorRelation => {
+      if (rels[actorRelation] && rels[actorRelation].data.length) {
+        for (let jsonActorRelation of rels[actorRelation].data) {
+          const actor = new Orga()
+          actor.deserialize(jsonActorRelation)
+          Entries.fetchCategory(actor)
+          Entries.fetchSubCategory(actor)
+
+          this[actorRelation].push(actor)
         }
       }
+    })
+
+    // parent orga
+    if (this.project_initiators.length) {
+      this.parent_orga = this.project_initiators[0]
     }
 
     // resourceItems
@@ -47,10 +62,6 @@ export default class Orga extends Entry {
     data.attributes.orga_type_id = this.orga_type_id
     data.attributes.facebook_id = this.facebook_id
 
-    data.relationships.parent_orga = this.parent_orga
-      ? { data: {id: this.parent_orga.id, type: 'orgas'} }
-      : null
-
     const resourceItemsSerialized = []
     for (let resourceItem of this.resource_items) {
       resourceItemsSerialized.push(resourceItem.serialize())
@@ -59,5 +70,13 @@ export default class Orga extends Entry {
     data.relationships.resource_items = {data: resourceItemsSerialized}
 
     return data
+  }
+
+  clone () {
+    const clone = super.clone(this)
+    Orga.ACTOR_RELATIONS.forEach(actorRelation => {
+      clone[actorRelation] = this[actorRelation]
+    })
+    return clone
   }
 }

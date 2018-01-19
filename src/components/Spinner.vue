@@ -6,13 +6,15 @@
 import Spinner from 'spin.js'
 
 export default {
-  props: ['show', 'width', 'radius', 'length'],
+  props: ['show', 'width', 'radius', 'length', 'color', 'fadeColor'],
 
   mounted () {
     const width = this.width || 3
     const radius = this.radius || 3
     const length = this.length || 3
-    let spinner = new Spinner({width, radius, length}).spin()
+    const color = this.color || 'black'
+    const fadeColor = this.fadeColor || 0x999
+    let spinner = new Spinner({width, radius, length, color, fadeColor}).spin()
     this.$el.appendChild(spinner.el)
   }
 }
@@ -23,7 +25,6 @@ export default {
   position: relative;
   display: inline-block;
   width: 1em;
-  sheight: 3em;
   vertical-align: middle;
   margin-right: 5px;
   margin-top: -4px;

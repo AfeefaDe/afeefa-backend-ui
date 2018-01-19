@@ -25,26 +25,6 @@ export default {
     }
   },
 
-  fetchSubOrgas (orga) {
-    // do not fetch sub orgas multiple times
-    if (orga.sub_orgas.__isLoading) {
-      return
-    }
-
-    for (let id of orga._relationIds.sub_orgas) {
-      Orgas.get(id, [
-        'fetchCategory',
-        'fetchSubCategory'
-      ]).then(subOrga => {
-        if (subOrga) {
-          orga.sub_orgas.push(subOrga)
-        }
-      })
-    }
-
-    orga.sub_orgas.__isLoading = true
-  },
-
   fetchCategory (entry) {
     if (!entry.category) {
       const id = entry._relationIds.category

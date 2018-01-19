@@ -18,7 +18,7 @@ export default class OrgaType {
       name: 'Location'
     },
     {
-      id: OrgaType.LOCATION,
+      id: OrgaType.NETWORK,
       name: 'Network'
     }
   ]

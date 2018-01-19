@@ -14,33 +14,6 @@ class OrgasResource extends BaseEntriesResource {
   createItem () {
     return new Orga()
   }
-
-  itemAdded (orga) {
-    super.itemAdded(orga)
-    // parent orgas sub orgas might change
-    if (orga._relationIds.parent_orga) {
-      this.cachePurgeItem('orgas', orga._relationIds.parent_orga)
-    }
-  }
-
-  itemDeleted (orga) {
-    super.itemDeleted(orga)
-    // parent orgas sub orgas might change
-    if (orga._relationIds.parent_orga) {
-      this.cachePurgeItem('orgas', orga._relationIds.parent_orga)
-    }
-  }
-
-  itemSaved (orgaOld, orga) {
-    super.itemSaved(orgaOld, orga)
-    // parent orgas sub orgas might change
-    if (orgaOld._relationIds.parent_orga) {
-      this.cachePurgeItem('orgas', orgaOld._relationIds.parent_orga)
-    }
-    if (orga._relationIds.parent_orga) {
-      this.cachePurgeItem('orgas', orga._relationIds.parent_orga)
-    }
-  }
 }
 
 
@@ -70,8 +43,7 @@ const Orgas = {
     'fetchSubCategory',
     'fetchLocation',
     'fetchContact',
-    'fetchAnnotations',
-    'fetchSubOrgas'
+    'fetchAnnotations'
   ]) {
     if (!id) {
       const orga = Entries.create(new Orga())
@@ -94,7 +66,6 @@ const Orgas = {
 
   clone (orga) {
     const clone = Entries.clone(orga)
-    Entries.fetchSubOrgas(clone)
     Entries.fetchResources(clone)
     return clone
   },
@@ -111,6 +82,48 @@ const Orgas = {
         item: orga
       })
     }
+  },
+
+  joinActorRelation (relationType, relatingOrga, relatedOrga) {
+    const resource = Vue.resource(BASE + `orgas{/relating_id}/${relationType}{/related_id}`)
+    return resource.save({
+      relating_id: relatingOrga.id,
+      related_id: relatedOrga.id
+    }, {}).then(() => {
+      const resourceCache = store.state.api.resourceCache
+      resourceCache.purgeItem('orgas', relatingOrga.id)
+      resourceCache.purgeItem('orgas', relatedOrga.id)
+      return true
+    }).catch(response => {
+      store.dispatch('messages/showAlert', {
+        isError: true,
+        title: 'Fehler beim Hinzufügen',
+        description: `Die Orga ${relatedOrga.title} konnte nicht hinzugefügt werden.`
+      }, {root: true})
+      console.log('error join actor relation', response)
+      return null
+    })
+  },
+
+  leaveActorRelation (relationType, relatingOrga, relatedOrga) {
+    const resource = Vue.resource(BASE + `orgas{/relating_id}/${relationType}{/related_id}`)
+    return resource.delete({
+      relating_id: relatingOrga.id,
+      related_id: relatedOrga.id
+    }, {}).then(() => {
+      const resourceCache = store.state.api.resourceCache
+      resourceCache.purgeItem('orgas', relatingOrga.id)
+      resourceCache.purgeItem('orgas', relatedOrga.id)
+      return true
+    }).catch(response => {
+      store.dispatch('messages/showAlert', {
+        isError: true,
+        title: 'Fehler beim Entfernen',
+        description: 'Der Orga konnte nicht entfernt werden.'
+      }, {root: true})
+      console.log('error leave actor relation', response)
+      return null
+    })
   },
 
   updateAttributes (orga, attributes) {

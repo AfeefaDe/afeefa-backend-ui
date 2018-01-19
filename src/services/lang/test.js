@@ -37,7 +37,9 @@ export default {
     generalTab: '*',
     placeTab: '*',
     contactTab: '*',
-    linkTab: '*',
+    networkMembersTab: '*',
+    projectsTab: '*',
+    eventsTab: '*',
     resourceTab: '*'
   },
   errors: {
