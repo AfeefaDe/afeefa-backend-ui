@@ -16,7 +16,7 @@
 import Vue2Leaflet from 'vue2-leaflet'
 
 export default {
-  props: ['mapCenter', 'location', 'draggable', 'currentTab'],
+  props: ['mapCenter', 'initialZoom', 'location', 'draggable', 'currentTab'],
 
   data () {
     return {
@@ -90,7 +90,7 @@ export default {
           lat: this.location.lat,
           lng: this.location.lon
         }
-        this.zoom = 18
+        this.zoom = this.initialZoom || 18
       } else {
         this.marker = null
         this.zoom = 11

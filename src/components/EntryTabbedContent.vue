@@ -47,6 +47,7 @@ export default {
       }
       this.$emit('setCurrentTab', this.activeTab)
     },
+
     setActiveTab (tab) {
       this.activeTab = tab
       // set active tab to parent (used to switch between edit/view mode consistently)

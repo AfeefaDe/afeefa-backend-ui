@@ -950,9 +950,6 @@ export default {
       const hashOrig = JSON.stringify(this.origItem.serialize())
       const hashItem = JSON.stringify(this.item.serialize())
 
-      console.log(hashOrig)
-      console.log(hashItem)
-
       if (hashOrig === hashItem) {
         return true
       }

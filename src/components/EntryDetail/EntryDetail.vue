@@ -35,7 +35,7 @@
       <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="tabNames">
         <section slot="generalTab">
           <ul class="entryDetail">
-            <entry-detail-property v-if="entry.type === 'orgas'" :name="'Typ'" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' :entryIconClass="categoryClass">
+            <entry-detail-property v-if="entry.type === 'orgas'" name="Typ" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' :entryIconClass="categoryClass">
               {{ getOrgaType(entry.orga_type_id).name }}
             </entry-detail-property>
 
@@ -162,30 +162,13 @@
           </ul>
         </section>
 
-        <section slot="placeTab">
-          <ul class="entryDetail" v-if="entry.location">
-            <li v-if="entry.location.isEmpty()" class="entryDetail__error">
-                {{ $t('errors.noLocationPresent') }}
-            </li>
-            <li v-else>
-              <entry-detail-property v-if="!entry.location.isEmpty()" :name="$t('entries.address')" :iconName="'location_on'">
-                  <span v-if="entry.location.placename">{{ entry.location.placename }}<br></span>
-                  <span v-if="entry.location.street">{{ entry.location.street }}<br></span>
-                  <span v-if="entry.location.zip || entry.location.city">{{ entry.location.zip }} {{ entry.location.city }}</span>
-              </entry-detail-property>
-
-              <entry-detail-property v-if="entry.location.directions" :name="$t('entries.directions')" :iconName="'train'" :isMultiline="true">{{ entry.location.directions }}</entry-detail-property>
-
-              <location-map :map-center="mapCenter" :location="entry.location" :currentTab="currentTab"></location-map>
-            </li>
-          </ul>
-        </section>
-
         <section slot="contactTab">
           <show-contact-info
+            :location="entry.location"
             :contact-info="entry.contact"
             :inherited-contact-info="entry.inheritance.contact_infos"
-            :parent-orga="entry.parent_orga">
+            :parent-orga="entry.parent_orga"
+            :currentTab="currentTab">
           </show-contact-info>
         </section>
 
@@ -260,7 +243,6 @@ import slugify from '@/helpers/slugify'
 import GenerateFrontendLinkMixin from '@/components/mixins/GenerateFrontendLinkMixin'
 
 import EntryListItems from '@/components/EntryListItems'
-import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
 import EntryTabbedContent from '@/components/EntryTabbedContent'
 import AnnotationTag from '@/components/AnnotationTag'
@@ -345,13 +327,6 @@ export default {
     entryVisibleInFrontend () {
       return this.entry.active && ((this.entry.type === 'events' && this.entry.upcoming) || (this.entry.type === 'orgas'))
     },
-    mapCenter () {
-      if (this.entry.location && this.entry.location.lat) {
-        return [this.entry.location.lat, this.entry.location.lon]
-      } else {
-        return [51.0571904, 13.7154319]
-      }
-    },
     previewLink () {
       if (this.entry.type === 'orgas') {
         return `${this.frontendURL}/project/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
@@ -369,7 +344,7 @@ export default {
      * define tabNames according to the entry type and the area of the current user
      */
     tabNames () {
-      let tabNames = ['generalTab', 'placeTab', 'contactTab']
+      let tabNames = ['generalTab', 'contactTab']
       if (this.entry.type === 'orgas' && this.entry.resource_items.length && this.currentUser.area === 'dresden') {
         tabNames.push('resourceTab')
       }
@@ -386,7 +361,6 @@ export default {
 
   components: {
     EntryListItems,
-    LocationMap,
     ImageContainer,
     EntryDetailProperty,
     EntryTabbedContent,

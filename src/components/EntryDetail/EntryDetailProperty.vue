@@ -1,12 +1,17 @@
 <template>
   <li class="detailProperty">
     <div v-if="hasEntryIcon" class="detailProperty__propertyEntryIcon">
-      <span :class="['entryType-icon', 'entryType-icon--' + this.entryIconType, 'entryType-icon--' + (entryIconStatus ? 'active' : 'inactive'), 'entryType-icon--categoryColors', entryIconClass]"></span>
+      <span :class="[
+        'entryType-icon',
+        'entryType-icon--' + this.entryIconType,
+        'entryType-icon--' + (entryIconStatus ? 'active' : 'inactive'),
+        'entryType-icon--categoryColors', entryIconClass
+      ]"></span>
     </div>
-
     <span v-else class="detailProperty__propertyIcon">
       <i class="material-icons">{{ iconName }}</i>
     </span>
+
     <div class="detailProperty__propertyContainer">
       <p class="detailProperty__propertyName">{{ name }}</p>
       <p :class="['detailProperty__propertyContent', {multiline: isMultiline}]">
