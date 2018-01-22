@@ -6,35 +6,39 @@
       <label v-else for="inhContact">{{$t('checkboxes.contact_infos_inheritance_event')}}</label>
     </div>
 
-    <div class="input-field">
-      <label for="mail" :class="{active: contactInfo.mail || showInheritValue('mail')}">E-Mail</label>
-      <input id="mail" type="email"
-        v-model="contactInfo.mail"
-        name="email"
-        data-vv-validate-on="blur"
-        data-vv-as="E-Mail"
-        v-validate="'email'"
-        :class="{'validation-error': errors.has('email') }"
-        :placeholder="showInheritValue('mail')"/>
-      <span v-show="errors.has('email')" class="validation-error">{{ errors.first('email') }}</span>
-    </div>
+    <input-field
+      class="inputField__spacing"
+      field-name="mail"
+      v-model="contactInfo.mail"
+      :placeholder="showInheritValue('mail')"
+      validate="email"
+      validate-on-blur="true"
+      label="E-Mail">
+    </input-field>
 
-    <div class="input-field">
-      <label for="phone" :class="{active: contactInfo.phone || showInheritValue('phone')}">Telefon</label>
-      <input v-model="contactInfo.phone" name="phone" data-vv-as="Telefon" v-validate.initial="'max: 255'" :placeholder="showInheritValue('phone')" id="phone" type="text" />
-      <span v-show="errors.has('phone')" class="validation-error">{{ errors.first('phone') }}</span>
-    </div>
+    <input-field
+      field-name="phone"
+      v-model="contactInfo.phone"
+      :placeholder="showInheritValue('phone')"
+      validate="max:255"
+      label="Telefon">
+    </input-field>
 
-    <div class="input-field">
-      <label for="fax" :class="{active: contactInfo.fax || showInheritValue('fax')}">Fax</label>
-      <input v-model="contactInfo.fax" name="fax" data-vv-as="Fax" v-validate.initial="'max: 255'" :placeholder="showInheritValue('fax')" id="fax" type="text" />
-      <span v-show="errors.has('fax')" class="validation-error">{{ errors.first('fax') }}</span>
-    </div>
+    <input-field
+      field-name="fax"
+      v-model="contactInfo.fax"
+      :placeholder="showInheritValue('fax')"
+      validate="max:255"
+      label="Fax">
+    </input-field>
 
-    <div class="input-field">
-      <label for="contactPerson" :class="{active: contactInfo.person || showInheritValue('person')}">Kontaktperson</label>
-      <input v-model="contactInfo.person" :placeholder="showInheritValue('person')" id="contactPerson" type="text"/>
-    </div>
+    <input-field
+      field-name="person"
+      v-model="contactInfo.person"
+      :placeholder="showInheritValue('person')"
+      validate="max:255"
+      label="Kontaktperson">
+    </input-field>
 
     <div class="inputField__spacing input-field" v-if="type === 'orgas'">
       <label for="openingHours" :class="{active: contactInfo.openingHours || showInheritValue('openingHours')}">
@@ -44,35 +48,23 @@
         class="materialize-textarea"></textarea>
     </div>
 
-    <div class="input-field">
-      <label for="web" :class="{active: contactInfo.web || showInheritValue('web')}">{{ $t('entries.web') }}</label>
-      <input id="web"
-            type="text"
-            v-model="contactInfo.web"
-            name="web"
-            data-vv-validate-on="blur"
-            data-vv-as="Homepage"
-            v-validate="'url-with-protocol'"
-            :class="{'validation-error': errors.has('web') }"
-            :placeholder="showInheritValue('web')"/>
-      <span v-show="errors.has('web')" class="validation-error">{{ errors.first('web') }}</span>
-    </div>
+    <input-field
+      field-name="web"
+      v-model="contactInfo.web"
+      :placeholder="showInheritValue('web')"
+      validate="url-with-protocol"
+      validate-on-blur="true"
+      label="Homepage">
+    </input-field>
 
-    <div class="input-field">
-      <label for="socialMedia" :class="{active: contactInfo.socialMedia || showInheritValue('socialMedia')}">
-        {{ $t('entries.socialMedia') }}
-      </label>
-      <input id="socialMedia"
-            type="text"
-            v-model="contactInfo.socialMedia"
-            name="socialMedia"
-            data-vv-validate-on="blur"
-            v-validate="'url-with-protocol'"
-            data-vv-as="Social Media"
-            :class="{'validation-error': errors.has('socialMedia') }"
-            :placeholder="showInheritValue('socialMedia')"/>
-    </div>
-    <span v-show="errors.has('socialMedia')" class="validation-error">{{ errors.first('socialMedia') }}</span>
+    <input-field
+      field-name="socialMedia"
+      v-model="contactInfo.socialMedia"
+      :placeholder="showInheritValue('socialMedia')"
+      validate="url-with-protocol"
+      validate-on-blur="true"
+      label="Social Media">
+    </input-field>
 
     <lang-select-input  @input="updateSpokenLanguages" :inheritedValues="showInheritValue('spokenLanguages')" :entryValue="contactInfo.spokenLanguages"></lang-select-input>
 
@@ -82,6 +74,7 @@
 <script>
 import LangSelectInput from './LangSelectInput'
 import ValidationMixin from '@/components/mixins/ValidationMixin'
+import InputField from '@/components/InputField'
 
 
 export default {
@@ -115,7 +108,8 @@ export default {
   },
 
   components: {
-    LangSelectInput
+    LangSelectInput,
+    InputField
   }
 }
 </script>

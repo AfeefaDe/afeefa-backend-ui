@@ -141,7 +141,7 @@
                 <input-field
                   field-name="title"
                   v-model="item.title"
-                  validation="required|max:150"
+                  validate="required|max:150"
                   :label="$t('entries.title')"
                   :options="{charCount: true}">
                 </input-field>
@@ -157,6 +157,7 @@
                   {{ $t('entries.short_description') }}
                   <span class="labelCharacterCount" v-if="item.short_description.length">{{item.short_description.length}}/350</span>
                 </label>
+
                 <div class="inputField__spacing input-field">
                   <p v-if="item.parent_orga && item.inheritance.short_description" class="inheritance-output">
                     {{item.parent_orga.short_description}}
@@ -171,7 +172,6 @@
                   <input class="filled-in" id="inheritDescription" type="checkbox" v-model="item.inheritance.short_description"/>
                   <label for="inheritDescription">{{ $t('checkboxes.short_description_inheritance') }}</label>
                 </div>
-
 
                 <div class="inputField__spacing input-field">
                   <label for="description" :class="{active: item.description}">{{ $t('entries.description') }}</label>
@@ -256,7 +256,7 @@
                   <input-field
                     field-name="facebook_id"
                     v-model="item.facebook_id"
-                    validation="min:15|max:64"
+                    validate="min:15|max:64"
                     label="Facebook ID für Events">
                   </input-field>
                 </div>
@@ -289,22 +289,22 @@
                 <div class="inputField__spacing" v-if="item.location">
                   <div class="input-field">
                     <label for="placename" :class="{active: (item.location.placename)}">Ortsbezeichnung (z.B. Hinterhof)</label>
-                    <input  v-model="item.location.placename" id="placename" type="text" class="validate" />
+                    <input  v-model="item.location.placename" id="placename" type="text" />
                   </div>
 
                   <div class="input-field">
                     <label for="street" :class="{active: item.location.street}">Straße</label>
-                    <input v-model="item.location.street" id="street" type="text" class="validate" @change="getGeocode(true)" />
+                    <input v-model="item.location.street" id="street" type="text" @change="getGeocode(true)" />
                   </div>
 
                   <div class="input-field">
                     <label for="zip" :class="{active: item.location.zip}">Postleitzahl</label>
-                    <input v-model="item.location.zip" id="zip" type="text" class="validate" @change="getGeocode(true)" />
+                    <input v-model="item.location.zip" id="zip" type="text" @change="getGeocode(true)" />
                   </div>
 
                   <div class="input-field">
                     <label for="city" :class="{active: item.location.city}">Stadt</label>
-                    <input v-model="item.location.city" id="city" type="text" class="validate" @change="getGeocode(true)" />
+                    <input v-model="item.location.city" id="city" type="text" @change="getGeocode(true)" />
                   </div>
 
                   <div class="input-field">

@@ -1,6 +1,6 @@
 <template>
-  <div class="inputField__spacing input-field">
-    <label :for="fieldName" :class="{active: value}">
+  <div class="input-field">
+    <label :for="fieldName" :class="{active: value || placeholder}">
       {{ label }}
       <span class="labelCharacterCount" v-if="has.charCount && value.length">{{value.length}}/150</span>
     </label>
@@ -9,8 +9,12 @@
       :id="fieldName"
       :value="value"
       :name="fieldName"
+      :placeholder="placeholder"
+
+      :data-vv-validate-on="validateOn"
+      v-validate.initial="validate"
       :data-vv-as="label"
-      v-validate.initial="validation"
+
       :class="{'validation-error': errors.has(fieldName) }"
       @input="updateValue($event.target.value)"/>
     <span v-show="errors.has(fieldName)" class="validation-error">{{ errors.first(fieldName) }}</span>
@@ -19,7 +23,7 @@
 
 <script>
 export default {
-  props: ['type', 'value', 'fieldName', 'validation', 'label', 'options'],
+  props: ['type', 'fieldName', 'value', 'placeholder', 'validate', 'validateOnBlur', 'label', 'options'],
 
   inject: ['$validator'],
 
@@ -27,6 +31,7 @@ export default {
     const options = this.options || {}
 
     return {
+      validateOn: this.validateOnBlur ? 'blur' : 'input',
       has: {
         charCount: options.charCount
       }

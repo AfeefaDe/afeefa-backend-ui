@@ -11,21 +11,21 @@
             <input-field
               field-name="first_name"
               v-model="user.first_name"
-              validation="required|max:20"
+              validate="required|max:20"
               :label="$t('usersettings.first_name')">
             </input-field>
 
             <input-field
               field-name="last_name"
               v-model="user.last_name"
-              validation="required|max:20"
+              validate="required|max:20"
               :label="$t('usersettings.last_name')">
             </input-field>
 
             <input-field
               field-name="organization"
               v-model="user.organization"
-              validation="required|max:20"
+              validate="required|max:20"
               :label="$t('usersettings.organization')">
             </input-field>
 
@@ -37,7 +37,7 @@
               field-name="password"
               type="password"
               v-model="user.password"
-              validation="min:8|max:40"
+              validate="min:8|max:40"
               label="Neues Passwort">
             </input-field>
 
@@ -45,7 +45,7 @@
               field-name="password_confirm"
               type="password"
               v-model="passwordConfirm"
-              validation="password-confirm:#password"
+              validate="password-confirm:#password"
               label="Passwortbestätigung">
             </input-field>
 
