@@ -1,9 +1,7 @@
 <template>
   <entry-edit
     id=""
-    route-name="orgas"
-    :Resource="Resource"
-    :messages="messages"
+    :route-config="routeConfig"
     :options="{hasParentOrga: true}"
     ref="form">
   </entry-edit>
@@ -12,24 +10,19 @@
 <script>
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import EntryEdit from '@/components/EntryEdit/EntryEdit'
-
-import Orgas from '@/resources/Orgas'
+import OrgaRouteConfig from './OrgaRouteConfig'
 
 export default {
   mixins: [BeforeRouteLeaveMixin],
-  components: {
-    EntryEdit
-  },
+
   data () {
     return {
-      Resource: Orgas,
-      messages: {
-        loading: () => this.$t('status.load_orga') + ' ' + this.id,
-        saved: () => {
-          return `Die Orga wurde hinzugefügt.`
-        }
-      }
+      routeConfig: new OrgaRouteConfig(this)
     }
+  },
+
+  components: {
+    EntryEdit
   }
 }
 </script>

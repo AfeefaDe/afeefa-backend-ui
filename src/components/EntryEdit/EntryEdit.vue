@@ -430,8 +430,8 @@
 
         <div v-else class="mainCard">
           <div class="mainCard__header mainCard__headerLight">
-            <span v-if="loadingError">{{ messages.loadingError() }} ...</span>
-            <span v-else>{{ messages.loading() }} ...</span>
+            <span v-if="loadingError">{{ messages.loadingItemError() }} ...</span>
+            <span v-else>{{ messages.loadingItem() }} ...</span>
           </div>
         </div>
 
@@ -468,10 +468,11 @@ import TagsSelectInput from './TagsSelectInput'
 import InputField from '@/components/InputField'
 
 import ValidationMixin from '../mixins/ValidationMixin'
+import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 
 export default {
-  props: ['id', 'routeName', 'Resource', 'messages', 'options'],
-  mixins: [ValidationMixin],
+  props: ['id', 'options'],
+  mixins: [ValidationMixin, RouteConfigAwareMixin],
 
   data () {
     const options = this.options || {}
@@ -910,7 +911,7 @@ export default {
           this.Resource.save(this.item).then(entry => {
             if (entry) {
               this.$store.dispatch('messages/showAlert', {
-                description: this.messages.saved()
+                description: this.origItem.id ? this.messages.saveItemSuccess() : this.messages.addItemSuccess()
               })
               this.origItem = this.item // prevent route leave dialog after save
               this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}, query: {tab: this.currentTab}})
@@ -923,14 +924,14 @@ export default {
 
     remove () {
       this.$store.dispatch('messages/showDialog', {
-        title: this.messages.deleteHeadline(),
-        message: this.messages.delete(this.item)
+        title: this.messages.deleteItemDialogTitle(),
+        message: this.messages.deleteItemDialogMessage(this.item)
       }).then(result => {
         if (result === 'yes') {
           this.Resource.delete(this.item).then(result => {
             if (result) {
               this.$store.dispatch('messages/showAlert', {
-                description: this.messages.deleted()
+                description: this.messages.deleteItemSuccess()
               })
               this.origItem = this.item // prevent route leave dialog after save
               this.$router.push({name: this.routeName + '.list'})
@@ -939,6 +940,7 @@ export default {
         }
       })
     },
+
     /*
      * called by the BeforeRouteLeaveMixin
      * to raise a alert in case of unsaved changes

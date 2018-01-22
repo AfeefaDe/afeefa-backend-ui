@@ -1,9 +1,7 @@
 <template>
   <entry-edit
     id=""
-    route-name="events"
-    :Resource="Resource"
-    :messages="messages"
+    :route-config="routeConfig"
     :options="{hasDate: true, hasOrga: true}"
     ref="form">
   </entry-edit>
@@ -12,24 +10,19 @@
 <script>
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import EntryEdit from '@/components/EntryEdit/EntryEdit'
-
-import Events from '@/resources/Events'
+import EventRouteConfig from './EventRouteConfig'
 
 export default {
   mixins: [BeforeRouteLeaveMixin],
-  components: {
-    EntryEdit
-  },
+
   data () {
     return {
-      Resource: Events,
-      messages: {
-        loading: () => this.$t('status.load_event') + ' ' + this.id,
-        saved: () => {
-          return `Das Event wurde hinzugefügt.`
-        }
-      }
+      routeConfig: new EventRouteConfig(this)
     }
+  },
+
+  components: {
+    EntryEdit
   }
 }
 </script>
