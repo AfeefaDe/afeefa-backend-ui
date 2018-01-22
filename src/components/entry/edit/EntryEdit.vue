@@ -138,16 +138,13 @@
                   </multiselect>
                 </div>
 
-                <div class="inputField__spacing input-field">
-                  <label for="title" :class="{active: item.title}">
-                    {{ $t('entries.title') }}
-                    <span class="labelCharacterCount" v-if="item.title.length">{{item.title.length}}/150</span>
-                  </label>
-                  <input v-model="item.title" id="title" type="text"
-                    name="title" :data-vv-as="$t('entries.title')" v-validate.initial="'required|max: 150'"
-                    :class="{'validation-error': errors.has('title') }"/>
-                  <span v-show="errors.has('title')" class="validation-error">{{ errors.first('title') }}</span>
-                </div>
+                <input-field
+                  field-name="title"
+                  v-model="item.title"
+                  validation="required|max:150"
+                  :label="$t('entries.title')"
+                  :options="{charCount: true}">
+                </input-field>
 
                 <div class="inputField__spacing input-field">
                   <label for="url" :class="{active: item.media_url}">{{ $t('entries.image_link') }}</label>

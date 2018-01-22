@@ -2,6 +2,7 @@
   <div class="inputField__spacing input-field">
     <label :for="fieldName" :class="{active: value}">
       {{ label }}
+      <span class="labelCharacterCount" v-if="has.charCount && value.length">{{value.length}}/150</span>
     </label>
     <input
       :type="inputType"
@@ -18,9 +19,19 @@
 
 <script>
 export default {
-  props: ['type', 'value', 'fieldName', 'validation', 'label'],
+  props: ['type', 'value', 'fieldName', 'validation', 'label', 'options'],
 
   inject: ['$validator'],
+
+  data () {
+    const options = this.options || {}
+
+    return {
+      has: {
+        charCount: options.charCount
+      }
+    }
+  },
 
   methods: {
     updateValue (value) {
