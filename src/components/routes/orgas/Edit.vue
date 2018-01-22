@@ -9,7 +9,7 @@
 
 <script>
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
-import EntryEdit from '@/components/EntryEdit/EntryEdit'
+import EntryEdit from '@/components/entry/edit/EntryEdit'
 import OrgaRouteConfig from './OrgaRouteConfig'
 
 export default {

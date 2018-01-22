@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import NavigationSidebar from '@/components/NavigationSidebar'
-import NavigationMobile from '@/components/NavigationMobile'
+import NavigationSidebar from '@/components/navigation/NavigationSidebar'
+import NavigationMobile from '@/components/navigation/NavigationMobile'
 import Categories from '@/resources/Categories'
 import AnnotationCategories from '@/resources/AnnotationCategories'
 

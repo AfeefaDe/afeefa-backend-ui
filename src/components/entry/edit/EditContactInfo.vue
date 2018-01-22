@@ -81,7 +81,7 @@
 
 <script>
 import LangSelectInput from './LangSelectInput'
-import ValidationMixin from '../mixins/ValidationMixin'
+import ValidationMixin from '@/components/mixins/ValidationMixin'
 
 
 export default {

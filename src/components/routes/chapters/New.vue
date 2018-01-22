@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ChapterEdit from '@/components/ChapterEdit/ChapterEdit'
+import ChapterEdit from '@/components/chapter/ChapterEdit'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 
 export default {

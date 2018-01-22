@@ -30,7 +30,7 @@
 
 
 <script>
-import EntryListItems from '@/components/EntryListItems'
+import EntryListItems from '@/components/entry/EntryListItems'
 
 export default {
   props: ['items', 'sortFunction', 'sortOrder', 'options', 'messages', 'addEntryButton'],

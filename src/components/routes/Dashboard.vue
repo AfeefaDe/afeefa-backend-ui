@@ -76,7 +76,7 @@
 
 
 <script>
-import EntryListItems from '@/components/EntryListItems'
+import EntryListItems from '@/components/entry/EntryListItems'
 import SearchItems from '@/components/SearchItems'
 import sortByUpdatedAt from '@/helpers/sort-by-updated-at'
 import sortByCreatedAt from '@/helpers/sort-by-created-at'

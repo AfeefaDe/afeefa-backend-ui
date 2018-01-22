@@ -1,5 +1,5 @@
 <script>
-import EntryList from '@/components/EntryList'
+import EntryList from '@/components/entry/EntryList'
 
 export default {
   data () {

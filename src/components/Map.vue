@@ -35,7 +35,7 @@ export default {
     },
     /*
      * this recalculates the size of the map after every tab change
-     * allows us to use v-show in the EntryTabbedContent Component
+     * allows us to use v-show in the TabBar Component
      */
     currentTab: function (currentTab) {
       const map = this.$refs.map.mapObject

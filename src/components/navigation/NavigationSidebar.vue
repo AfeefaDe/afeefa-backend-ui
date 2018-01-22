@@ -48,7 +48,7 @@
 
 
 <script>
-import NavigationMixin from './mixins/NavigationMixin'
+import NavigationMixin from '@/components/navigation/mixins/NavigationMixin'
 
 export default {
   mixins: [NavigationMixin],

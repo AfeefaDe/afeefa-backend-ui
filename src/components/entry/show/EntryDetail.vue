@@ -12,7 +12,7 @@
           :image-url="entry.media_url">
         </image-container>
 
-        <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="tabNames">
+        <tab-bar v-on:setCurrentTab="setCurrentTab" :tabNames="tabNames">
           <section slot="generalTab">
             <ul class="entryDetail">
               <entry-detail-property v-if="entry.type === 'orgas'" name="Typ" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' :entryIconClass="categoryClass">
@@ -199,7 +199,7 @@
               :options="{event_date: true}">
             </entry-list-items>
           </section>
-        </entry-tabbed-content>
+        </tab-bar>
       </div>
 
       <div v-else class="mainCard">
@@ -220,9 +220,9 @@ import OrgaType from '@/models/OrgaType'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 
-import EntryListItems from '@/components/EntryListItems'
+import EntryListItems from '@/components/entry/EntryListItems'
 import ImageContainer from '@/components/ImageContainer'
-import EntryTabbedContent from '@/components/EntryTabbedContent'
+import TabBar from '@/components/TabBar'
 import AnnotationTag from '@/components/AnnotationTag'
 import ResourceItem from '@/components/ResourceItem'
 
@@ -313,7 +313,7 @@ export default {
     EntryListItems,
     ImageContainer,
     EntryDetailProperty,
-    EntryTabbedContent,
+    TabBar,
     EntryListDropDownMenu,
     AnnotationTag,
     ShowContactInfo,

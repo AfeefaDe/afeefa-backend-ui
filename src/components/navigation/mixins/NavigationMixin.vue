@@ -1,5 +1,5 @@
 <script>
-import NavigationBreadcrumb from './../NavigationBreadcrumb'
+import NavigationBreadcrumb from '@/components/navigation/NavigationBreadcrumb'
 import { mapState } from 'vuex'
 import Users from '@/resources/Users'
 

@@ -29,7 +29,7 @@
 
 
 <script>
-import EntryListItems from '@/components/EntryListItems'
+import EntryListItems from '@/components/entry/EntryListItems'
 import sortByTitle from '@/helpers/sort-by-title'
 import Search from '@/resources/Search'
 import Spinner from '@/components/Spinner'

@@ -22,7 +22,7 @@
         <div v-if="item">
           <form @submit.prevent="save" class="entryForm" novalidate>
 
-            <entry-tabbed-content v-on:setCurrentTab="setCurrentTab" :tabNames="tabNames">
+            <tab-bar v-on:setCurrentTab="setCurrentTab" :tabNames="tabNames">
               <section slot="generalTab">
                 <br>
 
@@ -412,7 +412,7 @@
                   </div>
 
               </section>
-            </entry-tabbed-content>
+            </tab-bar>
 
             <br>
             <section class="entryForm__actionFooter">
@@ -458,16 +458,16 @@ import AnnotationTag from '@/components/AnnotationTag'
 import Spinner from '@/components/Spinner'
 import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
-import EntryTabbedContent from '@/components/EntryTabbedContent'
+import TabBar from '@/components/TabBar'
 import ResourceItem from '@/components/ResourceItem'
 import PowerSelector from '@/components/PowerSelector'
 
-import DatePicker from './Datepicker/DatePicker'
+import DatePicker from './datepicker/DatePicker'
 import EditContactInfo from './EditContactInfo'
 import TagsSelectInput from './TagsSelectInput'
 import InputField from '@/components/InputField'
 
-import ValidationMixin from '../mixins/ValidationMixin'
+import ValidationMixin from '@/components/mixins/ValidationMixin'
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 
 export default {
@@ -1014,7 +1014,7 @@ export default {
     LocationMap,
     ImageContainer,
     AnnotationTag,
-    EntryTabbedContent,
+    TabBar,
     Multiselect,
     EditContactInfo,
     TagsSelectInput,

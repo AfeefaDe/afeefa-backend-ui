@@ -1,5 +1,5 @@
 <script>
-import EntryDetail from '@/components/EntryDetail/EntryDetail'
+import EntryDetail from '@/components/entry/show/EntryDetail'
 
 export default {
   props: ['id'],
