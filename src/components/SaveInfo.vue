@@ -34,7 +34,7 @@ export default {
   z-index: $z-index-overlay + 10;
   background-color: black;
   opacity: .5;
-  top: 3px;
+  top: 0;
   left: 0;
   right: 0;
   bottom: 0;
@@ -44,7 +44,7 @@ export default {
   position: fixed;
   z-index: $z-index-overlay + 11;
   left: 50%;
-  top: ($header-height*1.5);
+  top: ($header-height*2);
   transform: translateX(-50%);
   border-radius: 4px;
   swidth: 140px;

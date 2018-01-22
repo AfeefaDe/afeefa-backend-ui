@@ -278,8 +278,6 @@ export default {
     return {
       pastEvents: [],
       upcomingEvents: [],
-      filterOrgaEventsBy: 'upcoming',
-      orgaEventsSortOrder: 'ASC',
       sortByDateStart,
       sortByDateMixin,
       currentTab: '',

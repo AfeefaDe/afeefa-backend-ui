@@ -57,7 +57,6 @@ export default {
         if (request.method !== 'GET') {
           if (++COUNT_SAVE_OPERATIONS === 1) {
             commit('isSaving')
-            Vue.prototype.$Progress.start()
           }
         }
 
@@ -66,7 +65,6 @@ export default {
             return new Promise((resolve, reject) => {
               setTimeout(() => {
                 if (--COUNT_SAVE_OPERATIONS === 0) {
-                  Vue.prototype.$Progress.finish()
                   commit('savingFinished')
                   resolve(response)
                 }
