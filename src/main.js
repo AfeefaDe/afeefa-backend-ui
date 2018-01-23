@@ -10,6 +10,8 @@ import VeeValidate from 'vee-validate'
 import './services/validation'
 import './services/leaflet'
 
+import './helpers/directives'
+
 // import materialize js
 import 'materialize-css/dist/js/materialize.min.js'
 // import vue multiselect style

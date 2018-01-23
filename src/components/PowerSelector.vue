@@ -1,12 +1,12 @@
 <template>
   <div class="ps">
-    <ul class="ps__selected-items">
+    <ul class="ps__selected-items" v-if="selectedItems">
       <li v-for="item in selectedItems" :key="item.id" class="ps__selected-item">
         <div>
           <slot name="selected-item" :item="item"></slot>
         </div>
         <div>
-          <a href="" @click.prevent="removeItem(item)">Netzwerk verlassen</a>
+          <a href="" @click.prevent="removeItem(item)">Entfernen</a>
         </div>
       </li>
     </ul>
@@ -75,8 +75,9 @@ export default {
     },
 
     filterItems () {
+      const selectedItems = this.selectedItems || []
       const filteredItems = this.items.filter(item => {
-        const isSelected = this.selectedItems.some(selectedItem => {
+        const isSelected = selectedItems.some(selectedItem => {
           return selectedItem.id === item.id
         })
         if (isSelected) {

@@ -43,7 +43,7 @@
 <script>
 import Chapters from '@/resources/Chapters'
 import EntryShowMixin from '@/components/mixins/EntryShowMixin'
-import EntryDetailProperty from '@/components/EntryDetail/EntryDetailProperty'
+import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
 
 export default {
   mixins: [EntryShowMixin],

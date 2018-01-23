@@ -8,7 +8,7 @@
     <a href="" @click.prevent="removeResourceItem" v-if="editEnabled"><i class="material-icons">delete</i></a>
   </div>
 
-  <input v-if="editEnabled" v-model="resourceItem.category" id="category" type="text" name="category" placeholder="Kategorie"/>
+  <input v-if="editEnabled" v-model="resourceItem.category" type="text" placeholder="Kategorie"/>
   <div v-else class="resourceItem__meta">
     {{resourceItem.category}} ·
     {{ $t('status.changed') }} {{resourceItem.updated_at | formatDateAbsolute}}<span> ({{resourceItem.updated_at | formatDateRelative}})</span>

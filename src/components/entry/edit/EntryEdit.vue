@@ -24,13 +24,18 @@
 
             <tab-bar v-on:setCurrentTab="setCurrentTab" :tabNames="tabNames">
               <section slot="generalTab">
+                <h2>Kategorien</h2>
+
+                <category-selector :item="item" v-if="item">
+                </category-selector>
+
                 <br>
 
                 <div class="inputField__spacing" v-if="item.type === 'orgas'">
                   <label for="orgaType">Typ</label>
                   <select v-model="item.orga_type_id" id="orgaType"
                    name="orgaType"
-                    :class="['browser-default', 'categoriesForm']">
+                    :class="['browser-default']">
                     <option :value="orgaType.id" v-for="orgaType in orgaTypes" :key="orgaType.id">{{ orgaType.name }}</option>
                   </select>
                 </div>
@@ -38,68 +43,36 @@
                 <div v-if="item.type === 'orgas' && item.id">
                   <h2>Projektträger</h2>
 
-                  <power-selector
-                    :items="orgas"
-                    :selected-items="item.project_initiators"
-                    :search-fields="['title']"
-                    @select="addProjectInitiator"
-                    @remove="removeProjectIntiator"
-                    :messages="{
-                      addButtonTitle: 'Projektträger hinzufügen',
-                      removeTitle: 'Projektträger entfernen?',
-                      removeMessage (item) {
-                        return `Soll die Orga ${item.title} kein Projektträger mehr sein?`
-                      }
-                    }"
-                    v-if="orgas.length">
-                    <div slot="selected-item" slot-scope="props">
-                      <div>{{ props.item.title }}</div>
-                    </div>
-                    <div slot="item" slot-scope="props">
-                      <div>{{ props.item.title }}</div>
-                    </div>
-                  </power-selector>
+                  <project-initiator-selector :actor="item" v-if="item">
+                  </project-initiator-selector>
 
                   <h2>Netzwerke</h2>
 
-                  <power-selector
-                    :items="orgas"
-                    :selected-items="item.networks"
-                    :search-fields="['title']"
-                    @select="joinNetwork"
-                    @remove="leaveNetwork"
-                    :messages="{
-                      addButtonTitle: 'Netzwerk hinzufügen',
-                      removeTitle: 'Netzwerk verlassen?',
-                      removeMessage (item) {
-                        return `Soll das Netzwerk ${item.title} verlassen werden?`
-                      }
-                    }"
-                    v-if="orgas.length">
-                    <div slot="selected-item" slot-scope="props">
-                      <div>{{ props.item.title }}</div>
-                    </div>
-                    <div slot="item" slot-scope="props">
-                      <div>{{ props.item.title }}</div>
-                    </div>
-                  </power-selector>
+                  <network-selector :actor="item" v-if="item">
+                  </network-selector>
 
                   <h2>Partner</h2>
 
+                  <partner-selector :actor="item" v-if="item">
+                  </partner-selector>
+                </div>
+
+                <div v-if="item.type === 'events'">
+                  <label>{{ $t('headlines.organizer')}}</label>
+
                   <power-selector
                     :items="orgas"
-                    :selected-items="item.partners"
+                    :selected-items="parentOrgas"
                     :search-fields="['title']"
-                    @select="addPartner"
-                    @remove="removePartner"
+                    @select="parentOrgaChanged"
+                    @remove="parentOrgaRemoved"
                     :messages="{
-                      addButtonTitle: 'Partner hinzufügen',
-                      removeTitle: 'Partner entfernen?',
-                      removeMessage (item) {
-                        return `Soll die Orga ${item.title} kein Partner mehr sein?`
+                      addButtonTitle: 'Veranstalter hinzufügen',
+                      removeTitle: 'Veranstalter entfernen?',
+                      removeMessage: actor => {
+                        return `Soll der Veranstalter entfernt werden?`
                       }
-                    }"
-                    v-if="orgas.length">
+                    }">
                     <div slot="selected-item" slot-scope="props">
                       <div>{{ props.item.title }}</div>
                     </div>
@@ -109,36 +82,8 @@
                   </power-selector>
                 </div>
 
-                <div
-                  v-if="item.type === 'events'"
-                  v-bind:class="[
-                    {'customMultiselect--hide': parentOrgaSimplified.length===1},
-                    'inputField__spacing',
-                    'customMultiselect'
-                  ]">
-
-                  <label>{{ $t('headlines.organizer')}}</label>
-                  <multiselect
-                    v-model="parentOrgaSimplified"
-                    :options="orgasSimplified"
-                    label="title"
-                    track-by="id"
-
-                    :multiple="true"
-                    :max="1"
-                    :searchable="true"
-                    :allow-empty="true"
-                    @input="parentOrgaChanged"
-
-                    :placeholder="$t('multiselect.noSelection')"
-                    :selectLabel="$t('multiselect.selectLabel')"
-                    :selectedLabel="$t('multiselect.selectedLabel')"
-                    :deselectLabel="$t('multiselect.deselectLabel')"
-                  >
-                  </multiselect>
-                </div>
-
                 <input-field
+                  class="inputField__spacing"
                   field-name="title"
                   v-model="item.title"
                   validate="required|max:150"
@@ -162,9 +107,15 @@
                   <p v-if="item.parent_orga && item.inheritance.short_description" class="inheritance-output">
                     {{item.parent_orga.short_description}}
                   </p>
-                  <textarea v-model="item.short_description" id="short_description"
-                  name="short_description" :data-vv-as="$t('entries.short_description')" v-validate.initial="'required|max: 350'"
-                  :class="['materialize-textarea', {'validation-error': errors.has('short_description') }]"></textarea>
+                  <textarea
+                    v-model="item.short_description"
+                    id="short_description"
+                    name="short_description"
+                    :data-vv-as="$t('entries.short_description')"
+                    v-validate.initial="'required|max: 350'"
+                    :class="['materialize-textarea', {'validation-error': errors.has('short_description') }]"
+                    v-autosize>
+                  </textarea>
                   <span v-show="errors.has('short_description')" class="validation-error">{{ errors.first('short_description') }}</span>
                 </div>
 
@@ -176,7 +127,7 @@
                 <div class="inputField__spacing input-field">
                   <label for="description" :class="{active: item.description}">{{ $t('entries.description') }}</label>
                   <textarea v-model="item.description" id="description"
-                    class="materialize-textarea"></textarea>
+                    class="materialize-textarea" v-autosize></textarea>
                 </div>
                 <br>
 
@@ -191,26 +142,6 @@
                   </span>
                 </div>
 
-                <h2>Kategorien</h2>
-                <div class="inputField__spacing">
-                  <label for="category">Kategorie</label>
-                  <select v-model="item.category" id="category" @change="categoryChanged"
-                   name="category" data-vv-validate-on="change" :data-vv-as="$t('entries.category')" v-validate.initial="'required'"
-                    :class="['browser-default', 'categoriesForm', {'validation-error': errors.has('category') }]">
-                    <option selected :value="null">Keine Kategorie ausgewählt</option>
-                    <option selected :value="category" v-for="category in categories" :key="category.id">{{ $t('categories.' + category.title) }}</option>
-                  </select>
-                  <span v-show="errors.has('category')" class="validation-error">{{ errors.first('category') }}</span>
-                </div>
-
-                <div class="inputField__spacing inputField__indented" v-if="item.category && item.category.sub_categories && item.category.sub_categories.length">
-                  <label>Unterkategorie</label>
-                  <select class="browser-default categoriesForm" v-model="item.sub_category">
-                    <option selected :value="null">Keine Kategorie ausgewählt</option>
-                    <option selected :value="category" v-for="category in item.category.sub_categories" :key="category.id">{{ $t('categories.' + category.title) }}</option>
-                  </select>
-                </div>
-
                 <div class="input-field">
                   <h2>{{ $t("headlines.support_wanted") }}</h2>
                   <input type="checkbox" id="support_wanted" class="filled-in" v-model="item.support_wanted"/>
@@ -223,13 +154,16 @@
                     v-model="item.support_wanted_detail"
                     :data-vv-as="$t('entries.support_wanted_detail')"
                     v-validate.initial="'max: 350'"
-                    v-bind:class="[{'validation-error': errors.has('support_wanted_detail')}, 'materialize-textarea']"></textarea>
+                    v-bind:class="[{'validation-error': errors.has('support_wanted_detail')}, 'materialize-textarea']"
+                    v-autosize>
+                  </textarea>
                   <label for="supportWantedDetail" :class="{active: item.support_wanted_detail}">
                     {{$t("entries.support_wanted_detail")}}
                     <span class="labelCharacterCount" v-if="item.support_wanted_detail">{{item.support_wanted_detail.length}}/350</span>
                   </label>
                   <span v-show="errors.has('support_wanted_detail')" class="validation-error">{{ errors.first('support_wanted_detail') }}</span>
                 </div>
+
                 <!-- this v-if condition is a hotfix for #339 and should be implemented in the api as well -->
                 <div class="input-field" v-if="currentUser && currentUser.area=='dresden'">
                   <h2>{{ $t("headlines.certified_sfr") }}</h2>
@@ -284,57 +218,16 @@
                 </span>
               </section>
 
-
               <section slot="placeTab">
-                <div class="inputField__spacing" v-if="item.location">
-                  <div class="input-field">
-                    <label for="placename" :class="{active: (item.location.placename)}">Ortsbezeichnung (z.B. Hinterhof)</label>
-                    <input  v-model="item.location.placename" id="placename" type="text" />
-                  </div>
-
-                  <div class="input-field">
-                    <label for="street" :class="{active: item.location.street}">Straße</label>
-                    <input v-model="item.location.street" id="street" type="text" @change="getGeocode(true)" />
-                  </div>
-
-                  <div class="input-field">
-                    <label for="zip" :class="{active: item.location.zip}">Postleitzahl</label>
-                    <input v-model="item.location.zip" id="zip" type="text" @change="getGeocode(true)" />
-                  </div>
-
-                  <div class="input-field">
-                    <label for="city" :class="{active: item.location.city}">Stadt</label>
-                    <input v-model="item.location.city" id="city" type="text" @change="getGeocode(true)" />
-                  </div>
-
-                  <div class="input-field">
-                    <div v-if="geodataLoading">
-                      <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Geodaten
-                    </div>
-                    <span v-else-if="geocodeError" class="geodata-not-found validation-error">
-                      {{ geocodeError }}
-                    </span>
-                    <span v-if="bippelMoved" class="validation-hint">
-                      <i class="material-icons">error_outline</i>
-                      Der Bippel wurde manuell verschoben und zeigt nicht mehr genau auf die Adresse.<br />
-                      Falls das nicht beabsichtigt ist: <a href="" @click.prevent="resetToGeodateOfAddress">Zurücksetzen auf Adresse.</a>
-                    </span>
-                  </div>
-
-                  <location-map :map-center="mapCenter" :location="item.location" :draggable="true" @bibbelDrag="bibbelDrag" :currentTab="currentTab"></location-map>
-
-                  <div class="input-field">
-                    <label for="directions" :class="{active: item.location.directions}">
-                      {{ $t('entries.directions') }}
-                    </label>
-                    <textarea v-model="item.location.directions" id="directions"
-                      class="materialize-textarea"></textarea>
-                  </div>
-                </div>
+                <location-form
+                  :location="item.location"
+                  :currentTab="currentTab"
+                  v-if="item.location">
+                </location-form>
               </section>
 
               <section slot="contactTab">
-                <edit-contact-info ref="EditContactInfo" v-if="item"
+                <edit-contact-info ref="EditContactInfo" v-if="item.contact"
                   :contact-info="item.contact"
                   :inheritance-state="item.inheritance.contact_infos"
                   :type="item.type"
@@ -344,76 +237,37 @@
               </section>
 
               <section slot="networkMembersTab">
-                <power-selector
-                  :items="orgas"
-                  :selected-items="item.network_members"
-                  :search-fields="['title']"
-                  @select="addNetworkMember"
-                  @remove="removeNetworkMember"
-                  :messages="{
-                    addButtonTitle: 'Zum Netzwerk hinzufügen',
-                    removeTitle: 'Aus dem Netzwerk austragen?',
-                    removeMessage (item) {
-                      return `Soll die Orga ${item.title} das Netzwerk verlassen?`
-                    }
-                  }"
-                  v-if="orgas.length">
-                  <div slot="selected-item" slot-scope="props">
-                    <div>{{ props.item.title }}</div>
-                  </div>
-                  <div slot="item" slot-scope="props">
-                    <div>{{ props.item.title }}</div>
-                  </div>
-                </power-selector>
+                <network-member-selector :actor="this.item" v-if="item">
+                </network-member-selector>
               </section>
 
               <section slot="projectsTab">
-                <power-selector
-                  :items="orgas"
-                  :selected-items="item.projects"
-                  :search-fields="['title']"
-                  @select="addProject"
-                  @remove="removeProject"
-                  :messages="{
-                    addButtonTitle: 'Projekt hinzufügen',
-                    removeTitle: 'Project entfernen?',
-                    removeMessage (item) {
-                      return `Soll das Projekt ${item.title} aus der Projektliste entfernt werden?`
-                    }
-                  }"
-                  v-if="orgas.length">
-                  <div slot="selected-item" slot-scope="props">
-                    <div>{{ props.item.title }}</div>
-                  </div>
-                  <div slot="item" slot-scope="props">
-                    <div>{{ props.item.title }}</div>
-                  </div>
-                </power-selector>
+                <project-selector :actor="this.item" v-if="item">
+                </project-selector>
               </section>
 
               <section slot="resourceTab" v-if="item.type === 'orgas'">
-                  <resource-item
-                    v-for="resourceItem in item.resource_items"
-                    :key="resourceItem.id"
-                    :resourceItem="resourceItem"
-                    v-on:remove="removeResourceItem"
-                    :editEnabled="true">
-                  </resource-item>
-                  <div class="newResource">
-                    <div>
-                      <a href="" @click.prevent="addResourceItem"><i class="material-icons">add_circle</i></a>
-                    </div>
-                    <h2>
-                      Neue Ressource hinzufügen
-                    </h2>
+                <resource-item
+                  v-for="resourceItem in item.resource_items"
+                  :key="resourceItem.id"
+                  :resourceItem="resourceItem"
+                  v-on:remove="removeResourceItem"
+                  :editEnabled="true">
+                </resource-item>
+                <div class="newResource">
+                  <div>
+                    <a href="" @click.prevent="addResourceItem"><i class="material-icons">add_circle</i></a>
                   </div>
-
+                  <h2>
+                    Neue Ressource hinzufügen
+                  </h2>
+                </div>
               </section>
             </tab-bar>
 
             <br>
             <section class="entryForm__actionFooter">
-              <button v-bind:class="[{disabled: currentlySaving}, 'btn', 'waves-effect', 'waves-light', 'saveButton']" type="submit">
+              <button class="btn waves-effect waves-light saveButton" type="submit">
                 <i class="material-icons left">done</i>
                 Speichern
               </button>
@@ -439,12 +293,8 @@
 
 
 <script>
-import Vue from 'vue'
-import autosize from 'autosize'
 import Multiselect from 'vue-multiselect'
-import { BASE } from '@/store/api'
 import Orgas from '@/resources/Orgas'
-import Categories from '@/resources/Categories'
 import Annotations from '@/resources/Annotations'
 import AnnotationCategories from '@/resources/AnnotationCategories'
 import Users from '@/resources/Users'
@@ -452,51 +302,50 @@ import ResourceItems from '@/resources/ResourceItems'
 import OrgaType from '@/models/OrgaType'
 import sortByTitle from '@/helpers/sort-by-title'
 import AnnotationTag from '@/components/AnnotationTag'
-import Spinner from '@/components/Spinner'
-import LocationMap from '@/components/Map'
 import ImageContainer from '@/components/ImageContainer'
 import TabBar from '@/components/TabBar'
 import ResourceItem from '@/components/ResourceItem'
 import PowerSelector from '@/components/PowerSelector'
+import InputField from '@/components/InputField'
 
+import LocationForm from './LocationForm'
 import DatePicker from './datepicker/DatePicker'
 import EditContactInfo from './EditContactInfo'
 import TagsSelectInput from './TagsSelectInput'
-import InputField from '@/components/InputField'
+import CategorySelector from './CategorySelector'
+
+import ProjectInitiatorSelector from './actor-relations/ProjectInitiatorSelector'
+import NetworkSelector from './actor-relations/NetworkSelector'
+import PartnerSelector from './actor-relations/PartnerSelector'
+import ProjectSelector from './actor-relations/ProjectSelector'
+import NetworkMemberSelector from './actor-relations/NetworkMemberSelector'
 
 import ValidationMixin from '@/components/mixins/ValidationMixin'
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 
 export default {
-  props: ['id', 'options'],
   mixins: [ValidationMixin, RouteConfigAwareMixin],
+
+  props: ['id', 'options'],
 
   data () {
     const options = this.options || {}
+
     return {
       origItem: null,
       item: null,
-      categories: [],
-      annotationCategories: [],
       orgas: [],
+      parentOrgas: [],
       currentUser: null,
 
       imageError: false,
       loadingError: false,
+
+      annotationCategories: [],
       selectedAnnotation: null,
-      orgasSimplified: [],
-      // implemented as array to allow the :multiple="true" option on vue-multiselect
-      // the limit is set to one. so this array contains one element max
-      parentOrgaSimplified: [],
-
-      networks: [],
-
-      geodataLoading: false,
-      geodataOfAddress: null,
-      geocodeError: false,
 
       currentTab: '',
-      currentlySaving: false,
+
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
@@ -512,23 +361,12 @@ export default {
         this.origItem = entry
         this.item = this.Resource.clone(entry)
 
-        Categories.getAll().then(categories => {
-          this.categories = categories.filter(
-            category => category.parent_category === null
-          )
-        })
-
         AnnotationCategories.getAll().then(annotationCategories => {
           this.annotationCategories = annotationCategories
         })
 
         Orgas.getAll().then(orgas => {
           this.orgas = sortByTitle(orgas)
-        })
-
-        Orgas.getAllSimplified().then(orgas => {
-          // remove current orga from array
-          this.orgasSimplified = orgas.filter(orga => orga.id !== this.item.id)
         })
 
         this.currentUser = Users.getCurrentUser()
@@ -540,53 +378,14 @@ export default {
   },
 
   watch: {
-    'item.contact' (contact) {
-      if (contact) {
-        this.checkAutosizeFields()
-      }
-    },
-    'item.support_wanted_detail' (supportWantedDetail) {
-      if (supportWantedDetail) {
-        this.checkAutosizeFields()
-      }
-    },
-    'item.location' (location) {
-      if (location) {
-        if (!location.isEmpty()) {
-          this.getGeocode(false)
-        }
-        this.checkAutosizeFields()
-      }
-    },
     'item.media_url' (url) {
       if (url === '') {
         this.imageError = false
       }
     },
-    /*
-     * simplify orga list by removing circular references
-     * gets passed as options for parent_orga select input
-     */
-    'orgas' (orgas) {
-      let result = []
-      let networks = []
-      for (let orga of this.orgas) {
-        if (this.item.id !== orga.id) {
-          result.push({title: orga.title, id: orga.id})
-          if (orga.orga_type_id === OrgaType.NETWORK) {
-            networks.push({title: orga.title, id: orga.id})
-          }
-        }
-      }
-      this.orgasSimplified = result
-      this.networks = networks
-    },
-    'item.parent_orga' (parentOrga) {
-      if (parentOrga) {
-        this.parentOrgaSimplified = [{title: this.item.parent_orga.title, id: this.item.parent_orga.id}]
-      } else {
-        this.parentOrgaSimplified = []
-      }
+
+    'item.parent_orga' (orga) {
+      this.parentOrgas = orga ? [orga] : []
     }
   },
 
@@ -606,26 +405,12 @@ export default {
       )
     },
 
-    bippelMoved () {
-      if (!this.item.location || !this.geodataOfAddress) {
-        return false
-      }
-      return this.item.location.lat !== this.geodataOfAddress.lat ||
-        this.item.location.lon !== this.geodataOfAddress.lon
-    },
-
-    mapCenter () {
-      if (this.item.location && this.item.location.lat) {
-        return [this.item.location.lat, this.item.location.lon]
-      } else {
-        return [51.0571904, 13.7154319]
-      }
-    },
     categoryClass () {
       if (this.item.category && this.item.category.title) {
         return 'cat-' + this.item.category.title
       }
     },
+
     /*
      * define tabNames according to the entry type and the area of the current user
      */
@@ -644,133 +429,20 @@ export default {
     }
   },
 
-
   methods: {
-    joinNetwork (network) {
-      Orgas.joinActorRelation('network_members', network, this.item).then(result => {
-        if (result) {
-          this.item.networks.push(network)
-          this.$store.dispatch('messages/showAlert', {
-            description: `Die Orga ist jetzt im Netzwerk ${network.title}.`
-          })
-        }
+    parentOrgaChanged (parentOrga) {
+      this.item.parent_orga = parentOrga
+      Orgas.get(parentOrga.id, ['fetchContact']).then(orga => {
+        this.item.parent_orga = orga
+        this.parentOrgas = [orga]
       })
     },
 
-    leaveNetwork (network) {
-      Orgas.leaveActorRelation('network_members', network, this.item).then(result => {
-        if (result) {
-          this.item.networks = this.item.networks.filter(n => n.id !== network.id)
-          this.$store.dispatch('messages/showAlert', {
-            description: `Das Netzwerk ${network.title} wurde verlassen.`
-          })
-        }
-      })
+    parentOrgaRemoved () {
+      this.item.parent_orga = null
+      this.parentOrgas = []
     },
 
-    addNetworkMember (member) {
-      Orgas.joinActorRelation('network_members', this.item, member).then(result => {
-        if (result) {
-          this.item.network_members.push(member)
-          this.$store.dispatch('messages/showAlert', {
-            description: `Die Orga ${member.title} ist jetzt im Netzwerk.`
-          })
-        }
-      })
-    },
-
-    removeNetworkMember (member) {
-      Orgas.leaveActorRelation('network_members', this.item, member).then(result => {
-        if (result) {
-          this.item.network_members = this.item.network_members.filter(n => n.id !== member.id)
-          this.$store.dispatch('messages/showAlert', {
-            description: `Die Orga ${member.title} hat das Netzwerk verlassen.`
-          })
-        }
-      })
-    },
-
-    addProjectInitiator (initiator) {
-      Orgas.joinActorRelation('projects', initiator, this.item).then(result => {
-        if (result) {
-          this.item.project_initiators.push(initiator)
-          this.$store.dispatch('messages/showAlert', {
-            description: `Die Orga ist jetzt Projekt von ${initiator.title}.`
-          })
-        }
-      })
-    },
-
-    removeProjectIntiator (initiator) {
-      Orgas.leaveActorRelation('projects', initiator, this.item).then(result => {
-        if (result) {
-          this.item.project_initiators = this.item.project_initiators.filter(pi => pi.id !== initiator.id)
-          this.$store.dispatch('messages/showAlert', {
-            description: `Die Orga ${initiator.title} ist nicht mehr Projektträger.`
-          })
-        }
-      })
-    },
-
-    addProject (project) {
-      Orgas.joinActorRelation('projects', this.item, project).then(result => {
-        if (result) {
-          this.item.projects.push(project)
-          this.$store.dispatch('messages/showAlert', {
-            description: `Die Orga ${project.title} ist jetzt ein Projekt.`
-          })
-        }
-      })
-    },
-
-    removeProject (project) {
-      Orgas.leaveActorRelation('projects', this.item, project).then(result => {
-        if (result) {
-          this.item.projects = this.item.projects.filter(p => p.id !== project.id)
-          this.$store.dispatch('messages/showAlert', {
-            description: `Die Orga ${project.title} ist kein Projekt mehr.`
-          })
-        }
-      })
-    },
-
-    addPartner (partner) {
-      Orgas.joinActorRelation('partners', this.item, partner).then(result => {
-        if (result) {
-          this.item.partners.push(partner)
-          this.item.parent_orga = this.item.partners[0]
-          this.$store.dispatch('messages/showAlert', {
-            description: `Die Orga ${partner.title} ist jetzt Partnerorga.`
-          })
-        }
-      })
-    },
-
-    removePartner (partner) {
-      Orgas.leaveActorRelation('partners', this.item, partner).then(result => {
-        if (result) {
-          this.item.partners = this.item.partners.filter(p => p.id !== partner.id)
-          this.item.parent_orga = this.item.partners.length ? this.item.partners[0] : null
-          this.$store.dispatch('messages/showAlert', {
-            description: `Die Orga ${partner.title} ist keine Partnerorga mehr.`
-          })
-        }
-      })
-    },
-
-    /*
-     * match back simplified parent_orga to full orga object from this.orgas
-     */
-    parentOrgaChanged () {
-      if (this.parentOrgaSimplified.length === 0) {
-        this.item.parent_orga = null
-      } else {
-        const parentOrga = this.orgas.find(x => x.id === this.parentOrgaSimplified[0].id)
-        Orgas.get(parentOrga.id, ['fetchContact']).then(orga => {
-          this.item.parent_orga = orga
-        })
-      }
-    },
     /*
      * called by TagsSelectInput
      * sets the comma-sparated list on the tag attribute
@@ -778,39 +450,9 @@ export default {
     tagsChanged (newTags) {
       this.item.tags = newTags
     },
-    categoryChanged () {
-      this.item.sub_category = null
-    },
 
     setCurrentTab (newCurrentTab) {
       this.currentTab = newCurrentTab
-
-      this.checkAutosizeFields()
-    },
-
-    checkAutosizeFields () {
-      Vue.nextTick(() => {
-        const description = this.$el.querySelector('#description')
-        if (description) {
-          autosize(this.$el.querySelector('#description'))
-          autosize(this.$el.querySelector('#short_description'))
-        }
-
-        const directions = this.$el.querySelector('#directions')
-        if (directions) {
-          autosize(this.$el.querySelector('#directions'))
-        }
-
-        const openingHours = this.$el.querySelector('#openingHours')
-        if (openingHours) {
-          autosize(this.$el.querySelector('#openingHours'))
-        }
-
-        const supportWantedDetail = this.$el.querySelector('#supportWantedDetail')
-        if (supportWantedDetail) {
-          autosize(this.$el.querySelector('#supportWantedDetail'))
-        }
-      })
     },
 
     addAnnotation () {
@@ -893,7 +535,6 @@ export default {
             autoHide: false,
             description: 'Es sind leider noch Fehler im Formular!' + errorString
           })
-          this.currentlySaving = false
         } else {
           // fix for vee-validator which is currently not
           // able to deal with async validations:
@@ -903,7 +544,6 @@ export default {
           if (this.imageError) {
             throw new Error()
           }
-          this.currentlySaving = true
           // actual save routine on the resource
           this.Resource.save(this.item).then(entry => {
             if (entry) {
@@ -913,7 +553,6 @@ export default {
               this.origItem = this.item // prevent route leave dialog after save
               this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}, query: {tab: this.currentTab}})
             }
-            this.currentlySaving = false
           })
         }
       })
@@ -953,62 +592,11 @@ export default {
         return true
       }
       return 'Soll das Editieren beendet werden?'
-    },
-
-    bibbelDrag (markerEvent) {
-      this.item.location.lat = '' + markerEvent.target._latlng.lat
-      this.item.location.lon = '' + markerEvent.target._latlng.lng
-    },
-
-    resetToGeodateOfAddress () {
-      this.item.location.lat = this.geodataOfAddress.lat
-      this.item.location.lon = this.geodataOfAddress.lon
-    },
-
-    getGeocode (updateItemLocation) {
-      const address = [this.item.location.zip || '', this.item.location.city || '', this.item.location.street || ''].join(' ')
-      if (address === '  ') {
-        this.geocodeError = false
-        this.item.location.lat = null
-        this.item.location.lon = null
-        this.geodataOfAddress = null
-        return
-      }
-
-      this.geodataLoading = true
-
-      let url = BASE + 'geocoding'
-      setTimeout(() => {
-        let request = Vue.http.get(url, {params: {token: 'MapCat_050615', address}})
-        request.then(result => {
-          this.geocodeError = false
-          this.geodataOfAddress = {
-            lat: '' + result.body.latitude,
-            lon: '' + result.body.longitude
-          }
-          if (updateItemLocation) {
-            this.item.location.lat = '' + result.body.latitude
-            this.item.location.lon = '' + result.body.longitude
-          }
-        }).catch(error => {
-          this.geocodeError = 'Geodaten nicht gefunden. Bitte Adresse anpassen.'
-          this.geodataOfAddress = null
-          if (updateItemLocation) { // do not set intial lat/lon to null in order to prevent the unsaved changes dialog to appear
-            this.item.location.lat = null
-            this.item.location.lon = null
-          }
-          console.log('error loading geodata', error)
-        }).finally(() => {
-          this.geodataLoading = false
-        })
-      }, 200)
     }
   },
 
   components: {
     DatePicker,
-    Spinner,
-    LocationMap,
     ImageContainer,
     AnnotationTag,
     TabBar,
@@ -1017,7 +605,15 @@ export default {
     TagsSelectInput,
     ResourceItem,
     InputField,
-    PowerSelector
+    PowerSelector,
+    LocationForm,
+    CategorySelector,
+
+    ProjectInitiatorSelector,
+    NetworkSelector,
+    PartnerSelector,
+    ProjectSelector,
+    NetworkMemberSelector
   }
 }
 </script>

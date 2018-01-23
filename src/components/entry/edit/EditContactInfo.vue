@@ -44,8 +44,13 @@
       <label for="openingHours" :class="{active: contactInfo.openingHours || showInheritValue('openingHours')}">
         {{ $t('entries.openingHours') }}
       </label>
-      <textarea v-model="contactInfo.openingHours" :placeholder="showInheritValue('openingHours')" id="openingHours"
-        class="materialize-textarea"></textarea>
+      <textarea
+        v-model="contactInfo.openingHours"
+        :placeholder="showInheritValue('openingHours')"
+        id="openingHours"
+        class="materialize-textarea"
+        v-autosize>
+      </textarea>
     </div>
 
     <input-field
@@ -76,10 +81,11 @@ import LangSelectInput from './LangSelectInput'
 import ValidationMixin from '@/components/mixins/ValidationMixin'
 import InputField from '@/components/InputField'
 
-
 export default {
-  props: ['contactInfo', 'inheritanceState', 'type', 'parentOrga'],
   mixins: [ValidationMixin],
+
+  props: ['contactInfo', 'inheritanceState', 'type', 'parentOrga'],
+
   data () {
     return {
       inheritedContactInfo: false
@@ -99,9 +105,11 @@ export default {
         return false
       }
     },
+
     updateSpokenLanguages (spokenLanguages) {
       this.contactInfo.spokenLanguages = spokenLanguages
     },
+
     updateInheritanceState () {
       this.$emit('input', this.inheritedContactInfo)
     }

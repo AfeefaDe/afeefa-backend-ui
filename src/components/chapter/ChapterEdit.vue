@@ -33,7 +33,7 @@
 
             <br>
             <section class="entryForm__actionFooter">
-              <button v-bind:class="[{disabled: currentlySaving}, 'btn', 'waves-effect', 'waves-light', 'saveButton']" type="submit">
+              <button class="btn waves-effect waves-light saveButton" type="submit">
                 <i class="material-icons left">done</i>
                 Speichern
               </button>
@@ -73,8 +73,7 @@ export default {
     return {
       item: null,
       origItem: null,
-      loadingError: false,
-      currentlySaving: false
+      loadingError: false
     }
   },
   computed: {
@@ -139,15 +138,12 @@ export default {
           return
         }
 
-        this.currentlySaving = true
         Chapters.save(this.item).then(chapter => {
           this.$store.dispatch('messages/showAlert', {
             description: `Das Kapitel "${this.item.title}" wurde geändert.`
           })
           this.origItem = this.item // prevent route leave dialog after save
           this.$router.push({name: 'chapters.list'})
-        }).finally(() => {
-          this.currentlySaving = false
         })
       })
     },

@@ -7,8 +7,8 @@
     <input
       :type="inputType"
       :id="fieldName"
-      :value="value"
       :name="fieldName"
+      :value="value"
       :placeholder="placeholder"
 
       :data-vv-validate-on="validateOn"

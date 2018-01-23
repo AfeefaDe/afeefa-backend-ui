@@ -50,7 +50,7 @@
             </input-field>
 
             <section class="entryForm__actionFooter">
-              <button v-bind:class="[{disabled: currentlySaving}, 'btn', 'waves-effect', 'waves-light', 'saveButton']" type="submit">
+              <button class="btn waves-effect waves-light saveButton" type="submit">
                 <i class="material-icons left">done</i>
                 Speichern
               </button>
@@ -75,7 +75,6 @@ export default {
     return {
       userOrig: null,
       user: null,
-      currentlySaving: false,
       passwordConfirm: null
     }
   },
@@ -128,7 +127,6 @@ export default {
           return
         }
 
-        this.currentlySaving = true
         Users.save(this.user).then(() => {
           const pwChanged = this.passwordConfirm ? 'und das Passwort ' : ''
           this.$store.dispatch('messages/showAlert', {
@@ -136,8 +134,6 @@ export default {
           })
           this.initCurrentUser()
           this.passwordConfirm = null
-        }).finally(() => {
-          this.currentlySaving = false
         })
       })
     }
