@@ -26,7 +26,7 @@
               <section slot="generalTab">
                 <h2>Kategorien</h2>
 
-                <category-selector :item="item" v-if="item">
+                <category-selector :item="item">
                 </category-selector>
 
                 <br>
@@ -43,17 +43,17 @@
                 <div v-if="item.type === 'orgas' && item.id">
                   <h2>Projektträger</h2>
 
-                  <project-initiator-selector :actor="item" v-if="item">
+                  <project-initiator-selector :actor="item">
                   </project-initiator-selector>
 
                   <h2>Netzwerke</h2>
 
-                  <network-selector :actor="item" v-if="item">
+                  <network-selector :actor="item">
                   </network-selector>
 
                   <h2>Partner</h2>
 
-                  <partner-selector :actor="item" v-if="item">
+                  <partner-selector :actor="item">
                   </partner-selector>
                 </div>
 
@@ -194,28 +194,13 @@
                     label="Facebook ID für Events">
                   </input-field>
                 </div>
+              </section>
 
+              <section slot="annotationsTab">
                 <h2>{{ $tc('headlines.annotations', 2) }}</h2>
-                <div class="annotationEditArea">
-                  <annotation-tag
-                    v-for="annotation in item.annotations"
-                    :annotation="annotation"
-                    :editMode="true"
-                    v-on:remove="removeAnnotation"
-                    :key="annotation.id">
-                  </annotation-tag>
-                  <p v-if="!item.annotations.length" class="annotationArea__error">Keine Anmerkungen</p>
-                  <div class="annotationNew">
-                    <select class="browser-default annotationNew" v-model="selectedAnnotation" @change="addAnnotation">
-                      <option :value="null" selected>Neue Anmerkung hinzufügen</option>
-                      <option :value="annotation" v-for="annotation in selectableAnnotations" :key="annotation.id">{{ annotation.title }}</option>
-                    </select>
-                  </div>
-                </div>
-                <span class="validation-hint">
-                  <i class="material-icons">error_outline</i>
-                  Anmerkungen sind nicht öffentlich sichtbar und dienen nur den Redakteur*innen.
-                </span>
+
+                <annotation-form :item="item">
+                </annotation-form>
               </section>
 
               <section slot="placeTab">
@@ -237,12 +222,12 @@
               </section>
 
               <section slot="networkMembersTab">
-                <network-member-selector :actor="this.item" v-if="item">
+                <network-member-selector :actor="this.item">
                 </network-member-selector>
               </section>
 
               <section slot="projectsTab">
-                <project-selector :actor="this.item" v-if="item">
+                <project-selector :actor="this.item">
                 </project-selector>
               </section>
 
@@ -295,13 +280,10 @@
 <script>
 import Multiselect from 'vue-multiselect'
 import Orgas from '@/resources/Orgas'
-import Annotations from '@/resources/Annotations'
-import AnnotationCategories from '@/resources/AnnotationCategories'
 import Users from '@/resources/Users'
 import ResourceItems from '@/resources/ResourceItems'
 import OrgaType from '@/models/OrgaType'
 import sortByTitle from '@/helpers/sort-by-title'
-import AnnotationTag from '@/components/AnnotationTag'
 import ImageContainer from '@/components/ImageContainer'
 import TabBar from '@/components/TabBar'
 import ResourceItem from '@/components/ResourceItem'
@@ -313,6 +295,7 @@ import DatePicker from './datepicker/DatePicker'
 import EditContactInfo from './EditContactInfo'
 import TagsSelectInput from './TagsSelectInput'
 import CategorySelector from './CategorySelector'
+import AnnotationForm from './AnnotationForm'
 
 import ProjectInitiatorSelector from './actor-relations/ProjectInitiatorSelector'
 import NetworkSelector from './actor-relations/NetworkSelector'
@@ -341,9 +324,6 @@ export default {
       imageError: false,
       loadingError: false,
 
-      annotationCategories: [],
-      selectedAnnotation: null,
-
       currentTab: '',
 
       has: {
@@ -360,10 +340,6 @@ export default {
       if (entry) {
         this.origItem = entry
         this.item = this.Resource.clone(entry)
-
-        AnnotationCategories.getAll().then(annotationCategories => {
-          this.annotationCategories = annotationCategories
-        })
 
         Orgas.getAll().then(orgas => {
           this.orgas = sortByTitle(orgas)
@@ -394,17 +370,6 @@ export default {
       return OrgaType.TYPES
     },
 
-    selectableAnnotations () {
-      return this.annotationCategories.filter(
-        (annotationCategory) => {
-          // only allow editor annotationCategories
-          if (!annotationCategory.generatedBySystem) {
-            return true
-          }
-        }
-      )
-    },
-
     categoryClass () {
       if (this.item.category && this.item.category.title) {
         return 'cat-' + this.item.category.title
@@ -415,7 +380,7 @@ export default {
      * define tabNames according to the entry type and the area of the current user
      */
     tabNames () {
-      let tabNames = ['generalTab', 'placeTab', 'contactTab']
+      let tabNames = ['generalTab', 'annotationsTab', 'placeTab', 'contactTab']
       if (this.item.type === 'orgas' && this.currentUser.area === 'dresden') {
         tabNames.push('resourceTab')
       }
@@ -455,26 +420,9 @@ export default {
       this.currentTab = newCurrentTab
     },
 
-    addAnnotation () {
-      const annotationCategory = this.selectedAnnotation
-      let newAnnotation = Annotations.createItem()
-      // the detail attribute is currently reserved for annoations generated by the backend
-      newAnnotation.detail = null
-      newAnnotation.annotationCategory = annotationCategory
-      this.item.annotations.push(newAnnotation)
-      this.selectedAnnotation = null
-    },
-
     addResourceItem () {
       let newResource = ResourceItems.createItem()
       this.item.resource_items.push(newResource)
-    },
-
-    removeAnnotation (annotation) {
-      const index = this.item.annotations.indexOf(annotation)
-      if (index !== -1) {
-        this.item.annotations.splice(index, 1)
-      }
     },
 
     removeResourceItem (resourceItem) {
@@ -598,7 +546,6 @@ export default {
   components: {
     DatePicker,
     ImageContainer,
-    AnnotationTag,
     TabBar,
     Multiselect,
     EditContactInfo,
@@ -608,6 +555,7 @@ export default {
     PowerSelector,
     LocationForm,
     CategorySelector,
+    AnnotationForm,
 
     ProjectInitiatorSelector,
     NetworkSelector,

@@ -35,6 +35,7 @@ export default {
   },
   tabs: {
     generalTab: '*',
+    annotationsTab: '*',
     placeTab: '*',
     contactTab: '*',
     networkMembersTab: '*',

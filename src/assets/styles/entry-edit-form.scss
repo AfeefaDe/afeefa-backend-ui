@@ -32,6 +32,7 @@
     background: $green;
   }
 }
+
 .input-field {
   .flatpickr-input {
     color: inherit !important;
@@ -85,19 +86,6 @@ span.validation-hint {
 
 select + span.validation-error, .datePicker + span.validation-error {
   margin-top: .4em;
-}
-
-.annotationEditArea {
-  margin-top: 0.5em;
-  &__error {
-    color: $gray50;
-    margin-left: 0.3em;
-  }
-  .annotationNew {
-    display: block;
-    width: 100%;
-    margin-top: 0.4em;
-  }
 }
 
 .newResource {

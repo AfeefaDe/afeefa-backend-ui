@@ -35,6 +35,7 @@ export default {
   },
   tabs: {
     generalTab: 'General',
+    annotationsTab: 'Annotations',
     placeTab: 'Place',
     contactTab: 'Contact',
     networkMembersTab: 'Network Members',

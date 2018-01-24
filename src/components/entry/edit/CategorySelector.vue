@@ -66,10 +66,6 @@ export default {
     }
   },
 
-  mounted () {
-    this.$validator.validate()
-  },
-
   methods: {
     categoryChanged () {
       this.item.sub_category = null
