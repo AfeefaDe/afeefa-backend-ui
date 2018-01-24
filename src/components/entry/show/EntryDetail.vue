@@ -202,13 +202,7 @@
         </tab-bar>
       </div>
 
-      <div v-else class="mainCard">
-        <div class="mainCard__header mainCard__headerLight">
-          <span v-if="entryLoadingError">{{ messages.loadingItemError() }}</span>
-          <span v-else>{{ messages.loadingItem() }} ...</span>
-        </div>
-      </div>
-
+      <entry-loading-message v-else :error="entryLoadingError" :messages="messages" />
     </div>
   </div>
 </template>
@@ -220,6 +214,7 @@ import OrgaType from '@/models/OrgaType'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 
+import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryListItems from '@/components/entry/EntryListItems'
 import ImageContainer from '@/components/ImageContainer'
 import TabBar from '@/components/TabBar'
@@ -310,6 +305,7 @@ export default {
   },
 
   components: {
+    EntryLoadingMessage,
     EntryListItems,
     ImageContainer,
     EntryDetailProperty,

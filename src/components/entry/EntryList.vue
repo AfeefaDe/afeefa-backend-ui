@@ -3,7 +3,6 @@
     <div class="col s12 m12">
       <div class="mainCard">
         <div class="mainCard__header">
-
           <h2 class="mainCard__headerTitle">
             {{ messages.headline() }} ({{ numItems }})
           </h2>
@@ -12,11 +11,10 @@
             {{$t('buttons.add')}}
             <i class="material-icons">add</i>
           </router-link>
+        </div>
 
-        </div>
-        <div>
-          <slot></slot>
-        </div>
+        <slot></slot>
+
         <entry-list-items
           :items="items"
           :sort-function="sortFunction"

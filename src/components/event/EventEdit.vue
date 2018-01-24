@@ -115,12 +115,7 @@
         </div>
       </div>
 
-      <div v-else class="mainCard">
-        <div class="mainCard__header mainCard__headerLight">
-          <span v-if="hasItemLoadingError">{{ messages.loadingItemError() }} ...</span>
-          <span v-else>{{ messages.loadingItem() }} ...</span>
-        </div>
-      </div>
+      <entry-loading-message v-else :error="hasItemLoadingError" :messages="messages" />
     </div>
   </div>
 </template>
@@ -134,6 +129,7 @@ import ImageContainer from '@/components/ImageContainer'
 import InputField from '@/components/InputField'
 import PowerSelector from '@/components/PowerSelector'
 
+import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryEditHeader from '@/components/entry/edit/EntryEditHeader'
 import CategorySelector from '@/components/entry/edit/CategorySelector'
 import LocationForm from '@/components/entry/edit/LocationForm'
@@ -218,6 +214,7 @@ export default {
     InputField,
     PowerSelector,
 
+    EntryLoadingMessage,
     EntryEditHeader,
     TitleInput,
     EditContactInfo,

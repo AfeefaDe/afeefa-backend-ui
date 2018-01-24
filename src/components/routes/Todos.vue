@@ -6,11 +6,14 @@
       :sort-function="sortByUpdatedAt"
       :options="{pagination: true, updated_at: true, annotations: true}"
       :messages="messages">
-      <label for="annoationCategory">Todos filtern</label>
-      <select id="annotationCategory" v-model="selectedCategory" style="display: block">
-        <option value="all" selected>Alle Anmerkungen</option>
-        <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{cat.title}}</option>
-      </select>
+
+      <div>
+        <label for="annoationCategory">Todos filtern</label>
+        <select id="annotationCategory" v-model="selectedCategory" style="display: block">
+          <option value="all" selected>Alle Anmerkungen</option>
+          <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{cat.title}}</option>
+        </select>
+      </div>
 
     </entry-list>
   </div>
