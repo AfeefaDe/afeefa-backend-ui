@@ -4,7 +4,7 @@
       <div class="mainCard" v-if="entry">
         <entry-detail-header
           :entry="entry"
-          :routeConfig="routeConfig"
+          :route-config="routeConfig"
           :currentTab="currentTab">
           </entry-detail-header>
 

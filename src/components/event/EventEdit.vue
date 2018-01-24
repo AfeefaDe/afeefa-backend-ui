@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col s12 m12">
       <div class="mainCard" v-if="item">
-        <entry-edit-header :item="item" :routeConfig="routeConfig" />
+        <entry-edit-header :item="item" :route-config="routeConfig" />
 
         <image-container v-if="item" v-show="!imageError"
           :image-url="item.media_url"

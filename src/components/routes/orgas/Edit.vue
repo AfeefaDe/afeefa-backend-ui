@@ -1,14 +1,14 @@
 <template>
-  <entry-edit
+  <actor-edit
     :id="id"
     :route-config="routeConfig"
     ref="form">
-  </entry-edit>
+  </actor-edit>
 </template>
 
 <script>
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
-import EntryEdit from '@/components/entry/edit/EntryEdit'
+import ActorEdit from '@/components/actor/ActorEdit'
 import OrgaRouteConfig from './OrgaRouteConfig'
 
 export default {
@@ -23,7 +23,7 @@ export default {
   },
 
   components: {
-    EntryEdit
+    ActorEdit
   }
 }
 </script>

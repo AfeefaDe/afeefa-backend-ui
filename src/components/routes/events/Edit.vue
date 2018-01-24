@@ -1,8 +1,9 @@
 <template>
   <event-edit
     :id="id"
-    :routeConfig="routeConfig"
-    ref="form" />
+    :route-config="routeConfig"
+    ref="form">
+  </event-edit>
 </template>
 
 <script>
