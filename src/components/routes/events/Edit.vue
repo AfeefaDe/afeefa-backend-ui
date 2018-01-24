@@ -1,15 +1,13 @@
 <template>
-  <entry-edit
+  <event-edit
     :id="id"
-    :route-config="routeConfig"
-    :options="{hasDate: true, hasOrga: true, hasDelete: true}"
-    ref="form">
-  </entry-edit>
+    :routeConfig="routeConfig"
+    ref="form" />
 </template>
 
 <script>
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
-import EntryEdit from '@/components/entry/edit/EntryEdit'
+import EventEdit from '@/components/event/EventEdit'
 import EventRouteConfig from './EventRouteConfig'
 
 export default {
@@ -24,7 +22,7 @@ export default {
   },
 
   components: {
-    EntryEdit
+    EventEdit
   }
 }
 </script>

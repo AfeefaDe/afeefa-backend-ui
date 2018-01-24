@@ -51,7 +51,6 @@
 
 <script>
 import Vue from 'vue'
-import { mapState } from 'vuex'
 
 export default {
   props: ['items', 'selectedItems', 'searchFields', 'messages'],
@@ -64,10 +63,6 @@ export default {
       selectedItemIndex: null
     }
   },
-
-  computed: mapState({
-    isSaving: state => state.api.isSaving
-  }),
 
   methods: {
     keywordChanged (event) {

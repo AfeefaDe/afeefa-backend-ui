@@ -12,6 +12,7 @@
 <script>
 export default {
   props: ['imageUrl'],
+
   data () {
     return {
       mediaImageLoaded: false,
@@ -38,6 +39,10 @@ export default {
           this.mediaImageLoaded = false
           this.$emit('state', {mediaImageError: this.mediaImageError})
         }
+      } else {
+        this.mediaImageError = false
+        this.mediaImageLoaded = false
+        this.$emit('state', {mediaImageError: this.mediaImageError})
       }
     }
   },

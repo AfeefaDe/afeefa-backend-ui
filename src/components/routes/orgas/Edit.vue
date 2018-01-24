@@ -2,7 +2,6 @@
   <entry-edit
     :id="id"
     :route-config="routeConfig"
-    :options="{hasParentOrga: true, hasDelete: true}"
     ref="form">
   </entry-edit>
 </template>
