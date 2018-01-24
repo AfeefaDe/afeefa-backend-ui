@@ -24,13 +24,6 @@
 
             <tab-bar v-on:setCurrentTab="setCurrentTab" :tabNames="tabNames">
               <section slot="generalTab">
-                <h2>Kategorien</h2>
-
-                <category-selector :item="item">
-                </category-selector>
-
-                <br>
-
                 <div class="inputField__spacing" v-if="item.type === 'orgas'">
                   <label for="orgaType">Typ</label>
                   <select v-model="item.orga_type_id" id="orgaType"
@@ -81,6 +74,13 @@
                     </div>
                   </power-selector>
                 </div>
+
+                <h2>Kategorien</h2>
+
+                <category-selector :item="item">
+                </category-selector>
+
+                <br>
 
                 <input-field
                   class="inputField__spacing"
@@ -197,8 +197,6 @@
               </section>
 
               <section slot="annotationsTab">
-                <h2>{{ $tc('headlines.annotations', 2) }}</h2>
-
                 <annotation-form :item="item">
                 </annotation-form>
               </section>
@@ -232,21 +230,8 @@
               </section>
 
               <section slot="resourceTab" v-if="item.type === 'orgas'">
-                <resource-item
-                  v-for="resourceItem in item.resource_items"
-                  :key="resourceItem.id"
-                  :resourceItem="resourceItem"
-                  v-on:remove="removeResourceItem"
-                  :editEnabled="true">
-                </resource-item>
-                <div class="newResource">
-                  <div>
-                    <a href="" @click.prevent="addResourceItem"><i class="material-icons">add_circle</i></a>
-                  </div>
-                  <h2>
-                    Neue Ressource hinzufügen
-                  </h2>
-                </div>
+                <resource-form :item="item">
+                </resource-form>
               </section>
             </tab-bar>
 
@@ -281,12 +266,10 @@
 import Multiselect from 'vue-multiselect'
 import Orgas from '@/resources/Orgas'
 import Users from '@/resources/Users'
-import ResourceItems from '@/resources/ResourceItems'
 import OrgaType from '@/models/OrgaType'
 import sortByTitle from '@/helpers/sort-by-title'
 import ImageContainer from '@/components/ImageContainer'
 import TabBar from '@/components/TabBar'
-import ResourceItem from '@/components/ResourceItem'
 import PowerSelector from '@/components/PowerSelector'
 import InputField from '@/components/InputField'
 
@@ -296,6 +279,7 @@ import EditContactInfo from './EditContactInfo'
 import TagsSelectInput from './TagsSelectInput'
 import CategorySelector from './CategorySelector'
 import AnnotationForm from './AnnotationForm'
+import ResourceForm from './ResourceForm'
 
 import ProjectInitiatorSelector from './actor-relations/ProjectInitiatorSelector'
 import NetworkSelector from './actor-relations/NetworkSelector'
@@ -420,18 +404,6 @@ export default {
       this.currentTab = newCurrentTab
     },
 
-    addResourceItem () {
-      let newResource = ResourceItems.createItem()
-      this.item.resource_items.push(newResource)
-    },
-
-    removeResourceItem (resourceItem) {
-      const index = this.item.resource_items.indexOf(resourceItem)
-      if (index !== -1) {
-        this.item.resource_items.splice(index, 1)
-      }
-    },
-
     cancel () {
       if (this.item.id) {
         this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}, query: {tab: this.currentTab}})
@@ -550,12 +522,12 @@ export default {
     Multiselect,
     EditContactInfo,
     TagsSelectInput,
-    ResourceItem,
     InputField,
     PowerSelector,
     LocationForm,
     CategorySelector,
     AnnotationForm,
+    ResourceForm,
 
     ProjectInitiatorSelector,
     NetworkSelector,
