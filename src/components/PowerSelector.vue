@@ -183,6 +183,12 @@ export default {
         }
       })
     }
+  },
+
+  watch: {
+    items () {
+      this.filterItems()
+    }
   }
 }
 </script>
