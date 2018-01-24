@@ -1,134 +1,94 @@
 <template>
-  <div class="row">
-    <div class="col s12 m12">
-      <div class="mainCard" v-if="item">
-        <entry-edit-header :item="item" :route-config="routeConfig" />
-
-        <image-container v-if="item" v-show="!imageError"
-          :image-url="item.media_url"
-          @state="updateImageContainerState">
-        </image-container>
-
-        <div>
-          <form @submit.prevent="save" class="entryForm" novalidate>
-            <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
-
-              <section slot="generalTab">
-                <div class="inputField__spacing" v-if="item.type === 'orgas'">
-                  <label for="orgaType">Typ</label>
-                  <select v-model="item.orga_type_id" id="orgaType"
-                   name="orgaType"
-                    :class="['browser-default']">
-                    <option :value="orgaType.id" v-for="orgaType in orgaTypes" :key="orgaType.id">{{ orgaType.name }}</option>
-                  </select>
-                </div>
-
-                <div v-if="item.id">
-                  <h2>Projektträger</h2>
-
-                  <project-initiator-selector :actor="item" />
-
-                  <h2>Netzwerke</h2>
-
-                  <network-selector :actor="item" />
-
-                  <h2>Partner</h2>
-
-                  <partner-selector :actor="item" />
-                </div>
-
-                <h2>Kategorien</h2>
-
-                <category-selector :item="item" />
-
-                <br>
-
-                <title-input :item="item" />
-
-                <media-image-input :item="item" :image-error="imageError" />
-
-                <description-form :item="item" />
-
-                <br>
-
-                <tag-selector :item="item" v-if="currentUser && currentUser.area=='dresden'" />
-
-                <help-wanted-form :item="item" />
-
-                <input-field
-                  field-name="facebook_id"
-                  v-model="item.facebook_id"
-                  validate="min:15|max:64"
-                  label="Facebook ID für Events">
-                </input-field>
-              </section>
-
-              <section slot="annotationsTab">
-                <annotation-form :item="item" />
-              </section>
-
-              <section slot="placeTab">
-                <location-form
-                  :location="item.location"
-                  :currentTab="currentTab"
-                  v-if="item.location">
-                </location-form>
-              </section>
-
-              <section slot="contactTab">
-                <edit-contact-info ref="EditContactInfo" v-if="item.contact"
-                  :contact-info="item.contact"
-                  :inheritance-state="item.inheritance.contact_infos"
-                  :type="item.type"
-                  :parent-orga="item.parent_orga"
-                  @input="updateInheritedContactInfo">
-                </edit-contact-info>
-              </section>
-
-              <section slot="networkMembersTab">
-                <network-member-selector :actor="this.item" />
-              </section>
-
-              <section slot="projectsTab">
-                <project-selector :actor="this.item" />
-              </section>
-
-              <section slot="resourceTab" v-if="item.type === 'orgas'">
-                <resource-form :item="item" />
-              </section>
-            </tab-bar>
-
-            <section class="entryForm__actionFooter">
-              <button class="btn waves-effect waves-light saveButton" type="submit">
-                <i class="material-icons left">done</i>
-                Speichern
-              </button>
-              <button class="btn waves-effect waves-light red" @click.prevent="remove">
-                <i class="material-icons left">delete</i>
-                Löschen
-              </button>
-            </section>
-          </form>
-        </div>
+  <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
+    <section slot="generalTab">
+      <div class="inputField__spacing">
+        <label for="orgaType">Typ</label>
+        <select v-model="item.orga_type_id" id="orgaType"
+          name="orgaType"
+          :class="['browser-default']">
+          <option :value="orgaType.id" v-for="orgaType in orgaTypes" :key="orgaType.id">{{ orgaType.name }}</option>
+        </select>
       </div>
 
-      <entry-loading-message v-else :error="hasItemLoadingError" :messages="messages" />
-    </div>
-  </div>
+      <div v-if="item.id">
+        <h2>Projektträger</h2>
+
+        <project-initiator-selector :actor="item" />
+
+        <h2>Netzwerke</h2>
+        <network-selector :actor="item" />
+
+        <h2>Partner</h2>
+        <partner-selector :actor="item" />
+      </div>
+
+      <h2>Kategorien</h2>
+      <category-selector :item="item" />
+
+      <h2>Titel und Beschreibung</h2>
+      <title-input :item="item" />
+      <description-form :item="item" />
+
+      <h2>Bild</h2>
+      <media-image-input :item="item" :image-error="imageError" />
+
+      <tag-selector :item="item" v-if="currentUser && currentUser.area=='dresden'" />
+
+      <help-wanted-form :item="item" />
+
+      <input-field
+        field-name="facebook_id"
+        v-model="item.facebook_id"
+        validate="min:15|max:64"
+        label="Facebook ID für Events">
+      </input-field>
+    </section>
+
+    <section slot="annotationsTab">
+      <annotation-form :item="item" />
+    </section>
+
+    <section slot="placeTab">
+      <location-form
+        :location="item.location"
+        :currentTab="currentTab"
+        v-if="item.location">
+      </location-form>
+    </section>
+
+    <section slot="contactTab">
+      <edit-contact-info ref="EditContactInfo" v-if="item.contact"
+        :contact-info="item.contact"
+        :inheritance-state="item.inheritance.contact_infos"
+        :type="item.type"
+        :parent-orga="item.parent_orga"
+        @input="updateInheritedContactInfo">
+      </edit-contact-info>
+    </section>
+
+    <section slot="networkMembersTab">
+      <network-member-selector :actor="this.item" />
+    </section>
+
+    <section slot="projectsTab">
+      <project-selector :actor="this.item" />
+    </section>
+
+    <section slot="resourceTab" v-if="item.type === 'orgas'">
+      <resource-form :item="item" />
+    </section>
+  </tab-bar>
 </template>
 
 
 <script>
-import Multiselect from 'vue-multiselect'
 import OrgaType from '@/models/OrgaType'
 
-import ImageContainer from '@/components/ImageContainer'
 import TabBar from '@/components/TabBar'
 import PowerSelector from '@/components/PowerSelector'
 import InputField from '@/components/InputField'
 
-import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
-import EntryEditHeader from '@/components/entry/edit/EntryEditHeader'
+import EntryEdit from '@/components/entry/edit/EntryEdit'
 import LocationForm from '@/components/entry/edit//LocationForm'
 import EditContactInfo from '@/components/entry/edit//EditContactInfo'
 import CategorySelector from '@/components/entry/edit//CategorySelector'
@@ -146,17 +106,14 @@ import PartnerSelector from '@/components/entry/edit//actor-relations/PartnerSel
 import ProjectSelector from '@/components/entry/edit//actor-relations/ProjectSelector'
 import NetworkMemberSelector from '@/components/entry/edit//actor-relations/NetworkMemberSelector'
 
-import EntryApiMixin from '@/components/entry/edit/mixins/EntryApiMixin'
-
 export default {
-  mixins: [EntryApiMixin],
+  props: ['item', 'currentUser', 'imageError'],
 
-  props: ['id'],
+  inject: ['$validator'],
 
   data () {
     return {
-      currentTab: '',
-      imageError: false
+      currentTab: ''
     }
   },
 
@@ -186,22 +143,15 @@ export default {
 
     updateInheritedContactInfo (inheritanceState) {
       this.item.inheritance.contact_infos = inheritanceState
-    },
-
-    updateImageContainerState ({mediaImageError}) {
-      this.imageError = mediaImageError
     }
   },
 
   components: {
-    ImageContainer,
     TabBar,
-    Multiselect,
     InputField,
     PowerSelector,
 
-    EntryLoadingMessage,
-    EntryEditHeader,
+    EntryEdit,
     TitleInput,
     EditContactInfo,
     LocationForm,

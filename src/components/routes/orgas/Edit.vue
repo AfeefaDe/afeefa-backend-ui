@@ -1,13 +1,20 @@
 <template>
-  <actor-edit
+  <entry-edit
     :id="id"
     :route-config="routeConfig"
     ref="form">
-  </actor-edit>
+    <div slot-scope="{item, currentUser, imageError}" >
+      <actor-edit
+        :item="item"
+        :currentUser="currentUser"
+        :imageError="imageError" />
+    </div>
+  </entry-edit>
 </template>
 
 <script>
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
+import EntryEdit from '@/components/entry/edit/EntryEdit'
 import ActorEdit from '@/components/actor/ActorEdit'
 import OrgaRouteConfig from './OrgaRouteConfig'
 
@@ -23,6 +30,7 @@ export default {
   },
 
   components: {
+    EntryEdit,
     ActorEdit
   }
 }
