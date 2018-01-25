@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!items">
+    <div v-if="!items" class="loadingInfo">
       <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Liste
     </div>
 
@@ -152,6 +152,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "~variables";
+
+.loadingInfo {
+  margin-top: .8em;
+}
 
 .entryList {
   padding-left: 0;
