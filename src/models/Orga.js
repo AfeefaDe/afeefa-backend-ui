@@ -43,7 +43,7 @@ export default class Orga extends Entry {
 
     // parent orga
     if (this.project_initiators.length) {
-      this.parent_orga = this.project_initiators[0]
+      this._relationIds.parent_orga = this.project_initiators[0].id
     }
 
     // resourceItems

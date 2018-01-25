@@ -22,7 +22,10 @@
           <div v-if="item.id">
             <h2>Projektträger</h2>
 
-            <project-initiator-selector :actor="item" />
+            <project-initiator-selector
+              :actor="item"
+              @itemAdded="projectInitiatorChanged"
+              @itemRemoved="projectInitiatorChanged" />
 
             <h2>Netzwerke</h2>
             <network-selector :actor="item" />
@@ -97,6 +100,7 @@ import EditEntrySlotMixin from '@/components/entry/edit/mixins/EditEntrySlotMixi
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import OrgaRouteConfig from './OrgaRouteConfig'
 
+import Orgas from '@/resources/Orgas'
 import OrgaType from '@/models/OrgaType'
 
 import TabBar from '@/components/TabBar'
@@ -150,6 +154,17 @@ export default {
   },
 
   methods: {
+    projectInitiatorChanged () {
+      const parentOrga = this.item.project_initiators[0]
+      if (parentOrga) {
+        Orgas.get(parentOrga.id, ['fetchContact']).then(orga => {
+          this.item.parent_orga = orga
+        })
+      } else {
+        this.item.parent_orga = null
+      }
+    },
+
     setCurrentTab (tab) {
       this.currentTab = tab
     },

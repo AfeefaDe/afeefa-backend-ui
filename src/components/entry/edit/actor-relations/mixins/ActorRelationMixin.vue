@@ -45,6 +45,7 @@ export default {
           this.$store.dispatch('messages/showAlert', {
             description: this.messages.addChildSuccess(child)
           })
+          this.$emit('itemAdded', child)
         }
       })
     },
@@ -56,6 +57,7 @@ export default {
           this.$store.dispatch('messages/showAlert', {
             description: this.messages.removeChildSuccess(child)
           })
+          this.$emit('itemRemoved', child)
         }
       })
     },
@@ -67,6 +69,7 @@ export default {
           this.$store.dispatch('messages/showAlert', {
             description: this.messages.addParentSuccess(parent)
           })
+          this.$emit('itemAdded', parent)
         }
       })
     },
@@ -78,6 +81,7 @@ export default {
           this.$store.dispatch('messages/showAlert', {
             description: this.messages.removeParentSuccess(parent)
           })
+          this.$emit('itemRemoved', parent)
         }
       })
     }

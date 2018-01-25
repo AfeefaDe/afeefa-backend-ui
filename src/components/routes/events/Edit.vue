@@ -160,7 +160,6 @@ export default {
     },
 
     parentOrgaChanged (parentOrga) {
-      this.item.parent_orga = parentOrga
       Orgas.get(parentOrga.id, ['fetchContact']).then(orga => {
         this.item.parent_orga = orga
         this.parentOrgas = [orga]
