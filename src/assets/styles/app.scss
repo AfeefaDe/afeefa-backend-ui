@@ -74,6 +74,8 @@ $input-focus-color: $secondaryBlue;
 @import 'entry-detail-form';
 /* style for entry edit */
 @import 'entry-edit-form';
+/* global mixins */
+@import 'mixins';
 
 // import TinyMCE skin
 @import '../../../node_modules/tinymce/skins/lightgray/skin.min.css';

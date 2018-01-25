@@ -4,6 +4,15 @@
       <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Liste
     </div>
 
+    <div v-if="items && has.pagination">
+      <pagination
+        :num-items="currentNumItems"
+        :page-size="currentPageSize"
+        :page="currentPage"
+        @changed="setPage">
+      </pagination>
+    </div>
+
     <ul class="entryList">
       <li v-for="item in itemsSorted" :key="item.id">
         <div v-if="!showIcon">
@@ -51,14 +60,13 @@
       </li>
     </ul>
 
-    <div v-if="items">
+    <div v-if="items && has.pagination">
       <pagination
-      :num-items="currentNumItems"
-      :page-size="currentPageSize"
-      :page="currentPage"
-      @changed="setPage"
-      v-if="has.pagination">
-    </pagination>
+        :num-items="currentNumItems"
+        :page-size="currentPageSize"
+        :page="currentPage"
+        @changed="setPage">
+      </pagination>
     </div>
 
   </div>
