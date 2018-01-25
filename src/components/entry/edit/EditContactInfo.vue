@@ -1,7 +1,7 @@
 <template>
   <div class="inputField__spacing" v-if="contactInfo">
     <div v-if="parentOrga && parentOrga.contact && !parentOrga.contact.isEmpty()" class="input-field">
-      <input class="filled-in" id="inhContact" type="checkbox" @click="updateInheritanceState" v-model="inheritedContactInfo">
+      <input class="filled-in" id="inhContact" type="checkbox" @change="inheritanceChanged" v-model="inheritContactInfos">
       <label v-if="type === 'orgas'" for="inhContact">{{$t('checkboxes.contact_infos_inheritance_orga')}}</label>
       <label v-else for="inhContact">{{$t('checkboxes.contact_infos_inheritance_event')}}</label>
     </div>
@@ -87,18 +87,18 @@ export default {
 
   data () {
     return {
-      inheritedContactInfo: false
+      inheritContactInfos: false
     }
   },
 
   created () {
-    this.inheritedContactInfo = this.inheritanceState
+    this.inheritContactInfos = this.inheritanceState
   },
 
   methods: {
     /* decide whereever to output the inheritaded attribute for the contact object */
     showInheritValue (attribute) {
-      if (this.inheritedContactInfo && this.parentOrga && this.parentOrga.contact && this.parentOrga.contact[attribute]) {
+      if (this.inheritContactInfos && this.parentOrga && this.parentOrga.contact && this.parentOrga.contact[attribute]) {
         return this.parentOrga.contact[attribute]
       } else {
         return false
@@ -109,8 +109,8 @@ export default {
       this.contactInfo.spokenLanguages = spokenLanguages
     },
 
-    updateInheritanceState () {
-      this.$emit('input', this.inheritedContactInfo)
+    inheritanceChanged () {
+      this.$emit('inheritanceChanged', this.inheritContactInfos)
     }
   },
 

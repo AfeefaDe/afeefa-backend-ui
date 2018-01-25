@@ -91,7 +91,7 @@
             :inheritance-state="item.inheritance.contact_infos"
             :type="item.type"
             :parent-orga="item.parent_orga"
-            @input="updateInheritedContactInfo">
+            @inheritanceChanged="setContactInfoInheritance">
           </edit-contact-info>
         </section>
 
@@ -175,8 +175,8 @@ export default {
       this.currentTab = tab
     },
 
-    updateInheritedContactInfo (inheritanceState) {
-      this.item.inheritance.contact_infos = inheritanceState
+    setContactInfoInheritance (inheritContactInfos) {
+      this.item.inheritance.contact_infos = inheritContactInfos
     }
   },
 
