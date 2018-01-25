@@ -12,10 +12,7 @@
         <div>
           <form @submit.prevent="save" class="entryForm" novalidate>
 
-            <slot
-              :item="item"
-              :currentUser="currentUser"
-              :imageError="imageError" />
+            <slot />
 
             <section class="entryForm__actionFooter">
               <button class="btn waves-effect waves-light saveButton" type="submit">

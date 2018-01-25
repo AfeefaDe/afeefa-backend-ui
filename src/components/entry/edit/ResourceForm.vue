@@ -25,8 +25,6 @@ import ResourceItem from '@/components/ResourceItem'
 export default {
   props: ['item'],
 
-  inject: ['$validator'],
-
   data () {
     return {
       annotationCategories: [],

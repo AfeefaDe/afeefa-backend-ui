@@ -29,7 +29,7 @@
               <span v-show="errors.has('title')" class="validation-error">{{ errors.first('title') }}</span>
             </div>
 
-            <chapter-editor :value="item.content" v-on:input="updateContent"></chapter-editor>
+            <chapter-editor :value="item.content" @input="updateContent"></chapter-editor>
 
             <br>
             <section class="entryForm__actionFooter">

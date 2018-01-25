@@ -78,13 +78,12 @@
 
 <script>
 import LangSelectInput from './LangSelectInput'
-import ValidationMixin from '@/components/mixins/ValidationMixin'
 import InputField from '@/components/InputField'
 
 export default {
-  mixins: [ValidationMixin],
-
   props: ['contactInfo', 'inheritanceState', 'type', 'parentOrga'],
+
+  inject: ['$validator'],
 
   data () {
     return {

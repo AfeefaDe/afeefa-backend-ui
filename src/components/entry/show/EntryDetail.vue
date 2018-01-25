@@ -12,7 +12,7 @@
           :image-url="entry.media_url">
         </image-container>
 
-        <tab-bar v-on:setCurrentTab="setCurrentTab" :tabNames="tabNames">
+        <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
           <section slot="generalTab">
             <ul class="entryDetail">
               <entry-detail-property v-if="entry.type === 'orgas'" name="Typ" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' :entryIconClass="categoryClass">

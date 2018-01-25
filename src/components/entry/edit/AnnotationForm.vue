@@ -5,7 +5,7 @@
         v-for="annotation in item.annotations"
         :annotation="annotation"
         :editMode="true"
-        v-on:remove="removeAnnotation"
+        @remove="removeAnnotation"
         :key="annotation.id">
       </annotation-tag>
       <p v-if="!item.annotations.length" class="annotationArea__error">Keine Anmerkungen</p>
