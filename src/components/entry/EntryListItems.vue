@@ -4,6 +4,15 @@
       <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Liste
     </div>
 
+    <div v-if="items && has.filter" class="filter">
+      <input
+        type="text"
+        placeholder="Tippen zum Filtern"
+        v-model="searchKeyword"
+        @keydown.esc.prevent="searchKeyword = ''" />
+      <a v-if="searchKeyword" @click.prevent="searchKeyword = ''" href=""><i class="material-icons searchForm__icon">cancel</i></a>
+    </div>
+
     <div v-if="items && has.pagination">
       <pagination
         :num-items="currentNumItems"
@@ -60,7 +69,7 @@
       </li>
     </ul>
 
-    <div v-if="items && has.pagination">
+    <div v-if="items && currentNumItems && has.pagination">
       <pagination
         :num-items="currentNumItems"
         :page-size="currentPageSize"
@@ -87,7 +96,9 @@ export default {
       currentPageSize: 15,
       currentPage: 1,
       currentNumItems: 0,
+      searchKeyword: '',
       has: {
+        filter: options.filter,
         pagination: options.pagination,
         annotations: options.annotations,
         updated_at: options.updated_at,
@@ -112,7 +123,9 @@ export default {
 
   computed: {
     itemsSorted () {
-      let items = this.sortFunction ? this.sortFunction(this.items, this.sortOrder) : this.items || []
+      let items = this.items || []
+      items = items.filter(i => i.title.toLowerCase().includes(this.searchKeyword.toLowerCase()))
+      items = this.sortFunction ? this.sortFunction(items, this.sortOrder) : items
       this.currentNumItems = items.length // eslint-disable-line vue/no-side-effects-in-computed-properties
       if (this.limit) {
         items = items.slice(0, this.limit)
@@ -140,11 +153,13 @@ export default {
         this.$router.push({query: query})
       }
     },
+
     categoryClass (item) {
       if (item.category && item.category.title) {
         return 'cat-' + item.category.title
       }
     },
+
     routerLinkObject (item) {
       return {name: item.type + `.${this.has.linkToItem}`, params: {id: item.id}}
     }
@@ -163,6 +178,16 @@ export default {
 
 .loadingInfo {
   margin-top: .8em;
+}
+
+.filter {
+  position: relative;
+
+  a {
+    position: absolute;
+    top: .5em;
+    right: 0;
+  }
 }
 
 .entryList {

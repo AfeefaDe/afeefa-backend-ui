@@ -4,7 +4,7 @@
       :items="items"
       :addEntryButton="false"
       :sort-function="sortByUpdatedAt"
-      :options="{pagination: true, updated_at: true, annotations: true}"
+      :options="{filter: true, pagination: true, updated_at: true, annotations: true}"
       :messages="messages">
 
       <div>

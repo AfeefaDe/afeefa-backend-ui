@@ -4,7 +4,7 @@
     addEntryButton="events.new"
     :sort-function="sortFunction"
     :sort-order="sortOrder"
-    :options="{pagination: true, event_date: true}"
+    :options="{filter: true, pagination: true, event_date: true}"
     :messages="messages">
   </entry-list>
 </template>

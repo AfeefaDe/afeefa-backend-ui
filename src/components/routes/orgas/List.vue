@@ -3,7 +3,7 @@
     :items="items"
     addEntryButton="orgas.new"
     :sort-function="sortByCreatedAt"
-    :options="{pagination: true, created_at: true}"
+    :options="{filter: true, pagination: true, created_at: true}"
     :messages="messages">
   </entry-list>
 </template>
