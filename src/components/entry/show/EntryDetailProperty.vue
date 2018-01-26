@@ -1,15 +1,11 @@
 <template>
   <li class="detailProperty">
-    <div v-if="hasEntryIcon" class="detailProperty__propertyEntryIcon">
-      <span :class="[
-        'entryType-icon',
-        'entryType-icon--' + this.entryIconType,
-        'entryType-icon--' + (entryIconStatus ? 'active' : 'inactive'),
-        'entryType-icon--categoryColors', entryIconClass
-      ]"></span>
-    </div>
-    <span v-else class="detailProperty__propertyIcon">
+    <span v-if="iconName" class="detailProperty__propertyIcon">
       <i class="material-icons">{{ iconName }}</i>
+    </span>
+
+    <span v-else class="detailProperty__propertyEntryIcon">
+      <slot name="icon" />
     </span>
 
     <div class="detailProperty__propertyContainer">
@@ -23,7 +19,7 @@
 
 <script>
 export default {
-  props: ['name', 'iconName', 'isMultiline', 'hasEntryIcon', 'entryIconType', 'entryIconStatus', 'entryIconClass']
+  props: ['name', 'iconName', 'isMultiline', 'entryIconType', 'entryIconStatus', 'entryIconClass']
 }
 </script>
 
@@ -46,6 +42,11 @@ export default {
     margin-top: 0.3em;
     padding-right: 0.3em;
     line-height: 100%;
+    span {
+      width: 24px;
+      height: 24px;
+      font-size: 2.3em;
+    }
   }
   &__propertyName {
     text-transform: uppercase;

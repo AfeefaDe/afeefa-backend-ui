@@ -17,20 +17,15 @@
             <ul class="entryDetail">
               <entry-detail-property
                 v-if="entry.type === 'orgas'"
-                name="Typ" hasEntryIcon="true"
-                :entryIconType='entry.type'
-                :entryIconStatus='entry.active'
-                :entryIconClass="categoryClass">
+                name="Typ">
+                <entry-icon :item="entry" slot="icon" />
                 {{ getOrgaType(entry.orga_type_id).name }}
               </entry-detail-property>
 
               <entry-detail-property
                 v-if="entry.title"
-                :name="$t('entries.title')"
-                hasEntryIcon="true"
-                :entryIconType='entry.type'
-                :entryIconStatus='entry.active'
-                :entryIconClass="categoryClass">
+                :name="$t('entries.title')">
+                <entry-icon :item="entry" slot="icon" />
                 {{ entry.title }}
               </entry-detail-property>
 
@@ -233,6 +228,7 @@ import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryListItems from '@/components/entry/EntryListItems'
+import EntryIcon from '@/components/entry/EntryIcon'
 import ImageContainer from '@/components/ImageContainer'
 import TabBar from '@/components/TabBar'
 import AnnotationTag from '@/components/AnnotationTag'
@@ -323,6 +319,7 @@ export default {
 
   components: {
     EntryLoadingMessage,
+    EntryIcon,
     EntryListItems,
     ImageContainer,
     EntryDetailProperty,

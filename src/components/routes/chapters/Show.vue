@@ -20,9 +20,8 @@
         <ul class="entryDetail">
           <entry-detail-property
             v-if="item.title"
-            :name="$t('entries.title')"
-            hasEntryIcon="true"
-            :entryIconType='item.type'>
+            :name="$t('entries.title')">
+            <entry-icon :item="item" slot="icon" />
             {{ item.title }}
           </entry-detail-property>
 
@@ -48,6 +47,7 @@
 import Chapters from '@/resources/Chapters'
 import EntryShowMixin from '@/components/mixins/EntryShowMixin'
 import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
+import EntryIcon from '@/components/entry/EntryIcon'
 
 export default {
   mixins: [EntryShowMixin],
@@ -65,7 +65,8 @@ export default {
   },
 
   components: {
-    EntryDetailProperty
+    EntryDetailProperty,
+    EntryIcon
   }
 }
 </script>
