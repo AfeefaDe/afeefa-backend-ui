@@ -4,7 +4,7 @@
       <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Liste
     </div>
 
-    <div v-if="items && has.filter" class="filter">
+    <div v-if="items && items.length > 1 && has.filter" class="filter">
       <input
         type="text"
         placeholder="Tippen zum Filtern"
