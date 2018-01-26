@@ -24,12 +24,26 @@
 
     <ul class="entryList">
       <li v-for="item in itemsSorted" :key="item.id">
+
         <div v-if="!showIcon">
           <div v-if="has.typeIcon" class="entryList__icon">
             <span :class="['entryType-icon',  'entryType-icon--' + item.type, 'entryType-icon--' + (item.active ? 'active' : 'inactive'), 'entryType-icon--categoryColors', categoryClass(item)]"></span>
+            <div class="eventDate" v-if="item.type === 'events'">
+              <div class="day">{{ dayOfEvent(item) }}</div>
+              <div class="month">{{ monthOfEvent(item) }}</div>
+              <div class="year" v-if="yearOfEvent(item)">{{ yearOfEvent(item) }}</div>
+            </div>
           </div>
         </div>
+
         <div class="entryList__content">
+
+          <div class="entryList__attributes" v-if="has.event_date && item.type === 'events'">
+            <p class="item entryList--lightColor">
+              {{item | formatEventDate}}
+              <span>({{item.date_start | formatDateRelative}})</span>
+            </p>
+          </div>
 
           <router-link :to="routerLinkObject(item)" class="entryList__nav">
             <h4 class="title">{{ item.title || 'Kein Titel' }}</h4>
@@ -47,22 +61,18 @@
 
             <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
 
-            <p class="item entryList--lightColor" v-if="has.event_date">
-              {{item | formatEventDate}}
-            </p>
-
             <p class="item entryList--lightColor" v-if="has.updated_at">
               {{ $t('status.changed') }}
               {{item.updated_at | formatDateAbsolute}}
               <span>({{item.updated_at | formatDateRelative}})</span>
-              <span v-if="item.lastEditor"> von {{ item.lastEditor.name }} <span v-if="item.lastEditor.organization">({{ item.lastEditor.organization }})</span></span>
+              <span v-if="item.lastEditor"><br>von {{ item.lastEditor.name }} <span v-if="item.lastEditor.organization">({{ item.lastEditor.organization }})</span></span>
             </p>
 
             <p class="item entryList--lightColor" v-if="has.created_at">
               {{ $t('status.added') }}
               {{item.created_at | formatDateAbsolute}}
               <span>({{item.created_at | formatDateRelative}})</span>
-              <span v-if="item.creator"> von {{ item.creator.name }} <span v-if="item.creator.organization">({{ item.creator.organization }})</span></span>
+              <span v-if="item.creator"><br>von {{ item.creator.name }} <span v-if="item.creator.organization">({{ item.creator.organization }})</span></span>
             </p>
           </div>
         </div>
@@ -86,6 +96,7 @@
 import Pagination from '@/components/Pagination'
 import AnnotationTag from '@/components/AnnotationTag'
 import Spinner from '@/components/Spinner'
+import moment from 'moment'
 
 export default {
   props: {items: {}, limit: {}, sortFunction: {}, sortOrder: {}, showIcon: {}, options: {}, modifyRoute: {default: true}},
@@ -138,6 +149,24 @@ export default {
   },
 
   methods: {
+    dayOfEvent (item) {
+      let day = moment(item.date_start).date()
+      if (day < 10) {
+        day = '0' + day
+      }
+      return day
+    },
+
+    monthOfEvent (item) {
+      return moment(item.date_start).format('MMM')
+    },
+
+    yearOfEvent (item) {
+      const currentYear = moment().year().toString()
+      const yearOfEvent = moment(item.date_start).format('YYYY')
+      return currentYear === yearOfEvent ? null : yearOfEvent.substring(0, 4)
+    },
+
     initPageProperties () {
       this.currentPage = this.$route.query.page || 1
       this.currentPageSize = this.$route.query.pageSize || 15
@@ -194,15 +223,18 @@ export default {
   padding-left: 0;
   margin-top: 0;
   list-style: none;
+
   li {
     border-bottom: 2px solid $gray20;
     padding: 1em 0;
     display: flex;
     align-items: flex-start;
   }
+
   li:last-child {
     border-bottom: none
   }
+
   &__nav {
     cursor: pointer;
     color: inherit;
@@ -214,20 +246,42 @@ export default {
     .title {
       flex-grow: 2;
       font-size: 1.4em;
-      margin-bottom: 0.2em;
-      margin-top: 0;
+      margin: 0 0 0.2em;
       font-weight: 500;
       line-height: 120%;
     }
   }
+
+  div + &__nav .title {
+    margin-top: 0.2em;
+  }
+
   &__content {
     flex-grow: 2;
   }
+
   &__icon {
     margin-right: 2em;
     margin-top: 0.3em;
     line-height: 100%;
+    text-align: center;
+    .eventDate {
+      text-align: center;
+      margin-top: .4em;
+      .day {
+        font-size: 20px;
+        line-height: 1em;
+      }
+      .month {
+        font-size: 12px;
+      }
+      .year {
+        color: $gray50;
+        font-size: 10px;
+      }
+    }
   }
+
   &__attributes {
     align-items: baseline;
     font-size: 1em;
@@ -251,6 +305,7 @@ export default {
       margin-right: 0.3em;
     }
   }
+
   &--lightColor {
     color: $gray50;
   }
