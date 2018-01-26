@@ -15,9 +15,7 @@
     <div class="detailProperty__propertyContainer">
       <p class="detailProperty__propertyName">{{ name }}</p>
       <p :class="['detailProperty__propertyContent', {multiline: isMultiline}]">
-        <slot>
-            Passed down content goes here.
-        </slot>
+        <slot />
       </p>
     </div>
   </li>
@@ -66,7 +64,7 @@ export default {
   &__propertyContainer {
     width: 80%;
   }
-  .multiline {
+  .multiline * { /* ignore v-if=false comments that force empty lines */
       white-space: pre-wrap;
   }
 }

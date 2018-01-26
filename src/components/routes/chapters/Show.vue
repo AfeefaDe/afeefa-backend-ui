@@ -18,7 +18,11 @@
 
       <div>
         <ul class="entryDetail">
-          <entry-detail-property v-if="item.title" :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='item.type'>
+          <entry-detail-property
+            v-if="item.title"
+            :name="$t('entries.title')"
+            hasEntryIcon="true"
+            :entryIconType='item.type'>
             {{ item.title }}
           </entry-detail-property>
 

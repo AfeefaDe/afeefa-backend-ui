@@ -15,8 +15,30 @@
         <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
           <section slot="generalTab">
             <ul class="entryDetail">
-              <entry-detail-property v-if="entry.type === 'orgas'" name="Typ" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' :entryIconClass="categoryClass">
+              <entry-detail-property
+                v-if="entry.type === 'orgas'"
+                name="Typ" hasEntryIcon="true"
+                :entryIconType='entry.type'
+                :entryIconStatus='entry.active'
+                :entryIconClass="categoryClass">
                 {{ getOrgaType(entry.orga_type_id).name }}
+              </entry-detail-property>
+
+              <entry-detail-property
+                v-if="entry.title"
+                :name="$t('entries.title')"
+                hasEntryIcon="true"
+                :entryIconType='entry.type'
+                :entryIconStatus='entry.active'
+                :entryIconClass="categoryClass">
+                {{ entry.title }}
+              </entry-detail-property>
+
+              <entry-detail-property
+                :name="$tc('entries.date')"
+                :iconName="'date_range'"
+                v-if="has.date && entry.date_start">
+                  {{ entry | formatEventDate }}
               </entry-detail-property>
 
               <entry-detail-property v-if="entry.type === 'orgas'" name="Projektträger" :iconName="'device_hub'">
@@ -57,8 +79,9 @@
                 </entry-detail-property>
               </ul>
 
-              <entry-detail-property v-if="entry.title" :name="$t('entries.title')" hasEntryIcon="true" :entryIconType='entry.type' :entryIconStatus='entry.active' :entryIconClass="categoryClass">
-                {{ entry.title }}
+              <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'">
+                {{ entry.category ? $t('categories.' + entry.category.title) : 'Keine Kategorie angegeben' }}
+                <span v-if="entry.sub_category">> {{ $t('categories.' + entry.sub_category.title) }}</span>
               </entry-detail-property>
 
               <entry-detail-property
@@ -70,18 +93,12 @@
                 <div v-if="entry.short_description">{{entry.short_description}}</div>
               </entry-detail-property>
 
-              <entry-detail-property v-if="entry.description"  :name="$t('entries.description')" :iconName="'info_outline'" :isMultiline="true">{{ entry.description }}</entry-detail-property>
-
-              <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'">
-                {{ entry.category ? $t('categories.' + entry.category.title) : 'Keine Kategorie angegeben' }}
-                <span v-if="entry.sub_category">> {{ $t('categories.' + entry.sub_category.title) }}</span>
-              </entry-detail-property>
-
               <entry-detail-property
-                :name="$tc('entries.date')"
-                :iconName="'date_range'"
-                v-if="has.date && entry.date_start">
-                  {{ entry | formatEventDate }}
+                v-if="entry.description"
+                :name="$t('entries.description')"
+                :iconName="'more_horiz'"
+                :isMultiline="true">
+                <span>{{ entry.description }}</span>
               </entry-detail-property>
 
               <entry-detail-property
