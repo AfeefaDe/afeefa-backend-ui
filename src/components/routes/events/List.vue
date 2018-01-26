@@ -47,8 +47,8 @@ export default {
 
   methods: {
     getQueryParams () {
-      this.sortOrder = this.$route.name === 'events.list' ? 'ASC' : 'DESC'
-      this.sortFunction = this.$route.name === 'events.list' ? sortByDateMixin : sortByDateStart
+      this.sortOrder = this.$route.name === 'events.upcoming' ? 'ASC' : 'DESC'
+      this.sortFunction = this.$route.name === 'events.past' ? sortByDateStart : sortByDateMixin
 
       if (this.$route.name === 'events.past') {
         return {'filter[date]': 'past'}
