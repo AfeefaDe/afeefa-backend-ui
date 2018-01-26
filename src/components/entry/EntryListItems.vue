@@ -27,7 +27,7 @@
 
         <div v-if="!showIcon">
           <div v-if="has.typeIcon" class="entryList__icon">
-            <span :class="['entryType-icon',  'entryType-icon--' + item.type, 'entryType-icon--' + (item.active ? 'active' : 'inactive'), 'entryType-icon--categoryColors', categoryClass(item)]"></span>
+            <entry-icon :item="item" />
             <div class="eventDate" v-if="item.type === 'events'">
               <div class="day">{{ dayOfEvent(item) }}</div>
               <div class="month">{{ monthOfEvent(item) }}</div>
@@ -95,6 +95,7 @@
 <script>
 import Pagination from '@/components/Pagination'
 import AnnotationTag from '@/components/AnnotationTag'
+import EntryIcon from '@/components/entry/EntryIcon'
 import Spinner from '@/components/Spinner'
 import moment from 'moment'
 
@@ -197,7 +198,8 @@ export default {
   components: {
     Pagination,
     Spinner,
-    AnnotationTag
+    AnnotationTag,
+    EntryIcon
   }
 }
 </script>
