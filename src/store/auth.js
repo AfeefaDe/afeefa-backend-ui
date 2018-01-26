@@ -188,6 +188,8 @@ export default {
 
 
     logout ({state, commit, dispatch}) {
+      window.stop() // cancel all requests, prevent 'session invalid' for running requests
+
       const url = BASE + 'users/sign_out'
       const request = Vue.http.delete(url, {headers: state.lastAuthHeader})
       request.then(response => {
