@@ -25,7 +25,7 @@
               <entry-detail-property
                 v-if="entry.title"
                 :name="$t('entries.title')">
-                <entry-icon :item="entry" slot="icon" />
+                <entry-icon :item="entry" slot="icon" v-if="entry.type === 'events'" />
                 {{ entry.title }}
               </entry-detail-property>
 
@@ -34,6 +34,7 @@
                 :iconName="'date_range'"
                 v-if="has.date && entry.date_start">
                   {{ entry | formatEventDate }}
+                  <span>({{entry.date_start | formatDateRelative}})</span>
               </entry-detail-property>
 
               <entry-detail-property v-if="entry.type === 'orgas'" name="Projektträger" :iconName="'device_hub'">
@@ -45,7 +46,7 @@
                 <div v-if="!entry.project_initiators.length" class="entryDetail__error">Kein Projektträger angegeben</div>
               </entry-detail-property>
 
-              <entry-detail-property v-if="entry.type === 'orgas'" name="Netzwerke" :iconName="'device_hub'">
+              <entry-detail-property v-if="entry.type === 'orgas'" name="Netzwerke">
                 <div v-for="network in entry.networks" :key="network.id">
                   <router-link :to="{name: network.type + '.show', params: {id: network.id}}">
                     {{ network.title }}
@@ -54,7 +55,7 @@
                 <div v-if="!entry.networks.length" class="entryDetail__error">In keinem Netzwerk Mitglied</div>
               </entry-detail-property>
 
-              <entry-detail-property v-if="entry.type === 'orgas'" name="Partner" :iconName="'device_hub'">
+              <entry-detail-property v-if="entry.type === 'orgas'" name="Partner">
                 <div v-for="partner in entry.partners" :key="partner.id">
                   <router-link :to="{name: partner.type + '.show', params: {id: partner.id}}">
                     {{ partner.title }}
@@ -80,7 +81,7 @@
               </entry-detail-property>
 
               <entry-detail-property
-                v-if="entry.short_description || entry.inheritance.short_description && entry.parent_orga && entry.parent_orga.short_description"
+                v-if="showShortDescription"
                 :name="$t('entries.short_description')"
                 :iconName="'more_horiz'"
                 :isMultiline="true">
@@ -91,7 +92,7 @@
               <entry-detail-property
                 v-if="entry.description"
                 :name="$t('entries.description')"
-                :iconName="'more_horiz'"
+                :iconName="showShortDescription ? null : 'more_horiz'"
                 :isMultiline="true">
                 <span>{{ entry.description }}</span>
               </entry-detail-property>
@@ -293,6 +294,13 @@ export default {
   },
 
   computed: {
+    showShortDescription () {
+      return this.entry.short_description ||
+        this.entry.inheritance.short_description &&
+        this.entry.parent_orga &&
+        this.entry.parent_orga.short_description
+    },
+
     categoryClass () {
       if (this.entry.category && this.entry.category.title) {
         return 'cat-' + this.entry.category.title

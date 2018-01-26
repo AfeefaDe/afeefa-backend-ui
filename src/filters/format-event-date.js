@@ -19,7 +19,7 @@ export default function (event) {
   }
 
   // create date start string
-  let format = 'dddd DD. MMMM'
+  let format = 'ddd DD. MMM'
   const startYear = moment(event.date_start).year()
   if (currentYear !== startYear) {
     format += ' YYYY'
@@ -29,7 +29,7 @@ export default function (event) {
   // create date end string
   let dateEnd
   if (event.date_end) {
-    format = 'dddd DD. MMMM'
+    format = 'ddd DD. MMM'
     const endYear = moment(event.date_end).year()
     if (currentYear !== endYear) {
       format += ' YYYY'
