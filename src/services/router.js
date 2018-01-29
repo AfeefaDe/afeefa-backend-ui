@@ -22,6 +22,7 @@ import EditChapter from '@/components/routes/chapters/Edit'
 import ShowChapter from '@/components/routes/chapters/Show'
 
 
+import Categories from '@/components/routes/Categories'
 import Search from '@/components/routes/Search'
 import UserSettings from '@/components/routes/UserSettings'
 
@@ -140,6 +141,11 @@ const routes = [
             props: true
           }
         ]
+      },
+      {
+        path: 'categories',
+        name: 'categories',
+        component: Categories
       },
       {
         path: 'search',

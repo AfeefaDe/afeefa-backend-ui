@@ -74,6 +74,12 @@ const menuTree = {
       ]
     },
     {
+      route: 'categories',
+      title: 'headlines.categories',
+      action: null,
+      level: 1
+    },
+    {
       route: 'search',
       title: 'headlines.search',
       action: null,

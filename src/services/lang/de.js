@@ -9,6 +9,7 @@ export default {
     annotations: 'Anmerkung | Anmerkungen',
     search: 'Suche',
     searchPlaceholder: 'Suche nach',
+    categories: 'Kategorien',
     logout: 'Logout',
     new: 'Neu',
     edit: 'Ändern',

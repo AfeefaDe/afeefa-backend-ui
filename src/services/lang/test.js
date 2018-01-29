@@ -9,6 +9,7 @@ export default {
     annotations: '*',
     search: '*',
     searchPlaceholder: '*',
+    categories: '*',
     logout: '*',
     new: '*',
     edit: '*',
