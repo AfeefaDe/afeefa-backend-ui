@@ -17,9 +17,9 @@
             <section class="entryForm__actionFooter">
               <button class="btn waves-effect waves-light saveButton" type="submit">
                 <i class="material-icons left">done</i>
-                Speichern
+                {{ item.id ? 'Speichern' : 'Anlegen' }}
               </button>
-              <button class="btn waves-effect waves-light red" @click.prevent="remove">
+              <button class="btn waves-effect waves-light red" @click.prevent="remove" v-if="item.id">
                 <i class="material-icons left">delete</i>
                 Löschen
               </button>
