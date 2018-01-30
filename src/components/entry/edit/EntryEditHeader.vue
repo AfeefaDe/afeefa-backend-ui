@@ -1,7 +1,7 @@
 <template>
   <div v-bind:class="['mainCard__header', 'mainCard__headerCategories', categoryClass]" v-if="item">
     <div class="mainCard__headerTitle">
-      <h2 class="mainCard__headerTitle"> {{item.title || 'Kein Titel'}}</h2>
+      <h2 class="mainCard__headerTitle"> {{item.title || defaultTitle }}</h2>
       <span v-if="item.parent_orga" class="mainCard__headerSubtitle">
         <router-link :to="{name: item.parent_orga.type + '.show', params: {id: item.parent_orga.id}}">
           <u>{{ item.parent_orga.title }}</u>
@@ -25,6 +25,14 @@ export default {
       if (this.item.category && this.item.category.title) {
         return 'cat-' + this.item.category.title
       }
+    },
+
+    defaultTitle () {
+      return this.item.id
+        ? 'Kein Titel'
+        : this.item.type === 'events'
+          ? 'Neue Veranstaltung'
+          : 'Neuer Akteur'
     }
   },
 
