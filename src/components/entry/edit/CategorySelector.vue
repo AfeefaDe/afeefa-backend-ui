@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div class="inputField__spacing">
-      <label for="category">Kategorie</label>
+  <div class="categorySelector inputField__spacing input-field">
+    <div class="categorySelect">
+      <label for="category" class="active">Kategorie</label>
       <select
         v-model="item.category"
         id="category"
@@ -20,9 +20,9 @@
       <span v-show="errors.has('category')" class="validation-error">{{ errors.first('category') }}</span>
     </div>
 
-    <div class="inputField__spacing inputField__indented"
+    <div class="categorySelect inputField__indented"
       v-if="item.category && item.category.sub_categories && item.category.sub_categories.length">
-      <label>Unterkategorie</label>
+      <label class="active">Unterkategorie</label>
       <select class="browser-default" v-model="item.sub_category">
         <option selected :value="null">Keine Kategorie ausgewählt</option>
         <option selected :value="category" v-for="category in item.category.sub_categories" :key="category.id">{{ $t('categories.' + category.title) }}</option>
@@ -73,3 +73,17 @@ export default {
   }
 }
 </script>
+
+
+<style lang="scss" scoped>
+.categorySelect {
+  position: relative;
+  label + * {
+    margin-top: 6px;
+  }
+}
+.categorySelector {
+  display: flex;
+  justify-content: flex-start;
+}
+</style>

@@ -1,5 +1,5 @@
 /*default inputField Spacing for non materialize inputs*/
-.inputField__spacing {
+.inputField__spacing:not(:first-child) {
   margin-top: 2rem;
 }
 .inputField__indented {
