@@ -143,12 +143,17 @@ export default {
     },
 
     tabNames () {
-      let tabNames = ['generalTab', 'annotationsTab', 'placeTab', 'contactTab']
+      let tabNames = [
+        'generalTab',
+        {name: 'annotationsTab', hint: this.item.annotations.length},
+        'placeTab',
+        'contactTab'
+      ]
       if (this.currentUser && this.currentUser.area === 'dresden') {
-        tabNames.push('resourceTab')
+        tabNames.push({name: 'resourceTab', hint: this.item.resource_items.length})
       }
-      tabNames.push('networkMembersTab')
-      tabNames.push('projectsTab')
+      tabNames.push({name: 'networkMembersTab', hint: this.item.network_members.length})
+      tabNames.push({name: 'projectsTab', hint: this.item.projects.length})
       return tabNames
     }
   },

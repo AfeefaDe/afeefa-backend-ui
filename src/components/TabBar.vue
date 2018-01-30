@@ -1,22 +1,25 @@
 <template>
-<div class="tabbedSection">
-  <ul class="tabbedSection__navItemContainer">
-    <li v-for="tabName in tabNames" :key="tabName" :class="['tabbedSection__navItem', {active: activeTab === tabName}]">
-      <a href="#" @click.prevent="setActiveTab(tabName)">{{$t('tabs.'+tabName)}}</a>
-    </li>
-  </ul>
-
-  <section v-for="tabName in tabNames" :key="tabName" v-show="activeTab === tabName">
-    <slot :name="tabName"></slot>
-  </section>
-
+<div class="tabBar">
+  <div v-if="tabs.length > 1">
+    <ul class="tabBar__navItemContainer">
+      <li v-for="tab in tabs" :key="tab.name" :class="['tabBar__navItem', {active: activeTab === tab}]">
+        <a href="#" @click.prevent="setActiveTab(tab)">
+          {{ $t('tabs.' + tab.name) }}
+          <span v-if="tab.hint !== null">({{ tab.hint }})</span>
+        </a>
+      </li>
+    </ul>
+    <section v-for="tab in tabs" :key="tab.name" v-show="activeTab === tab">
+      <slot :name="tab.name"></slot>
+    </section>
+  </div>
 </div>
 </template>
 
 <script>
 export default {
   /*
-   * the tabNames should be handled as a generic identifier for the tab
+   * the tabs should be handled as a generic identifier for the tab
    * the translation i stored in 'tabs'.tabName
    */
   props: ['tabNames'],
@@ -25,35 +28,70 @@ export default {
 
   data () {
     return {
-      activeTab: this.tabNames[0]
+      tabs: [],
+      activeTab: null
     }
   },
+
   created () {
+    this.initTabs()
     this.initPageProperties()
   },
 
   watch: {
     '$route' () {
       this.initPageProperties()
+    },
+
+    tabNames () {
+      this.initTabs()
     }
   },
 
   methods: {
-    initPageProperties () {
-      if (this.tabNames.includes(this.$route.query.tab)) {
-        this.activeTab = this.$route.query.tab
-      } else {
-        this.activeTab = this.tabNames[0]
+    initTabs () {
+      const newTabs = []
+      for (let index in this.tabNames) {
+        let tabName
+        let tabHint = null
+        if (typeof this.tabNames[index] === 'object') {
+          tabName = this.tabNames[index].name
+          tabHint = this.tabNames[index].hint
+        } else {
+          tabName = this.tabNames[index]
+        }
+
+        let tab = this.tabs.find(t => t.name === tabName)
+        if (!tab) {
+          tab = { name: tabName }
+        }
+        tab.hint = tabHint
+        newTabs.push(tab)
       }
-      this.$emit('setCurrentTab', this.activeTab)
+      this.tabs = newTabs
+    },
+
+    initPageProperties () {
+      const activeTab = this.tabs.find(tab => {
+        return tab.name === this.$route.query.tab
+      })
+
+      if (activeTab) {
+        this.activeTab = activeTab
+      } else {
+        this.activeTab = this.tabs[0]
+      }
+
+      this.$emit('setCurrentTab', this.activeTab.name)
     },
 
     setActiveTab (tab) {
       this.activeTab = tab
       // set active tab to parent (used to switch between edit/view mode consistently)
-      this.$emit('setCurrentTab', this.activeTab)
+      this.$emit('setCurrentTab', this.activeTab.name)
+
       const query = {...this.$route.query}
-      query.tab = tab === this.tabNames[0] ? undefined : tab
+      query.tab = tab === this.tabs[0] ? undefined : tab.name
       this.$router.replace({query: query})
     }
   }
@@ -63,9 +101,10 @@ export default {
 <style lang="scss" scoped>
 @import "~variables";
 
-.tabbedSection {
+.tabBar {
   $activeBorderWidth: 3px;
   &__navItemContainer {
+    margin: 0 0 2em;
     width: 100%;
     // fixes strange chrome bug (#200)
     overflow-x: hidden;

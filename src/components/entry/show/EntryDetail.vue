@@ -311,15 +311,15 @@ export default {
      */
     tabNames () {
       let tabNames = ['generalTab', 'contactTab']
-      if (this.entry.type === 'orgas' && this.entry.resource_items.length && this.currentUser.area === 'dresden') {
-        tabNames.push('resourceTab')
+      if (this.entry.type === 'orgas' && this.currentUser.area === 'dresden') {
+        tabNames.push({name: 'resourceTab', hint: this.entry.resource_items.length})
       }
       if (this.entry.type === 'orgas') {
         if (this.entry.network_members.length) {
-          tabNames.push('networkMembersTab')
+          tabNames.push({name: 'networkMembersTab', hint: this.entry.network_members.length})
         }
-        tabNames.push('projectsTab')
-        tabNames.push('eventsTab')
+        tabNames.push({name: 'projectsTab', hint: this.entry.projects.length})
+        tabNames.push({name: 'eventsTab', hint: this.upcomingEvents.length + this.pastEvents.length})
       }
       return tabNames
     }
