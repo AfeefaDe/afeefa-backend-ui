@@ -1,20 +1,42 @@
 <template>
   <entry-list
     :items="items"
+    :numItems="numItems"
     addEntryButton="events.new"
-    :sort-function="sortFunction"
-    :sort-order="sortOrder"
-    :options="{filter: true, pagination: true, event_date: true}"
     :messages="messages">
+
+    <div slot="items">
+      <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
+        <entry-list-items
+          slot="upcomingEventsTab"
+          :items="items"
+          :sort-function="sortFunction"
+          :options="{filter: true, pagination: true, event_date: true}"
+          :sort-order="sortOrder">
+        </entry-list-items>
+
+        <entry-list-items
+          slot="pastEventsTab"
+          :items="items"
+          :sort-function="sortFunction"
+          :options="{filter: true, pagination: true, event_date: true}"
+          :sort-order="sortOrder">
+        </entry-list-items>
+      </tab-bar>
+    </div>
+
   </entry-list>
 </template>
 
 
 <script>
-import EntryListMixin from '@/components/mixins/EntryListMixin'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 import Events from '@/resources/Events'
+import TabBar from '@/components/TabBar'
+import EntryListMixin from '@/components/mixins/EntryListMixin'
+import EntryListItems from '@/components/entry/EntryListItems'
+import { mapState } from 'vuex'
 
 export default {
   mixins: [EntryListMixin],
@@ -22,40 +44,62 @@ export default {
   data () {
     return {
       Resource: Events,
-      sortFunction: sortByDateStart,
-      sortOrder: 'ASC',
+      sortFunction: null,
+      sortOrder: null,
+      currentTab: null,
+
       messages: {
         headline: () => {
-          if (this.$route.name === 'events.past') {
-            return this.$t('headlines.pastEvents')
-          } else if (this.$route.name === 'events.upcoming') {
-            return this.$t('headlines.upcomingEvents')
-          } else {
-            return this.$tc('headlines.events', 2)
-          }
+          return this.$tc('headlines.events', 2)
         }
       }
     }
   },
 
-  watch: {
-    '$route.name': function () {
-      this.items = null
-      this.loadItems()
+  computed: {
+    ...mapState({
+      numEvents: state => state.navigation.numEvents
+    }),
+
+    numItems () {
+      return this.numEvents.upcoming + this.numEvents.past
+    },
+
+    tabNames () {
+      return [
+        { name: 'upcomingEventsTab', hint: this.numEvents.upcoming },
+        { name: 'pastEventsTab', hint: this.numEvents.past }
+      ]
     }
   },
 
   methods: {
-    getQueryParams () {
-      this.sortOrder = this.$route.name === 'events.upcoming' ? 'ASC' : 'DESC'
-      this.sortFunction = this.$route.name === 'events.past' ? sortByDateStart : sortByDateMixin
+    beforeCreated () {
+      this.currentTab = this.$route.query.tab || 'upcomingEventsTab'
+    },
 
-      if (this.$route.name === 'events.past') {
+    setCurrentTab (tabName) {
+      this.currentTab = tabName
+
+      this.items = null
+      this.loadItems()
+    },
+
+    getQueryParams () {
+      this.sortOrder = this.currentTab === 'upcomingEventsTab' ? 'ASC' : 'DESC'
+      this.sortFunction = this.currentTab === 'pastEventsTab' ? sortByDateStart : sortByDateMixin
+
+      if (this.currentTab === 'pastEventsTab') {
         return {'filter[date]': 'past'}
-      } else if (this.$route.name === 'events.upcoming') {
+      } else {
         return {'filter[date]': 'upcoming'}
       }
     }
+  },
+
+  components: {
+    EntryListItems,
+    TabBar
   }
 }
 </script>

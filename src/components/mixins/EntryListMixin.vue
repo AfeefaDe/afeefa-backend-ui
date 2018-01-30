@@ -9,10 +9,14 @@ export default {
   },
 
   created () {
+    this.beforeCreated()
     this.loadItems()
   },
 
   methods: {
+    beforeCreated () {
+      return null
+    },
     getQueryParams () {
       return null
     },

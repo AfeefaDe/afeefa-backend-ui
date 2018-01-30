@@ -42,6 +42,8 @@ export default {
     networkMembersTab: '*',
     projectsTab: '*',
     eventsTab: '*',
+    upcomingEventsTab: '*',
+    pastEventsTab: '*',
     resourceTab: '*'
   },
   errors: {

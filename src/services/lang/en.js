@@ -42,6 +42,8 @@ export default {
     networkMembersTab: 'Network Members',
     projectsTab: 'Projects',
     eventsTab: 'Events',
+    upcomingEventsTab: 'Upcoming',
+    pastEventsTab: 'Past',
     resourceTab: 'Resources'
   },
   errors: {

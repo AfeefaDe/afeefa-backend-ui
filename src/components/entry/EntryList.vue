@@ -4,7 +4,7 @@
       <div class="mainCard">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">
-            {{ messages.headline() }} ({{ numItems }})
+            {{ messages.headline() }} ({{ currentNumItems }})
           </h2>
 
           <router-link v-if="addEntryButton" :to="{name: addEntryButton}"  class="mainCard__headerButton">
@@ -15,12 +15,15 @@
 
         <slot></slot>
 
-        <entry-list-items
-          :items="items"
-          :sort-function="sortFunction"
-          :options="options"
-          :sort-order="sortOrder">
-        </entry-list-items>
+        <slot name="items">
+          <entry-list-items
+            :items="items"
+            :sort-function="sortFunction"
+            :options="options"
+            :sort-order="sortOrder">
+          </entry-list-items>
+        </slot>
+
       </div>
     </div>
   </div>
@@ -31,11 +34,11 @@
 import EntryListItems from '@/components/entry/EntryListItems'
 
 export default {
-  props: ['items', 'sortFunction', 'sortOrder', 'options', 'messages', 'addEntryButton'],
+  props: ['items', 'numItems', 'sortFunction', 'sortOrder', 'options', 'messages', 'addEntryButton'],
 
   computed: {
-    numItems () {
-      return this.items ? this.items.length : 0
+    currentNumItems () {
+      return this.numItems || (this.items ? this.items.length : 0)
     }
   },
 
