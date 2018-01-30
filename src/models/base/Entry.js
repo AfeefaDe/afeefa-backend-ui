@@ -148,7 +148,7 @@ export default class Entry extends BaseModel {
     }
 
     // annotations
-    if (rels.annotations.data.length) {
+    if (rels.annotations && rels.annotations.data.length) {
       for (let jsonAnnotation of rels.annotations.data) {
         if (!this._relationIds.annotations.includes(jsonAnnotation.id)) {
           this._relationIds.annotations.push(jsonAnnotation.id)
