@@ -127,23 +127,15 @@ export default class Entry extends BaseModel {
     this.updated_at = new Date(json.attributes.updated_at)
     this.state_changed_at = new Date(json.attributes.state_changed_at)
 
-    const rels = json.relationships
-
-    // parent orga / orga
-    if (this.type === 'orgas' && rels.parent_orga && rels.parent_orga.data) {
-      this._relationIds.parent_orga = rels.parent_orga.data.id
-    }
-    if (this.type === 'events' && rels.orga && rels.orga.data) {
-      this._relationIds.parent_orga = rels.orga.data.id
-    }
+    const rels = json.relationships || {}
 
     // category
-    if (rels.category.data) {
+    if (rels.category && rels.category.data) {
       this._relationIds.category = rels.category.data.id
     }
 
     // subcategory
-    if (rels.sub_category.data) {
+    if (rels.sub_category && rels.sub_category.data) {
       this._relationIds.sub_category = rels.sub_category.data.id
     }
 
@@ -167,11 +159,12 @@ export default class Entry extends BaseModel {
     }
 
     // creator, last editor
-    if (rels.creator.data) {
+    if (rels.creator && rels.creator.data) {
       this.creator = new User()
       this.creator.deserialize(rels.creator.data)
     }
-    if (rels.last_editor.data) {
+
+    if (rels.last_editor && rels.last_editor.data) {
       this.lastEditor = new User()
       this.lastEditor.deserialize(rels.last_editor.data)
     }

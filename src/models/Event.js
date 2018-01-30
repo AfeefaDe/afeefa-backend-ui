@@ -1,4 +1,5 @@
 import Entry from './base/Entry'
+import Orga from './Orga'
 import moment from 'moment'
 
 export default class Event extends Entry {
@@ -21,6 +22,16 @@ export default class Event extends Entry {
     this.date_end = json.attributes.date_end ? new Date(json.attributes.date_end) : this.date_start
     this.has_time_end = json.attributes.has_time_end === true
     this.upcoming = json.attributes.upcoming
+
+    const rels = json.relationships
+
+    if (rels.orga && rels.orga.data) {
+      const parentOrga = new Orga()
+      parentOrga.deserialize(rels.orga.data)
+      this.parent_orga = parentOrga
+
+      this._relationIds.parent_orga = rels.orga.data.id
+    }
   }
 
   serialize () {
@@ -46,5 +57,11 @@ export default class Event extends Entry {
       : null
 
     return data
+  }
+
+  clone () {
+    const clone = super.clone(this)
+    clone.parent_orga = this.parent_orga
+    return clone
   }
 }

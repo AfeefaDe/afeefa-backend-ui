@@ -50,6 +50,12 @@
             <span class="icon"><i v-if="!showIcon" class="material-icons">navigate_next</i></span>
           </router-link>
 
+          <span v-if="item.parent_orga">
+            <router-link :to="{name: item.parent_orga.type + '.show', params: {id: item.parent_orga.id}}">
+              <u> {{ item.parent_orga.title }}</u>
+            </router-link>
+          </span>
+
           <div class="entryList__attributes">
             <p class="item category" v-if="item.category">
               {{ $t('categories.' + item.category.title) }}

@@ -34,7 +34,7 @@ export default class Orga extends Entry {
     this.count_projects = json.attributes.count_projects
     this.count_network_members = json.attributes.count_network_members
 
-    const rels = json.relationships
+    const rels = json.relationships || {}
 
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
       if (rels[actorRelation] && rels[actorRelation].data.length) {
@@ -50,8 +50,12 @@ export default class Orga extends Entry {
     })
 
     // parent orga
-    if (this.project_initiators.length) {
-      this._relationIds.parent_orga = this.project_initiators[0].id
+    if (rels.initiator && rels.initiator.data) {
+      const parentOrga = new Orga()
+      parentOrga.deserialize(rels.initiator.data)
+      this.parent_orga = parentOrga
+
+      this._relationIds.parent_orga = rels.initiator.data.id
     }
 
     // resourceItems
@@ -85,6 +89,7 @@ export default class Orga extends Entry {
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
       clone[actorRelation] = this[actorRelation]
     })
+    clone.parent_orga = this.parent_orga
     return clone
   }
 }

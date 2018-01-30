@@ -11,7 +11,7 @@ import Location from '@/models/Location'
 
 export default {
   fetchParentOrga (entry) {
-    if (!entry.parent_orga) {
+    if (!entry.parent_orga || !entry.parent_orga._fullyLoaded) {
       const id = entry._relationIds.parent_orga
       if (id) {
         Orgas.get(id, [
@@ -114,7 +114,6 @@ export default {
 
   clone (entry) {
     const clone = entry.clone()
-    this.fetchParentOrga(clone)
     this.fetchCategory(clone)
     this.fetchSubCategory(clone)
     this.fetchLocation(clone, true) // true => location.clone()
