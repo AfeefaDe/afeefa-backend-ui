@@ -141,7 +141,12 @@ export default {
 
   computed: {
     tabNames () {
-      return ['generalTab', 'annotationsTab', 'placeTab', 'contactTab']
+      return [
+        'generalTab',
+        { name: 'annotationsTab', hint: this.item.annotations.length },
+        'placeTab',
+        'contactTab'
+      ]
     }
   },
 
