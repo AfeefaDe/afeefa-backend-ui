@@ -21,6 +21,7 @@ import NavigationSidebar from '@/components/navigation/NavigationSidebar'
 import NavigationMobile from '@/components/navigation/NavigationMobile'
 import Categories from '@/resources/Categories'
 import AnnotationCategories from '@/resources/AnnotationCategories'
+import Annotations from '@/resources/Annotations'
 
 export default {
   components: {
@@ -30,9 +31,10 @@ export default {
 
   created () {
     this.$store.dispatch('api/getMetaInformation')
-    // categoris and annotationsCategories should be loaded initially
+    // categories and annotations are used multiple times
     Categories.getAll()
     AnnotationCategories.getAll()
+    Annotations.getAll()
   }
 }
 
