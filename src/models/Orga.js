@@ -10,6 +10,10 @@ export default class Orga extends Entry {
 
     this.type = 'orgas'
     this.orga_type_id = OrgaType.ORGANIZATION
+    this.count_events = 0
+    this.count_resource_items = 0
+    this.count_projects = 0
+    this.count_network_members = 0
 
     this.resource_items = []
 
@@ -25,6 +29,10 @@ export default class Orga extends Entry {
     super.deserialize(json)
 
     this.orga_type_id = json.attributes.orga_type_id
+    this.count_events = json.attributes.count_events
+    this.count_resource_items = json.attributes.count_resource_items
+    this.count_projects = json.attributes.count_projects
+    this.count_network_members = json.attributes.count_network_members
 
     const rels = json.relationships
 
