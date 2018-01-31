@@ -1,5 +1,6 @@
 import BaseModel from './base/BaseModel'
 import ContactPerson from './ContactPerson'
+import Location from './Location'
 
 export default class Contact extends BaseModel {
   init () {
@@ -13,6 +14,7 @@ export default class Contact extends BaseModel {
     this.socialMedia = ''
     this.spokenLanguages = ''
 
+    this.location = null
     this.persons = []
   }
 
@@ -25,6 +27,13 @@ export default class Contact extends BaseModel {
     this.spokenLanguages = json.attributes.spoken_languages || ''
 
     const rels = json.relationships || {}
+
+    // location
+    if (rels.location && rels.location.data) {
+      const location = new Location()
+      location.deserialize(rels.location.data)
+      this.location = location
+    }
 
     // contact persons
     if (rels.contact_persons && rels.contact_persons.data.length) {
@@ -43,6 +52,7 @@ export default class Contact extends BaseModel {
       web: this.web,
       social_media: this.socialMedia,
       spoken_languages: this.spokenLanguages,
+      location: this.location.serialize(),
       contact_persons: []
     }
 
@@ -58,6 +68,9 @@ export default class Contact extends BaseModel {
 
   clone () {
     const clone = super.clone(this)
+
+    // location
+    clone.location = this.location.clone()
 
     // persons
     clone.persons = this.persons.map(cp => cp.clone())

@@ -3,23 +3,30 @@
     <div v-for="contact in item.contacts" :key="contact.id">
 
       <ul class="entryDetail" v-if="contact.location">
-        <li v-if="location.isEmpty()" class="entryDetail__error">
+        <li v-if="contact.location.isEmpty()" class="entryDetail__error">
             {{ $t('errors.noLocationPresent') }}
         </li>
         <li v-else>
-          <entry-detail-property v-if="!location.isEmpty()" :name="$t('entries.address')" :iconName="'location_on'">
-            <span v-if="location.placename">{{ location.placename }}<br></span>
-            <span v-if="location.street">{{ location.street }}<br></span>
-            <span v-if="location.zip || location.city">{{ location.zip }} {{ location.city }}</span>
-            <location-map :map-center="mapCenter" :initial-zoom="13" :location="location" :currentTab="currentTab" style="max-width:400px"></location-map>
+          <entry-detail-property v-if="!contact.location.isEmpty()" :name="$t('entries.address')" :iconName="'location_on'">
+            <span v-if="contact.location.placename">{{ contact.location.placename }}<br></span>
+            <span v-if="contact.location.street">{{ contact.location.street }}<br></span>
+            <span v-if="contact.location.zip || contact.location.city">
+              {{ contact.location.zip }} {{ contact.location.city }}
+            </span>
+            <location-map
+              :map-center="mapCenter"
+              :initial-zoom="13"
+              :location="contact.location"
+              style="max-width:400px">
+            </location-map>
           </entry-detail-property>
 
           <entry-detail-property
-            v-if="location.directions"
+            v-if="contact.location.directions"
             :name="$t('entries.directions')"
             :iconName="'train'"
             :isMultiline="true">
-            {{ location.directions }}
+            {{ contact.location.directions }}
           </entry-detail-property>
         </li>
       </ul>

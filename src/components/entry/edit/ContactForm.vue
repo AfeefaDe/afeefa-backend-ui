@@ -1,5 +1,12 @@
 <template>
   <div>
+    <h2>Ort</h2>
+
+    <location-form
+      :location="contact.location"
+      v-if="contact.location">
+    </location-form>
+
     <h2>Kontaktperson</h2>
 
     <div v-for="person in contact.persons" :key="person.id">
@@ -83,10 +90,12 @@
 </template>
 
 <script>
-import LangSelectInput from './LangSelectInput'
-import InputField from '@/components/InputField'
 import Contacts from '@/resources/Contacts'
 import Contact from '@/models/Contact'
+
+import InputField from '@/components/InputField'
+import LocationForm from './LocationForm'
+import LangSelectInput from './LangSelectInput'
 
 export default {
   props: ['item'],
@@ -124,6 +133,7 @@ export default {
 
   components: {
     LangSelectInput,
+    LocationForm,
     InputField
   }
 }
