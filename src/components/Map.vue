@@ -36,6 +36,8 @@ export default {
     /*
      * this recalculates the size of the map after every tab change
      * allows us to use v-show in the TabBar Component
+     *
+     * @TODO what is the problem solved by this currentTab injection?
      */
     currentTab: function (currentTab) {
       const map = this.$refs.map.mapObject
