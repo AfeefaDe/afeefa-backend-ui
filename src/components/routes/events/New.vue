@@ -34,10 +34,10 @@ import EditEntrySlotMixin from '@/components/entry/edit/mixins/EditEntrySlotMixi
 import EventRouteConfig from './EventRouteConfig'
 
 import EntryEdit from '@/components/entry/edit/EntryEdit'
-import TitleInput from '@/components/entry/edit//TitleInput'
-import CategorySelector from '@/components/entry/edit//CategorySelector'
+import TitleInput from '@/components/entry/edit/TitleInput'
+import CategorySelector from '@/components/entry/edit/CategorySelector'
 import DatePicker from '@/components/event/datepicker/DatePicker'
-import DescriptionForm from '@/components/entry/edit//DescriptionForm'
+import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 
 export default {
   mixins: [BeforeRouteLeaveMixin, EditEntrySlotMixin],

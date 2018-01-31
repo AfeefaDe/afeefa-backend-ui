@@ -32,9 +32,9 @@ import OrgaRouteConfig from './OrgaRouteConfig'
 import OrgaType from '@/models/OrgaType'
 
 import EntryEdit from '@/components/entry/edit/EntryEdit'
-import TitleInput from '@/components/entry/edit//TitleInput'
-import DescriptionForm from '@/components/entry/edit//DescriptionForm'
-import CategorySelector from '@/components/entry/edit//CategorySelector'
+import TitleInput from '@/components/entry/edit/TitleInput'
+import DescriptionForm from '@/components/entry/edit/DescriptionForm'
+import CategorySelector from '@/components/entry/edit/CategorySelector'
 
 export default {
   mixins: [BeforeRouteLeaveMixin, EditEntrySlotMixin],
