@@ -156,13 +156,7 @@
           </section>
 
           <section slot="contactTab">
-            <show-contact-info
-              :location="entry.location"
-              :contact-info="entry.contact"
-              :inherited-contact-info="entry.inheritance.contact_infos"
-              :parent-orga="entry.parent_orga"
-              :currentTab="currentTab">
-            </show-contact-info>
+            <contact-list :item="entry" />
           </section>
 
           <section slot="resourceTab" v-if="entry.type === 'orgas' && entry.resource_items.length">
@@ -238,7 +232,7 @@ import ResourceItem from '@/components/ResourceItem'
 import EntryDetailProperty from './EntryDetailProperty'
 import EntryListDropDownMenu from './EntryListDropDownMenu'
 import EntryDetailHeader from './EntryDetailHeader'
-import ShowContactInfo from './ShowContactInfo'
+import ContactList from './ContactList'
 
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 
@@ -334,7 +328,7 @@ export default {
     TabBar,
     EntryListDropDownMenu,
     AnnotationTag,
-    ShowContactInfo,
+    ContactList,
     ResourceItem,
     EntryDetailHeader
   }

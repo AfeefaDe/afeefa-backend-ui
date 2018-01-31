@@ -1,5 +1,6 @@
 import Entry from './base/Entry'
 import OrgaType from './OrgaType'
+import Contact from './Contact'
 import Entries from '@/resources/base/Entries'
 
 export default class Orga extends Entry {
@@ -16,6 +17,7 @@ export default class Orga extends Entry {
     this.count_network_members = 0
 
     this.resource_items = []
+    this.contacts = []
 
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
       this[actorRelation] = []
@@ -58,6 +60,15 @@ export default class Orga extends Entry {
       this._relationIds.parent_orga = rels.initiator.data.id
     }
 
+    // contacts
+    if (rels.contacts && rels.contacts.data.length) {
+      for (let jsonContact of rels.contacts.data) {
+        const contact = new Contact()
+        contact.deserialize(jsonContact)
+        this.contacts.push(contact)
+      }
+    }
+
     // resourceItems
     if (rels.resource_items && rels.resource_items.data.length) {
       for (let jsonResource of rels.resource_items.data) {
@@ -78,18 +89,31 @@ export default class Orga extends Entry {
     for (let resourceItem of this.resource_items) {
       resourceItemsSerialized.push(resourceItem.serialize())
     }
+    data.relationships.resource_items = { data: resourceItemsSerialized }
 
-    data.relationships.resource_items = {data: resourceItemsSerialized}
+    const contactsSerialized = []
+    for (let contact of this.contacts) {
+      contactsSerialized.push(contact.serialize())
+    }
+    data.relationships.contacts = { data: contactsSerialized }
 
     return data
   }
 
   clone () {
     const clone = super.clone(this)
+
+    // actor relations
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
       clone[actorRelation] = this[actorRelation]
     })
+
+    // initiator relation
     clone.parent_orga = this.parent_orga
+
+    // contacts
+    clone.contacts = this.contacts.map(c => c.clone())
+
     return clone
   }
 }

@@ -69,13 +69,7 @@
         </section>
 
         <section slot="contactTab">
-          <edit-contact-info ref="EditContactInfo" v-if="item.contact"
-            :contact-info="item.contact"
-            :inheritance-state="item.inheritance.contact_infos"
-            :type="item.type"
-            :parent-orga="item.parent_orga"
-            @inheritanceChanged="setContactInfoInheritance">
-          </edit-contact-info>
+          <contact-form :item="item" />
         </section>
 
         <section slot="networkMembersTab">
@@ -109,7 +103,7 @@ import InputField from '@/components/InputField'
 
 import EntryEdit from '@/components/entry/edit/EntryEdit'
 import LocationForm from '@/components/entry/edit//LocationForm'
-import EditContactInfo from '@/components/entry/edit//EditContactInfo'
+import ContactForm from '@/components/entry/edit//ContactForm'
 import CategorySelector from '@/components/entry/edit//CategorySelector'
 import AnnotationForm from '@/components/entry/edit//AnnotationForm'
 import ResourceForm from '@/components/entry/edit//ResourceForm'
@@ -172,10 +166,6 @@ export default {
 
     setCurrentTab (tab) {
       this.currentTab = tab
-    },
-
-    setContactInfoInheritance (inheritContactInfos) {
-      this.item.inheritance.contact_infos = inheritContactInfos
     }
   },
 
@@ -187,7 +177,7 @@ export default {
     PowerSelector,
 
     TitleInput,
-    EditContactInfo,
+    ContactForm,
     LocationForm,
     CategorySelector,
     AnnotationForm,
