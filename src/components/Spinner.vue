@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Spinner from 'spin.js'
+import {Spinner} from 'spin.js'
 
 export default {
   props: ['show', 'width', 'radius', 'length', 'color', 'fadeColor'],

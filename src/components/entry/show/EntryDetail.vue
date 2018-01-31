@@ -296,9 +296,9 @@ export default {
   computed: {
     showShortDescription () {
       return this.entry.short_description ||
-        this.entry.inheritance.short_description &&
+        (this.entry.inheritance.short_description &&
         this.entry.parent_orga &&
-        this.entry.parent_orga.short_description
+        this.entry.parent_orga.short_description)
     },
 
     categoryClass () {
