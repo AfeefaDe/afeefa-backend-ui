@@ -71,7 +71,15 @@ export default {
 
   computed: {
     entryVisibleInFrontend () {
-      return this.entry.active && ((this.entry.type === 'events' && this.entry.upcoming) || (this.entry.type === 'orgas'))
+      // not active
+      if (!this.entry.active) {
+        return false
+      }
+      // past event
+      if (this.entry.type === 'events' && !this.entry.isUpcoming()) {
+        return false
+      }
+      return true
     },
 
     previewLink () {

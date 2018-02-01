@@ -11,7 +11,21 @@ export default class Event extends Entry {
     this.has_time_start = false
     this.date_end = moment(new Date()).startOf('day').toDate()
     this.has_time_end = false
-    this.upcoming = false
+  }
+
+  isUpcoming () {
+    const today = moment().startOf('day')
+    const start = moment(this.date_start).startOf('day')
+    if (start.diff(today, 'days') >= 0) { // start >= today
+      return true
+    }
+    if (this.date_end) {
+      const end = moment(this.date_end).startOf('day')
+      if (end.diff(today, 'days') >= 0) { // end >= today
+        return true
+      }
+    }
+    return false
   }
 
   deserialize (json) {
@@ -21,7 +35,6 @@ export default class Event extends Entry {
     this.has_time_start = json.attributes.has_time_start === true
     this.date_end = json.attributes.date_end ? new Date(json.attributes.date_end) : this.date_start
     this.has_time_end = json.attributes.has_time_end === true
-    this.upcoming = json.attributes.upcoming
 
     const rels = json.relationships
 
