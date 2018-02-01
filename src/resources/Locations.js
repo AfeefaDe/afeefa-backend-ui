@@ -16,6 +16,11 @@ class LocationsResource extends BaseResource {
 }
 
 export default {
+  getAll () {
+    const resource = new LocationsResource()
+    return store.dispatch('api/getList', {resource})
+  },
+
   get (id) {
     const resource = new LocationsResource()
     return store.dispatch('api/getItem', {resource, id})

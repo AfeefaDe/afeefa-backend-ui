@@ -60,14 +60,6 @@
           <annotation-form :item="item" />
         </section>
 
-        <section slot="placeTab">
-          <location-form
-            :location="item.location"
-            :currentTab="currentTab"
-            v-if="item.location">
-          </location-form>
-        </section>
-
         <section slot="contactTab">
           <contact-form :item="item" />
         </section>
@@ -140,8 +132,7 @@ export default {
       let tabNames = [
         'generalTab',
         {name: 'annotationsTab', hint: this.item.annotations.length},
-        'placeTab',
-        'contactTab'
+        {name: 'contactTab', hint: this.item.contacts.length}
       ]
       if (this.currentUser && this.currentUser.area === 'dresden') {
         tabNames.push({name: 'resourceTab', hint: this.item.resource_items.length})

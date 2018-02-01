@@ -1,10 +1,10 @@
-export default function (items) {
+export default function (items, fieldName = 'title') {
   if (!items) {
     return []
   }
   return items.sort((a, b) => {
-    const ta = a.title.toLowerCase().replace(/[^\w]/, '')
-    const tb = b.title.toLowerCase().replace(/[^\w]/, '')
+    const ta = a[fieldName].toLowerCase().replace(/[^\w]/, '')
+    const tb = b[fieldName].toLowerCase().replace(/[^\w]/, '')
     if (ta === tb) {
       return 0
     }

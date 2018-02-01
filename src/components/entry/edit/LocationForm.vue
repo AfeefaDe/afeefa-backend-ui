@@ -2,8 +2,8 @@
   <div>
     <div class="inputField__spacing" v-if="location">
       <div class="input-field">
-        <label for="placename" :class="{active: (location.placename)}">Ortsbezeichnung (z.B. Hinterhof)</label>
-        <input  v-model="location.placename" id="placename" type="text" />
+        <label for="title" :class="{active: (location.title)}">Ortsbezeichnung (z.B. Hinterhof)</label>
+        <input  v-model="location.title" id="title" type="text" />
       </div>
 
       <div class="input-field">

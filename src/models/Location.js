@@ -6,38 +6,43 @@ export default class Location extends BaseModel {
 
     this.id = null
     this.type = 'locations'
-    this.lat = ''
-    this.lon = ''
+    this.title = ''
     this.street = ''
     this.zip = ''
     this.city = ''
-    this.placename = ''
+    this.lat = ''
+    this.lon = ''
     this.directions = ''
+
+    this.ownerTitle = null
   }
 
   deserialize (json) {
     this.id = json.id
-    this.lat = json.attributes.lat || ''
-    this.lon = json.attributes.lon || ''
+    this.title = json.attributes.title || ''
     this.street = json.attributes.street || ''
     this.zip = json.attributes.zip || ''
     this.city = json.attributes.city || ''
-    this.placename = json.attributes.placename || ''
+    this.lat = json.attributes.lat || ''
+    this.lon = json.attributes.lon || ''
     this.directions = json.attributes.directions || ''
+
+    const rels = json.relationships || {}
+
+    if (rels.owner && rels.owner.data) {
+      this.ownerTitle = rels.owner.data.attributes.title
+    }
   }
 
   serialize () {
     const data = {
-      type: this.type,
-      attributes: {
-        lat: this.lat || '', // if unknown, it's set to null in entry edit
-        lon: this.lon || '',
-        street: this.street,
-        zip: this.zip,
-        city: this.city,
-        placename: this.placename,
-        directions: this.directions
-      }
+      title: this.title,
+      street: this.street,
+      zip: this.zip,
+      city: this.city,
+      lat: this.lat || '', // if unknown, it's set to null in entry edit
+      lon: this.lon || '',
+      directions: this.directions
     }
     if (this.id) {
       data.id = this.id

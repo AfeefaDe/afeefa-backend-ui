@@ -79,19 +79,27 @@ export default {
           return false
         }
 
-        return this.searchFields.some(field => {
-          let value = item[field]
-          if (!value) {
-            if (!this.keyword) {
-              return true
+        const keywords = this.keyword.split(' ')
+        let findCount = 0
+        for (let keyword of keywords) {
+          const hasFound = this.searchFields.some(field => {
+            let value = item[field]
+            if (!value) {
+              if (!keyword) {
+                return true
+              }
+            } else {
+              if (value.toLowerCase().includes(keyword.toLowerCase())) {
+                return true
+              }
             }
-          } else {
-            if (value.toLowerCase().includes(this.keyword.toLowerCase())) {
-              return true
-            }
+            return false
+          })
+          if (hasFound) {
+            findCount++
           }
-          return false
-        })
+        }
+        return findCount === keywords.length
       })
       this.filteredItems = filteredItems
 

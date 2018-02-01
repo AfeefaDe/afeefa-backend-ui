@@ -2,6 +2,35 @@
   <div>
     <h2>Ort</h2>
 
+    <power-selector
+      :items="locations"
+      :selected-items="[contact.location]"
+      :search-fields="['title', 'street', 'ownerTitle']"
+      @select="locationChanged"
+      @remove="locationRemoved"
+      :messages="{
+        addButtonTitle: 'Ort auswählen',
+        removeTitle: 'Ort entfernen?',
+        removeMessage: location => {
+          return `Soll der Ort ${location.title} entfernt werden?`
+        }
+      }">
+      <div slot="selected-item" slot-scope="props">
+        <div>
+          <div>{{ props.item.ownerTitle }}</div>
+          <div v-if="props.item.title" class="addressDetail">{{ props.item.title }}</div>
+          <div class="addressDetail">{{ props.item.street }}, {{ props.item.zip }}, {{ props.item.city }}</div>
+        </div>
+      </div>
+      <div slot="item" slot-scope="props">
+        <div>
+          <div>{{ props.item.ownerTitle }}</div>
+          <div v-if="props.item.title" class="addressDetail">{{ props.item.title }}</div>
+          <div class="addressDetail">{{ props.item.street }}, {{ props.item.zip }}, {{ props.item.city }}</div>
+        </div>
+      </div>
+    </power-selector>
+
     <location-form
       :location="contact.location"
       v-if="contact.location">
@@ -42,6 +71,8 @@
         label="Telefon">
       </input-field>
     </div>
+
+    <button type="button" @click="addContactPerson(contact)">Kontaktperson hinzufügen</button>
 
     <h2>Rest</h2>
 
@@ -91,11 +122,15 @@
 
 <script>
 import Contacts from '@/resources/Contacts'
+import Locations from '@/resources/Locations'
 import Contact from '@/models/Contact'
+import ContactPerson from '@/models/ContactPerson'
 
+import PowerSelector from '@/components/PowerSelector'
 import InputField from '@/components/InputField'
 import LocationForm from './LocationForm'
 import LangSelectInput from './LangSelectInput'
+import sortByTitle from '@/helpers/sort-by-title'
 
 export default {
   props: ['item'],
@@ -104,18 +139,34 @@ export default {
 
   data () {
     return {
-      contact: new Contact()
+      contact: new Contact(),
+      locations: []
     }
   },
 
   created () {
-    console.log(this.item.contacts)
     if (this.item.contacts.length) {
       this.contact = this.item.contacts[0]
     }
+
+    Locations.getAll().then(locations => {
+      this.locations = sortByTitle(locations, 'ownerTitle')
+    })
   },
 
   methods: {
+    locationChanged (location) {
+      this.contact.location = location
+    },
+
+    locationRemoved () {
+    },
+
+    addContactPerson (contact) {
+      const person = new ContactPerson()
+      contact.persons.push(person)
+    },
+
     updateSpokenLanguages (spokenLanguages) {
       this.item.spokenLanguages = spokenLanguages
     },
@@ -134,12 +185,17 @@ export default {
   components: {
     LangSelectInput,
     LocationForm,
-    InputField
+    InputField,
+    PowerSelector
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.addressDetail {
+  font-size: .8em;
+}
+
 h3 {
   font-size: 1em;
   font-weight: bold;
