@@ -1,7 +1,7 @@
 <template>
   <entry-edit
     :id="id"
-    :route-config="routeConfig"
+    :routeConfig="routeConfig"
     ref="form">
 
       <tab-bar
@@ -60,10 +60,6 @@
           <annotation-form :item="item" />
         </section>
 
-        <section slot="contactTab">
-          <contact-form :item="item" />
-        </section>
-
         <section slot="networkMembersTab">
           <network-member-selector :actor="item" />
         </section>
@@ -82,7 +78,7 @@
 </template>
 
 <script>
-import EditEntrySlotMixin from '@/components/entry/edit/mixins/EditEntrySlotMixin'
+import EntryEditApiSlotMixin from '@/components/entry/edit/mixins/EntryEditApiSlotMixin'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import OrgaRouteConfig from './OrgaRouteConfig'
 
@@ -94,8 +90,6 @@ import PowerSelector from '@/components/PowerSelector'
 import InputField from '@/components/InputField'
 
 import EntryEdit from '@/components/entry/edit/EntryEdit'
-import LocationForm from '@/components/entry/edit/LocationForm'
-import ContactForm from '@/components/entry/edit/ContactForm'
 import CategorySelector from '@/components/entry/edit/CategorySelector'
 import AnnotationForm from '@/components/entry/edit/AnnotationForm'
 import ResourceForm from '@/components/entry/edit/ResourceForm'
@@ -112,7 +106,7 @@ import ProjectSelector from '@/components/entry/edit/actor-relations/ProjectSele
 import NetworkMemberSelector from '@/components/entry/edit/actor-relations/NetworkMemberSelector'
 
 export default {
-  mixins: [BeforeRouteLeaveMixin, EditEntrySlotMixin],
+  mixins: [BeforeRouteLeaveMixin, EntryEditApiSlotMixin],
 
   props: ['id'],
 
@@ -129,10 +123,9 @@ export default {
     },
 
     tabNames () {
-      let tabNames = [
+      const tabNames = [
         'generalTab',
-        {name: 'annotationsTab', hint: this.item.annotations.length},
-        {name: 'contactTab', hint: this.item.contacts.length}
+        {name: 'annotationsTab', hint: this.item.annotations.length}
       ]
       if (this.currentUser && this.currentUser.area === 'dresden') {
         tabNames.push({name: 'resourceTab', hint: this.item.resource_items.length})
@@ -147,7 +140,7 @@ export default {
     projectInitiatorChanged () {
       const parentOrga = this.item.project_initiators[0]
       if (parentOrga) {
-        Orgas.get(parentOrga.id, ['fetchContact']).then(orga => {
+        Orgas.get(parentOrga.id, []).then(orga => {
           this.item.parent_orga = orga
         })
       } else {
@@ -168,8 +161,6 @@ export default {
     PowerSelector,
 
     TitleInput,
-    ContactForm,
-    LocationForm,
     CategorySelector,
     AnnotationForm,
     ResourceForm,

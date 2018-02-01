@@ -2,12 +2,7 @@ import Categories from '@/resources/Categories'
 import AnnotationCategories from '@/resources/AnnotationCategories'
 import Annotations from '@/resources/Annotations'
 import ResourceItems from '@/resources/ResourceItems'
-import Contacts from '@/resources/Contacts'
-import Locations from '@/resources/Locations'
 import Orgas from '@/resources/Orgas'
-
-import Contact from '@/models/Contact'
-import Location from '@/models/Location'
 
 export default {
   fetchParentOrga (entry) {
@@ -16,8 +11,7 @@ export default {
       if (id) {
         Orgas.get(id, [
           'fetchCategory',
-          'fetchSubCategory',
-          'fetchContact'
+          'fetchSubCategory'
         ]).then(orga => {
           entry.parent_orga = orga
         })
@@ -43,32 +37,6 @@ export default {
         Categories.get(id).then(category => {
           entry.sub_category = category
         })
-      }
-    }
-  },
-
-  fetchLocation (entry, clone) {
-    if (!entry.location) {
-      const id = entry._relationIds.location
-      if (id) {
-        Locations.get(id).then(location => {
-          entry.location = clone ? location.clone() : location
-        })
-      } else {
-        entry.location = new Location()
-      }
-    }
-  },
-
-  fetchContact (entry, clone) {
-    if (!entry.contact) {
-      const id = entry._relationIds.contact
-      if (id) {
-        Contacts.get(id).then(contact => {
-          entry.contact = clone ? contact.clone() : contact
-        })
-      } else {
-        entry.contact = new Contact()
       }
     }
   },
@@ -106,18 +74,10 @@ export default {
     orga.resource_items.__isLoading = true
   },
 
-  create (entry) {
-    entry.location = new Location()
-    entry.contact = new Contact()
-    return entry
-  },
-
   clone (entry) {
     const clone = entry.clone()
     this.fetchCategory(clone)
     this.fetchSubCategory(clone)
-    this.fetchLocation(clone, true) // true => location.clone()
-    this.fetchContact(clone, true) // true => contact.clone()
     this.fetchAnnotations(clone, true) // true => annotation.clone()
     return clone
   },

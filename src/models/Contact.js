@@ -8,6 +8,7 @@ export default class Contact extends BaseModel {
 
     this.id = null
     this.type = 'contacts'
+    this.title = ''
     this.fax = ''
     this.openingHours = ''
     this.web = ''
@@ -20,6 +21,7 @@ export default class Contact extends BaseModel {
 
   deserialize (json) {
     this.id = json.id
+    this.title = json.attributes.title || ''
     this.fax = json.attributes.fax || ''
     this.openingHours = json.attributes.opening_hours || ''
     this.web = json.attributes.web || ''
@@ -47,15 +49,19 @@ export default class Contact extends BaseModel {
 
   serialize () {
     const data = {
+      title: this.title,
       fax: this.fax,
       opening_hours: this.openingHours,
       web: this.web,
       social_media: this.socialMedia,
-      spoken_languages: this.spokenLanguages,
-      location: this.location.serialize(),
-      contact_persons: []
+      spoken_languages: this.spokenLanguages
     }
 
+    if (this.location) {
+      data.location = this.location.serialize()
+    }
+
+    data.contact_persons = []
     for (let person of this.persons) {
       data.contact_persons.push(person.serialize())
     }
@@ -68,13 +74,10 @@ export default class Contact extends BaseModel {
 
   clone () {
     const clone = super.clone(this)
-
     // location
-    clone.location = this.location.clone()
-
+    clone.location = this.location ? this.location.clone() : null
     // persons
     clone.persons = this.persons.map(cp => cp.clone())
-
     return clone
   }
 

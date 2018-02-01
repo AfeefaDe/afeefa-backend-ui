@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col s12 m12">
       <div class="mainCard" v-if="item">
-        <entry-edit-header :item="item" :route-config="routeConfig" />
+        <entry-edit-header :item="item" :routeConfig="routeConfig" />
 
         <image-container v-if="item" v-show="!imageError"
           :image-url="item.media_url"
@@ -41,10 +41,10 @@ import ImageContainer from '@/components/ImageContainer'
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryEditHeader from '@/components/entry/edit/EntryEditHeader'
 
-import EntryApiMixin from '@/components/entry/edit/mixins/EntryApiMixin'
+import EntryEditApiMixin from '@/components/entry/edit/mixins/EntryEditApiMixin'
 
 export default {
-  mixins: [EntryApiMixin],
+  mixins: [EntryEditApiMixin],
 
   props: ['id'],
 

@@ -1,7 +1,7 @@
 <template>
   <entry-detail
     :entry="item"
-    :route-config="routeConfig"
+    :routeConfig="routeConfig"
     :entry-loading-error="loadingError"
     :options="{hasDate: true, hasOrga: true}">
   </entry-detail>

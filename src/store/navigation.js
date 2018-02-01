@@ -24,8 +24,16 @@ const menuTree = {
       level: 2,
       hint: state => state.numOrgas,
       children: [
-        { route: 'orgas.show', title: 'headlines.show', level: 4 },
-        { route: 'orgas.edit', title: 'headlines.edit', level: 4 },
+        {
+          route: 'orgas.show',
+          title: 'headlines.show',
+          level: 4,
+          children: [
+            { route: 'orgas.edit', title: 'headlines.edit', level: 5 },
+            { route: 'orgas.contactedit', title: 'headlines.contactEdit', level: 5 },
+            { route: 'orgas.contactnew', title: 'headlines.contactNew', level: 5 }
+          ]
+        },
         { route: 'orgas.new', title: 'headlines.new', level: 4 }
       ]
     },

@@ -1,7 +1,7 @@
 <template>
   <entry-edit
     :id="id"
-    :route-config="routeConfig"
+    :routeConfig="routeConfig"
     ref="form">
 
       <tab-bar
@@ -76,32 +76,13 @@
           <annotation-form :item="item">
           </annotation-form>
         </section>
-
-        <section slot="placeTab">
-          <location-form
-            :location="item.location"
-            :currentTab="currentTab"
-            v-if="item.location">
-          </location-form>
-        </section>
-
-        <section slot="contactTab">
-          <edit-contact-info ref="EditContactInfo" v-if="item.contact"
-            :contact-info="item.contact"
-            :inheritance-state="item.inheritance.contact_infos"
-            :type="item.type"
-            :parent-orga="item.parent_orga"
-            @inheritanceChanged="setContactInfoInheritance">
-          </edit-contact-info>
-        </section>
-
       </tab-bar>
 
   </entry-edit>
 </template>
 
 <script>
-import EditEntrySlotMixin from '@/components/entry/edit/mixins/EditEntrySlotMixin'
+import EntryEditApiSlotMixin from '@/components/entry/edit/mixins/EntryEditApiSlotMixin'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import EventRouteConfig from './EventRouteConfig'
 
@@ -116,8 +97,6 @@ import EntryEdit from '@/components/entry/edit/EntryEdit'
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryEditHeader from '@/components/entry/edit/EntryEditHeader'
 import CategorySelector from '@/components/entry/edit/CategorySelector'
-import LocationForm from '@/components/entry/edit/LocationForm'
-import EditContactInfo from '@/components/entry/edit/EditContactInfo'
 import AnnotationForm from '@/components/entry/edit/AnnotationForm'
 import DatePicker from '@/components/event/datepicker/DatePicker'
 import TagSelector from '@/components/entry/edit/TagSelector'
@@ -127,7 +106,7 @@ import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 import MediaImageInput from '@/components/entry/edit/MediaImageInput'
 
 export default {
-  mixins: [BeforeRouteLeaveMixin, EditEntrySlotMixin],
+  mixins: [BeforeRouteLeaveMixin, EntryEditApiSlotMixin],
 
   props: ['id'],
 
@@ -165,7 +144,7 @@ export default {
     },
 
     parentOrgaChanged (parentOrga) {
-      Orgas.get(parentOrga.id, ['fetchContact']).then(orga => {
+      Orgas.get(parentOrga.id, []).then(orga => {
         this.item.parent_orga = orga
         this.parentOrgas = [orga]
       })
@@ -178,10 +157,6 @@ export default {
 
     setCurrentTab (tab) {
       this.currentTab = tab
-    },
-
-    setContactInfoInheritance (inheritContactInfos) {
-      this.item.inheritance.contact_infos = inheritContactInfos
     }
   },
 
@@ -195,8 +170,6 @@ export default {
     EntryLoadingMessage,
     EntryEditHeader,
     TitleInput,
-    EditContactInfo,
-    LocationForm,
     AnnotationForm,
     TagSelector,
     HelpWantedForm,

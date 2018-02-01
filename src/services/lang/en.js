@@ -14,6 +14,8 @@ export default {
     new: 'New',
     edit: 'Edit',
     show: 'Show',
+    contactNew: 'Add Contact',
+    contactEdit: 'Edit Contact',
     status: 'Status',
     time: 'Zeit',
     parentOrga: 'Parent Organization',
@@ -56,7 +58,6 @@ export default {
     noEventsForOrga: 'No events for organiszation present',
     loadingImageError: 'Error loading image',
     loadingEntryError: 'Error loading entry'
-
   },
   entries: {
     date_start: 'Start date',
@@ -245,17 +246,23 @@ export default {
     'workshop': 'Workshop',
     'workspace': 'Rooms + Workplaces',
     'youth-club': 'Youth club',
+
     // LEIPZIG
     'hotspots': 'Hotspots',
     'social-advice': 'Social Advice',
+    'advice-and-support': 'Rat und Begleitung',
+    'buddy-programme': 'Patenschaften',
+    'daily-life': 'Daily Life',
     'family': 'Family, Children & Co',
     'health': 'Health',
     'housing': 'Housing',
-    'religion': 'Religion',
-    'mobility': 'Mobility',
-    'daily-life': 'Daily Life',
+    'kita-and-school': 'Kindergarden and School',
     'learning-german': 'Learning German',
-    'kita-and-school': 'Kindergarten und School',
-    'work-and-education': 'Work and Education'
+    'living-in-leipzig': 'Living in Leipzig',
+    'mobility': 'Mobility',
+    'participate': 'Participate',
+    'religion': 'Religion',
+    'work-and-education': 'Work and Education',
+    'work-learn-study': 'Arbeit, Ausbildung, Studium'
   }
 }

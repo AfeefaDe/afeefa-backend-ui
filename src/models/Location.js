@@ -1,4 +1,5 @@
 import BaseModel from './base/BaseModel'
+import Orga from './Orga'
 
 export default class Location extends BaseModel {
   init () {
@@ -14,7 +15,12 @@ export default class Location extends BaseModel {
     this.lon = ''
     this.directions = ''
 
-    this.ownerTitle = null
+    this.owner = null
+  }
+
+  // TODO remove again
+  get ownerTitle () {
+    return (this.owner && this.owner.title) || ''
   }
 
   deserialize (json) {
@@ -30,7 +36,9 @@ export default class Location extends BaseModel {
     const rels = json.relationships || {}
 
     if (rels.owner && rels.owner.data) {
-      this.ownerTitle = rels.owner.data.attributes.title
+      const owner = new Orga()
+      owner.deserialize(rels.owner.data)
+      this.owner = owner
     }
   }
 
@@ -50,7 +58,13 @@ export default class Location extends BaseModel {
     return data
   }
 
+  clone () {
+    const clone = super.clone(this)
+    clone.owner = this.owner ? this.owner.clone() : null
+    return clone
+  }
+
   isEmpty () {
-    return !this.street && !this.zip && !this.city && !this.placename && !this.directions
+    return !this.street && !this.zip && !this.city && !this.title && !this.directions
   }
 }

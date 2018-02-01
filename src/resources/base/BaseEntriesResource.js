@@ -22,9 +22,6 @@ export default class BaseEntriesResource extends BaseResource {
     this.cachePurgeList(this.listCacheKey)
     // annotation might be changed, entry may (disappear) in todo list
     this.cachePurgeList('todos')
-    // location or contact might be changed
-    this.cachePurgeItem('locations', entryOld.location.id)
-    this.cachePurgeItem('contacts', entryOld.contact.id)
     // annotation detail might be changed
     for (let annotation of entryOld.annotations) {
       this.cachePurgeItem('annotations', annotation.id)

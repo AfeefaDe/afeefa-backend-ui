@@ -1,4 +1,8 @@
 <script>
+/**
+ * The mixin provides all necessary functions to load,
+ * validate and save entries.
+ */
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 import Orgas from '@/resources/Orgas'
 import Users from '@/resources/Users'

@@ -68,4 +68,9 @@ export default class BaseResource {
     const resourceCache = store.state.api.resourceCache
     resourceCache.purgeItem(key, id)
   }
+
+  findCachedItem (key, id) {
+    const resourceCache = store.state.api.resourceCache
+    return resourceCache.getItem(key, id)
+  }
 }

@@ -11,6 +11,9 @@ import NewOrga from '@/components/routes/orgas/New'
 import EditOrga from '@/components/routes/orgas/Edit'
 import ShowOrga from '@/components/routes/orgas/Show'
 
+import EditContact from '@/components/routes/contacts/Edit'
+import NewContact from '@/components/routes/contacts/New'
+
 import ListEvents from '@/components/routes/events/List'
 import NewEvent from '@/components/routes/events/New'
 import EditEvent from '@/components/routes/events/Edit'
@@ -62,9 +65,27 @@ const routes = [
           },
           {
             path: ':id',
-            name: 'orgas.show',
-            component: ShowOrga,
-            props: true
+            component: { template: '<router-view></router-view>' },
+            children: [
+              {
+                path: '',
+                name: 'orgas.show',
+                component: ShowOrga,
+                props: true
+              },
+              {
+                path: 'contacts/:contactId/edit',
+                name: 'orgas.contactedit',
+                component: EditContact,
+                props: true
+              },
+              {
+                path: 'contacts/new',
+                name: 'orgas.contactnew',
+                component: NewContact,
+                props: true
+              }
+            ]
           },
           {
             path: ':id/edit',

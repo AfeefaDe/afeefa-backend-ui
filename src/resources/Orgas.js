@@ -41,12 +41,10 @@ const Orgas = {
     'fetchParentOrga',
     'fetchCategory',
     'fetchSubCategory',
-    'fetchLocation',
-    'fetchContact',
     'fetchAnnotations'
   ]) {
     if (!id) {
-      const orga = Entries.create(new Orga())
+      const orga = new Orga()
       return Promise.resolve(orga)
     }
     const resource = new OrgasResource()

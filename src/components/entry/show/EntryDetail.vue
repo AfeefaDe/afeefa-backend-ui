@@ -4,7 +4,7 @@
       <div class="mainCard" v-if="entry">
         <entry-detail-header
           :entry="entry"
-          :route-config="routeConfig"
+          :routeConfig="routeConfig"
           :currentTab="currentTab">
           </entry-detail-header>
 
@@ -13,7 +13,7 @@
         </image-container>
 
         <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
-          <section slot="generalTab">
+          <section slot="generalTab" class="generalTab">
             <ul class="entryDetail">
               <entry-detail-property
                 v-if="entry.type === 'orgas'"
@@ -153,9 +153,6 @@
                 <span>{{ $t('entries.state_changed_at') }}: {{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }})</span><br>
               </entry-detail-property>
             </ul>
-          </section>
-
-          <section slot="contactTab">
             <contact-list :item="entry" />
           </section>
 
@@ -224,6 +221,8 @@ import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryListItems from '@/components/entry/EntryListItems'
 import EntryIcon from '@/components/entry/EntryIcon'
+import ContactList from '@/components/contact/ContactList'
+
 import ImageContainer from '@/components/ImageContainer'
 import TabBar from '@/components/TabBar'
 import AnnotationTag from '@/components/AnnotationTag'
@@ -232,7 +231,6 @@ import ResourceItem from '@/components/ResourceItem'
 import EntryDetailProperty from './EntryDetailProperty'
 import EntryListDropDownMenu from './EntryListDropDownMenu'
 import EntryDetailHeader from './EntryDetailHeader'
-import ContactList from './ContactList'
 
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 
@@ -304,7 +302,7 @@ export default {
      * define tabNames according to the entry type and the area of the current user
      */
     tabNames () {
-      let tabNames = ['generalTab', 'contactTab']
+      let tabNames = ['generalTab']
       if (this.entry.type === 'orgas' && this.currentUser.area === 'dresden') {
         tabNames.push({name: 'resourceTab', hint: this.entry.resource_items.length})
       }
@@ -334,3 +332,14 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.generalTab {
+  display: flex;
+  justify-content: space-between;
+
+  > * {
+    width: 50%;
+  }
+}
+</style>

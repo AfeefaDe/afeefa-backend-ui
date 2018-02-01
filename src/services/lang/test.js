@@ -14,6 +14,8 @@ export default {
     new: '*',
     edit: '*',
     show: '*',
+    contactNew: '*',
+    contactEdit: '*',
     status: '*',
     time: '*',
     parentOrga: '*',
@@ -248,14 +250,19 @@ export default {
     // LEIPZIG
     'hotspots': '*',
     'social-advice': '*',
+    'advice-and-support': '*',
+    'buddy-programme': '*',
+    'daily-life': '*',
     'family': '*',
     'health': '*',
     'housing': '*',
-    'religion': '*',
-    'mobility': '*',
-    'daily-life': '*',
-    'learning-german': '*',
     'kita-and-school': '*',
-    'work-and-education': '*'
+    'learning-german': '*',
+    'living-in-leipzig': '*',
+    'mobility': '*',
+    'participate': '*',
+    'religion': '*',
+    'work-and-education': '*',
+    'work-learn-study': '*'
   }
 }

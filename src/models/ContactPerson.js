@@ -1,6 +1,6 @@
 import BaseModel from './base/BaseModel'
 
-export default class Contact extends BaseModel {
+export default class ContactPerson extends BaseModel {
   init () {
     this._fullyLoaded = true // there is no half-loaded-state
 

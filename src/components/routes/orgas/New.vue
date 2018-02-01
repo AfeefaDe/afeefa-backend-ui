@@ -1,7 +1,7 @@
 <template>
   <entry-edit
     id=""
-    :route-config="routeConfig"
+    :routeConfig="routeConfig"
     ref="form">
 
     <div v-if="item">
@@ -26,7 +26,7 @@
 
 <script>
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
-import EditEntrySlotMixin from '@/components/entry/edit/mixins/EditEntrySlotMixin'
+import EntryEditApiSlotMixin from '@/components/entry/edit/mixins/EntryEditApiSlotMixin'
 
 import OrgaRouteConfig from './OrgaRouteConfig'
 import OrgaType from '@/models/OrgaType'
@@ -37,7 +37,7 @@ import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 import CategorySelector from '@/components/entry/edit/CategorySelector'
 
 export default {
-  mixins: [BeforeRouteLeaveMixin, EditEntrySlotMixin],
+  mixins: [BeforeRouteLeaveMixin, EntryEditApiSlotMixin],
 
   data () {
     return {

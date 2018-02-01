@@ -1,6 +1,14 @@
 <template>
   <div>
-    <div v-for="contact in item.contacts" :key="contact.id">
+    <div v-for="(contact, index) in item.contacts" :key="contact.id">
+
+      <h3 v-if="index" class="contactTitle">{{ contact.title || 'Weiterer Kontakt' }} </h3>
+      <h3 v-else class="contactTitle">{{ contact.title || 'Kontakt' }} </h3>
+
+      <router-link :to="{name: 'orgas.contactedit', params: {contactId: contact.id}}">
+        Kontakt ändern
+      </router-link>
+      <a href="" @click.prevent="removeContact(contact)">Kontakt löschen</a>
 
       <ul class="entryDetail" v-if="contact.location">
         <li v-if="contact.location.isEmpty()" class="entryDetail__error">
@@ -8,7 +16,7 @@
         </li>
         <li v-else>
           <entry-detail-property v-if="!contact.location.isEmpty()" :name="$t('entries.address')" :iconName="'location_on'">
-            <span v-if="contact.location.placename">{{ contact.location.placename }}<br></span>
+            <span v-if="contact.location.title">{{ contact.location.title }}<br></span>
             <span v-if="contact.location.street">{{ contact.location.street }}<br></span>
             <span v-if="contact.location.zip || contact.location.city">
               {{ contact.location.zip }} {{ contact.location.city }}
@@ -73,14 +81,20 @@
           </entry-detail-property>
         </li>
       </ul>
-
     </div>
+
+    <router-link :to="{name: 'orgas.contactnew'}">
+      Weiteren Kontakt hinzufügen
+    </router-link>
   </div>
 </template>
 
 <script>
 import Languages from '@/helpers/iso_639_languages.js'
-import EntryDetailProperty from './EntryDetailProperty'
+
+import Contacts from '@/resources/Contacts'
+
+import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
 import LocationMap from '@/components/Map'
 
 export default {
@@ -99,6 +113,23 @@ export default {
         }
       }
       return spokenLanguagesResult.join(', ')
+    },
+
+    removeContact (contact) {
+      this.$store.dispatch('messages/showDialog', {
+        title: 'Kontakt löschen',
+        message: 'Soll der Kontakt gelöscht werden?'
+      }).then(result => {
+        if (result === 'yes') {
+          Contacts.delete(this.item.id, contact).then(result => {
+            if (result) {
+              this.$store.dispatch('messages/showAlert', {
+                description: 'Kontakt erfolgreich gelöscht.'
+              })
+            }
+          })
+        }
+      })
     }
   },
 
@@ -118,3 +149,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.contactTitle {
+  font-size: 1.5em;
+}
+</style>

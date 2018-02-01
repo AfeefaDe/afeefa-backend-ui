@@ -22,22 +22,50 @@ export default {
   },
 
   save (orgaId, contact) {
+    let promise
+    let resource = new ContactsResource(orgaId)
+
     if (contact.id) {
-      return store.dispatch('api/saveItem', {
-        resource: new ContactsResource(orgaId),
+      promise = store.dispatch('api/saveItem', {
+        resource,
         item: contact,
         options: {
           wrapInDataProperty: false
         }
       })
     } else {
-      return store.dispatch('api/addItem', {
-        resource: new ContactsResource(orgaId),
+      promise = store.dispatch('api/addItem', {
+        resource,
         item: contact,
         options: {
           wrapInDataProperty: false
         }
       })
     }
+
+    return promise.then(contact => {
+      // update contact owners contact list
+      const orga = resource.findCachedItem('orgas', orgaId)
+      if (orga) {
+        orga.updateOrAddContact(contact)
+      }
+      return contact
+    })
+  },
+
+  delete (orgaId, contact) {
+    let resource = new ContactsResource(orgaId)
+
+    return store.dispatch('api/deleteItem', {
+      resource,
+      item: contact
+    }).then(result => {
+      // update contact owners contact list
+      const orga = resource.findCachedItem('orgas', orgaId)
+      if (orga) {
+        orga.removeContact(contact)
+      }
+      return result
+    })
   }
 }

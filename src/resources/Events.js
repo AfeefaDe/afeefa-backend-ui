@@ -70,7 +70,7 @@ export default {
 
   get (id) {
     if (!id) {
-      const event = Entries.create(new Event())
+      const event = new Event()
       return Promise.resolve(event)
     }
     const resource = new EventsResource()
@@ -79,8 +79,6 @@ export default {
         Entries.fetchParentOrga(event)
         Entries.fetchCategory(event)
         Entries.fetchSubCategory(event)
-        Entries.fetchLocation(event)
-        Entries.fetchContact(event)
         Entries.fetchAnnotations(event)
       }
       return event

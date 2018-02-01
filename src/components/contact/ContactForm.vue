@@ -1,20 +1,30 @@
 <template>
   <div>
+    <h2>Kontaktbezeichnung</h2>
+
+    <input-field
+      field-name="title"
+      v-model="contact.title"
+      validate="max:255"
+      label="Bezeichnung">
+    </input-field>
+
     <h2>Ort</h2>
 
     <power-selector
       :items="locations"
-      :selected-items="[contact.location]"
+      :selected-items="selectedLocations"
       :search-fields="['title', 'street', 'ownerTitle']"
       @select="locationChanged"
       @remove="locationRemoved"
       :messages="{
-        addButtonTitle: 'Ort auswählen',
+        addButtonTitle: 'Ort ' + (selectedLocations.length ? 'ändern' : 'auswählen'),
         removeTitle: 'Ort entfernen?',
         removeMessage: location => {
           return `Soll der Ort ${location.title} entfernt werden?`
         }
-      }">
+      }"
+      v-if="showLocationSelector">
       <div slot="selected-item" slot-scope="props">
         <div>
           <div>{{ props.item.ownerTitle }}</div>
@@ -31,10 +41,14 @@
       </div>
     </power-selector>
 
-    <location-form
-      :location="contact.location"
-      v-if="contact.location">
-    </location-form>
+    <div v-if="!contact.location">
+      Oder <button type="button" class="btn btn-small" @click="createLocation">Neuen Ort anlegen</button>
+    </div>
+
+    <div v-if="contact.location && !locationIsLinked">
+      <location-form :location="contact.location" />
+      <button type="button" class="btn btn-small" @click="removeLocation">Ort löschen</button>
+    </div>
 
     <h2>Kontaktperson</h2>
 
@@ -121,34 +135,48 @@
 </template>
 
 <script>
-import Contacts from '@/resources/Contacts'
+import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
+
 import Locations from '@/resources/Locations'
-import Contact from '@/models/Contact'
 import ContactPerson from '@/models/ContactPerson'
+import Location from '@/models/Location'
 
 import PowerSelector from '@/components/PowerSelector'
 import InputField from '@/components/InputField'
+
 import LocationForm from './LocationForm'
 import LangSelectInput from './LangSelectInput'
+
 import sortByTitle from '@/helpers/sort-by-title'
 
 export default {
-  props: ['item'],
+  mixins: [RouteConfigAwareMixin],
+
+  props: ['item', 'contact'],
 
   inject: ['$validator'],
 
   data () {
     return {
-      contact: new Contact(),
       locations: []
     }
   },
 
-  created () {
-    if (this.item.contacts.length) {
-      this.contact = this.item.contacts[0]
-    }
+  computed: {
+    selectedLocations () {
+      return this.contact.location ? [this.contact.location] : []
+    },
 
+    showLocationSelector () {
+      return !this.contact.location || this.locationIsLinked
+    },
+
+    locationIsLinked () {
+      return this.contact.location.owner.id !== this.item.id
+    }
+  },
+
+  created () {
     Locations.getAll().then(locations => {
       this.locations = sortByTitle(locations, 'ownerTitle')
     })
@@ -159,7 +187,18 @@ export default {
       this.contact.location = location
     },
 
+    createLocation () {
+      const location = new Location()
+      location.owner = this.item
+      this.contact.location = location
+    },
+
+    removeLocation () {
+      this.contact.location = null
+    },
+
     locationRemoved () {
+      this.contact.location = null
     },
 
     addContactPerson (contact) {
@@ -168,17 +207,11 @@ export default {
     },
 
     updateSpokenLanguages (spokenLanguages) {
-      this.item.spokenLanguages = spokenLanguages
+      this.contact.spokenLanguages = spokenLanguages
     },
 
     saveContact () {
-      Contacts.save(this.item.id, this.contact).then(result => {
-        if (result) {
-          this.$store.dispatch('messages/showAlert', {
-            description: 'Kontakt erfolgreich gespeichert.'
-          })
-        }
-      })
+      this.$emit('save')
     }
   },
 

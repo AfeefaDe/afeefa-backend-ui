@@ -23,8 +23,6 @@ export default class Entry extends BaseModel {
     this.parent_orga = null
     this.category = null
     this.sub_category = null
-    this.location = null
-    this.contact = null
     this.annotations = []
     this.creator = null
     this.lastEditor = null
@@ -40,8 +38,6 @@ export default class Entry extends BaseModel {
       parent_orga: null,
       category: null,
       sub_category: null,
-      location: null,
-      contact: null,
       annotations: []
     }
   }
@@ -71,16 +67,6 @@ export default class Entry extends BaseModel {
         inheritance: inheritance
       },
       relationships: {
-        contact_infos: {
-          data: !this.contact || this.contact.isEmpty()
-            ? []
-            : [this.contact.serialize()]
-        },
-        locations: {
-          data: !this.location || this.location.isEmpty()
-            ? []
-            : [this.location.serialize()]
-        },
         category: this.category
           ? { data: this.category.serialize() }
           : null,
@@ -146,16 +132,6 @@ export default class Entry extends BaseModel {
           this._relationIds.annotations.push(jsonAnnotation.id)
         }
       }
-    }
-
-    // location
-    if (rels.locations && rels.locations.data.length) {
-      this._relationIds.location = rels.locations.data[0].id
-    }
-
-    // contact
-    if (rels.contact_infos && rels.contact_infos.data.length) {
-      this._relationIds.contact = rels.contact_infos.data[0].id
     }
 
     // creator, last editor

@@ -14,6 +14,8 @@ export default {
     new: 'Neu',
     edit: 'Ändern',
     show: 'Anzeigen',
+    contactNew: 'Kontakt hinzufügen',
+    contactEdit: 'Kontakt ändern',
     status: 'Status',
     time: 'Zeit',
     parentOrga: 'Übergeordnete Orga',
@@ -246,12 +248,13 @@ export default {
     'youth-club': 'Jugendtreff',
 
     // LEIPZIG
+    'hotspots': 'Hot Spots',
+    'social-advice': 'Sozialberatung',
     'advice-and-support': 'Rat und Begleitung',
     'buddy-programme': 'Patenschaften',
     'daily-life': 'Alltag',
     'family': 'Kinder, Familie & Co',
     'health': 'Gesundheit',
-    'hotspots': 'Hot Spots',
     'housing': 'Wohnen',
     'kita-and-school': 'Kindergarten und Schule',
     'learning-german': 'Deutsch lernen',
@@ -259,7 +262,6 @@ export default {
     'mobility': 'Mobil sein',
     'participate': 'Mitwirken und sich einmischen',
     'religion': 'Religion',
-    'social-advice': 'Sozialberatung',
     'work-and-education': 'Bildung + Arbeit',
     'work-learn-study': 'Arbeit, Ausbildung, Studium'
   }

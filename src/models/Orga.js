@@ -91,12 +91,6 @@ export default class Orga extends Entry {
     }
     data.relationships.resource_items = { data: resourceItemsSerialized }
 
-    const contactsSerialized = []
-    for (let contact of this.contacts) {
-      contactsSerialized.push(contact.serialize())
-    }
-    data.relationships.contacts = { data: contactsSerialized }
-
     return data
   }
 
@@ -115,5 +109,24 @@ export default class Orga extends Entry {
     clone.contacts = this.contacts.map(c => c.clone())
 
     return clone
+  }
+
+  removeContact (removedContact) {
+    this.contacts = this.contacts.filter(contact => contact.id !== removedContact.id)
+  }
+
+  updateOrAddContact (savedContact) {
+    let updated = false
+    this.contacts = this.contacts.map(contact => {
+      if (contact.id === savedContact.id) {
+        updated = true
+        return savedContact
+      } else {
+        return contact
+      }
+    })
+    if (!updated) {
+      this.contacts.push(savedContact)
+    }
   }
 }
