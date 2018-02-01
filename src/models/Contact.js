@@ -66,9 +66,6 @@ export default class Contact extends BaseModel {
       data.contact_persons.push(person.serialize())
     }
 
-    if (this.id) {
-      data.id = this.id
-    }
     return data
   }
 

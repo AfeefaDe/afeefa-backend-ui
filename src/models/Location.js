@@ -52,9 +52,6 @@ export default class Location extends BaseModel {
       lon: this.lon || '',
       directions: this.directions
     }
-    if (this.id) {
-      data.id = this.id
-    }
     return data
   }
 
