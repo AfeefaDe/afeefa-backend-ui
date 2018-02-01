@@ -12,6 +12,7 @@
     <h2>Ort</h2>
 
     <power-selector
+      v-if="showLocationSelector"
       :items="locations"
       :selected-items="selectedLocations"
       :search-fields="['title', 'street', 'ownerTitle']"
@@ -23,8 +24,7 @@
         removeMessage: location => {
           return `Soll der Ort ${location.title} entfernt werden?`
         }
-      }"
-      v-if="showLocationSelector">
+      }">
       <div slot="selected-item" slot-scope="props">
         <div>
           <div>{{ props.item.ownerTitle }}</div>
@@ -97,7 +97,7 @@
       label="Fax">
     </input-field>
 
-    <div class="inputField__spacing input-field" v-if="item.type === 'orgas'">
+    <div class="inputField__spacing input-field" v-if="owner.type === 'orgas'">
       <label for="openingHours" :class="{active: contact.openingHours}">
         {{ $t('entries.openingHours') }}
       </label>
@@ -152,7 +152,7 @@ import sortByTitle from '@/helpers/sort-by-title'
 export default {
   mixins: [RouteConfigAwareMixin],
 
-  props: ['item', 'contact'],
+  props: ['owner', 'contact'],
 
   inject: ['$validator'],
 
@@ -172,7 +172,7 @@ export default {
     },
 
     locationIsLinked () {
-      return this.contact.location.owner.id !== this.item.id
+      return this.contact.location.owner.id !== this.owner.id
     }
   },
 
@@ -189,7 +189,7 @@ export default {
 
     createLocation () {
       const location = new Location()
-      location.owner = this.item
+      location.owner = this.owner
       this.contact.location = location
     },
 

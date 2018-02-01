@@ -5,7 +5,7 @@
         <entry-edit-header :item="item" :routeConfig="routeConfig" />
 
         <contact-form
-          :item="item"
+          :owner="item"
           :contact="contact"
           :routeConfig="routeConfig"
           @save="saveContact" />
