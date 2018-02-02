@@ -20,7 +20,11 @@ export default class Contact extends BaseModel {
   }
 
   deserialize (json) {
+    this.init()
+
     this.id = json.id
+
+    json.attributes || (json.attributes = {})
     this.title = json.attributes.title || ''
     this.fax = json.attributes.fax || ''
     this.openingHours = json.attributes.opening_hours || ''
@@ -58,7 +62,16 @@ export default class Contact extends BaseModel {
     }
 
     if (this.location) {
-      data.location = this.location.serialize()
+      if (this.location.creatingContactId === this.id) {
+        // post own location data
+        data.location = this.location.serialize()
+      } else {
+        // link to any other location
+        data.location_id = this.location.id
+      }
+    } else {
+      // remove location
+      data.location_id = null
     }
 
     data.contact_persons = []

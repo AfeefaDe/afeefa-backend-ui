@@ -1,5 +1,6 @@
 import BaseModel from './base/BaseModel'
 import Orga from './Orga'
+import Contact from './Contact'
 
 export default class Location extends BaseModel {
   init () {
@@ -15,16 +16,15 @@ export default class Location extends BaseModel {
     this.lon = ''
     this.directions = ''
 
-    this.owner = null
-  }
-
-  // TODO remove again
-  get ownerTitle () {
-    return (this.owner && this.owner.title) || ''
+    this.ownerTitle = ''
+    this.creatingContactId = null
   }
 
   deserialize (json) {
+    this.init()
+
     this.id = json.id
+
     this.title = json.attributes.title || ''
     this.street = json.attributes.street || ''
     this.zip = json.attributes.zip || ''
@@ -38,7 +38,13 @@ export default class Location extends BaseModel {
     if (rels.owner && rels.owner.data) {
       const owner = new Orga()
       owner.deserialize(rels.owner.data)
-      this.owner = owner
+      this.ownerTitle = owner.title
+    }
+
+    if (rels.contact && rels.contact.data) {
+      const contact = new Contact()
+      contact.deserialize(rels.contact.data)
+      this.creatingContactId = contact.id
     }
   }
 
@@ -53,12 +59,6 @@ export default class Location extends BaseModel {
       directions: this.directions
     }
     return data
-  }
-
-  clone () {
-    const clone = super.clone(this)
-    clone.owner = this.owner ? this.owner.clone() : null
-    return clone
   }
 
   isEmpty () {

@@ -55,6 +55,8 @@
     <div v-for="person in contact.persons" :key="person.id">
       <h3>{{ person.role }}</h3>
 
+      <a href="" @click.prevent="removeContactPerson(person)">Person löschen</a>
+
       <input-field
         class="inputField__spacing"
         field-name="role"
@@ -86,7 +88,7 @@
       </input-field>
     </div>
 
-    <button type="button" @click="addContactPerson(contact)">Kontaktperson hinzufügen</button>
+    <button type="button" @click="addContactPerson()">Kontaktperson hinzufügen</button>
 
     <h2>Rest</h2>
 
@@ -172,7 +174,10 @@ export default {
     },
 
     locationIsLinked () {
-      return this.contact.location.owner.id !== this.owner.id
+      if (!this.contact.location) {
+        return false
+      }
+      return this.contact.location.creatingContactId !== this.contact.id
     }
   },
 
@@ -189,7 +194,7 @@ export default {
 
     createLocation () {
       const location = new Location()
-      location.owner = this.owner
+      location.creatingContactId = this.contact.id
       this.contact.location = location
     },
 
@@ -201,9 +206,13 @@ export default {
       this.contact.location = null
     },
 
-    addContactPerson (contact) {
+    addContactPerson () {
       const person = new ContactPerson()
-      contact.persons.push(person)
+      this.contact.persons.push(person)
+    },
+
+    removeContactPerson (person) {
+      this.contact.persons = this.contact.persons.filter(p => p !== person)
     },
 
     updateSpokenLanguages (spokenLanguages) {
