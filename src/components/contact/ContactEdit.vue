@@ -70,7 +70,6 @@ export default {
       Contacts.save(this.item.id, this.contact).then(contact => {
         if (contact) {
           // update contact's owner contact list
-          this.$emit('saved', contact)
           this.$store.dispatch('messages/showAlert', {
             description: 'Kontakt erfolgreich gespeichert.'
           })

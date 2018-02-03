@@ -1,3 +1,4 @@
+import store from '@/store'
 import BaseModel from './base/BaseModel'
 import ContactPerson from './ContactPerson'
 import Location from './Location'
@@ -36,8 +37,19 @@ export default class Contact extends BaseModel {
 
     // location
     if (rels.location && rels.location.data) {
-      const location = new Location()
-      location.deserialize(rels.location.data)
+      // since we may share the same location across multiple
+      // contacts we need to keep track of any location in our
+      // resource cache so changes to a location can reflected
+      // at any other place where the location is used.
+      const resourceCache = store.state.api.resourceCache
+      let location = resourceCache.getItem('locations', rels.location.data.id)
+      if (location) { // location exists, update with new data
+        location.deserialize(rels.location.data)
+      } else { // create new location and make it's instance available to other contacts
+        location = new Location()
+        location.deserialize(rels.location.data)
+        resourceCache.addItem('locations', location)
+      }
       this.location = location
     }
 

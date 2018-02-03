@@ -44,10 +44,12 @@ export default {
     }
 
     return promise.then(contact => {
-      // update contact owners contact list
-      const orga = resource.findCachedItem('orgas', orgaId)
-      if (orga) {
-        orga.updateOrAddContact(contact)
+      if (contact) {
+        // update contact owners contact list
+        const orga = resource.findCachedItem('orgas', orgaId)
+        if (orga) {
+          orga.updateOrAddContact(contact)
+        }
       }
       return contact
     })
