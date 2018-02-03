@@ -22,7 +22,7 @@
               {{ contact.location.zip }} {{ contact.location.city }}
             </span>
             <location-map
-              :map-center="mapCenter"
+              :map-center="mapCenter(contact.location)"
               :initial-zoom="13"
               :location="contact.location"
               style="max-width:400px">
@@ -130,13 +130,11 @@ export default {
           })
         }
       })
-    }
-  },
+    },
 
-  computed: {
-    mapCenter () {
-      if (this.location && this.location.lat) {
-        return [this.location.lat, this.location.lon]
+    mapCenter (location) {
+      if (location.lat) {
+        return [location.lat, location.lon]
       } else {
         return [51.0571904, 13.7154319]
       }
