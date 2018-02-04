@@ -108,28 +108,29 @@ export default {
 
 
     getList: ({dispatch}, {resource, params}) => {
+      // key of list in resource cache
       const listCacheKey = resource.listCacheKey
+      // different caches for different list params
+      const cacheUrl = JSON.stringify(params || '')
 
-      const cacheUrl = JSON.stringify(params || '') // distinct different caches of filtered events
+      // list already loaded
       if (resourceCache.hasList(listCacheKey, cacheUrl)) {
         return Promise.resolve(resourceCache.getList(listCacheKey, cacheUrl))
       }
 
+      // list currently loading
       if (promiseCache.hasItem(listCacheKey + cacheUrl)) {
         return promiseCache.getItem(listCacheKey + cacheUrl)
       }
 
+      // load list
       const promise = resource.http.query(params).then(response => {
         const items = []
-        const duplicatesMap = {}
 
-        const data = response.body.data || response.body // jsonapi vs custom api
+        const data = response.body.data || response.body // jsonapi spec || afeefa api spec
         for (let json of data) {
-          const dupMapKey = (json.type || listCacheKey) + json.id // custom api does not deliver type
-          if (duplicatesMap[dupMapKey]) {
-            continue
-          }
           let item
+
           // update existing cached items but not replace them!
           const itemCacheKey = resource.getItemCacheKey(json)
           const itemCacheId = resource.getItemCacheId(json)
@@ -145,19 +146,19 @@ export default {
              * loaded an keep the data from the first one.
              */
             // do nothing (before was: resource.deserialize(item, json))
+
           // no cached item found -> create one
           } else {
             item = resource.createItem(json)
             resource.deserialize(item, json)
           }
-          // workaround for issue #149
-          if (item) {
-            items.push(item)
-            duplicatesMap[dupMapKey] = true
-          }
+          // add model to list
+          items.push(item)
         }
 
+        // apply custom map to items, e.g. to create a category tree from a flat list
         resource.transformList(items)
+        // cache list
         resourceCache.addList(listCacheKey, cacheUrl, items)
 
         return items
@@ -167,9 +168,11 @@ export default {
         return []
       })
 
+      // cache http call
       promiseCache.addItem(resource.listCacheKey + cacheUrl, promise)
       return promise
     },
+
 
     getItem: ({dispatch}, {resource, id}) => {
       const itemCacheKey = resource.getItemCacheKey()
@@ -179,6 +182,7 @@ export default {
         return Promise.resolve(null)
       }
 
+      // check if item already loaded
       if (resourceCache.hasItem(itemCacheKey, id)) {
         const item = resourceCache.getItem(itemCacheKey, id)
         if (item._fullyLoaded) {
@@ -186,15 +190,16 @@ export default {
         }
       }
 
+      // item loading
       if (promiseCache.hasItem(itemCacheKey + id)) {
         return promiseCache.getItem(itemCacheKey + id)
       }
 
       const promise = resource.http.get({id}).then(response => {
-        const json = response.body.data || response.body // jsonapi vs custom api
+        const json = response.body.data || response.body // jsonapi spec || afeefa api spec
 
         let item
-        // update existing cached items but not replace them!
+        // update existing cached items but not replace them in order to keep references alive
         if (resourceCache.hasItem(itemCacheKey, id)) {
           item = resourceCache.getItem(itemCacheKey, id)
           item.deserialize(json)
@@ -211,6 +216,7 @@ export default {
         return null
       })
 
+      // cache http call
       promiseCache.addItem(itemCacheKey + id, promise)
       return promise
     },
@@ -225,6 +231,7 @@ export default {
       const promise = resource.http.update(
         {id: item.id}, body
       ).then(response => {
+        // we do not allow saving items that are not cached beforehand
         let cachedItem = resourceCache.getItem(itemCacheKey, item.id)
         // TODO hack to force actors to re-add to cache after
         // purge upon actor relation change @see Orgas.joinActorRelation
