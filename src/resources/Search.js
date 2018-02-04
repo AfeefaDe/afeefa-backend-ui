@@ -7,20 +7,23 @@ import Entries from './base/Entries'
 import BaseResource from './base/BaseResource'
 
 class SearchResource extends BaseResource {
-  init ([searchRequest]) {
-    const filterUrl = this.generateFilterUrl(searchRequest)
-    this.listCacheKey = 'search' + filterUrl
-    this.http = Vue.resource(BASE + filterUrl)
+  init () {
+    this.listCacheKey = 'search'
+    this.http = Vue.resource(BASE + 'entries')
   }
 
-  generateFilterUrl (searchRequest) {
-    const filter = 'filter[' + searchRequest.filterCriterion + ']=' + searchRequest.keyword
-    const url = 'entries?' + filter
-    return url
+  getSearchParams (searchRequest) {
+    return {
+      [`filter[${searchRequest.filterCriterion}]`]: searchRequest.keyword
+    }
   }
 
   getItemCacheKey (json) {
-    return json.type
+    return json.relationships.entry.data.type
+  }
+
+  getItemCacheId (json) {
+    return json.relationships.entry.data.id
   }
 
   createItem (json) {
@@ -38,8 +41,10 @@ class SearchResource extends BaseResource {
 
 export default {
   find (searchRequest) {
-    const resource = new SearchResource(searchRequest)
-    return store.dispatch('api/getList', {resource}).then(entries => {
+    const resource = new SearchResource()
+    const params = resource.getSearchParams(searchRequest)
+
+    return store.dispatch('api/getList', {resource, params}).then(entries => {
       for (let entry of entries) {
         Entries.fetchCategory(entry)
         Entries.fetchSubCategory(entry)

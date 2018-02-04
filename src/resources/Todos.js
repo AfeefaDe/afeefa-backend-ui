@@ -14,7 +14,11 @@ class TodosResource extends BaseResource {
   }
 
   getItemCacheKey (json) {
-    return json.type
+    return json.relationships.entry.data.type
+  }
+
+  getItemCacheId (json) {
+    return json.relationships.entry.data.id
   }
 
   createItem (json) {

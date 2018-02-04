@@ -46,9 +46,12 @@ class EventsResource extends BaseEntriesResource {
 export default {
   getAllForOrga (id, filter) {
     const resource = new EventsResource()
-    resource.http = Vue.resource(BASE + `orgas/${id}/events?filter[date]=${filter}`)
-    resource.listCacheKey = `orgas/${id}/events?filter[date]=${filter}`
-    return store.dispatch('api/getList', {resource}).then(events => {
+    resource.http = Vue.resource(BASE + `orgas/${id}/events`)
+    resource.listCacheKey = `orgas/${id}/events`
+    const params = {
+      'filter[date]': filter
+    }
+    return store.dispatch('api/getList', {resource, params}).then(events => {
       for (let event of events) {
         Entries.fetchCategory(event)
         Entries.fetchSubCategory(event)

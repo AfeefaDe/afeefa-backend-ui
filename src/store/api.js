@@ -132,8 +132,9 @@ export default {
           let item
           // update existing cached items but not replace them!
           const itemCacheKey = resource.getItemCacheKey(json)
-          if (resourceCache.hasItem(itemCacheKey, json.id)) {
-            item = resourceCache.getItem(itemCacheKey, json.id)
+          const itemCacheId = resource.getItemCacheId(json)
+          if (resourceCache.hasItem(itemCacheKey, itemCacheId)) {
+            item = resourceCache.getItem(itemCacheKey, itemCacheId)
             /*
              * if we can find the item in cache, we assume that we
              * do not have newer or different data than stored for

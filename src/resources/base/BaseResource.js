@@ -14,8 +14,12 @@ export default class BaseResource {
    * used based on the actual item's type.
    * @see Search or Todos resources
    */
-  getItemCacheKey () {
+  getItemCacheKey (json) {
     return this.listCacheKey
+  }
+
+  getItemCacheId (json) {
+    return json.id
   }
 
   // creates a new model based on the given json response
