@@ -13,6 +13,12 @@ export default class Annotion extends BaseModel {
     }
   }
 
+  deserialize (json) {
+    this.id = json.id
+    this.detail = json.attributes.detail
+    this._relationIds.annotationCategory = json.attributes.annotation_category_id
+  }
+
   serialize () {
     // always send full annotation cause the title could have changed
     let data = {
@@ -28,11 +34,5 @@ export default class Annotion extends BaseModel {
       delete data['id']
     }
     return data
-  }
-
-  deserialize (json) {
-    this.id = json.id
-    this.detail = json.attributes.detail
-    this._relationIds.annotationCategory = json.attributes.annotation_category_id
   }
 }

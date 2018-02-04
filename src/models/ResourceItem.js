@@ -13,6 +13,15 @@ export default class ResourceItem extends BaseModel {
     this.updated_at = new Date()
   }
 
+  deserialize (json) {
+    this.id = json.id
+    this.title = json.attributes.title
+    this.description = json.attributes.description
+    this.category = json.attributes.tags
+    this.created_at = new Date(json.attributes.created_at)
+    this.updated_at = new Date(json.attributes.updated_at)
+  }
+
   serialize () {
     let data = {
       type: this.type,
@@ -28,14 +37,5 @@ export default class ResourceItem extends BaseModel {
       delete data['id']
     }
     return data
-  }
-
-  deserialize (json) {
-    this.id = json.id
-    this.title = json.attributes.title
-    this.description = json.attributes.description
-    this.category = json.attributes.tags
-    this.created_at = new Date(json.attributes.created_at)
-    this.updated_at = new Date(json.attributes.updated_at)
   }
 }

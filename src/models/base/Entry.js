@@ -42,48 +42,6 @@ export default class Entry extends BaseModel {
     }
   }
 
-  serialize () {
-    const annotations = []
-    for (let annotation of this.annotations) {
-      annotations.push(annotation.serialize())
-    }
-
-    const inheritance = Object.keys(this.inheritance).filter(key => {
-      return this.inheritance[key] === true
-    }).join('|') || null
-
-    const data = {
-      type: this.type,
-      attributes: {
-        title: this.title,
-        description: this.description,
-        short_description: this.short_description,
-        active: this.active,
-        media_url: this.media_url,
-        support_wanted: this.support_wanted,
-        support_wanted_detail: this.support_wanted_detail,
-        certified_sfr: this.certified_sfr,
-        tags: this.tags,
-        inheritance: inheritance
-      },
-      relationships: {
-        category: this.category
-          ? { data: this.category.serialize() }
-          : null,
-        sub_category: this.sub_category
-          ? { data: this.sub_category.serialize() }
-          : null,
-        annotations: {
-          data: annotations
-        }
-      }
-    }
-    if (this.id) {
-      data.id = this.id
-    }
-    return data
-  }
-
   deserialize (json) {
     this.init()
 
@@ -144,5 +102,47 @@ export default class Entry extends BaseModel {
       this.lastEditor = new User()
       this.lastEditor.deserialize(rels.last_editor.data)
     }
+  }
+
+  serialize () {
+    const annotations = []
+    for (let annotation of this.annotations) {
+      annotations.push(annotation.serialize())
+    }
+
+    const inheritance = Object.keys(this.inheritance).filter(key => {
+      return this.inheritance[key] === true
+    }).join('|') || null
+
+    const data = {
+      type: this.type,
+      attributes: {
+        title: this.title,
+        description: this.description,
+        short_description: this.short_description,
+        active: this.active,
+        media_url: this.media_url,
+        support_wanted: this.support_wanted,
+        support_wanted_detail: this.support_wanted_detail,
+        certified_sfr: this.certified_sfr,
+        tags: this.tags,
+        inheritance: inheritance
+      },
+      relationships: {
+        category: this.category
+          ? { data: this.category.serialize() }
+          : null,
+        sub_category: this.sub_category
+          ? { data: this.sub_category.serialize() }
+          : null,
+        annotations: {
+          data: annotations
+        }
+      }
+    }
+    if (this.id) {
+      data.id = this.id
+    }
+    return data
   }
 }

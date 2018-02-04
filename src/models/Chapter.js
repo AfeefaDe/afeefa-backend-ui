@@ -13,6 +13,15 @@ export default class Chapter extends BaseModel {
     // this.updated_at = new Date()
   }
 
+  deserialize (json) {
+    this.id = json.id
+    this.title = json.title
+    this.content = json.content
+    this.order = json.order || 0
+    // this.created_at = new Date(json.created_at)
+    // this.updated_at = new Date(json.updated_at)
+  }
+
   serialize () {
     let data = {
       id: this.id,
@@ -25,14 +34,5 @@ export default class Chapter extends BaseModel {
       delete data['id']
     }
     return data
-  }
-
-  deserialize (json) {
-    this.id = json.id
-    this.title = json.title
-    this.content = json.content
-    this.order = json.order || 0
-    // this.created_at = new Date(json.created_at)
-    // this.updated_at = new Date(json.updated_at)
   }
 }
