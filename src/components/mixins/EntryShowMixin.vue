@@ -24,8 +24,6 @@ export default {
       setTimeout(() => {
         this.initItem(to.params.id)
       }, 100)
-    } else {
-      this.initItem(to.params.id)
     }
     next()
   },
