@@ -22,10 +22,7 @@ class TodosResource extends BaseResource {
   }
 
   createItem (json) {
-    // workaround for issue #149
-    if (!json.relationships.entry.data) {
-      return null
-    } else if (json.relationships.entry.data.type === 'orgas') {
+    if (json.relationships.entry.data.type === 'orgas') {
       return new Orga()
     } else {
       return new Event()
@@ -33,10 +30,7 @@ class TodosResource extends BaseResource {
   }
 
   deserialize (item, json) {
-    // workaround for issue #149
-    if (item) {
-      item.deserialize(json.relationships.entry.data)
-    }
+    item.deserialize(json.relationships.entry.data)
   }
 }
 
