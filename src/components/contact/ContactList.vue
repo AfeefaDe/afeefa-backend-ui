@@ -40,10 +40,10 @@
       </ul>
 
       <ul>
-        <li v-for="person in contact.persons" :key="person.id">
+        <li v-for="(person, index) in contact.persons" :key="person.id">
           <entry-detail-property
             :name="person.role || $t('headlines.contact')"
-            :iconName="'mail_outline'">
+            :iconName="index ? '' : 'mail_outline'">
               <span v-if="person.name">{{ person.name }}<br></span>
               <span v-if="person.phone">{{ person.phone }}<br></span>
               <span v-if="person.mail">{{ person.mail }}<br></span>
@@ -59,6 +59,14 @@
             :iconName="'access_time'"
             :isMultiline="true">
             <div v-if="contact.openingHours">{{ contact.openingHours }}</div>
+          </entry-detail-property>
+
+          <entry-detail-property
+            v-if="contact.fax"
+            :name="$t('entries.fax')"
+            :iconName="'filter_none'"
+            :isMultiline="true">
+            <div v-if="contact.fax">{{ contact.fax }}</div>
           </entry-detail-property>
 
           <entry-detail-property

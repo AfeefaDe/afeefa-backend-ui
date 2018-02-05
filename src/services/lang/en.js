@@ -84,6 +84,7 @@ export default {
     person: 'Contact Person',
     mail: 'Email',
     phone: 'Phone number',
+    fax: 'Fax',
     openingHours: 'Opening hours',
     web: 'Webpage',
     socialMedia: 'Social Media',
