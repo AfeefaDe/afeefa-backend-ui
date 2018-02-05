@@ -153,6 +153,7 @@
                 <span>{{ $t('entries.state_changed_at') }}: {{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }})</span><br>
               </entry-detail-property>
             </ul>
+
             <contact-list :item="entry" />
           </section>
 
