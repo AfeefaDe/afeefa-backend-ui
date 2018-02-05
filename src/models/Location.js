@@ -1,6 +1,4 @@
 import BaseModel from './base/BaseModel'
-import Orga from './Orga'
-import Contact from './Contact'
 
 export default class Location extends BaseModel {
   init () {
@@ -36,15 +34,11 @@ export default class Location extends BaseModel {
     const rels = json.relationships || {}
 
     if (rels.owner && rels.owner.data) {
-      const owner = new Orga()
-      owner.deserialize(rels.owner.data)
-      this.ownerTitle = owner.title
+      this.ownerTitle = rels.owner.data.attributes.title
     }
 
     if (rels.contact && rels.contact.data) {
-      const contact = new Contact()
-      contact.deserialize(rels.contact.data)
-      this.creatingContactId = contact.id
+      this.creatingContactId = rels.contact.data.id
     }
   }
 
