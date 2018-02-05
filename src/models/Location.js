@@ -2,6 +2,8 @@ import BaseModel from './base/BaseModel'
 
 export default class Location extends BaseModel {
   init () {
+    super.init()
+
     this._fullyLoaded = true // there is no half-loaded-state
 
     this.id = null
@@ -57,5 +59,9 @@ export default class Location extends BaseModel {
 
   isEmpty () {
     return !this.street && !this.zip && !this.city && !this.title && !this.directions
+  }
+
+  get info () {
+    return `[Locations id=${this.id} ID=${this.__ID} title="${this.title}" street="${this.street}"]`
   }
 }
