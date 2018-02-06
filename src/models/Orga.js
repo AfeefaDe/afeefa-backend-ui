@@ -1,7 +1,5 @@
 import Entry from './base/Entry'
 import OrgaType from './OrgaType'
-import Contact from './Contact'
-import Entries from '@/resources/base/Entries'
 
 export default class Orga extends Entry {
   static ACTOR_RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
@@ -17,7 +15,6 @@ export default class Orga extends Entry {
     this.count_network_members = 0
 
     this.resource_items = []
-    this.contacts = []
 
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
       this[actorRelation] = []
@@ -25,6 +22,11 @@ export default class Orga extends Entry {
 
     // extend _relationIds
     this._relationIds.resource_items = []
+    this._eagerLoadedRelations.parent_orga = null
+    this._eagerLoadedRelations.actorRelations = {}
+    Orga.ACTOR_RELATIONS.forEach(actorRelation => {
+      this._eagerLoadedRelations.actorRelations[actorRelation] = []
+    })
   }
 
   deserialize (json) {
@@ -41,40 +43,21 @@ export default class Orga extends Entry {
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
       if (rels[actorRelation] && rels[actorRelation].data.length) {
         for (let jsonActorRelation of rels[actorRelation].data) {
-          const actor = new Orga()
-          actor.deserialize(jsonActorRelation)
-          Entries.fetchCategory(actor)
-          Entries.fetchSubCategory(actor)
-
-          this[actorRelation].push(actor)
+          this._eagerLoadedRelations.actorRelations[actorRelation].push(jsonActorRelation)
         }
       }
     })
 
-    // parent orga
+    // parent orga, eagerly loaded
     if (rels.initiator && rels.initiator.data) {
-      const parentOrga = new Orga()
-      parentOrga.deserialize(rels.initiator.data)
-      this.parent_orga = parentOrga
-
-      this._relationIds.parent_orga = rels.initiator.data.id
-    }
-
-    // contacts
-    if (rels.contacts && rels.contacts.data.length) {
-      for (let jsonContact of rels.contacts.data) {
-        const contact = new Contact()
-        contact.deserialize(jsonContact)
-        this.contacts.push(contact)
-      }
+      this._eagerLoadedRelations.parent_orga = rels.initiator.data
+      this._relationIds.parent_orga = rels.initiator.data.id // store id to be able to fetch afterwards
     }
 
     // resourceItems
     if (rels.resource_items && rels.resource_items.data.length) {
       for (let jsonResource of rels.resource_items.data) {
-        if (!this._relationIds.resource_items.includes(jsonResource.id)) {
-          this._relationIds.resource_items.push(jsonResource.id)
-        }
+        this._relationIds.resource_items.push(jsonResource.id)
       }
     }
   }
@@ -102,31 +85,6 @@ export default class Orga extends Entry {
       clone[actorRelation] = this[actorRelation]
     })
 
-    // initiator relation
-    clone.parent_orga = this.parent_orga
-
-    // contacts
-    clone.contacts = this.contacts.map(c => c.clone())
-
     return clone
-  }
-
-  removeContact (removedContact) {
-    this.contacts = this.contacts.filter(contact => contact.id !== removedContact.id)
-  }
-
-  updateOrAddContact (savedContact) {
-    let updated = false
-    this.contacts = this.contacts.map(contact => {
-      if (contact.id === savedContact.id) {
-        updated = true
-        return savedContact
-      } else {
-        return contact
-      }
-    })
-    if (!updated) {
-      this.contacts.push(savedContact)
-    }
   }
 }

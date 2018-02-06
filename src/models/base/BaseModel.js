@@ -1,17 +1,26 @@
+import LoadingState from '@/store/api/LoadingState'
+
 let ID = 0
 
 export default class BaseModel {
   constructor () {
-    this._ID = ++ID
-    this._fullyLoaded = false
+    this.__ID = ++ID
+    this._loadingState = LoadingState.NOT_LOADED
 
     this.init()
   }
 
-
-  init () {
+  _relationLoadingStarted (relationName) {
+    return this.__relationsLoadingStarted[relationName] === true
   }
 
+  _startLoadingRelation (relationName) {
+    this.__relationsLoadingStarted[relationName] = true
+  }
+
+  init () {
+    this.__relationsLoadingStarted = {}
+  }
 
   serialize () {
     const data = {
@@ -27,7 +36,8 @@ export default class BaseModel {
       const Constructor = model.constructor
       const clone = new Constructor()
       for (let key in model) {
-        if (key === '_ID') {
+        // hide instance related properties
+        if (key.startsWith('__')) {
           continue
         }
         const keyVal = model[key]

@@ -1,11 +1,12 @@
-import store from '@/store'
 import BaseModel from './base/BaseModel'
 import ContactPerson from './ContactPerson'
-import Location from './Location'
+import LoadingState from '@/store/api/LoadingState'
 
 export default class Contact extends BaseModel {
   init () {
-    this._fullyLoaded = true // there is no half-loaded-state
+    super.init()
+
+    this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state
 
     this.id = null
     this.type = 'contacts'
@@ -18,6 +19,14 @@ export default class Contact extends BaseModel {
 
     this.location = null
     this.persons = []
+
+    this._relationIds = {
+      location: null
+    }
+
+    this._eagerLoadedRelations = {
+      location: null
+    }
   }
 
   deserialize (json) {
@@ -37,20 +46,8 @@ export default class Contact extends BaseModel {
 
     // location
     if (rels.location && rels.location.data) {
-      // since we may share the same location across multiple
-      // contacts we need to keep track of any location in our
-      // resource cache so changes to a location can reflected
-      // at any other place where the location is used.
-      const resourceCache = store.state.api.resourceCache
-      let location = resourceCache.getItem('locations', rels.location.data.id)
-      if (location) { // location exists, update with new data
-        location.deserialize(rels.location.data)
-      } else { // create new location and make it's instance available to other contacts
-        location = new Location()
-        location.deserialize(rels.location.data)
-        resourceCache.addItem('locations', location)
-      }
-      this.location = location
+      this._eagerLoadedRelations.location = rels.location.data
+      this._relationIds.location = rels.location.data.id // store id to be able to fetch afterwards
     }
 
     // contact persons
@@ -96,8 +93,6 @@ export default class Contact extends BaseModel {
 
   clone () {
     const clone = super.clone(this)
-    // location
-    clone.location = this.location ? this.location.clone() : null
     // persons
     clone.persons = this.persons.map(cp => cp.clone())
     return clone
@@ -106,5 +101,19 @@ export default class Contact extends BaseModel {
   isEmpty () {
     const hasPerson = this.persons.some(cp => !cp.isEmpty())
     return !this.fax && !this.openingHours && !this.web && !this.socialMedia && !this.spokenLanguages && !hasPerson
+  }
+
+  /**
+   * indicates that a location object will be loaded
+   * even if this.location is still null
+   */
+  get hasLocation () {
+    return this._relationIds.location
+  }
+
+  get info () {
+    const location = this.location ? this.location.info : `[Locations id="${this._relationIds.location}"]`
+    return `[Contacts id=${this.id} ID=${this.__ID} title="${this.title}"]` +
+      `\n\t${location}`
   }
 }

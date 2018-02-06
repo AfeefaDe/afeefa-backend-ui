@@ -41,7 +41,7 @@
       </div>
     </power-selector>
 
-    <div v-if="!contact.location">
+    <div v-if="!contact.hasLocation">
       Oder <button type="button" class="btn btn-small" @click="createLocation">Neuen Ort anlegen</button>
     </div>
 
@@ -170,7 +170,7 @@ export default {
     },
 
     showLocationSelector () {
-      return !this.contact.location || this.locationIsLinked
+      return !this.contact.hasLocation || this.locationIsLinked
     },
 
     locationIsLinked () {

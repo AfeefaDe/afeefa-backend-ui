@@ -3,6 +3,8 @@ import User from '../User'
 
 export default class Entry extends BaseModel {
   init () {
+    super.init()
+
     this.id = null
     this.type = null
 
@@ -23,6 +25,7 @@ export default class Entry extends BaseModel {
     this.parent_orga = null
     this.category = null
     this.sub_category = null
+    this.contacts = []
     this.annotations = []
     this.creator = null
     this.lastEditor = null
@@ -39,6 +42,10 @@ export default class Entry extends BaseModel {
       category: null,
       sub_category: null,
       annotations: []
+    }
+
+    this._eagerLoadedRelations = {
+      contacts: []
     }
   }
 
@@ -81,6 +88,13 @@ export default class Entry extends BaseModel {
     // subcategory
     if (rels.sub_category && rels.sub_category.data) {
       this._relationIds.sub_category = rels.sub_category.data.id
+    }
+
+    // contacts, eagerly loaded
+    if (rels.contacts && rels.contacts.data.length) {
+      for (let jsonContact of rels.contacts.data) {
+        this._eagerLoadedRelations.contacts.push(jsonContact)
+      }
     }
 
     // annotations
@@ -144,5 +158,15 @@ export default class Entry extends BaseModel {
       data.id = this.id
     }
     return data
+  }
+
+  get info () {
+    const type = this.type.charAt(0).toUpperCase() + this.type.slice(1)
+    return `[${type} id=${this.id} ID=${this.__ID} title="${this.title}"]`
+  }
+
+  invalidateLoadedContacts () {
+    delete this.__relationsLoadingStarted.contacts
+    this.contacts = []
   }
 }

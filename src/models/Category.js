@@ -1,10 +1,11 @@
 import BaseModel from './base/BaseModel'
+import LoadingState from '@/store/api/LoadingState'
 
 export default class Category extends BaseModel {
   init () {
     super.init()
 
-    this._fullyLoaded = true // there is no half-loaded-state
+    this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state
 
     this.id = null
     this.type = 'categories'

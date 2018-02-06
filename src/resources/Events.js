@@ -37,8 +37,8 @@ class EventsResource extends BaseEntriesResource {
   _updateParentOrgasEventList (event) {
     const orgaId = event._relationIds.parent_orga
     if (orgaId) {
-      this.cachePurgeList(`orgas/${orgaId}/events?filter[date]=upcoming`)
-      this.cachePurgeList(`orgas/${orgaId}/events?filter[date]=past`)
+      this.cachePurgeList('events', JSON.stringify({orga_id: orgaId, 'filter[date]': 'upcoming'}))
+      this.cachePurgeList('events', JSON.stringify({orga_id: orgaId, 'filter[date]': 'past'}))
     }
   }
 }
@@ -47,7 +47,8 @@ export default {
   getAllForOrga (id, filter) {
     const resource = new EventsResource()
     resource.http = Vue.resource(BASE + `orgas/${id}/events`)
-    resource.listCacheKey = `orgas/${id}/events`
+    resource.listCacheKey = `events`
+    resource.listCacheParams = JSON.stringify({orga_id: id, 'filter[date]': filter})
     const params = {
       'filter[date]': filter
     }
@@ -83,6 +84,7 @@ export default {
         Entries.fetchCategory(event)
         Entries.fetchSubCategory(event)
         Entries.fetchAnnotations(event)
+        Entries.fetchContacts(event)
       }
       return event
     })

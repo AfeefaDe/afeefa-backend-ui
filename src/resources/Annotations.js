@@ -22,9 +22,12 @@ export default {
   },
 
   get (id) {
-    const resource = new AnnotationsResource()
-    return store.dispatch('api/getItem', {resource, id})
+    return this.getAll().then(() => {
+      const resource = new AnnotationsResource()
+      return store.dispatch('api/getItem', {resource, id})
+    })
   },
+
   /*
    * public method to create new annoation in editentry form
    */

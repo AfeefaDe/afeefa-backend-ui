@@ -1,11 +1,11 @@
 <template>
 <div class="row">
     <div class="col s12 m12">
-      <div class="mainCard" v-if="item">
-        <entry-edit-header :item="item" :routeConfig="routeConfig" />
+      <div class="mainCard" v-if="owner">
+        <entry-edit-header :item="owner" :routeConfig="routeConfig" />
 
         <contact-form
-          :owner="item"
+          :owner="owner"
           :contact="contact"
           :routeConfig="routeConfig"
           @save="saveContact" />
@@ -18,7 +18,7 @@
 
 
 <script>
-import EntryEditApiMixin from '@/components/entry/edit/mixins/EntryEditApiMixin'
+import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 
 import Contacts from '@/resources/Contacts'
 import Contact from '@/models/Contact'
@@ -29,26 +29,39 @@ import EntryEditHeader from '@/components/entry/edit/EntryEditHeader'
 import ContactForm from './ContactForm'
 
 export default {
-  mixins: [EntryEditApiMixin],
+  mixins: [RouteConfigAwareMixin],
 
   props: ['id', 'contactId'],
 
   data () {
     return {
+      owner: null,
       origContact: null,
-      contact: null
+      contact: null,
+      hasItemLoadingError: false
     }
   },
 
+  created () {
+    this.Resource.get(this.id).then(owner => {
+      if (owner) {
+        this.owner = owner
+      } else {
+        console.log('error loading contact owner')
+        this.hasItemLoadingError = true
+      }
+    })
+  },
+
   watch: {
-    item (item) {
+    'owner.contacts' () {
       if (this.contactId) {
-        this.origContact = this.item.contacts.find(c => c.id === this.contactId)
+        this.origContact = this.owner.contacts.find(c => c.id === this.contactId)
       }
       if (!this.origContact) {
         this.origContact = new Contact()
       }
-      this.contact = this.origContact.clone()
+      this.contact = Contacts.clone(this.origContact)
     }
   },
 
@@ -67,14 +80,14 @@ export default {
     },
 
     saveContact () {
-      Contacts.save(this.item.id, this.contact).then(contact => {
+      Contacts.save(this.owner.id, this.contact).then(contact => {
         if (contact) {
           // update contact's owner contact list
           this.$store.dispatch('messages/showAlert', {
             description: 'Kontakt erfolgreich gespeichert.'
           })
           this.origContact = this.contact // prevent route leave dialog after save
-          this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}})
+          this.$router.push({name: this.routeName + '.show', params: {id: this.owner.id}})
         }
       })
     }

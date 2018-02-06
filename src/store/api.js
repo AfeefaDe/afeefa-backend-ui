@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import ResourceCache from './api/ResourceCache'
 import PromiseCache from './api/PromiseCache'
+import LoadingState from './api/LoadingState'
+import LoadingStrategy from './api/LoadingStrategy'
 
 export const BASE = '/api/v1/'
 
@@ -107,20 +109,28 @@ export default {
     },
 
 
-    getList: ({dispatch}, {resource, params}) => {
+    getList: ({dispatch}, {resource, params, strategy = LoadingStrategy.RETURN_CACHED_OR_LOAD}) => {
       // key of list in resource cache
       const listCacheKey = resource.listCacheKey
       // different caches for different list params
-      const cacheUrl = JSON.stringify(params || '')
+      const cacheUrl = resource.listCacheParams || JSON.stringify(params || '')
 
-      // list already loaded
       if (resourceCache.hasList(listCacheKey, cacheUrl)) {
-        return Promise.resolve(resourceCache.getList(listCacheKey, cacheUrl))
+        // list already loaded
+        if (strategy === LoadingStrategy.RETURN_CACHED_OR_LOAD || strategy === LoadingStrategy.RETURN_CACHED_OR_EMPTY) {
+          return Promise.resolve(resourceCache.getList(listCacheKey, cacheUrl))
+        }
+      } else {
+        // list not cached but should not load
+        if (strategy === LoadingStrategy.RETURN_CACHED_OR_EMPTY) {
+          return Promise.resolve([])
+        }
       }
 
       // list currently loading
-      if (promiseCache.hasItem(listCacheKey + cacheUrl)) {
-        return promiseCache.getItem(listCacheKey + cacheUrl)
+      const promiseCacheKey = resource.url || (listCacheKey + JSON.stringify(params || ''))
+      if (promiseCache.hasItem(promiseCacheKey)) {
+        return promiseCache.getItem(promiseCacheKey)
       }
 
       // load list
@@ -137,20 +147,21 @@ export default {
           if (resourceCache.hasItem(itemCacheKey, itemCacheId)) {
             item = resourceCache.getItem(itemCacheKey, itemCacheId)
             /*
-             * if we can find the item in cache, we assume that we
-             * do not have newer or different data than stored for
-             * the item found. hence, we do not need to deserialize
-             * the item again. the assumption will break when we start
-             * to load lists with different data for each item. in such
-             * a case we would ignore the data of the latter list
-             * loaded an keep the data from the first one.
+             * update item only if it has fewer data than provided
+             * by the result of the list loading operation
              */
-            // do nothing (before was: resource.deserialize(item, json))
+            if (item._loadingState < LoadingState.LOADED_FOR_LISTS) {
+              resource.deserialize(item, json)
+              item._loadingState = LoadingState.LOADED_FOR_LISTS
+            }
 
-          // no cached item found -> create one
+            // no cached item found -> create one
           } else {
             item = resource.createItem(json)
             resource.deserialize(item, json)
+            if (item._loadingState < LoadingState.LOADED_FOR_LISTS) {
+              item._loadingState = LoadingState.LOADED_FOR_LISTS
+            }
           }
           // add model to list
           items.push(item)
@@ -169,12 +180,12 @@ export default {
       })
 
       // cache http call
-      promiseCache.addItem(resource.listCacheKey + cacheUrl, promise)
+      promiseCache.addItem(promiseCacheKey, promise)
       return promise
     },
 
 
-    getItem: ({dispatch}, {resource, id}) => {
+    getItem: ({dispatch}, {resource, id, strategy = LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD}) => {
       const itemCacheKey = resource.getItemCacheKey()
 
       if (!id) {
@@ -185,7 +196,11 @@ export default {
       // check if item already loaded
       if (resourceCache.hasItem(itemCacheKey, id)) {
         const item = resourceCache.getItem(itemCacheKey, id)
-        if (item._fullyLoaded) {
+
+        if (item._loadingState === LoadingState.FULLY_LOADED && strategy === LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD) {
+          return Promise.resolve(resourceCache.getItem(itemCacheKey, id))
+        }
+        if (strategy === LoadingStrategy.RETURN_CACHED_OR_LOAD) {
           return Promise.resolve(resourceCache.getItem(itemCacheKey, id))
         }
       }
@@ -202,13 +217,13 @@ export default {
         // update existing cached items but not replace them in order to keep references alive
         if (resourceCache.hasItem(itemCacheKey, id)) {
           item = resourceCache.getItem(itemCacheKey, id)
-          item.deserialize(json)
+          resource.deserialize(item, json)
         } else {
           item = resource.createItem(json)
-          item.deserialize(json)
+          resource.deserialize(item, json)
           resourceCache.addItem(itemCacheKey, item)
         }
-        item._fullyLoaded = true
+        item._loadingState = LoadingState.FULLY_LOADED
         return item
       }).catch(response => {
         dispatch('loadingError', response)
@@ -240,7 +255,7 @@ export default {
           cachedItem = item.clone()
           resourceCache.addItem(itemCacheKey, cachedItem)
         }
-        cachedItem.deserialize(response.body.data || response.body)
+        resource.deserialize(cachedItem, response.body.data || response.body)
         resource.itemSaved(item, cachedItem)
         dispatch('getMetaInformation') // e.g. todos may change after annotation change
         return cachedItem
@@ -267,7 +282,7 @@ export default {
       return resource.http.save(
         {id: item.id}, body
       ).then(response => {
-        item.deserialize(response.body.data || response.body)
+        resource.deserialize(item, response.body.data || response.body)
         resourceCache.addItem(itemCacheKey, item)
         resource.itemAdded(item)
         dispatch('getMetaInformation')

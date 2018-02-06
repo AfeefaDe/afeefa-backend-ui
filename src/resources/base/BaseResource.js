@@ -9,6 +9,10 @@ export default class BaseResource {
   }
 
   /**
+   * Config
+   */
+
+  /**
    * Since Search or Todos resources return lists of mixed items
    * we need to decide what resource cache key is to be
    * used based on the actual item's type.
@@ -27,7 +31,6 @@ export default class BaseResource {
   createItem (json) {
   }
 
-
   // transforms the given list prior to caching
   // useful to create a hierachical list from a flat list
   // e.g. for cateories
@@ -39,7 +42,17 @@ export default class BaseResource {
   // @see Todos or Search
   deserialize (item, json) {
     item.deserialize(json)
+    this.initEagerLoadedRelations(item)
   }
+
+  // pushes eagerly loaded relation data into
+  // the resource cache
+  initEagerLoadedRelations (item) {
+  }
+
+  /**
+   * Api Hooks
+   */
 
   // called after an item has been added
   // to enable custom resource cache treatment
@@ -63,14 +76,23 @@ export default class BaseResource {
   itemAttributesUpdated (item, attributes) {
   }
 
-  cachePurgeList (key) {
+  /**
+   * Resource Cache Access
+   */
+
+  cachePurgeList (key, url) {
     const resourceCache = store.state.api.resourceCache
-    resourceCache.purgeList(key)
+    resourceCache.purgeList(key, url)
   }
 
   cachePurgeItem (key, id) {
     const resourceCache = store.state.api.resourceCache
     resourceCache.purgeItem(key, id)
+  }
+
+  cacheGetAllLists (key) {
+    const resourceCache = store.state.api.resourceCache
+    return resourceCache.getCache(key).lists
   }
 
   findCachedItem (key, id) {

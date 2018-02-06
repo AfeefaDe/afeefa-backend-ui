@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import store from '@/store'
 import { BASE } from '@/store/api'
+import LoadingStrategy from '@/store/api/LoadingStrategy'
 import Orga from '@/models/Orga'
 import Entries from './base/Entries'
+import ActorRelations from './ActorRelations'
 import BaseEntriesResource from './base/BaseEntriesResource'
+import ActorRelationsModel from '@/models/ActorRelations'
 
 class OrgasResource extends BaseEntriesResource {
   init () {
@@ -14,14 +17,46 @@ class OrgasResource extends BaseEntriesResource {
   createItem () {
     return new Orga()
   }
+
+  initEagerLoadedRelations (orga) {
+    super.initEagerLoadedRelations(orga)
+
+    // loaded actor relations
+    const actorRelations = new ActorRelationsModel()
+    actorRelations.id = orga.id
+    actorRelations.deserialize(orga._eagerLoadedRelations.actorRelations)
+    ActorRelations.initActorRelations(orga.id, actorRelations)
+  }
 }
 
-
 const Orgas = {
+  /**
+   * Initializes an eagerly loaded related orga
+   */
+  initOrga (orgaJson, loadingState) {
+    if (orgaJson) {
+      const resourceCache = store.state.api.resourceCache
+      let orga = resourceCache.getItem('orgas', orgaJson.id)
+      if (!orga) {
+        orga = new Orga()
+        orga.deserialize(orgaJson)
+        orga._loadingState = loadingState
+        resourceCache.addItem('orgas', orga)
+      } else {
+        if (orga._loadingState < loadingState) {
+          orga.deserialize(orgaJson)
+          orga._loadingState = loadingState
+        }
+      }
+      return orga
+    }
+  },
+
   getAll () {
     const resource = new OrgasResource()
     return store.dispatch('api/getList', {resource}).then(orgas => {
       for (let orga of orgas) {
+        Entries.fetchParentOrga(orga, LoadingStrategy.RETURN_CACHED_OR_LOAD)
         Entries.fetchCategory(orga)
         Entries.fetchSubCategory(orga)
       }
@@ -41,14 +76,16 @@ const Orgas = {
     'fetchParentOrga',
     'fetchCategory',
     'fetchSubCategory',
-    'fetchAnnotations'
-  ]) {
+    'fetchAnnotations',
+    'fetchContacts',
+    'fetchActorRelations'
+  ], strategy) {
     if (!id) {
       const orga = new Orga()
       return Promise.resolve(orga)
     }
     const resource = new OrgasResource()
-    return store.dispatch('api/getItem', {resource, id}).then(orga => {
+    return store.dispatch('api/getItem', {resource, id, strategy}).then(orga => {
       if (orga) {
         // only fetch Resources when there are unloaded id's in the _relationIds attribute
         if (orga._relationIds.resource_items.length) {
@@ -65,6 +102,7 @@ const Orgas = {
   clone (orga) {
     const clone = Entries.clone(orga)
     Entries.fetchResources(clone)
+    Entries.fetchActorRelations(clone)
     return clone
   },
 

@@ -1,6 +1,17 @@
 import BaseResource from './BaseResource'
+import Contacts from '../Contacts'
+import Orgas from '../Orgas'
+import LoadingState from '@/store/api/LoadingState'
 
 export default class BaseEntriesResource extends BaseResource {
+  initEagerLoadedRelations (entry) {
+    // parent_orga
+    Orgas.initOrga(entry._eagerLoadedRelations.parent_orga, LoadingState.LOADED_AS_ATTRIBUTE)
+
+    // contacts
+    Contacts.initAllForOwner(entry, entry._eagerLoadedRelations.contacts)
+  }
+
   itemAdded (entry) {
     // new entry added to lists
     this.cachePurgeList(this.listCacheKey)
