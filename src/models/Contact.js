@@ -1,4 +1,6 @@
 import BaseModel from './base/BaseModel'
+import Location from './Location'
+import CachedRelation from './base/CachedRelation'
 import ContactPerson from './ContactPerson'
 import LoadingState from '@/store/api/LoadingState'
 
@@ -19,13 +21,11 @@ export default class Contact extends BaseModel {
 
     this.location = null
     this.persons = []
+  }
 
-    this._relationIds = {
-      location: null
-    }
-
-    this._eagerLoadedRelations = {
-      location: null
+  setupRelations () {
+    return {
+      location: new CachedRelation({attribute: 'location', type: CachedRelation.HAS_ONE, cacheKey: 'locations'})
     }
   }
 
@@ -46,8 +46,11 @@ export default class Contact extends BaseModel {
 
     // location
     if (rels.location && rels.location.data) {
-      this._eagerLoadedRelations.location = rels.location.data
-      this._relationIds.location = rels.location.data.id // store id to be able to fetch afterwards
+      this.relation('location').initWithJson(rels.location.data, jsonLocation => {
+        this.location = new Location()
+        this.location.deserialize(jsonLocation)
+        return this.location
+      })
     }
 
     // contact persons
@@ -108,11 +111,11 @@ export default class Contact extends BaseModel {
    * even if this.location is still null
    */
   get hasLocation () {
-    return this._relationIds.location
+    return this.relation('location').itemId
   }
 
   get info () {
-    const location = this.location ? this.location.info : `[Locations id="${this._relationIds.location}"]`
+    const location = this.location ? this.location.info : `[Locations id="${this.relation('location').itemId}"]`
     return `[Contacts id=${this.id} ID=${this.__ID} title="${this.title}"]` +
       `\n\t${location}`
   }

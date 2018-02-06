@@ -2,7 +2,6 @@ import Vue from 'vue'
 import store from '@/store'
 import { BASE } from '@/store/api'
 import Contact from '@/models/Contact'
-import Location from '@/models/Location'
 import BaseResource from './base/BaseResource'
 import Locations from './Locations'
 import Orgas from './Orgas'
@@ -22,8 +21,8 @@ class ContactsResource extends BaseResource {
   }
 
   itemSaved (oldContact, contact) {
-    const oldLocationId = oldContact._relationIds.location
-    const newLocationId = contact._relationIds.location
+    const oldLocationId = oldContact.relation('location').itemId
+    const newLocationId = contact.relation('location').itemId
 
     // invalidate contact lists of all orgas owning a contact
     // with the old location id
@@ -31,7 +30,7 @@ class ContactsResource extends BaseResource {
     for (let key in contactLists) {
       const contacts = contactLists[key]
       contacts.forEach(cachedContact => {
-        if (cachedContact._relationIds.location === oldLocationId) {
+        if (cachedContact.relation('location').itemId === oldLocationId) {
           const {owner_type, owner_id} = JSON.parse(key) // eslint-disable-line camelcase
           const owner = this.findCachedItem(owner_type, owner_id)
           if (owner) {
@@ -68,33 +67,21 @@ class ContactsResource extends BaseResource {
   }
 
   initEagerLoadedRelations (contact) {
-    const locationJson = contact._eagerLoadedRelations.location
-    if (locationJson) {
-      const resourceCache = store.state.api.resourceCache
-      let location = resourceCache.getItem('locations', locationJson.id)
-      if (!location) {
-        location = new Location()
-        location.deserialize(locationJson)
-        resourceCache.addItem('locations', location)
-      } else {
-        location.deserialize(locationJson)
-      }
+    const resourceCache = store.state.api.resourceCache
+    for (let name in contact._relations) {
+      const relation = contact._relations[name]
+      relation.cache(resourceCache)
     }
   }
 }
 
 export default {
-  initEagerLoadedRelations (contact) {
-    const resource = new ContactsResource(null)
-    resource.initEagerLoadedRelations(contact)
-  },
-
   fetchLocation (contact, clone) {
     if (contact._relationLoadingStarted('location')) {
       return
     }
-    const id = contact._relationIds.location
-    if (id) {
+    if (contact.relation('location').json) {
+      const id = contact.relation('location').json.id
       Locations.get(id).then(location => {
         contact.location = clone ? location.clone() : location
       })

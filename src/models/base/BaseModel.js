@@ -7,7 +7,17 @@ export default class BaseModel {
     this.__ID = ++ID
     this._loadingState = LoadingState.NOT_LOADED
 
+    this._relations = this.setupRelations()
+
     this.init()
+  }
+
+  setupRelations () {
+    // return object of relations in model
+  }
+
+  relation (name) {
+    return this._relations[name]
   }
 
   _relationLoadingStarted (relationName) {
@@ -66,6 +76,10 @@ export default class BaseModel {
 
     if (value instanceof Date) {
       return new Date(value.getTime())
+    }
+
+    if (value && typeof value.clone === 'function') {
+      return value.clone()
     }
 
     if (value !== null && typeof value === 'object') {
