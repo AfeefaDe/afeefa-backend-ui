@@ -22,14 +22,6 @@ class ContactsResource extends BaseResource {
   }
 
   itemSaved (oldContact, contact) {
-    // refetch contact owners contact list
-    // refetch all contact lists of owners who have a contact
-    // with a location of ...
-    const orga = this.findCachedItem('orgas', this.orgaId)
-    if (orga) {
-      // orga.contacts = []
-    }
-
     const oldLocationId = oldContact._relationIds.location
     const newLocationId = contact._relationIds.location
 
@@ -65,7 +57,7 @@ class ContactsResource extends BaseResource {
     const orga = this.findCachedItem('orgas', this.orgaId)
     if (orga) {
       this.cachePurgeList('contacts', this.listCacheParams)
-      orga.contacts = []
+      orga.invalidateLoadedContacts()
     }
     // reload location list
     this.cachePurgeList('locations')

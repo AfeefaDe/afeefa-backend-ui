@@ -87,4 +87,11 @@ export default class Orga extends Entry {
 
     return clone
   }
+
+  invalidateLoadedActorRelations () {
+    delete this.__relationsLoadingStarted.actorRelations
+    Orga.ACTOR_RELATIONS.forEach(actorRelation => {
+      this[actorRelation] = []
+    })
+  }
 }

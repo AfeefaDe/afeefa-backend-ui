@@ -18,6 +18,18 @@ class OrgasResource extends BaseEntriesResource {
     return new Orga()
   }
 
+  itemSaved (orgaOld, orga) {
+    super.itemSaved(orgaOld, orga)
+
+    // refetch relations to this orga
+    const allActorRelations = this.cacheGetAllItems('actor_relations')
+    for (let orgaId in allActorRelations) {
+      this.cachePurgeItem('actor_relations', orgaId)
+      const relatedOrga = this.findCachedItem('orgas', orgaId)
+      relatedOrga.invalidateLoadedActorRelations()
+    }
+  }
+
   initEagerLoadedRelations (orga) {
     super.initEagerLoadedRelations(orga)
 
