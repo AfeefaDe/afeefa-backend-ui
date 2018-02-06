@@ -64,14 +64,6 @@ const Orgas = {
     })
   },
 
-  getAllSimplified () {
-    return this.getAll().then(orgas => {
-      return orgas.map((orga) => {
-        return {title: orga.title, id: orga.id}
-      })
-    })
-  },
-
   get (id, fetchRelationsWhiteList = [
     'fetchParentOrga',
     'fetchCategory',

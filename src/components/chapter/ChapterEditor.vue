@@ -94,9 +94,13 @@ export default {
     }
   },
   created () {
-    Orgas.getAllSimplified().then(orgas => {
+    Orgas.getAll().then(orgas => {
+      orgas = orgas.map(orga => {
+        return {title: orga.title, id: orga.id}
+      })
       this.entrySelector.orgasSimplified = sortByTitle(orgas)
     })
+
     Chapters.getAll().then(chapters => {
       this.chapterSelector.chapters = chapters
     })
