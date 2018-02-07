@@ -10,14 +10,6 @@
         @setCurrentTab="setCurrentTab">
 
         <section slot="generalTab">
-          <div class="inputField__spacing">
-            <label for="orgaType">Typ</label>
-            <select v-model="item.orga_type_id" id="orgaType"
-              name="orgaType"
-              class="browser-default">
-              <option :value="orgaType.id" v-for="orgaType in orgaTypes" :key="orgaType.id">{{ orgaType.name }}</option>
-            </select>
-          </div>
 
           <div v-if="item.id">
             <h2>Projektträger</h2>
