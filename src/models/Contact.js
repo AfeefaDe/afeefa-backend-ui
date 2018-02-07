@@ -24,7 +24,11 @@ export default class Contact extends BaseModel {
   }
 
   locationRelation () {
-    return new CachedRelation({type: CachedRelation.HAS_ONE, cacheKey: 'locations'})
+    return new CachedRelation({
+      type: CachedRelation.HAS_ONE,
+      cacheKey: 'locations',
+      loadingState: LoadingState.FULLY_LOADED
+    })
   }
 
   deserialize (json) {

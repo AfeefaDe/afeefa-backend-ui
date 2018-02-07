@@ -73,7 +73,7 @@ export default {
       return
     }
     if (contact.relation('location').json) {
-      const id = contact.relation('location').json.id
+      const id = contact.relation('location').itemId
       Locations.get(id).then(location => {
         contact.location = clone ? location.clone() : location
         contact.fetched('location', true)

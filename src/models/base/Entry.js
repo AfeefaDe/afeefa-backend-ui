@@ -2,6 +2,7 @@ import BaseModel from './BaseModel'
 import User from '../User'
 import CachedRelation from '@/models/base/CachedRelation'
 import Contact from '@/models/Contact'
+import LoadingState from '@/store/api/LoadingState'
 
 export default class Entry extends BaseModel {
   init () {
@@ -52,7 +53,12 @@ export default class Entry extends BaseModel {
   }
 
   contactsRelation () {
-    return new CachedRelation({type: CachedRelation.HAS_MANY, cacheKey: 'contacts', cacheParams: {owner_type: this.type, owner_id: this.id}})
+    return new CachedRelation({
+      type: CachedRelation.HAS_MANY,
+      cacheKey: 'contacts',
+      cacheParams: {owner_type: this.type, owner_id: this.id},
+      loadingState: LoadingState.FULLY_LOADED
+    })
   }
 
   deserialize (json) {

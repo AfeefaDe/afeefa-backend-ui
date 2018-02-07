@@ -11,18 +11,18 @@ import LoadingStrategy from '@/store/api/LoadingStrategy'
 
 export default {
   fetchParentOrga (entry, strategy = LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD) {
-    if (entry.fetched('parent_orga')) {
+    if (entry.fetched('parentOrga')) {
       return
     }
     if (entry.parent_orga && entry.parent_orga._loadingState === LoadingState.FULLY_LOADED) {
       return
     }
-    const id = entry._relationIds.parent_orga
+    const id = entry.relation('parentOrga').itemId
     if (id) {
       // do not load parent orga from remote by default
       Orgas.get(id, [], strategy).then(orga => {
         entry.parent_orga = orga
-        entry.fetched('parent_orga', true)
+        entry.fetched('parentOrga', true)
       })
     }
   },

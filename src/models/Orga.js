@@ -1,5 +1,7 @@
 import Entry from './base/Entry'
 import OrgaType from './OrgaType'
+import CachedRelation from './base/CachedRelation'
+import LoadingState from '@/store/api/LoadingState'
 
 export default class Orga extends Entry {
   static ACTOR_RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
@@ -29,6 +31,14 @@ export default class Orga extends Entry {
     })
   }
 
+  parentOrgaRelation () {
+    return new CachedRelation({
+      type: CachedRelation.HAS_ONE,
+      cacheKey: 'orgas',
+      loadingState: LoadingState.LOADED_AS_ATTRIBUTE
+    })
+  }
+
   deserialize (json) {
     super.deserialize(json)
 
@@ -50,8 +60,11 @@ export default class Orga extends Entry {
 
     // parent orga, eagerly loaded
     if (rels.initiator && rels.initiator.data) {
-      this._eagerLoadedRelations.parent_orga = rels.initiator.data
-      this._relationIds.parent_orga = rels.initiator.data.id // store id to be able to fetch afterwards
+      this.relation('parentOrga').initWithJson(rels.initiator.data, jsonInitiator => {
+        const parentOrga = new Orga()
+        parentOrga.deserialize(jsonInitiator)
+        return parentOrga
+      })
     }
 
     // resourceItems

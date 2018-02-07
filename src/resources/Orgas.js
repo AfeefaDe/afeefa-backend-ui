@@ -42,28 +42,6 @@ class OrgasResource extends BaseEntriesResource {
 }
 
 const Orgas = {
-  /**
-   * Initializes an eagerly loaded related orga
-   */
-  initOrga (orgaJson, loadingState) {
-    if (orgaJson) {
-      const resourceCache = store.state.api.resourceCache
-      let orga = resourceCache.getItem('orgas', orgaJson.id)
-      if (!orga) {
-        orga = new Orga()
-        orga.deserialize(orgaJson)
-        orga._loadingState = loadingState
-        resourceCache.addItem('orgas', orga)
-      } else {
-        if (orga._loadingState < loadingState) {
-          orga.deserialize(orgaJson)
-          orga._loadingState = loadingState
-        }
-      }
-      return orga
-    }
-  },
-
   getAll () {
     const resource = new OrgasResource()
     return store.dispatch('api/getList', {resource}).then(orgas => {
