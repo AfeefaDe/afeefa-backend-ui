@@ -11,19 +11,30 @@ export default class CachedRelation {
     this.json = null
     this.factory = null
 
-    this.cached = false // avoid recursions
+    this.id = null
+    this.ids = null
+
+    // avoid recursions, if a relation has been cached,
+    // there is no need to cache eagerly loaded data again,
+    // even if we clone the item that holds the relation
+    this.cached = false
   }
 
   initWithJson (json, factory) {
     this.json = json
+
+    if (this.json && this.type === CachedRelation.HAS_ONE) {
+      this.id = this.json.id
+    }
     this.factory = factory
   }
 
-  get itemId () {
-    if (this.type === CachedRelation.HAS_ONE && this.json) {
-      return this.json.id
-    }
-    return null
+  initWithId (id) {
+    this.id = id
+  }
+
+  initWithIds (ids) {
+    this.ids = ids
   }
 
   cache (resourceCache) {
@@ -69,6 +80,11 @@ export default class CachedRelation {
     const clone = new CachedRelation({type: this.type, cacheKey: this.cacheKey, cacheParams: this.cacheParams})
     clone.json = this.json
     clone.factory = this.factory
+
+    clone.id = this.id
+    clone.ids = this.ids
+
+    clone.cached = this.cached
     return clone
   }
 }

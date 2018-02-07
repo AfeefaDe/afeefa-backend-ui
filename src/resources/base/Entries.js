@@ -17,7 +17,7 @@ export default {
     if (entry.parent_orga && entry.parent_orga._loadingState === LoadingState.FULLY_LOADED) {
       return
     }
-    const id = entry.relation('parentOrga').itemId
+    const id = entry.relation('parentOrga').id
     if (id) {
       // do not load parent orga from remote by default
       Orgas.get(id, [], strategy).then(orga => {
@@ -61,7 +61,7 @@ export default {
       Annotations.get(id).then(annotation => {
         if (annotation) {
           annotation = clone ? annotation.clone() : annotation
-          AnnotationCategories.get(annotation._relationIds.annotationCategory).then(annotationCategory => {
+          AnnotationCategories.get(annotation.relation('annotationCategory').id).then(annotationCategory => {
             annotation.annotationCategory = annotationCategory
             entry.annotations.push(annotation)
           })

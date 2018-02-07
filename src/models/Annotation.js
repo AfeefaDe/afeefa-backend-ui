@@ -1,5 +1,6 @@
 import BaseModel from './base/BaseModel'
 import LoadingState from '@/store/api/LoadingState'
+import CachedRelation from '@/models/base/CachedRelation'
 
 export default class Annotion extends BaseModel {
   init () {
@@ -16,10 +17,19 @@ export default class Annotion extends BaseModel {
     }
   }
 
+  annotationCategoryRelation () {
+    return new CachedRelation({
+      type: CachedRelation.HAS_ONE,
+      cacheKey: 'annotationCategories',
+      loadingState: LoadingState.FULLY_LOADED
+    })
+  }
+
   deserialize (json) {
     this.id = json.id
     this.detail = json.attributes.detail
-    this._relationIds.annotationCategory = json.attributes.annotation_category_id
+
+    this.relation('annotationCategory').initWithId(json.attributes.annotation_category_id)
   }
 
   serialize () {
@@ -37,5 +47,9 @@ export default class Annotion extends BaseModel {
       delete data['id']
     }
     return data
+  }
+
+  get info () {
+    return `[Annotation id=${this.id} ID=${this.__ID} category="${this.relation('annotationCategory').id}"]`
   }
 }

@@ -8,7 +8,7 @@ export default class BaseModel {
     this._loadingState = LoadingState.NOT_LOADED
 
     this._relations = {}
-    this.__fetchedRelations = {} // do not clone, fetch again for each instance
+    this.__fetchedRelations = {} // '__' means: do not clone -> fetch again for each cloned instance
 
     this.init()
   }
@@ -33,7 +33,8 @@ export default class BaseModel {
   }
 
   init () {
-    this.__relationsLoadingStarted = {}
+    // fetch all relations again
+    this.__fetchedRelations = {}
   }
 
   serialize () {

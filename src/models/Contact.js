@@ -113,11 +113,11 @@ export default class Contact extends BaseModel {
    * even if this.location is still null
    */
   get hasLocation () {
-    return this.relation('location').itemId
+    return this.relation('location').id
   }
 
   get info () {
-    const location = this.location ? this.location.info : `[Locations id="${this.relation('location').itemId}"]`
+    const location = this.location ? this.location.info : `[Locations id="${this.relation('location').id}"]`
     return `[Contacts id=${this.id} ID=${this.__ID} title="${this.title}"]` +
       `\n\t${location}`
   }

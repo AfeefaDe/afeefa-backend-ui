@@ -21,8 +21,8 @@ class ContactsResource extends BaseResource {
   }
 
   itemSaved (oldContact, contact) {
-    const oldLocationId = oldContact.relation('location').itemId
-    const newLocationId = contact.relation('location').itemId
+    const oldLocationId = oldContact.relation('location').id
+    const newLocationId = contact.relation('location').id
 
     // invalidate contact lists of all orgas owning a contact
     // with the old location id
@@ -30,7 +30,7 @@ class ContactsResource extends BaseResource {
     for (let key in contactLists) {
       const contacts = contactLists[key]
       contacts.forEach(cachedContact => {
-        if (cachedContact.relation('location').itemId === oldLocationId) {
+        if (cachedContact.relation('location').id === oldLocationId) {
           const {owner_type, owner_id} = JSON.parse(key) // eslint-disable-line camelcase
           const owner = this.findCachedItem(owner_type, owner_id)
           if (owner) {
@@ -73,7 +73,7 @@ export default {
       return
     }
     if (contact.relation('location').json) {
-      const id = contact.relation('location').itemId
+      const id = contact.relation('location').id
       Locations.get(id).then(location => {
         contact.location = clone ? location.clone() : location
         contact.fetched('location', true)
