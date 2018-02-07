@@ -75,5 +75,6 @@ export default {
 }
 .loading-error {
   background-color: #ffeeee;
+  color: $red;
 }
 </style>

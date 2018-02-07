@@ -14,7 +14,7 @@
 
         <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
           <section slot="generalTab" class="generalTab">
-            <ul class="entryDetail">
+            <div class="entryDetail">
               <entry-detail-property
                 v-if="entry.type === 'orgas'"
                 name="Typ">
@@ -152,7 +152,7 @@
                 <span v-if="entry.lastEditor">von {{ entry.lastEditor.name }} <span v-if="entry.lastEditor.organization">({{ entry.lastEditor.organization }})</span></span><br>
                 <span>{{ $t('entries.state_changed_at') }}: {{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }})</span><br>
               </entry-detail-property>
-            </ul>
+            </div>
 
             <contact-list :item="entry" />
           </section>

@@ -36,6 +36,24 @@ export default {
     chapters: '*',
     singleChapter: '*'
   },
+  orgaTypes: {
+    'Organization': {
+      name: '*',
+      description: '*'
+    },
+    'Project': {
+      name: '*',
+      description: '*'
+    },
+    'Location': {
+      name: '*',
+      description: '*'
+    },
+    'Network': {
+      name: '*',
+      description: '*'
+    }
+  },
   tabs: {
     generalTab: '*',
     annotationsTab: '*',

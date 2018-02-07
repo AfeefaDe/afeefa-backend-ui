@@ -36,6 +36,24 @@ export default {
     chapters: 'Wiki',
     singleChapter: 'Chapter'
   },
+  orgaTypes: {
+    'Organization': {
+      name: 'Organization',
+      description: 'Description for Organization @todo'
+    },
+    'Project': {
+      name: 'Project',
+      description: 'Description for Project @todo'
+    },
+    'Location': {
+      name: 'Location',
+      description: 'Description for Location @todo'
+    },
+    'Network': {
+      name: 'Network',
+      description: 'Description for Network @todo'
+    }
+  },
   tabs: {
     generalTab: 'General',
     annotationsTab: 'Annotations',

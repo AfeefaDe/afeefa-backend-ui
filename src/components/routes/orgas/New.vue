@@ -7,14 +7,26 @@
     <div v-if="item">
       <div class="inputField__spacing">
         <label for="orgaType">Typ</label>
-        <select v-model="item.orga_type_id" id="orgaType"
-          name="orgaType"
-          class="browser-default">
-          <option :value="orgaType.id" v-for="orgaType in orgaTypes" :key="orgaType.id">{{ orgaType.name }}</option>
-        </select>
+        <ul class="orgaTypeSelector">
+          <li class="orgaTypeSelector__singleType" v-for="orgaType in orgaTypes"  :key="orgaType.id">
+            <input
+              class="with-gap"
+              name="orgaType"
+              type="radio"
+              :id="orgaType.id"
+              v-bind:checked="orgaType.id === 2"
+              v-model="item.orga_type_id"
+              :value="orgaType.id"/>
+            <label :for="orgaType.id">{{$t('orgaTypes.'+orgaType.name+'.name')}}</label>
+          </li>
+        </ul>
+        <div class="orgaTypeDescription">
+          <i class="material-icons">info_outline</i>
+          <p>{{$t('orgaTypes.'+currentOrgaTypeName+'.description')}}</p>
+        </div>
       </div>
 
-      <title-input :item="item" />
+      <title-input :item="item"/>
 
       <category-selector :item="item" />
 
@@ -48,6 +60,9 @@ export default {
   computed: {
     orgaTypes () {
       return OrgaType.TYPES
+    },
+    currentOrgaTypeName () {
+      return OrgaType.getById(this.item.orga_type_id).name
     }
   },
 
@@ -59,3 +74,36 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+@import "~variables";
+.orgaTypeSelector {
+  margin: 0.5em 0;
+  &__singleType {
+    margin: 0 6vw 0 0;
+    display: inline-block;
+  }
+  label {
+    color: $black;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}
+.orgaTypeDescription {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5em 0.6em;
+  margin: 0.5em 0;
+  border-radius: $default-border-radius;
+  background: $gray20;
+  p {
+    line-height: 150%;
+    margin: 0;
+  }
+  i {
+    vertical-align: middle;
+    padding-right: 0.5em;
+    font-size: 1.5rem;
+  }
+}
+
+</style>
