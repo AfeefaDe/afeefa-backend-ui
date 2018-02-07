@@ -29,7 +29,6 @@ export default {
   display: flex;
   list-style: none;
   margin: 2em 0;
-
   &__propertyIcon {
     margin-left: 0.3em;
     margin-right: 2em;

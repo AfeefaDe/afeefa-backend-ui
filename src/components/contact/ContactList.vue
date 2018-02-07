@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div class="contactList">
+    <h3 class="contactList__title">{{$tc('headlines.contact', item.contacts.length)}}</h3>
     <div v-for="(contact, index) in item.contacts" :key="contact.id">
 
-      <h3 v-if="index" class="contactTitle">{{ contact.title || 'Weiterer Kontakt' }} </h3>
+       <h3 v-if="index" class="contactTitle">{{ contact.title || 'Weiterer Kontakt' }} </h3>
       <h3 v-else class="contactTitle">{{ contact.title || 'Kontakt' }} </h3>
 
       <router-link :to="{name: 'orgas.contactedit', params: {contactId: contact.id}}">
@@ -157,7 +158,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.contactTitle {
-  font-size: 1.5em;
+.contactList {
+  &__title {
+    font-size: 1.5em;
+  }
 }
 </style>

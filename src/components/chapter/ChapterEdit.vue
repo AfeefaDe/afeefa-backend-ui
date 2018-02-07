@@ -4,6 +4,7 @@
       <div class="mainCard">
         <div v-bind:class="['mainCard__header', 'mainCard__headerCategories']" v-if="item">
           <div class="mainCard__headerTitle">
+            <span class="mainCard__type">Kapitel</span>
             <h2 class="mainCard__headerTitle"> {{item.title || 'Kein Titel'}}</h2>
           </div>
           <div class="mainCard__headerButtonContainer">

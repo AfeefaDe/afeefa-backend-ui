@@ -13,7 +13,7 @@
         </image-container>
 
         <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
-          <section slot="generalTab" class="generalTab">
+          <section slot="generalTab" class="generalTab generalTab--splitView">
             <div class="entryDetail">
 
               <entry-detail-property
@@ -138,8 +138,7 @@
                 <span>{{ $t('entries.updated_at') }}: {{ entry.updated_at | formatDateAbsolute }} ({{ entry.updated_at | formatDateRelative }})</span>
                 <span v-if="entry.lastEditor">von {{ entry.lastEditor.name }} <span v-if="entry.lastEditor.organization">({{ entry.lastEditor.organization }})</span></span><br>
                 <span>{{ $t('entries.state_changed_at') }}: {{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }})</span><br>
-              </entry-detail-property>
-            </div>
+              </entry-detail-property></div>
 
             <contact-list :item="entry" />
           </section>
@@ -318,12 +317,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.generalTab {
+@import "~variables";
+.generalTab--splitView {
   display: flex;
   justify-content: space-between;
-
+  flex-wrap: wrap;
   > * {
     width: 50%;
+    @media screen and (max-width: $break-medium) {
+      width: 100%;
+    }
   }
 }
 </style>

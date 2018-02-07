@@ -6,6 +6,7 @@
       <div v-bind:class="['mainCard__header', 'mainCard__headerCategories']">
         <a href="" @click.prevent="goBack"><i class="material-icons go-back">chevron_left</i></a>
         <div class="mainCard__headerTitle">
+          <span class="mainCard__type">Kapitel {{item.order}}</span>
           <h2 class="mainCard__headerTitleHeading">{{ item.title || 'Kein Titel' }}</h2>
         </div>
         <div class="mainCard__headerButtonContainer">

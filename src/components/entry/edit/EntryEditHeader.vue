@@ -3,6 +3,10 @@
     <a href="" @click.prevent="goBack"><i class="material-icons go-back">chevron_left</i></a>
 
     <div class="mainCard__headerTitle">
+      <span class="mainCard__type">
+        <template v-if="item.orga_type_id">{{$t('orgaTypes.'+item.orga_type_id+'.name')}}</template>
+      </span>
+
       <h2 class="mainCard__headerTitleHeading"> {{item.title || defaultTitle }}</h2>
       <span v-if="item.parent_orga" class="mainCard__headerSubtitle">
         <router-link :to="{name: item.parent_orga.type + '.show', params: {id: item.parent_orga.id}}">

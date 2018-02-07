@@ -104,7 +104,7 @@ export default {
 .tabBar {
   $activeBorderWidth: 3px;
   &__navItemContainer {
-    margin: 0 0 2em;
+    margin: 0 0 1em;
     width: 100%;
     // fixes strange chrome bug (#200)
     overflow-x: hidden;
