@@ -89,7 +89,7 @@ export default class Orga extends Entry {
   }
 
   invalidateLoadedActorRelations () {
-    delete this.__relationsLoadingStarted.actorRelations
+    this.fetched('actorRelations', false)
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
       this[actorRelation] = []
     })

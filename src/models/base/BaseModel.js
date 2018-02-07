@@ -7,25 +7,29 @@ export default class BaseModel {
     this.__ID = ++ID
     this._loadingState = LoadingState.NOT_LOADED
 
-    this._relations = this.setupRelations()
+    this._relations = {}
+    this.__fetchedRelations = {} // do not clone, fetch again for each instance
 
     this.init()
   }
 
-  setupRelations () {
-    // return object of relations in model
+  get relations () {
+    return this._relations
   }
 
   relation (name) {
+    if (!this._relations[name]) {
+      this._relations[name] = this[name + 'Relation']()
+    }
     return this._relations[name]
   }
 
-  _relationLoadingStarted (relationName) {
-    return this.__relationsLoadingStarted[relationName] === true
-  }
-
-  _startLoadingRelation (relationName) {
-    this.__relationsLoadingStarted[relationName] = true
+  fetched (relationName, flag) {
+    if (arguments.length === 1) {
+      return this.__fetchedRelations[relationName] || false
+    } else {
+      this.__fetchedRelations[relationName] = flag
+    }
   }
 
   init () {

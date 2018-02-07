@@ -11,8 +11,7 @@ import LoadingStrategy from '@/store/api/LoadingStrategy'
 
 export default {
   fetchParentOrga (entry, strategy = LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD) {
-    // do not fetch parent_orga multiple times
-    if (entry._relationLoadingStarted('parent_orga')) {
+    if (entry.fetched('parent_orga')) {
       return
     }
     if (entry.parent_orga && entry.parent_orga._loadingState === LoadingState.FULLY_LOADED) {
@@ -23,42 +22,39 @@ export default {
       // do not load parent orga from remote by default
       Orgas.get(id, [], strategy).then(orga => {
         entry.parent_orga = orga
+        entry.fetched('parent_orga', true)
       })
     }
-    entry._startLoadingRelation('parent_orga')
   },
 
   fetchCategory (entry) {
-    // do not fetch category multiple times
-    if (entry._relationLoadingStarted('category')) {
+    if (entry.fetched('category')) {
       return
     }
     const id = entry._relationIds.category
     if (id) {
       Categories.get(id).then(category => {
         entry.category = category
+        entry.fetched('category', true)
       })
     }
-    entry._startLoadingRelation('category')
   },
 
   fetchSubCategory (entry) {
-    // do not fetch sub_category multiple times
-    if (entry._relationLoadingStarted('sub_category')) {
+    if (entry.fetched('sub_category')) {
       return
     }
     const id = entry._relationIds.sub_category
     if (id) {
       Categories.get(id).then(category => {
         entry.sub_category = category
+        entry.fetched('sub_category', true)
       })
     }
-    entry._startLoadingRelation('sub_category')
   },
 
   fetchAnnotations (entry, clone) {
-    // do not fetch annotations multiple times
-    if (entry._relationLoadingStarted('annotations')) {
+    if (entry.fetched('annotations')) {
       return
     }
     for (let id of entry._relationIds.annotations) {
@@ -70,14 +66,13 @@ export default {
             entry.annotations.push(annotation)
           })
         }
+        entry.fetched('annotations', true)
       })
     }
-    entry._startLoadingRelation('annotations')
   },
 
   fetchContacts (entry, clone) {
-    // do not fetch contacts multiple times
-    if (entry._relationLoadingStarted('contacts')) {
+    if (entry.fetched('contacts')) {
       return
     }
     Contacts.getAllForOwner(entry).then(contacts => {
@@ -85,34 +80,34 @@ export default {
         contact = clone ? Contacts.clone(contact) : contact
         entry.contacts.push(contact)
       })
+      entry.fetched('contacts', true)
     })
-    entry._startLoadingRelation('contacts')
   },
 
   fetchActorRelations (orga) {
     // do not fetch contacts multiple times
-    if (orga._relationLoadingStarted('actorRelations')) {
+    if (orga.fetched('actorRelations')) {
       return
     }
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
       ActorRelations.getRelatedActors(orga, actorRelation).then(actors => {
         orga[actorRelation] = actors
+        orga.fetched('actorRelations', true)
       })
     })
-    orga._startLoadingRelation('actorRelations')
   },
 
   fetchResources (orga) {
     // do not fetch contacts multiple times
-    if (orga._relationLoadingStarted('resources')) {
+    if (orga.fetched('resources')) {
       return
     }
     for (let id of orga._relationIds.resource_items) {
       ResourceItems.get(id).then(resourceItem => {
         orga.resource_items.push(resourceItem)
+        orga.fetched('resources', true)
       })
     }
-    orga._startLoadingRelation('resources')
   },
 
   clone (entry) {

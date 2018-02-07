@@ -42,6 +42,13 @@ export default class BaseResource {
   // @see Todos or Search
   deserialize (item, json) {
     item.deserialize(json)
+
+    const resourceCache = store.state.api.resourceCache
+    for (let name in item.relations) {
+      const relation = item.relations[name]
+      relation.cache(resourceCache)
+    }
+
     this.initEagerLoadedRelations(item)
   }
 

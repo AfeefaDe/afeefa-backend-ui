@@ -1,5 +1,7 @@
 import BaseModel from './BaseModel'
 import User from '../User'
+import CachedRelation from '@/models/base/CachedRelation'
+import Contact from '@/models/Contact'
 
 export default class Entry extends BaseModel {
   init () {
@@ -49,6 +51,10 @@ export default class Entry extends BaseModel {
     }
   }
 
+  contactsRelation () {
+    return new CachedRelation({type: CachedRelation.HAS_MANY, cacheKey: 'contacts', cacheParams: {owner_type: this.type, owner_id: this.id}})
+  }
+
   deserialize (json) {
     this.init()
 
@@ -92,9 +98,15 @@ export default class Entry extends BaseModel {
 
     // contacts, eagerly loaded
     if (rels.contacts && rels.contacts.data.length) {
-      for (let jsonContact of rels.contacts.data) {
-        this._eagerLoadedRelations.contacts.push(jsonContact)
-      }
+      this.relation('contacts').initWithJson(rels.contacts.data, jsonContacts => {
+        const contacts = []
+        for (let jsonContact of jsonContacts) {
+          const contact = new Contact()
+          contact.deserialize(jsonContact)
+          contacts.push(contact)
+        }
+        return contacts
+      })
     }
 
     // annotations
@@ -166,7 +178,7 @@ export default class Entry extends BaseModel {
   }
 
   invalidateLoadedContacts () {
-    delete this.__relationsLoadingStarted.contacts
+    this.fetched('contacts', false)
     this.contacts = []
   }
 }

@@ -23,10 +23,8 @@ export default class Contact extends BaseModel {
     this.persons = []
   }
 
-  setupRelations () {
-    return {
-      location: new CachedRelation({attribute: 'location', type: CachedRelation.HAS_ONE, cacheKey: 'locations'})
-    }
+  locationRelation () {
+    return new CachedRelation({type: CachedRelation.HAS_ONE, cacheKey: 'locations'})
   }
 
   deserialize (json) {
@@ -47,9 +45,9 @@ export default class Contact extends BaseModel {
     // location
     if (rels.location && rels.location.data) {
       this.relation('location').initWithJson(rels.location.data, jsonLocation => {
-        this.location = new Location()
-        this.location.deserialize(jsonLocation)
-        return this.location
+        const location = new Location()
+        location.deserialize(jsonLocation)
+        return location
       })
     }
 

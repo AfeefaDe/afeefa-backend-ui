@@ -13,7 +13,7 @@ class ContactsResource extends BaseResource {
 
     this.http = Vue.resource(BASE + `orgas/${orgaId}/contacts{/id}`, {}, {update: {method: 'PATCH'}})
     this.listCacheKey = 'contacts'
-    this.listCacheParams = JSON.stringify({owner_id: orgaId, owner_type: 'orgas'})
+    this.listCacheParams = JSON.stringify({owner_type: 'orgas', owner_id: orgaId})
   }
 
   createItem () {
@@ -65,44 +65,19 @@ class ContactsResource extends BaseResource {
   itemAdded (contact) {
     this.itemDeleted(contact)
   }
-
-  initEagerLoadedRelations (contact) {
-    const resourceCache = store.state.api.resourceCache
-    for (let name in contact._relations) {
-      const relation = contact._relations[name]
-      relation.cache(resourceCache)
-    }
-  }
 }
 
 export default {
   fetchLocation (contact, clone) {
-    if (contact._relationLoadingStarted('location')) {
+    if (contact.fetched('location')) {
       return
     }
     if (contact.relation('location').json) {
       const id = contact.relation('location').json.id
       Locations.get(id).then(location => {
         contact.location = clone ? location.clone() : location
+        contact.fetched('location', true)
       })
-    }
-    contact._startLoadingRelation('location')
-  },
-
-  /**
-   * Initializes all eagerly loaded contacts of the given owner.
-   */
-  initAllForOwner (owner, contactsJson) {
-    if (contactsJson.length) {
-      const resource = new ContactsResource(owner.id)
-      const contacts = []
-      contactsJson.forEach(contactJson => {
-        const contact = new Contact()
-        resource.deserialize(contact, contactJson) // also initializes contact's eagerly loaded locations
-        contacts.push(contact)
-      })
-      const resourceCache = store.state.api.resourceCache
-      resourceCache.addList('contacts', resource.listCacheParams, contacts)
     }
   },
 

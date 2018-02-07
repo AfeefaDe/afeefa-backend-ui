@@ -2,10 +2,10 @@ export default class CachedRelation {
   static HAS_ONE = 'has_one'
   static HAS_MANY = 'has_many'
 
-  constructor ({attribute, type, cacheKey}) {
-    this.attribute = attribute
+  constructor ({type, cacheKey, cacheParams}) {
     this.type = type
     this.cacheKey = cacheKey
+    this.cacheParams = JSON.stringify(cacheParams)
 
     this.json = null
     this.factory = null
@@ -25,18 +25,34 @@ export default class CachedRelation {
 
   cache (resourceCache) {
     if (this.json) {
-      let item = resourceCache.getItem(this.cacheKey, this.json.id)
-      if (!item) {
-        item = this.factory(this.json)
-        resourceCache.addItem(this.cacheKey, item)
+      if (this.type === CachedRelation.HAS_ONE) {
+        let item = resourceCache.getItem(this.cacheKey, this.json.id)
+        if (!item) {
+          item = this.factory(this.json)
+          resourceCache.addItem(this.cacheKey, item)
+        } else {
+          item.deserialize(this.json)
+        }
+        this.cacheItemRelations(resourceCache, item)
       } else {
-        item.deserialize(this.json)
+        const items = this.factory(this.json)
+        resourceCache.addList(this.cacheKey, this.cacheParams, items)
+        items.forEach(item => {
+          this.cacheItemRelations(resourceCache, item)
+        })
       }
     }
   }
 
+  cacheItemRelations (resourceCache, item) {
+    for (let name in item.relations) {
+      const relation = item.relations[name]
+      relation.cache(resourceCache)
+    }
+  }
+
   clone () {
-    const clone = new CachedRelation({attribute: this.attribute, type: this.type, cacheKey: this.cacheKey})
+    const clone = new CachedRelation({type: this.type, cacheKey: this.cacheKey, cacheParams: this.cacheParams})
     clone.json = this.json
     clone.factory = this.factory
     return clone
