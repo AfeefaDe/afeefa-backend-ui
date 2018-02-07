@@ -37,19 +37,19 @@ export default {
     singleChapter: '*'
   },
   orgaTypes: {
-    'Organization': {
+    '2': {
       name: '*',
       description: '*'
     },
-    'Project': {
+    '3': {
       name: '*',
       description: '*'
     },
-    'Location': {
+    '4': {
       name: '*',
       description: '*'
     },
-    'Network': {
+    '5': {
       name: '*',
       description: '*'
     }

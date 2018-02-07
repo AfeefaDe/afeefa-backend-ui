@@ -62,9 +62,7 @@ $sidebarWidth: 350px;
   background-color: white;
   margin-top: 2em;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
-  h2 {
-    font-size: 1.2em;
-  }
+
   @media screen and (max-width: $break-small) {
     margin-left: 0;
     margin-right: 0;
@@ -94,20 +92,13 @@ $sidebarWidth: 350px;
 			font-size: 1.4em;
 		}
   }
-  &__headerGreen {
-    background-color: $secondaryBlue;
-    color: white;
-    h2 {
-      font-size: 1.4em;
-      font-weight: normal;
-    }
-  }
   /* output background color depending on category */
   &__headerCategories {
     @include categoryColors($alpha_background: 1, $alpha_border: 0);
   }
   &__headerTitle {
     flex-grow: 2;
+    font-size: 1.2em;
     overflow: hidden;
     padding-right: 1em;
     margin: 0;
@@ -120,9 +111,7 @@ $sidebarWidth: 350px;
   }
   &__headerTitleHeading {
     margin: 0;
-  }
-  &__headerTitleHeading {
-    margin: 0;
+    font-size: 1.5em;
   }
   &__headerSubtitle {
     font-size: 0.9rem;
@@ -135,6 +124,12 @@ $sidebarWidth: 350px;
     @media screen and (max-width: $break-medium) {
       display: block;
     }
+  }
+  &__orgaType {
+    text-transform: uppercase;
+    color: $gray20;
+    padding-bottom: 0.5em;
+    font-size: 0.9rem;
   }
   &__headerButton {
     font-size: 0.93em;

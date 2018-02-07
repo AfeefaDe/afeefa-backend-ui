@@ -15,19 +15,6 @@
         <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
           <section slot="generalTab" class="generalTab">
             <div class="entryDetail">
-              <entry-detail-property
-                v-if="entry.type === 'orgas'"
-                name="Typ">
-                <entry-icon :item="entry" slot="icon" />
-                {{ $t('orgaTypes.'+getOrgaType(entry.orga_type_id).name+'.name') }}
-              </entry-detail-property>
-
-              <entry-detail-property
-                v-if="entry.title"
-                :name="$t('entries.title')">
-                <entry-icon :item="entry" slot="icon" v-if="entry.type === 'events'" />
-                {{ entry.title }}
-              </entry-detail-property>
 
               <entry-detail-property
                 :name="$tc('entries.date')"
@@ -184,7 +171,7 @@
           </section>
 
           <section slot="eventsTab" v-if="entry.type === 'orgas'">
-            <h2>{{ $t('headlines.upcomingEvents') }}</h2>
+            <h5>{{ $t('headlines.upcomingEvents') }}</h5>
 
             <entry-list-items
               :items="upcomingEvents"
@@ -194,7 +181,7 @@
               :options="{event_date: true}">
             </entry-list-items>
 
-            <h2>{{ $t('headlines.pastEvents') }}</h2>
+            <h5>{{ $t('headlines.pastEvents') }}</h5>
 
             <entry-list-items
               :items="pastEvents"
@@ -215,7 +202,6 @@
 <script>
 import Events from '@/resources/Events'
 import Users from '@/resources/Users'
-import OrgaType from '@/models/OrgaType'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 
@@ -280,9 +266,6 @@ export default {
   methods: {
     setCurrentTab (newCurrentTab) {
       this.currentTab = newCurrentTab
-    },
-    getOrgaType (id) {
-      return OrgaType.getById(id)
     }
   },
 

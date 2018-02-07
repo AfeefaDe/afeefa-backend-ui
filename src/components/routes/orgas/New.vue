@@ -17,12 +17,12 @@
               v-bind:checked="orgaType.id === 2"
               v-model="item.orga_type_id"
               :value="orgaType.id"/>
-            <label :for="orgaType.id">{{$t('orgaTypes.'+orgaType.name+'.name')}}</label>
+            <label :for="orgaType.id">{{$t('orgaTypes.'+orgaType.id+'.name')}}</label>
           </li>
         </ul>
         <div class="orgaTypeDescription">
           <i class="material-icons">info_outline</i>
-          <p>{{$t('orgaTypes.'+currentOrgaTypeName+'.description')}}</p>
+          <p>{{$t('orgaTypes.'+this.item.orga_type_id+'.description')}}</p>
         </div>
       </div>
 
@@ -60,9 +60,6 @@ export default {
   computed: {
     orgaTypes () {
       return OrgaType.TYPES
-    },
-    currentOrgaTypeName () {
-      return OrgaType.getById(this.item.orga_type_id).name
     }
   },
 

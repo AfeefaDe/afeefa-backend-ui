@@ -49,19 +49,19 @@ export default {
     resourceTab: 'Ressourcen'
   },
   orgaTypes: {
-    'Organization': {
+    '2': {
       name: 'Organisation',
       description: 'Organisationen bilden Vereine und Zusammenschlüsse in der Realität ab.'
     },
-    'Project': {
+    '3': {
       name: 'Projekt',
       description: 'Projekte sind kleinere Einheiten und immer Teil einer Organisation. Dabei können sie zu mehreren Organisationen hinzugefügt werden.'
     },
-    'Location': {
+    '4': {
       name: 'Ort',
       description: 'Der Typ "Ort" befindet sich noch in der Entwicklung. Langfristig sollen damit reele Orte abgebildet werden.'
     },
-    'Network': {
+    '5': {
       name: 'Netzwerk',
       description: 'Mit Netzwerken werden komplexere Strukturen, bestehende aus Organisationen, abgebildet. Ein Netzwerk hat immer einen Träger und beliebig viele Teilnehmer.'
     }
