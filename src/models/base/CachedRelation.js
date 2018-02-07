@@ -25,9 +25,12 @@ export default class CachedRelation {
   initWithJson (json, factory) {
     this.json = json
 
-    if (this.json && this.type === CachedRelation.HAS_ONE) {
+    if (this.type === CachedRelation.HAS_ONE) {
       this.id = this.json.id
+    } else {
+      this.ids = this.json.map(json => json.id)
     }
+
     this.factory = factory
   }
 
@@ -69,6 +72,8 @@ export default class CachedRelation {
         })
       }
     }
+
+    this.cached = false
   }
 
   cacheItemRelations (resourceCache, item) {
@@ -79,7 +84,8 @@ export default class CachedRelation {
   }
 
   clone () {
-    const clone = new CachedRelation({type: this.type, cacheKey: this.cacheKey, cacheParams: this.cacheParams})
+    const cacheParams = this.cacheParams ? JSON.parse(this.cacheParams) : ''
+    const clone = new CachedRelation({type: this.type, cacheKey: this.cacheKey, cacheParams})
     clone.json = this.json
     clone.factory = this.factory
 

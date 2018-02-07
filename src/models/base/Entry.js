@@ -1,7 +1,8 @@
 import BaseModel from './BaseModel'
 import User from '../User'
-import CachedRelation from '@/models/base/CachedRelation'
-import Contact from '@/models/Contact'
+import CachedRelation from './CachedRelation'
+import Contact from '../Contact'
+import Annotation from '../Annotation'
 
 export default class Entry extends BaseModel {
   init () {
@@ -47,7 +48,6 @@ export default class Entry extends BaseModel {
     }
 
     this._eagerLoadedRelations = {
-      contacts: []
     }
   }
 
@@ -55,6 +55,14 @@ export default class Entry extends BaseModel {
     return new CachedRelation({
       type: CachedRelation.HAS_MANY,
       cacheKey: 'contacts',
+      cacheParams: {owner_type: this.type, owner_id: this.id}
+    })
+  }
+
+  annotationsRelation () {
+    return new CachedRelation({
+      type: CachedRelation.HAS_MANY,
+      cacheKey: 'annotations',
       cacheParams: {owner_type: this.type, owner_id: this.id}
     })
   }
@@ -100,7 +108,7 @@ export default class Entry extends BaseModel {
       this._relationIds.sub_category = rels.sub_category.data.id
     }
 
-    // contacts, eagerly loaded
+    // contacts
     if (rels.contacts && rels.contacts.data.length) {
       this.relation('contacts').initWithJson(rels.contacts.data, jsonContacts => {
         const contacts = []
@@ -115,11 +123,15 @@ export default class Entry extends BaseModel {
 
     // annotations
     if (rels.annotations && rels.annotations.data.length) {
-      for (let jsonAnnotation of rels.annotations.data) {
-        if (!this._relationIds.annotations.includes(jsonAnnotation.id)) {
-          this._relationIds.annotations.push(jsonAnnotation.id)
+      this.relation('annotations').initWithJson(rels.annotations.data, jsonAnnotations => {
+        const annotations = []
+        for (let jsonAnnotation of jsonAnnotations) {
+          const annotation = new Annotation()
+          annotation.deserialize(jsonAnnotation)
+          annotations.push(annotation)
         }
-      }
+        return annotations
+      })
     }
 
     // creator, last editor
@@ -184,5 +196,10 @@ export default class Entry extends BaseModel {
   invalidateLoadedContacts () {
     this.fetched('contacts', false)
     this.contacts = []
+  }
+
+  invalidateLoadedAnnotations () {
+    this.fetched('annotations', false)
+    this.annotations = []
   }
 }

@@ -41,7 +41,7 @@ export default class BaseResource {
   // @see Search
   // @see Todos or Search
   deserialize (item, json) {
-    item.deserialize(json)
+    this.deserializeItem(item, json)
 
     const resourceCache = store.state.api.resourceCache
     for (let name in item.relations) {
@@ -50,6 +50,10 @@ export default class BaseResource {
     }
 
     this.initEagerLoadedRelations(item)
+  }
+
+  deserializeItem (item, json) {
+    item.deserialize(json)
   }
 
   // pushes eagerly loaded relation data into

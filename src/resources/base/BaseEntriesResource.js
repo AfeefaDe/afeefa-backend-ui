@@ -21,11 +21,15 @@ export default class BaseEntriesResource extends BaseResource {
     // entry attributes may change and reorder lists
     this.cachePurgeList(this.listCacheKey)
     // annotation might be changed, entry may (disappear) in todo list
+    // invalidate only if first annotation added or last removed
     this.cachePurgeList('todos')
     // annotation detail might be changed
     for (let annotation of entryOld.annotations) {
       this.cachePurgeItem('annotations', annotation.id)
     }
+    // this.cachePurgeList('annotations', entry.relation('annotations').cacheParams)
+    // console.log('purge list for', entry.relation('annotations').cacheParams)
+    entry.invalidateLoadedAnnotations()
   }
 
   itemAttributesUpdated (entry, attributes) {

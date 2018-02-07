@@ -1,5 +1,4 @@
 import Categories from '../Categories'
-import AnnotationCategories from '../AnnotationCategories'
 import Annotations from '../Annotations'
 import ResourceItems from '../ResourceItems'
 import Orgas from '../Orgas'
@@ -57,18 +56,13 @@ export default {
     if (entry.fetched('annotations')) {
       return
     }
-    for (let id of entry._relationIds.annotations) {
-      Annotations.get(id).then(annotation => {
-        if (annotation) {
-          annotation = clone ? annotation.clone() : annotation
-          AnnotationCategories.get(annotation.relation('annotationCategory').id).then(annotationCategory => {
-            annotation.annotationCategory = annotationCategory
-            entry.annotations.push(annotation)
-          })
-        }
-        entry.fetched('annotations', true)
+    Annotations.getAllForOwner(entry).then(annotations => {
+      annotations.forEach(annotation => {
+        annotation = clone ? Annotations.clone(annotation) : annotation
+        entry.annotations.push(annotation)
       })
-    }
+      entry.fetched('annotations', true)
+    })
   },
 
   fetchContacts (entry, clone) {

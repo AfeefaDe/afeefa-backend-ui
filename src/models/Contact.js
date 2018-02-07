@@ -109,6 +109,7 @@ export default class Contact extends BaseModel {
    * even if this.location is still null
    */
   get hasLocation () {
+    console.log('has location', this.relation('location').id)
     return this.relation('location').id
   }
 

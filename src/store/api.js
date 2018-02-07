@@ -113,12 +113,12 @@ export default {
       // key of list in resource cache
       const listCacheKey = resource.listCacheKey
       // different caches for different list params
-      const cacheUrl = resource.listCacheParams || JSON.stringify(params || '')
+      const listCacheParams = resource.listCacheParams || JSON.stringify(params || '')
 
-      if (resourceCache.hasList(listCacheKey, cacheUrl)) {
+      if (resourceCache.hasList(listCacheKey, listCacheParams)) {
         // list already loaded
         if (strategy === LoadingStrategy.RETURN_CACHED_OR_LOAD || strategy === LoadingStrategy.RETURN_CACHED_OR_EMPTY) {
-          return Promise.resolve(resourceCache.getList(listCacheKey, cacheUrl))
+          return Promise.resolve(resourceCache.getList(listCacheKey, listCacheParams))
         }
       } else {
         // list not cached but should not load
@@ -170,7 +170,7 @@ export default {
         // apply custom map to items, e.g. to create a category tree from a flat list
         resource.transformList(items)
         // cache list
-        resourceCache.addList(listCacheKey, cacheUrl, items)
+        resourceCache.addList(listCacheKey, listCacheParams, items)
 
         return items
       }).catch(response => {

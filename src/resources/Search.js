@@ -34,7 +34,7 @@ class SearchResource extends BaseResource {
     }
   }
 
-  deserialize (item, json) {
+  deserializeItem (item, json) {
     item.deserialize(json.relationships.entry.data)
   }
 }

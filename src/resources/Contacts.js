@@ -72,8 +72,8 @@ export default {
     if (contact.fetched('location')) {
       return
     }
-    if (contact.relation('location').json) {
-      const id = contact.relation('location').id
+    const id = contact.relation('location').id
+    if (id) {
       Locations.get(id).then(location => {
         contact.location = clone ? location.clone() : location
         contact.fetched('location', true)
@@ -107,7 +107,7 @@ export default {
       resource: new ContactsResource(orgaId),
       item: contact
     }).then(() => {
-      Orgas.get(orgaId).then(orga => {
+      Orgas.get(orgaId, []).then(orga => {
         Entries.fetchContacts(orga)
       })
     })

@@ -24,7 +24,6 @@ export default class Orga extends Entry {
 
     // extend _relationIds
     this._relationIds.resource_items = []
-    this._eagerLoadedRelations.parent_orga = null
     this._eagerLoadedRelations.actorRelations = {}
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
       this._eagerLoadedRelations.actorRelations[actorRelation] = []
