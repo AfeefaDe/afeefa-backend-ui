@@ -12,17 +12,10 @@ export default class Annotion extends BaseModel {
     this.type = 'annotations'
     this.detail = ''
     this.annotationCategory = null
-    this._relationIds = {
-      annotationCategory: null
-    }
   }
 
   annotationCategoryRelation () {
-    return new CachedRelation({
-      type: CachedRelation.HAS_ONE,
-      cacheKey: 'annotationCategories',
-      loadingState: LoadingState.FULLY_LOADED
-    })
+    return new CachedRelation({type: CachedRelation.HAS_ONE, cacheKey: 'annotationCategories'})
   }
 
   deserialize (json) {

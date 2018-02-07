@@ -1,5 +1,6 @@
 import BaseModel from './base/BaseModel'
 import LoadingState from '@/store/api/LoadingState'
+import CachedRelation from '@/models/base/CachedRelation'
 
 export default class Category extends BaseModel {
   init () {
@@ -13,10 +14,10 @@ export default class Category extends BaseModel {
 
     this.parent_category = null
     this.sub_categories = []
+  }
 
-    this._relationIds = {
-      parent_category: null
-    }
+  parentCategoryRelation () {
+    return new CachedRelation({type: CachedRelation.HAS_ONE, cacheKey: 'categories'})
   }
 
   deserialize (json) {
@@ -27,7 +28,7 @@ export default class Category extends BaseModel {
 
     // category
     if (rels.parent_category.data) {
-      this._relationIds.parent_category = rels.parent_category.data.id
+      this.relation('parentCategory').initWithId(rels.parent_category.data.id)
     }
   }
 }

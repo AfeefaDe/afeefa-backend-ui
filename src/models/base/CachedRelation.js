@@ -1,8 +1,10 @@
+import LoadingState from '@/store/api/LoadingState'
+
 export default class CachedRelation {
   static HAS_ONE = 'has_one'
   static HAS_MANY = 'has_many'
 
-  constructor ({type, cacheKey, cacheParams, loadingState}) {
+  constructor ({type, cacheKey, cacheParams, loadingState = LoadingState.FULLY_LOADED}) {
     this.type = type
     this.cacheKey = cacheKey
     this.cacheParams = JSON.stringify(cacheParams)

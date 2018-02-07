@@ -14,14 +14,14 @@ class CategoriesResource extends BaseResource {
     return new Category()
   }
 
-  transformList (items) {
+  transformList (categories) {
     const categoriesMap = {}
-    for (let category of items) {
+    for (let category of categories) {
       categoriesMap[category.id] = category
     }
 
-    for (let category of items) {
-      const parentId = category._relationIds.parent_category
+    for (let category of categories) {
+      const parentId = category.relation('parentCategory').id
       const parentCategory = categoriesMap[parentId]
       if (parentCategory) {
         category.parent_category = parentCategory
