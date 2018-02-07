@@ -19,7 +19,7 @@
                 v-if="entry.type === 'orgas'"
                 name="Typ">
                 <entry-icon :item="entry" slot="icon" />
-                {{ getOrgaType(entry.orga_type_id).name }}
+                {{ $t('orgaTypes.'+getOrgaType(entry.orga_type_id).name+'.name') }}
               </entry-detail-property>
 
               <entry-detail-property
