@@ -108,6 +108,7 @@ export default {
       item: contact
     }).then(() => {
       Orgas.get(orgaId, []).then(orga => {
+        // TODO let Orga fetch the contats by itself
         Entries.fetchContacts(orga)
       })
     })

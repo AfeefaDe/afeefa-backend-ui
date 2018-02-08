@@ -27,8 +27,6 @@ export default class BaseEntriesResource extends BaseResource {
     for (let annotation of entryOld.annotations) {
       this.cachePurgeItem('annotations', annotation.id)
     }
-    // this.cachePurgeList('annotations', entry.relation('annotations').cacheParams)
-    // console.log('purge list for', entry.relation('annotations').cacheParams)
     entry.invalidateLoadedAnnotations()
   }
 

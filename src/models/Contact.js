@@ -47,6 +47,8 @@ export default class Contact extends BaseModel {
       this.relation('location').initWithJson(rels.location.data, jsonLocation => {
         const location = new Location()
         location.deserialize(jsonLocation)
+        this.locationLoaded = true
+        console.log('set location loaded', this.locationLoaded)
         return location
       })
     }
@@ -102,15 +104,6 @@ export default class Contact extends BaseModel {
   isEmpty () {
     const hasPerson = this.persons.some(cp => !cp.isEmpty())
     return !this.fax && !this.openingHours && !this.web && !this.socialMedia && !this.spokenLanguages && !hasPerson
-  }
-
-  /**
-   * indicates that a location object will be loaded
-   * even if this.location is still null
-   */
-  get hasLocation () {
-    console.log('has location', this.relation('location').id)
-    return this.relation('location').id
   }
 
   get info () {

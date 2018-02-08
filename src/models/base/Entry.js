@@ -109,7 +109,7 @@ export default class Entry extends BaseModel {
     }
 
     // contacts
-    if (rels.contacts && rels.contacts.data.length) {
+    if (rels.contacts) {
       this.relation('contacts').initWithJson(rels.contacts.data, jsonContacts => {
         const contacts = []
         for (let jsonContact of jsonContacts) {
@@ -122,7 +122,7 @@ export default class Entry extends BaseModel {
     }
 
     // annotations
-    if (rels.annotations && rels.annotations.data.length) {
+    if (rels.annotations) {
       this.relation('annotations').initWithJson(rels.annotations.data, jsonAnnotations => {
         const annotations = []
         for (let jsonAnnotation of jsonAnnotations) {

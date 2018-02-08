@@ -9,6 +9,7 @@ export default class BaseModel {
 
     this._relations = {}
     this.__fetchedRelations = {} // '__' means: do not clone -> fetch again for each cloned instance
+    this.__fetchingRelations = {} // '__' means: do not clone -> fetch again for each cloned instance
 
     this.init()
   }
@@ -29,6 +30,17 @@ export default class BaseModel {
       return this.__fetchedRelations[relationName] || false
     } else {
       this.__fetchedRelations[relationName] = flag
+      if (flag) {
+        this.__fetchingRelations[relationName] = false
+      }
+    }
+  }
+
+  fetching (relationName, flag) {
+    if (arguments.length === 1) {
+      return this.__fetchingRelations[relationName] || false
+    } else {
+      this.__fetchingRelations[relationName] = flag
     }
   }
 

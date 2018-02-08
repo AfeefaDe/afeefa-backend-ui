@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import store from '@/store'
 import { BASE } from '@/store/api'
-import LoadingStrategy from '@/store/api/LoadingStrategy'
 import Orga from '@/models/Orga'
 import Entries from './base/Entries'
 import ActorRelations from './ActorRelations'
@@ -46,7 +45,7 @@ const Orgas = {
     const resource = new OrgasResource()
     return store.dispatch('api/getList', {resource}).then(orgas => {
       for (let orga of orgas) {
-        Entries.fetchParentOrga(orga, LoadingStrategy.RETURN_CACHED_OR_LOAD)
+        Entries.fetchParentOrga(orga)
         Entries.fetchCategory(orga)
         Entries.fetchSubCategory(orga)
       }
@@ -54,27 +53,43 @@ const Orgas = {
     })
   },
 
-  get (id, fetchRelationsWhiteList = [
-    'fetchParentOrga',
-    'fetchCategory',
-    'fetchSubCategory',
-    'fetchAnnotations',
-    'fetchContacts',
-    'fetchActorRelations'
-  ], strategy) {
+  /**
+   * Orgas.get(id) - fetch all relations, fetch parent orga with cached_or_load
+   * Orgas.get(id, null) - fetch all relations, fetch parent orga with cached_or_load
+   * Orgas.get(id, []) - fetch no relation
+   * Orgas.get(id, [], strategy) - fetch no relation, use specific loading strategy
+   * Orgas.get(id, null, null, fetchingStrategies) - fetch all and apply custom loading strategies to specific relations
+   */
+
+  get (id, relations, strategy, fetchingStrategies = {}) {
     if (!id) {
       const orga = new Orga()
       return Promise.resolve(orga)
     }
+
+    const fetchRelations = relations || [
+      'fetchParentOrga',
+      'fetchCategory',
+      'fetchSubCategory',
+      'fetchAnnotations',
+      'fetchContacts',
+      'fetchActorRelations'
+    ]
+
     const resource = new OrgasResource()
     return store.dispatch('api/getItem', {resource, id, strategy}).then(orga => {
       if (orga) {
         // only fetch Resources when there are unloaded id's in the _relationIds attribute
-        if (orga._relationIds.resource_items.length) {
-          fetchRelationsWhiteList.push('fetchResources')
+        if (fetchRelations.length && orga._relationIds.resource_items.length) {
+          fetchRelations.push('fetchResources')
         }
-        for (let fetchRelation of fetchRelationsWhiteList) {
-          Entries[fetchRelation](orga)
+        // corner cases, we only want to fetch a parent orga relation
+        if (fetchingStrategies.fetchParentOrga && !fetchRelations.length) {
+          fetchRelations.push('fetchParentOrga')
+        }
+        for (let fetchRelation of fetchRelations) {
+          const strategy = fetchingStrategies[fetchRelation] || null
+          Entries[fetchRelation](orga, strategy)
         }
       }
       return orga

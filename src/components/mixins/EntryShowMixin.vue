@@ -1,5 +1,6 @@
 <script>
 import EntryDetail from '@/components/entry/show/EntryDetail'
+import LoadingStrategy from '@/store/api/LoadingStrategy'
 
 export default {
   props: ['id'],
@@ -32,7 +33,9 @@ export default {
     initItem (id) {
       this.loadingError = false
 
-      this.routeConfig.Resource.get(id).then(entry => {
+      this.routeConfig.Resource.get(id, null, null, {
+        'fetchParentOrga': LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD
+      }).then(entry => {
         this.item = entry
 
         if (!this.item) {

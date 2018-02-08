@@ -172,6 +172,11 @@ export default {
         // cache list
         resourceCache.addList(listCacheKey, listCacheParams, items)
 
+        // check for eager loaded relations
+        items.forEach(item => {
+          resource.cacheEagerLoadedRelations(item)
+        })
+
         return items
       }).catch(response => {
         dispatch('loadingError', response)
@@ -196,12 +201,15 @@ export default {
       // check if item already loaded
       if (resourceCache.hasItem(itemCacheKey, id)) {
         const item = resourceCache.getItem(itemCacheKey, id)
-
         if (item._loadingState === LoadingState.FULLY_LOADED && strategy === LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD) {
           return Promise.resolve(resourceCache.getItem(itemCacheKey, id))
         }
-        if (strategy === LoadingStrategy.RETURN_CACHED_OR_LOAD) {
+        if (strategy === LoadingStrategy.RETURN_CACHED_OR_LOAD || strategy === LoadingStrategy.RETURN_CACHED_OR_EMPTY) {
           return Promise.resolve(resourceCache.getItem(itemCacheKey, id))
+        }
+      } else {
+        if (strategy === LoadingStrategy.RETURN_CACHED_OR_EMPTY) {
+          return Promise.resolve(null)
         }
       }
 
@@ -224,6 +232,10 @@ export default {
           resourceCache.addItem(itemCacheKey, item)
         }
         item._loadingState = LoadingState.FULLY_LOADED
+
+        // check for included cacheable relations
+        resource.cacheEagerLoadedRelations(item)
+
         return item
       }).catch(response => {
         dispatch('loadingError', response)
@@ -256,6 +268,10 @@ export default {
           resourceCache.addItem(itemCacheKey, cachedItem)
         }
         resource.deserialize(cachedItem, response.body.data || response.body)
+
+        // check for included cacheable relations
+        resource.cacheEagerLoadedRelations(cachedItem)
+
         resource.itemSaved(item, cachedItem)
         dispatch('getMetaInformation') // e.g. todos may change after annotation change
         return cachedItem
@@ -284,6 +300,10 @@ export default {
       ).then(response => {
         resource.deserialize(item, response.body.data || response.body)
         resourceCache.addItem(itemCacheKey, item)
+
+        // check for included cacheable relations
+        resource.cacheEagerLoadedRelations(item)
+
         resource.itemAdded(item)
         dispatch('getMetaInformation')
         return item

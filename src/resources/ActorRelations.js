@@ -6,6 +6,7 @@ import BaseResource from './base/BaseResource'
 import LoadingStrategy from '@/store/api/LoadingStrategy'
 import Orga from '@/models/Orga'
 import LoadingState from '@/store/api/LoadingState'
+import Entries from '@/resources/base/Entries'
 
 class ActorRelationsResource extends BaseResource {
   init ([orgaId]) {
@@ -51,6 +52,7 @@ const ActorRelations = {
       actorsJson.forEach(actorJson => {
         const actor = this.initRelatedActor(actorJson, loadingState)
         actors.push(actor)
+        Entries.fetchParentOrga(actor)
       })
     }
     return actors
@@ -68,6 +70,7 @@ const ActorRelations = {
         orga.deserialize(actorJson)
         orga._loadingState = loadingState
         resourceCache.addItem('orgas', orga)
+        orga.relation('parentOrga').cache(resourceCache)
       } else {
         if (orga._loadingState < loadingState) {
           orga.deserialize(actorJson)

@@ -38,11 +38,19 @@ export default class BaseResource {
   }
 
   // deserialized the current item
-  // @see Search
   // @see Todos or Search
   deserialize (item, json) {
     this.deserializeItem(item, json)
+  }
 
+  // hook to override if special deserialization code
+  // is provided. @see Todos or Search
+  deserializeItem (item, json) {
+    item.deserialize(json)
+  }
+
+  // caches eagerly loaded relations
+  cacheEagerLoadedRelations (item) {
     const resourceCache = store.state.api.resourceCache
     for (let name in item.relations) {
       const relation = item.relations[name]
@@ -50,10 +58,6 @@ export default class BaseResource {
     }
 
     this.initEagerLoadedRelations(item)
-  }
-
-  deserializeItem (item, json) {
-    item.deserialize(json)
   }
 
   // pushes eagerly loaded relation data into

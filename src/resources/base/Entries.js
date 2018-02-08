@@ -4,26 +4,40 @@ import ResourceItems from '../ResourceItems'
 import Orgas from '../Orgas'
 import ActorRelations from '../ActorRelations'
 import Contacts from '../Contacts'
-import LoadingState from '@/store/api/LoadingState'
 import Orga from '@/models/Orga'
 import LoadingStrategy from '@/store/api/LoadingStrategy'
+import LoadingState from '@/store/api/LoadingState'
 
 export default {
-  fetchParentOrga (entry, strategy = LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD) {
-    if (entry.fetched('parentOrga')) {
-      return
-    }
-    if (entry.parent_orga && entry.parent_orga._loadingState === LoadingState.FULLY_LOADED) {
-      return
-    }
+  fetchParentOrga (entry, strategy = LoadingStrategy.RETURN_CACHED_OR_LOAD) {
     const id = entry.relation('parentOrga').id
-    if (id) {
-      // do not load parent orga from remote by default
-      Orgas.get(id, [], strategy).then(orga => {
-        entry.parent_orga = orga
-        entry.fetched('parentOrga', true)
-      })
+    if (!id) {
+      return
     }
+
+    if (entry.fetching('parentOrga')) {
+      const wantToFetchMore = strategy === LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD &&
+        entry.fetching('parentOrga') !== strategy
+      if (!wantToFetchMore) {
+        return
+      }
+    }
+
+    if (entry.fetched('parentOrga')) {
+      const wantToFetchMore = strategy === LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD &&
+        entry.parent_orga._loadingState < LoadingState.FULLY_LOADED
+      if (!wantToFetchMore) {
+        return
+      }
+    }
+
+    entry.fetching('parentOrga', strategy)
+    Orgas.get(id, [], strategy, {
+      'fetchParentOrga': LoadingStrategy.RETURN_CACHED_OR_LOAD // fetch parent of parent :-)
+    }).then(orga => {
+      entry.parent_orga = orga
+      entry.fetched('parentOrga', true)
+    })
   },
 
   fetchCategory (entry) {
