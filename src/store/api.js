@@ -109,7 +109,7 @@ export default {
     },
 
 
-    getList: ({dispatch}, {resource, params, strategy = LoadingStrategy.RETURN_CACHED_OR_LOAD}) => {
+    getList: ({dispatch}, {resource, params, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED}) => {
       // key of list in resource cache
       const listCacheKey = resource.listCacheKey
       // different caches for different list params
@@ -117,13 +117,8 @@ export default {
 
       if (resourceCache.hasList(listCacheKey, listCacheParams)) {
         // list already loaded
-        if (strategy === LoadingStrategy.RETURN_CACHED_OR_LOAD || strategy === LoadingStrategy.RETURN_CACHED_OR_EMPTY) {
+        if (strategy === LoadingStrategy.LOAD_IF_NOT_CACHED) {
           return Promise.resolve(resourceCache.getList(listCacheKey, listCacheParams))
-        }
-      } else {
-        // list not cached but should not load
-        if (strategy === LoadingStrategy.RETURN_CACHED_OR_EMPTY) {
-          return Promise.resolve([])
         }
       }
 
@@ -190,7 +185,7 @@ export default {
     },
 
 
-    getItem: ({dispatch}, {resource, id, strategy = LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD}) => {
+    getItem: ({dispatch}, {resource, id, strategy = LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED}) => {
       const itemCacheKey = resource.getItemCacheKey()
 
       if (!id) {
@@ -201,15 +196,11 @@ export default {
       // check if item already loaded
       if (resourceCache.hasItem(itemCacheKey, id)) {
         const item = resourceCache.getItem(itemCacheKey, id)
-        if (item._loadingState === LoadingState.FULLY_LOADED && strategy === LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD) {
+        if (item._loadingState === LoadingState.FULLY_LOADED && strategy === LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED) {
           return Promise.resolve(resourceCache.getItem(itemCacheKey, id))
         }
-        if (strategy === LoadingStrategy.RETURN_CACHED_OR_LOAD || strategy === LoadingStrategy.RETURN_CACHED_OR_EMPTY) {
+        if (strategy === LoadingStrategy.LOAD_IF_NOT_CACHED) {
           return Promise.resolve(resourceCache.getItem(itemCacheKey, id))
-        }
-      } else {
-        if (strategy === LoadingStrategy.RETURN_CACHED_OR_EMPTY) {
-          return Promise.resolve(null)
         }
       }
 

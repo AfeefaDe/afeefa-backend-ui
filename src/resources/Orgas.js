@@ -80,12 +80,9 @@ const Orgas = {
     return store.dispatch('api/getItem', {resource, id, strategy}).then(orga => {
       if (orga) {
         // only fetch Resources when there are unloaded id's in the _relationIds attribute
-        if (fetchRelations.length && orga._relationIds.resource_items.length) {
+        // load together with anything else
+        if (fetchRelations.length > 5 && orga._relationIds.resource_items.length) {
           fetchRelations.push('fetchResources')
-        }
-        // corner cases, we only want to fetch a parent orga relation
-        if (fetchingStrategies.fetchParentOrga && !fetchRelations.length) {
-          fetchRelations.push('fetchParentOrga')
         }
         for (let fetchRelation of fetchRelations) {
           const strategy = fetchingStrategies[fetchRelation] || null

@@ -9,14 +9,14 @@ import LoadingStrategy from '@/store/api/LoadingStrategy'
 import LoadingState from '@/store/api/LoadingState'
 
 export default {
-  fetchParentOrga (entry, strategy = LoadingStrategy.RETURN_CACHED_OR_LOAD) {
+  fetchParentOrga (entry, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
     const id = entry.relation('parentOrga').id
     if (!id) {
       return
     }
 
     if (entry.fetching('parentOrga')) {
-      const wantToFetchMore = strategy === LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD &&
+      const wantToFetchMore = strategy === LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED &&
         entry.fetching('parentOrga') !== strategy
       if (!wantToFetchMore) {
         return
@@ -24,7 +24,7 @@ export default {
     }
 
     if (entry.fetched('parentOrga')) {
-      const wantToFetchMore = strategy === LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD &&
+      const wantToFetchMore = strategy === LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED &&
         entry.parent_orga._loadingState < LoadingState.FULLY_LOADED
       if (!wantToFetchMore) {
         return
@@ -32,9 +32,10 @@ export default {
     }
 
     entry.fetching('parentOrga', strategy)
-    Orgas.get(id, [], strategy, {
-      'fetchParentOrga': LoadingStrategy.RETURN_CACHED_OR_LOAD // fetch parent of parent :-)
+    Orgas.get(id, ['fetchParentOrga'], strategy, {
+      'fetchParentOrga': LoadingStrategy.LOAD_IF_NOT_CACHED // fetch parent of parent :-)
     }).then(orga => {
+      console.log('         fetchted! entry:', entry.id, 'parent:', orga.id, 'state:', orga._loadingState, 'strategy:', strategy)
       entry.parent_orga = orga
       entry.fetched('parentOrga', true)
     })

@@ -24,7 +24,7 @@ export default {
 
   created () {
     this.Resource.get(this.id, null, null, {
-      'fetchParentOrga': LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD
+      'fetchParentOrga': LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED
     }).then(entry => {
       if (entry) {
         this.origItem = entry

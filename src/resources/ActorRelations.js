@@ -83,7 +83,7 @@ const ActorRelations = {
 
   getRelatedActors (orga, actorRelation) {
     const resource = new ActorRelationsResource(orga.id)
-    return store.dispatch('api/getItem', {resource, id: orga.id, strategy: LoadingStrategy.RETURN_CACHED_OR_LOAD}).then(actorRelations => {
+    return store.dispatch('api/getItem', {resource, id: orga.id, strategy: LoadingStrategy.LOAD_IF_NOT_CACHED}).then(actorRelations => {
       return actorRelations[actorRelation]
     })
   }

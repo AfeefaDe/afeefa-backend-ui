@@ -34,7 +34,7 @@ export default {
       this.loadingError = false
 
       this.routeConfig.Resource.get(id, null, null, {
-        'fetchParentOrga': LoadingStrategy.RETURN_CACHED_IF_FULLY_LOADED_OR_LOAD
+        'fetchParentOrga': LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED
       }).then(entry => {
         this.item = entry
 
