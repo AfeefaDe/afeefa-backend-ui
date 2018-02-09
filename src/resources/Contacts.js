@@ -20,6 +20,14 @@ class ContactsResource extends BaseResource {
     return new Contact()
   }
 
+  beforeItemSaved (oldContact, contact) {
+    const newLocationId = contact.relation('location').id
+    if (newLocationId) {
+      const location = this.findCachedItem('locations', newLocationId)
+      location.invalidateCaching()
+    }
+  }
+
   itemSaved (oldContact, contact) {
     const oldLocationId = oldContact.relation('location').id
     const newLocationId = contact.relation('location').id

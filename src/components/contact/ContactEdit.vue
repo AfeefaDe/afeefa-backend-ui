@@ -5,6 +5,7 @@
         <entry-edit-header :item="owner" :routeConfig="routeConfig" />
 
         <contact-form
+          v-if="contact"
           :owner="owner"
           :contact="contact"
           :routeConfig="routeConfig"
@@ -46,23 +47,19 @@ export default {
     this.Resource.get(this.id).then(owner => {
       if (owner) {
         this.owner = owner
+        if (this.contactId) {
+          Contacts.getAllForOwner(owner).then(contacts => {
+            this.origContact = contacts.find(c => c.id === this.contactId)
+            this.contact = Contacts.clone(this.origContact)
+          })
+        } else {
+          this.origContact = new Contact()
+          this.contact = new Contact()
+        }
       } else {
-        console.log('error loading contact owner')
         this.hasItemLoadingError = true
       }
     })
-  },
-
-  watch: {
-    'owner.contacts' () {
-      if (this.contactId) {
-        this.origContact = this.owner.contacts.find(c => c.id === this.contactId)
-      }
-      if (!this.origContact) {
-        this.origContact = new Contact()
-      }
-      this.contact = Contacts.clone(this.origContact)
-    }
   },
 
   methods: {

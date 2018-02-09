@@ -35,7 +35,7 @@ class EventsResource extends BaseEntriesResource {
   }
 
   _updateParentOrgasEventList (event) {
-    const orgaId = event._relationIds.parent_orga
+    const orgaId = event.relation('parentOrga').id
     if (orgaId) {
       this.cachePurgeList('events', JSON.stringify({orga_id: orgaId, 'filter[date]': 'upcoming'}))
       this.cachePurgeList('events', JSON.stringify({orga_id: orgaId, 'filter[date]': 'past'}))

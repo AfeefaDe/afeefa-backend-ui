@@ -8,6 +8,7 @@ export default class BaseModel {
     this._loadingState = LoadingState.NOT_LOADED
 
     this._relations = {}
+    this._cachingInvalidated = false
     this.__fetchedRelations = {} // '__' means: do not clone -> fetch again for each cloned instance
     this.__fetchingRelations = {} // '__' means: do not clone -> fetch again for each cloned instance
 
@@ -45,8 +46,16 @@ export default class BaseModel {
   }
 
   init () {
+    // reset all relations
+    for (let name in this._relations) {
+      const relation = this._relations[name]
+      relation.reset()
+    }
     // fetch all relations again
     this.__fetchedRelations = {}
+
+    // cached version is valid again
+    this._cachingInvalidated = false
   }
 
   serialize () {
@@ -119,5 +128,14 @@ export default class BaseModel {
 
   clone () {
     return this._clone(this)
+  }
+
+  get cachingInvalidated () {
+    return this._cachingInvalidated
+  }
+
+  invalidateCaching () {
+    this._cachingInvalidated = true
+    console.log(this.info, this.cachingInvalidated)
   }
 }

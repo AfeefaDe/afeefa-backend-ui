@@ -2,6 +2,8 @@ import Entry from './base/Entry'
 import OrgaType from './OrgaType'
 import CachedRelation from './base/CachedRelation'
 import LoadingState from '@/store/api/LoadingState'
+import ResourceItem from './ResourceItem'
+import ActorRelations from './ActorRelations'
 
 export default class Orga extends Entry {
   static ACTOR_RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
@@ -21,20 +23,31 @@ export default class Orga extends Entry {
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
       this[actorRelation] = []
     })
-
-    // extend _relationIds
-    this._relationIds.resource_items = []
-    this._eagerLoadedRelations.actorRelations = {}
-    Orga.ACTOR_RELATIONS.forEach(actorRelation => {
-      this._eagerLoadedRelations.actorRelations[actorRelation] = []
-    })
   }
 
   parentOrgaRelation () {
     return new CachedRelation({
       type: CachedRelation.HAS_ONE,
       cacheKey: 'orgas',
+      Model: Orga,
       loadingState: LoadingState.LOADED_AS_ATTRIBUTE
+    })
+  }
+
+  resourceItemsRelation () {
+    return new CachedRelation({
+      type: CachedRelation.HAS_MANY,
+      cacheKey: 'resource_items',
+      cacheParams: {owner_type: this.type, owner_id: this.id},
+      Model: ResourceItem
+    })
+  }
+
+  actorRelationsRelation () {
+    return new CachedRelation({
+      type: CachedRelation.HAS_ONE,
+      cacheKey: 'actor_relations',
+      Model: ActorRelations
     })
   }
 
@@ -49,28 +62,27 @@ export default class Orga extends Entry {
 
     const rels = json.relationships || {}
 
+    // actor relations, create a merge object for the different relations
+    const actorRelationsJson = {}
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
-      if (rels[actorRelation] && rels[actorRelation].data.length) {
-        for (let jsonActorRelation of rels[actorRelation].data) {
-          this._eagerLoadedRelations.actorRelations[actorRelation].push(jsonActorRelation)
-        }
+      if (rels[actorRelation]) {
+        actorRelationsJson[actorRelation] = rels[actorRelation].data
       }
     })
-
-    // parent orga, eagerly loaded
-    if (rels.initiator && rels.initiator.data) {
-      this.relation('parentOrga').initWithJson(rels.initiator.data, jsonInitiator => {
-        const parentOrga = new Orga()
-        parentOrga.deserialize(jsonInitiator)
-        return parentOrga
+    if (Object.keys(actorRelationsJson).length) {
+      this.relation('actorRelations').initWithJson(actorRelationsJson, actorRelations => {
+        actorRelations.id = this.id
       })
     }
 
+    // parent orga, eagerly loaded
+    if (rels.initiator && rels.initiator.data) {
+      this.relation('parentOrga').initWithJson(rels.initiator.data)
+    }
+
     // resourceItems
-    if (rels.resource_items && rels.resource_items.data.length) {
-      for (let jsonResource of rels.resource_items.data) {
-        this._relationIds.resource_items.push(jsonResource.id)
-      }
+    if (rels.resource_items) {
+      this.relation('resourceItems').initWithJson(rels.resource_items.data)
     }
   }
 

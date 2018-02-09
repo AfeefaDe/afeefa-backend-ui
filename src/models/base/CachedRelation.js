@@ -4,17 +4,17 @@ export default class CachedRelation {
   static HAS_ONE = 'has_one'
   static HAS_MANY = 'has_many'
 
-  constructor ({type, cacheKey, cacheParams, loadingState = LoadingState.FULLY_LOADED}) {
+  constructor ({type, cacheKey, cacheParams, itemType, Model, loadingState = LoadingState.FULLY_LOADED}) {
     this.type = type
     this.cacheKey = cacheKey
     this.cacheParams = JSON.stringify(cacheParams)
+    this.itemType = itemType || cacheKey
+    this.Model = Model
     this.loadingState = loadingState
 
     this.json = null
-    this.factory = null
-
+    this.callback = null
     this.id = null
-    this.ids = null
 
     // avoid recursions, if a relation has been cached,
     // there is no need to cache eagerly loaded data again,
@@ -22,24 +22,30 @@ export default class CachedRelation {
     this.cached = false
   }
 
-  initWithJson (json, factory) {
-    this.json = json
+  reset () {
+    this.json = null
+    this.callback = null
+    this.id = null
+    this.cached = false
+  }
 
+  initWithJson (json, callback) {
+    this.json = json
     if (this.type === CachedRelation.HAS_ONE) {
       this.id = this.json.id
-    } else {
-      this.ids = this.json.map(json => json.id)
     }
 
-    this.factory = factory
+    this.callback = callback || (() => {})
+  }
+
+  factory (json) {
+    const item = new this.Model()
+    item.deserialize(json)
+    return item
   }
 
   initWithId (id) {
     this.id = id
-  }
-
-  initWithIds (ids) {
-    this.ids = ids
   }
 
   cache (resourceCache) {
@@ -51,29 +57,38 @@ export default class CachedRelation {
     if (this.json) {
       // cache item
       if (this.type === CachedRelation.HAS_ONE) {
-        let item = resourceCache.getItem(this.cacheKey, this.json.id)
-        if (!item) {
-          item = this.factory(this.json)
-          item._loadingState = this.loadingState
-          resourceCache.addItem(this.cacheKey, item)
-        } else {
-          if (item._loadingState < this.loadingState) {
-            item.deserialize(this.json)
-            item._loadingState = this.loadingState
-          }
-        }
+        const item = this.findOrCreateItem(resourceCache, this.json)
         this.cacheItemRelations(resourceCache, item)
-      // cache list
+        this.callback(item)
+        // cache list
       } else {
-        const items = this.factory(this.json)
-        resourceCache.addList(this.cacheKey, this.cacheParams, items)
+        const items = []
+        this.json.forEach(json => {
+          const item = this.findOrCreateItem(resourceCache, json)
+          items.push(item)
+        })
         items.forEach(item => {
           this.cacheItemRelations(resourceCache, item)
         })
+        resourceCache.addList(this.cacheKey, this.cacheParams, items)
+        this.callback(items)
       }
     }
+  }
 
-    this.cached = false
+  findOrCreateItem (resourceCache, json) {
+    let item = resourceCache.getItem(this.itemType, json.id)
+    if (!item) {
+      item = this.factory(json)
+      item._loadingState = this.loadingState
+      resourceCache.addItem(this.itemType, item)
+    } else {
+      if ((item._loadingState < this.loadingState) || item.cachingInvalidated) { // update cached item only if the updated version is more comprehensive
+        item.deserialize(json) // resets all relations to null or []
+        item._loadingState = this.loadingState
+      }
+    }
+    return item
   }
 
   cacheItemRelations (resourceCache, item) {
@@ -85,14 +100,13 @@ export default class CachedRelation {
 
   clone () {
     const cacheParams = this.cacheParams ? JSON.parse(this.cacheParams) : ''
-    const clone = new CachedRelation({type: this.type, cacheKey: this.cacheKey, cacheParams})
+    const clone = new CachedRelation({type: this.type, cacheKey: this.cacheKey, cacheParams, itemType: this.itemType, Model: this.Model})
+
     clone.json = this.json
-    clone.factory = this.factory
-
+    clone.callback = this.callback
     clone.id = this.id
-    clone.ids = this.ids
-
     clone.cached = this.cached
+
     return clone
   }
 }

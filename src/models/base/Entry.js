@@ -39,23 +39,28 @@ export default class Entry extends BaseModel {
       short_description: false,
       contact_infos: false
     }
+  }
 
-    this._relationIds = {
-      parent_orga: null,
-      category: null,
-      sub_category: null,
-      annotations: []
-    }
+  categoryRelation () {
+    return new CachedRelation({
+      type: CachedRelation.HAS_ONE,
+      cacheKey: 'categories'
+    })
+  }
 
-    this._eagerLoadedRelations = {
-    }
+  subCategoryRelation () {
+    return new CachedRelation({
+      type: CachedRelation.HAS_ONE,
+      cacheKey: 'categories'
+    })
   }
 
   contactsRelation () {
     return new CachedRelation({
       type: CachedRelation.HAS_MANY,
       cacheKey: 'contacts',
-      cacheParams: {owner_type: this.type, owner_id: this.id}
+      cacheParams: {owner_type: this.type, owner_id: this.id},
+      Model: Contact
     })
   }
 
@@ -63,7 +68,8 @@ export default class Entry extends BaseModel {
     return new CachedRelation({
       type: CachedRelation.HAS_MANY,
       cacheKey: 'annotations',
-      cacheParams: {owner_type: this.type, owner_id: this.id}
+      cacheParams: {owner_type: this.type, owner_id: this.id},
+      Model: Annotation
     })
   }
 
@@ -100,38 +106,22 @@ export default class Entry extends BaseModel {
 
     // category
     if (rels.category && rels.category.data) {
-      this._relationIds.category = rels.category.data.id
+      this.relation('category').initWithId(rels.category.data.id)
     }
 
     // subcategory
     if (rels.sub_category && rels.sub_category.data) {
-      this._relationIds.sub_category = rels.sub_category.data.id
+      this.relation('subCategory').initWithId(rels.sub_category.data.id)
     }
 
     // contacts
     if (rels.contacts) {
-      this.relation('contacts').initWithJson(rels.contacts.data, jsonContacts => {
-        const contacts = []
-        for (let jsonContact of jsonContacts) {
-          const contact = new Contact()
-          contact.deserialize(jsonContact)
-          contacts.push(contact)
-        }
-        return contacts
-      })
+      this.relation('contacts').initWithJson(rels.contacts.data)
     }
 
     // annotations
     if (rels.annotations) {
-      this.relation('annotations').initWithJson(rels.annotations.data, jsonAnnotations => {
-        const annotations = []
-        for (let jsonAnnotation of jsonAnnotations) {
-          const annotation = new Annotation()
-          annotation.deserialize(jsonAnnotation)
-          annotations.push(annotation)
-        }
-        return annotations
-      })
+      this.relation('annotations').initWithJson(rels.annotations.data)
     }
 
     // creator, last editor

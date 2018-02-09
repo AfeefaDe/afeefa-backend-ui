@@ -5,7 +5,7 @@ export default class Chapter extends BaseModel {
   init () {
     super.init()
 
-    this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state
+    this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
 
     this.type = 'chapters'
     this.id = null

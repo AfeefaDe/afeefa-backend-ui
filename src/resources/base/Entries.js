@@ -7,6 +7,7 @@ import Contacts from '../Contacts'
 import Orga from '@/models/Orga'
 import LoadingStrategy from '@/store/api/LoadingStrategy'
 import LoadingState from '@/store/api/LoadingState'
+import ResourceItem from '@/models/ResourceItem'
 
 export default {
   fetchParentOrga (entry, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
@@ -32,10 +33,9 @@ export default {
     }
 
     entry.fetching('parentOrga', strategy)
-    Orgas.get(id, ['fetchParentOrga'], strategy, {
-      'fetchParentOrga': LoadingStrategy.LOAD_IF_NOT_CACHED // fetch parent of parent :-)
+    Orgas.get(id, ['fetchParentOrga'], strategy, { // fetch parent orga with only its own parent orga relation
+      'fetchParentOrga': LoadingStrategy.LOAD_IF_NOT_CACHED // do not force fully loading of parents parent orga
     }).then(orga => {
-      console.log('         fetchted! entry:', entry.id, 'parent:', orga.id, 'state:', orga._loadingState, 'strategy:', strategy)
       entry.parent_orga = orga
       entry.fetched('parentOrga', true)
     })
@@ -45,7 +45,7 @@ export default {
     if (entry.fetched('category')) {
       return
     }
-    const id = entry._relationIds.category
+    const id = entry.relation('category').id
     if (id) {
       Categories.get(id).then(category => {
         entry.category = category
@@ -58,7 +58,7 @@ export default {
     if (entry.fetched('sub_category')) {
       return
     }
-    const id = entry._relationIds.sub_category
+    const id = entry.relation('subCategory').id
     if (id) {
       Categories.get(id).then(category => {
         entry.sub_category = category
@@ -94,29 +94,29 @@ export default {
   },
 
   fetchActorRelations (orga) {
-    // do not fetch contacts multiple times
     if (orga.fetched('actorRelations')) {
       return
     }
-    Orga.ACTOR_RELATIONS.forEach(actorRelation => {
-      ActorRelations.getRelatedActors(orga, actorRelation).then(actors => {
-        orga[actorRelation] = actors
-        orga.fetched('actorRelations', true)
+    ActorRelations.getForOrga(orga).then(actorRelations => {
+      orga.actorRelations = actorRelations
+
+      Orga.ACTOR_RELATIONS.forEach(actorRelation => {
+        orga[actorRelation] = actorRelations[actorRelation]
       })
     })
   },
 
-  fetchResources (orga) {
-    // do not fetch contacts multiple times
+  fetchResources (orga, clone) {
     if (orga.fetched('resources')) {
       return
     }
-    for (let id of orga._relationIds.resource_items) {
-      ResourceItems.get(id).then(resourceItem => {
+    ResourceItems.getAllForOrga(orga).then(resourceItems => {
+      resourceItems.forEach(resourceItem => {
+        resourceItem = clone ? ResourceItem.clone(resourceItem) : resourceItem
         orga.resource_items.push(resourceItem)
-        orga.fetched('resources', true)
       })
-    }
+      orga.fetched('resources', true)
+    })
   },
 
   clone (entry) {

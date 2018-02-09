@@ -5,8 +5,7 @@ import ActorRelationsModel from '@/models/ActorRelations'
 import BaseResource from './base/BaseResource'
 import LoadingStrategy from '@/store/api/LoadingStrategy'
 import Orga from '@/models/Orga'
-import LoadingState from '@/store/api/LoadingState'
-import Entries from '@/resources/base/Entries'
+import Entries from './base/Entries'
 
 class ActorRelationsResource extends BaseResource {
   init ([orgaId]) {
@@ -23,68 +22,43 @@ class ActorRelationsResource extends BaseResource {
     actorRelations.id = this.orgaId
     return actorRelations
   }
+}
 
-  initEagerLoadedRelations (actorRelations) {
-    ActorRelations.initActorRelations(this.orgaId, actorRelations)
+class ActorRelationActorsResource extends BaseResource {
+  init ([orgaId, actorRelation]) {
+    this.url = BASE + `orgas/${orgaId}/actor_relations/${actorRelation}`
+    this.http = Vue.resource(this.url)
+    this.listCacheKey = 'actor_relations'
+    this.listCacheParams = JSON.stringify({actorRelationsId: orgaId, relationName: actorRelation})
+  }
+
+  createItem () {
+    return new Orga()
   }
 }
 
 const ActorRelations = {
-  /**
-   * Initializes all relations
-   */
-  initActorRelations (actorId, actorRelations) {
-    Orga.ACTOR_RELATIONS.forEach(actorRelation => {
-      const actorsJson = actorRelations._eagerLoadedRelations[actorRelation]
-      const actors = ActorRelations.initActorRelation(actorsJson, 'actor_relations', this.listCacheParams, LoadingState.LOADED_AS_ATTRIBUTE)
-      actorRelations[actorRelation] = actors
-    })
-    const resourceCache = store.state.api.resourceCache
-    resourceCache.addItem('actor_relations', actorRelations)
-  },
-
-  /**
-   * Initializes a list of eagerly loaded related orgas
-   */
-  initActorRelation (actorsJson, listName, listUrl, loadingState) {
-    const actors = []
-    if (actorsJson.length) {
-      actorsJson.forEach(actorJson => {
-        const actor = this.initRelatedActor(actorJson, loadingState)
-        actors.push(actor)
-        Entries.fetchParentOrga(actor)
-      })
-    }
-    return actors
-  },
-
-  /**
-   * Initializes an eagerly loaded related orga
-   */
-  initRelatedActor (actorJson, loadingState) {
-    if (actorJson) {
-      const resourceCache = store.state.api.resourceCache
-      let orga = resourceCache.getItem('orgas', actorJson.id)
-      if (!orga) {
-        orga = new Orga()
-        orga.deserialize(actorJson)
-        orga._loadingState = loadingState
-        resourceCache.addItem('orgas', orga)
-        orga.relation('parentOrga').cache(resourceCache)
-      } else {
-        if (orga._loadingState < loadingState) {
-          orga.deserialize(actorJson)
-          orga._loadingState = loadingState
-        }
-      }
-      return orga
-    }
-  },
-
-  getRelatedActors (orga, actorRelation) {
+  getForOrga (orga) {
     const resource = new ActorRelationsResource(orga.id)
+
     return store.dispatch('api/getItem', {resource, id: orga.id, strategy: LoadingStrategy.LOAD_IF_NOT_CACHED}).then(actorRelations => {
-      return actorRelations[actorRelation]
+      const promises = []
+      Orga.ACTOR_RELATIONS.forEach(actorRelation => {
+        const actorsResource = new ActorRelationActorsResource(orga.id, actorRelation)
+        const promise = store.dispatch('api/getList', {resource: actorsResource, strategy: LoadingStrategy.LOAD_IF_NOT_CACHED}).then(actors => {
+          actorRelations[actorRelation] = actors
+          actors.forEach(actor => {
+            Entries.fetchParentOrga(actor)
+            Entries.fetchCategory(actor)
+            Entries.fetchSubCategory(actor)
+          })
+        })
+        promises.push(promise)
+      })
+
+      return Promise.all(promises).then(() => {
+        return actorRelations
+      })
     })
   }
 }

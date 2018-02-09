@@ -169,7 +169,7 @@ export default {
 
         // check for eager loaded relations
         items.forEach(item => {
-          resource.cacheEagerLoadedRelations(item)
+          resource.cacheLoadedRelations(item)
         })
 
         return items
@@ -185,7 +185,11 @@ export default {
     },
 
 
-    getItem: ({dispatch}, {resource, id, strategy = LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED}) => {
+    getItem: ({dispatch}, {resource, id, strategy}) => {
+      if (!strategy) {
+        strategy = LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED
+      }
+
       const itemCacheKey = resource.getItemCacheKey()
 
       if (!id) {
@@ -225,7 +229,7 @@ export default {
         item._loadingState = LoadingState.FULLY_LOADED
 
         // check for included cacheable relations
-        resource.cacheEagerLoadedRelations(item)
+        resource.cacheLoadedRelations(item)
 
         return item
       }).catch(response => {
@@ -251,6 +255,7 @@ export default {
       ).then(response => {
         // we do not allow saving items that are not cached beforehand
         let cachedItem = resourceCache.getItem(itemCacheKey, item.id)
+        console.log('saved', cachedItem.info)
         // TODO hack to force actors to re-add to cache after
         // purge upon actor relation change @see Orgas.joinActorRelation
         // otherwise we get a notdefined error here
@@ -258,10 +263,12 @@ export default {
           cachedItem = item.clone()
           resourceCache.addItem(itemCacheKey, cachedItem)
         }
+        resource.beforeItemSaved(item, cachedItem)
+
         resource.deserialize(cachedItem, response.body.data || response.body)
 
         // check for included cacheable relations
-        resource.cacheEagerLoadedRelations(cachedItem)
+        resource.cacheLoadedRelations(cachedItem)
 
         resource.itemSaved(item, cachedItem)
         dispatch('getMetaInformation') // e.g. todos may change after annotation change
@@ -293,7 +300,7 @@ export default {
         resourceCache.addItem(itemCacheKey, item)
 
         // check for included cacheable relations
-        resource.cacheEagerLoadedRelations(item)
+        resource.cacheLoadedRelations(item)
 
         resource.itemAdded(item)
         dispatch('getMetaInformation')

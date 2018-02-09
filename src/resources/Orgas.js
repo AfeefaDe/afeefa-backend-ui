@@ -3,9 +3,9 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import Orga from '@/models/Orga'
 import Entries from './base/Entries'
-import ActorRelations from './ActorRelations'
+// import ActorRelations from './ActorRelations'
 import BaseEntriesResource from './base/BaseEntriesResource'
-import ActorRelationsModel from '@/models/ActorRelations'
+// import ActorRelationsModel from '@/models/ActorRelations'
 
 class OrgasResource extends BaseEntriesResource {
   init () {
@@ -27,16 +27,6 @@ class OrgasResource extends BaseEntriesResource {
       const relatedOrga = this.findCachedItem('orgas', orgaId)
       relatedOrga.invalidateLoadedActorRelations()
     }
-  }
-
-  initEagerLoadedRelations (orga) {
-    super.initEagerLoadedRelations(orga)
-
-    // loaded actor relations
-    const actorRelations = new ActorRelationsModel()
-    actorRelations.id = orga.id
-    actorRelations.deserialize(orga._eagerLoadedRelations.actorRelations)
-    ActorRelations.initActorRelations(orga.id, actorRelations)
   }
 }
 
@@ -73,17 +63,13 @@ const Orgas = {
       'fetchSubCategory',
       'fetchAnnotations',
       'fetchContacts',
+      'fetchResources',
       'fetchActorRelations'
     ]
 
     const resource = new OrgasResource()
     return store.dispatch('api/getItem', {resource, id, strategy}).then(orga => {
       if (orga) {
-        // only fetch Resources when there are unloaded id's in the _relationIds attribute
-        // load together with anything else
-        if (fetchRelations.length > 5 && orga._relationIds.resource_items.length) {
-          fetchRelations.push('fetchResources')
-        }
         for (let fetchRelation of fetchRelations) {
           const strategy = fetchingStrategies[fetchRelation] || null
           Entries[fetchRelation](orga, strategy)

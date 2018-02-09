@@ -5,9 +5,12 @@ import ResourceItem from '@/models/ResourceItem'
 import BaseResource from './base/BaseResource'
 
 class ResourceItemsResource extends BaseResource {
-  init () {
-    this.http = Vue.resource(BASE + 'resource_items{/id}')
+  init ([orgaId]) {
+    this.orgaId = orgaId
+
+    this.http = Vue.resource(BASE + `orgas/${orgaId}/resource_items{/id}`, {}, {update: {method: 'PATCH'}})
     this.listCacheKey = 'resource_items'
+    this.listCacheParams = JSON.stringify({owner_type: 'orgas', owner_id: orgaId})
   }
 
   createItem () {
@@ -16,27 +19,8 @@ class ResourceItemsResource extends BaseResource {
 }
 
 export default {
-  getAllForOrga (id) {
-    const resource = new ResourceItemsResource()
-    resource.http = Vue.resource(BASE + `orgas/${id}/resource_items`)
-    resource.listCacheKey = `orgas/${id}/relationships/resource_items`
+  getAllForOrga (orga) {
+    const resource = new ResourceItemsResource(orga.id)
     return store.dispatch('api/getList', {resource})
-  },
-
-  getAll () {
-    const resource = new ResourceItemsResource()
-    return store.dispatch('api/getList', {resource})
-  },
-
-  get (id) {
-    const resource = new ResourceItemsResource()
-    return store.dispatch('api/getItem', {resource, id})
-  },
-  /*
-   * public method to create new ResourceItem in EditEntry component
-   */
-  createItem () {
-    const resource = new ResourceItemsResource()
-    return resource.createItem()
   }
 }

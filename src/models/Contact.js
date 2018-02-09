@@ -8,7 +8,7 @@ export default class Contact extends BaseModel {
   init () {
     super.init()
 
-    this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state
+    this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
 
     this.id = null
     this.type = 'contacts'
@@ -24,7 +24,7 @@ export default class Contact extends BaseModel {
   }
 
   locationRelation () {
-    return new CachedRelation({type: CachedRelation.HAS_ONE, cacheKey: 'locations'})
+    return new CachedRelation({type: CachedRelation.HAS_ONE, cacheKey: 'locations', Model: Location})
   }
 
   deserialize (json) {
@@ -44,13 +44,7 @@ export default class Contact extends BaseModel {
 
     // location
     if (rels.location && rels.location.data) {
-      this.relation('location').initWithJson(rels.location.data, jsonLocation => {
-        const location = new Location()
-        location.deserialize(jsonLocation)
-        this.locationLoaded = true
-        console.log('set location loaded', this.locationLoaded)
-        return location
-      })
+      this.relation('location').initWithJson(rels.location.data)
     }
 
     // contact persons

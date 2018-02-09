@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import ResourceItems from '@/resources/ResourceItems'
 import ResourceItem from '@/components/ResourceItem'
+import ResourceItemModel from '@/models/ResourceItem'
 
 export default {
   props: ['item'],
@@ -50,7 +50,7 @@ export default {
 
   methods: {
     addResourceItem () {
-      let newResource = ResourceItems.createItem()
+      let newResource = new ResourceItemModel()
       this.item.resource_items.push(newResource)
     },
 

@@ -43,7 +43,7 @@ export default class Event extends Entry {
       parentOrga.deserialize(rels.orga.data)
       this.parent_orga = parentOrga
 
-      this._relationIds.parent_orga = rels.orga.data.id
+      this.relation('parentOrga').id = rels.orga.data.id
     }
   }
 

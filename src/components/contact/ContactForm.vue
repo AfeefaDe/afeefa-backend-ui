@@ -1,5 +1,7 @@
 <template>
   <div>
+    <button type="button" @click="saveContact">Kontakt Speichern</button>
+
     <h2>Kontaktbezeichnung</h2>
 
     <input-field

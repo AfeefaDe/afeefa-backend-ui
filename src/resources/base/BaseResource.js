@@ -50,19 +50,12 @@ export default class BaseResource {
   }
 
   // caches eagerly loaded relations
-  cacheEagerLoadedRelations (item) {
+  cacheLoadedRelations (item) {
     const resourceCache = store.state.api.resourceCache
     for (let name in item.relations) {
       const relation = item.relations[name]
       relation.cache(resourceCache)
     }
-
-    this.initEagerLoadedRelations(item)
-  }
-
-  // pushes eagerly loaded relation data into
-  // the resource cache
-  initEagerLoadedRelations (item) {
   }
 
   /**
@@ -83,6 +76,9 @@ export default class BaseResource {
   // to enable custom resource cache treatment
   // use the old item to access the item relations
   // that have been present prior saving
+  beforeItemSaved (itemOld, item) {
+  }
+
   itemSaved (itemOld, item) {
   }
 
