@@ -1,6 +1,6 @@
 import store from '@/store'
 
-export default class BaseResource {
+export default class Resource {
   constructor () {
     this.init(arguments)
   }

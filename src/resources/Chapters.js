@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import store from '@/store'
 import { BASE } from '@/store/api'
-import BaseResource from './base/BaseResource'
+import Resource from './base/Resource'
 import Chapter from '@/models/Chapter'
 
-class ChaptersResource extends BaseResource {
+class ChaptersResource extends Resource {
   init () {
     this.http = Vue.resource(BASE + 'chapters{/id}')
     this.listCacheKey = 'chapters'

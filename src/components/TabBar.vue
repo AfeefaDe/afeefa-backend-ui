@@ -13,6 +13,9 @@
       <slot :name="tab.name"></slot>
     </section>
   </div>
+  <div v-else>
+    <slot :name="tabs[0].name"></slot>
+  </div>
 </div>
 </template>
 

@@ -1,9 +1,10 @@
 import LoadingState from '@/store/api/LoadingState'
 import ResourceRegistry from '@/resources/config/Registry'
+import ModelRegistry from '../config/Registry'
 
 let ID = 0
 
-export default class BaseModel {
+export default class Model {
   constructor () {
     this.__ID = ++ID
     this._loadingState = LoadingState.NOT_LOADED
@@ -22,19 +23,28 @@ export default class BaseModel {
     return ResourceRegistry.get(resourceName)
   }
 
+  /**
+   * Dependency injection for Models
+   * Prevents cyclic imports (Model1 -> Model2 -> Model3)
+   */
+  Model (modelName) {
+    return ModelRegistry.get(modelName)
+  }
+
   get relations () {
     return this._relations
   }
 
   relation (name) {
     if (!this._relations[name]) {
+      // expect the method to be defined by configuration in the particular model classes
       this._relations[name] = this[name + 'Relation']()
     }
     return this._relations[name]
   }
 
   init () {
-    // reset all relations
+    // reset all relations prior to deserialization
     for (let name in this._relations) {
       const relation = this._relations[name]
       relation.reset()
@@ -49,8 +59,12 @@ export default class BaseModel {
     return data
   }
 
+  /**
+   * magic clone function :-)
+   * clone anything but no model relations
+   */
   _clone (value) {
-    if (value instanceof BaseModel) {
+    if (value instanceof Model) {
       const model = value
       const Constructor = model.constructor
       const clone = new Constructor()
@@ -62,7 +76,7 @@ export default class BaseModel {
         }
         const keyVal = model[key]
         // set model associations to null
-        if (keyVal instanceof BaseModel) {
+        if (keyVal instanceof Model) {
           clone[key] = null
           continue
         }
@@ -75,7 +89,7 @@ export default class BaseModel {
       const array = value
       const clone = []
       for (let arrVal of array) {
-        if (arrVal instanceof BaseModel) {
+        if (arrVal instanceof Model) {
           // do not clone associations
           continue
         }
@@ -98,7 +112,7 @@ export default class BaseModel {
       for (let key in obj) {
         const keyVal = obj[key]
         // set model associations to null
-        if (keyVal instanceof BaseModel) {
+        if (keyVal instanceof Model) {
           clone[key] = null
           continue
         }

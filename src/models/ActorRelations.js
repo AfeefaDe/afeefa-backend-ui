@@ -1,25 +1,24 @@
-import BaseModel from './base/BaseModel'
-import Orga from './Orga'
-import CachedRelation from './base/CachedRelation'
+import Model from './base/Model'
+import Relation from './base/Relation'
 import LoadingState from '@/store/api/LoadingState'
 
-export default class ActorRelations extends BaseModel {
+export default class ActorRelations extends Model {
   init () {
     super.init()
 
     this.id = null
     this.type = 'actor_relations'
 
-    Orga.ACTOR_RELATIONS.forEach(actorRelation => {
+    this.Model('Orga').ACTOR_RELATIONS.forEach(actorRelation => {
       this[actorRelation] = []
 
       this[actorRelation + 'Relation'] = () => {
-        return new CachedRelation({
-          type: CachedRelation.HAS_MANY,
+        return new Relation({
+          type: Relation.HAS_MANY,
           cacheKey: 'actor_relations',
           itemType: 'orgas',
           cacheParams: {actorRelationsId: this.id, relationName: actorRelation},
-          Model: Orga
+          Model: this.Model('Orga')
         })
       }
     })
@@ -30,7 +29,7 @@ export default class ActorRelations extends BaseModel {
     // to the loaded Json as well as in ActorRelations.createItem()
     this.id = json.id
 
-    Orga.ACTOR_RELATIONS.forEach(actorRelation => {
+    this.Model('Orga').ACTOR_RELATIONS.forEach(actorRelation => {
       if (json[actorRelation]) {
         this.relation(actorRelation).initWithJson(json[actorRelation], LoadingState.LOADED_FOR_LISTS)
       }

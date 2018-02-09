@@ -2,9 +2,9 @@ import Vue from 'vue'
 import store from '@/store'
 import { BASE } from '@/store/api'
 import ResourceItem from '@/models/ResourceItem'
-import BaseResource from './base/BaseResource'
+import Resource from './base/Resource'
 
-class ResourceItemsResource extends BaseResource {
+class ResourceItemsResource extends Resource {
   init ([orgaId]) {
     this.orgaId = orgaId
 

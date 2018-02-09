@@ -3,9 +3,9 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import Event from '@/models/Event'
 import Orga from '@/models/Orga'
-import BaseResource from './base/BaseResource'
+import Resource from './base/Resource'
 
-class TodosResource extends BaseResource {
+class TodosResource extends Resource {
   init () {
     this.listCacheKey = 'todos'
     this.http = Vue.resource(BASE + 'todos')

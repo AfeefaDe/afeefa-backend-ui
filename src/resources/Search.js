@@ -3,9 +3,9 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import Event from '@/models/Event'
 import Orga from '@/models/Orga'
-import BaseResource from './base/BaseResource'
+import Resource from './base/Resource'
 
-class SearchResource extends BaseResource {
+class SearchResource extends Resource {
   init () {
     this.listCacheKey = 'search'
     this.http = Vue.resource(BASE + 'entries')

@@ -123,9 +123,27 @@ const routes = [
           },
           {
             path: ':id',
-            name: 'events.show',
-            component: ShowEvent,
-            props: true
+            component: { template: '<router-view></router-view>' },
+            children: [
+              {
+                path: '',
+                name: 'events.show',
+                component: ShowEvent,
+                props: true
+              },
+              {
+                path: 'contacts/:contactId/edit',
+                name: 'events.contactedit',
+                component: EditContact,
+                props: true
+              },
+              {
+                path: 'contacts/new',
+                name: 'events.contactnew',
+                component: NewContact,
+                props: true
+              }
+            ]
           },
           {
             path: ':id/edit',

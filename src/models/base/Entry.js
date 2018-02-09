@@ -1,10 +1,9 @@
-import BaseModel from './BaseModel'
+import LoadingStrategy from '@/store/api/LoadingStrategy'
+import Model from './Model'
+import Relation from './Relation'
 import User from '../User'
-import CachedRelation from './CachedRelation'
-import Contact from '../Contact'
-import Annotation from '../Annotation'
 
-export default class Entry extends BaseModel {
+export default class Entry extends Model {
   init () {
     super.init()
 
@@ -41,36 +40,55 @@ export default class Entry extends BaseModel {
     }
   }
 
+  parentOrgaRelation () {
+    return new Relation({
+      type: Relation.HAS_ONE,
+      cacheKey: 'orgas',
+      Model: this.Model('Orga')
+    })
+  }
+
   categoryRelation () {
-    return new CachedRelation({
-      type: CachedRelation.HAS_ONE,
+    return new Relation({
+      type: Relation.HAS_ONE,
       cacheKey: 'categories'
     })
   }
 
   subCategoryRelation () {
-    return new CachedRelation({
-      type: CachedRelation.HAS_ONE,
+    return new Relation({
+      type: Relation.HAS_ONE,
       cacheKey: 'categories'
     })
   }
 
   contactsRelation () {
-    return new CachedRelation({
-      type: CachedRelation.HAS_MANY,
+    return new Relation({
+      type: Relation.HAS_MANY,
       cacheKey: 'contacts',
       cacheParams: {owner_type: this.type, owner_id: this.id},
-      Model: Contact
+      Model: this.Model('Contact')
     })
   }
 
   annotationsRelation () {
-    return new CachedRelation({
-      type: CachedRelation.HAS_MANY,
+    return new Relation({
+      type: Relation.HAS_MANY,
       cacheKey: 'annotations',
       cacheParams: {owner_type: this.type, owner_id: this.id},
-      Model: Annotation
+      Model: this.Model('Annotation')
     })
+  }
+
+  fetchParentOrga (strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
+    this.relation('parentOrga').fetch(id => {
+      return this.Resource('Orgas').get(id, ['fetchParentOrga'], strategy, { // fetch parent orga with only its own parent orga relation
+        'fetchParentOrga': LoadingStrategy.LOAD_IF_NOT_CACHED // do not force fully loading of parents parent orga
+      }).then(orga => {
+        this.parent_orga = orga
+        return orga
+      })
+    }, strategy)
   }
 
   fetchCategory () {

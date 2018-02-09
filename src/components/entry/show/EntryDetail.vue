@@ -15,7 +15,7 @@
         <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
           <section slot="generalTab" class="generalTab generalTab--splitView">
             <div class="entryDetail">
-
+              DETAIL
               <entry-detail-property
                 :name="$tc('entries.date')"
                 :iconName="'date_range'"

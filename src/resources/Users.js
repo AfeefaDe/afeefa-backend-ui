@@ -2,9 +2,9 @@ import Vue from 'vue'
 import store from '@/store'
 import { BASE } from '@/store/api'
 import User from '@/models/User'
-import BaseResource from './base/BaseResource'
+import Resource from './base/Resource'
 
-class UsersResource extends BaseResource {
+class UsersResource extends Resource {
   init () {
     this.http = Vue.resource(BASE + 'users{/id}', {}, {update: {method: 'PATCH'}})
     this.listCacheKey = 'users'

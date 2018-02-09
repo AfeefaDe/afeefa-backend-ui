@@ -1,6 +1,6 @@
-import Entry from './base/Entry'
-import Orga from './Orga'
 import moment from 'moment'
+import LoadingState from '@/store/api/LoadingState'
+import Entry from './base/Entry'
 
 export default class Event extends Entry {
   init () {
@@ -13,25 +13,6 @@ export default class Event extends Entry {
     this.has_time_end = false
   }
 
-  get isUpcoming () {
-    const today = moment().startOf('day')
-    const start = moment(this.date_start).startOf('day')
-    if (start.diff(today, 'days') >= 0) { // start >= today
-      return true
-    }
-    if (this.date_end) {
-      const end = moment(this.date_end).startOf('day')
-      if (end.diff(today, 'days') >= 0) { // end >= today
-        return true
-      }
-    }
-    return false
-  }
-
-  fetchParentOrga () {
-    // coming later
-  }
-
   deserialize (json) {
     super.deserialize(json)
 
@@ -42,12 +23,9 @@ export default class Event extends Entry {
 
     const rels = json.relationships
 
+    // parent orga
     if (rels.orga && rels.orga.data) {
-      const parentOrga = new Orga()
-      parentOrga.deserialize(rels.orga.data)
-      this.parent_orga = parentOrga
-
-      this.relation('parentOrga').id = rels.orga.data.id
+      this.relation('parentOrga').initWithJson(rels.orga.data, LoadingState.LOADED_AS_ATTRIBUTE)
     }
   }
 
@@ -80,5 +58,20 @@ export default class Event extends Entry {
     const clone = super.clone(this)
     clone.parent_orga = this.parent_orga
     return clone
+  }
+
+  get isUpcoming () {
+    const today = moment().startOf('day')
+    const start = moment(this.date_start).startOf('day')
+    if (start.diff(today, 'days') >= 0) { // start >= today
+      return true
+    }
+    if (this.date_end) {
+      const end = moment(this.date_end).startOf('day')
+      if (end.diff(today, 'days') >= 0) { // end >= today
+        return true
+      }
+    }
+    return false
   }
 }

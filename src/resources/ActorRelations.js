@@ -2,11 +2,11 @@ import Vue from 'vue'
 import store from '@/store'
 import { BASE } from '@/store/api'
 import ActorRelationsModel from '@/models/ActorRelations'
-import BaseResource from './base/BaseResource'
+import Resource from './base/Resource'
 import LoadingStrategy from '@/store/api/LoadingStrategy'
 import Orga from '@/models/Orga'
 
-class ActorRelationsResource extends BaseResource {
+class ActorRelationsResource extends Resource {
   init ([orgaId]) {
     this.orgaId = orgaId
 
@@ -25,7 +25,7 @@ class ActorRelationsResource extends BaseResource {
   }
 }
 
-class ActorRelationActorsResource extends BaseResource {
+class ActorRelationActorsResource extends Resource {
   init ([orgaId, actorRelation]) {
     this.url = BASE + `orgas/${orgaId}/actor_relations/${actorRelation}`
     this.http = Vue.resource(this.url)

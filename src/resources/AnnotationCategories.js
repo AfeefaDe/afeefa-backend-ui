@@ -2,9 +2,9 @@ import Vue from 'vue'
 import store from '@/store'
 import { BASE } from '@/store/api'
 import AnnotationCategory from '@/models/AnnotationCategory'
-import BaseResource from './base/BaseResource'
+import Resource from './base/Resource'
 
-class AnnotationCategoriesResource extends BaseResource {
+class AnnotationCategoriesResource extends Resource {
   init () {
     this.http = Vue.resource(BASE + 'annotation_categories{/id}')
     this.listCacheKey = 'annotationCategories'

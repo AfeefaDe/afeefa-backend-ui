@@ -2,9 +2,9 @@ import Vue from 'vue'
 import store from '@/store'
 import { BASE } from '@/store/api'
 import Category from '@/models/Category'
-import BaseResource from './base/BaseResource'
+import Resource from './base/Resource'
 
-class CategoriesResource extends BaseResource {
+class CategoriesResource extends Resource {
   init () {
     this.http = Vue.resource(BASE + 'categories{/id}')
     this.listCacheKey = 'categories'

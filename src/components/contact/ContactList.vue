@@ -6,7 +6,7 @@
        <h3 v-if="index" class="contactTitle">{{ contact.title || 'Weiterer Kontakt' }} </h3>
       <h3 v-else class="contactTitle">{{ contact.title || 'Kontakt' }} </h3>
 
-      <router-link :to="{name: 'orgas.contactedit', params: {contactId: contact.id}}">
+      <router-link :to="{name: item.type + '.contactedit', params: {contactId: contact.id}}">
         Kontakt ändern
       </router-link>
       <a href="" @click.prevent="removeContact(contact)">Kontakt löschen</a>
@@ -92,7 +92,7 @@
       </ul>
     </div>
 
-    <router-link :to="{name: 'orgas.contactnew'}">
+    <router-link :to="{name: item.type + '.contactnew'}">
       Weiteren Kontakt hinzufügen
     </router-link>
   </div>

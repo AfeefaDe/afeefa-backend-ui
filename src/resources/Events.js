@@ -26,6 +26,7 @@ class Events {
     const resource = new EventsResource()
     return store.dispatch('api/getList', {resource, params}).then(events => {
       for (let event of events) {
+        event.fetchParentOrga()
         event.fetchCategory()
         event.fetchSubCategory()
       }

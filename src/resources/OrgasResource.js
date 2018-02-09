@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import { BASE } from '@/store/api'
 import Orga from '@/models/Orga'
-import BaseEntriesResource from './base/BaseEntriesResource'
+import EntriesResource from './base/EntriesResource'
 
-export default class OrgasResource extends BaseEntriesResource {
+export default class OrgasResource extends EntriesResource {
   init () {
     this.http = Vue.resource(BASE + 'orgas{/id}', {}, {update: {method: 'PATCH'}})
     this.listCacheKey = 'orgas'
@@ -11,6 +11,12 @@ export default class OrgasResource extends BaseEntriesResource {
 
   createItem () {
     return new Orga()
+  }
+
+  beforeItemSaved (orgaOld, orga) {
+    super.beforeItemSaved(orgaOld, orga)
+    // resources might be changed and should be rewritten to resource cache
+    orga.relation('resourceItems').forceCacheUpdate()
   }
 
   itemSaved (orgaOld, orga) {

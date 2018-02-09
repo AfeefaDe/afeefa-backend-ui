@@ -1,10 +1,7 @@
 import Entry from './base/Entry'
 import OrgaType from './OrgaType'
-import CachedRelation from './base/CachedRelation'
+import Relation from './base/Relation'
 import LoadingState from '@/store/api/LoadingState'
-import ResourceItem from './ResourceItem'
-import ActorRelationsModel from './ActorRelations'
-import LoadingStrategy from '@/store/api/LoadingStrategy'
 
 export default class Orga extends Entry {
   static ACTOR_RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
@@ -26,40 +23,21 @@ export default class Orga extends Entry {
     })
   }
 
-  parentOrgaRelation () {
-    return new CachedRelation({
-      type: CachedRelation.HAS_ONE,
-      cacheKey: 'orgas',
-      Model: Orga
-    })
-  }
-
   resourceItemsRelation () {
-    return new CachedRelation({
-      type: CachedRelation.HAS_MANY,
+    return new Relation({
+      type: Relation.HAS_MANY,
       cacheKey: 'resource_items',
       cacheParams: {owner_type: this.type, owner_id: this.id},
-      Model: ResourceItem
+      Model: this.Model('ResourceItem')
     })
   }
 
   actorRelationsRelation () {
-    return new CachedRelation({
-      type: CachedRelation.HAS_ONE,
+    return new Relation({
+      type: Relation.HAS_ONE,
       cacheKey: 'actor_relations',
-      Model: ActorRelationsModel
+      Model: this.Model('ActorRelations')
     })
-  }
-
-  fetchParentOrga (strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
-    this.relation('parentOrga').fetch(id => {
-      return this.Resource('Orgas').get(id, ['fetchParentOrga'], strategy, { // fetch parent orga with only its own parent orga relation
-        'fetchParentOrga': LoadingStrategy.LOAD_IF_NOT_CACHED // do not force fully loading of parents parent orga
-      }).then(orga => {
-        this.parent_orga = orga
-        return orga
-      })
-    }, strategy)
   }
 
   fetchActorRelations () {

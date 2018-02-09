@@ -77,7 +77,7 @@ export default {
     },
 
     saveContact () {
-      Contacts.save(this.owner.id, this.contact).then(contact => {
+      Contacts.save(this.owner, this.contact).then(contact => {
         if (contact) {
           // update contact's owner contact list
           this.$store.dispatch('messages/showAlert', {

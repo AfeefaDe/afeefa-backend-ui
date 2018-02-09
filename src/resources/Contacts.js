@@ -2,17 +2,17 @@ import Vue from 'vue'
 import store from '@/store'
 import { BASE } from '@/store/api'
 import Contact from '@/models/Contact'
-import BaseResource from './base/BaseResource'
+import Resource from './base/Resource'
 import Locations from './Locations'
 import Orgas from './Orgas'
 
-class ContactsResource extends BaseResource {
-  init ([orgaId]) {
-    this.orgaId = orgaId
+class ContactsResource extends Resource {
+  init ([owner]) {
+    this.owner = owner
 
-    this.http = Vue.resource(BASE + `orgas/${orgaId}/contacts{/id}`, {}, {update: {method: 'PATCH'}})
+    this.http = Vue.resource(BASE + `${owner.type}/${owner.id}/contacts{/id}`, {}, {update: {method: 'PATCH'}})
     this.listCacheKey = 'contacts'
-    this.listCacheParams = JSON.stringify({owner_type: 'orgas', owner_id: orgaId})
+    this.listCacheParams = JSON.stringify({owner_type: owner.type, owner_id: owner.id})
   }
 
   createItem () {
@@ -61,7 +61,7 @@ class ContactsResource extends BaseResource {
     if (orga) {
       this.cachePurgeList('contacts', this.listCacheParams)
       orga.relation('contacts').reset()
-      // orga.invalidateLoadedContacts()
+      // TODO orga.invalidateLoadedContacts()
     }
     // reload location list
     this.cachePurgeList('locations')
@@ -83,7 +83,7 @@ export default {
   },
 
   getAllForOwner (owner) {
-    const resource = new ContactsResource(owner.id)
+    const resource = new ContactsResource(owner)
     return store.dispatch('api/getList', {resource}).then(contacts => {
       contacts.forEach(contact => {
         this.fetchLocation(contact)
@@ -92,10 +92,10 @@ export default {
     })
   },
 
-  save (orgaId, contact) {
+  save (owner, contact) {
     const action = contact.id ? 'saveItem' : 'addItem'
     return store.dispatch(`api/${action}`, {
-      resource: new ContactsResource(orgaId),
+      resource: new ContactsResource(owner),
       item: contact,
       options: {
         wrapInDataProperty: false

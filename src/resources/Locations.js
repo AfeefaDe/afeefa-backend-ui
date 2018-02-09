@@ -2,9 +2,9 @@ import Vue from 'vue'
 import store from '@/store'
 import { BASE } from '@/store/api'
 import Location from '@/models/Location'
-import BaseResource from './base/BaseResource'
+import Resource from './base/Resource'
 
-class LocationsResource extends BaseResource {
+class LocationsResource extends Resource {
   init () {
     this.http = Vue.resource(BASE + 'locations{/id}')
     this.listCacheKey = 'locations'

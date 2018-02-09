@@ -1,7 +1,7 @@
 import LoadingState from '@/store/api/LoadingState'
 import LoadingStrategy from '@/store/api/LoadingStrategy'
 
-export default class CachedRelation {
+export default class Relation {
   static HAS_ONE = 'has_one'
   static HAS_MANY = 'has_many'
 
@@ -52,7 +52,7 @@ export default class CachedRelation {
   initWithJson (json, loadingState = LoadingState.FULLY_LOADED) {
     this.json = json
     this.loadingState = loadingState
-    if (this.type === CachedRelation.HAS_ONE) {
+    if (this.type === Relation.HAS_ONE) {
       this.id = this.json.id
     }
   }
@@ -75,7 +75,7 @@ export default class CachedRelation {
 
     if (this.json) {
       // cache item
-      if (this.type === CachedRelation.HAS_ONE) {
+      if (this.type === Relation.HAS_ONE) {
         const item = this.findOrCreateItem(resourceCache, this.json)
         this.cacheItemRelations(resourceCache, item)
         // cache list
@@ -111,7 +111,7 @@ export default class CachedRelation {
 
   fetch (callback, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
     // FETCH ITEM
-    if (this.type === CachedRelation.HAS_ONE) {
+    if (this.type === Relation.HAS_ONE) {
       if (!this.id) {
         return
       }
@@ -168,7 +168,7 @@ export default class CachedRelation {
    */
   clone () {
     const cacheParams = this.cacheParams ? JSON.parse(this.cacheParams) : undefined
-    const clone = new CachedRelation({type: this.type, cacheKey: this.cacheKey, cacheParams, itemType: this.itemType, Model: this.Model})
+    const clone = new Relation({type: this.type, cacheKey: this.cacheKey, cacheParams, itemType: this.itemType, Model: this.Model})
 
     if (this.json) {
       clone.initWithJson(this.json, this.loadingState)

@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import { BASE } from '@/store/api'
 import Event from '@/models/Event'
-import BaseEntriesResource from './base/BaseEntriesResource'
+import EntriesResource from './base/EntriesResource'
 
-export default class EventsResource extends BaseEntriesResource {
+export default class EventsResource extends EntriesResource {
   init () {
     this.http = Vue.resource(BASE + 'events{/id}', {}, {update: {method: 'PATCH'}})
     this.listCacheKey = 'events'

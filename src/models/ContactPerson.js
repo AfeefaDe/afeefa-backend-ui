@@ -1,7 +1,7 @@
-import BaseModel from './base/BaseModel'
+import Model from './base/Model'
 import LoadingState from '@/store/api/LoadingState'
 
-export default class ContactPerson extends BaseModel {
+export default class ContactPerson extends Model {
   init () {
     super.init()
 

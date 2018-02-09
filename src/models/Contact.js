@@ -1,10 +1,9 @@
-import BaseModel from './base/BaseModel'
-import Location from './Location'
-import CachedRelation from './base/CachedRelation'
+import Model from './base/Model'
+import Relation from './base/Relation'
 import ContactPerson from './ContactPerson'
 import LoadingState from '@/store/api/LoadingState'
 
-export default class Contact extends BaseModel {
+export default class Contact extends Model {
   init () {
     super.init()
 
@@ -24,10 +23,10 @@ export default class Contact extends BaseModel {
   }
 
   locationRelation () {
-    return new CachedRelation({
-      type: CachedRelation.HAS_ONE,
+    return new Relation({
+      type: Relation.HAS_ONE,
       cacheKey: 'locations',
-      Model: Location
+      Model: this.Model('Location')
     })
   }
 

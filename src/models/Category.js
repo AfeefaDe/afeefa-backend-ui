@@ -1,8 +1,8 @@
-import BaseModel from './base/BaseModel'
+import Model from './base/Model'
 import LoadingState from '@/store/api/LoadingState'
-import CachedRelation from '@/models/base/CachedRelation'
+import Relation from '@/models/base/Relation'
 
-export default class Category extends BaseModel {
+export default class Category extends Model {
   init () {
     super.init()
 
@@ -17,8 +17,8 @@ export default class Category extends BaseModel {
   }
 
   parentCategoryRelation () {
-    return new CachedRelation({
-      type: CachedRelation.HAS_ONE,
+    return new Relation({
+      type: Relation.HAS_ONE,
       cacheKey: 'categories'
     })
   }

@@ -48,8 +48,16 @@ const menuTree = {
       level: 2,
       hint: state => { return state.numEvents.upcoming + state.numEvents.past },
       children: [
-        { route: 'events.show', title: 'headlines.show', level: 4 },
-        { route: 'events.edit', title: 'headlines.edit', level: 4 },
+        {
+          route: 'events.show',
+          title: 'headlines.show',
+          level: 4,
+          children: [
+            { route: 'events.edit', title: 'headlines.edit', level: 5 },
+            { route: 'events.contactedit', title: 'headlines.contactEdit', level: 5 },
+            { route: 'events.contactnew', title: 'headlines.contactNew', level: 5 }
+          ]
+        },
         { route: 'events.new', title: 'headlines.new', level: 4 }
       ]
     },

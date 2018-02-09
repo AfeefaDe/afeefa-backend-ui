@@ -1,8 +1,8 @@
-import BaseModel from './base/BaseModel'
+import Model from './base/Model'
 import LoadingState from '@/store/api/LoadingState'
-import CachedRelation from '@/models/base/CachedRelation'
+import Relation from '@/models/base/Relation'
 
-export default class Annotion extends BaseModel {
+export default class Annotion extends Model {
   init () {
     super.init()
 
@@ -15,8 +15,8 @@ export default class Annotion extends BaseModel {
   }
 
   annotationCategoryRelation () {
-    return new CachedRelation({
-      type: CachedRelation.HAS_ONE,
+    return new Relation({
+      type: Relation.HAS_ONE,
       cacheKey: 'annotationCategories'}
     )
   }
