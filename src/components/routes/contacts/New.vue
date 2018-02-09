@@ -9,6 +9,7 @@
 <script>
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import OrgaRouteConfig from '@/components/routes/orgas/OrgaRouteConfig'
+import EventRouteConfig from '@/components/routes/events/EventRouteConfig'
 
 import ContactEdit from '@/components/contact/ContactEdit'
 
@@ -19,7 +20,9 @@ export default {
 
   data () {
     return {
-      routeConfig: new OrgaRouteConfig(this, this.id)
+      routeConfig: this.$route.name.startsWith('events')
+        ? new EventRouteConfig(this, this.id)
+        : new OrgaRouteConfig(this, this.id)
     }
   },
 

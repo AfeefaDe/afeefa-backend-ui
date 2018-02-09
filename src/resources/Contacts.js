@@ -4,6 +4,7 @@ import { BASE } from '@/store/api'
 import Contact from '@/models/Contact'
 import Resource from './base/Resource'
 import Orgas from './Orgas'
+import Events from './Events'
 
 class ContactsResource extends Resource {
   init ([owner]) {
@@ -56,10 +57,10 @@ class ContactsResource extends Resource {
 
   itemDeleted (contact) {
     // refetch contact owners contact list
-    const orga = this.findCachedItem('orgas', this.orgaId)
-    if (orga) {
+    const owner = this.findCachedItem(this.owner.type, this.owner.id)
+    if (owner) {
       this.cachePurgeList('contacts', this.listCacheParams)
-      orga.relation('contacts').reset()
+      owner.relation('contacts').reset()
       // TODO orga.invalidateLoadedContacts()
     }
     // reload location list
@@ -93,14 +94,15 @@ export default {
     })
   },
 
-  delete (orgaId, contact) {
+  delete (owner, contact) {
     return store.dispatch('api/deleteItem', {
-      resource: new ContactsResource(orgaId),
+      resource: new ContactsResource(owner),
       item: contact
     }).then(() => {
-      Orgas.get(orgaId, []).then(orga => {
+      const Resource = owner.type === 'events' ? Events : Orgas
+      Resource.get(owner.id, []).then(owner => {
         // TODO let Orga fetch the contats by itself
-        orga.fetchContacts()
+        owner.fetchContacts()
       })
     })
   }
