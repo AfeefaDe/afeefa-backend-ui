@@ -50,7 +50,7 @@ export default {
         if (this.contactId) {
           Contacts.getAllForOwner(owner).then(contacts => {
             this.origContact = contacts.find(c => c.id === this.contactId)
-            this.contact = Contacts.clone(this.origContact)
+            this.contact = this.origContact.clone()
           })
         } else {
           this.origContact = new Contact()

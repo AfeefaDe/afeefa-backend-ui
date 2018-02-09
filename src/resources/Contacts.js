@@ -3,7 +3,6 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import Contact from '@/models/Contact'
 import Resource from './base/Resource'
-import Locations from './Locations'
 import Orgas from './Orgas'
 
 class ContactsResource extends Resource {
@@ -73,20 +72,11 @@ class ContactsResource extends Resource {
 }
 
 export default {
-  fetchLocation (contact, clone) {
-    contact.relation('location').fetch(id => {
-      return Locations.get(id).then(location => {
-        contact.location = clone ? location.clone() : location
-        return location
-      })
-    })
-  },
-
   getAllForOwner (owner) {
     const resource = new ContactsResource(owner)
     return store.dispatch('api/getList', {resource}).then(contacts => {
       contacts.forEach(contact => {
-        this.fetchLocation(contact)
+        contact.fetchLocation()
       })
       return contacts
     })
@@ -113,11 +103,5 @@ export default {
         orga.fetchContacts()
       })
     })
-  },
-
-  clone (contact) {
-    const clone = contact.clone()
-    this.fetchLocation(clone, true)
-    return clone
   }
 }

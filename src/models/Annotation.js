@@ -10,7 +10,9 @@ export default class Annotion extends Model {
 
     this.id = null
     this.type = 'annotations'
+
     this.detail = ''
+
     this.annotationCategory = null
   }
 
@@ -19,6 +21,15 @@ export default class Annotion extends Model {
       type: Relation.HAS_ONE,
       cacheKey: 'annotationCategories'}
     )
+  }
+
+  fetchCategory () {
+    this.relation('annotationCategory').fetch(id => {
+      return this.Resource('AnnotationCategories').get(id).then(annotationCategory => {
+        this.annotationCategory = annotationCategory
+        return annotationCategory
+      })
+    })
   }
 
   deserialize (json) {
@@ -43,6 +54,12 @@ export default class Annotion extends Model {
       delete data['id']
     }
     return data
+  }
+
+  clone (annotation) {
+    const clone = super.clone()
+    clone.fetchCategory()
+    return clone
   }
 
   get info () {

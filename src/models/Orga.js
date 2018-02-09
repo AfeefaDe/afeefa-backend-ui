@@ -90,7 +90,7 @@ export default class Orga extends Entry {
       this.relation('actorRelations').initWithJson(actorRelationsJson)
     }
 
-    // parent orga, eagerly loaded
+    // parent orga
     if (rels.initiator && rels.initiator.data) {
       this.relation('parentOrga').initWithJson(rels.initiator.data, LoadingState.LOADED_AS_ATTRIBUTE)
     }

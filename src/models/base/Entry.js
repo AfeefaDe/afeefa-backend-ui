@@ -114,7 +114,7 @@ export default class Entry extends Model {
       return this.Resource('Contacts').getAllForOwner(this).then(contacts => {
         this.contacts.length = 0
         contacts.forEach(contact => {
-          contact = clone ? this.Resource('Contacts').clone(contact) : contact
+          contact = clone ? contact.clone() : contact
           this.contacts.push(contact)
         })
         return contacts
@@ -127,7 +127,7 @@ export default class Entry extends Model {
       return this.Resource('Annotations').getAllForOwner(this).then(annotations => {
         this.annotations.length = 0
         annotations.forEach(annotation => {
-          annotation = clone ? this.Resource('Annotations').clone(annotation) : annotation
+          annotation = clone ? annotation.clone() : annotation
           this.annotations.push(annotation)
         })
         return annotations

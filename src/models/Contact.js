@@ -30,6 +30,15 @@ export default class Contact extends Model {
     })
   }
 
+  fetchLocation (clone) {
+    this.relation('location').fetch(id => {
+      return this.Resource('Locations').get(id).then(location => {
+        this.location = clone ? location.clone() : location
+        return location
+      })
+    })
+  }
+
   deserialize (json) {
     this.init()
 
@@ -95,6 +104,8 @@ export default class Contact extends Model {
     const clone = super.clone(this)
     // persons
     clone.persons = this.persons.map(cp => cp.clone())
+    // location
+    clone.fetchLocation(true)
     return clone
   }
 
