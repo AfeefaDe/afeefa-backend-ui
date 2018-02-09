@@ -63,6 +63,6 @@ export default class Location extends BaseModel {
   }
 
   get info () {
-    return `[Locations id=${this.id} ID=${this.__ID} title="${this.title}" street="${this.street}"]`
+    return `[Locations id=${this.id} ID=${this.__ID} title="${this.title}" street="${this.street}" clone="${this.__isClone}"]`
   }
 }

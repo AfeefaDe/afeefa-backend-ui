@@ -21,11 +21,8 @@ class ContactsResource extends BaseResource {
   }
 
   beforeItemSaved (oldContact, contact) {
-    const newLocationId = contact.relation('location').id
-    if (newLocationId) {
-      const location = this.findCachedItem('locations', newLocationId)
-      location.invalidateCaching()
-    }
+    // location might be changed and should be rewritten to resource cache
+    contact.relation('location').forceCacheUpdate()
   }
 
   itemSaved (oldContact, contact) {
@@ -42,7 +39,7 @@ class ContactsResource extends BaseResource {
           const {owner_type, owner_id} = JSON.parse(key) // eslint-disable-line camelcase
           const owner = this.findCachedItem(owner_type, owner_id)
           if (owner) {
-            owner.invalidateLoadedContacts()
+            owner.relation('contacts').reset()
           }
         }
       })
@@ -64,7 +61,8 @@ class ContactsResource extends BaseResource {
     const orga = this.findCachedItem('orgas', this.orgaId)
     if (orga) {
       this.cachePurgeList('contacts', this.listCacheParams)
-      orga.invalidateLoadedContacts()
+      orga.relation('contacts').reset()
+      // orga.invalidateLoadedContacts()
     }
     // reload location list
     this.cachePurgeList('locations')
@@ -77,16 +75,12 @@ class ContactsResource extends BaseResource {
 
 export default {
   fetchLocation (contact, clone) {
-    if (contact.fetched('location')) {
-      return
-    }
-    const id = contact.relation('location').id
-    if (id) {
-      Locations.get(id).then(location => {
+    contact.relation('location').fetch(id => {
+      return Locations.get(id).then(location => {
         contact.location = clone ? location.clone() : location
-        contact.fetched('location', true)
+        return location
       })
-    }
+    })
   },
 
   getAllForOwner (owner) {

@@ -18,16 +18,12 @@ class AnnotationsResource extends BaseResource {
 
 export default {
   fetchCategory (annotation) {
-    if (annotation.fetched('annotationCategory')) {
-      return
-    }
-    const id = annotation.relation('annotationCategory').id
-    if (id) {
-      AnnotationCategories.get(id).then(annotationCategory => {
+    annotation.relation('annotationCategory').fetch(id => {
+      return AnnotationCategories.get(id).then(annotationCategory => {
         annotation.annotationCategory = annotationCategory
-        annotation.fetched('annotationCategory', true)
+        return annotationCategory
       })
-    }
+    })
   },
 
   getAllForOwner (owner) {

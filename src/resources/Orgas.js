@@ -25,7 +25,14 @@ class OrgasResource extends BaseEntriesResource {
     for (let orgaId in allActorRelations) {
       this.cachePurgeItem('actor_relations', orgaId)
       const relatedOrga = this.findCachedItem('orgas', orgaId)
-      relatedOrga.invalidateLoadedActorRelations()
+      if (relatedOrga) {
+        console.log('TODO invalidate loaded actor relations')
+        // relatedOrga.invalidateLoadedActorRelations()
+        // this.fetched('actorRelations', false)
+        // Orga.ACTOR_RELATIONS.forEach(actorRelation => {
+        //   this[actorRelation] = []
+        // })
+      }
     }
   }
 }

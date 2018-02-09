@@ -24,7 +24,11 @@ export default class Contact extends BaseModel {
   }
 
   locationRelation () {
-    return new CachedRelation({type: CachedRelation.HAS_ONE, cacheKey: 'locations', Model: Location})
+    return new CachedRelation({
+      type: CachedRelation.HAS_ONE,
+      cacheKey: 'locations',
+      Model: Location
+    })
   }
 
   deserialize (json) {
@@ -102,7 +106,7 @@ export default class Contact extends BaseModel {
 
   get info () {
     const location = this.location ? this.location.info : `[Locations id="${this.relation('location').id}"]`
-    return `[Contacts id=${this.id} ID=${this.__ID} title="${this.title}"]` +
+    return `[Contacts id=${this.id} ID=${this.__ID} title="${this.title}" clone="${this.__isClone}"]` +
       `\n\t${location}`
   }
 }

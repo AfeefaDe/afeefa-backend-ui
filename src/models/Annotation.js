@@ -15,7 +15,10 @@ export default class Annotion extends BaseModel {
   }
 
   annotationCategoryRelation () {
-    return new CachedRelation({type: CachedRelation.HAS_ONE, cacheKey: 'annotationCategories'})
+    return new CachedRelation({
+      type: CachedRelation.HAS_ONE,
+      cacheKey: 'annotationCategories'}
+    )
   }
 
   deserialize (json) {

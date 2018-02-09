@@ -255,7 +255,6 @@ export default {
       ).then(response => {
         // we do not allow saving items that are not cached beforehand
         let cachedItem = resourceCache.getItem(itemCacheKey, item.id)
-        console.log('saved', cachedItem.info)
         // TODO hack to force actors to re-add to cache after
         // purge upon actor relation change @see Orgas.joinActorRelation
         // otherwise we get a notdefined error here

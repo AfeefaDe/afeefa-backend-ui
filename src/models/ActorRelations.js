@@ -19,17 +19,20 @@ export default class ActorRelations extends BaseModel {
           cacheKey: 'actor_relations',
           itemType: 'orgas',
           cacheParams: {actorRelationsId: this.id, relationName: actorRelation},
-          Model: Orga,
-          loadingState: LoadingState.LOADED_FOR_LISTS
+          Model: Orga
         })
       }
     })
   }
 
   deserialize (json) {
+    // this will be the conaining orga.id, injected in Orga.deserialize
+    // to the loaded Json as well as in ActorRelations.createItem()
+    this.id = json.id
+
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
       if (json[actorRelation]) {
-        this.relation(actorRelation).initWithJson(json[actorRelation])
+        this.relation(actorRelation).initWithJson(json[actorRelation], LoadingState.LOADED_FOR_LISTS)
       }
     })
   }

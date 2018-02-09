@@ -180,16 +180,6 @@ export default class Entry extends BaseModel {
 
   get info () {
     const type = this.type.charAt(0).toUpperCase() + this.type.slice(1)
-    return `[${type} id=${this.id} ID=${this.__ID} title="${this.title}"]`
-  }
-
-  invalidateLoadedContacts () {
-    this.fetched('contacts', false)
-    this.contacts = []
-  }
-
-  invalidateLoadedAnnotations () {
-    this.fetched('annotations', false)
-    this.annotations = []
+    return `[${type} id=${this.id} ID=${this.__ID} title="${this.title}" clone="${this.__isClone}"]`
   }
 }

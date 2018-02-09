@@ -29,8 +29,7 @@ export default class Orga extends Entry {
     return new CachedRelation({
       type: CachedRelation.HAS_ONE,
       cacheKey: 'orgas',
-      Model: Orga,
-      loadingState: LoadingState.LOADED_AS_ATTRIBUTE
+      Model: Orga
     })
   }
 
@@ -70,14 +69,15 @@ export default class Orga extends Entry {
       }
     })
     if (Object.keys(actorRelationsJson).length) {
-      this.relation('actorRelations').initWithJson(actorRelationsJson, actorRelations => {
-        actorRelations.id = this.id
-      })
+      // in order to later find the relations container, we need to give
+      // it the id of our orga
+      actorRelationsJson.id = this.id
+      this.relation('actorRelations').initWithJson(actorRelationsJson)
     }
 
     // parent orga, eagerly loaded
     if (rels.initiator && rels.initiator.data) {
-      this.relation('parentOrga').initWithJson(rels.initiator.data)
+      this.relation('parentOrga').initWithJson(rels.initiator.data, LoadingState.LOADED_AS_ATTRIBUTE)
     }
 
     // resourceItems
@@ -99,23 +99,5 @@ export default class Orga extends Entry {
     data.relationships.resource_items = { data: resourceItemsSerialized }
 
     return data
-  }
-
-  clone () {
-    const clone = super.clone(this)
-
-    // actor relations
-    Orga.ACTOR_RELATIONS.forEach(actorRelation => {
-      clone[actorRelation] = this[actorRelation]
-    })
-
-    return clone
-  }
-
-  invalidateLoadedActorRelations () {
-    this.fetched('actorRelations', false)
-    Orga.ACTOR_RELATIONS.forEach(actorRelation => {
-      this[actorRelation] = []
-    })
   }
 }

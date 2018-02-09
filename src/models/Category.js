@@ -17,7 +17,10 @@ export default class Category extends BaseModel {
   }
 
   parentCategoryRelation () {
-    return new CachedRelation({type: CachedRelation.HAS_ONE, cacheKey: 'categories'})
+    return new CachedRelation({
+      type: CachedRelation.HAS_ONE,
+      cacheKey: 'categories'
+    })
   }
 
   deserialize (json) {

@@ -6,11 +6,9 @@ export default class BaseModel {
   constructor () {
     this.__ID = ++ID
     this._loadingState = LoadingState.NOT_LOADED
+    this.__isClone = false
 
     this._relations = {}
-    this._cachingInvalidated = false
-    this.__fetchedRelations = {} // '__' means: do not clone -> fetch again for each cloned instance
-    this.__fetchingRelations = {} // '__' means: do not clone -> fetch again for each cloned instance
 
     this.init()
   }
@@ -26,36 +24,12 @@ export default class BaseModel {
     return this._relations[name]
   }
 
-  fetched (relationName, flag) {
-    if (arguments.length === 1) {
-      return this.__fetchedRelations[relationName] || false
-    } else {
-      this.__fetchedRelations[relationName] = flag
-      if (flag) {
-        this.__fetchingRelations[relationName] = false
-      }
-    }
-  }
-
-  fetching (relationName, flag) {
-    if (arguments.length === 1) {
-      return this.__fetchingRelations[relationName] || false
-    } else {
-      this.__fetchingRelations[relationName] = flag
-    }
-  }
-
   init () {
     // reset all relations
     for (let name in this._relations) {
       const relation = this._relations[name]
       relation.reset()
     }
-    // fetch all relations again
-    this.__fetchedRelations = {}
-
-    // cached version is valid again
-    this._cachingInvalidated = false
   }
 
   serialize () {
@@ -71,6 +45,7 @@ export default class BaseModel {
       const model = value
       const Constructor = model.constructor
       const clone = new Constructor()
+      clone.__isClone = true
       for (let key in model) {
         // hide instance related properties
         if (key.startsWith('__')) {
@@ -128,14 +103,5 @@ export default class BaseModel {
 
   clone () {
     return this._clone(this)
-  }
-
-  get cachingInvalidated () {
-    return this._cachingInvalidated
-  }
-
-  invalidateCaching () {
-    this._cachingInvalidated = true
-    console.log(this.info, this.cachingInvalidated)
   }
 }

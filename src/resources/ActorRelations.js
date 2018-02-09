@@ -19,6 +19,8 @@ class ActorRelationsResource extends BaseResource {
 
   createItem () {
     const actorRelations = new ActorRelationsModel()
+    // in order to later find the relations container, we need to give
+    // it the id of our orga
     actorRelations.id = this.orgaId
     return actorRelations
   }
