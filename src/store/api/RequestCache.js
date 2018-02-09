@@ -1,6 +1,6 @@
 const _cache = {}
 
-export default class PromiseCache {
+export default class RequestCache {
   addItem (key, promise) {
     _cache[key] = promise
 

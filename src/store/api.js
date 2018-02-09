@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import ResourceCache from './api/ResourceCache'
-import PromiseCache from './api/PromiseCache'
+import RequestCache from './api/RequestCache'
 import LoadingState from './api/LoadingState'
 import LoadingStrategy from './api/LoadingStrategy'
 
 export const BASE = '/api/v1/'
 
-const promiseCache = new PromiseCache()
+const requestCache = new RequestCache()
 const resourceCache = new ResourceCache()
 
 const getErrorDescription = response => {
@@ -123,9 +123,9 @@ export default {
       }
 
       // list currently loading
-      const promiseCacheKey = resource.url || (listCacheKey + JSON.stringify(params || ''))
-      if (promiseCache.hasItem(promiseCacheKey)) {
-        return promiseCache.getItem(promiseCacheKey)
+      const requestKey = resource.url || (listCacheKey + JSON.stringify(params || ''))
+      if (requestCache.hasItem(requestKey)) {
+        return requestCache.getItem(requestKey)
       }
 
       // load list
@@ -180,7 +180,7 @@ export default {
       })
 
       // cache http call
-      promiseCache.addItem(promiseCacheKey, promise)
+      requestCache.addItem(requestKey, promise)
       return promise
     },
 
@@ -209,8 +209,8 @@ export default {
       }
 
       // item loading
-      if (promiseCache.hasItem(itemCacheKey + id)) {
-        return promiseCache.getItem(itemCacheKey + id)
+      if (requestCache.hasItem(itemCacheKey + id)) {
+        return requestCache.getItem(itemCacheKey + id)
       }
 
       const promise = resource.http.get({id}).then(response => {
@@ -239,7 +239,7 @@ export default {
       })
 
       // cache http call
-      promiseCache.addItem(itemCacheKey + id, promise)
+      requestCache.addItem(itemCacheKey + id, promise)
       return promise
     },
 

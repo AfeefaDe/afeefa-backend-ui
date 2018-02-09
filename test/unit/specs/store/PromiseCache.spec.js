@@ -1,19 +1,19 @@
-import PromiseCache from '@/store/api/PromiseCache'
+import RequestCache from '@/store/api/RequestCache'
 
 function newPromise () {
   return new Promise((resolve, reject) => {})
 }
 
-describe('Store - PromiseCache', () => {
+describe('Store - RequestCache', () => {
   it('creates cache', () => {
-    const cache = new PromiseCache()
-    expect(cache).to.be.an.instanceof(PromiseCache)
+    const cache = new RequestCache()
+    expect(cache).to.be.an.instanceof(RequestCache)
     expect(cache.hasItem('randomkey')).to.be.false
   })
 
 
   it('should has and return added item', () => {
-    const cache = new PromiseCache()
+    const cache = new RequestCache()
     const promise = newPromise()
     cache.addItem('myp', promise)
     expect(cache.hasItem('myp')).to.be.true
@@ -22,7 +22,7 @@ describe('Store - PromiseCache', () => {
 
 
   it('throws error if no promise is given', () => {
-    const cache = new PromiseCache()
+    const cache = new RequestCache()
 
     expect(() => {
       cache.addItem('myp')
@@ -39,7 +39,7 @@ describe('Store - PromiseCache', () => {
 
 
   it('does not throw error if promise interface given', () => {
-    const cache = new PromiseCache()
+    const cache = new RequestCache()
 
     expect(() => {
       cache.addItem('myp', newPromise())
@@ -58,7 +58,7 @@ describe('Store - PromiseCache', () => {
 
 
   it('should remove item', () => {
-    const cache = new PromiseCache()
+    const cache = new RequestCache()
     const promise = newPromise()
     const promise2 = newPromise()
     cache.addItem('p1', promise)
@@ -84,7 +84,7 @@ describe('Store - PromiseCache', () => {
 
 
   it('should remove item when promises resolves', async () => {
-    const cache = new PromiseCache()
+    const cache = new RequestCache()
     let pResolve
     const promise = new Promise((resolve, reject) => {
       pResolve = resolve
@@ -103,7 +103,7 @@ describe('Store - PromiseCache', () => {
 
 
   it('should remove item when promises rejects', done => {
-    const cache = new PromiseCache()
+    const cache = new RequestCache()
 
     let pReject
     const promise = new Promise((resolve, reject) => {
