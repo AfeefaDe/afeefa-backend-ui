@@ -3,7 +3,6 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import Event from '@/models/Event'
 import Orga from '@/models/Orga'
-import Entries from './base/Entries'
 import BaseResource from './base/BaseResource'
 
 class TodosResource extends BaseResource {
@@ -40,9 +39,10 @@ export default {
     // we are waiting till
     return store.dispatch('api/getList', {resource, params}).then(entries => {
       for (let entry of entries) {
-        Entries.fetchCategory(entry)
-        Entries.fetchSubCategory(entry)
-        Entries.fetchAnnotations(entry)
+        entry.fetchParentOrga()
+        entry.fetchCategory()
+        entry.fetchSubCategory()
+        entry.fetchAnnotations()
       }
       return entries
     })

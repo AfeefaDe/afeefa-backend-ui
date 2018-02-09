@@ -5,7 +5,6 @@ import Contact from '@/models/Contact'
 import BaseResource from './base/BaseResource'
 import Locations from './Locations'
 import Orgas from './Orgas'
-import Entries from './base/Entries'
 
 class ContactsResource extends BaseResource {
   init ([orgaId]) {
@@ -111,7 +110,7 @@ export default {
     }).then(() => {
       Orgas.get(orgaId, []).then(orga => {
         // TODO let Orga fetch the contats by itself
-        Entries.fetchContacts(orga)
+        orga.fetchContacts()
       })
     })
   },

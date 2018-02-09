@@ -77,7 +77,7 @@ export default {
         return false
       }
       // past event
-      if (this.entry.type === 'events' && !this.entry.isUpcoming()) {
+      if (this.entry.type === 'events' && !this.entry.isUpcoming) {
         return false
       }
       return true

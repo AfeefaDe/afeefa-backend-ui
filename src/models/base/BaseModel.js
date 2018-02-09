@@ -1,4 +1,5 @@
 import LoadingState from '@/store/api/LoadingState'
+import ResourceRegistry from '@/resources/config/Registry'
 
 let ID = 0
 
@@ -11,6 +12,14 @@ export default class BaseModel {
     this._relations = {}
 
     this.init()
+  }
+
+  /**
+   * Dependency injection for Resources
+   * Prevents cyclic imports (Model -> Resource -> Model)
+   */
+  Resource (resourceName) {
+    return ResourceRegistry.get(resourceName)
   }
 
   get relations () {

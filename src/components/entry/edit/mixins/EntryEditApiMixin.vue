@@ -28,7 +28,7 @@ export default {
     }).then(entry => {
       if (entry) {
         this.origItem = entry
-        this.item = this.Resource.clone(entry)
+        this.item = entry.clone()
         Orgas.getAll().then(orgas => {
           this.orgas = sortByTitle(orgas)
         })

@@ -28,6 +28,8 @@ export default class BaseEntriesResource extends BaseResource {
       this.cachePurgeItem('annotations', annotation.id)
     }
     entry.relation('annotations').reset()
+
+    // TODO refresh annotations
     // entry.invalidateLoadedAnnotations()
   }
 

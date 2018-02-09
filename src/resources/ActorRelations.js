@@ -5,7 +5,6 @@ import ActorRelationsModel from '@/models/ActorRelations'
 import BaseResource from './base/BaseResource'
 import LoadingStrategy from '@/store/api/LoadingStrategy'
 import Orga from '@/models/Orga'
-import Entries from './base/Entries'
 
 class ActorRelationsResource extends BaseResource {
   init ([orgaId]) {
@@ -50,9 +49,9 @@ const ActorRelations = {
         const promise = store.dispatch('api/getList', {resource: actorsResource, strategy: LoadingStrategy.LOAD_IF_NOT_CACHED}).then(actors => {
           actorRelations[actorRelation] = actors
           actors.forEach(actor => {
-            Entries.fetchParentOrga(actor)
-            Entries.fetchCategory(actor)
-            Entries.fetchSubCategory(actor)
+            actor.fetchParentOrga()
+            actor.fetchCategory()
+            actor.fetchSubCategory()
           })
         })
         promises.push(promise)

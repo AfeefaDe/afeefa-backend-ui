@@ -3,7 +3,6 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import Event from '@/models/Event'
 import Orga from '@/models/Orga'
-import Entries from './base/Entries'
 import BaseResource from './base/BaseResource'
 
 class SearchResource extends BaseResource {
@@ -46,8 +45,8 @@ export default {
 
     return store.dispatch('api/getList', {resource, params}).then(entries => {
       for (let entry of entries) {
-        Entries.fetchCategory(entry)
-        Entries.fetchSubCategory(entry)
+        entry.fetchCategory()
+        entry.fetchSubCategory()
       }
       return entries
     })

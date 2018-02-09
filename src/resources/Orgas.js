@@ -2,51 +2,20 @@ import Vue from 'vue'
 import store from '@/store'
 import { BASE } from '@/store/api'
 import Orga from '@/models/Orga'
-import Entries from './base/Entries'
-import BaseEntriesResource from './base/BaseEntriesResource'
+import OrgasResource from './OrgasResource'
 
-class OrgasResource extends BaseEntriesResource {
-  init () {
-    this.http = Vue.resource(BASE + 'orgas{/id}', {}, {update: {method: 'PATCH'}})
-    this.listCacheKey = 'orgas'
-  }
-
-  createItem () {
-    return new Orga()
-  }
-
-  itemSaved (orgaOld, orga) {
-    super.itemSaved(orgaOld, orga)
-
-    // refetch relations to this orga
-    const allActorRelations = this.cacheGetAllItems('actor_relations')
-    for (let orgaId in allActorRelations) {
-      this.cachePurgeItem('actor_relations', orgaId)
-      const relatedOrga = this.findCachedItem('orgas', orgaId)
-      if (relatedOrga) {
-        console.log('TODO invalidate loaded actor relations')
-        // relatedOrga.invalidateLoadedActorRelations()
-        // this.fetched('actorRelations', false)
-        // Orga.ACTOR_RELATIONS.forEach(actorRelation => {
-        //   this[actorRelation] = []
-        // })
-      }
-    }
-  }
-}
-
-const Orgas = {
+class Orgas {
   getAll () {
     const resource = new OrgasResource()
     return store.dispatch('api/getList', {resource}).then(orgas => {
       for (let orga of orgas) {
-        Entries.fetchParentOrga(orga)
-        Entries.fetchCategory(orga)
-        Entries.fetchSubCategory(orga)
+        orga.fetchParentOrga()
+        orga.fetchCategory()
+        orga.fetchSubCategory()
       }
       return orgas
     })
-  },
+  }
 
   /**
    * Orgas.get(id) - fetch all relations, fetch parent orga with cached_or_load
@@ -55,7 +24,6 @@ const Orgas = {
    * Orgas.get(id, [], strategy) - fetch no relation, use specific loading strategy
    * Orgas.get(id, null, null, fetchingStrategies) - fetch all and apply custom loading strategies to specific relations
    */
-
   get (id, relations, strategy, fetchingStrategies = {}) {
     if (!id) {
       const orga = new Orga()
@@ -77,19 +45,12 @@ const Orgas = {
       if (orga) {
         for (let fetchRelation of fetchRelations) {
           const strategy = fetchingStrategies[fetchRelation] || null
-          Entries[fetchRelation](orga, strategy)
+          orga[fetchRelation](strategy)
         }
       }
       return orga
     })
-  },
-
-  clone (orga) {
-    const clone = Entries.clone(orga)
-    Entries.fetchResources(clone)
-    Entries.fetchActorRelations(clone)
-    return clone
-  },
+  }
 
   save (orga) {
     if (orga.id) {
@@ -103,7 +64,7 @@ const Orgas = {
         item: orga
       })
     }
-  },
+  }
 
   joinActorRelation (relationType, relatingOrga, relatedOrga) {
     const resource = Vue.resource(BASE + `orgas{/relating_id}/${relationType}{/related_id}`)
@@ -124,7 +85,7 @@ const Orgas = {
       console.log('error join actor relation', response)
       return null
     })
-  },
+  }
 
   leaveActorRelation (relationType, relatingOrga, relatedOrga) {
     const resource = Vue.resource(BASE + `orgas{/relating_id}/${relationType}{/related_id}`)
@@ -145,7 +106,7 @@ const Orgas = {
       console.log('error leave actor relation', response)
       return null
     })
-  },
+  }
 
   updateAttributes (orga, attributes) {
     return store.dispatch('api/updateItemAttributes', {
@@ -154,7 +115,7 @@ const Orgas = {
       type: 'orgas',
       attributes
     })
-  },
+  }
 
   delete (orga) {
     return store.dispatch('api/deleteItem', {
@@ -164,4 +125,4 @@ const Orgas = {
   }
 }
 
-export default Orgas
+export default new Orgas()

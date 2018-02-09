@@ -73,6 +73,50 @@ export default class Entry extends BaseModel {
     })
   }
 
+  fetchCategory () {
+    this.relation('category').fetch(id => {
+      return this.Resource('Categories').get(id).then(category => {
+        this.category = category
+        return category
+      })
+    })
+  }
+
+  fetchSubCategory () {
+    this.relation('subCategory').fetch(id => {
+      return this.Resource('Categories').get(id).then(category => {
+        this.sub_category = category
+        return category
+      })
+    })
+  }
+
+  fetchContacts (clone) {
+    this.relation('contacts').fetch(() => {
+      return this.Resource('Contacts').getAllForOwner(this).then(contacts => {
+        this.contacts.length = 0
+        contacts.forEach(contact => {
+          contact = clone ? this.Resource('Contacts').clone(contact) : contact
+          this.contacts.push(contact)
+        })
+        return contacts
+      })
+    })
+  }
+
+  fetchAnnotations (clone) {
+    this.relation('annotations').fetch(() => {
+      return this.Resource('Annotations').getAllForOwner(this).then(annotations => {
+        this.annotations.length = 0
+        annotations.forEach(annotation => {
+          annotation = clone ? this.Resource('Annotations').clone(annotation) : annotation
+          this.annotations.push(annotation)
+        })
+        return annotations
+      })
+    })
+  }
+
   deserialize (json) {
     this.init()
 
@@ -176,6 +220,26 @@ export default class Entry extends BaseModel {
       data.id = this.id
     }
     return data
+  }
+
+  clone () {
+    const clone = super.clone()
+    clone.fetchParentOrga()
+    clone.fetchCategory()
+    clone.fetchSubCategory()
+    clone.fetchAnnotations(true) // true => annotation.clone()
+    clone.fetchContacts(true) // true => contact.clone()
+    return clone
+  }
+
+  updateAttributes (attributes) {
+    if (attributes) {
+      if ('active' in attributes) {
+        this.active = attributes.active === true
+        this.state_changed_at = new Date(attributes.state_changed_at)
+      }
+      this.updated_at = new Date(attributes.updated_at)
+    }
   }
 
   get info () {

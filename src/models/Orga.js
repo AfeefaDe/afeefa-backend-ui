@@ -3,7 +3,8 @@ import OrgaType from './OrgaType'
 import CachedRelation from './base/CachedRelation'
 import LoadingState from '@/store/api/LoadingState'
 import ResourceItem from './ResourceItem'
-import ActorRelations from './ActorRelations'
+import ActorRelationsModel from './ActorRelations'
+import LoadingStrategy from '@/store/api/LoadingStrategy'
 
 export default class Orga extends Entry {
   static ACTOR_RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
@@ -46,7 +47,43 @@ export default class Orga extends Entry {
     return new CachedRelation({
       type: CachedRelation.HAS_ONE,
       cacheKey: 'actor_relations',
-      Model: ActorRelations
+      Model: ActorRelationsModel
+    })
+  }
+
+  fetchParentOrga (strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
+    this.relation('parentOrga').fetch(id => {
+      return this.Resource('Orgas').get(id, ['fetchParentOrga'], strategy, { // fetch parent orga with only its own parent orga relation
+        'fetchParentOrga': LoadingStrategy.LOAD_IF_NOT_CACHED // do not force fully loading of parents parent orga
+      }).then(orga => {
+        this.parent_orga = orga
+        return orga
+      })
+    }, strategy)
+  }
+
+  fetchActorRelations () {
+    this.relation('actorRelations').fetch(id => {
+      return this.Resource('ActorRelations').getForOrga(this).then(actorRelations => {
+        this.actorRelations = actorRelations
+        Orga.ACTOR_RELATIONS.forEach(actorRelation => {
+          this[actorRelation] = actorRelations[actorRelation]
+        })
+        return actorRelations
+      })
+    })
+  }
+
+  fetchResources (clone) {
+    this.relation('resourceItems').fetch(() => {
+      return this.Resource('ResourceItems').getAllForOrga(this).then(resourceItems => {
+        this.resource_items.length = 0
+        resourceItems.forEach(resourceItem => {
+          resourceItem = clone ? resourceItem.clone() : resourceItem
+          this.resource_items.push(resourceItem)
+        })
+        return resourceItems
+      })
     })
   }
 
@@ -99,5 +136,12 @@ export default class Orga extends Entry {
     data.relationships.resource_items = { data: resourceItemsSerialized }
 
     return data
+  }
+
+  clone (orga) {
+    const clone = super.clone(orga)
+    clone.fetchResources()
+    clone.fetchActorRelations()
+    return clone
   }
 }

@@ -13,7 +13,7 @@ export default class Event extends Entry {
     this.has_time_end = false
   }
 
-  isUpcoming () {
+  get isUpcoming () {
     const today = moment().startOf('day')
     const start = moment(this.date_start).startOf('day')
     if (start.diff(today, 'days') >= 0) { // start >= today
@@ -26,6 +26,10 @@ export default class Event extends Entry {
       }
     }
     return false
+  }
+
+  fetchParentOrga () {
+    // coming later
   }
 
   deserialize (json) {

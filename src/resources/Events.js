@@ -2,48 +2,9 @@ import Vue from 'vue'
 import store from '@/store'
 import { BASE } from '@/store/api'
 import Event from '@/models/Event'
-import Entries from './base/Entries'
-import BaseEntriesResource from './base/BaseEntriesResource'
+import EventsResource from './EventsResource'
 
-class EventsResource extends BaseEntriesResource {
-  init () {
-    this.http = Vue.resource(BASE + 'events{/id}', {}, {update: {method: 'PATCH'}})
-    this.listCacheKey = 'events'
-  }
-
-  createItem () {
-    return new Event()
-  }
-
-  itemAdded (event) {
-    super.itemAdded(event)
-    // parent orgas events might change
-    this._updateParentOrgasEventList(event)
-  }
-
-  itemDeleted (event) {
-    super.itemDeleted(event)
-    // parent orgas events might change
-    this._updateParentOrgasEventList(event)
-  }
-
-  itemSaved (eventOld, event) {
-    super.itemSaved(eventOld, event)
-    // parent orgas events might change
-    this._updateParentOrgasEventList(eventOld)
-    this._updateParentOrgasEventList(event)
-  }
-
-  _updateParentOrgasEventList (event) {
-    const orgaId = event.relation('parentOrga').id
-    if (orgaId) {
-      this.cachePurgeList('events', JSON.stringify({orga_id: orgaId, 'filter[date]': 'upcoming'}))
-      this.cachePurgeList('events', JSON.stringify({orga_id: orgaId, 'filter[date]': 'past'}))
-    }
-  }
-}
-
-export default {
+class Events {
   getAllForOrga (id, filter) {
     const resource = new EventsResource()
     resource.http = Vue.resource(BASE + `orgas/${id}/events`)
@@ -54,23 +15,23 @@ export default {
     }
     return store.dispatch('api/getList', {resource, params}).then(events => {
       for (let event of events) {
-        Entries.fetchCategory(event)
-        Entries.fetchSubCategory(event)
+        event.fetchCategory()
+        event.fetchSubCategory()
       }
       return events
     })
-  },
+  }
 
   getAll (params) {
     const resource = new EventsResource()
     return store.dispatch('api/getList', {resource, params}).then(events => {
       for (let event of events) {
-        Entries.fetchCategory(event)
-        Entries.fetchSubCategory(event)
+        event.fetchCategory()
+        event.fetchSubCategory()
       }
       return events
     })
-  },
+  }
 
   get (id) {
     if (!id) {
@@ -80,19 +41,15 @@ export default {
     const resource = new EventsResource()
     return store.dispatch('api/getItem', {resource, id}).then(event => {
       if (event) {
-        Entries.fetchParentOrga(event)
-        Entries.fetchCategory(event)
-        Entries.fetchSubCategory(event)
-        Entries.fetchAnnotations(event)
-        Entries.fetchContacts(event)
+        event.fetchParentOrga()
+        event.fetchCategory()
+        event.fetchSubCategory()
+        event.fetchAnnotations()
+        event.fetchContacts()
       }
       return event
     })
-  },
-
-  clone (event) {
-    return Entries.clone(event)
-  },
+  }
 
   save (event) {
     if (event.id) {
@@ -106,7 +63,7 @@ export default {
         item: event
       })
     }
-  },
+  }
 
   updateAttributes (event, attributes) {
     return store.dispatch('api/updateItemAttributes', {
@@ -115,7 +72,7 @@ export default {
       type: 'events',
       attributes
     })
-  },
+  }
 
   delete (event) {
     return store.dispatch('api/deleteItem', {
@@ -124,3 +81,5 @@ export default {
     })
   }
 }
+
+export default new Events()
