@@ -3,9 +3,7 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import Orga from '@/models/Orga'
 import Entries from './base/Entries'
-// import ActorRelations from './ActorRelations'
 import BaseEntriesResource from './base/BaseEntriesResource'
-// import ActorRelationsModel from '@/models/ActorRelations'
 
 class OrgasResource extends BaseEntriesResource {
   init () {
