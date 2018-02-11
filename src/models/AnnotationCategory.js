@@ -1,5 +1,6 @@
 import Model from './base/Model'
 import LoadingState from '@/store/api/LoadingState'
+import DataTypes from './base/DataTypes'
 
 export default class AnnotionCategory extends Model {
   init () {
@@ -9,13 +10,16 @@ export default class AnnotionCategory extends Model {
 
     this.id = null
     this.type = 'annotationCategories'
-    this.generatedBySystem = false
-    this.title = ''
+
+    this.attr('title', DataTypes.String)
+    this.attr('generatedBySystem', DataTypes.Boolean, {
+      remoteName: 'generated_by_system'
+    })
   }
 
   deserialize (json) {
     this.id = json.id
-    this.generatedBySystem = json.attributes.generated_by_system
-    this.title = json.attributes.title
+
+    this.deserializeAttributes(json.attributes)
   }
 }

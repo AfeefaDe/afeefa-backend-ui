@@ -1,5 +1,6 @@
 import Model from './base/Model'
 import LoadingState from '@/store/api/LoadingState'
+import DataTypes from './base/DataTypes'
 
 export default class ContactPerson extends Model {
   init () {
@@ -7,17 +8,14 @@ export default class ContactPerson extends Model {
 
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
 
-    this.name = ''
-    this.role = ''
-    this.mail = ''
-    this.phone = ''
+    this.attr('name', DataTypes.String)
+    this.attr('role', DataTypes.String)
+    this.attr('mail', DataTypes.String)
+    this.attr('phone', DataTypes.String)
   }
 
   deserialize (json) {
-    this.name = json.attributes.name || ''
-    this.role = json.attributes.role || ''
-    this.mail = json.attributes.mail || ''
-    this.phone = json.attributes.phone || ''
+    this.deserializeAttributes(json.attributes)
   }
 
   serialize () {

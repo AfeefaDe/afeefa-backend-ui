@@ -2,6 +2,7 @@ import Entry from './base/Entry'
 import OrgaType from './OrgaType'
 import Relation from './base/Relation'
 import LoadingState from '@/store/api/LoadingState'
+import DataTypes from './base/DataTypes'
 
 export default class Orga extends Entry {
   static ACTOR_RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
@@ -10,11 +11,14 @@ export default class Orga extends Entry {
     super.init()
 
     this.type = 'orgas'
-    this.orga_type_id = OrgaType.ORGANIZATION
-    this.count_events = 0
-    this.count_resource_items = 0
-    this.count_projects = 0
-    this.count_network_members = 0
+
+    this.attr('orga_type_id', DataTypes.Int, {
+      default: OrgaType.ORGANIZATION
+    })
+    this.attr('count_events', DataTypes.Int)
+    this.attr('count_resource_items', DataTypes.Int)
+    this.attr('count_projects', DataTypes.Int)
+    this.attr('count_network_members', DataTypes.Int)
 
     this.resource_items = []
 
@@ -68,15 +72,9 @@ export default class Orga extends Entry {
   deserialize (json) {
     super.deserialize(json)
 
-    this.orga_type_id = json.attributes.orga_type_id
-    this.count_events = json.attributes.count_events
-    this.count_resource_items = json.attributes.count_resource_items
-    this.count_projects = json.attributes.count_projects
-    this.count_network_members = json.attributes.count_network_members
-
     const rels = json.relationships || {}
 
-    // actor relations, create a merge object for the different relations
+    // actor relations, create a merge json object for the different relations
     const actorRelationsJson = {}
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
       if (rels[actorRelation]) {

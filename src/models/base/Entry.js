@@ -1,4 +1,5 @@
 import LoadingStrategy from '@/store/api/LoadingStrategy'
+import DataTypes from './DataTypes'
 import Model from './Model'
 import Relation from './Relation'
 import User from '../User'
@@ -10,19 +11,32 @@ export default class Entry extends Model {
     this.id = null
     this.type = null
 
-    this.title = ''
-    this.description = ''
-    this.short_description = ''
-    this.media_url = ''
-    this.support_wanted = false
-    this.support_wanted_detail = ''
-    this.certified_sfr = false
-    this.tags = ''
+    this.attr('title', DataTypes.String)
+    this.attr('description', DataTypes.String)
+    this.attr('short_description', DataTypes.String)
+    this.attr('media_url', DataTypes.String)
+    this.attr('support_wanted', DataTypes.Boolean)
+    this.attr('support_wanted_detail', DataTypes.String)
+    this.attr('certified_sfr', DataTypes.Boolean)
+    this.attr('tags', DataTypes.String)
+    this.attr('facebook_id', DataTypes.Date)
+    this.attr('inheritance', DataTypes.Custom, {
+      default: {},
+      value (value) {
+        const inheritance = {}
+        if (value) {
+          value.split('|').forEach(key => {
+            inheritance[key] = true
+          })
+        }
+        return inheritance
+      }
+    })
 
-    this.active = false
-    this.created_at = new Date()
-    this.updated_at = new Date()
-    this.state_changed_at = new Date()
+    this.attr('active', DataTypes.Boolean)
+    this.attr('created_at', DataTypes.Date)
+    this.attr('updated_at', DataTypes.Date)
+    this.attr('state_changed_at', DataTypes.Date)
 
     this.parent_orga = null
     this.category = null
@@ -31,13 +45,6 @@ export default class Entry extends Model {
     this.annotations = []
     this.creator = null
     this.lastEditor = null
-
-    this.facebook_id = null
-
-    this.inheritance = {
-      short_description: false,
-      contact_infos: false
-    }
   }
 
   parentOrgaRelation () {
@@ -141,28 +148,7 @@ export default class Entry extends Model {
     this.id = json.id
     this.type = json.type
 
-    this.title = json.attributes.title || ''
-    this.description = json.attributes.description || ''
-    this.short_description = json.attributes.short_description || ''
-    this.media_url = json.attributes.media_url || ''
-    this.support_wanted = json.attributes.support_wanted
-    this.support_wanted_detail = json.attributes.support_wanted_detail
-    this.certified_sfr = json.attributes.certified_sfr
-    this.tags = json.attributes.tags
-
-    this.facebook_id = json.attributes.facebook_id
-
-    // feed inheritance object with values
-    if (json.attributes.inheritance) {
-      json.attributes.inheritance.split('|').forEach(key => {
-        this.inheritance[key] = true
-      })
-    }
-
-    this.active = json.attributes.active === true
-    this.created_at = new Date(json.attributes.created_at)
-    this.updated_at = new Date(json.attributes.updated_at)
-    this.state_changed_at = new Date(json.attributes.state_changed_at)
+    this.deserializeAttributes(json.attributes)
 
     const rels = json.relationships || {}
 
@@ -262,6 +248,6 @@ export default class Entry extends Model {
 
   get info () {
     const type = this.type.charAt(0).toUpperCase() + this.type.slice(1)
-    return `[${type} id=${this.id} ID=${this.__ID} title="${this.title}" clone="${this.__isClone}"]`
+    return `[${type} id=${this.id} ID=${this._ID} title="${this.title}" clone="${this._isClone}"]`
   }
 }

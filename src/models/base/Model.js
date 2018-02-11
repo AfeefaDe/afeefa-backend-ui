@@ -6,11 +6,31 @@ let ID = 0
 
 export default class Model {
   constructor () {
-    this.__ID = ++ID
-    this._loadingState = LoadingState.NOT_LOADED
-    this.__isClone = false
+    Object.defineProperty(this, '_ID', {
+      value: ++ID
+    })
 
-    this._relations = {}
+    Object.defineProperty(this, '_loadingState', {
+      value: LoadingState.NOT_LOADED,
+      writable: true
+    })
+
+    Object.defineProperty(this, '_isClone', {
+      value: false,
+      writable: true
+    })
+
+    Object.defineProperty(this, '_attributes', {
+      value: {}
+    })
+
+    Object.defineProperty(this, '_attributeRemoteNameMap', {
+      value: {}
+    })
+
+    Object.defineProperty(this, '_relations', {
+      value: {}
+    })
 
     this.init()
   }
@@ -36,11 +56,42 @@ export default class Model {
   }
 
   relation (name) {
+    // return empty relation if model not loaded yet
+    if (!this.id) {
+      return {
+        fetch: () => {}
+      }
+    }
+
     if (!this._relations[name]) {
       // expect the method to be defined by configuration in the particular model classes
       this._relations[name] = this[name + 'Relation']()
     }
     return this._relations[name]
+  }
+
+  attr (name, type, options = {}) {
+    this._attributes[name] = {
+      type,
+      ...options
+    }
+
+    if (options.remoteName) {
+      this._attributeRemoteNameMap[options.remoteName] = name
+    }
+
+    // set given default value or the types default value
+    this[name] = options.default || type.value()
+  }
+
+  hasAttr (name) {
+    return !!this._attributes[name]
+  }
+
+  getAttrValue (name, value) {
+    const attr = this._attributes[name]
+    // return custom value calclulation or the default calculation of the type
+    return attr.value ? attr.value(value) : attr.type.value(value)
   }
 
   init () {
@@ -51,7 +102,17 @@ export default class Model {
     }
   }
 
+  deserializeAttributes (attributes) {
+    for (let name in attributes) {
+      const localName = this._attributeRemoteNameMap[name] || name
+      if (this.hasAttr(localName)) {
+        this[localName] = this.getAttrValue(localName, attributes[name])
+      }
+    }
+  }
+
   serialize () {
+    // default serialization
     const data = {
       id: this.id,
       type: this.type
@@ -68,7 +129,7 @@ export default class Model {
       const model = value
       const Constructor = model.constructor
       const clone = new Constructor()
-      clone.__isClone = true
+      clone._isClone = true
       for (let key in model) {
         // hide instance related properties
         if (key.startsWith('__')) {
@@ -125,6 +186,11 @@ export default class Model {
   }
 
   clone () {
-    return this._clone(this)
+    const clone = this._clone(this)
+    clone._loadingState = this._loadingState
+    for (let relationName in this._relations) {
+      clone._relations[relationName] = this._relations[relationName].clone()
+    }
+    return clone
   }
 }

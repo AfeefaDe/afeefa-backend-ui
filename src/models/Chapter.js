@@ -1,5 +1,6 @@
 import Model from './base/Model'
 import LoadingState from '@/store/api/LoadingState'
+import DataTypes from './base/DataTypes'
 
 export default class Chapter extends Model {
   init () {
@@ -7,22 +8,18 @@ export default class Chapter extends Model {
 
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
 
-    this.type = 'chapters'
     this.id = null
-    this.title = ''
-    this.content = ''
-    this.order = 0
-    // this.created_at = new Date()
-    // this.updated_at = new Date()
+    this.type = 'chapters'
+
+    this.attr('title', DataTypes.String)
+    this.attr('content', DataTypes.String)
+    this.attr('order', DataTypes.Int)
   }
 
   deserialize (json) {
     this.id = json.id
-    this.title = json.title
-    this.content = json.content
-    this.order = json.order || 0
-    // this.created_at = new Date(json.created_at)
-    // this.updated_at = new Date(json.updated_at)
+
+    this.deserializeAttributes(json.attributes)
   }
 
   serialize () {

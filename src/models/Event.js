@@ -1,25 +1,31 @@
 import moment from 'moment'
 import LoadingState from '@/store/api/LoadingState'
 import Entry from './base/Entry'
+import DataTypes from './base/DataTypes'
 
 export default class Event extends Entry {
   init () {
     super.init()
 
     this.type = 'events'
-    this.date_start = moment(new Date()).startOf('day').toDate()
-    this.has_time_start = false
-    this.date_end = moment(new Date()).startOf('day').toDate()
-    this.has_time_end = false
+
+    this.attr('date_start', DataTypes.Date, {
+      default: moment(new Date()).startOf('day').toDate()
+    })
+    this.attr('has_time_start', DataTypes.Boolean)
+    this.attr('date_end', DataTypes.Date, {
+      default: moment(new Date()).startOf('day').toDate()
+    })
+    this.attr('has_time_end', DataTypes.Boolean)
   }
 
   deserialize (json) {
     super.deserialize(json)
 
-    this.date_start = (json.attributes.date_start === null) ? null : new Date(json.attributes.date_start)
-    this.has_time_start = json.attributes.has_time_start === true
-    this.date_end = json.attributes.date_end ? new Date(json.attributes.date_end) : this.date_start
-    this.has_time_end = json.attributes.has_time_end === true
+    // set date and to start if not specified
+    if (!this.date_end) {
+      this.date_end = this.date_start
+    }
 
     const rels = json.relationships
 

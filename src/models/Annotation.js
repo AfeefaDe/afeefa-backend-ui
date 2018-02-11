@@ -1,6 +1,7 @@
 import Model from './base/Model'
 import LoadingState from '@/store/api/LoadingState'
-import Relation from '@/models/base/Relation'
+import Relation from './base/Relation'
+import DataTypes from './base/DataTypes'
 
 export default class Annotion extends Model {
   init () {
@@ -11,7 +12,7 @@ export default class Annotion extends Model {
     this.id = null
     this.type = 'annotations'
 
-    this.detail = ''
+    this.attr('detail', DataTypes.String)
 
     this.annotationCategory = null
   }
@@ -34,7 +35,8 @@ export default class Annotion extends Model {
 
   deserialize (json) {
     this.id = json.id
-    this.detail = json.attributes.detail
+
+    this.deserializeAttributes(json.attributes)
 
     this.relation('annotationCategory').initWithId(json.attributes.annotation_category_id)
   }
@@ -63,6 +65,6 @@ export default class Annotion extends Model {
   }
 
   get info () {
-    return `[Annotation id=${this.id} ID=${this.__ID} category="${this.relation('annotationCategory').id}"]`
+    return `[Annotation id=${this.id} ID=${this._ID} category="${this.relation('annotationCategory').id}"]`
   }
 }

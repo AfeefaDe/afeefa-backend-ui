@@ -1,6 +1,7 @@
 import Model from './base/Model'
 import LoadingState from '@/store/api/LoadingState'
-import Relation from '@/models/base/Relation'
+import Relation from './base/Relation'
+import DataTypes from './base/DataTypes'
 
 export default class Category extends Model {
   init () {
@@ -10,7 +11,8 @@ export default class Category extends Model {
 
     this.id = null
     this.type = 'categories'
-    this.title = ''
+
+    this.attr('title', DataTypes.String)
 
     this.parent_category = null
     this.sub_categories = []
@@ -25,7 +27,8 @@ export default class Category extends Model {
 
   deserialize (json) {
     this.id = json.id
-    this.title = json.attributes.title
+
+    this.deserializeAttributes(json.attributes)
 
     const rels = json.relationships
 

@@ -1,5 +1,6 @@
 import Model from './base/Model'
 import LoadingState from '@/store/api/LoadingState'
+import DataTypes from './base/DataTypes'
 
 export default class User extends Model {
   init () {
@@ -9,10 +10,16 @@ export default class User extends Model {
 
     this.id = null
     this.type = 'users'
-    this.first_name = ''
-    this.last_name = ''
-    this.area = ''
-    this.organization = ''
+
+    this.attr('first_name', DataTypes.String, {
+      remoteName: 'forename'
+    })
+    this.attr('last_name', DataTypes.String, {
+      remoteName: 'surname'
+    })
+    this.attr('area', DataTypes.String)
+    this.attr('organization', DataTypes.String)
+
     this.password = ''
   }
 
@@ -22,10 +29,8 @@ export default class User extends Model {
 
   deserialize (json) {
     this.id = json.id
-    this.first_name = json.attributes.forename
-    this.last_name = json.attributes.surname
-    this.area = json.attributes.area
-    this.organization = json.attributes.organization
+
+    this.deserializeAttributes(json.attributes)
   }
 
   serialize () {

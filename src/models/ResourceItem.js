@@ -1,5 +1,6 @@
 import Model from './base/Model'
 import LoadingState from '@/store/api/LoadingState'
+import DataTypes from './base/DataTypes'
 
 export default class ResourceItem extends Model {
   init () {
@@ -9,20 +10,18 @@ export default class ResourceItem extends Model {
 
     this.id = null
     this.type = 'resource_items'
-    this.title = ''
-    this.description = ''
-    this.category = ''
-    this.created_at = new Date()
-    this.updated_at = new Date()
+
+    this.attr('title', DataTypes.String)
+    this.attr('description', DataTypes.String)
+    this.attr('category', DataTypes.String)
+    this.attr('created_at', DataTypes.Date)
+    this.attr('updated_at', DataTypes.Date)
   }
 
   deserialize (json) {
     this.id = json.id
-    this.title = json.attributes.title
-    this.description = json.attributes.description
-    this.category = json.attributes.tags
-    this.created_at = new Date(json.attributes.created_at)
-    this.updated_at = new Date(json.attributes.updated_at)
+
+    this.deserializeAttributes(json.attributes)
   }
 
   serialize () {

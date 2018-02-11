@@ -1,5 +1,6 @@
 import Model from './base/Model'
 import LoadingState from '@/store/api/LoadingState'
+import DataTypes from './base/DataTypes'
 
 export default class Location extends Model {
   init () {
@@ -9,13 +10,14 @@ export default class Location extends Model {
 
     this.id = null
     this.type = 'locations'
-    this.title = ''
-    this.street = ''
-    this.zip = ''
-    this.city = ''
-    this.lat = ''
-    this.lon = ''
-    this.directions = ''
+
+    this.attr('title', DataTypes.String)
+    this.attr('street', DataTypes.String)
+    this.attr('zip', DataTypes.String)
+    this.attr('city', DataTypes.String)
+    this.attr('lat', DataTypes.String)
+    this.attr('lon', DataTypes.String)
+    this.attr('directions', DataTypes.String)
 
     this.ownerTitle = ''
     this.creatingContactId = null
@@ -26,13 +28,7 @@ export default class Location extends Model {
 
     this.id = json.id
 
-    this.title = json.attributes.title || ''
-    this.street = json.attributes.street || ''
-    this.zip = json.attributes.zip || ''
-    this.city = json.attributes.city || ''
-    this.lat = json.attributes.lat || ''
-    this.lon = json.attributes.lon || ''
-    this.directions = json.attributes.directions || ''
+    this.deserializeAttributes(json.attributes)
 
     const rels = json.relationships || {}
 
@@ -63,6 +59,6 @@ export default class Location extends Model {
   }
 
   get info () {
-    return `[Locations id=${this.id} ID=${this.__ID} title="${this.title}" street="${this.street}" clone="${this.__isClone}"]`
+    return `[Locations id=${this.id} ID=${this._ID} title="${this.title}" street="${this.street}" clone="${this._isClone}"]`
   }
 }

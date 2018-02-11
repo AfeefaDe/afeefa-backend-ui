@@ -2,6 +2,7 @@ import Model from './base/Model'
 import Relation from './base/Relation'
 import ContactPerson from './ContactPerson'
 import LoadingState from '@/store/api/LoadingState'
+import DataTypes from './base/DataTypes'
 
 export default class Contact extends Model {
   init () {
@@ -11,12 +12,19 @@ export default class Contact extends Model {
 
     this.id = null
     this.type = 'contacts'
-    this.title = ''
-    this.fax = ''
-    this.openingHours = ''
-    this.web = ''
-    this.socialMedia = ''
-    this.spokenLanguages = ''
+
+    this.attr('title', DataTypes.String)
+    this.attr('fax', DataTypes.String)
+    this.attr('openingHours', DataTypes.String, {
+      remoteName: 'opening_hours'
+    })
+    this.attr('web', DataTypes.String)
+    this.attr('socialMedia', DataTypes.String, {
+      remoteName: 'social_media'
+    })
+    this.attr('spokenLanguages', DataTypes.String, {
+      remoteName: 'spoken_languages'
+    })
 
     this.location = null
     this.persons = []
@@ -44,13 +52,7 @@ export default class Contact extends Model {
 
     this.id = json.id
 
-    json.attributes || (json.attributes = {})
-    this.title = json.attributes.title || ''
-    this.fax = json.attributes.fax || ''
-    this.openingHours = json.attributes.opening_hours || ''
-    this.web = json.attributes.web || ''
-    this.socialMedia = json.attributes.social_media || ''
-    this.spokenLanguages = json.attributes.spoken_languages || ''
+    this.deserializeAttributes(json.attributes)
 
     const rels = json.relationships || {}
 
@@ -116,7 +118,7 @@ export default class Contact extends Model {
 
   get info () {
     const location = this.location ? this.location.info : `[Locations id="${this.relation('location').id}"]`
-    return `[Contacts id=${this.id} ID=${this.__ID} title="${this.title}" clone="${this.__isClone}"]` +
+    return `[Contacts id=${this.id} ID=${this._ID} title="${this.title}" clone="${this._isClone}"]` +
       `\n\t${location}`
   }
 }
