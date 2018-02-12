@@ -23,6 +23,20 @@ const getErrorDescription = response => {
   return description
 }
 
+const setRequestId = (json, requestId) => {
+  if (typeof json !== 'object' || json === null) {
+    return
+  }
+
+  Object.defineProperty(json, '_requestId', {
+    value: requestId
+  })
+
+  for (let key in json) {
+    setRequestId(json[key], requestId)
+  }
+}
+
 let COUNT_SAVE_OPERATIONS = 0
 
 export default {
@@ -31,7 +45,8 @@ export default {
 
   state: {
     resourceCache,
-    isSaving: false
+    isSaving: false,
+    requestId: 0
   },
 
 
@@ -42,6 +57,11 @@ export default {
 
     savingFinished (state) {
       state.isSaving = false
+    },
+
+    setRequestId (state, json) {
+      ++state.requestId
+      setRequestId(json, state.requestId)
     }
   },
 
@@ -63,6 +83,8 @@ export default {
         }
 
         next(response => {
+          commit('setRequestId', response.body)
+
           if (request.method !== 'GET') {
             return new Promise((resolve, reject) => {
               setTimeout(() => {
@@ -264,7 +286,8 @@ export default {
         }
         resource.beforeItemSaved(item, cachedItem)
 
-        resource.deserialize(cachedItem, response.body.data || response.body)
+        const json = response.body.data || response.body
+        resource.deserialize(cachedItem, json)
 
         // check for included cacheable relations
         resource.cacheLoadedRelations(cachedItem)
@@ -295,7 +318,9 @@ export default {
       return resource.http.save(
         {id: item.id}, body
       ).then(response => {
-        resource.deserialize(item, response.body.data || response.body)
+        const json = response.body.data || response.body
+        resource.deserialize(item, json)
+
         resourceCache.addItem(itemCacheKey, item)
 
         // check for included cacheable relations
@@ -341,9 +366,10 @@ export default {
       }
       return resource.http.update({id: item.id}, {data}).then(response => {
         const itemCacheKey = resource.getItemCacheKey()
-        const attributes = response.body.data.attributes
+
+        const json = response.body.data || response.body
         const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
-        resource.itemAttributesUpdated(cachedItem, attributes)
+        resource.deserialize(cachedItem, json)
         return attributes
       }).catch(response => {
         dispatch('messages/showAlert', {

@@ -33,7 +33,7 @@ export default class EventsResource extends EntriesResource {
   }
 
   _updateParentOrgasEventList (event) {
-    const orgaId = event.relation('parentOrga').id
+    const orgaId = event.relation('parent_orga').id
     if (orgaId) {
       this.cachePurgeList('events', JSON.stringify({orga_id: orgaId, 'filter[date]': 'upcoming'}))
       this.cachePurgeList('events', JSON.stringify({orga_id: orgaId, 'filter[date]': 'past'}))

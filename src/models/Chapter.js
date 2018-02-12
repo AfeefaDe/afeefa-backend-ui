@@ -3,6 +3,12 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class Chapter extends Model {
+  static attributes = {
+    title: DataTypes.String,
+    content: DataTypes.String,
+    order: DataTypes.Int
+  }
+
   init () {
     super.init()
 
@@ -10,10 +16,6 @@ export default class Chapter extends Model {
 
     this.id = null
     this.type = 'chapters'
-
-    this.attr('title', DataTypes.String)
-    this.attr('content', DataTypes.String)
-    this.attr('order', DataTypes.Int)
   }
 
   deserialize (json) {

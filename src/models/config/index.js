@@ -3,6 +3,7 @@ import registry from './Registry'
 import Event from '../Event'
 import Orga from '../Orga'
 import Contact from '../Contact'
+import ContactPerson from '../ContactPerson'
 import Location from '../Location'
 import Category from '../Category'
 
@@ -17,6 +18,7 @@ import User from '../User'
 registry.add('Event', Event)
 registry.add('Orga', Orga)
 registry.add('Contact', Contact)
+registry.add('ContactPerson', ContactPerson)
 registry.add('Location', Location)
 registry.add('Category', Category)
 
@@ -27,3 +29,5 @@ registry.add('ActorRelations', ActorRelations)
 registry.add('Chapter', Chapter)
 
 registry.add('User', User)
+
+registry.initializeAll()

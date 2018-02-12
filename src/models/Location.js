@@ -3,6 +3,16 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class Location extends Model {
+  static attributes = {
+    title: DataTypes.String,
+    street: DataTypes.String,
+    zip: DataTypes.String,
+    city: DataTypes.String,
+    lat: DataTypes.String,
+    lon: DataTypes.String,
+    directions: DataTypes.String
+  }
+
   init () {
     super.init()
 
@@ -10,14 +20,6 @@ export default class Location extends Model {
 
     this.id = null
     this.type = 'locations'
-
-    this.attr('title', DataTypes.String)
-    this.attr('street', DataTypes.String)
-    this.attr('zip', DataTypes.String)
-    this.attr('city', DataTypes.String)
-    this.attr('lat', DataTypes.String)
-    this.attr('lon', DataTypes.String)
-    this.attr('directions', DataTypes.String)
 
     this.ownerTitle = ''
     this.creatingContactId = null
@@ -59,6 +61,6 @@ export default class Location extends Model {
   }
 
   get info () {
-    return `[Locations id=${this.id} ID=${this._ID} title="${this.title}" street="${this.street}" clone="${this._isClone}"]`
+    return super.info + ` title="${this.title}" street="${this.street}"`
   }
 }

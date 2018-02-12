@@ -82,11 +82,6 @@ export default class Resource {
   itemSaved (itemOld, item) {
   }
 
-  // called after attributes of an item have been changed
-  // to enable custom resource cache treatment
-  itemAttributesUpdated (item, attributes) {
-  }
-
   /**
    * Resource Cache Access
    */

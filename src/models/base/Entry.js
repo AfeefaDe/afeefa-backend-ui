@@ -2,25 +2,20 @@ import LoadingStrategy from '@/store/api/LoadingStrategy'
 import DataTypes from './DataTypes'
 import Model from './Model'
 import Relation from './Relation'
-import User from '../User'
 
 export default class Entry extends Model {
-  init () {
-    super.init()
-
-    this.id = null
-    this.type = null
-
-    this.attr('title', DataTypes.String)
-    this.attr('description', DataTypes.String)
-    this.attr('short_description', DataTypes.String)
-    this.attr('media_url', DataTypes.String)
-    this.attr('support_wanted', DataTypes.Boolean)
-    this.attr('support_wanted_detail', DataTypes.String)
-    this.attr('certified_sfr', DataTypes.Boolean)
-    this.attr('tags', DataTypes.String)
-    this.attr('facebook_id', DataTypes.Date)
-    this.attr('inheritance', DataTypes.Custom, {
+  static attributes = {
+    title: DataTypes.String,
+    description: DataTypes.String,
+    short_description: DataTypes.String,
+    media_url: DataTypes.String,
+    support_wanted: DataTypes.Boolean,
+    support_wanted_detail: DataTypes.String,
+    certified_sfr: DataTypes.Boolean,
+    tags: DataTypes.String,
+    facebook_id: DataTypes.Date,
+    inheritance: {
+      type: DataTypes.Custom,
       default: {},
       value (value) {
         const inheritance = {}
@@ -31,28 +26,32 @@ export default class Entry extends Model {
         }
         return inheritance
       }
-    })
+    },
+    active: DataTypes.Boolean,
+    created_at: DataTypes.Date,
+    updated_at: DataTypes.Date,
+    state_changed_at: DataTypes.Date
+  }
 
-    this.attr('active', DataTypes.Boolean)
-    this.attr('created_at', DataTypes.Date)
-    this.attr('updated_at', DataTypes.Date)
-    this.attr('state_changed_at', DataTypes.Date)
+  init () {
+    super.init()
 
-    this.parent_orga = null
+    this.id = null
+    this.type = null
+
+
+    this.rel('parent_orga', new Relation({
+      type: Relation.HAS_ONE,
+      cacheKey: 'orgas',
+      Model: this.Model('Orga')
+    }))
+
     this.category = null
     this.sub_category = null
     this.contacts = []
     this.annotations = []
     this.creator = null
     this.lastEditor = null
-  }
-
-  parentOrgaRelation () {
-    return new Relation({
-      type: Relation.HAS_ONE,
-      cacheKey: 'orgas',
-      Model: this.Model('Orga')
-    })
   }
 
   categoryRelation () {
@@ -87,8 +86,24 @@ export default class Entry extends Model {
     })
   }
 
+  creatorRelation () {
+    return new Relation({
+      type: Relation.HAS_ONE,
+      cacheKey: 'users',
+      Model: this.Model('User')
+    })
+  }
+
+  lastEditorRelation () {
+    return new Relation({
+      type: Relation.HAS_ONE,
+      cacheKey: 'users',
+      Model: this.Model('User')
+    })
+  }
+
   fetchParentOrga (strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
-    this.relation('parentOrga').fetch(id => {
+    this.relation('parent_orga').fetch(id => {
       return this.Resource('Orgas').get(id, ['fetchParentOrga'], strategy, { // fetch parent orga with only its own parent orga relation
         'fetchParentOrga': LoadingStrategy.LOAD_IF_NOT_CACHED // do not force fully loading of parents parent orga
       }).then(orga => {
@@ -142,8 +157,26 @@ export default class Entry extends Model {
     })
   }
 
+  fetchCreator () {
+    this.relation('creator').fetch(id => {
+      return this.Resource('Users').get(id).then(creator => {
+        this.creator = creator
+        return creator
+      })
+    })
+  }
+
+  fetchLastEditor () {
+    this.relation('lastEditor').fetch(id => {
+      return this.Resource('Users').get(id).then(editor => {
+        this.creator = editor
+        return editor
+      })
+    })
+  }
+
   deserialize (json) {
-    this.init()
+    // this.init() TODO !!!
 
     this.id = json.id
     this.type = json.type
@@ -174,13 +207,11 @@ export default class Entry extends Model {
 
     // creator, last editor
     if (rels.creator && rels.creator.data) {
-      this.creator = new User()
-      this.creator.deserialize(rels.creator.data)
+      this.relation('creator').initWithJson(rels.creator.data)
     }
 
     if (rels.last_editor && rels.last_editor.data) {
-      this.lastEditor = new User()
-      this.lastEditor.deserialize(rels.last_editor.data)
+      this.relation('lastEditor').initWithJson(rels.last_editor.data)
     }
   }
 
@@ -247,7 +278,6 @@ export default class Entry extends Model {
   }
 
   get info () {
-    const type = this.type.charAt(0).toUpperCase() + this.type.slice(1)
-    return `[${type} id=${this.id} ID=${this._ID} title="${this.title}" clone="${this._isClone}"]`
+    return super.info + ` title="${this.title}"`
   }
 }

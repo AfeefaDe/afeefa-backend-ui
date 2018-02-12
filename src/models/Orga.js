@@ -7,18 +7,21 @@ import DataTypes from './base/DataTypes'
 export default class Orga extends Entry {
   static ACTOR_RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
 
+  static attributes = {
+    orga_type_id: {
+      type: DataTypes.Int,
+      default: OrgaType.ORGANIZATION
+    },
+    count_events: DataTypes.Int,
+    count_resource_items: DataTypes.Int,
+    count_projects: DataTypes.Int,
+    count_network_members: DataTypes.Int
+  }
+
   init () {
     super.init()
 
     this.type = 'orgas'
-
-    this.attr('orga_type_id', DataTypes.Int, {
-      default: OrgaType.ORGANIZATION
-    })
-    this.attr('count_events', DataTypes.Int)
-    this.attr('count_resource_items', DataTypes.Int)
-    this.attr('count_projects', DataTypes.Int)
-    this.attr('count_network_members', DataTypes.Int)
 
     this.resource_items = []
 
@@ -90,7 +93,7 @@ export default class Orga extends Entry {
 
     // parent orga
     if (rels.initiator && rels.initiator.data) {
-      this.relation('parentOrga').initWithJson(rels.initiator.data, LoadingState.LOADED_AS_ATTRIBUTE)
+      this.relation('parent_orga').initWithJson(rels.initiator.data, LoadingState.LOADED_AS_ATTRIBUTE)
     }
 
     // resourceItems

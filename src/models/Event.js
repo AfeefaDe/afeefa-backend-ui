@@ -4,19 +4,23 @@ import Entry from './base/Entry'
 import DataTypes from './base/DataTypes'
 
 export default class Event extends Entry {
+  static attributes = {
+    date_start: {
+      type: DataTypes.Date,
+      default: moment(new Date()).startOf('day').toDate()
+    },
+    has_time_start: DataTypes.Boolean,
+    date_end: {
+      type: DataTypes.Date,
+      default: moment(new Date()).startOf('day').toDate()
+    },
+    has_time_end: DataTypes.Boolean
+  }
+
   init () {
     super.init()
 
     this.type = 'events'
-
-    this.attr('date_start', DataTypes.Date, {
-      default: moment(new Date()).startOf('day').toDate()
-    })
-    this.attr('has_time_start', DataTypes.Boolean)
-    this.attr('date_end', DataTypes.Date, {
-      default: moment(new Date()).startOf('day').toDate()
-    })
-    this.attr('has_time_end', DataTypes.Boolean)
   }
 
   deserialize (json) {
@@ -31,7 +35,7 @@ export default class Event extends Entry {
 
     // parent orga
     if (rels.orga && rels.orga.data) {
-      this.relation('parentOrga').initWithJson(rels.orga.data, LoadingState.LOADED_AS_ATTRIBUTE)
+      this.relation('parent_orga').initWithJson(rels.orga.data, LoadingState.LOADED_AS_ATTRIBUTE)
     }
   }
 

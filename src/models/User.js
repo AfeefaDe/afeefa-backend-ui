@@ -3,6 +3,19 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class User extends Model {
+  static attributes = {
+    first_name: {
+      type: DataTypes.String,
+      remoteName: 'forename'
+    },
+    last_name: {
+      type: DataTypes.String,
+      remoteName: 'surname'
+    },
+    area: DataTypes.String,
+    organization: DataTypes.String
+  }
+
   init () {
     super.init()
 
@@ -10,15 +23,6 @@ export default class User extends Model {
 
     this.id = null
     this.type = 'users'
-
-    this.attr('first_name', DataTypes.String, {
-      remoteName: 'forename'
-    })
-    this.attr('last_name', DataTypes.String, {
-      remoteName: 'surname'
-    })
-    this.attr('area', DataTypes.String)
-    this.attr('organization', DataTypes.String)
 
     this.password = ''
   }

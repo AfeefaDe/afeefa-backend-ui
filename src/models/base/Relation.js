@@ -100,11 +100,16 @@ export default class Relation {
       item._loadingState = this.loadingState
       resourceCache.addItem(this.itemType, item)
     } else {
-      if ((item._loadingState < this.loadingState) || this.cacheUpdateForced) { // update cached item only if the updated version is more comprehensive
-        item.deserialize(json) // resets all relations to null or []
-        item._loadingState = this.loadingState
-        this.cacheUpdateForced = false
-      }
+      item.deserialize(json) // resets all relations to null or []
+      item._loadingState = this.loadingState
+      this.cacheUpdateForced = false
+    // if ((item._loadingState < this.loadingState) || this.cacheUpdateForced) { // update cached item only if the updated version is more comprehensive
+      //   item.deserialize(json) // resets all relations to null or []
+      //   item._loadingState = this.loadingState
+      //   this.cacheUpdateForced = false
+      // } else {
+      //   console.log('item loading stat reached', item.info)
+      // }
     }
     return item
   }

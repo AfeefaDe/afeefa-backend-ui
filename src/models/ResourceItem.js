@@ -3,6 +3,14 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class ResourceItem extends Model {
+  static attributes = {
+    title: DataTypes.String,
+    description: DataTypes.String,
+    category: DataTypes.String,
+    created_at: DataTypes.Date,
+    updated_at: DataTypes.Date
+  }
+
   init () {
     super.init()
 
@@ -10,12 +18,6 @@ export default class ResourceItem extends Model {
 
     this.id = null
     this.type = 'resource_items'
-
-    this.attr('title', DataTypes.String)
-    this.attr('description', DataTypes.String)
-    this.attr('category', DataTypes.String)
-    this.attr('created_at', DataTypes.Date)
-    this.attr('updated_at', DataTypes.Date)
   }
 
   deserialize (json) {

@@ -5,6 +5,24 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class Contact extends Model {
+  static attributes = {
+    title: DataTypes.String,
+    fax: DataTypes.String,
+    openingHours: {
+      type: DataTypes.String,
+      remoteName: 'opening_hours'
+    },
+    web: DataTypes.String,
+    socialMedia: {
+      type: DataTypes.String,
+      remoteName: 'social_media'
+    },
+    spokenLanguages: {
+      type: DataTypes.String,
+      remoteName: 'spoken_languages'
+    }
+  }
+
   init () {
     super.init()
 
@@ -12,19 +30,6 @@ export default class Contact extends Model {
 
     this.id = null
     this.type = 'contacts'
-
-    this.attr('title', DataTypes.String)
-    this.attr('fax', DataTypes.String)
-    this.attr('openingHours', DataTypes.String, {
-      remoteName: 'opening_hours'
-    })
-    this.attr('web', DataTypes.String)
-    this.attr('socialMedia', DataTypes.String, {
-      remoteName: 'social_media'
-    })
-    this.attr('spokenLanguages', DataTypes.String, {
-      remoteName: 'spoken_languages'
-    })
 
     this.location = null
     this.persons = []
@@ -117,8 +122,7 @@ export default class Contact extends Model {
   }
 
   get info () {
-    const location = this.location ? this.location.info : `[Locations id="${this.relation('location').id}"]`
-    return `[Contacts id=${this.id} ID=${this._ID} title="${this.title}" clone="${this._isClone}"]` +
-      `\n\t${location}`
+    const location = this.location ? this.location.info : `[Location] id="${this.relation('location').id}"`
+    return super.info + ` title="${this.title}"` + `\n\t${location}`
   }
 }

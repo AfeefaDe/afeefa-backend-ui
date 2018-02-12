@@ -4,6 +4,10 @@ import Relation from './base/Relation'
 import DataTypes from './base/DataTypes'
 
 export default class Category extends Model {
+  static attributes = {
+    title: DataTypes.String
+  }
+
   init () {
     super.init()
 
@@ -11,8 +15,6 @@ export default class Category extends Model {
 
     this.id = null
     this.type = 'categories'
-
-    this.attr('title', DataTypes.String)
 
     this.parent_category = null
     this.sub_categories = []
@@ -36,5 +38,10 @@ export default class Category extends Model {
     if (rels.parent_category.data) {
       this.relation('parentCategory').initWithId(rels.parent_category.data.id)
     }
+  }
+
+  get info () {
+    const subCat = !!this.relation('parentCategory').id
+    return super.info + ` subCat="${subCat}" title="${this.title}"`
   }
 }

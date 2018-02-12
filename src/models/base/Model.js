@@ -1,10 +1,20 @@
 import LoadingState from '@/store/api/LoadingState'
 import ResourceRegistry from '@/resources/config/Registry'
 import ModelRegistry from '../config/Registry'
+import DataTypes from './DataTypes'
 
 let ID = 0
 
 export default class Model {
+  static attributes = {
+    id: {
+      type: DataTypes.Int
+    },
+    type: {
+      type: DataTypes.String
+    }
+  }
+
   constructor () {
     Object.defineProperty(this, '_ID', {
       value: ++ID
@@ -15,20 +25,21 @@ export default class Model {
       writable: true
     })
 
+    Object.defineProperty(this, '_requestId', {
+      value: 0,
+      writable: true
+    })
+
     Object.defineProperty(this, '_isClone', {
       value: false,
       writable: true
     })
 
-    Object.defineProperty(this, '_attributes', {
-      value: {}
-    })
-
-    Object.defineProperty(this, '_attributeRemoteNameMap', {
-      value: {}
-    })
-
     Object.defineProperty(this, '_relations', {
+      value: {}
+    })
+
+    Object.defineProperty(this, '_relationRemoteNameMap', {
       value: {}
     })
 
@@ -55,6 +66,10 @@ export default class Model {
     return this._relations
   }
 
+  rel (name, relation) {
+    this._relations[name] = relation
+  }
+
   relation (name) {
     // return empty relation if model not loaded yet
     if (!this.id) {
@@ -70,26 +85,12 @@ export default class Model {
     return this._relations[name]
   }
 
-  attr (name, type, options = {}) {
-    this._attributes[name] = {
-      type,
-      ...options
-    }
-
-    if (options.remoteName) {
-      this._attributeRemoteNameMap[options.remoteName] = name
-    }
-
-    // set given default value or the types default value
-    this[name] = options.default || type.value()
-  }
-
   hasAttr (name) {
-    return !!this._attributes[name]
+    return !!this.constructor._attributes[name]
   }
 
   getAttrValue (name, value) {
-    const attr = this._attributes[name]
+    const attr = this.constructor._attributes[name]
     // return custom value calclulation or the default calculation of the type
     return attr.value ? attr.value(value) : attr.type.value(value)
   }
@@ -103,12 +104,22 @@ export default class Model {
   }
 
   deserializeAttributes (attributes) {
+    if (attributes._requestId <= this._requestId) {
+      // console.log('wont update model since newer version stored', this.info, attributes._requestId)
+      return
+    } else {
+      // console.log('deserialize attributes', this.info, attributes._requestId)
+    }
     for (let name in attributes) {
-      const localName = this._attributeRemoteNameMap[name] || name
+      const localName = this.constructor._attributeRemoteNameMap[name] || name
       if (this.hasAttr(localName)) {
         this[localName] = this.getAttrValue(localName, attributes[name])
+      } else {
+        console.warn('Remote attribute not defined in Model:', this.constructor.name, name)
       }
     }
+
+    this._requestId = attributes._requestId
   }
 
   serialize () {
@@ -192,5 +203,10 @@ export default class Model {
       clone._relations[relationName] = this._relations[relationName].clone()
     }
     return clone
+  }
+
+  get info () {
+    const isClone = this._isClone ? '(CLONE)' : ''
+    return `[${this.constructor.name}] id="${this.id}" ID="${this._ID}${isClone}" request="${this._requestId}"`
   }
 }
