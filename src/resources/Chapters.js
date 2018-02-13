@@ -7,7 +7,7 @@ import Chapter from '@/models/Chapter'
 class ChaptersResource extends Resource {
   init () {
     this.http = Vue.resource(BASE + 'chapters{/id}')
-    this.listCacheKey = 'chapters'
+    this.listType = 'chapters'
   }
 
   createItem () {

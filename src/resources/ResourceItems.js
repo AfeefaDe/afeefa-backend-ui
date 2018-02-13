@@ -9,8 +9,8 @@ class ResourceItemsResource extends Resource {
     this.orgaId = orgaId
 
     this.http = Vue.resource(BASE + `orgas/${orgaId}/resource_items{/id}`, {}, {update: {method: 'PATCH'}})
-    this.listCacheKey = 'resource_items'
-    this.listCacheParams = JSON.stringify({owner_type: 'orgas', owner_id: orgaId})
+    this.listType = 'resource_items'
+    this.listParams = JSON.stringify({owner_type: 'orgas', owner_id: orgaId})
   }
 
   createItem () {

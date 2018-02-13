@@ -7,16 +7,20 @@ import Resource from './base/Resource'
 
 class TodosResource extends Resource {
   init () {
-    this.listCacheKey = 'todos'
+    this.listType = 'todos'
     this.http = Vue.resource(BASE + 'todos')
   }
 
-  getItemCacheKey (json) {
+  getItemType (json) {
     return json.relationships.entry.data.type
   }
 
-  getItemCacheId (json) {
+  getItemId (json) {
     return json.relationships.entry.data.id
+  }
+
+  getItemJson (json) {
+    return json.relationships.entry.data
   }
 
   createItem (json) {
@@ -25,10 +29,6 @@ class TodosResource extends Resource {
     } else {
       return new Event()
     }
-  }
-
-  getItemJson (json) {
-    return json.relationships.entry.data
   }
 }
 

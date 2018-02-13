@@ -11,8 +11,8 @@ class ContactsResource extends Resource {
     this.owner = owner
 
     this.http = Vue.resource(BASE + `${owner.type}/${owner.id}/contacts{/id}`, {}, {update: {method: 'PATCH'}})
-    this.listCacheKey = 'contacts'
-    this.listCacheParams = JSON.stringify({owner_type: owner.type, owner_id: owner.id})
+    this.listType = 'contacts'
+    this.listParams = JSON.stringify({owner_type: owner.type, owner_id: owner.id})
   }
 
   createItem () {
@@ -54,7 +54,7 @@ class ContactsResource extends Resource {
     // refetch contact owners contact list
     const owner = this.findCachedItem(this.owner.type, this.owner.id)
     if (owner) {
-      this.cachePurgeList('contacts', this.listCacheParams)
+      this.cachePurgeList('contacts', this.listParams)
       owner.relation('contacts').reset()
       // TODO orga.invalidateLoadedContacts()
     }

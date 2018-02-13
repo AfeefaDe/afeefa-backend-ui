@@ -18,11 +18,11 @@ export default class Resource {
    * used based on the actual item's type.
    * @see Search or Todos resources
    */
-  getItemCacheKey (json) {
-    return this.listCacheKey
+  getItemType (json) {
+    return this.listType
   }
 
-  getItemCacheId (json) {
+  getItemId (json) {
     return json.id
   }
 

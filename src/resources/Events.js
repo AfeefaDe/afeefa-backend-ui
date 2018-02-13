@@ -8,8 +8,8 @@ class Events {
   getAllForOrga (id, filter) {
     const resource = new EventsResource()
     resource.http = Vue.resource(BASE + `orgas/${id}/events`)
-    resource.listCacheKey = `events`
-    resource.listCacheParams = JSON.stringify({orga_id: id, 'filter[date]': filter})
+    resource.listType = `events`
+    resource.listParams = JSON.stringify({orga_id: id, 'filter[date]': filter})
     const params = {
       'filter[date]': filter
     }

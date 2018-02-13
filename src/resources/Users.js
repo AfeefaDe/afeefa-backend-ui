@@ -7,7 +7,7 @@ import Resource from './base/Resource'
 class UsersResource extends Resource {
   init () {
     this.http = Vue.resource(BASE + 'users{/id}', {}, {update: {method: 'PATCH'}})
-    this.listCacheKey = 'users'
+    this.listType = 'users'
   }
 
   createItem () {

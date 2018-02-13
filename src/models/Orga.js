@@ -35,8 +35,8 @@ export default class Orga extends Entry {
   static relations = {
     parent_orga: {
       type: Relation.HAS_ONE,
-      cacheKey: 'orgas',
       Model: 'Orga',
+      itemType: 'orgas',
       data: json => json.data,
       remoteName: 'initiator',
       loadingState: LoadingState.LOADED_AS_ATTRIBUTE
@@ -44,8 +44,8 @@ export default class Orga extends Entry {
 
     resource_items: {
       type: Relation.HAS_MANY,
-      cacheKey: 'resource_items',
-      cacheParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
+      listType: 'resource_items',
+      listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
       Model: 'ResourceItem',
       data: json => json.data,
       loadingState: LoadingState.FULLY_LOADED
@@ -53,8 +53,8 @@ export default class Orga extends Entry {
 
     actor_relations: {
       type: Relation.HAS_ONE,
-      cacheKey: 'actor_relations',
       Model: 'ActorRelations',
+      itemType: 'actor_relations',
       data: json => json,
       loadingState: LoadingState.FULLY_LOADED
     }

@@ -13,7 +13,7 @@ export default class Annotation extends Model {
   static relations = {
     annotationCategory: {
       type: Relation.HAS_ONE,
-      cacheKey: 'annotationCategories',
+      itemType: 'annotationCategories',
       data: json => json
     }
   }

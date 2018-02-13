@@ -12,8 +12,8 @@ class ActorRelationsResource extends Resource {
 
     this.url = BASE + `orgas{/id}/actor_relations`
     this.http = Vue.resource(this.url, {id: orgaId})
-    this.listCacheKey = 'actor_relations'
-    this.listCacheParams = JSON.stringify({orgaId: orgaId})
+    this.listType = 'actor_relations'
+    this.listParams = JSON.stringify({orgaId: orgaId})
   }
 
   createItem () {
@@ -29,8 +29,8 @@ class ActorRelationActorsResource extends Resource {
   init ([orgaId, actorRelation]) {
     this.url = BASE + `orgas/${orgaId}/actor_relations/${actorRelation}`
     this.http = Vue.resource(this.url)
-    this.listCacheKey = 'actor_relations'
-    this.listCacheParams = JSON.stringify({actorRelationsId: orgaId, relationName: actorRelation})
+    this.listType = 'actor_relations'
+    this.listParams = JSON.stringify({actorRelationsId: orgaId, relationName: actorRelation})
   }
 
   createItem () {

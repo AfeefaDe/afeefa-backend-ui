@@ -5,12 +5,12 @@ export default class Relation {
   static HAS_ONE = 'has_one'
   static HAS_MANY = 'has_many'
 
-  constructor ({owner, type, cacheKey, cacheParams, itemType, Model, data, loadingState}) {
+  constructor ({owner, type, listType, listParams, itemType, Model, data, loadingState}) {
     this.owner = owner
     this.type = type
-    this.cacheKey = cacheKey
-    this.cacheParams = cacheParams || (() => '') // empty object
-    this.itemType = itemType || cacheKey
+    this.listType = listType
+    this.listParams = listParams || (() => '') // empty object
+    this.itemType = itemType || listType
     this.Model = Model
     this.data = data || (() => null) // no data
     this.loadingState = loadingState
@@ -86,8 +86,8 @@ export default class Relation {
         items.forEach(item => {
           this.cacheItemRelations(resourceCache, item)
         })
-        const cacheParams = JSON.stringify(this.cacheParams(this.owner))
-        resourceCache.addList(this.cacheKey, cacheParams, items)
+        const listParams = JSON.stringify(this.listParams(this.owner))
+        resourceCache.addList(this.listType, listParams, items)
       }
     }
   }
@@ -101,7 +101,7 @@ export default class Relation {
       // we want to update our item not multiple times in the same request
       const isSameRequest = json._requestId === item._requestId
       const wantToCacheMore = this.loadingState > item._loadingState
-      // if (this.cacheKey === 'orgas' && json.id === '4274') {
+      // if (this.listType === 'orgas' && json.id === '4274') {
       //   console.log('--- wanttofetchmore', this.loadingState, item._loadingState, wantToCacheMore)
       // }
       if (wantToCacheMore || !isSameRequest) {
@@ -175,8 +175,8 @@ export default class Relation {
     const clone = new Relation({
       owner: this.owner,
       type: this.type,
-      cacheKey: this.cacheKey,
-      cacheParams: this.cacheParams,
+      listType: this.listType,
+      listParams: this.listParams,
       itemType: this.itemType,
       Model: this.Model,
       data: this.data,

@@ -133,17 +133,17 @@ export default {
 
     getList: ({dispatch}, {resource, params}) => {
       // key of list in resource cache
-      const listCacheKey = resource.listCacheKey
+      const listType = resource.listType
       // different caches for different list params
-      const listCacheParams = resource.listCacheParams || JSON.stringify(params || '')
+      const listParams = resource.listParams || JSON.stringify(params || '')
 
-      if (resourceCache.hasList(listCacheKey, listCacheParams)) {
+      if (resourceCache.hasList(listType, listParams)) {
         // list already loaded
-        return Promise.resolve(resourceCache.getList(listCacheKey, listCacheParams))
+        return Promise.resolve(resourceCache.getList(listType, listParams))
       }
 
       // list currently loading
-      const requestKey = resource.url || (listCacheKey + JSON.stringify(params || ''))
+      const requestKey = resource.url || (listType + JSON.stringify(params || ''))
       if (requestCache.hasItem(requestKey)) {
         return requestCache.getItem(requestKey)
       }
@@ -156,10 +156,10 @@ export default {
         for (let json of data) {
           let item
           // update existing cached items but not replace them!
-          const itemCacheKey = resource.getItemCacheKey(json)
-          const itemCacheId = resource.getItemCacheId(json)
-          if (resourceCache.hasItem(itemCacheKey, itemCacheId)) {
-            item = resourceCache.getItem(itemCacheKey, itemCacheId)
+          const itemType = resource.getItemType(json)
+          const itemId = resource.getItemId(json)
+          if (resourceCache.hasItem(itemType, itemId)) {
+            item = resourceCache.getItem(itemType, itemId)
           } else {
             item = resource.createItem(json)
           }
@@ -174,7 +174,7 @@ export default {
         // apply custom map to items, e.g. to create a category tree from a flat list
         resource.transformList(items)
         // cache list, adds all items to the cache if not yet added
-        resourceCache.addList(listCacheKey, listCacheParams, items)
+        resourceCache.addList(listType, listParams, items)
 
         return items
       }).catch(response => {
@@ -194,27 +194,27 @@ export default {
         strategy = LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED
       }
 
-      const itemCacheKey = resource.getItemCacheKey()
+      const itemType = resource.getItemType()
 
       if (!id) {
-        console.debug(`API: getItem(${itemCacheKey}) - keine ID gegeben.`)
+        console.debug(`API: getItem(${itemType}) - keine ID gegeben.`)
         return Promise.resolve(null)
       }
 
       // check if item already loaded
-      if (resourceCache.hasItem(itemCacheKey, id)) {
-        const item = resourceCache.getItem(itemCacheKey, id)
+      if (resourceCache.hasItem(itemType, id)) {
+        const item = resourceCache.getItem(itemType, id)
         if (item._loadingState === LoadingState.FULLY_LOADED && strategy === LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED) {
-          return Promise.resolve(resourceCache.getItem(itemCacheKey, id))
+          return Promise.resolve(resourceCache.getItem(itemType, id))
         }
         if (strategy === LoadingStrategy.LOAD_IF_NOT_CACHED) {
-          return Promise.resolve(resourceCache.getItem(itemCacheKey, id))
+          return Promise.resolve(resourceCache.getItem(itemType, id))
         }
       }
 
       // item loading
-      if (requestCache.hasItem(itemCacheKey + id)) {
-        return requestCache.getItem(itemCacheKey + id)
+      if (requestCache.hasItem(itemType + id)) {
+        return requestCache.getItem(itemType + id)
       }
 
       const promise = resource.http.get({id}).then(response => {
@@ -222,13 +222,13 @@ export default {
 
         let item
         // update existing cached items but not replace them in order to keep references alive
-        if (resourceCache.hasItem(itemCacheKey, id)) {
-          item = resourceCache.getItem(itemCacheKey, id)
+        if (resourceCache.hasItem(itemType, id)) {
+          item = resourceCache.getItem(itemType, id)
           item.deserialize(resource.getItemJson(json))
         } else {
           item = resource.createItem(json)
           item.deserialize(resource.getItemJson(json))
-          resourceCache.addItem(itemCacheKey, item)
+          resourceCache.addItem(itemType, item)
         }
         item._loadingState = LoadingState.FULLY_LOADED
 
@@ -240,13 +240,13 @@ export default {
       })
 
       // cache http call
-      requestCache.addItem(itemCacheKey + id, promise)
+      requestCache.addItem(itemType + id, promise)
       return promise
     },
 
 
     saveItem: ({dispatch}, {resource, item, options = {}}) => {
-      const itemCacheKey = resource.getItemCacheKey()
+      const itemType = resource.getItemType()
 
       const itemJson = item.serialize()
       const body = options.wrapInDataProperty === false ? itemJson : {data: itemJson}
@@ -255,13 +255,13 @@ export default {
         {id: item.id}, body
       ).then(response => {
         // we do not allow saving items that are not cached beforehand
-        let cachedItem = resourceCache.getItem(itemCacheKey, item.id)
+        let cachedItem = resourceCache.getItem(itemType, item.id)
         // TODO hack to force actors to re-add to cache after
         // purge upon actor relation change @see Orgas.joinActorRelation
         // otherwise we get a notdefined error here
         if (!cachedItem) {
           cachedItem = item.clone()
-          resourceCache.addItem(itemCacheKey, cachedItem)
+          resourceCache.addItem(itemType, cachedItem)
         }
 
         const json = response.body.data || response.body
@@ -285,7 +285,7 @@ export default {
 
 
     addItem: ({dispatch}, {resource, item, options = {}}) => {
-      const itemCacheKey = resource.getItemCacheKey()
+      const itemType = resource.getItemType()
 
       const itemJson = item.serialize()
       const body = options.wrapInDataProperty === false ? itemJson : {data: itemJson}
@@ -295,7 +295,7 @@ export default {
       ).then(response => {
         const json = response.body.data || response.body
         item.deserialize(resource.getItemJson(json))
-        resourceCache.addItem(itemCacheKey, item)
+        resourceCache.addItem(itemType, item)
 
         resource.itemAdded(item)
         dispatch('getMetaInformation')
@@ -336,10 +336,10 @@ export default {
         attributes
       }
       return resource.http.update({id: item.id}, {data}).then(response => {
-        const itemCacheKey = resource.getItemCacheKey()
+        const itemType = resource.getItemType()
 
         const json = response.body.data || response.body
-        const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
+        const cachedItem = resourceCache.getItem(itemType, item.id)
         cachedItem.deserialize(resource.getItemJson(json))
         return attributes
       }).catch(response => {

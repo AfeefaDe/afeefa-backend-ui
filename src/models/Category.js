@@ -13,7 +13,7 @@ export default class Category extends Model {
   static relations = {
     parent_category: {
       type: Relation.HAS_ONE,
-      cacheKey: 'categories',
+      itemType: 'categories',
       data: json => (json.data && json.data.id)
     }
   }

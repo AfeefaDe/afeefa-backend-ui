@@ -6,7 +6,7 @@ import EntriesResource from './base/EntriesResource'
 export default class OrgasResource extends EntriesResource {
   init () {
     this.http = Vue.resource(BASE + 'orgas{/id}', {}, {update: {method: 'PATCH'}})
-    this.listCacheKey = 'orgas'
+    this.listType = 'orgas'
   }
 
   createItem () {

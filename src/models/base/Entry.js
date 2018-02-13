@@ -50,20 +50,20 @@ export default class Entry extends Model {
   static relations = {
     category: {
       type: Relation.HAS_ONE,
-      cacheKey: 'categories',
+      itemType: 'categories',
       data: json => (json.data && json.data.id)
     },
 
     sub_category: {
       type: Relation.HAS_ONE,
-      cacheKey: 'categories',
+      itemType: 'categories',
       data: json => (json.data && json.data.id)
     },
 
     contacts: {
       type: Relation.HAS_MANY,
-      cacheKey: 'contacts',
-      cacheParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
+      listType: 'contacts',
+      listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
       Model: 'Contact',
       data: json => json.data,
       loadingState: LoadingState.FULLY_LOADED
@@ -71,8 +71,8 @@ export default class Entry extends Model {
 
     annotations: {
       type: Relation.HAS_MANY,
-      cacheKey: 'annotations',
-      cacheParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
+      listType: 'annotations',
+      listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
       Model: 'Annotation',
       data: json => json.data,
       loadingState: LoadingState.FULLY_LOADED
@@ -80,16 +80,16 @@ export default class Entry extends Model {
 
     creator: {
       type: Relation.HAS_ONE,
-      cacheKey: 'users',
       Model: 'User',
+      itemType: 'users',
       data: json => json.data,
       loadingState: LoadingState.FULLY_LOADED
     },
 
     last_editor: {
       type: Relation.HAS_ONE,
-      cacheKey: 'users',
       Model: 'User',
+      itemType: 'users',
       data: json => json.data,
       loadingState: LoadingState.FULLY_LOADED
     }

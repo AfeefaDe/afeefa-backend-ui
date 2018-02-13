@@ -8,8 +8,8 @@ class AnnotationsResource extends Resource {
   init ([owner]) {
     this.url = BASE + `${owner.type}/${owner.id}/annotations`
     this.http = Vue.resource(this.url)
-    this.listCacheKey = 'annotations'
-    this.listCacheParams = JSON.stringify(owner.relation('annotations').cacheParams(owner))
+    this.listType = 'annotations'
+    this.listParams = JSON.stringify(owner.relation('annotations').listParams(owner))
   }
 
   createItem () {

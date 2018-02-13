@@ -6,7 +6,7 @@ import EntriesResource from './base/EntriesResource'
 export default class EventsResource extends EntriesResource {
   init () {
     this.http = Vue.resource(BASE + 'events{/id}', {}, {update: {method: 'PATCH'}})
-    this.listCacheKey = 'events'
+    this.listType = 'events'
   }
 
   createItem () {

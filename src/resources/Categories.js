@@ -7,7 +7,7 @@ import Resource from './base/Resource'
 class CategoriesResource extends Resource {
   init () {
     this.http = Vue.resource(BASE + 'categories{/id}')
-    this.listCacheKey = 'categories'
+    this.listType = 'categories'
   }
 
   createItem () {

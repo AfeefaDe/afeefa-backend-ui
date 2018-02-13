@@ -7,7 +7,7 @@ import Resource from './base/Resource'
 
 class SearchResource extends Resource {
   init () {
-    this.listCacheKey = 'search'
+    this.listType = 'search'
     this.http = Vue.resource(BASE + 'entries')
   }
 
@@ -17,12 +17,16 @@ class SearchResource extends Resource {
     }
   }
 
-  getItemCacheKey (json) {
+  getItemType (json) {
     return json.relationships.entry.data.type
   }
 
-  getItemCacheId (json) {
+  getItemId (json) {
     return json.relationships.entry.data.id
+  }
+
+  getItemJson (json) {
+    return json.relationships.entry.data
   }
 
   createItem (json) {
@@ -31,10 +35,6 @@ class SearchResource extends Resource {
     } else {
       return new Event()
     }
-  }
-
-  getItemJson (json) {
-    return json.relationships.entry.data
   }
 }
 
