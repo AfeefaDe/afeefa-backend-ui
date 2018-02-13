@@ -23,7 +23,7 @@
     </div>
 
     <ul class="entryList">
-      <li v-for="item in itemsSorted" :key="item.id">
+      <li v-for="item in itemsSorted" :key="item.type + item.id">
 
         <div v-if="!showIcon">
           <div v-if="has.typeIcon" class="entryList__icon">
