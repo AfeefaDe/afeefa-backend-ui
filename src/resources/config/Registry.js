@@ -1,4 +1,4 @@
-class Registry {
+class ResourceRegistry {
   constructor () {
     this.resources = {}
   }
@@ -15,4 +15,4 @@ class Registry {
   }
 }
 
-export default new Registry()
+export default new ResourceRegistry()

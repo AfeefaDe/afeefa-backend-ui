@@ -1,4 +1,4 @@
-import registry from './Registry'
+import ModelRegistry from './Registry'
 
 import Event from '../Event'
 import Orga from '../Orga'
@@ -15,19 +15,19 @@ import Chapter from '../Chapter'
 
 import User from '../User'
 
-registry.add('Event', Event)
-registry.add('Orga', Orga)
-registry.add('Contact', Contact)
-registry.add('ContactPerson', ContactPerson)
-registry.add('Location', Location)
-registry.add('Category', Category)
+ModelRegistry.add('Event', Event)
+ModelRegistry.add('Orga', Orga)
+ModelRegistry.add('Contact', Contact)
+ModelRegistry.add('ContactPerson', ContactPerson)
+ModelRegistry.add('Location', Location)
+ModelRegistry.add('Category', Category)
 
-registry.add('AnnotationCategory', AnnotationCategory)
-registry.add('Annotation', Annotation)
-registry.add('ResourceItem', ResourceItem)
-registry.add('ActorRelations', ActorRelations)
-registry.add('Chapter', Chapter)
+ModelRegistry.add('AnnotationCategory', AnnotationCategory)
+ModelRegistry.add('Annotation', Annotation)
+ModelRegistry.add('ResourceItem', ResourceItem)
+ModelRegistry.add('ActorRelations', ActorRelations)
+ModelRegistry.add('Chapter', Chapter)
 
-registry.add('User', User)
+ModelRegistry.add('User', User)
 
-registry.initializeAll()
+ModelRegistry.initializeAll()

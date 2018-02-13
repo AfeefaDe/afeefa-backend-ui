@@ -1,4 +1,4 @@
-import registry from './Registry'
+import ResourceRegistry from './Registry'
 
 import Events from '../Events'
 import Orgas from '../Orgas'
@@ -16,18 +16,18 @@ import Search from '../Search'
 import Todos from '../Todos'
 import Users from '../Users'
 
-registry.add('Events', Events)
-registry.add('Orgas', Orgas)
-registry.add('Contacts', Contacts)
-registry.add('Locations', Locations)
-registry.add('Categories', Categories)
+ResourceRegistry.add('Events', Events)
+ResourceRegistry.add('Orgas', Orgas)
+ResourceRegistry.add('Contacts', Contacts)
+ResourceRegistry.add('Locations', Locations)
+ResourceRegistry.add('Categories', Categories)
 
-registry.add('AnnotationCategories', AnnotationCategories)
-registry.add('Annotations', Annotations)
-registry.add('ResourceItems', ResourceItems)
-registry.add('ActorRelations', ActorRelations)
-registry.add('Chapters', Chapters)
+ResourceRegistry.add('AnnotationCategories', AnnotationCategories)
+ResourceRegistry.add('Annotations', Annotations)
+ResourceRegistry.add('ResourceItems', ResourceItems)
+ResourceRegistry.add('ActorRelations', ActorRelations)
+ResourceRegistry.add('Chapters', Chapters)
 
-registry.add('Search', Search)
-registry.add('Todos', Todos)
-registry.add('Users', Users)
+ResourceRegistry.add('Search', Search)
+ResourceRegistry.add('Todos', Todos)
+ResourceRegistry.add('Users', Users)

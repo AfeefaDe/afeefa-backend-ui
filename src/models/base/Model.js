@@ -1,7 +1,6 @@
 import store from '@/store'
 import LoadingState from '@/store/api/LoadingState'
 import ResourceRegistry from '@/resources/config/Registry'
-import ModelRegistry from '../config/Registry'
 import DataTypes from './DataTypes'
 import Relation from './Relation'
 
@@ -69,14 +68,6 @@ export default class Model {
   }
 
   /**
-   * Dependency injection for Models
-   * Prevents cyclic imports (Model1 -> Model2 -> Model3)
-   */
-  Model (modelName) {
-    return ModelRegistry.get(modelName)
-  }
-
-  /**
    * Relations
    */
 
@@ -86,6 +77,7 @@ export default class Model {
 
   relation (name) {
     // return empty relation if model not loaded yet TODO
+    // to prevent http calls to get the relations on null objects
     if (!this.id) {
       return {
         fetch: () => {}

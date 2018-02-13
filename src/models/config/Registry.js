@@ -1,6 +1,6 @@
 import BaseModel from '../base/Model'
 
-class Registry {
+class ModelRegistry {
   constructor () {
     this.models = {}
   }
@@ -92,4 +92,4 @@ class Registry {
   }
 }
 
-export default new Registry()
+export default new ModelRegistry()
