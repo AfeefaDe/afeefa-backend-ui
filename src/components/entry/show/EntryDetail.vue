@@ -14,7 +14,7 @@
 
         <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
           <section slot="generalTab" class="generalTab generalTab--splitView">
-            <div class="entryDetail">
+            <div class="entryDetail generalTab__splitViewChild">
               <entry-detail-property
                 :name="$tc('entries.date')"
                 :iconName="'date_range'"
@@ -129,17 +129,9 @@
                 </div>
               </entry-detail-property>
 
-              <entry-detail-property
-                :name="$tc('headlines.status')"
-                :iconName= "entry.active ? 'visibility' : 'visibility_off'">
-                <span>{{ $t('entries.created_at') }}: {{ entry.created_at | formatDateAbsolute }} ({{ entry.created_at | formatDateRelative }})</span>
-                <span v-if="entry.creator"> von {{ entry.creator.name }} <span v-if="entry.creator.organization">({{ entry.creator.organization }})</span></span><br>
-                <span>{{ $t('entries.updated_at') }}: {{ entry.updated_at | formatDateAbsolute }} ({{ entry.updated_at | formatDateRelative }})</span>
-                <span v-if="entry.last_editor">von {{ entry.last_editor.name }} <span v-if="entry.last_editor.organization">({{ entry.last_editor.organization }})</span></span><br>
-                <span>{{ $t('entries.state_changed_at') }}: {{ entry.state_changed_at | formatDateAbsolute }} ({{ entry.state_changed_at | formatDateRelative }})</span><br>
-              </entry-detail-property></div>
-
-            <contact-list :item="entry" />
+              </div>
+              <contact-list :item="entry" class="generalTab__splitViewChild"/>
+              <entry-detail-footer :entry="entry"/>
           </section>
 
           <section slot="resourceTab" v-if="entry.type === 'orgas' && entry.resource_items.length">
@@ -191,7 +183,6 @@
           </section>
         </tab-bar>
       </div>
-
       <entry-loading-message v-else :error="entryLoadingError" :messages="messages" />
     </div>
   </div>
@@ -216,7 +207,7 @@ import ResourceItem from '@/components/ResourceItem'
 import EntryDetailProperty from './EntryDetailProperty'
 import EntryListDropDownMenu from './EntryListDropDownMenu'
 import EntryDetailHeader from './EntryDetailHeader'
-
+import EntryDetailFooter from './EntryDetailFooter'
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 
 export default {
@@ -310,7 +301,8 @@ export default {
     AnnotationTag,
     ContactList,
     ResourceItem,
-    EntryDetailHeader
+    EntryDetailHeader,
+    EntryDetailFooter
   }
 }
 </script>
@@ -322,6 +314,9 @@ export default {
   justify-content: space-between;
   flex-wrap: wrap;
   > * {
+    width: 100%;
+  }
+  > .generalTab__splitViewChild {
     width: 50%;
     @media screen and (max-width: $break-medium) {
       width: 100%;

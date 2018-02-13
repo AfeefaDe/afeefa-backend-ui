@@ -3,8 +3,8 @@
     <h3 class="contactList__title">{{$tc('headlines.contact', item.contacts.length)}}</h3>
     <div v-for="(contact, index) in item.contacts" :key="contact.id">
 
-      <h3 v-if="index" class="contactTitle">{{ contact.title || 'Weiterer Kontakt' }} </h3>
-      <h3 v-else class="contactTitle">{{ contact.title || 'Kontakt' }} </h3>
+      <h4 v-if="index" class="contact__title">{{ contact.title || 'Weiterer Kontakt' }} </h4>
+      <h4 v-else class="contact__title">{{ contact.title || 'Kontakt' }} </h4>
 
       <router-link :to="{name: item.type + '.contactedit', params: {contactId: contact.id}}">
         Kontakt ändern
@@ -160,7 +160,12 @@ export default {
 <style lang="scss" scoped>
 .contactList {
   &__title {
-    font-size: 1.5em;
+    font-size: 1.6em;
+  }
+}
+.contact {
+  &__title {
+    font-size: 1.2em;
   }
 }
 </style>
