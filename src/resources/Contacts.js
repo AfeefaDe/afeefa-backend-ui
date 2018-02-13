@@ -93,12 +93,13 @@ export default {
     return store.dispatch('api/deleteItem', {
       resource: new ContactsResource(owner),
       item: contact
-    }).then(() => {
+    }).then(result => {
       const Resource = owner.type === 'events' ? Events : Orgas
       Resource.get(owner.id, []).then(owner => {
         // TODO let Orga fetch the contats by itself
         owner.fetchContacts()
       })
+      return result
     })
   }
 }
