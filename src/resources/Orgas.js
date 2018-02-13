@@ -7,16 +7,7 @@ import OrgasResource from './OrgasResource'
 class Orgas {
   getAll () {
     const resource = new OrgasResource()
-    return store.dispatch('api/getList', {resource}).then(orgas => {
-      for (let orga of orgas) {
-        orga.fetchParentOrga()
-        orga.fetchCategory()
-        orga.fetchSubCategory()
-        orga.fetchCreator()
-        orga.fetchLastEditor()
-      }
-      return orgas
-    })
+    return store.dispatch('api/getList', {resource})
   }
 
   /**
@@ -33,15 +24,11 @@ class Orgas {
     }
 
     const fetchRelations = relations || [
-      'fetchParentOrga',
-      'fetchCategory',
-      'fetchSubCategory',
+      'fetchParentOrga', // must be here because of possible custom fetching strategy
       'fetchAnnotations',
       'fetchContacts',
       'fetchResources',
-      'fetchActorRelations',
-      'fetchCreator',
-      'fetchLastEditor'
+      'fetchActorRelations'
     ]
 
     const resource = new OrgasResource()

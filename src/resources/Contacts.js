@@ -70,12 +70,7 @@ class ContactsResource extends Resource {
 export default {
   getAllForOwner (owner) {
     const resource = new ContactsResource(owner)
-    return store.dispatch('api/getList', {resource}).then(contacts => {
-      contacts.forEach(contact => {
-        contact.fetchLocation()
-      })
-      return contacts
-    })
+    return store.dispatch('api/getList', {resource})
   },
 
   save (owner, contact) {

@@ -5,9 +5,11 @@ import Annotation from '@/models/Annotation'
 import Resource from './base/Resource'
 
 class AnnotationsResource extends Resource {
-  init () {
-    this.http = Vue.resource(BASE + 'annotations{/id}')
+  init ([owner]) {
+    this.url = BASE + `${owner.type}/${owner.id}/annotations`
+    this.http = Vue.resource(this.url)
     this.listCacheKey = 'annotations'
+    this.listCacheParams = JSON.stringify(owner.relation('annotations').cacheParams(owner))
   }
 
   createItem () {
@@ -17,24 +19,7 @@ class AnnotationsResource extends Resource {
 
 export default {
   getAllForOwner (owner) {
-    const resource = new AnnotationsResource(owner.id)
-    resource.url = BASE + `${owner.type}/${owner.id}/annotations`
-    resource.http = Vue.resource(resource.url)
-    resource.listCacheParams = JSON.stringify(owner.relation('annotations').cacheParams(owner))
-
-    return store.dispatch('api/getList', {resource}).then(annotations => {
-      annotations.forEach(annotation => {
-        annotation.fetchCategory()
-      })
-      return annotations
-    })
-  },
-
-  get (id) {
-    const resource = new AnnotationsResource()
-    return store.dispatch('api/getItem', {resource, id}).then(annotation => {
-      this.fetchCategory(annotation)
-      return annotation
-    })
+    const resource = new AnnotationsResource(owner)
+    return store.dispatch('api/getList', {resource})
   }
 }

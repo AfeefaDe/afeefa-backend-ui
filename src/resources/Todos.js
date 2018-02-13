@@ -39,12 +39,7 @@ export default {
     // we are waiting till
     return store.dispatch('api/getList', {resource, params}).then(entries => {
       for (let entry of entries) {
-        entry.fetchParentOrga()
-        entry.fetchCategory()
-        entry.fetchSubCategory()
         entry.fetchAnnotations()
-        entry.fetchCreator()
-        entry.fetchLastEditor()
       }
       return entries
     })

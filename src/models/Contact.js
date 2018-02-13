@@ -80,6 +80,11 @@ export default class Contact extends Model {
     return json.relationships
   }
 
+  afterDeserialize () {
+    this.fetchLocation()
+    this.fetchContactPersons()
+  }
+
   serialize () {
     const data = {
       title: this.title,

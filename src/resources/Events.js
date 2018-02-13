@@ -13,28 +13,12 @@ class Events {
     const params = {
       'filter[date]': filter
     }
-    return store.dispatch('api/getList', {resource, params}).then(events => {
-      for (let event of events) {
-        event.fetchParentOrga()
-        event.fetchCategory()
-        event.fetchSubCategory()
-      }
-      return events
-    })
+    return store.dispatch('api/getList', {resource, params})
   }
 
   getAll (params) {
     const resource = new EventsResource()
-    return store.dispatch('api/getList', {resource, params}).then(events => {
-      for (let event of events) {
-        event.fetchParentOrga()
-        event.fetchCategory()
-        event.fetchSubCategory()
-        event.fetchCreator()
-        event.fetchLastEditor()
-      }
-      return events
-    })
+    return store.dispatch('api/getList', {resource, params})
   }
 
   get (id) {
@@ -45,13 +29,8 @@ class Events {
     const resource = new EventsResource()
     return store.dispatch('api/getItem', {resource, id}).then(event => {
       if (event) {
-        event.fetchParentOrga()
-        event.fetchCategory()
-        event.fetchSubCategory()
         event.fetchAnnotations()
         event.fetchContacts()
-        event.fetchCreator()
-        event.fetchLastEditor()
       }
       return event
     })

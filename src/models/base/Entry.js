@@ -131,7 +131,6 @@ export default class Entry extends Model {
         contacts.forEach(contact => {
           contact = clone ? contact.clone() : contact
           this.contacts.push(contact)
-          contact.fetchContactPersons() // TODO
         })
         return contacts
       })
@@ -175,6 +174,14 @@ export default class Entry extends Model {
 
   getRelationsFromJson (json) {
     return json.relationships
+  }
+
+  afterDeserialize () {
+    this.fetchParentOrga()
+    this.fetchCategory()
+    this.fetchSubCategory()
+    this.fetchCreator()
+    this.fetchLastEditor()
   }
 
   serialize () {

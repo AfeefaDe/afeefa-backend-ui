@@ -43,6 +43,10 @@ export default class Annotation extends Model {
     }
   }
 
+  afterDeserialize () {
+    this.fetchCategory()
+  }
+
   serialize () {
     // always send full annotation cause the title could have changed
     let data = {

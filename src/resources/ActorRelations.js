@@ -48,11 +48,6 @@ const ActorRelations = {
         const actorsResource = new ActorRelationActorsResource(orga.id, actorRelation)
         const promise = store.dispatch('api/getList', {resource: actorsResource}).then(actors => {
           actorRelations[actorRelation] = actors
-          actors.forEach(actor => {
-            actor.fetchParentOrga()
-            actor.fetchCategory()
-            actor.fetchSubCategory()
-          })
         })
         promises.push(promise)
       })
