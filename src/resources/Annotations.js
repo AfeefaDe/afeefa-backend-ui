@@ -20,7 +20,7 @@ export default {
     const resource = new AnnotationsResource(owner.id)
     resource.url = BASE + `${owner.type}/${owner.id}/annotations`
     resource.http = Vue.resource(resource.url)
-    resource.listCacheParams = owner.relation('annotations').cacheParams
+    resource.listCacheParams = JSON.stringify(owner.relation('annotations').cacheParams(owner))
 
     return store.dispatch('api/getList', {resource}).then(annotations => {
       annotations.forEach(annotation => {

@@ -46,7 +46,7 @@ const ActorRelations = {
       const promises = []
       Orga.ACTOR_RELATIONS.forEach(actorRelation => {
         const actorsResource = new ActorRelationActorsResource(orga.id, actorRelation)
-        const promise = store.dispatch('api/getList', {resource: actorsResource, strategy: LoadingStrategy.LOAD_IF_NOT_CACHED}).then(actors => {
+        const promise = store.dispatch('api/getList', {resource: actorsResource}).then(actors => {
           actorRelations[actorRelation] = actors
           actors.forEach(actor => {
             actor.fetchParentOrga()

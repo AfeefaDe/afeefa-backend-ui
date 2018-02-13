@@ -30,6 +30,10 @@ export default {
     this._resourceCache.purgeItem('users', id)
   },
 
+  get (id) {
+    return Promise.resolve(this._resourceCache.getItem('users', id))
+  },
+
   getCurrentUser () {
     return this._resourceCache.getItem('users', store.state.auth.currentUserId)
   },

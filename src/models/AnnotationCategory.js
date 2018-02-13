@@ -5,6 +5,7 @@ import DataTypes from './base/DataTypes'
 export default class AnnotionCategory extends Model {
   static attributes = {
     title: DataTypes.String,
+
     generatedBySystem: {
       type: DataTypes.Boolean,
       remoteName: 'generated_by_system'

@@ -19,11 +19,6 @@ class ContactsResource extends Resource {
     return new Contact()
   }
 
-  beforeItemSaved (oldContact, contact) {
-    // location might be changed and should be rewritten to resource cache
-    contact.relation('location').forceCacheUpdate()
-  }
-
   itemSaved (oldContact, contact) {
     const oldLocationId = oldContact.relation('location').id
     const newLocationId = contact.relation('location').id
@@ -38,7 +33,7 @@ class ContactsResource extends Resource {
           const {owner_type, owner_id} = JSON.parse(key) // eslint-disable-line camelcase
           const owner = this.findCachedItem(owner_type, owner_id)
           if (owner) {
-            owner.relation('contacts').reset()
+            // owner.relation('contacts').reset()
           }
         }
       })

@@ -45,8 +45,11 @@ export default {
 
     return store.dispatch('api/getList', {resource, params}).then(entries => {
       for (let entry of entries) {
+        entry.fetchParentOrga()
         entry.fetchCategory()
         entry.fetchSubCategory()
+        entry.fetchCreator()
+        entry.fetchLastEditor()
       }
       return entries
     })

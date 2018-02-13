@@ -1,25 +1,49 @@
+import store from '@/store'
 import Model from './base/Model'
 import Relation from './base/Relation'
-import ContactPerson from './ContactPerson'
 import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class Contact extends Model {
   static attributes = {
     title: DataTypes.String,
+
     fax: DataTypes.String,
+
     openingHours: {
       type: DataTypes.String,
       remoteName: 'opening_hours'
     },
+
     web: DataTypes.String,
+
     socialMedia: {
       type: DataTypes.String,
       remoteName: 'social_media'
     },
+
     spokenLanguages: {
       type: DataTypes.String,
       remoteName: 'spoken_languages'
+    }
+  }
+
+  static relations = {
+    location: {
+      type: Relation.HAS_ONE,
+      cacheKey: 'locations',
+      Model: 'Location',
+      data: json => json.data,
+      loadingState: LoadingState.FULLY_LOADED
+    },
+
+    contact_persons: {
+      type: Relation.HAS_MANY,
+      cacheKey: 'contact_persons',
+      cacheParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
+      Model: 'ContactPerson',
+      data: json => json.data,
+      loadingState: LoadingState.FULLY_LOADED
     }
   }
 
@@ -31,16 +55,7 @@ export default class Contact extends Model {
     this.id = null
     this.type = 'contacts'
 
-    this.location = null
-    this.persons = []
-  }
-
-  locationRelation () {
-    return new Relation({
-      type: Relation.HAS_ONE,
-      cacheKey: 'locations',
-      Model: this.Model('Location')
-    })
+    this.contact_persons = []
   }
 
   fetchLocation (clone) {
@@ -52,28 +67,23 @@ export default class Contact extends Model {
     })
   }
 
+  fetchContactPersons (clone) {
+    const resourceCache = store.state.api.resourceCache
+    this.contact_persons.length = 0
+    const contactPersons = resourceCache.getList('contact_persons', JSON.stringify({owner_type: this.type, owner_id: this.id}))
+    contactPersons.forEach(person => {
+      person = clone ? person.clone() : person
+      this.contact_persons.push(person)
+    })
+  }
+
   deserialize (json) {
-    this.init()
+    // this.init() // TODO
 
     this.id = json.id
 
     this.deserializeAttributes(json.attributes)
-
-    const rels = json.relationships || {}
-
-    // location
-    if (rels.location && rels.location.data) {
-      this.relation('location').initWithJson(rels.location.data)
-    }
-
-    // contact persons
-    if (rels.contact_persons && rels.contact_persons.data.length) {
-      for (let jsonPerson of rels.contact_persons.data) {
-        const person = new ContactPerson()
-        person.deserialize(jsonPerson)
-        this.persons.push(person)
-      }
-    }
+    this.deserializeRelations(json.relationships)
   }
 
   serialize () {
@@ -100,7 +110,7 @@ export default class Contact extends Model {
     }
 
     data.contact_persons = []
-    for (let person of this.persons) {
+    for (let person of this.contact_persons) {
       data.contact_persons.push(person.serialize())
     }
 
@@ -109,9 +119,7 @@ export default class Contact extends Model {
 
   clone () {
     const clone = super.clone(this)
-    // persons
-    clone.persons = this.persons.map(cp => cp.clone())
-    // location
+    clone.fetchContactPersons(true)
     clone.fetchLocation(true)
     return clone
   }

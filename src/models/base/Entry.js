@@ -2,18 +2,28 @@ import LoadingStrategy from '@/store/api/LoadingStrategy'
 import DataTypes from './DataTypes'
 import Model from './Model'
 import Relation from './Relation'
+import LoadingState from '@/store/api/LoadingState'
 
 export default class Entry extends Model {
   static attributes = {
     title: DataTypes.String,
+
     description: DataTypes.String,
+
     short_description: DataTypes.String,
+
     media_url: DataTypes.String,
+
     support_wanted: DataTypes.Boolean,
+
     support_wanted_detail: DataTypes.String,
+
     certified_sfr: DataTypes.Boolean,
+
     tags: DataTypes.String,
-    facebook_id: DataTypes.Date,
+
+    facebook_id: DataTypes.String,
+
     inheritance: {
       type: DataTypes.Custom,
       default: {},
@@ -27,10 +37,62 @@ export default class Entry extends Model {
         return inheritance
       }
     },
+
     active: DataTypes.Boolean,
+
     created_at: DataTypes.Date,
+
     updated_at: DataTypes.Date,
+
     state_changed_at: DataTypes.Date
+  }
+
+  static relations = {
+    category: {
+      type: Relation.HAS_ONE,
+      cacheKey: 'categories',
+      data: json => (json.data && json.data.id)
+    },
+
+    sub_category: {
+      type: Relation.HAS_ONE,
+      cacheKey: 'categories',
+      data: json => (json.data && json.data.id)
+    },
+
+    contacts: {
+      type: Relation.HAS_MANY,
+      cacheKey: 'contacts',
+      cacheParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
+      Model: 'Contact',
+      data: json => json.data,
+      loadingState: LoadingState.FULLY_LOADED
+    },
+
+    annotations: {
+      type: Relation.HAS_MANY,
+      cacheKey: 'annotations',
+      cacheParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
+      Model: 'Annotation',
+      data: json => json.data,
+      loadingState: LoadingState.FULLY_LOADED
+    },
+
+    creator: {
+      type: Relation.HAS_ONE,
+      cacheKey: 'users',
+      Model: 'User',
+      data: json => json.data,
+      loadingState: LoadingState.FULLY_LOADED
+    },
+
+    last_editor: {
+      type: Relation.HAS_ONE,
+      cacheKey: 'users',
+      Model: 'User',
+      data: json => json.data,
+      loadingState: LoadingState.FULLY_LOADED
+    }
   }
 
   init () {
@@ -38,68 +100,6 @@ export default class Entry extends Model {
 
     this.id = null
     this.type = null
-
-
-    this.rel('parent_orga', new Relation({
-      type: Relation.HAS_ONE,
-      cacheKey: 'orgas',
-      Model: this.Model('Orga')
-    }))
-
-    this.category = null
-    this.sub_category = null
-    this.contacts = []
-    this.annotations = []
-    this.creator = null
-    this.lastEditor = null
-  }
-
-  categoryRelation () {
-    return new Relation({
-      type: Relation.HAS_ONE,
-      cacheKey: 'categories'
-    })
-  }
-
-  subCategoryRelation () {
-    return new Relation({
-      type: Relation.HAS_ONE,
-      cacheKey: 'categories'
-    })
-  }
-
-  contactsRelation () {
-    return new Relation({
-      type: Relation.HAS_MANY,
-      cacheKey: 'contacts',
-      cacheParams: {owner_type: this.type, owner_id: this.id},
-      Model: this.Model('Contact')
-    })
-  }
-
-  annotationsRelation () {
-    return new Relation({
-      type: Relation.HAS_MANY,
-      cacheKey: 'annotations',
-      cacheParams: {owner_type: this.type, owner_id: this.id},
-      Model: this.Model('Annotation')
-    })
-  }
-
-  creatorRelation () {
-    return new Relation({
-      type: Relation.HAS_ONE,
-      cacheKey: 'users',
-      Model: this.Model('User')
-    })
-  }
-
-  lastEditorRelation () {
-    return new Relation({
-      type: Relation.HAS_ONE,
-      cacheKey: 'users',
-      Model: this.Model('User')
-    })
   }
 
   fetchParentOrga (strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
@@ -123,7 +123,7 @@ export default class Entry extends Model {
   }
 
   fetchSubCategory () {
-    this.relation('subCategory').fetch(id => {
+    this.relation('sub_category').fetch(id => {
       return this.Resource('Categories').get(id).then(category => {
         this.sub_category = category
         return category
@@ -138,6 +138,7 @@ export default class Entry extends Model {
         contacts.forEach(contact => {
           contact = clone ? contact.clone() : contact
           this.contacts.push(contact)
+          contact.fetchContactPersons() // TODO
         })
         return contacts
       })
@@ -167,9 +168,9 @@ export default class Entry extends Model {
   }
 
   fetchLastEditor () {
-    this.relation('lastEditor').fetch(id => {
+    this.relation('last_editor').fetch(id => {
       return this.Resource('Users').get(id).then(editor => {
-        this.creator = editor
+        this.last_editor = editor
         return editor
       })
     })
@@ -177,42 +178,13 @@ export default class Entry extends Model {
 
   deserialize (json) {
     // this.init() TODO !!!
+    // console.log('DESERIALIZE', this.info, 'json:request:', json._requestId, json)
 
     this.id = json.id
     this.type = json.type
 
     this.deserializeAttributes(json.attributes)
-
-    const rels = json.relationships || {}
-
-    // category
-    if (rels.category && rels.category.data) {
-      this.relation('category').initWithId(rels.category.data.id)
-    }
-
-    // subcategory
-    if (rels.sub_category && rels.sub_category.data) {
-      this.relation('subCategory').initWithId(rels.sub_category.data.id)
-    }
-
-    // contacts
-    if (rels.contacts) {
-      this.relation('contacts').initWithJson(rels.contacts.data)
-    }
-
-    // annotations
-    if (rels.annotations) {
-      this.relation('annotations').initWithJson(rels.annotations.data)
-    }
-
-    // creator, last editor
-    if (rels.creator && rels.creator.data) {
-      this.relation('creator').initWithJson(rels.creator.data)
-    }
-
-    if (rels.last_editor && rels.last_editor.data) {
-      this.relation('lastEditor').initWithJson(rels.last_editor.data)
-    }
+    this.deserializeRelations(json.relationships)
   }
 
   serialize () {
@@ -265,16 +237,6 @@ export default class Entry extends Model {
     clone.fetchAnnotations(true) // true => annotation.clone()
     clone.fetchContacts(true) // true => contact.clone()
     return clone
-  }
-
-  updateAttributes (attributes) {
-    if (attributes) {
-      if ('active' in attributes) {
-        this.active = attributes.active === true
-        this.state_changed_at = new Date(attributes.state_changed_at)
-      }
-      this.updated_at = new Date(attributes.updated_at)
-    }
   }
 
   get info () {

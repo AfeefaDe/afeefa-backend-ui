@@ -17,11 +17,6 @@ export default class EntriesResource extends Resource {
     this.cachePurgeList('todos')
   }
 
-  beforeItemSaved (oldContact, contact) {
-    // annotations might be changed and should be rewritten to resource cache
-    contact.relation('annotations').forceCacheUpdate()
-  }
-
   itemSaved (entryOld, entry) {
     // entry attributes may change and reorder lists
     this.cachePurgeList(this.listCacheKey)

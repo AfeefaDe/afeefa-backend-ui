@@ -13,12 +13,6 @@ export default class OrgasResource extends EntriesResource {
     return new Orga()
   }
 
-  beforeItemSaved (orgaOld, orga) {
-    super.beforeItemSaved(orgaOld, orga)
-    // resources might be changed and should be rewritten to resource cache
-    orga.relation('resourceItems').forceCacheUpdate()
-  }
-
   itemSaved (orgaOld, orga) {
     super.itemSaved(orgaOld, orga)
 

@@ -5,29 +5,25 @@ export default class Relation {
   static HAS_ONE = 'has_one'
   static HAS_MANY = 'has_many'
 
-  constructor ({type, cacheKey, cacheParams, itemType, Model}) {
+  constructor ({owner, type, cacheKey, cacheParams, itemType, Model, data, loadingState}) {
+    this.owner = owner
     this.type = type
     this.cacheKey = cacheKey
-    this._cacheParams = cacheParams
-    this.cacheParams = JSON.stringify(cacheParams)
+    this.cacheParams = cacheParams || (() => '') // empty object
     this.itemType = itemType || cacheKey
     this.Model = Model
+    this.data = data || (() => null) // no data
+    this.loadingState = loadingState
 
     this.init()
   }
 
   init () {
     this.reset()
-
-    // we exclude the update from reset since the initialization of an updated
-    // item (after save) resets all relations and hence the flag that notifies
-    // us that the afterwards re-initialized relation should be written to cache
-    this.cacheUpdateForced = false
   }
 
   reset () {
     this.json = null
-    this.loadingState = LoadingState.FULLY_LOADED
     this.id = null
 
     // avoid recursions, if a relation has been cached,
@@ -35,39 +31,42 @@ export default class Relation {
     // even if we clone the item that holds the relation
     this.syncedWithResourceCache = false
 
+    this.initialized = false
     this.isFetching = false
     this.fetched = false
     this.item = null
     this.items = []
   }
 
-  /**
-   * If this flag is set, the initialized item will be written to
-   * the resource cache, even if the cached item has the same LoadingState.
-   */
-  forceCacheUpdate () {
-    this.cacheUpdateForced = true
-  }
-
-  initWithJson (json, loadingState = LoadingState.FULLY_LOADED) {
+  initWithJson (json) {
     this.json = json
-    this.loadingState = loadingState
-    if (this.type === Relation.HAS_ONE) {
+    if (this.json && this.type === Relation.HAS_ONE) {
       this.id = this.json.id
     }
+    this.syncedWithResourceCache = false
+    this.initialized = true
   }
 
   initWithId (id) {
     this.id = id
+    this.syncedWithResourceCache = false
+    this.initialized = true
   }
 
   factory (json) {
     const item = new this.Model()
     item.deserialize(json)
+    item._requestId = json._requestId
+    item._loadingState = this.loadingState
     return item
   }
 
   cache (resourceCache) {
+    // not initialized, no need to cache
+    if (!this.initialized) {
+      return
+    }
+
     if (this.syncedWithResourceCache) {
       return
     }
@@ -78,7 +77,7 @@ export default class Relation {
       if (this.type === Relation.HAS_ONE) {
         const item = this.findOrCreateItem(resourceCache, this.json)
         this.cacheItemRelations(resourceCache, item)
-        // cache list
+      // cache list
       } else {
         const items = []
         this.json.forEach(json => {
@@ -88,7 +87,8 @@ export default class Relation {
         items.forEach(item => {
           this.cacheItemRelations(resourceCache, item)
         })
-        resourceCache.addList(this.cacheKey, this.cacheParams, items)
+        const cacheParams = JSON.stringify(this.cacheParams(this.owner))
+        resourceCache.addList(this.cacheKey, cacheParams, items)
       }
     }
   }
@@ -97,19 +97,16 @@ export default class Relation {
     let item = resourceCache.getItem(this.itemType, json.id)
     if (!item) {
       item = this.factory(json)
-      item._loadingState = this.loadingState
       resourceCache.addItem(this.itemType, item)
     } else {
-      item.deserialize(json) // resets all relations to null or []
-      item._loadingState = this.loadingState
-      this.cacheUpdateForced = false
-    // if ((item._loadingState < this.loadingState) || this.cacheUpdateForced) { // update cached item only if the updated version is more comprehensive
-      //   item.deserialize(json) // resets all relations to null or []
-      //   item._loadingState = this.loadingState
-      //   this.cacheUpdateForced = false
-      // } else {
-      //   console.log('item loading stat reached', item.info)
-      // }
+      // we want to update our item not multiple times in the same request
+      const isSameRequest = json._requestId === item._requestId
+      const wantToCacheMore = this.loadingState > item._loadingState
+      if (wantToCacheMore || !isSameRequest) {
+        item.deserialize(json)
+        item._requestId = json._requestId
+        item._loadingState = Math.max(item._loadingState, this.loadingState)
+      }
     }
     return item
   }
@@ -122,6 +119,7 @@ export default class Relation {
       }
 
       if (this.fetched) {
+        // fetch again if we want do fully load but havent yet
         const wantToFetchMore = strategy === LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED &&
           this.item._loadingState < LoadingState.FULLY_LOADED
         if (!wantToFetchMore) {
@@ -130,6 +128,7 @@ export default class Relation {
       }
 
       if (this.isFetching) {
+        // fetch additionally if we want to fetch more detailed data
         const wantToFetchMore = strategy === LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED &&
           this.isFetching !== strategy
         if (!wantToFetchMore) {
@@ -172,15 +171,24 @@ export default class Relation {
    * hint, if the relation data has already been synced to the resource cache.
    */
   clone () {
-    const cacheParams = this.cacheParams ? JSON.parse(this.cacheParams) : undefined
-    const clone = new Relation({type: this.type, cacheKey: this.cacheKey, cacheParams, itemType: this.itemType, Model: this.Model})
+    const clone = new Relation({
+      owner: this.owner,
+      type: this.type,
+      cacheKey: this.cacheKey,
+      cacheParams: this.cacheParams,
+      itemType: this.itemType,
+      Model: this.Model,
+      data: this.data,
+      loadingState: this.loadingState
+    })
 
     if (this.json) {
-      clone.initWithJson(this.json, this.loadingState)
+      clone.initWithJson(this.json)
     } else {
       clone.initWithId(this.id)
     }
 
+    clone.initialized = this.initialized
     clone.syncedWithResourceCache = this.syncedWithResourceCache
 
     return clone

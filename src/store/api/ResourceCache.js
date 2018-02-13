@@ -1,5 +1,3 @@
-import LoadingState from './LoadingState'
-
 export default class ResourceCache {
   constructor () {
     this.cache = {}
@@ -24,7 +22,7 @@ export default class ResourceCache {
     listCache[url] = list
     for (let item of list) {
       const cachedItem = this.getItem(item.type, item.id)
-      if (cachedItem && cachedItem._loadingState > LoadingState.LOADED_FOR_LISTS) {
+      if (cachedItem) {
         continue
       }
       this.addItem(item.type, item)

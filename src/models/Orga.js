@@ -1,8 +1,8 @@
 import Entry from './base/Entry'
 import OrgaType from './OrgaType'
 import Relation from './base/Relation'
-import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
+import LoadingState from '@/store/api/LoadingState'
 
 export default class Orga extends Entry {
   static ACTOR_RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
@@ -12,10 +12,41 @@ export default class Orga extends Entry {
       type: DataTypes.Int,
       default: OrgaType.ORGANIZATION
     },
+
     count_events: DataTypes.Int,
+
     count_resource_items: DataTypes.Int,
+
     count_projects: DataTypes.Int,
+
     count_network_members: DataTypes.Int
+  }
+
+  static relations = {
+    parent_orga: {
+      type: Relation.HAS_ONE,
+      cacheKey: 'orgas',
+      Model: 'Orga',
+      data: json => json.data,
+      remoteName: 'initiator',
+      loadingState: LoadingState.LOADED_AS_ATTRIBUTE
+    },
+
+    resource_items: {
+      type: Relation.HAS_MANY,
+      cacheKey: 'resource_items',
+      cacheParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
+      Model: 'ResourceItem',
+      data: json => json.data,
+      loadingState: LoadingState.FULLY_LOADED
+    },
+
+    actor_relations: {
+      type: Relation.HAS_ONE,
+      cacheKey: 'actor_relations',
+      Model: 'ActorRelations',
+      loadingState: LoadingState.FULLY_LOADED
+    }
   }
 
   init () {
@@ -23,32 +54,13 @@ export default class Orga extends Entry {
 
     this.type = 'orgas'
 
-    this.resource_items = []
-
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
       this[actorRelation] = []
     })
   }
 
-  resourceItemsRelation () {
-    return new Relation({
-      type: Relation.HAS_MANY,
-      cacheKey: 'resource_items',
-      cacheParams: {owner_type: this.type, owner_id: this.id},
-      Model: this.Model('ResourceItem')
-    })
-  }
-
-  actorRelationsRelation () {
-    return new Relation({
-      type: Relation.HAS_ONE,
-      cacheKey: 'actor_relations',
-      Model: this.Model('ActorRelations')
-    })
-  }
-
   fetchActorRelations () {
-    this.relation('actorRelations').fetch(id => {
+    this.relation('actor_relations').fetch(id => {
       return this.Resource('ActorRelations').getForOrga(this).then(actorRelations => {
         this.actorRelations = actorRelations
         Orga.ACTOR_RELATIONS.forEach(actorRelation => {
@@ -60,7 +72,7 @@ export default class Orga extends Entry {
   }
 
   fetchResources (clone) {
-    this.relation('resourceItems').fetch(() => {
+    this.relation('resource_items').fetch(() => {
       return this.Resource('ResourceItems').getAllForOrga(this).then(resourceItems => {
         this.resource_items.length = 0
         resourceItems.forEach(resourceItem => {
@@ -88,17 +100,7 @@ export default class Orga extends Entry {
       // in order to later find the relations container, we need to give
       // it the id of our orga
       actorRelationsJson.id = this.id
-      this.relation('actorRelations').initWithJson(actorRelationsJson)
-    }
-
-    // parent orga
-    if (rels.initiator && rels.initiator.data) {
-      this.relation('parent_orga').initWithJson(rels.initiator.data, LoadingState.LOADED_AS_ATTRIBUTE)
-    }
-
-    // resourceItems
-    if (rels.resource_items) {
-      this.relation('resourceItems').initWithJson(rels.resource_items.data)
+      this.relation('actor_relations').initWithJson(actorRelationsJson)
     }
   }
 

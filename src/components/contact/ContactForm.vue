@@ -54,7 +54,7 @@
 
     <h2>Kontaktperson</h2>
 
-    <div v-for="person in contact.persons" :key="person.id">
+    <div v-for="person in contact.contact_persons" :key="person.id">
       <h3>{{ person.role }}</h3>
 
       <a href="" @click.prevent="removeContactPerson(person)">Person löschen</a>
@@ -210,11 +210,11 @@ export default {
 
     addContactPerson () {
       const person = new ContactPerson()
-      this.contact.persons.push(person)
+      this.contact.contact_persons.push(person)
     },
 
     removeContactPerson (person) {
-      this.contact.persons = this.contact.persons.filter(p => p !== person)
+      this.contact.contact_persons = this.contact.contact_persons.filter(p => p !== person)
     },
 
     updateSpokenLanguages (spokenLanguages) {

@@ -2,6 +2,7 @@ import LoadingState from '@/store/api/LoadingState'
 import ResourceRegistry from '@/resources/config/Registry'
 import ModelRegistry from '../config/Registry'
 import DataTypes from './DataTypes'
+import Relation from './Relation'
 
 let ID = 0
 
@@ -39,11 +40,28 @@ export default class Model {
       value: {}
     })
 
-    Object.defineProperty(this, '_relationRemoteNameMap', {
-      value: {}
-    })
+    // init attributes
+    for (let name in this.constructor._attributes) {
+      const attr = this.constructor._attributes[name]
+      this[name] = attr.default || attr.type.value()
+    }
+
+    // init relations
+    for (let name in this.constructor._relations) {
+      const relation = this.constructor._relations[name]
+      this[name] = relation.type === Relation.HAS_MANY ? [] : null
+      this._relations[name] = new Relation({owner: this, ...relation})
+    }
 
     this.init()
+  }
+
+  init () {
+    // // reset all relations prior to deserialization
+    // for (let name in this._relations) {
+    //   const relation = this._relations[name]
+    //   relation.reset() // TODO
+    // }
   }
 
   /**
@@ -62,28 +80,27 @@ export default class Model {
     return ModelRegistry.get(modelName)
   }
 
+  /**
+   * Relations
+   */
+
   get relations () {
     return this._relations
   }
 
-  rel (name, relation) {
-    this._relations[name] = relation
-  }
-
   relation (name) {
-    // return empty relation if model not loaded yet
+    // return empty relation if model not loaded yet TODO
     if (!this.id) {
       return {
         fetch: () => {}
       }
     }
-
-    if (!this._relations[name]) {
-      // expect the method to be defined by configuration in the particular model classes
-      this._relations[name] = this[name + 'Relation']()
-    }
     return this._relations[name]
   }
+
+  /**
+   * Attributes
+   */
 
   hasAttr (name) {
     return !!this.constructor._attributes[name]
@@ -95,31 +112,53 @@ export default class Model {
     return attr.value ? attr.value(value) : attr.type.value(value)
   }
 
-  init () {
-    // reset all relations prior to deserialization
-    for (let name in this._relations) {
-      const relation = this._relations[name]
-      relation.reset()
+  deserializeAttributes (attributesJson) {
+    if (!attributesJson) {
+      return
     }
+    for (let name in attributesJson) {
+      const localName = this.constructor._attributeRemoteNameMap[name] || name
+      if (!this.hasAttr(localName)) {
+        // console.debug('Remote attribute not defined in Model:', this.constructor.name, name)
+        continue
+      }
+      this[localName] = this.getAttrValue(localName, attributesJson[name])
+    }
+
+    this._requestId = attributesJson._requestId // TODO
   }
 
-  deserializeAttributes (attributes) {
-    if (attributes._requestId <= this._requestId) {
-      // console.log('wont update model since newer version stored', this.info, attributes._requestId)
+  hasRelation (name) {
+    return !!this.constructor._relations[name]
+  }
+
+  deserializeRelations (relationsJson) {
+    if (!relationsJson) {
       return
-    } else {
-      // console.log('deserialize attributes', this.info, attributes._requestId)
     }
-    for (let name in attributes) {
-      const localName = this.constructor._attributeRemoteNameMap[name] || name
-      if (this.hasAttr(localName)) {
-        this[localName] = this.getAttrValue(localName, attributes[name])
+    for (let name in relationsJson) {
+      const localName = this.constructor._relationRemoteNameMap[name] || name
+      if (!this.hasRelation(localName)) {
+        // console.debug('Remote relation not defined in Model:', this.constructor.name, name)
+        continue
+      }
+
+      const relation = this._relations[localName]
+      const relationJson = relationsJson[name]
+      const data = relation.data(relationJson)
+      if (data) {
+        if (!isNaN(parseFloat(data))) {
+          relation.initWithId(data)
+        } else {
+          relation.initWithJson(data)
+        }
       } else {
-        console.warn('Remote attribute not defined in Model:', this.constructor.name, name)
+        // TODO check what makes sense here
+        relation.reset()
       }
     }
 
-    this._requestId = attributes._requestId
+    this._requestId = relationsJson._requestId // TODO
   }
 
   serialize () {
@@ -207,6 +246,6 @@ export default class Model {
 
   get info () {
     const isClone = this._isClone ? '(CLONE)' : ''
-    return `[${this.constructor.name}] id="${this.id}" ID="${this._ID}${isClone}" request="${this._requestId}"`
+    return `[${this.constructor.name}] id="${this.id}" ID="${this._ID}${isClone}" request="${this._requestId}" loaded="${this._loadingState}"`
   }
 }

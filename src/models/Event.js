@@ -1,6 +1,7 @@
 import moment from 'moment'
 import LoadingState from '@/store/api/LoadingState'
 import Entry from './base/Entry'
+import Relation from './base/Relation'
 import DataTypes from './base/DataTypes'
 
 export default class Event extends Entry {
@@ -17,6 +18,17 @@ export default class Event extends Entry {
     has_time_end: DataTypes.Boolean
   }
 
+  static relations = {
+    parent_orga: {
+      type: Relation.HAS_ONE,
+      cacheKey: 'orgas',
+      Model: 'Orga',
+      data: json => json.data,
+      remoteName: 'orga',
+      loadingState: LoadingState.LOADED_AS_ATTRIBUTE
+    }
+  }
+
   init () {
     super.init()
 
@@ -29,13 +41,6 @@ export default class Event extends Entry {
     // set date and to start if not specified
     if (!this.date_end) {
       this.date_end = this.date_start
-    }
-
-    const rels = json.relationships
-
-    // parent orga
-    if (rels.orga && rels.orga.data) {
-      this.relation('parent_orga').initWithJson(rels.orga.data, LoadingState.LOADED_AS_ATTRIBUTE)
     }
   }
 

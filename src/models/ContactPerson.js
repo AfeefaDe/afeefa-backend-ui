@@ -13,10 +13,14 @@ export default class ContactPerson extends Model {
   init () {
     super.init()
 
+    this.type = 'contact_persons'
+
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
   }
 
   deserialize (json) {
+    this.id = json.id
+
     this.deserializeAttributes(json.attributes)
   }
 

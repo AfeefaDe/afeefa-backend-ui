@@ -26,7 +26,7 @@ export default class Location extends Model {
   }
 
   deserialize (json) {
-    this.init()
+    // this.init() // TODO
 
     this.id = json.id
 

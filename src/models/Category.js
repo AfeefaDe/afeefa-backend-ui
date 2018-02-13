@@ -8,6 +8,14 @@ export default class Category extends Model {
     title: DataTypes.String
   }
 
+  static relations = {
+    parent_category: {
+      type: Relation.HAS_ONE,
+      cacheKey: 'categories',
+      data: json => (json.data && json.data.id)
+    }
+  }
+
   init () {
     super.init()
 
@@ -20,28 +28,15 @@ export default class Category extends Model {
     this.sub_categories = []
   }
 
-  parentCategoryRelation () {
-    return new Relation({
-      type: Relation.HAS_ONE,
-      cacheKey: 'categories'
-    })
-  }
-
   deserialize (json) {
     this.id = json.id
 
     this.deserializeAttributes(json.attributes)
-
-    const rels = json.relationships
-
-    // category
-    if (rels.parent_category.data) {
-      this.relation('parentCategory').initWithId(rels.parent_category.data.id)
-    }
+    this.deserializeRelations(json.relationships)
   }
 
   get info () {
-    const subCat = !!this.relation('parentCategory').id
+    const subCat = !!this.relation('parent_category').id
     return super.info + ` subCat="${subCat}" title="${this.title}"`
   }
 }

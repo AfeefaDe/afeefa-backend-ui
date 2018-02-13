@@ -12,6 +12,8 @@ class Orgas {
         orga.fetchParentOrga()
         orga.fetchCategory()
         orga.fetchSubCategory()
+        orga.fetchCreator()
+        orga.fetchLastEditor()
       }
       return orgas
     })
@@ -37,7 +39,9 @@ class Orgas {
       'fetchAnnotations',
       'fetchContacts',
       'fetchResources',
-      'fetchActorRelations'
+      'fetchActorRelations',
+      'fetchCreator',
+      'fetchLastEditor'
     ]
 
     const resource = new OrgasResource()

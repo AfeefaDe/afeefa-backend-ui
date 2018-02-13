@@ -43,6 +43,8 @@ export default {
         entry.fetchCategory()
         entry.fetchSubCategory()
         entry.fetchAnnotations()
+        entry.fetchCreator()
+        entry.fetchLastEditor()
       }
       return entries
     })

@@ -12,18 +12,9 @@ export default class Annotation extends Model {
 
   static relations = {
     annotationCategory: {
-      type: new Relation({
-        type: Relation.HAS_ONE,
-        cacheKey: 'annotationCategories'}
-      ),
-      fetch () {
-        this.relation('annotationCategory').fetch(id => {
-          return this.Resource('AnnotationCategories').get(id).then(annotationCategory => {
-            this.annotationCategory = annotationCategory
-            return annotationCategory
-          })
-        })
-      }
+      type: Relation.HAS_ONE,
+      cacheKey: 'annotationCategories',
+      data: json => json
     }
   }
 
@@ -34,15 +25,6 @@ export default class Annotation extends Model {
 
     this.id = null
     this.type = 'annotations'
-
-    this.annotationCategory = null
-  }
-
-  annotationCategoryRelation () {
-    return new Relation({
-      type: Relation.HAS_ONE,
-      cacheKey: 'annotationCategories'}
-    )
   }
 
   fetchCategory () {
@@ -59,7 +41,9 @@ export default class Annotation extends Model {
 
     this.deserializeAttributes(json.attributes)
 
-    this.relation('annotationCategory').initWithId(json.attributes.annotation_category_id)
+    this.deserializeRelations({
+      annotationCategory: json.attributes.annotation_category_id
+    })
   }
 
   serialize () {

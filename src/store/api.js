@@ -131,7 +131,7 @@ export default {
     },
 
 
-    getList: ({dispatch}, {resource, params, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED}) => {
+    getList: ({dispatch}, {resource, params}) => {
       // key of list in resource cache
       const listCacheKey = resource.listCacheKey
       // different caches for different list params
@@ -139,9 +139,7 @@ export default {
 
       if (resourceCache.hasList(listCacheKey, listCacheParams)) {
         // list already loaded
-        if (strategy === LoadingStrategy.LOAD_IF_NOT_CACHED) {
-          return Promise.resolve(resourceCache.getList(listCacheKey, listCacheParams))
-        }
+        return Promise.resolve(resourceCache.getList(listCacheKey, listCacheParams))
       }
 
       // list currently loading
@@ -157,42 +155,27 @@ export default {
         const data = response.body.data || response.body // jsonapi spec || afeefa api spec
         for (let json of data) {
           let item
-
           // update existing cached items but not replace them!
           const itemCacheKey = resource.getItemCacheKey(json)
           const itemCacheId = resource.getItemCacheId(json)
           if (resourceCache.hasItem(itemCacheKey, itemCacheId)) {
             item = resourceCache.getItem(itemCacheKey, itemCacheId)
-            /*
-             * update item only if it has fewer data than provided
-             * by the result of the list loading operation
-             */
-            if (item._loadingState < LoadingState.LOADED_FOR_LISTS) {
-              resource.deserialize(item, json)
-              item._loadingState = LoadingState.LOADED_FOR_LISTS
-            }
-
-            // no cached item found -> create one
           } else {
             item = resource.createItem(json)
-            resource.deserialize(item, json)
-            if (item._loadingState < LoadingState.LOADED_FOR_LISTS) {
-              item._loadingState = LoadingState.LOADED_FOR_LISTS
-            }
           }
+          resource.deserialize(item, json)
+          resource.cacheLoadedRelations(item)
+
+          item._loadingState = Math.max(item._loadingState, LoadingState.LOADED_FOR_LISTS)
+
           // add model to list
           items.push(item)
         }
 
         // apply custom map to items, e.g. to create a category tree from a flat list
         resource.transformList(items)
-        // cache list
+        // cache list, adds all items to the cache if not yet added
         resourceCache.addList(listCacheKey, listCacheParams, items)
-
-        // check for eager loaded relations
-        items.forEach(item => {
-          resource.cacheLoadedRelations(item)
-        })
 
         return items
       }).catch(response => {
@@ -284,12 +267,9 @@ export default {
           cachedItem = item.clone()
           resourceCache.addItem(itemCacheKey, cachedItem)
         }
-        resource.beforeItemSaved(item, cachedItem)
 
         const json = response.body.data || response.body
         resource.deserialize(cachedItem, json)
-
-        // check for included cacheable relations
         resource.cacheLoadedRelations(cachedItem)
 
         resource.itemSaved(item, cachedItem)
@@ -320,10 +300,7 @@ export default {
       ).then(response => {
         const json = response.body.data || response.body
         resource.deserialize(item, json)
-
         resourceCache.addItem(itemCacheKey, item)
-
-        // check for included cacheable relations
         resource.cacheLoadedRelations(item)
 
         resource.itemAdded(item)

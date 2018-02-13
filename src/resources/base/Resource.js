@@ -41,6 +41,7 @@ export default class Resource {
   // @see Todos or Search
   deserialize (item, json) {
     this.deserializeItem(item, json)
+    item._requestId = json._requestId
   }
 
   // hook to override if special deserialization code
@@ -70,13 +71,6 @@ export default class Resource {
   // called after an item has been deleted
   // to enable custom resource cache treatment
   itemDeleted (item) {
-  }
-
-  // called after an item has been changed
-  // to enable custom resource cache treatment
-  // use the old item to access the item relations
-  // that have been present prior saving
-  beforeItemSaved (itemOld, item) {
   }
 
   itemSaved (itemOld, item) {

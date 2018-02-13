@@ -3,7 +3,7 @@
     <h3 class="contactList__title">{{$tc('headlines.contact', item.contacts.length)}}</h3>
     <div v-for="(contact, index) in item.contacts" :key="contact.id">
 
-       <h3 v-if="index" class="contactTitle">{{ contact.title || 'Weiterer Kontakt' }} </h3>
+      <h3 v-if="index" class="contactTitle">{{ contact.title || 'Weiterer Kontakt' }} </h3>
       <h3 v-else class="contactTitle">{{ contact.title || 'Kontakt' }} </h3>
 
       <router-link :to="{name: item.type + '.contactedit', params: {contactId: contact.id}}">
@@ -41,7 +41,7 @@
       </ul>
 
       <ul>
-        <li v-for="(person, index) in contact.persons" :key="person.id">
+        <li v-for="(person, index) in contact.contact_persons" :key="person.id">
           <entry-detail-property
             :name="person.role || $t('headlines.contact')"
             :iconName="index ? '' : 'mail_outline'">

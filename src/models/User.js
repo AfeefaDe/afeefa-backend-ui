@@ -8,11 +8,14 @@ export default class User extends Model {
       type: DataTypes.String,
       remoteName: 'forename'
     },
+
     last_name: {
       type: DataTypes.String,
       remoteName: 'surname'
     },
+
     area: DataTypes.String,
+
     organization: DataTypes.String
   }
 

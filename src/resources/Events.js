@@ -15,6 +15,7 @@ class Events {
     }
     return store.dispatch('api/getList', {resource, params}).then(events => {
       for (let event of events) {
+        event.fetchParentOrga()
         event.fetchCategory()
         event.fetchSubCategory()
       }
@@ -29,6 +30,8 @@ class Events {
         event.fetchParentOrga()
         event.fetchCategory()
         event.fetchSubCategory()
+        event.fetchCreator()
+        event.fetchLastEditor()
       }
       return events
     })
@@ -47,6 +50,8 @@ class Events {
         event.fetchSubCategory()
         event.fetchAnnotations()
         event.fetchContacts()
+        event.fetchCreator()
+        event.fetchLastEditor()
       }
       return event
     })
