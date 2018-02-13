@@ -74,7 +74,7 @@ export default class Orga extends Entry {
   fetchResources (clone) {
     this.relation('resource_items').fetch(() => {
       return this.Resource('ResourceItems').getAllForOrga(this).then(resourceItems => {
-        this.resource_items.length = 0
+        this.resource_items = []
         resourceItems.forEach(resourceItem => {
           resourceItem = clone ? resourceItem.clone() : resourceItem
           this.resource_items.push(resourceItem)

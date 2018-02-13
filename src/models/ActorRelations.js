@@ -10,7 +10,8 @@ export default class ActorRelations extends Model {
       itemType: 'orgas',
       cacheParams: owner => ({actorRelationsId: owner.id, relationName: 'networks'}),
       Model: 'Orga',
-      loadingState: LoadingState.LOADED_FOR_LISTS
+      loadingState: LoadingState.LOADED_FOR_LISTS,
+      data: json => json
     },
 
     network_members: {
@@ -19,7 +20,8 @@ export default class ActorRelations extends Model {
       itemType: 'orgas',
       cacheParams: owner => ({actorRelationsId: owner.id, relationName: 'network_members'}),
       Model: 'Orga',
-      loadingState: LoadingState.LOADED_FOR_LISTS
+      loadingState: LoadingState.LOADED_FOR_LISTS,
+      data: json => json
     },
 
     projects: {
@@ -28,7 +30,8 @@ export default class ActorRelations extends Model {
       itemType: 'orgas',
       cacheParams: owner => ({actorRelationsId: owner.id, relationName: 'projects'}),
       Model: 'Orga',
-      loadingState: LoadingState.LOADED_FOR_LISTS
+      loadingState: LoadingState.LOADED_FOR_LISTS,
+      data: json => json
     },
 
     project_initiators: {
@@ -37,7 +40,8 @@ export default class ActorRelations extends Model {
       itemType: 'orgas',
       cacheParams: owner => ({actorRelationsId: owner.id, relationName: 'project_initiators'}),
       Model: 'Orga',
-      loadingState: LoadingState.LOADED_FOR_LISTS
+      loadingState: LoadingState.LOADED_FOR_LISTS,
+      data: json => json
     },
 
     partners: {
@@ -46,7 +50,8 @@ export default class ActorRelations extends Model {
       itemType: 'orgas',
       cacheParams: owner => ({actorRelationsId: owner.id, relationName: 'partners'}),
       Model: 'Orga',
-      loadingState: LoadingState.LOADED_FOR_LISTS
+      loadingState: LoadingState.LOADED_FOR_LISTS,
+      data: json => json
     }
   }
 
@@ -62,11 +67,6 @@ export default class ActorRelations extends Model {
     // to the loaded Json as well as in ActorRelations.createItem()
     this.id = json.id
 
-    // TODO
-    this.Model('Orga').ACTOR_RELATIONS.forEach(actorRelation => {
-      if (json[actorRelation]) {
-        this.relation(actorRelation).initWithJson(json[actorRelation])
-      }
-    })
+    this.deserializeRelations(json)
   }
 }

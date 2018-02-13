@@ -69,7 +69,7 @@ export default class Contact extends Model {
 
   fetchContactPersons (clone) {
     const resourceCache = store.state.api.resourceCache
-    this.contact_persons.length = 0
+    this.contact_persons = []
     const contactPersons = resourceCache.getList('contact_persons', JSON.stringify({owner_type: this.type, owner_id: this.id}))
     contactPersons.forEach(person => {
       person = clone ? person.clone() : person
