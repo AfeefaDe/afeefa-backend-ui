@@ -19,7 +19,17 @@ export default class Orga extends Entry {
 
     count_projects: DataTypes.Int,
 
-    count_network_members: DataTypes.Int
+    count_network_members: DataTypes.Int,
+
+    networks: DataTypes.Array,
+
+    network_members: DataTypes.Array,
+
+    projects: DataTypes.Array,
+
+    project_initiators: DataTypes.Array,
+
+    partners: DataTypes.Array
   }
 
   static relations = {
@@ -45,18 +55,13 @@ export default class Orga extends Entry {
       type: Relation.HAS_ONE,
       cacheKey: 'actor_relations',
       Model: 'ActorRelations',
+      data: json => json,
       loadingState: LoadingState.FULLY_LOADED
     }
   }
 
   init () {
-    super.init()
-
     this.type = 'orgas'
-
-    Orga.ACTOR_RELATIONS.forEach(actorRelation => {
-      this[actorRelation] = []
-    })
   }
 
   fetchActorRelations () {
@@ -84,24 +89,25 @@ export default class Orga extends Entry {
     })
   }
 
-  deserialize (json) {
-    super.deserialize(json)
-
-    const rels = json.relationships || {}
+  getRelationsFromJson (json) {
+    const relations = super.getRelationsFromJson(json)
 
     // actor relations, create a merge json object for the different relations
+    const rels = json.relationships || {}
     const actorRelationsJson = {}
     Orga.ACTOR_RELATIONS.forEach(actorRelation => {
       if (rels[actorRelation]) {
         actorRelationsJson[actorRelation] = rels[actorRelation].data
       }
     })
+
     if (Object.keys(actorRelationsJson).length) {
-      // in order to later find the relations container, we need to give
-      // it the id of our orga
-      actorRelationsJson.id = this.id
-      this.relation('actor_relations').initWithJson(actorRelationsJson)
+      actorRelationsJson.id = this.id // inject id of orga as actorRelations id
+      actorRelationsJson._requestId = json._requestId // inject requestId
+      relations.actor_relations = actorRelationsJson
     }
+
+    return relations
   }
 
   serialize () {

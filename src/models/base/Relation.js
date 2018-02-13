@@ -56,7 +56,6 @@ export default class Relation {
   factory (json) {
     const item = new this.Model()
     item.deserialize(json)
-    item._requestId = json._requestId
     item._loadingState = this.loadingState
     return item
   }
@@ -102,9 +101,11 @@ export default class Relation {
       // we want to update our item not multiple times in the same request
       const isSameRequest = json._requestId === item._requestId
       const wantToCacheMore = this.loadingState > item._loadingState
+      // if (this.cacheKey === 'orgas' && json.id === '4274') {
+      //   console.log('--- wanttofetchmore', this.loadingState, item._loadingState, wantToCacheMore)
+      // }
       if (wantToCacheMore || !isSameRequest) {
         item.deserialize(json)
-        item._requestId = json._requestId
         item._loadingState = Math.max(item._loadingState, this.loadingState)
       }
     }

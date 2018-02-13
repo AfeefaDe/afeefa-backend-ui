@@ -10,37 +10,33 @@ export default class Location extends Model {
     city: DataTypes.String,
     lat: DataTypes.String,
     lon: DataTypes.String,
-    directions: DataTypes.String
+    directions: DataTypes.String,
+    ownerTitle: DataTypes.String,
+    creatingContactId: DataTypes.String
   }
 
   init () {
-    super.init()
-
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
 
-    this.id = null
     this.type = 'locations'
-
-    this.ownerTitle = ''
-    this.creatingContactId = null
   }
 
-  deserialize (json) {
-    // this.init() // TODO
-
-    this.id = json.id
-
-    this.deserializeAttributes(json.attributes)
+  getAttributesFromJson (json) {
+    const attributes = json.attributes
 
     const rels = json.relationships || {}
-
     if (rels.owner && rels.owner.data) {
-      this.ownerTitle = rels.owner.data.attributes.title
+      attributes.ownerTitle = rels.owner.data.attributes.title
+    }
+    if (rels.contact && rels.contact.data) {
+      attributes.creatingContactId = rels.contact.data.id
     }
 
-    if (rels.contact && rels.contact.data) {
-      this.creatingContactId = rels.contact.data.id
-    }
+    return attributes
+  }
+
+  getRelationsFromJson (json) {
+    return json.relationships
   }
 
   serialize () {

@@ -10,18 +10,13 @@ export default class Chapter extends Model {
   }
 
   init () {
-    super.init()
-
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
 
-    this.id = null
     this.type = 'chapters'
   }
 
-  deserialize (json) {
-    this.id = json.id
-
-    this.deserializeAttributes(json.attributes)
+  getAttributesFromJson (json) {
+    return json.attributes
   }
 
   serialize () {

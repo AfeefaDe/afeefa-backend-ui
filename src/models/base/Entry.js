@@ -95,13 +95,6 @@ export default class Entry extends Model {
     }
   }
 
-  init () {
-    super.init()
-
-    this.id = null
-    this.type = null
-  }
-
   fetchParentOrga (strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
     this.relation('parent_orga').fetch(id => {
       return this.Resource('Orgas').get(id, ['fetchParentOrga'], strategy, { // fetch parent orga with only its own parent orga relation
@@ -176,15 +169,12 @@ export default class Entry extends Model {
     })
   }
 
-  deserialize (json) {
-    // this.init() TODO !!!
-    // console.log('DESERIALIZE', this.info, 'json:request:', json._requestId, json)
+  getAttributesFromJson (json) {
+    return json.attributes
+  }
 
-    this.id = json.id
-    this.type = json.type
-
-    this.deserializeAttributes(json.attributes)
-    this.deserializeRelations(json.relationships)
+  getRelationsFromJson (json) {
+    return json.relationships
   }
 
   serialize () {

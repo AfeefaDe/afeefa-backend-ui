@@ -20,11 +20,8 @@ export default class User extends Model {
   }
 
   init () {
-    super.init()
-
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
 
-    this.id = null
     this.type = 'users'
 
     this.password = ''
@@ -34,10 +31,8 @@ export default class User extends Model {
     return this.first_name + ' ' + this.last_name
   }
 
-  deserialize (json) {
-    this.id = json.id
-
-    this.deserializeAttributes(json.attributes)
+  getAttributesFromJson (json) {
+    return json.attributes
   }
 
   serialize () {

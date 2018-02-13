@@ -9,7 +9,7 @@ export default class Resource {
   }
 
   /**
-   * Config
+   * Resource Config
    */
 
   /**
@@ -26,6 +26,10 @@ export default class Resource {
     return json.id
   }
 
+  getItemJson (json) {
+    return json
+  }
+
   // creates a new model based on the given json response
   // @see Todos or Search
   createItem (json) {
@@ -35,28 +39,6 @@ export default class Resource {
   // useful to create a hierachical list from a flat list
   // e.g. for cateories
   transformList (items) {
-  }
-
-  // deserialized the current item
-  // @see Todos or Search
-  deserialize (item, json) {
-    this.deserializeItem(item, json)
-    item._requestId = json._requestId
-  }
-
-  // hook to override if special deserialization code
-  // is provided. @see Todos or Search
-  deserializeItem (item, json) {
-    item.deserialize(json)
-  }
-
-  // caches eagerly loaded relations
-  cacheLoadedRelations (item) {
-    const resourceCache = store.state.api.resourceCache
-    for (let name in item.relations) {
-      const relation = item.relations[name]
-      relation.cache(resourceCache)
-    }
   }
 
   /**

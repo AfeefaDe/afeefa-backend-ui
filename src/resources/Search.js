@@ -33,8 +33,8 @@ class SearchResource extends Resource {
     }
   }
 
-  deserializeItem (item, json) {
-    item.deserialize(json.relationships.entry.data)
+  getItemJson (json) {
+    return json.relationships.entry.data
   }
 }
 

@@ -56,17 +56,10 @@ export default class ActorRelations extends Model {
   }
 
   init () {
-    super.init()
-
-    this.id = null
     this.type = 'actor_relations'
   }
 
-  deserialize (json) {
-    // this will be the conaining orga.id, injected in Orga.deserialize
-    // to the loaded Json as well as in ActorRelations.createItem()
-    this.id = json.id
-
-    this.deserializeRelations(json)
+  getRelationsFromJson (json) {
+    return json
   }
 }

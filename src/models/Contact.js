@@ -48,14 +48,9 @@ export default class Contact extends Model {
   }
 
   init () {
-    super.init()
-
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
 
-    this.id = null
     this.type = 'contacts'
-
-    this.contact_persons = []
   }
 
   fetchLocation (clone) {
@@ -77,13 +72,12 @@ export default class Contact extends Model {
     })
   }
 
-  deserialize (json) {
-    // this.init() // TODO
+  getAttributesFromJson (json) {
+    return json.attributes
+  }
 
-    this.id = json.id
-
-    this.deserializeAttributes(json.attributes)
-    this.deserializeRelations(json.relationships)
+  getRelationsFromJson (json) {
+    return json.relationships
   }
 
   serialize () {

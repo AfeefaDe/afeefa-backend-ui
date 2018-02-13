@@ -19,11 +19,8 @@ export default class Annotation extends Model {
   }
 
   init () {
-    super.init()
-
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
 
-    this.id = null
     this.type = 'annotations'
   }
 
@@ -36,14 +33,14 @@ export default class Annotation extends Model {
     })
   }
 
-  deserialize (json) {
-    this.id = json.id
+  getAttributesFromJson (json) {
+    return json.attributes
+  }
 
-    this.deserializeAttributes(json.attributes)
-
-    this.deserializeRelations({
+  getRelationsFromJson (json) {
+    return {
       annotationCategory: json.attributes.annotation_category_id
-    })
+    }
   }
 
   serialize () {

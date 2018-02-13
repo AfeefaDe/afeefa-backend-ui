@@ -163,8 +163,7 @@ export default {
           } else {
             item = resource.createItem(json)
           }
-          resource.deserialize(item, json)
-          resource.cacheLoadedRelations(item)
+          item.deserialize(resource.getItemJson(json))
 
           item._loadingState = Math.max(item._loadingState, LoadingState.LOADED_FOR_LISTS)
 
@@ -225,16 +224,13 @@ export default {
         // update existing cached items but not replace them in order to keep references alive
         if (resourceCache.hasItem(itemCacheKey, id)) {
           item = resourceCache.getItem(itemCacheKey, id)
-          resource.deserialize(item, json)
+          item.deserialize(resource.getItemJson(json))
         } else {
           item = resource.createItem(json)
-          resource.deserialize(item, json)
+          item.deserialize(resource.getItemJson(json))
           resourceCache.addItem(itemCacheKey, item)
         }
         item._loadingState = LoadingState.FULLY_LOADED
-
-        // check for included cacheable relations
-        resource.cacheLoadedRelations(item)
 
         return item
       }).catch(response => {
@@ -269,8 +265,7 @@ export default {
         }
 
         const json = response.body.data || response.body
-        resource.deserialize(cachedItem, json)
-        resource.cacheLoadedRelations(cachedItem)
+        cachedItem.deserialize(resource.getItemJson(json))
 
         resource.itemSaved(item, cachedItem)
         dispatch('getMetaInformation') // e.g. todos may change after annotation change
@@ -299,9 +294,8 @@ export default {
         {id: item.id}, body
       ).then(response => {
         const json = response.body.data || response.body
-        resource.deserialize(item, json)
+        item.deserialize(resource.getItemJson(json))
         resourceCache.addItem(itemCacheKey, item)
-        resource.cacheLoadedRelations(item)
 
         resource.itemAdded(item)
         dispatch('getMetaInformation')
@@ -346,7 +340,7 @@ export default {
 
         const json = response.body.data || response.body
         const cachedItem = resourceCache.getItem(itemCacheKey, item.id)
-        resource.deserialize(cachedItem, json)
+        cachedItem.deserialize(resource.getItemJson(json))
         return attributes
       }).catch(response => {
         dispatch('messages/showAlert', {

@@ -5,7 +5,9 @@ import DataTypes from './base/DataTypes'
 
 export default class Category extends Model {
   static attributes = {
-    title: DataTypes.String
+    title: DataTypes.String,
+
+    sub_categories: DataTypes.Array
   }
 
   static relations = {
@@ -17,22 +19,17 @@ export default class Category extends Model {
   }
 
   init () {
-    super.init()
-
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
 
-    this.id = null
     this.type = 'categories'
-
-    this.parent_category = null
-    this.sub_categories = []
   }
 
-  deserialize (json) {
-    this.id = json.id
+  getAttributesFromJson (json) {
+    return json.attributes
+  }
 
-    this.deserializeAttributes(json.attributes)
-    this.deserializeRelations(json.relationships)
+  getRelationsFromJson (json) {
+    return json.relationships
   }
 
   get info () {

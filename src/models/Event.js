@@ -30,15 +30,10 @@ export default class Event extends Entry {
   }
 
   init () {
-    super.init()
-
     this.type = 'events'
   }
 
-  deserialize (json) {
-    super.deserialize(json)
-
-    // set date and to start if not specified
+  afterDeserialize () {
     if (!this.date_end) {
       this.date_end = this.date_start
     }

@@ -1,3 +1,4 @@
+import store from '@/store'
 import LoadingState from '@/store/api/LoadingState'
 import ResourceRegistry from '@/resources/config/Registry'
 import ModelRegistry from '../config/Registry'
@@ -9,11 +10,11 @@ let ID = 0
 export default class Model {
   static attributes = {
     id: {
-      type: DataTypes.Int
+      type: DataTypes.Int,
+      default: null
     },
-    type: {
-      type: DataTypes.String
-    }
+
+    type: DataTypes.String
   }
 
   constructor () {
@@ -43,7 +44,7 @@ export default class Model {
     // init attributes
     for (let name in this.constructor._attributes) {
       const attr = this.constructor._attributes[name]
-      this[name] = attr.default || attr.type.value()
+      this[name] = attr.hasOwnProperty('default') ? attr.default : attr.type.value()
     }
 
     // init relations
@@ -57,11 +58,6 @@ export default class Model {
   }
 
   init () {
-    // // reset all relations prior to deserialization
-    // for (let name in this._relations) {
-    //   const relation = this._relations[name]
-    //   relation.reset() // TODO
-    // }
   }
 
   /**
@@ -124,8 +120,6 @@ export default class Model {
       }
       this[localName] = this.getAttrValue(localName, attributesJson[name])
     }
-
-    this._requestId = attributesJson._requestId // TODO
   }
 
   hasRelation (name) {
@@ -144,21 +138,49 @@ export default class Model {
       }
 
       const relation = this._relations[localName]
+      relation.reset() // TODO
+
       const relationJson = relationsJson[name]
       const data = relation.data(relationJson)
+
       if (data) {
         if (!isNaN(parseFloat(data))) {
           relation.initWithId(data)
         } else {
           relation.initWithJson(data)
         }
-      } else {
-        // TODO check what makes sense here
-        relation.reset()
       }
-    }
 
-    this._requestId = relationsJson._requestId // TODO
+      const resourceCache = store.state.api.resourceCache
+      relation.cache(resourceCache)
+    }
+  }
+
+  /**
+   * Serialization
+   */
+  deserialize (json) {
+    this.id = json.id
+
+    this.deserializeAttributes(this.getAttributesFromJson(json))
+    this.deserializeRelations(this.getRelationsFromJson(json))
+
+    this._requestId = json._requestId
+
+    this.afterDeserialize()
+
+    // if (this.type === 'orgas' && this.id === '4274') {
+    //   console.log('DEZERIALIZE', json._requestId, this.info, json)
+    // }
+  }
+
+  getAttributesFromJson (json) {
+  }
+
+  getRelationsFromJson (json) {
+  }
+
+  afterDeserialize (json) {
   }
 
   serialize () {

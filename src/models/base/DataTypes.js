@@ -11,6 +11,12 @@ export default class DataTypes {
     }
   }
 
+  static Array = {
+    value (value) {
+      return value || []
+    }
+  }
+
   static Date = {
     value (value) {
       return value ? new Date(value) : null
