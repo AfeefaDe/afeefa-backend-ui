@@ -51,8 +51,8 @@
 
 <script>
 import Multiselect from 'vue-multiselect'
-import Orgas from '@/resources/Orgas'
-import Chapters from '@/resources/Chapters'
+import Orga from '@/models/Orga'
+import Chapter from '@/models/Chapter'
 import sortByTitle from '@/helpers/sort-by-title'
 import tinymce from 'tinymce/tinymce'
 import 'tinymce/themes/modern/theme'
@@ -94,14 +94,14 @@ export default {
     }
   },
   created () {
-    Orgas.getAll().then(orgas => {
+    Orga.getAll().then(orgas => {
       orgas = orgas.map(orga => {
         return {title: orga.title, id: orga.id}
       })
       this.entrySelector.orgasSimplified = sortByTitle(orgas)
     })
 
-    Chapters.getAll().then(chapters => {
+    Chapter.getAll().then(chapters => {
       this.chapterSelector.chapters = chapters
     })
   },

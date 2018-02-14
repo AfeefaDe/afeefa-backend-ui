@@ -189,8 +189,8 @@
 </template>
 
 <script>
-import Events from '@/resources/Events'
-import Users from '@/resources/Users'
+import Event from '@/models/Event'
+import User from '@/models/User'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 
@@ -235,17 +235,17 @@ export default {
   },
 
   created () {
-    this.currentUser = Users.getCurrentUser()
+    this.currentUser = User.getCurrentUser()
   },
 
   watch: {
     entry () {
       // load past and upcoming events for orga
       if (this.entry && this.has.events) {
-        Events.getAllForOrga(this.entry.id, 'upcoming').then(events => {
+        Event.getAllForOrga(this.entry.id, 'upcoming').then(events => {
           this.upcomingEvents = events
         })
-        Events.getAllForOrga(this.entry.id, 'past').then(events => {
+        Event.getAllForOrga(this.entry.id, 'past').then(events => {
           this.pastEvents = events
         })
       }

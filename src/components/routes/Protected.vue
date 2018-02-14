@@ -19,8 +19,8 @@
 <script>
 import NavigationSidebar from '@/components/navigation/NavigationSidebar'
 import NavigationMobile from '@/components/navigation/NavigationMobile'
-import Categories from '@/resources/Categories'
-import AnnotationCategories from '@/resources/AnnotationCategories'
+import Category from '@/models/Category'
+import AnnotationCategory from '@/models/AnnotationCategory'
 
 export default {
   components: {
@@ -31,8 +31,8 @@ export default {
   created () {
     this.$store.dispatch('api/getMetaInformation')
     // categories and annotations are used multiple times
-    Categories.getAll()
-    AnnotationCategories.getAll()
+    Category.getAll()
+    AnnotationCategory.getAll()
   }
 }
 

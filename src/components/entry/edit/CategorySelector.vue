@@ -33,7 +33,7 @@
 
 <script>
 import Vue from 'vue'
-import Categories from '@/resources/Categories'
+import Category from '@/models/Category'
 
 export default {
   props: ['item'],
@@ -47,7 +47,7 @@ export default {
   },
 
   created () {
-    Categories.getAll().then(categories => {
+    Category.getAll().then(categories => {
       this.categories = categories.filter(
         c => c.parent_category === null
       )

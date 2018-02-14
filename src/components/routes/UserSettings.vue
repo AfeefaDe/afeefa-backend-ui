@@ -65,7 +65,7 @@
 
 <script>
 import InputField from '@/components/InputField'
-import Users from '@/resources/Users'
+import User from '@/models/User'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 
 export default {
@@ -96,7 +96,7 @@ export default {
 
   methods: {
     initCurrentUser () {
-      this.userOrig = Users.getCurrentUser()
+      this.userOrig = User.getCurrentUser()
       this.user = this.userOrig.clone()
     },
 
@@ -127,7 +127,7 @@ export default {
           return
         }
 
-        Users.save(this.user).then(() => {
+        User.save(this.user).then(() => {
           const pwChanged = this.passwordConfirm ? 'und das Passwort ' : ''
           this.$store.dispatch('messages/showAlert', {
             description: `Die Nutzerdaten ${pwChanged}wurden geändert.`

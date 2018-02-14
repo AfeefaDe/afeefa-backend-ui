@@ -21,7 +21,6 @@
 <script>
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 
-import Contacts from '@/resources/Contacts'
 import Contact from '@/models/Contact'
 
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
@@ -48,7 +47,7 @@ export default {
       if (owner) {
         this.owner = owner
         if (this.contactId) {
-          Contacts.getAllForOwner(owner).then(contacts => {
+          Contact.getAllForOwner(owner).then(contacts => {
             this.origContact = contacts.find(c => c.id === this.contactId)
             this.contact = this.origContact.clone()
           })
@@ -77,7 +76,7 @@ export default {
     },
 
     saveContact () {
-      Contacts.save(this.owner, this.contact).then(contact => {
+      Contact.save(this.owner, this.contact).then(contact => {
         if (contact) {
           // update contact's owner contact list
           this.$store.dispatch('messages/showAlert', {

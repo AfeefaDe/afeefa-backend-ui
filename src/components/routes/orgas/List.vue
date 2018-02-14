@@ -12,14 +12,14 @@
 <script>
 import EntryListMixin from '@/components/mixins/EntryListMixin'
 import sortByCreatedAt from '@/helpers/sort-by-created-at'
-import Orgas from '@/resources/Orgas'
+import Orga from '@/models/Orga'
 
 export default {
   mixins: [EntryListMixin],
 
   data () {
     return {
-      Resource: Orgas,
+      Resource: Orga,
       sortByCreatedAt,
       messages: {
         headline: () => this.$t('status.all') + ' ' + this.$tc('headlines.organisations', 2)

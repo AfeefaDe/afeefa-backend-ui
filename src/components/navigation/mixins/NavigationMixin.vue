@@ -1,7 +1,7 @@
 <script>
 import NavigationBreadcrumb from '@/components/navigation/NavigationBreadcrumb'
 import { mapState } from 'vuex'
-import Users from '@/resources/Users'
+import User from '@/models/User'
 
 export default {
   data () {
@@ -10,7 +10,7 @@ export default {
     }
   },
   created () {
-    this.currentUser = Users.getCurrentUser()
+    this.currentUser = User.getCurrentUser()
   },
   computed: {
     ...mapState({

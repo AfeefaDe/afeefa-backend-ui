@@ -45,7 +45,7 @@
 
 
 <script>
-import Chapters from '@/resources/Chapters'
+import Chapter from '@/models/Chapter'
 import EntryShowMixin from '@/components/mixins/EntryShowMixin'
 import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
 import EntryIcon from '@/components/entry/EntryIcon'
@@ -55,7 +55,7 @@ export default {
 
   data () {
     return {
-      Resource: Chapters
+      Resource: Chapter
     }
   },
 

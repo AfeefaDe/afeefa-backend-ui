@@ -141,7 +141,6 @@
 <script>
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 
-import Locations from '@/resources/Locations'
 import ContactPerson from '@/models/ContactPerson'
 import Location from '@/models/Location'
 
@@ -184,7 +183,7 @@ export default {
   },
 
   created () {
-    Locations.getAll().then(locations => {
+    Location.getAll().then(locations => {
       this.locations = sortByTitle(locations, 'ownerTitle')
     })
   },

@@ -32,7 +32,7 @@
 <script>
 import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByDateMixin from '@/helpers/sort-by-date-mixin'
-import Events from '@/resources/Events'
+import Event from '@/models/Event'
 import TabBar from '@/components/TabBar'
 import EntryListMixin from '@/components/mixins/EntryListMixin'
 import EntryListItems from '@/components/entry/EntryListItems'
@@ -43,7 +43,7 @@ export default {
 
   data () {
     return {
-      Resource: Events,
+      Resource: Event,
       sortFunction: null,
       sortOrder: null,
       currentTab: null,

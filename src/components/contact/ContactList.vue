@@ -101,7 +101,7 @@
 <script>
 import Languages from '@/helpers/iso_639_languages.js'
 
-import Contacts from '@/resources/Contacts'
+import Contact from '@/models/Contact'
 
 import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
 import LocationMap from '@/components/Map'
@@ -130,7 +130,7 @@ export default {
         message: 'Soll der Kontakt gelöscht werden?'
       }).then(result => {
         if (result === 'yes') {
-          Contacts.delete(this.item, contact).then(result => {
+          Contact.delete(this.item, contact).then(result => {
             if (result) {
               this.$store.dispatch('messages/showAlert', {
                 description: 'Kontakt erfolgreich gelöscht.'

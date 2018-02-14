@@ -10,14 +10,14 @@
 
 <script>
 import EntryListMixin from '@/components/mixins/EntryListMixin'
-import Chapters from '@/resources/Chapters'
+import Chapter from '@/models/Chapter'
 
 export default {
   mixins: [EntryListMixin],
 
   data () {
     return {
-      Resource: Chapters,
+      Resource: Chapter,
       messages: {
         headline: () => {
           return this.$tc('headlines.chapters', 2)

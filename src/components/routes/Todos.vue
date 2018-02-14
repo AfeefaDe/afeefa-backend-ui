@@ -24,7 +24,7 @@
 import EntryListMixin from '@/components/mixins/EntryListMixin'
 import sortByUpdatedAt from '@/helpers/sort-by-updated-at'
 import Todos from '@/resources/Todos'
-import AnnotationCategories from '@/resources/AnnotationCategories'
+import AnnotationCategory from '@/models/AnnotationCategory'
 
 export default {
   mixins: [EntryListMixin],
@@ -41,7 +41,7 @@ export default {
     }
   },
   created () {
-    AnnotationCategories.getAll().then(categories => {
+    AnnotationCategory.getAll().then(categories => {
       this.categories = categories
     })
   },

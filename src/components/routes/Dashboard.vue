@@ -81,8 +81,8 @@ import SearchItems from '@/components/SearchItems'
 import sortByUpdatedAt from '@/helpers/sort-by-updated-at'
 import sortByCreatedAt from '@/helpers/sort-by-created-at'
 import { mapState } from 'vuex'
-import Events from '@/resources/Events'
-import Orgas from '@/resources/Orgas'
+import Event from '@/models/Event'
+import Orga from '@/models/Orga'
 import Todos from '@/resources/Todos'
 
 export default {
@@ -108,11 +108,11 @@ export default {
       this.todos = todos
     })
 
-    Orgas.getAll().then(orgas => {
+    Orga.getAll().then(orgas => {
       this.orgas = orgas
     })
 
-    Events.getAll().then(events => {
+    Event.getAll().then(events => {
       this.events = events
     })
   },

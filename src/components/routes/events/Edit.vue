@@ -86,7 +86,7 @@ import EntryEditApiSlotMixin from '@/components/entry/edit/mixins/EntryEditApiSl
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import EventRouteConfig from './EventRouteConfig'
 
-import Orgas from '@/resources/Orgas'
+import Orga from '@/models/Orga'
 
 import TabBar from '@/components/TabBar'
 import ImageContainer from '@/components/ImageContainer'
@@ -144,7 +144,7 @@ export default {
     },
 
     parentOrgaChanged (parentOrga) {
-      Orgas.get(parentOrga.id, []).then(orga => {
+      Orga.get(parentOrga.id, []).then(orga => {
         this.item.parent_orga = orga
         this.parentOrgas = [orga]
       })

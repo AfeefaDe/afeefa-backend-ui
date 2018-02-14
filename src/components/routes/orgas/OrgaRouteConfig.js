@@ -1,4 +1,4 @@
-import Orgas from '@/resources/Orgas'
+import Orga from '@/models/Orga'
 import RouteConfig from '@/services/router/RouteConfig'
 
 export default class Config extends RouteConfig {
@@ -6,7 +6,7 @@ export default class Config extends RouteConfig {
     super(routeComponent, orgaId)
 
     this.routeName = 'orgas'
-    this.Resource = Orgas
+    this.Resource = Orga
 
     this.messages = {
       // any

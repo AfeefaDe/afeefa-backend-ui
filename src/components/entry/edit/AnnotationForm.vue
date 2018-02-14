@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import AnnotationCategories from '@/resources/AnnotationCategories'
+import AnnotationCategory from '@/models/AnnotationCategory'
 import Annotation from '@/models/Annotation'
 import AnnotationTag from '@/components/AnnotationTag'
 
@@ -41,7 +41,7 @@ export default {
   },
 
   created () {
-    AnnotationCategories.getAll().then(annotationCategories => {
+    AnnotationCategory.getAll().then(annotationCategories => {
       this.annotationCategories = annotationCategories
     })
   },

@@ -4,8 +4,8 @@
  * validate and save entries.
  */
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
-import Orgas from '@/resources/Orgas'
-import Users from '@/resources/Users'
+import Orga from '@/models/Orga'
+import User from '@/models/User'
 import sortByTitle from '@/helpers/sort-by-title'
 import LoadingStrategy from '@/store/api/LoadingStrategy'
 
@@ -29,7 +29,7 @@ export default {
       if (entry) {
         this.origItem = entry
         this.item = entry.clone()
-        Orgas.getAll().then(orgas => {
+        Orga.getAll().then(orgas => {
           this.orgas = sortByTitle(orgas)
         })
       } else {
@@ -38,7 +38,7 @@ export default {
       }
     })
 
-    this.currentUser = Users.getCurrentUser()
+    this.currentUser = User.getCurrentUser()
   },
 
   methods: {

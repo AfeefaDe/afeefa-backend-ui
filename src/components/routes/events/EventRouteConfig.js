@@ -1,4 +1,4 @@
-import Events from '@/resources/Events'
+import Event from '@/models/Event'
 import RouteConfig from '@/services/router/RouteConfig'
 
 export default class Config extends RouteConfig {
@@ -6,7 +6,7 @@ export default class Config extends RouteConfig {
     super(routeComponent, eventId)
 
     this.routeName = 'events'
-    this.Resource = Events
+    this.Resource = Event
 
     this.messages = {
       // any

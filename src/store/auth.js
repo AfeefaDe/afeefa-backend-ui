@@ -2,7 +2,6 @@ import Vue from 'vue'
 import { BASE } from '@/store/api'
 import router from '@/services/router'
 import User from '@/models/User'
-import Users from '@/resources/Users'
 
 const STORAGE_KEY = 'session'
 
@@ -21,11 +20,11 @@ export default {
     setCurrentUser (state, user) {
       if (user) {
         state.currentUserId = user.id
-        Users.setCurrentUser(user)
+        User.setCurrentUser(user)
       } else {
         const id = state.currentUserId
         state.currentUserId = null
-        Users.removeCurrentUser(id)
+        User.removeCurrentUser(id)
       }
     },
     setRedirectAfterLogin (state, route) {

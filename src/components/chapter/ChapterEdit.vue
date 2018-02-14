@@ -62,7 +62,6 @@
 import ChapterEditor from './ChapterEditor'
 import GenerateFrontendLinkMixin from '@/components/mixins/GenerateFrontendLinkMixin'
 import Chapter from '@/models/Chapter'
-import Chapters from '@/resources/Chapters'
 
 export default {
   props: ['id'],
@@ -102,7 +101,7 @@ export default {
 
     loadChapter () {
       if (this.id) { // edit
-        Chapters.get(this.id).then(chapter => {
+        Chapter.get(this.id).then(chapter => {
           if (chapter) {
             this.origItem = chapter
             this.item = chapter.clone()
@@ -139,7 +138,7 @@ export default {
           return
         }
 
-        Chapters.save(this.item).then(chapter => {
+        Chapter.save(this.item).then(chapter => {
           this.$store.dispatch('messages/showAlert', {
             description: `Das Kapitel "${this.item.title}" wurde geändert.`
           })
@@ -155,7 +154,7 @@ export default {
         message: `Soll das Kaptiel "${this.item.title}" gelöscht werden?`
       }).then(result => {
         if (result === 'yes') {
-          Chapters.delete(this.item).then(result => {
+          Chapter.delete(this.item).then(result => {
             if (result) {
               this.$store.dispatch('messages/showAlert', {
                 description: 'Das Kapitel wurde gelöscht.'

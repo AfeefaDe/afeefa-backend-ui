@@ -74,7 +74,7 @@ import EntryEditApiSlotMixin from '@/components/entry/edit/mixins/EntryEditApiSl
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import OrgaRouteConfig from './OrgaRouteConfig'
 
-import Orgas from '@/resources/Orgas'
+import Orga from '@/models/Orga'
 import OrgaType from '@/models/OrgaType'
 
 import TabBar from '@/components/TabBar'
@@ -132,7 +132,7 @@ export default {
     projectInitiatorChanged () {
       const parentOrga = this.item.project_initiators[0]
       if (parentOrga) {
-        Orgas.get(parentOrga.id, []).then(orga => {
+        Orga.get(parentOrga.id, []).then(orga => {
           this.item.parent_orga = orga
         })
       } else {

@@ -3,8 +3,8 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import Contact from '@/models/Contact'
 import Resource from './base/Resource'
-import Orgas from './Orgas'
-import Events from './Events'
+import Orga from '@/models/Orga'
+import Event from '@/models/Event'
 
 class ContactsResource extends Resource {
   init ([owner]) {
@@ -89,7 +89,7 @@ export default {
       resource: new ContactsResource(owner),
       item: contact
     }).then(result => {
-      const Resource = owner.type === 'events' ? Events : Orgas
+      const Resource = owner.type === 'events' ? Event : Orga
       Resource.get(owner.id, []).then(owner => {
         // TODO let Orga fetch the contats by itself
         owner.fetchContacts()
