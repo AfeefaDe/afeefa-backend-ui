@@ -1,7 +1,10 @@
 <template>
   <div class="ps">
-    <ul class="ps__selected-items" v-if="selectedItems">
-      <li v-for="item in selectedItems" :key="item.id" class="ps__selected-item">
+    <transition name="fade">
+      <div class="ps__glassframe" v-if="show" @click="close"></div>
+    </transition>
+    <ul class="ps__selectedItems" v-if="selectedItems">
+      <li v-for="item in selectedItems" :key="item.id" class="ps__selectedItem">
         <div>
           <slot name="selected-item" :item="item"></slot>
         </div>
@@ -17,12 +20,8 @@
     </button>
 
     <transition name="fade">
-      <div class="ps__glassframe" v-if="show" @click="close"></div>
-    </transition>
-
-    <transition name="fade">
       <div v-if="show" class="ps__selector">
-        <div class="ps__selector__closeIcon" @click="close">
+        <div class="ps__closeIcon" @click="close">
           <i class="material-icons">close</i>
         </div>
 
@@ -212,13 +211,6 @@ export default {
     height: 100%;
     background-color: black;
     opacity: .3;
-
-    &.fade-enter, &.fade-leave-to {
-      opacity: 0;
-    }
-    &.fade-enter-active, &.fade-leave-active {
-      transition: opacity .1s;
-    }
   }
 
   .ps__selector {
@@ -232,21 +224,12 @@ export default {
     transform: translateX(-50%);
     border-radius: 2px;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
-
-    &.fade-enter, &.fade-leave-to {
-      opacity: 0;
-    }
-    &.fade-enter-active, &.fade-leave-active {
-      transition: opacity .3s;
-    }
-
     h3 {
       font-size: 1.2rem;
       margin: 0 0 20px;
     }
   }
-
-  .ps__selector__closeIcon {
+  .ps__closeIcon {
     position: absolute;
     cursor: pointer;
     top: 10px;
@@ -255,14 +238,13 @@ export default {
       font-size: 30px;
     }
   }
-
-  .ps__selected-items {
+  .ps__selectedItems {
     .item {
       background-color: red;
     }
   }
 
-  .ps__selected-item {
+  .ps__selectedItem {
     > div {
       display: inline-block;
     }
@@ -275,7 +257,7 @@ export default {
   }
 
   .ps__item {
-    background-color: #eee;
+    background-color: #EEEEEE;
     padding: 5px;
     cursor: pointer;
 

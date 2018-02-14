@@ -17,7 +17,7 @@
           type="text"
           :placeholder="$t('hints.annotation_detail')"
           v-model="annotation.detail"></textarea>
-        <span v-else class="annotation-detail">{{ annotation.detail }}</span>
+        <span v-else class="annotationDetail">{{ annotation.detail }}</span>
     </div>
   </div>
 </template>
@@ -65,7 +65,7 @@ $annotationUserColor: $secondaryBlue;
     padding: 0.4em;
     margin: 0.5em 1em 0.5em 0;
     vertical-align: top;
-    span.annotation-detail {
+    span.annotationDetail {
       color: grey;
       font-size: 12px;
       white-space: pre-line;
@@ -76,7 +76,6 @@ $annotationUserColor: $secondaryBlue;
       outline: 0;
       background: $backgroundColor;
       color: $black;
-      border: 0;
       &::placeholder {
         color: lighten($black, 20);
       }
@@ -112,7 +111,7 @@ $annotationUserColor: $secondaryBlue;
     }
     &--editMode {
       a {
-        color: inherit
+        color: inherit;
       }
     }
 }

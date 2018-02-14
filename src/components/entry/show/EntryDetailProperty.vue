@@ -33,17 +33,15 @@ export default {
     margin-top: 0.3em;
     padding-right: 0.3em;
     line-height: 100%;
-
-    .material-icons {
+    & > i {
       width: 24px;
       height: 24px;
       font-size: 32px;
       margin-left: -2px;
       margin-right: 2px;
     }
-
     .emptyIcon,
-    .entryType-icon {
+    .entryTypeIcon {
       width: 24px;
       height: 24px;
       font-size: 2.3em;

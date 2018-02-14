@@ -3,7 +3,7 @@
     <div class="inputField__spacing input-field">
       <textarea v-model="value" :id="textareaID" class="materialize-textarea"></textarea>
     </div>
-    <transition name="overlay" tag="div">
+    <transition name="chapterOverlay" tag="div">
       <div class="overlay" v-if="entrySelector.visible">
         <div class="selector">
           <label>{{$t('multiselect.selectOrga')}}</label>
@@ -243,17 +243,5 @@ export default {
   background: white;
   padding: 1em;
 }
-.overlay-enter-active, .overlay-leave-active {
-  transition: opacity .3s ease
-}
-.overlay-enter, .overlay-leave-to {
-  opacity: 0
-}
-.overlay-enter-active .selector, .overlay-leave-active .selector{
-  transition: all .1s ease
-}
-.overlay-enter .selector, .overlay-leave-to .selector {
-  opacity: 0;
-  top: 100px;
-}
+
 </style>

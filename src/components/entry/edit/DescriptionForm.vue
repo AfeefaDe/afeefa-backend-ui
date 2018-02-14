@@ -1,6 +1,6 @@
 <template>
   <div class="inputField__spacing">
-    <p v-if="item.parent_orga && item.inheritance.short_description" class="inheritance-output inheritedValue">
+    <p v-if="item.parent_orga && item.inheritance.short_description" class="inheritanceOutput inheritedValue">
       {{item.parent_orga.short_description}}
     </p>
 
@@ -22,7 +22,7 @@
       <span v-show="errors.has('short_description')" class="validation-error">{{ errors.first('short_description') }}</span>
     </div>
 
-    <div class="inheritance-field" v-if="item.parent_orga && item.parent_orga.short_description">
+    <div class="inheritanceField" v-if="item.parent_orga && item.parent_orga.short_description">
       <input class="filled-in" id="inheritDescription" type="checkbox" v-model="item.inheritance.short_description"/>
       <label for="inheritDescription">{{ $t('checkboxes.short_description_inheritance') }}</label>
     </div>
@@ -53,11 +53,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.inheritance-field {
+.inheritanceField {
   margin-top: .5em;
 }
-
-.inheritance-output {
+.inheritanceOutput {
   margin-bottom: 0;
   color: $gray50;
 }

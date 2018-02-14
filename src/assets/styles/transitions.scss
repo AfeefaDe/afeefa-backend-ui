@@ -1,0 +1,46 @@
+/* these class names are not BEM compatible. so we are disabling our beloved stylelinter */
+/* stylelint-disable selector-class-pattern */
+
+$animationSpeed: .3s;
+
+/* Fade Animation */
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity $animationSpeed;
+}
+
+/* slideInTop Alert Animation */
+.slideInTop-enter-active, .slideInTop-leave-active {
+  transition: all .4s;
+}
+.slideInTop-enter, .slideInTop-leave-to {
+  opacity: 0;
+  transform: translateY(-50px);
+}
+
+/* chapter overlay animation */
+.chapterOverlay-enter-active, .chapterOverlay-leave-active {
+  transition: opacity $animationSpeed ease;
+}
+.chapterOverlay-enter, .chapterOverlay-leave-to {
+  opacity: 0;
+}
+.chapterOverlay-enter-active, .chapterOverlay-leave-active {
+  transition: all .1s ease;
+}
+.chapterOverlay-enter, .chapterOverlay-leave-to {
+  opacity: 0;
+  top: 100px;
+}
+
+/* dialog overlay animation */
+.dialog-enter-active, .dialog-leave-active {
+  transition: all $animationSpeed;
+}
+.dialog-enter, .dialog-leave-to {
+  opacity: 0;
+  top: 0;
+}
+/* stylelint-enable */

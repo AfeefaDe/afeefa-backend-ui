@@ -1,35 +1,35 @@
 <template>
-  <div class="navigation-mobile">
-    <div class="navigation-mobile__header">
+  <div class="navigationMobile">
+    <div class="navigationMobile__header">
       <navigation-breadcrumb :translate-title="translateTitle"></navigation-breadcrumb>
 
-      <div id="btn-sandwich" @click="toggleMenu()">
+      <div id="navigationMobile__sandwichButton" @click="toggleMenu()">
         <i class="material-icons" v-if="visible">close</i>
         <i class="material-icons" v-else>menu</i>
       </div>
     </div>
 
-    <div id="menu" v-if="visible">
-      <div v-for="item in items" :class="['navigation-mobile__item', 'level' + item.level]" :key="item.title">
+    <div class="navigationMobile__menu" v-if="visible">
+      <div v-for="item in items" :class="['navigationMobile__item', 'level' + item.level]" :key="item.title">
         <router-link :to="{name: item.route}">
           {{ translateTitle(item) }}
           <template v-if="item.hint || item.hint === 0">({{item.hint}})</template>
         </router-link>
 
-        <router-link :to="{name: item.action.route}" class="navigation-mobile__itemAction" v-if="item.action">
+        <router-link :to="{name: item.action.route}" class="navigationMobile__itemAction" v-if="item.action">
           <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
         </router-link>
       </div>
     </div>
 
-    <div id="footer" v-if="visible">
-      <div class="navigation-mobile__footerSeperator"></div>
-      <section class="navigation-mobile__footer">
+    <div class="navigationMobile__footerContainer" v-if="visible">
+      <div class="navigationMobile__footerSeperator"></div>
+      <section class="navigationMobile__footer">
         <span>
           <i class="material-icons spacing-right">account_circle</i> {{currentUser.name}} <span v-if="currentUser.organization">({{ currentUser.organization }})</span>
         </span>
       </section>
-      <section class="navigation-mobile__footer">
+      <section class="navigationMobile__footer">
         <div>
           <router-link :to="{name: 'usersettings'}">Meine Einstellungen</router-link><br>
           <div>
@@ -79,7 +79,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.navigation-mobile {
+.navigationMobile {
   display: block;
   padding: 1em 0.8em;
   background-color: $black_alpha;
@@ -88,6 +88,7 @@ export default {
   height: auto;
   z-index: 100;
   width: 100%;
+
   &__item {
     display: flex;
     justify-content: space-between;
@@ -106,28 +107,19 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
-  &__footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  &__footerSeperator {
-    border-top: 1px solid $gray20;
-    padding-top: 0.8em;
-    width: 100%;
-    height: 0;
-  }
   &__areaName {
     text-transform: capitalize;
   }
 
-  #btn-sandwich {
+  &__sandwichButton {
     cursor: pointer;
     margin-top: 0.2em;
-    i { font-size: 2em; }
+    i {
+      font-size: 2em;
+    }
   }
 
-  #menu {
+  &__menu {
     margin-top: 0.5em;
     border-top: 1px solid $gray20;
     position: relative;
@@ -142,7 +134,7 @@ export default {
     }
   }
 
-  #footer {
+  &__footerContainer {
     margin-top: 1em;
     a {
       display: inline-block;
@@ -152,6 +144,17 @@ export default {
       vertical-align: middle;
       margin-top: -3px;
     }
+  }
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__footerSeperator {
+    border-top: 1px solid $gray20;
+    padding-top: 0.8em;
+    width: 100%;
+    height: 0;
   }
 }
 </style>

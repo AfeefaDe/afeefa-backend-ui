@@ -166,7 +166,7 @@ export default {
   height: 300px;
 
   &.active {
-    border: 1px solid #26a69a;
+    border: 1px solid #26A69A;
     padding: 0;
   }
 }

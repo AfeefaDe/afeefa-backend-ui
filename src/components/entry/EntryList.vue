@@ -47,10 +47,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.past-events-checkbox {
-  display: flex;
-  justify-content: flex-end;
-}
-</style>

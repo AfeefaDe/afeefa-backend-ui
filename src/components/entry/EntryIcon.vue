@@ -1,9 +1,9 @@
 <template>
   <span :class="[
-    'entryType-icon',
-    'entryType-icon--' + item.type,
-    'entryType-icon--' + (item.active ? 'active' : 'inactive'),
-    'entryType-icon--categoryColors',
+    'entryTypeIcon',
+    'entryTypeIcon--' + item.type,
+    'entryTypeIcon--' + (item.active ? 'active' : 'inactive'),
+    'entryTypeIcon--categoryColors',
     categoryClass(item)
   ]">
   </span>

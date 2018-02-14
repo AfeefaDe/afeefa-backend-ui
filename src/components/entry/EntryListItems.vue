@@ -10,7 +10,9 @@
         placeholder="Tippen zum Filtern"
         v-model="searchKeyword"
         @keydown.esc.prevent="searchKeyword = ''" />
-      <a v-if="searchKeyword" @click.prevent="searchKeyword = ''" href=""><i class="material-icons searchForm__icon">cancel</i></a>
+      <a v-if="searchKeyword" @click.prevent="searchKeyword = ''" href="">
+        <i class="material-icons">cancel</i>
+      </a>
     </div>
 
     <div v-if="items && has.pagination">
@@ -246,7 +248,7 @@ export default {
   }
 
   li:last-child {
-    border-bottom: none
+    border-bottom: none;
   }
 
   &__nav {
@@ -254,7 +256,6 @@ export default {
     color: inherit;
     display: flex;
     align-items: flex-end;
-    word-break: break-all;
     word-break: break-word;
     hyphens: auto;
     .title {
@@ -309,7 +310,7 @@ export default {
         margin-bottom: .2em;
       }
     }
-    .item .material-icons {
+    .item i {
       vertical-align: middle;
       font-size: 1.4em;
       margin-left: -0.3em;

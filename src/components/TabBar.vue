@@ -107,7 +107,7 @@ export default {
   &__navItemContainer {
     margin: 0 0 1em;
     width: 100%;
-    // fixes strange chrome bug (#200)
+    /* fixes strange chrome bug (#200) */
     overflow-x: hidden;
     background: transparent;
     color: inherit;

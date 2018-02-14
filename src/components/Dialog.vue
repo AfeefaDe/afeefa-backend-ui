@@ -1,6 +1,6 @@
 <template>
-  <div class="dialog-container">
-    <div :class="['dialog-glassframe', dialog ? 'dialog-glassframe--visible' : 'dialog-glassframe--invisible']"></div>
+  <div class="dialogContainer">
+    <div :class="['dialogGlassframe', dialog ? 'dialogGlassframe--visible' : 'dialogGlassframe--invisible']"></div>
 
     <transition name="dialog">
       <div class="dialog" v-if="dialog">
@@ -76,13 +76,13 @@ export default {
 
 
 <style lang="scss" scoped>
-.dialog-container {
+.dialogContainer {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-.dialog-glassframe {
+.dialogGlassframe {
   position: fixed;
   top: 0;
   left: 0;
@@ -164,13 +164,5 @@ export default {
       color: $white;
     }
   }
-}
-
-.dialog-enter-active, .dialog-leave-active {
-  transition: all .4s;
-}
-.dialog-enter, .dialog-leave-to {
-  opacity: 0;
-  top: 0px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="spinner-container"></div>
+  <div v-if="show" class="spinnerContainer"></div>
 </template>
 
 <script>
@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style scoped>
-.spinner-container {
+.spinnerContainer {
   position: relative;
   display: inline-block;
   width: 1em;
@@ -29,7 +29,6 @@ export default {
   margin-right: 5px;
   margin-top: -4px;
 }
-
 .spinner {
   margin: 0;
 }

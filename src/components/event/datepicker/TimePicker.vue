@@ -19,7 +19,9 @@ export default {
 </script>
 
 <style lang="scss">
+/* stylelint-disable selector-class-pattern */
 button.time-picker-btn {
-  display: flex
+  display: flex;
 }
+/* stylelint-enable */
 </style>

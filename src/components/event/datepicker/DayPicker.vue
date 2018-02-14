@@ -30,6 +30,7 @@ export default {
 
 
 <style lang="scss">
+/* stylelint-disable selector-class-pattern */
 .btn-today {
   height: 22px;
   line-height: 24px;
@@ -37,5 +38,5 @@ export default {
   font-size: .8em;
   margin: 10px 5px;
 }
-
+/* stylelint-enable */
 </style>

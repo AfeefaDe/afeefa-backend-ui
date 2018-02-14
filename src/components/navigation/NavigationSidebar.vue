@@ -17,7 +17,7 @@
       <div class="navigationSidebar__footer">
         <div class="navigationSidebar__footerRow">
           <span class="navigationSidebar__footerItem" :title="$t('hints.user_status')">
-            <i class="navigationSidebar__userIcon material-icons spacing-right">account_circle</i>
+            <i class="navigationSidebar__userIcon material-icons navigationSidebar__userIcon--spacingRight">account_circle</i>
             <div>
               <strong>{{currentUser.name}}</strong><br>
               <span v-if="currentUser.organization">{{ currentUser.organization }}</span>
@@ -132,7 +132,7 @@ export default {
   }
   &__userIcon {
     color: $secondaryBlue;
-    &.spacing-right {
+    &--spacingRight {
       margin-right: 0.3em;
     }
   }
