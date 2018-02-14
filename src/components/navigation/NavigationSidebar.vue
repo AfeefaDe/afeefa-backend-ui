@@ -31,13 +31,13 @@
             <span class="navigationSidebar__footerItem">
               {{ $t('headlines.systemLanguage') }}:
               <span v-for="lang in ['de', 'en']" :key="lang">
-                <span v-if="lang === $i18n.locale"><strong class="spacing-left">{{ $t('languages.'+lang) }}</strong></span>
-                <span v-else><a href="#" class="spacing-left" @click="changeLanguage()">{{ $t('languages.'+lang) }}</a></span>
+                <span v-if="lang === $i18n.locale"><strong class="spacingLeft">{{ $t('languages.'+lang) }}</strong></span>
+                <span v-else><a href="#" class="spacingLeft" @click="changeLanguage()">{{ $t('languages.'+lang) }}</a></span>
               </span>
             </span>
           </div>
           <a href="" @click.prevent="logout()" class="cursor navigationSidebar__footerItem">
-            {{ $t('headlines.logout') }}<i class="material-icons spacing-left">exit_to_app</i>
+            {{ $t('headlines.logout') }}<i class="material-icons spacingLeft">exit_to_app</i>
           </a>
         </div>
       </div>

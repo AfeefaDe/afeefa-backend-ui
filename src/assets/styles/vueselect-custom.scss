@@ -14,9 +14,11 @@
        color: white;
     }
   }
+  /* stylelint-disable selector-class-pattern */
   .multiselect__tag-icon:focus, .multiselect__tag-icon:hover {
     background: $secondaryBlue;
   }
+  /* stylelint-enable */
   .multiselect--active {
     z-index: 10;
   }
@@ -28,7 +30,7 @@
 /* another variant of the custom sytle with borders and a background color — used for tag input*/
 .customMultiselect--border {
   .multiselect__tags {
-    border: 1px solid #e8e8e8;
+    border: 1px solid #E8E8E8;
     background: $gray20;
     padding: 8px 40px 0 8px;
   }

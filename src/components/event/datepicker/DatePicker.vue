@@ -8,7 +8,7 @@
       </button>
 
       <div @click.prevent.stop="toggleStartDatePicker" class="dateField start-dateField inputField__spacing input-field">
-        <label for="startDate" :class="['clickableElement', {active: currentDateStart}]">{{ $t("entries.date_start") }} <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span></label>
+        <label for="startDate" :class="['clickableElement', {active: currentDateStart}]">{{ $t("entries.date_start") }} <span class="mandatoryField">({{ $t('infos.mandatory_field') }})</span></label>
         <day-picker ref="startDatePickerRef" id="startDate" :options="dateOptions"/>
       </div>
 

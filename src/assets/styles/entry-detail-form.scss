@@ -1,4 +1,4 @@
-.go-back {
+.goBack {
   color: white;
   margin-left: -6px;
   font-weight: bold;
@@ -21,9 +21,6 @@
     font-weight: 500;
   }
 
-  li.align-status-items {
-    margin-left: 4.5em;
-  }
   .singleTag {
     display: inline-block;
     background: $secondaryBlue;
@@ -50,8 +47,5 @@
   }
   &__error {
     color: $red;
-  }
-  &__error_white_space {
-    margin-bottom: 3em;
   }
 }

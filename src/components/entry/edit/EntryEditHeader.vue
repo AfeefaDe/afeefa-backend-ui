@@ -1,6 +1,6 @@
 <template>
   <div :class="['mainCard__header', 'mainCard__headerCategories', categoryClass]" v-if="item">
-    <a href="" @click.prevent="goBack"><i class="material-icons go-back">chevron_left</i></a>
+    <a href="" @click.prevent="goBack"><i class="material-icons goBack">chevron_left</i></a>
 
     <div class="mainCard__headerTitle">
       <span class="mainCard__type">

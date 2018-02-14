@@ -26,7 +26,7 @@
               :map-center="mapCenter(contact.location)"
               :initial-zoom="13"
               :location="contact.location"
-              style="max-width:400px">
+              style="max-width:400px;">
             </location-map>
           </entry-detail-property>
 

@@ -17,7 +17,7 @@
       }
     }
   }
-  .mandatory-field {
+  .mandatoryField {
     color: darken($secondaryBlue, 15);
   }
   .saveButton {
@@ -25,43 +25,15 @@
   }
 }
 
-.input-field {
-  .flatpickr-input {
-    color: inherit !important;
-  }
-  label {
-    display: inline-block;
-    width: 100%;
-  }
-  input, textarea {
-    margin-bottom: 0 !important;
-    display: block;
-  }
-}
-
-select.validation-error,
-textarea.validation-error,
-input.validation-error,
-input:not(.browser-default).validation-error,
-div.validation-error {
-  background-color: #ffeeee;
-  border-bottom-color: red;
-  box-shadow: 0 1px 0 0 red;
-  &:focus {
-    background-color: #ffeeee;
-    border-bottom-color: red;
-    box-shadow: 0 1px 0 0 red;
-  }
-}
-
+/* stylelint-disable selector-class-pattern */
 .datePicker.validation-error {
-  background-color: #ffeeee;
+  background-color: #FFEEEE;
 }
 
 span.validation-error {
   margin-top: 2px;
   display: block;
-  color: #cc6666;
+  color: #CC6666;
   font-size: .9em;
 
   &.geodata-not-found {
@@ -71,11 +43,10 @@ span.validation-error {
 
 span.validation-hint {
   font-size: .9em;
-  color: #999;
+  color: #999999;
   i {
     vertical-align: middle;
     font-size: 1.4em;
   }
 }
-
-
+/* styleling-enable */

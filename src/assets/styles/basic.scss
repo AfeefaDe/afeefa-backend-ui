@@ -45,7 +45,6 @@ $sidebarWidth: 350px;
   }
 }
 
-
 .cursor {
   cursor: pointer;
 }
@@ -153,7 +152,7 @@ $sidebarWidth: 350px;
     &:hover {
       background-color: $gray80;
     }
-    .material-icons {
+    i {
       font-size: 1.4em;
       margin-left: 0.5em;
     }
@@ -186,9 +185,9 @@ $sidebarWidth: 350px;
 }
 
 //proper inline spacing for material icons
-.spacing-right {
+.spacingRight {
     margin-right: 0.2em;
 }
-.spacing-left {
+.spacingLeft {
     margin-left: 0.2em;
 }

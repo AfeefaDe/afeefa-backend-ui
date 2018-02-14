@@ -26,7 +26,7 @@
       <div class="navigationMobile__footerSeperator"></div>
       <section class="navigationMobile__footer">
         <span>
-          <i class="material-icons spacing-right">account_circle</i> {{currentUser.name}} <span v-if="currentUser.organization">({{ currentUser.organization }})</span>
+          <i class="material-icons spacingRight">account_circle</i> {{currentUser.name}} <span v-if="currentUser.organization">({{ currentUser.organization }})</span>
         </span>
       </section>
       <section class="navigationMobile__footer">
@@ -35,12 +35,12 @@
           <div>
             {{ $t('headlines.systemLanguage') }}:
             <span v-for="lang in ['de', 'en']" :key="lang">
-              <span v-if="lang === $i18n.locale"><strong class="spacing-left">{{ $t('languages.'+lang) }}</strong></span>
-              <span v-else><a href="#" class="spacing-left" @click="changeLanguage()">{{ $t('languages.'+lang) }}</a></span>
+              <span v-if="lang === $i18n.locale"><strong class="spacingLeft">{{ $t('languages.'+lang) }}</strong></span>
+              <span v-else><a href="#" class="spacingLeft" @click="changeLanguage()">{{ $t('languages.'+lang) }}</a></span>
             </span>
           </div>
         </div>
-        <a href="" @click.prevent="logout()"> {{ $t('headlines.logout') }}<i class="material-icons spacing-left">exit_to_app</i></a>
+        <a href="" @click.prevent="logout()"> {{ $t('headlines.logout') }}<i class="material-icons spacingLeft">exit_to_app</i></a>
       </section>
     </div>
   </div>

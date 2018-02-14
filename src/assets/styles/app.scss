@@ -7,7 +7,6 @@ $roboto-font-path: "../../../node_modules/materialize-css/dist/fonts/roboto/" !d
 //@import "~materialize/components/mixins";
 @import "~materialize/components/color";
 
-
 // Variables;
 @import "~materialize/components/variables";
 
@@ -23,7 +22,6 @@ $button-floating-background: $secondary-color !default;
 $button-raised-background-hover: lighten($secondaryBlue, 5%);
 $input-focus-color: $secondaryBlue;
 /* =======================> overwrite end <======================= */
-
 
 // Reset
 @import "~materialize/components/normalize";

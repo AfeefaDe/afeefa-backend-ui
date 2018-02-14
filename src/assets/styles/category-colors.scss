@@ -1,12 +1,14 @@
+/* stylelint-disable selector-class-pattern */
+
 @mixin categoryColors($alpha_background: 1, $alpha_border: 1) {
   /* colors copied from frontend code base */
   $gray50: #999999;
   $yellow: #E4B100;
-  $red: #a21c15;
+  $red: #A21C15;
   $blue_dark: #085272;
-  $olive: #5e6823;
+  $olive: #5E6823;
   $turquoise: #318B86;
-  $violet: #693e75;
+  $violet: #693E75;
   $orange: #CA7311;
 
   &.cat-general   {
@@ -49,3 +51,4 @@
     border-color: rgba($orange, $alpha_border);
   }
 }
+/* stylelint-enable */
