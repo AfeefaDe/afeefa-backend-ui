@@ -22,7 +22,8 @@ export default class Annotation extends Model {
     return {
       annotationCategory: {
         type: Relation.HAS_ONE,
-        Model: AnnotationCategory
+        Model: AnnotationCategory,
+        contains: Relation.CONTAINS_LINK
       }
     }
   }
@@ -46,7 +47,9 @@ export default class Annotation extends Model {
 
   getRelationsFromJson (json) {
     return {
-      annotationCategory: json.attributes.annotation_category_id
+      annotationCategory: {
+        id: json.attributes.annotation_category_id
+      }
     }
   }
 

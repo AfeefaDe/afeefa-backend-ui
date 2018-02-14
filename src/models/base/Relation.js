@@ -5,13 +5,13 @@ export default class Relation {
   static HAS_ONE = 'has_one'
   static HAS_MANY = 'has_many'
 
-  static CONTAINS_LINK = 0
+  static CONTAINS_LINK = 'link'
   static CONTAINS_ATTRIBUTE_DATA = 1
   static CONTAINS_LIST_DATA = 2
   static CONTAINS_FULL_DATA = 3
 
   constructor ({owner, name, type, Model, contains}) {
-    if (!type || !Model) {
+    if (!type || !Model || !contains) {
       console.error('Relation configuration invalid', ...arguments)
     }
     this.owner = owner
