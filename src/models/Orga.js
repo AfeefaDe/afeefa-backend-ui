@@ -2,7 +2,6 @@ import Entry from './base/Entry'
 import OrgaType from './OrgaType'
 import Relation from './base/Relation'
 import DataTypes from './base/DataTypes'
-import LoadingState from '@/store/api/LoadingState'
 
 export default class Orga extends Entry {
   static type = 'orgas'
@@ -45,27 +44,20 @@ export default class Orga extends Entry {
       parent_orga: {
         type: Relation.HAS_ONE,
         Model: Orga,
-        itemType: 'orgas',
-        data: json => json.data,
-        remoteName: 'initiator',
-        loadingState: LoadingState.LOADED_AS_ATTRIBUTE
+        contains: Relation.CONTAINS_ATTRIBUTE_DATA,
+        remoteName: 'initiator'
       },
 
       resource_items: {
         type: Relation.HAS_MANY,
-        listType: 'resource_items',
-        listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
         Model: ResourceItem,
-        data: json => json.data,
-        loadingState: LoadingState.FULLY_LOADED
+        contains: Relation.CONTAINS_FULL_DATA
       },
 
       actor_relations: {
         type: Relation.HAS_ONE,
         Model: ActorRelations,
-        itemType: 'actor_relations',
-        data: json => json,
-        loadingState: LoadingState.FULLY_LOADED
+        contains: Relation.CONTAINS_FULL_DATA
       }
     }
   }

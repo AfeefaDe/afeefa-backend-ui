@@ -41,18 +41,13 @@ export default class Contact extends Model {
       location: {
         type: Relation.HAS_ONE,
         Model: Location,
-        itemType: 'locations',
-        data: json => json.data,
-        loadingState: LoadingState.FULLY_LOADED
+        contains: Relation.CONTAINS_FULL_DATA
       },
 
       contact_persons: {
         type: Relation.HAS_MANY,
-        listType: 'contact_persons',
-        listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
         Model: ContactPerson,
-        data: json => json.data,
-        loadingState: LoadingState.FULLY_LOADED
+        contains: Relation.CONTAINS_FULL_DATA
       }
     }
   }
@@ -73,7 +68,7 @@ export default class Contact extends Model {
   fetchContactPersons (clone) {
     const resourceCache = store.state.api.resourceCache
     this.contact_persons = []
-    const contactPersons = resourceCache.getList('contact_persons', JSON.stringify({owner_type: this.type, owner_id: this.id}))
+    const contactPersons = resourceCache.getList('contact_persons', JSON.stringify({owner_type: this.type, owner_id: this.id, relation: 'contact_persons'}))
     contactPersons.forEach(person => {
       person = clone ? person.clone() : person
       this.contact_persons.push(person)

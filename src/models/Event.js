@@ -1,5 +1,4 @@
 import moment from 'moment'
-import LoadingState from '@/store/api/LoadingState'
 import Entry from './base/Entry'
 import Relation from './base/Relation'
 import DataTypes from './base/DataTypes'
@@ -17,11 +16,14 @@ export default class Event extends Entry {
         type: DataTypes.Date,
         default: moment(new Date()).startOf('day').toDate()
       },
+
       has_time_start: DataTypes.Boolean,
+
       date_end: {
         type: DataTypes.Date,
         default: moment(new Date()).startOf('day').toDate()
       },
+
       has_time_end: DataTypes.Boolean
     }
   }
@@ -32,10 +34,8 @@ export default class Event extends Entry {
       parent_orga: {
         type: Relation.HAS_ONE,
         Model: Orga,
-        itemType: 'orgas',
-        data: json => json.data,
-        remoteName: 'orga',
-        loadingState: LoadingState.LOADED_AS_ATTRIBUTE
+        contains: Relation.CONTAINS_ATTRIBUTE_DATA,
+        remoteName: 'orga'
       }
     }
   }

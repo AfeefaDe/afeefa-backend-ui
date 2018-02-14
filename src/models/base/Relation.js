@@ -5,15 +5,22 @@ export default class Relation {
   static HAS_ONE = 'has_one'
   static HAS_MANY = 'has_many'
 
-  constructor ({owner, type, listType, listParams, itemType, Model, data, loadingState}) {
+  static CONTAINS_LINK = 0
+  static CONTAINS_ATTRIBUTE_DATA = 1
+  static CONTAINS_LIST_DATA = 2
+  static CONTAINS_FULL_DATA = 3
+
+  constructor ({owner, name, type, Model, contains}) {
+    if (!type || !Model) {
+      console.error('Relation configuration invalid', ...arguments)
+    }
     this.owner = owner
+    this.name = name
     this.type = type
-    this.listType = listType
-    this.listParams = listParams || (() => '') // empty object
-    this.itemType = itemType || listType
     this.Model = Model
-    this.data = data || (() => null) // no data
-    this.loadingState = loadingState
+
+    this.contains = contains
+    this.loadingState = contains
 
     this.init()
   }
@@ -36,6 +43,14 @@ export default class Relation {
     this.fetched = false
     this.item = null
     this.items = []
+  }
+
+  listParams () {
+    return {
+      owner_type: this.owner.type,
+      owner_id: this.owner.id,
+      relation: this.name
+    }
   }
 
   initWithJson (json) {
@@ -61,6 +76,11 @@ export default class Relation {
   }
 
   cache (resourceCache) {
+    // nothing to cache
+    if (!this.json) {
+      return
+    }
+
     // not initialized, no need to cache
     if (!this.initialized) {
       return
@@ -71,37 +91,35 @@ export default class Relation {
     }
     this.syncedWithResourceCache = true
 
-    if (this.json) {
-      // cache item
-      if (this.type === Relation.HAS_ONE) {
-        const item = this.findOrCreateItem(resourceCache, this.json)
+    // cache item
+    if (this.type === Relation.HAS_ONE) {
+      const item = this.findOrCreateItem(resourceCache, this.json)
+      this.cacheItemRelations(resourceCache, item)
+    // cache list
+    } else {
+      const items = []
+      this.json.forEach(json => {
+        const item = this.findOrCreateItem(resourceCache, json)
+        items.push(item)
+      })
+      items.forEach(item => {
         this.cacheItemRelations(resourceCache, item)
-      // cache list
-      } else {
-        const items = []
-        this.json.forEach(json => {
-          const item = this.findOrCreateItem(resourceCache, json)
-          items.push(item)
-        })
-        items.forEach(item => {
-          this.cacheItemRelations(resourceCache, item)
-        })
-        const listParams = JSON.stringify(this.listParams(this.owner))
-        resourceCache.addList(this.listType, listParams, items)
-      }
+      })
+      const listParams = JSON.stringify(this.listParams())
+      resourceCache.addList(this.Model.type, listParams, items)
     }
   }
 
   findOrCreateItem (resourceCache, json) {
-    let item = resourceCache.getItem(this.itemType, json.id)
+    let item = resourceCache.getItem(this.Model.type, json.id)
     if (!item) {
       item = this.factory(json)
-      resourceCache.addItem(this.itemType, item)
+      resourceCache.addItem(this.Model.type, item)
     } else {
       // we want to update our item not multiple times in the same request
       const isSameRequest = json._requestId === item._requestId
       const wantToCacheMore = this.loadingState > item._loadingState
-      // if (this.listType === 'orgas' && json.id === '4274') {
+      // if (this.Model.type === 'orgas' && json.id === '4274') {
       //   console.log('--- wanttofetchmore', this.loadingState, item._loadingState, wantToCacheMore)
       // }
       if (wantToCacheMore || !isSameRequest) {
@@ -110,6 +128,28 @@ export default class Relation {
       }
     }
     return item
+  }
+
+  cacheItemRelations (resourceCache, item) {
+    for (let name in item.relations) {
+      const relation = item.relations[name]
+      relation.cache(resourceCache)
+    }
+  }
+
+  deserialize (resourceCache, json) {
+    this.reset() // TODO
+
+    const data = json.hasOwnProperty('data') ? json.data : json // jsonapi-spec fallback
+    if (data) {
+      if (this.type === Relation.HAS_ONE && this.contains === Relation.CONTAINS_LINK) {
+        this.initWithId(data.id)
+      } else {
+        this.initWithJson(data)
+      }
+    }
+
+    this.cache(resourceCache)
   }
 
   fetch (callback, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
@@ -155,13 +195,6 @@ export default class Relation {
     }
   }
 
-  cacheItemRelations (resourceCache, item) {
-    for (let name in item.relations) {
-      const relation = item.relations[name]
-      relation.cache(resourceCache)
-    }
-  }
-
   /**
    * A cloned item will also have all relations cloned from it's orginal.
    * The clone item must fetch any relation on its own and hence runs its
@@ -175,12 +208,8 @@ export default class Relation {
     const clone = new Relation({
       owner: this.owner,
       type: this.type,
-      listType: this.listType,
-      listParams: this.listParams,
-      itemType: this.itemType,
       Model: this.Model,
-      data: this.data,
-      loadingState: this.loadingState
+      contains: this.contains
     })
 
     if (this.json) {
@@ -193,5 +222,9 @@ export default class Relation {
     clone.syncedWithResourceCache = this.syncedWithResourceCache
 
     return clone
+  }
+
+  get info () {
+    return `[Relation] owner="${this.owner.type}(${this.owner.id})" type="${this.type}" name="${this.name}"`
   }
 }

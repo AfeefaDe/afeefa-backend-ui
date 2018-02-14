@@ -22,8 +22,8 @@ export default class Category extends Model {
     return {
       parent_category: {
         type: Relation.HAS_ONE,
-        itemType: 'categories',
-        data: json => (json.data && json.data.id)
+        Model: Category,
+        contains: Relation.CONTAINS_LINK
       }
     }
   }

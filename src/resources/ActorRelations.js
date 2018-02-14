@@ -26,11 +26,11 @@ class ActorRelationsResource extends Resource {
 }
 
 class ActorRelationActorsResource extends Resource {
-  init ([orgaId, actorRelation]) {
-    this.url = BASE + `orgas/${orgaId}/actor_relations/${actorRelation}`
+  init ([orga, actorRelation]) {
+    this.url = BASE + `orgas/${orga.id}/actor_relations/${actorRelation}`
     this.http = Vue.resource(this.url)
-    this.listType = 'actor_relations'
-    this.listParams = JSON.stringify({actorRelationsId: orgaId, relationName: actorRelation})
+    this.listType = 'orgas'
+    this.listParams = JSON.stringify({owner_type: 'actor_relations', owner_id: orga.id, relation: actorRelation})
   }
 
   createItem () {
@@ -45,7 +45,7 @@ const ActorRelations = {
     return store.dispatch('api/getItem', {resource, id: orga.id, strategy: LoadingStrategy.LOAD_IF_NOT_CACHED}).then(actorRelations => {
       const promises = []
       Orga.ACTOR_RELATIONS.forEach(actorRelation => {
-        const actorsResource = new ActorRelationActorsResource(orga.id, actorRelation)
+        const actorsResource = new ActorRelationActorsResource(orga, actorRelation)
         const promise = store.dispatch('api/getList', {resource: actorsResource}).then(actors => {
           actorRelations[actorRelation] = actors
         })

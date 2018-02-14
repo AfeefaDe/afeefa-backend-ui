@@ -58,7 +58,7 @@ export default class Model {
     for (let name in this.constructor._relations) {
       const relation = this.constructor._relations[name]
       this[name] = relation.type === Relation.HAS_MANY ? [] : null
-      this._relations[name] = new Relation({owner: this, ...relation})
+      this._relations[name] = new Relation({owner: this, name, ...relation})
     }
 
     this.init()
@@ -138,21 +138,9 @@ export default class Model {
       }
 
       const relation = this._relations[localName]
-      relation.reset() // TODO
-
-      const relationJson = relationsJson[name]
-      const data = relation.data(relationJson)
-
-      if (data) {
-        if (!isNaN(parseFloat(data))) {
-          relation.initWithId(data)
-        } else {
-          relation.initWithJson(data)
-        }
-      }
 
       const resourceCache = store.state.api.resourceCache
-      relation.cache(resourceCache)
+      relation.deserialize(resourceCache, relationsJson[name])
     }
   }
 

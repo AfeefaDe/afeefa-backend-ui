@@ -18,12 +18,11 @@ export default class Annotation extends Model {
     }
   }
 
-  static relations () {
+  static relations (AnnotationCategory) {
     return {
       annotationCategory: {
         type: Relation.HAS_ONE,
-        itemType: 'annotationCategories',
-        data: json => json
+        Model: AnnotationCategory
       }
     }
   }

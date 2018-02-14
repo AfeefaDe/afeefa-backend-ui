@@ -12,7 +12,7 @@ class ContactsResource extends Resource {
 
     this.http = Vue.resource(BASE + `${owner.type}/${owner.id}/contacts{/id}`, {}, {update: {method: 'PATCH'}})
     this.listType = 'contacts'
-    this.listParams = JSON.stringify({owner_type: owner.type, owner_id: owner.id})
+    this.listParams = JSON.stringify({owner_type: owner.type, owner_id: owner.id, relation: 'contacts'})
   }
 
   createItem () {

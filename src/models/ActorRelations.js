@@ -1,6 +1,5 @@
 import Model from './base/Model'
 import Relation from './base/Relation'
-import LoadingState from '@/store/api/LoadingState'
 
 export default class ActorRelations extends Model {
   static type = 'actor_relations'
@@ -14,12 +13,8 @@ export default class ActorRelations extends Model {
     Orga.ACTOR_RELATIONS.forEach(relationName => {
       relations[relationName] = {
         type: Relation.HAS_MANY,
-        listType: 'actor_relations',
-        listParams: owner => ({actorRelationsId: owner.id, relationName: relationName}),
         Model: Orga,
-        itemType: 'orgas',
-        loadingState: LoadingState.LOADED_FOR_LISTS,
-        data: json => json
+        contains: Relation.CONTAINS_LIST_DATA
       }
     })
     return relations

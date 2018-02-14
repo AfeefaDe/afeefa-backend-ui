@@ -2,7 +2,6 @@ import LoadingStrategy from '@/store/api/LoadingStrategy'
 import DataTypes from './DataTypes'
 import Model from './Model'
 import Relation from './Relation'
-import LoadingState from '@/store/api/LoadingState'
 
 export default class Entry extends Model {
   static attributes () {
@@ -49,52 +48,42 @@ export default class Entry extends Model {
     }
   }
 
-  static relations (Contact, Annotation, User) {
+  static relations (Contact, Annotation, User, Category) {
     return {
       category: {
         type: Relation.HAS_ONE,
-        itemType: 'categories',
-        data: json => (json.data && json.data.id)
+        Model: Category,
+        contains: Relation.CONTAINS_LINK
       },
 
       sub_category: {
         type: Relation.HAS_ONE,
-        itemType: 'categories',
-        data: json => (json.data && json.data.id)
+        Model: Category,
+        contains: Relation.CONTAINS_LINK
       },
 
       contacts: {
         type: Relation.HAS_MANY,
-        listType: 'contacts',
-        listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
         Model: Contact,
-        data: json => json.data,
-        loadingState: LoadingState.FULLY_LOADED
+        contains: Relation.CONTAINS_FULL_DATA
       },
 
       annotations: {
         type: Relation.HAS_MANY,
-        listType: 'annotations',
-        listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
         Model: Annotation,
-        data: json => json.data,
-        loadingState: LoadingState.FULLY_LOADED
+        contains: Relation.CONTAINS_FULL_DATA
       },
 
       creator: {
         type: Relation.HAS_ONE,
         Model: User,
-        itemType: 'users',
-        data: json => json.data,
-        loadingState: LoadingState.FULLY_LOADED
+        contains: Relation.CONTAINS_FULL_DATA
       },
 
       last_editor: {
         type: Relation.HAS_ONE,
         Model: User,
-        itemType: 'users',
-        data: json => json.data,
-        loadingState: LoadingState.FULLY_LOADED
+        contains: Relation.CONTAINS_FULL_DATA
       }
     }
   }
