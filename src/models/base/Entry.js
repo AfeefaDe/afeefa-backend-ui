@@ -5,46 +5,48 @@ import Relation from './Relation'
 import LoadingState from '@/store/api/LoadingState'
 
 export default class Entry extends Model {
-  static attributes = {
-    title: DataTypes.String,
+  static attributes () {
+    return {
+      title: DataTypes.String,
 
-    description: DataTypes.String,
+      description: DataTypes.String,
 
-    short_description: DataTypes.String,
+      short_description: DataTypes.String,
 
-    media_url: DataTypes.String,
+      media_url: DataTypes.String,
 
-    support_wanted: DataTypes.Boolean,
+      support_wanted: DataTypes.Boolean,
 
-    support_wanted_detail: DataTypes.String,
+      support_wanted_detail: DataTypes.String,
 
-    certified_sfr: DataTypes.Boolean,
+      certified_sfr: DataTypes.Boolean,
 
-    tags: DataTypes.String,
+      tags: DataTypes.String,
 
-    facebook_id: DataTypes.String,
+      facebook_id: DataTypes.String,
 
-    inheritance: {
-      type: DataTypes.Custom,
-      default: {},
-      value (value) {
-        const inheritance = {}
-        if (value) {
-          value.split('|').forEach(key => {
-            inheritance[key] = true
-          })
+      inheritance: {
+        type: DataTypes.Custom,
+        default: {},
+        value (value) {
+          const inheritance = {}
+          if (value) {
+            value.split('|').forEach(key => {
+              inheritance[key] = true
+            })
+          }
+          return inheritance
         }
-        return inheritance
-      }
-    },
+      },
 
-    active: DataTypes.Boolean,
+      active: DataTypes.Boolean,
 
-    created_at: DataTypes.Date,
+      created_at: DataTypes.Date,
 
-    updated_at: DataTypes.Date,
+      updated_at: DataTypes.Date,
 
-    state_changed_at: DataTypes.Date
+      state_changed_at: DataTypes.Date
+    }
   }
 
   static relations (Contact, Annotation, User) {

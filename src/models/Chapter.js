@@ -3,20 +3,22 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class Chapter extends Model {
+  static type = 'chapters'
+
   static query (Chapters) {
     return Chapters
   }
 
-  static attributes = {
-    title: DataTypes.String,
-    content: DataTypes.String,
-    order: DataTypes.Int
+  static attributes () {
+    return {
+      title: DataTypes.String,
+      content: DataTypes.String,
+      order: DataTypes.Int
+    }
   }
 
   init () {
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
-
-    this.type = 'chapters'
   }
 
   getAttributesFromJson (json) {

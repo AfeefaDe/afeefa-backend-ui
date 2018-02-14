@@ -4,13 +4,17 @@ import Relation from './base/Relation'
 import DataTypes from './base/DataTypes'
 
 export default class Annotation extends Model {
+  static type = 'annotations'
+
   static query (Annotations) {
     return Annotations
   }
 
-  static attributes = {
-    detail: {
-      type: DataTypes.String
+  static attributes () {
+    return {
+      detail: {
+        type: DataTypes.String
+      }
     }
   }
 
@@ -26,8 +30,6 @@ export default class Annotation extends Model {
 
   init () {
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
-
-    this.type = 'annotations'
   }
 
   fetchCategory () {

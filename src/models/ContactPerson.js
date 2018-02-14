@@ -3,16 +3,18 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class ContactPerson extends Model {
-  static attributes = {
-    name: DataTypes.String,
-    role: DataTypes.String,
-    mail: DataTypes.String,
-    phone: DataTypes.String
+  static type = 'contact_persons'
+
+  static attributes () {
+    return {
+      name: DataTypes.String,
+      role: DataTypes.String,
+      mail: DataTypes.String,
+      phone: DataTypes.String
+    }
   }
 
   init () {
-    this.type = 'contact_persons'
-
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
   }
 

@@ -4,14 +4,18 @@ import Relation from './base/Relation'
 import DataTypes from './base/DataTypes'
 
 export default class Category extends Model {
+  static type = 'categories'
+
   static query (Categories) {
     return Categories
   }
 
-  static attributes = {
-    title: DataTypes.String,
+  static attributes () {
+    return {
+      title: DataTypes.String,
 
-    sub_categories: DataTypes.Array
+      sub_categories: DataTypes.Array
+    }
   }
 
   static relations () {
@@ -26,8 +30,6 @@ export default class Category extends Model {
 
   init () {
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
-
-    this.type = 'categories'
   }
 
   getAttributesFromJson (json) {

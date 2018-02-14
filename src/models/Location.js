@@ -3,26 +3,36 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class Location extends Model {
+  static type = 'locations'
+
   static query (Locations) {
     return Locations
   }
 
-  static attributes = {
-    title: DataTypes.String,
-    street: DataTypes.String,
-    zip: DataTypes.String,
-    city: DataTypes.String,
-    lat: DataTypes.String,
-    lon: DataTypes.String,
-    directions: DataTypes.String,
-    ownerTitle: DataTypes.String,
-    creatingContactId: DataTypes.String
+  static attributes () {
+    return {
+      title: DataTypes.String,
+
+      street: DataTypes.String,
+
+      zip: DataTypes.String,
+
+      city: DataTypes.String,
+
+      lat: DataTypes.String,
+
+      lon: DataTypes.String,
+
+      directions: DataTypes.String,
+
+      ownerTitle: DataTypes.String,
+
+      creatingContactId: DataTypes.String
+    }
   }
 
   init () {
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
-
-    this.type = 'locations'
   }
 
   getAttributesFromJson (json) {

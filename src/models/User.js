@@ -3,30 +3,32 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class User extends Model {
+  static type = 'users'
+
   static query (Users) {
     return Users
   }
 
-  static attributes = {
-    first_name: {
-      type: DataTypes.String,
-      remoteName: 'forename'
-    },
+  static attributes () {
+    return {
+      first_name: {
+        type: DataTypes.String,
+        remoteName: 'forename'
+      },
 
-    last_name: {
-      type: DataTypes.String,
-      remoteName: 'surname'
-    },
+      last_name: {
+        type: DataTypes.String,
+        remoteName: 'surname'
+      },
 
-    area: DataTypes.String,
+      area: DataTypes.String,
 
-    organization: DataTypes.String
+      organization: DataTypes.String
+    }
   }
 
   init () {
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
-
-    this.type = 'users'
 
     this.password = ''
   }

@@ -5,21 +5,25 @@ import Relation from './base/Relation'
 import DataTypes from './base/DataTypes'
 
 export default class Event extends Entry {
+  static type = 'events'
+
   static query (Events) {
     return Events
   }
 
-  static attributes = {
-    date_start: {
-      type: DataTypes.Date,
-      default: moment(new Date()).startOf('day').toDate()
-    },
-    has_time_start: DataTypes.Boolean,
-    date_end: {
-      type: DataTypes.Date,
-      default: moment(new Date()).startOf('day').toDate()
-    },
-    has_time_end: DataTypes.Boolean
+  static attributes () {
+    return {
+      date_start: {
+        type: DataTypes.Date,
+        default: moment(new Date()).startOf('day').toDate()
+      },
+      has_time_start: DataTypes.Boolean,
+      date_end: {
+        type: DataTypes.Date,
+        default: moment(new Date()).startOf('day').toDate()
+      },
+      has_time_end: DataTypes.Boolean
+    }
   }
 
 
@@ -34,10 +38,6 @@ export default class Event extends Entry {
         loadingState: LoadingState.LOADED_AS_ATTRIBUTE
       }
     }
-  }
-
-  init () {
-    this.type = 'events'
   }
 
   afterDeserialize () {

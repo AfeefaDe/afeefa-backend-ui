@@ -13,6 +13,7 @@ class ModelRegistry {
   initializeAll () {
     for (let name in this.models) {
       const Model = this.models[name]
+      this.checkType(Model)
       this.initializeQuery(Model)
       this.initializeAttributes(Model)
       this.initializeRelations(Model)
@@ -48,6 +49,12 @@ class ModelRegistry {
     )
 
     return props
+  }
+
+  checkType (Model) {
+    if (!Model.hasOwnProperty('type')) {
+      console.error('Das Model', Model.name, 'hat keinen Typ')
+    }
   }
 
   initializeQuery (Model) {
@@ -93,7 +100,7 @@ class ModelRegistry {
       attributes = superAttrs
     }
     if (Model.hasOwnProperty('attributes')) {
-      attributes = {...attributes, ...Model.attributes}
+      attributes = {...attributes, ...Model.attributes()}
     }
     return attributes
   }

@@ -3,6 +3,8 @@ import Relation from './base/Relation'
 import LoadingState from '@/store/api/LoadingState'
 
 export default class ActorRelations extends Model {
+  static type = 'actor_relations'
+
   static query (ActorRelations) {
     return ActorRelations
   }
@@ -21,10 +23,6 @@ export default class ActorRelations extends Model {
       }
     })
     return relations
-  }
-
-  init () {
-    this.type = 'actor_relations'
   }
 
   getRelationsFromJson (json) {

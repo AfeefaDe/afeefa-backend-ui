@@ -7,13 +7,20 @@ import Relation from './Relation'
 let ID = 0
 
 export default class Model {
-  static attributes = {
-    id: {
-      type: DataTypes.Int,
-      default: null
-    },
+  static type = 'models'
 
-    type: DataTypes.String
+  static attributes () {
+    return {
+      id: {
+        type: DataTypes.Int,
+        default: null
+      },
+
+      type: {
+        type: DataTypes.String,
+        default: null
+      }
+    }
   }
 
   constructor () {
@@ -45,6 +52,7 @@ export default class Model {
       const attr = this.constructor._attributes[name]
       this[name] = attr.hasOwnProperty('default') ? attr.default : attr.type.value()
     }
+    this.type = this.constructor.type
 
     // init relations
     for (let name in this.constructor._relations) {

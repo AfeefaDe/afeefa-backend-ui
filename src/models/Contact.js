@@ -5,30 +5,34 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class Contact extends Model {
+  static type = 'contacts'
+
   static query (Contacts) {
     return Contacts
   }
 
-  static attributes = {
-    title: DataTypes.String,
+  static attributes () {
+    return {
+      title: DataTypes.String,
 
-    fax: DataTypes.String,
+      fax: DataTypes.String,
 
-    openingHours: {
-      type: DataTypes.String,
-      remoteName: 'opening_hours'
-    },
+      openingHours: {
+        type: DataTypes.String,
+        remoteName: 'opening_hours'
+      },
 
-    web: DataTypes.String,
+      web: DataTypes.String,
 
-    socialMedia: {
-      type: DataTypes.String,
-      remoteName: 'social_media'
-    },
+      socialMedia: {
+        type: DataTypes.String,
+        remoteName: 'social_media'
+      },
 
-    spokenLanguages: {
-      type: DataTypes.String,
-      remoteName: 'spoken_languages'
+      spokenLanguages: {
+        type: DataTypes.String,
+        remoteName: 'spoken_languages'
+      }
     }
   }
 
@@ -55,8 +59,6 @@ export default class Contact extends Model {
 
   init () {
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
-
-    this.type = 'contacts'
   }
 
   fetchLocation (clone) {

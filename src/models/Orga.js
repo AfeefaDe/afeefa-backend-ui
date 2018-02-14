@@ -5,35 +5,39 @@ import DataTypes from './base/DataTypes'
 import LoadingState from '@/store/api/LoadingState'
 
 export default class Orga extends Entry {
+  static type = 'orgas'
+
   static ACTOR_RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
 
   static query (Orgas) {
     return Orgas
   }
 
-  static attributes = {
-    orga_type_id: {
-      type: DataTypes.Int,
-      default: OrgaType.ORGANIZATION
-    },
+  static attributes () {
+    return {
+      orga_type_id: {
+        type: DataTypes.Int,
+        default: OrgaType.ORGANIZATION
+      },
 
-    count_events: DataTypes.Int,
+      count_events: DataTypes.Int,
 
-    count_resource_items: DataTypes.Int,
+      count_resource_items: DataTypes.Int,
 
-    count_projects: DataTypes.Int,
+      count_projects: DataTypes.Int,
 
-    count_network_members: DataTypes.Int,
+      count_network_members: DataTypes.Int,
 
-    networks: DataTypes.Array,
+      networks: DataTypes.Array,
 
-    network_members: DataTypes.Array,
+      network_members: DataTypes.Array,
 
-    projects: DataTypes.Array,
+      projects: DataTypes.Array,
 
-    project_initiators: DataTypes.Array,
+      project_initiators: DataTypes.Array,
 
-    partners: DataTypes.Array
+      partners: DataTypes.Array
+    }
   }
 
   static relations (Orga, ResourceItem, ActorRelations) {
@@ -64,10 +68,6 @@ export default class Orga extends Entry {
         loadingState: LoadingState.FULLY_LOADED
       }
     }
-  }
-
-  init () {
-    this.type = 'orgas'
   }
 
   fetchActorRelations () {
