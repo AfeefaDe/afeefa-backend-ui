@@ -1,5 +1,4 @@
 {
-  "processors": ["@mapbox/stylelint-processor-arbitrary-tags"],
   "rules": {
     "block-no-empty": true,
     "color-no-invalid-hex": true,
@@ -32,5 +31,5 @@
     "selector-combinator-space-before": "always",
     "selector-type-case": "lower",
     "max-empty-lines": 1
-  },
+  }
 }
