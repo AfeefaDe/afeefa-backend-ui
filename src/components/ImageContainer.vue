@@ -56,8 +56,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~variables";
-
 .image-container-style {
   background-color: $gray20;
   padding: 1em 0;

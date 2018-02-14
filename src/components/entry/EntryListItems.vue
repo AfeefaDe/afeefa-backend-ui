@@ -218,7 +218,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~variables";
 
 .loadingInfo {
   margin-top: .8em;

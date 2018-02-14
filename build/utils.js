@@ -31,6 +31,18 @@ exports.cssLoaders = function (options) {
         })
       })
     }
+    // make variables and mixins globally accessible
+    if (loader === 'sass') {
+      loaders.push({
+        loader: 'sass-resources-loader',
+        options: {
+          resources: [
+            path.resolve(__dirname, '../src/assets/styles/variables.scss'),
+            path.resolve(__dirname, '../src/assets/styles/mixins.scss')
+          ]
+        }
+      })
+    }
 
     // Extract CSS when that option is specified
     // (which is the case during production build)

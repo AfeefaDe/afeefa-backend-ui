@@ -53,8 +53,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~variables";
-
 .inheritance-field {
   margin-top: .5em;
 }

@@ -66,8 +66,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~variables";
-
 .navigationSidebar {
   &__navContainer {
     margin: 0;

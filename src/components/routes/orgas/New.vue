@@ -72,7 +72,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "~variables";
 .orgaTypeSelector {
   margin: 0.5em 0;
   &__singleType {

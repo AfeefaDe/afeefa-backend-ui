@@ -222,7 +222,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "~variables";
 .overlay {
   position: fixed;
   z-index: $z-index-overlay;

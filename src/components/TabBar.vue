@@ -102,8 +102,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~variables";
-
 .tabBar {
   $activeBorderWidth: 3px;
   &__navItemContainer {

@@ -85,8 +85,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "~variables";
-
   .annotationEditArea {
     margin-top: 0.5em;
     &__error {

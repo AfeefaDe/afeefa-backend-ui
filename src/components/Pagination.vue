@@ -147,9 +147,6 @@ export default {
 
 
 <style lang="scss">
-@import "~variables";
-@import '~mixins';
-
 .list-pagination {
   display: flex;
   justify-content: space-between;

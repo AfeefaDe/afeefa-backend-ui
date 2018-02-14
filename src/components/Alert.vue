@@ -70,8 +70,6 @@ export default {
 
 
 <style lang="scss" scoped>
-@import "~variables";
-
 .alert-container {
   position: fixed;
   z-index: $z-index-overlay;

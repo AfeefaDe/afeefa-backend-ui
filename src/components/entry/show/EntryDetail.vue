@@ -308,7 +308,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~variables";
 .generalTab--splitView {
   display: flex;
   justify-content: space-between;

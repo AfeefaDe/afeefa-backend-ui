@@ -35,8 +35,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~variables";
-
 .resourceItem {
   border: $gray20 2px solid;
   border-radius: 5px;

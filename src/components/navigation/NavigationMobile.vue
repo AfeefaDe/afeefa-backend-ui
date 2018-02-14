@@ -79,8 +79,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~variables";
-
 .navigation-mobile {
   display: block;
   padding: 1em 0.8em;

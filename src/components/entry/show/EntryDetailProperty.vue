@@ -23,8 +23,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~variables";
-
 .detailProperty {
   display: flex;
   list-style: none;

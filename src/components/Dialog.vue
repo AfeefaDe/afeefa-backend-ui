@@ -76,8 +76,6 @@ export default {
 
 
 <style lang="scss" scoped>
-@import "~variables";
-
 .dialog-container {
   position: absolute;
   top: 0;

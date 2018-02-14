@@ -82,8 +82,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~variables";
-
 .searchForm {
   flex-grow: 1;
   &__input {

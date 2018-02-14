@@ -1,3 +1,7 @@
+/*
+ * Avaible in global context:
+ * build/utils.js: function generateLoaders
+ */
 @mixin user-select() {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

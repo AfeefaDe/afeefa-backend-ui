@@ -27,8 +27,6 @@ export default {
 
 
 <style lang="scss" scoped>
-@import "~variables";
-
 .save-info-container {
   position: fixed;
   z-index: $z-index-overlay + 10;

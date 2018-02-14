@@ -203,8 +203,6 @@ export default {
 
 
 <style lang="scss" scoped>
-  @import "~variables";
-
   .ps__glassframe {
     position: fixed;
     top: 0;

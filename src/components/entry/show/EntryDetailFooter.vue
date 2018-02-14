@@ -39,7 +39,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~variables";
 .entryDetailFooter {
   display: flex;
   justify-content: space-evenly;
