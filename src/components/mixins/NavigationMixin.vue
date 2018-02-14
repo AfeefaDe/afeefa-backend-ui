@@ -30,7 +30,11 @@ export default {
     translateTitle (item) {
       if (item.title === 'headlines.dashboard') {
         const area = this.currentUser.area
-        return 'Afeefa ' + area.charAt(0).toUpperCase() + area.slice(1)
+        if (area) {
+          return 'Afeefa ' + area.charAt(0).toUpperCase() + area.slice(1)
+        } else {
+          return 'Afeefa'
+        }
       } else {
         return this.$tc(item.title, 2)
       }
