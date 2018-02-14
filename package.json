@@ -74,6 +74,7 @@
     "webpack-merge": "^4.1.1"
   },
   "devDependencies": {
+    "@mapbox/stylelint-processor-arbitrary-tags": "^0.2.0",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chromedriver": "^2.27.2",

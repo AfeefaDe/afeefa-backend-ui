@@ -1,7 +1,7 @@
 <template>
-  <div v-if="imageUrl" :class="[{'image-container-style': mediaImageLoaded}, {'loading-error': mediaImageError}]">
+  <div v-if="imageUrl" :class="[{'imageContainer--loaded': mediaImageLoaded}, {'imageContainer--error': mediaImageError}]">
     <div v-if="mediaImageLoaded">
-      <div class="image-container" :style="{ 'background-image': 'url(' + imageUrl + ')' }"> </div>
+      <div class="imageContainer__content" :style="{ 'background-image': 'url(' + imageUrl + ')' }"> </div>
     </div>
     <div v-else-if="mediaImageError">
       {{$t('errors.loadingImageError')}}
@@ -56,23 +56,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.image-container-style {
-  background-color: $gray20;
-  padding: 1em 0;
-}
-.image-container {
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: cover;
-  height: 50vh;
-  //matches max-height of bunner at afeefa.de
-  max-height: 150px;
-  //matches sidebar width of afeefa.de
-  max-width: 440px;
-  margin: 0 auto;
-}
-.loading-error {
-  background-color: #ffeeee;
-  color: $red;
+.imageContainer {
+  &--loaded {
+    background-color: $gray20;
+    padding: 1em 0;
+  }
+  &--error {
+    background-color: #FFEEEE;
+    color: $red;
+  }
+  &__content {
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: cover;
+    height: 50vh;
+    /* matches max-height of bunner at afeefa.de */
+    max-height: 150px;
+    /* matches sidebar width of afeefa.de */
+    max-width: 440px;
+    margin: 0 auto;
+  }
 }
 </style>

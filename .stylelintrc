@@ -1,7 +1,36 @@
 {
-  "processors": ["stylelint-processor-html"],
+  "processors": ["@mapbox/stylelint-processor-arbitrary-tags"],
   "rules": {
     "block-no-empty": true,
-    "color-no-invalid-hex": true
-  }
+    "color-no-invalid-hex": true,
+    "selector-class-pattern": [
+      "^(([a-z0-9]+([A-Z][a-z0-9]+)*))(__(([a-z0-9]+([A-Z][a-z0-9]+)*)))?(--(([a-z0-9]+([A-Z][a-z0-9]+)*)))?$",
+      {
+        "resolveNestedSelectors": true,
+        "message": "Expect class selector to conform to BEM"
+      },
+    ],
+    "unit-no-unknown": true,
+    "property-no-unknown": true,
+    "declaration-block-no-duplicate-properties": true,
+    "declaration-block-no-shorthand-property-overrides": true,
+    "selector-pseudo-class-no-unknown": true,
+    "comment-no-empty": true,
+    "no-empty-source": null,
+    "no-extra-semicolons": true,
+    "no-invalid-double-slash-comments": true,
+    "property-no-vendor-prefix": true,
+    "max-nesting-depth": 3,
+    "color-hex-case": "upper",
+    "color-hex-length": "long",
+    "length-zero-no-unit": true,
+    "unit-case": "lower",
+    "declaration-block-trailing-semicolon": "always",
+    "block-closing-brace-empty-line-before": "never",
+    "block-opening-brace-newline-after": "always",
+    "selector-combinator-space-after": "always",
+    "selector-combinator-space-before": "always",
+    "selector-type-case": "lower",
+    "max-empty-lines": 1
+  },
 }
