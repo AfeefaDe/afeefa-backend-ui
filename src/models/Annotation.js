@@ -4,6 +4,10 @@ import Relation from './base/Relation'
 import DataTypes from './base/DataTypes'
 
 export default class Annotation extends Model {
+  static query (Annotations) {
+    return Annotations
+  }
+
   static attributes = {
     detail: {
       type: DataTypes.String

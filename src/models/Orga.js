@@ -7,6 +7,10 @@ import LoadingState from '@/store/api/LoadingState'
 export default class Orga extends Entry {
   static ACTOR_RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
 
+  static query (Orgas) {
+    return Orgas
+  }
+
   static attributes = {
     orga_type_id: {
       type: DataTypes.Int,

@@ -5,6 +5,10 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class Contact extends Model {
+  static query (Contacts) {
+    return Contacts
+  }
+
   static attributes = {
     title: DataTypes.String,
 

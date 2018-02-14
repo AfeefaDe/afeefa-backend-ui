@@ -3,6 +3,10 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class Chapter extends Model {
+  static query (Chapters) {
+    return Chapters
+  }
+
   static attributes = {
     title: DataTypes.String,
     content: DataTypes.String,

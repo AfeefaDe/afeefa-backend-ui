@@ -11,6 +11,7 @@ import './services/validation'
 import './services/leaflet'
 
 import './helpers/directives'
+
 import './resources/config'
 import './models/config'
 

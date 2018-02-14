@@ -5,6 +5,10 @@ import Relation from './base/Relation'
 import DataTypes from './base/DataTypes'
 
 export default class Event extends Entry {
+  static query (Events) {
+    return Events
+  }
+
   static attributes = {
     date_start: {
       type: DataTypes.Date,

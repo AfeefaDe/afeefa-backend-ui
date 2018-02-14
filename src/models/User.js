@@ -3,6 +3,10 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class User extends Model {
+  static query (Users) {
+    return Users
+  }
+
   static attributes = {
     first_name: {
       type: DataTypes.String,

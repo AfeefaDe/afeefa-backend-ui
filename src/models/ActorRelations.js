@@ -3,6 +3,10 @@ import Relation from './base/Relation'
 import LoadingState from '@/store/api/LoadingState'
 
 export default class ActorRelations extends Model {
+  static query (ActorRelations) {
+    return ActorRelations
+  }
+
   static relations (Orga) {
     const relations = {}
     Orga.ACTOR_RELATIONS.forEach(relationName => {

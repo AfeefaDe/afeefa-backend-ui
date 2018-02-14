@@ -4,6 +4,10 @@ import Relation from './base/Relation'
 import DataTypes from './base/DataTypes'
 
 export default class Category extends Model {
+  static query (Categories) {
+    return Categories
+  }
+
   static attributes = {
     title: DataTypes.String,
 

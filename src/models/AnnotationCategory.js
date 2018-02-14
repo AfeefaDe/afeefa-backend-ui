@@ -2,7 +2,11 @@ import Model from './base/Model'
 import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
-export default class AnnotionCategory extends Model {
+export default class AnnotationCategory extends Model {
+  static query (AnnotationCategories) {
+    return AnnotationCategories
+  }
+
   static attributes = {
     title: DataTypes.String,
 

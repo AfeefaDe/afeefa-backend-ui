@@ -1,4 +1,5 @@
 import BaseModel from '../base/Model'
+import ResourceRegistry from '@/resources/config/Registry'
 
 class ModelRegistry {
   constructor () {
@@ -12,6 +13,7 @@ class ModelRegistry {
   initializeAll () {
     for (let name in this.models) {
       const Model = this.models[name]
+      this.initializeQuery(Model)
       this.initializeAttributes(Model)
       this.initializeRelations(Model)
     }
@@ -30,9 +32,35 @@ class ModelRegistry {
 
   get (name) {
     if (!this.models[name]) {
-      console.warn('error getting unknown model:', name)
+      console.error('error getting unknown model:', name)
     }
     return this.models[name]
+  }
+
+  getAllFuncs (obj) {
+    var props = []
+    do {
+      props = props.concat(Object.getOwnPropertyNames(obj).filter(name => {
+        return name !== 'constructor' && !props.includes(name)
+      }))
+    } while (
+      (obj = Object.getPrototypeOf(obj)) && obj.constructor.name !== 'Object'
+    )
+
+    return props
+  }
+
+  initializeQuery (Model) {
+    if (Model.hasOwnProperty('query')) {
+      const args = this.getArguments(Model.query).map(arg => ResourceRegistry.get(arg))
+      Model.query = Model.query(...args)
+      for (let method of this.getAllFuncs(Model.query)) {
+        if (Model[method]) {
+          console.error('Das Model', Model.name, 'hat bereits eine Methode', method)
+        }
+        Model[method] = Model.query[method]
+      }
+    }
   }
 
   initializeAttributes (Model) {
@@ -94,6 +122,24 @@ class ModelRegistry {
       relations = {...relations, ...Model.relations(...args)}
     }
     return relations
+  }
+
+  toCamelCase (str) {
+    // Todo!! currently not used
+    // https://stackoverflow.com/questions/2970525/converting-any-string-into-camel-case/32604073#32604073
+    // Lower cases the string
+    return 'fetch' + str
+      // first char to lower
+      .replace(/^(.)/, $1 => $1.toUpperCase())
+      // Replaces any - or _ characters with a space
+      .replace(/[-_]+/g, ' ')
+      // Removes any non alphanumeric characters
+      .replace(/[^\w\s]/g, '')
+      // Uppercases the first character in each group immediately following a space
+      // (delimited by spaces)
+      .replace(/ (.)/g, $1 => $1.toUpperCase())
+      // Removes spaces
+      .replace(/ /g, '')
   }
 }
 

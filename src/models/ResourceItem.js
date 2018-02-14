@@ -3,6 +3,10 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class ResourceItem extends Model {
+  static query (ResourceItems) {
+    return ResourceItems
+  }
+
   static attributes = {
     title: DataTypes.String,
     description: DataTypes.String,

@@ -9,7 +9,7 @@ class ResourceRegistry {
 
   get (name) {
     if (!this.resources[name]) {
-      console.log('error getting unknown Resource:', name)
+      console.error('error getting unknown Resource:', name)
     }
     return this.resources[name]
   }

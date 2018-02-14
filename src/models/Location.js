@@ -3,6 +3,10 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class Location extends Model {
+  static query (Locations) {
+    return Locations
+  }
+
   static attributes = {
     title: DataTypes.String,
     street: DataTypes.String,
