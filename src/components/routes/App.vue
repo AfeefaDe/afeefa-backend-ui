@@ -2,7 +2,7 @@
   <div id="app">
     <router-view></router-view>
 
-    <save-info></save-info>
+    <spinner-modal></spinner-modal>
     <dialog-window></dialog-window>
     <alert></alert>
   </div>
@@ -12,7 +12,7 @@
 <script>
 import Alert from '@/components/Alert'
 import DialogWindow from '@/components/Dialog'
-import SaveInfo from '@/components/SaveInfo'
+import SpinnerModal from '@/components/SpinnerModal'
 
 import 'flatpickr/dist/themes/material_green.css'
 import 'leaflet/dist/leaflet.css'
@@ -23,7 +23,7 @@ export default {
   components: {
     DialogWindow,
     Alert,
-    SaveInfo
+    SpinnerModal
   }
 }
 </script>

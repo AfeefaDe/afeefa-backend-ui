@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="saveInfoContainer" v-if="isSaving"></div>
-    <div class="saveInfo" v-if="isSaving">
+    <div class="spinnerModalContainer" v-if="isSaving"></div>
+    <div class="spinnerModal" v-if="isSaving">
       <spinner :show="true" :width="8" :radius="25" :length="20" color="white" fade-color="black" />
     </div>
   </div>
@@ -26,7 +26,7 @@ export default {
 
 
 <style lang="scss" scoped>
-.saveInfoContainer {
+.spinnerModalContainer {
   position: fixed;
   z-index: $z-index-overlay + 10;
   background-color: black;
@@ -37,7 +37,7 @@ export default {
   bottom: 0;
 }
 
-.saveInfo {
+.spinnerModal {
   position: fixed;
   z-index: $z-index-overlay + 11;
   left: 50%;
