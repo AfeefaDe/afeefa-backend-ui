@@ -22,19 +22,17 @@ export default class Chapter extends Model {
   }
 
   getAttributesFromJson (json) {
-    return json.attributes
+    return json
   }
 
   serialize () {
     let data = {
-      id: this.id,
       title: this.title,
       content: this.content,
       order: this.order
     }
-    // in case we are creating a new resource strip away the id attribute
-    if (this.id === null) {
-      delete data['id']
+    if (this.id) {
+      data['id'] = this.id
     }
     return data
   }
