@@ -148,9 +148,6 @@ export default {
 
       // list currently loading
       const requestKey = resource.url + (params ? JSON.stringify(params) : '')
-
-      console.log(requestKey, listParams)
-
       if (requestCache.hasItem(requestKey)) {
         return requestCache.getItem(requestKey)
       }
@@ -170,6 +167,7 @@ export default {
           } else {
             item = resource.createItem(json)
           }
+          resource.itemJsonLoaded(json)
           item.deserialize(resource.getItemJson(json))
 
           item._loadingState = Math.max(item._loadingState, LoadingState.LOADED_FOR_LISTS)
@@ -226,6 +224,7 @@ export default {
 
       const promise = resource.http.get({id}).then(response => {
         const json = response.body.data || response.body // jsonapi spec || afeefa api spec
+        resource.itemJsonLoaded(json)
 
         let item
         // update existing cached items but not replace them in order to keep references alive
@@ -272,6 +271,7 @@ export default {
         }
 
         const json = response.body.data || response.body
+        resource.itemJsonLoaded(cachedItem)
         cachedItem.deserialize(resource.getItemJson(json))
 
         resource.itemSaved(item, cachedItem)
@@ -301,6 +301,7 @@ export default {
         {id: item.id}, body
       ).then(response => {
         const json = response.body.data || response.body
+        resource.itemJsonLoaded(json)
         item.deserialize(resource.getItemJson(json))
         resourceCache.addItem(itemType, item)
 
@@ -347,6 +348,7 @@ export default {
 
         const json = response.body.data || response.body
         const cachedItem = resourceCache.getItem(itemType, item.id)
+        resource.itemJsonLoaded(cachedItem)
         cachedItem.deserialize(resource.getItemJson(json))
         return attributes
       }).catch(response => {

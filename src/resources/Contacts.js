@@ -72,8 +72,6 @@ class ContactListResource extends ContactsResource {
 
     this.listType = 'contacts'
     this.listParams = owner.relation('contacts').listParams()
-
-    console.log('LIST', owner.relation('contacts').info, this.listParams)
   }
 }
 

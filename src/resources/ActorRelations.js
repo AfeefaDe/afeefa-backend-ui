@@ -18,12 +18,12 @@ class ActorRelationsResource extends Resource {
     return 'actor_relations'
   }
 
+  itemJsonLoaded (json) {
+    json.id = this.orgaId
+  }
+
   createItem () {
-    const actorRelations = new ActorRelationsModel()
-    // in order to later find the relations container, we need to give
-    // it the id of our orga
-    actorRelations.id = this.orgaId
-    return actorRelations
+    return new ActorRelationsModel()
   }
 }
 

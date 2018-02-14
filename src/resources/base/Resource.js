@@ -45,6 +45,11 @@ export default class Resource {
    * Api Hooks
    */
 
+  // called after the json of an item has been loaded
+  // to enable modicificatoins on the json
+  itemJsonLoaded (json) {
+  }
+
   // called after an item has been added
   // to enable custom resource cache treatment
   itemAdded (item) {

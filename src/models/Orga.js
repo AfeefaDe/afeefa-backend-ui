@@ -100,7 +100,9 @@ export default class Orga extends Entry {
     })
 
     if (Object.keys(actorRelationsJson).length) {
-      actorRelationsJson.id = this.id // inject id of orga as actorRelations id
+      // inject id of orga as actorRelations id
+      // also see ActorRelationsResource#itemJsonLoaded
+      actorRelationsJson.id = this.id
       actorRelationsJson._requestId = json._requestId // inject requestId
       relations.actor_relations = actorRelationsJson
     }
