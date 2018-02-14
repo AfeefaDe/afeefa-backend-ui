@@ -7,8 +7,10 @@ import Resource from './base/Resource'
 
 class SearchResource extends Resource {
   init () {
+    this.url = 'entries'
+    this.http = Vue.resource(BASE + this.url)
+
     this.listType = 'search'
-    this.http = Vue.resource(BASE + 'entries')
   }
 
   getSearchParams (searchRequest) {

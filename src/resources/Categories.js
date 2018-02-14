@@ -6,7 +6,8 @@ import Resource from './base/Resource'
 
 class CategoriesResource extends Resource {
   init () {
-    this.http = Vue.resource(BASE + 'categories{/id}')
+    this.url = 'categories'
+    this.http = Vue.resource(BASE + this.url + '{/id}')
     this.listType = 'categories'
   }
 

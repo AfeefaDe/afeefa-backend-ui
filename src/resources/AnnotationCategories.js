@@ -6,7 +6,8 @@ import Resource from './base/Resource'
 
 class AnnotationCategoriesResource extends Resource {
   init () {
-    this.http = Vue.resource(BASE + 'annotation_categories{/id}')
+    this.url = 'annotation_categories'
+    this.http = Vue.resource(BASE + this.url + '{/id}')
     this.listType = 'annotationCategories'
   }
 

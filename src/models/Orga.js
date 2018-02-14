@@ -66,8 +66,8 @@ export default class Orga extends Entry {
     this.relation('actor_relations').fetch(id => {
       return this.Resource('ActorRelations').getForOrga(this).then(actorRelations => {
         this.actorRelations = actorRelations
-        Orga.ACTOR_RELATIONS.forEach(actorRelation => {
-          this[actorRelation] = actorRelations[actorRelation]
+        Orga.ACTOR_RELATIONS.forEach(relationName => {
+          this[relationName] = actorRelations[relationName]
         })
         return actorRelations
       })
@@ -93,9 +93,9 @@ export default class Orga extends Entry {
     // actor relations, create a merge json object for the different relations
     const rels = json.relationships || {}
     const actorRelationsJson = {}
-    Orga.ACTOR_RELATIONS.forEach(actorRelation => {
-      if (rels[actorRelation]) {
-        actorRelationsJson[actorRelation] = rels[actorRelation].data
+    Orga.ACTOR_RELATIONS.forEach(relationName => {
+      if (rels[relationName]) {
+        actorRelationsJson[relationName] = rels[relationName].data
       }
     })
 

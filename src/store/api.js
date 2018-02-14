@@ -135,15 +135,22 @@ export default {
       // key of list in resource cache
       const listType = resource.listType
       // different caches for different list params
-      const listParams = resource.listParams || JSON.stringify(params || '')
+      const listParams = JSON.stringify({...resource.listParams, ...params} || '')
 
       if (resourceCache.hasList(listType, listParams)) {
         // list already loaded
         return Promise.resolve(resourceCache.getList(listType, listParams))
       }
 
+      if (!resource.url) {
+        console.error('Keine resource.url konfiguriert', listType, listParams)
+      }
+
       // list currently loading
-      const requestKey = resource.url || (listType + JSON.stringify(params || ''))
+      const requestKey = resource.url + (params ? JSON.stringify(params) : '')
+
+      console.log(requestKey, listParams)
+
       if (requestCache.hasItem(requestKey)) {
         return requestCache.getItem(requestKey)
       }

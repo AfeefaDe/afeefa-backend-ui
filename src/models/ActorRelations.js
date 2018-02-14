@@ -20,6 +20,15 @@ export default class ActorRelations extends Model {
     return relations
   }
 
+  deserialize (json) {
+    // TODO find a way to inject the orga id into actorRelations
+    if (this.id) {
+      json.id = this.id
+    }
+
+    super.deserialize(json)
+  }
+
   getRelationsFromJson (json) {
     return json
   }

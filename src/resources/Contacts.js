@@ -10,9 +10,8 @@ class ContactsResource extends Resource {
   init ([owner]) {
     this.owner = owner
 
-    this.http = Vue.resource(BASE + `${owner.type}/${owner.id}/contacts{/id}`, {}, {update: {method: 'PATCH'}})
-    this.listType = 'contacts'
-    this.listParams = JSON.stringify({owner_type: owner.type, owner_id: owner.id, relation: 'contacts'})
+    this.url = `${owner.type}/${owner.id}/contacts`
+    this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
   }
 
   createItem () {
@@ -67,9 +66,20 @@ class ContactsResource extends Resource {
   }
 }
 
+class ContactListResource extends ContactsResource {
+  init ([owner]) {
+    super.init([owner])
+
+    this.listType = 'contacts'
+    this.listParams = owner.relation('contacts').listParams()
+
+    console.log('LIST', owner.relation('contacts').info, this.listParams)
+  }
+}
+
 export default {
   getAllForOwner (owner) {
-    const resource = new ContactsResource(owner)
+    const resource = new ContactListResource(owner)
     return store.dispatch('api/getList', {resource})
   },
 

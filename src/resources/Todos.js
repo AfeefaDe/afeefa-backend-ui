@@ -7,8 +7,10 @@ import Resource from './base/Resource'
 
 class TodosResource extends Resource {
   init () {
+    this.url = 'todos'
+    this.http = Vue.resource(BASE + this.url)
+
     this.listType = 'todos'
-    this.http = Vue.resource(BASE + 'todos')
   }
 
   getItemType (json) {

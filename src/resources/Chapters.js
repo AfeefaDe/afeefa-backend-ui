@@ -6,7 +6,8 @@ import Chapter from '@/models/Chapter'
 
 class ChaptersResource extends Resource {
   init () {
-    this.http = Vue.resource(BASE + 'chapters{/id}')
+    this.url = 'chapters'
+    this.http = Vue.resource(BASE + this.url + '{/id}')
     this.listType = 'chapters'
   }
 

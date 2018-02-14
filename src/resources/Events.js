@@ -7,9 +7,11 @@ import EventsResource from './EventsResource'
 class Events {
   getAllForOrga (id, filter) {
     const resource = new EventsResource()
-    resource.http = Vue.resource(BASE + `orgas/${id}/events`)
+    resource.url = `orgas/${id}/events`
+    resource.http = Vue.resource(BASE + resource.url)
     resource.listType = `events`
-    resource.listParams = JSON.stringify({orga_id: id, 'filter[date]': filter})
+    resource.listParams = {orga_id: id, 'filter[date]': filter}
+
     const params = {
       'filter[date]': filter
     }

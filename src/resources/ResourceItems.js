@@ -5,12 +5,14 @@ import ResourceItem from '@/models/ResourceItem'
 import Resource from './base/Resource'
 
 class ResourceItemsResource extends Resource {
-  init ([orgaId]) {
-    this.orgaId = orgaId
+  init ([orga]) {
+    this.orga = orga
 
-    this.http = Vue.resource(BASE + `orgas/${orgaId}/resource_items{/id}`, {}, {update: {method: 'PATCH'}})
+    this.url = `orgas/${orga.id}/resource_items`
+    this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
+
     this.listType = 'resource_items'
-    this.listParams = JSON.stringify({owner_type: 'orgas', owner_id: orgaId, relation: 'resource_items'})
+    this.listParams = orga.relation('resource_items').listParams()
   }
 
   createItem () {
@@ -20,7 +22,7 @@ class ResourceItemsResource extends Resource {
 
 export default {
   getAllForOrga (orga) {
-    const resource = new ResourceItemsResource(orga.id)
+    const resource = new ResourceItemsResource(orga)
     return store.dispatch('api/getList', {resource})
   }
 }

@@ -6,7 +6,9 @@ import Resource from './base/Resource'
 
 class LocationsResource extends Resource {
   init () {
-    this.http = Vue.resource(BASE + 'locations{/id}')
+    this.url = 'locations'
+    this.http = Vue.resource(BASE + this.url + '{/id}')
+
     this.listType = 'locations'
   }
 

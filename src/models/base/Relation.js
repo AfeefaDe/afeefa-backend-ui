@@ -207,6 +207,7 @@ export default class Relation {
   clone () {
     const clone = new Relation({
       owner: this.owner,
+      name: this.name,
       type: this.type,
       Model: this.Model,
       contains: this.contains

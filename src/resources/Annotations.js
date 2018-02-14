@@ -6,10 +6,11 @@ import Resource from './base/Resource'
 
 class AnnotationsResource extends Resource {
   init ([owner]) {
-    this.url = BASE + `${owner.type}/${owner.id}/annotations`
-    this.http = Vue.resource(this.url)
+    this.url = `${owner.type}/${owner.id}/annotations`
+    this.http = Vue.resource(BASE + this.url)
+
     this.listType = 'annotations'
-    this.listParams = JSON.stringify(owner.relation('annotations').listParams(owner))
+    this.listParams = owner.relation('annotations').listParams()
   }
 
   createItem () {
