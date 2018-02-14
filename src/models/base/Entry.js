@@ -47,51 +47,53 @@ export default class Entry extends Model {
     state_changed_at: DataTypes.Date
   }
 
-  static relations = {
-    category: {
-      type: Relation.HAS_ONE,
-      itemType: 'categories',
-      data: json => (json.data && json.data.id)
-    },
+  static relations (Contact, Annotation, User) {
+    return {
+      category: {
+        type: Relation.HAS_ONE,
+        itemType: 'categories',
+        data: json => (json.data && json.data.id)
+      },
 
-    sub_category: {
-      type: Relation.HAS_ONE,
-      itemType: 'categories',
-      data: json => (json.data && json.data.id)
-    },
+      sub_category: {
+        type: Relation.HAS_ONE,
+        itemType: 'categories',
+        data: json => (json.data && json.data.id)
+      },
 
-    contacts: {
-      type: Relation.HAS_MANY,
-      listType: 'contacts',
-      listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
-      Model: 'Contact',
-      data: json => json.data,
-      loadingState: LoadingState.FULLY_LOADED
-    },
+      contacts: {
+        type: Relation.HAS_MANY,
+        listType: 'contacts',
+        listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
+        Model: Contact,
+        data: json => json.data,
+        loadingState: LoadingState.FULLY_LOADED
+      },
 
-    annotations: {
-      type: Relation.HAS_MANY,
-      listType: 'annotations',
-      listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
-      Model: 'Annotation',
-      data: json => json.data,
-      loadingState: LoadingState.FULLY_LOADED
-    },
+      annotations: {
+        type: Relation.HAS_MANY,
+        listType: 'annotations',
+        listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
+        Model: Annotation,
+        data: json => json.data,
+        loadingState: LoadingState.FULLY_LOADED
+      },
 
-    creator: {
-      type: Relation.HAS_ONE,
-      Model: 'User',
-      itemType: 'users',
-      data: json => json.data,
-      loadingState: LoadingState.FULLY_LOADED
-    },
+      creator: {
+        type: Relation.HAS_ONE,
+        Model: User,
+        itemType: 'users',
+        data: json => json.data,
+        loadingState: LoadingState.FULLY_LOADED
+      },
 
-    last_editor: {
-      type: Relation.HAS_ONE,
-      Model: 'User',
-      itemType: 'users',
-      data: json => json.data,
-      loadingState: LoadingState.FULLY_LOADED
+      last_editor: {
+        type: Relation.HAS_ONE,
+        Model: User,
+        itemType: 'users',
+        data: json => json.data,
+        loadingState: LoadingState.FULLY_LOADED
+      }
     }
   }
 

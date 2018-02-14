@@ -28,22 +28,24 @@ export default class Contact extends Model {
     }
   }
 
-  static relations = {
-    location: {
-      type: Relation.HAS_ONE,
-      Model: 'Location',
-      itemType: 'locations',
-      data: json => json.data,
-      loadingState: LoadingState.FULLY_LOADED
-    },
+  static relations (Location, ContactPerson) {
+    return {
+      location: {
+        type: Relation.HAS_ONE,
+        Model: Location,
+        itemType: 'locations',
+        data: json => json.data,
+        loadingState: LoadingState.FULLY_LOADED
+      },
 
-    contact_persons: {
-      type: Relation.HAS_MANY,
-      listType: 'contact_persons',
-      listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
-      Model: 'ContactPerson',
-      data: json => json.data,
-      loadingState: LoadingState.FULLY_LOADED
+      contact_persons: {
+        type: Relation.HAS_MANY,
+        listType: 'contact_persons',
+        listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
+        Model: ContactPerson,
+        data: json => json.data,
+        loadingState: LoadingState.FULLY_LOADED
+      }
     }
   }
 

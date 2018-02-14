@@ -10,11 +10,13 @@ export default class Category extends Model {
     sub_categories: DataTypes.Array
   }
 
-  static relations = {
-    parent_category: {
-      type: Relation.HAS_ONE,
-      itemType: 'categories',
-      data: json => (json.data && json.data.id)
+  static relations () {
+    return {
+      parent_category: {
+        type: Relation.HAS_ONE,
+        itemType: 'categories',
+        data: json => (json.data && json.data.id)
+      }
     }
   }
 

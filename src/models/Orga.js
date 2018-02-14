@@ -32,31 +32,33 @@ export default class Orga extends Entry {
     partners: DataTypes.Array
   }
 
-  static relations = {
-    parent_orga: {
-      type: Relation.HAS_ONE,
-      Model: 'Orga',
-      itemType: 'orgas',
-      data: json => json.data,
-      remoteName: 'initiator',
-      loadingState: LoadingState.LOADED_AS_ATTRIBUTE
-    },
+  static relations (Orga, ResourceItem, ActorRelations) {
+    return {
+      parent_orga: {
+        type: Relation.HAS_ONE,
+        Model: Orga,
+        itemType: 'orgas',
+        data: json => json.data,
+        remoteName: 'initiator',
+        loadingState: LoadingState.LOADED_AS_ATTRIBUTE
+      },
 
-    resource_items: {
-      type: Relation.HAS_MANY,
-      listType: 'resource_items',
-      listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
-      Model: 'ResourceItem',
-      data: json => json.data,
-      loadingState: LoadingState.FULLY_LOADED
-    },
+      resource_items: {
+        type: Relation.HAS_MANY,
+        listType: 'resource_items',
+        listParams: owner => ({owner_type: owner.type, owner_id: owner.id}),
+        Model: ResourceItem,
+        data: json => json.data,
+        loadingState: LoadingState.FULLY_LOADED
+      },
 
-    actor_relations: {
-      type: Relation.HAS_ONE,
-      Model: 'ActorRelations',
-      itemType: 'actor_relations',
-      data: json => json,
-      loadingState: LoadingState.FULLY_LOADED
+      actor_relations: {
+        type: Relation.HAS_ONE,
+        Model: ActorRelations,
+        itemType: 'actor_relations',
+        data: json => json,
+        loadingState: LoadingState.FULLY_LOADED
+      }
     }
   }
 

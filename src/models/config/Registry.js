@@ -17,6 +17,17 @@ class ModelRegistry {
     }
   }
 
+  getArguments (func) {
+    // https://stackoverflow.com/questions/1007981/how-to-get-function-parameter-names-values-dynamically/31194949#31194949
+    return (func + '')
+      .replace(/[/][/].*$/mg, '') // strip single-line comments
+      .replace(/\s+/g, '') // strip white space
+      .replace(/[/][*][^/*]*[*][/]/g, '') // strip multi-line comments
+      .split('){', 1)[0].replace(/^[^(]*[(]/, '') // extract the parameters
+      .replace(/=[^,]+/g, '') // strip any ES6 defaults
+      .split(',').filter(Boolean) // split & filter [""]
+  }
+
   get (name) {
     if (!this.models[name]) {
       console.warn('error getting unknown model:', name)
@@ -60,22 +71,15 @@ class ModelRegistry {
   }
 
   initializeRelations (Model) {
-    const allRelations = this.setupRelations(Model)
-    const modelRelations = {}
-
+    const relations = this.setupRelations(Model)
     const relationRemoteNameMap = {}
-    for (let name in allRelations) {
-      const relation = allRelations[name]
-      const modelRelation = {...relation}
-      if (modelRelation.Model) {
-        modelRelation.Model = this.get(modelRelation.Model)
-      }
-      modelRelations[name] = modelRelation
-      if (modelRelation.remoteName) {
-        relationRemoteNameMap[modelRelation.remoteName] = name
+    for (let name in relations) {
+      const relation = relations[name]
+      if (relation.remoteName) {
+        relationRemoteNameMap[relation.remoteName] = name
       }
     }
-    Model._relations = modelRelations
+    Model._relations = relations
     Model._relationRemoteNameMap = relationRemoteNameMap
   }
 
@@ -86,7 +90,8 @@ class ModelRegistry {
       relations = superRelations
     }
     if (Model.hasOwnProperty('relations')) {
-      relations = {...relations, ...Model.relations}
+      const args = this.getArguments(Model.relations).map(arg => this.get(arg))
+      relations = {...relations, ...Model.relations(...args)}
     }
     return relations
   }

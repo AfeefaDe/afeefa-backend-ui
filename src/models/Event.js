@@ -18,14 +18,17 @@ export default class Event extends Entry {
     has_time_end: DataTypes.Boolean
   }
 
-  static relations = {
-    parent_orga: {
-      type: Relation.HAS_ONE,
-      Model: 'Orga',
-      itemType: 'orgas',
-      data: json => json.data,
-      remoteName: 'orga',
-      loadingState: LoadingState.LOADED_AS_ATTRIBUTE
+
+  static relations (Orga) {
+    return {
+      parent_orga: {
+        type: Relation.HAS_ONE,
+        Model: Orga,
+        itemType: 'orgas',
+        data: json => json.data,
+        remoteName: 'orga',
+        loadingState: LoadingState.LOADED_AS_ATTRIBUTE
+      }
     }
   }
 
