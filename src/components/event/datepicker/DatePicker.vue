@@ -2,56 +2,56 @@
   <div class="datePicker">
 
     <!-- start date and start time  -->
-    <div class=row-DateAndTime>
-      <button @click.prevent.stop="toggleStartDatePicker" class="showDate-button btn waves-effect waves-light">
+    <div class="rowDateAndTime">
+      <button @click.prevent.stop="toggleStartDatePicker" class="showDateButton btn waves-effect waves-light">
         <i class="material-icons center">event</i>
       </button>
 
-      <div @click.prevent.stop="toggleStartDatePicker" class="date-field start-date-field inputField__spacing input-field">
-        <label for="startDate" :class="['clickable-element', {active: currentDateStart}]">{{ $t("entries.date_start") }} <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span></label>
+      <div @click.prevent.stop="toggleStartDatePicker" class="dateField start-dateField inputField__spacing input-field">
+        <label for="startDate" :class="['clickableElement', {active: currentDateStart}]">{{ $t("entries.date_start") }} <span class="mandatory-field">({{ $t('infos.mandatory_field') }})</span></label>
         <day-picker ref="startDatePickerRef" id="startDate" :options="dateOptions"/>
       </div>
 
       <template v-if="hasStartTime">
-        <button @click.prevent.stop="toggleStartTimeButton" class="red showTime-button btn waves-effect waves-light">
+        <button @click.prevent.stop="toggleStartTimeButton" class="red showTimeButton btn waves-effect waves-light">
           <i class="material-icons center">delete_forever</i>
         </button>
-        <div @click.prevent.stop="toggleStartTimePicker" class="date-field start-time-field inputField__spacing input-field">
-          <label for="startTime" :class="['clickable-element', {active: currentTimeStart}]">{{ $t("entries.time_start") }}</label>
+        <div @click.prevent.stop="toggleStartTimePicker" class="dateField start-time-field inputField__spacing input-field">
+          <label for="startTime" :class="['clickableElement', {active: currentTimeStart}]">{{ $t("entries.time_start") }}</label>
           <time-picker id="startTime" :options="timeOptions" @FlatpickrRef="setStartTimeRef"/>
         </div>
       </template>
       <template v-else>
-        <button @click.prevent.stop="toggleStartTimeButton" class="showTime-button btn waves-effect waves-light">
+        <button @click.prevent.stop="toggleStartTimeButton" class="showTimeButton btn waves-effect waves-light">
           <i class="material-icons center">alarm</i>
         </button>
       </template>
     </div>
 
     <!-- end Date and end time  -->
-    <div class=row-DateAndTime>
-      <button @click.prevent.stop="toggleEndDatePicker" class="showDate-button btn waves-effect waves-light">
+    <div class="rowDateAndTime">
+      <button @click.prevent.stop="toggleEndDatePicker" class="showDateButton btn waves-effect waves-light">
         <i class="material-icons center">event</i>
       </button>
 
-      <div @click.prevent.stop="toggleEndDatePicker" class="date-field end-date-field inputField__spacing input-field">
-        <label for="endDate" :class="['clickable-element', {active: currentDateEnd}]">{{ $t("entries.date_end") }}</label>
-        <span :class="['clickable-element', 'is-same-day-label', {'hide-span': !isSameDay}]"> Gleicher Tag </span>
-        <day-picker :class="{'hide-picker': isSameDay}" ref="endDatePickerRef" id="endDate" :options="dateOptions"/>
+      <div @click.prevent.stop="toggleEndDatePicker" class="dateField end-dateField inputField__spacing input-field">
+        <label for="endDate" :class="['clickableElement', {active: currentDateEnd}]">{{ $t("entries.date_end") }}</label>
+        <span :class="['clickableElement', 'isSameDayLabel', {'hideSpan': !isSameDay}]"> Gleicher Tag </span>
+        <day-picker :class="{'hidePicker': isSameDay}" ref="endDatePickerRef" id="endDate" :options="dateOptions"/>
       </div>
 
       <template v-if="hasEndTime">
-        <button @click.prevent.stop="toggleEndTimeButton" class="red showTime-button btn waves-effect waves-light">
+        <button @click.prevent.stop="toggleEndTimeButton" class="red showTimeButton btn waves-effect waves-light">
           <i class="material-icons center">delete_forever</i>
         </button>
 
-        <div @click.prevent.stop="toggleEndTimePicker" class="date-field end-time-field inputField__spacing input-field">
-          <label for="endTime" :class="['clickable-element', {active: currentTimeEnd}]">{{ $t("entries.time_end") }}</label>
+        <div @click.prevent.stop="toggleEndTimePicker" class="dateField end-time-field inputField__spacing input-field">
+          <label for="endTime" :class="['clickableElement', {active: currentTimeEnd}]">{{ $t("entries.time_end") }}</label>
           <time-picker id="endTime" :options="timeOptions" @FlatpickrRef="setEndTimeRef"/>
         </div>
       </template>
       <template v-else>
-        <button @click.prevent.stop="toggleEndTimeButton" class="showTime-button btn waves-effect waves-light">
+        <button @click.prevent.stop="toggleEndTimeButton" class="showTimeButton btn waves-effect waves-light">
           <i class="material-icons center">alarm</i>
         </button>
       </template>
@@ -287,58 +287,60 @@ export default {
 </script>
 
 <style lang="scss">
-  label.clickable-element {
+  label.clickableElement {
     pointer-events:none;
   }
-  span.hide-span {
+  span.hideSpan {
     display: none;
   }
-  span.is-same-day-label {
+  span.isSameDayLabel {
     position: absolute;
     height: 3rem;
     line-height: 3rem;
     color: grey;
   }
-  .hide-picker {
+  .hidePicker {
     opacity: 0;
   }
-  .row-DateAndTime {
+  .rowDateAndTime {
     display: flex;
     align-items: baseline;
   }
-  .date-field {
+  .dateField {
     width: 30%;
   }
-  .showDate-button {
+  .showDateButton {
     padding-left: 0.5em;
     padding-right: 0.45em;
-    margin: 0em 1em 0em 0em;
+    margin: 0 1em 0 0;
   }
-  .showTime-button {
+  .showTimeButton {
     padding-left: 0.5em;
     padding-right: 0.45em;
-    margin: 0em 1em 0em 2em;
+    margin: 0 1em 0 2em;
   }
+  /* stylelint-disable selector-class-pattern */
   div.flatpickr-calendar {
     background-color: inherit;
   }
+/* stylelint-enable */
   #startDate {
-    cursor: pointer; cursor: hand;
+    cursor: hand;
     border-bottom: none;
     color: black;
   }
   #startTime {
-    cursor: pointer; cursor: hand;
+    cursor: hand;
     border-bottom: none;
     color: black;
   }
   #endDate {
-    cursor: pointer; cursor: hand;
+    cursor: hand;
     border-bottom: none;
     color: black;
   }
   #endTime {
-    cursor: pointer; cursor: hand;
+    cursor: hand;
     border-bottom: none;
     color: black;
   }

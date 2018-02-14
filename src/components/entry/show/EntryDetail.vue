@@ -205,7 +205,6 @@ import AnnotationTag from '@/components/AnnotationTag'
 import ResourceItem from '@/components/ResourceItem'
 
 import EntryDetailProperty from './EntryDetailProperty'
-import EntryListDropDownMenu from './EntryListDropDownMenu'
 import EntryDetailHeader from './EntryDetailHeader'
 import EntryDetailFooter from './EntryDetailFooter'
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
@@ -297,7 +296,6 @@ export default {
     ImageContainer,
     EntryDetailProperty,
     TabBar,
-    EntryListDropDownMenu,
     AnnotationTag,
     ContactList,
     ResourceItem,
