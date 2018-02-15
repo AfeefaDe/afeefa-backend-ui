@@ -7,8 +7,8 @@ export default {
   props: ['routeConfig'],
 
   computed: {
-    Resource () {
-      return this.routeConfig.Resource
+    Model () {
+      return this.routeConfig.Model
     },
     routeName () {
       return this.routeConfig.routeName

@@ -43,7 +43,7 @@ export default {
   },
 
   created () {
-    this.Resource.get(this.id).then(owner => {
+    this.Model.get(this.id).then(owner => {
       if (owner) {
         this.owner = owner
         if (this.contactId) {

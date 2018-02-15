@@ -22,7 +22,7 @@ export default {
   },
 
   created () {
-    this.Resource.with('parent_orga').get(this.id).then(entry => {
+    this.Model.with('parent_orga').get(this.id).then(entry => {
       if (entry) {
         this.origItem = entry
         this.item = entry.clone()
@@ -85,7 +85,7 @@ export default {
           })
         } else {
           // actual save routine on the resource
-          this.Resource.save(this.item).then(entry => {
+          this.Model.save(this.item).then(entry => {
             if (entry) {
               this.$store.dispatch('messages/showAlert', {
                 description: this.origItem.id ? this.messages.saveItemSuccess() : this.messages.addItemSuccess()
@@ -104,7 +104,7 @@ export default {
         message: this.messages.deleteItemDialogMessage(this.item)
       }).then(result => {
         if (result === 'yes') {
-          this.Resource.delete(this.item).then(result => {
+          this.Model.delete(this.item).then(result => {
             if (result) {
               this.$store.dispatch('messages/showAlert', {
                 description: this.messages.deleteItemSuccess()

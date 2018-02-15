@@ -6,7 +6,7 @@ export default class Config extends RouteConfig {
     super(routeComponent, eventId)
 
     this.routeName = 'events'
-    this.Resource = Event
+    this.Model = Event
 
     this.messages = {
       // any

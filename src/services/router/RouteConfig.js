@@ -4,8 +4,8 @@ export default class RouteConfig {
 
     this.itemId = itemId || null
 
+    this.Model = null
     this.routeName = null
-    this.Resource = null
     this.messages = {}
   }
 }

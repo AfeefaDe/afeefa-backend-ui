@@ -32,7 +32,7 @@ export default {
     initItem (id) {
       this.loadingError = false
 
-      this.routeConfig.Resource.with('parent_orga').get(id).then(entry => {
+      this.routeConfig.Model.with('parent_orga').get(id).then(entry => {
         this.item = entry
 
         if (!this.item) {

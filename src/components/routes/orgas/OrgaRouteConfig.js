@@ -6,7 +6,7 @@ export default class Config extends RouteConfig {
     super(routeComponent, orgaId)
 
     this.routeName = 'orgas'
-    this.Resource = Orga
+    this.Model = Orga
 
     this.messages = {
       // any
