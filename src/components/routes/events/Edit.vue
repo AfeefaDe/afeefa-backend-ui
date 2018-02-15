@@ -144,7 +144,7 @@ export default {
     },
 
     parentOrgaChanged (parentOrga) {
-      Orga.get(parentOrga.id, []).then(orga => {
+      Orga.get(parentOrga.id).then(orga => {
         this.item.parent_orga = orga
         this.parentOrgas = [orga]
       })

@@ -241,10 +241,10 @@ export default {
     entry () {
       // load past and upcoming events for orga
       if (this.entry && this.has.events) {
-        Event.getAllForOrga(this.entry.id, 'upcoming').then(events => {
+        Event.forOwner(this.entry).getAll({'filter[date]': 'upcoming'}).then(events => {
           this.upcomingEvents = events
         })
-        Event.getAllForOrga(this.entry.id, 'past').then(events => {
+        Event.forOwner(this.entry).getAll({'filter[date]': 'past'}).then(events => {
           this.pastEvents = events
         })
       }

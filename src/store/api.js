@@ -336,10 +336,10 @@ export default {
     },
 
 
-    updateItemAttributes: ({dispatch}, {resource, item, type, attributes}) => {
+    updateItemAttributes: ({dispatch}, {resource, item, attributes}) => {
       const data = {
         id: item.id,
-        type,
+        type: item.type,
         attributes
       }
       return resource.http.update({id: item.id}, {data}).then(response => {

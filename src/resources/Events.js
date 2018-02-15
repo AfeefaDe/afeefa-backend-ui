@@ -1,90 +1,73 @@
 import Vue from 'vue'
-import store from '@/store'
 import { BASE } from '@/store/api'
 import Event from '@/models/Event'
-import EventsResource from './EventsResource'
-import LoadingStrategy from '@/store/api/LoadingStrategy'
-import toCamelCase from '@/filters/camel-case'
+import EntriesResource from './base/EntriesResource'
+import Query from './base/Query'
 
-class Events {
-  constructor () {
-    this.relationsToFetch = []
+class EventsResource extends EntriesResource {
+  init () {
+    this.url = 'events'
+    this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
+
+    this.listType = 'events'
   }
 
-  with (...relations) {
-    const EventsCopy = new Events()
-    EventsCopy.relationsToFetch = relations
-    return EventsCopy
+  getItemModel () {
+    return Event
   }
 
-  getAllForOrga (id, filter) {
-    const resource = new EventsResource()
-    resource.url = `orgas/${id}/events`
-    resource.http = Vue.resource(BASE + resource.url)
-    resource.listType = `events`
-    resource.listParams = {orga_id: id, 'filter[date]': filter}
+  itemAdded (event) {
+    super.itemAdded(event)
+    // parent orgas events might change
+    this._updateParentOrgasEventList(event)
+  }
 
-    const params = {
-      'filter[date]': filter
+  itemDeleted (event) {
+    super.itemDeleted(event)
+    // parent orgas events might change
+    this._updateParentOrgasEventList(event)
+  }
+
+  itemSaved (eventOld, event) {
+    super.itemSaved(eventOld, event)
+    // parent orgas events might change
+    this._updateParentOrgasEventList(eventOld)
+    this._updateParentOrgasEventList(event)
+  }
+
+  _updateParentOrgasEventList (event) {
+    const orgaId = event.relation('parent_orga').id
+    if (orgaId) {
+      this.cachePurgeList('events', JSON.stringify({orga_id: orgaId, 'filter[date]': 'upcoming'}))
+      this.cachePurgeList('events', JSON.stringify({orga_id: orgaId, 'filter[date]': 'past'}))
     }
-    return store.dispatch('api/getList', {resource, params})
+  }
+}
+
+class OrgaEventsResource extends EventsResource {
+  init ([orgaId, params]) {
+    this.url = `orgas/${orgaId}/events`
+    this.http = Vue.resource(BASE + this.url)
+
+    this.listParams = {orga_id: orgaId, ...params}
+  }
+}
+
+class Events extends Query {
+  init () {
+    this.Model = Event
   }
 
-  getAll (params) {
-    const resource = new EventsResource()
-    return store.dispatch('api/getList', {resource, params})
+  getApi () {
+    return super.getApi().concat(['forOwner'])
   }
 
-  get (id) {
-    if (!id) {
-      const event = new Event()
-      return Promise.resolve(event)
-    }
-    const resource = new EventsResource()
-    return store.dispatch('api/getItem', {resource, id}).then(event => {
-      if (event) {
-        if (this.relationsToFetch) {
-          this.relationsToFetch.forEach(relationName => {
-            const fetchFunction = 'fetch' + toCamelCase(relationName)
-            if (!event[fetchFunction]) {
-              console.error('Method to fetch a relation is not defined:', fetchFunction, this.info)
-            }
-            event[fetchFunction](LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED)
-          })
-        }
-      }
-      return event
-    })
-  }
-
-  save (event) {
-    if (event.id) {
-      return store.dispatch('api/saveItem', {
-        resource: new EventsResource(),
-        item: event
-      })
+  createResource ({owner, params}) {
+    if (owner) {
+      return new OrgaEventsResource(owner.id, params)
     } else {
-      return store.dispatch('api/addItem', {
-        resource: new EventsResource(),
-        item: event
-      })
+      return new EventsResource()
     }
-  }
-
-  updateAttributes (event, attributes) {
-    return store.dispatch('api/updateItemAttributes', {
-      resource: new EventsResource(),
-      item: event,
-      type: 'events',
-      attributes
-    })
-  }
-
-  delete (event) {
-    return store.dispatch('api/deleteItem', {
-      resource: new EventsResource(),
-      item: event
-    })
   }
 }
 

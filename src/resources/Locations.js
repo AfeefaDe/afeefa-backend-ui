@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import store from '@/store'
 import { BASE } from '@/store/api'
 import Location from '@/models/Location'
 import Resource from './base/Resource'
+import Query from './base/Query'
 
 class LocationsResource extends Resource {
   init () {
@@ -17,14 +17,14 @@ class LocationsResource extends Resource {
   }
 }
 
-export default {
-  getAll () {
-    const resource = new LocationsResource()
-    return store.dispatch('api/getList', {resource})
-  },
+class Locations extends Query {
+  getApi () {
+    return ['getAll']
+  }
 
-  get (id) {
-    const resource = new LocationsResource()
-    return store.dispatch('api/getItem', {resource, id})
+  createResource () {
+    return new LocationsResource()
   }
 }
+
+export default new Locations()

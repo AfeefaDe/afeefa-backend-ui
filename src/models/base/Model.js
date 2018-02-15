@@ -177,11 +177,11 @@ export default class Model {
     this._loadingState = Math.max(this._loadingState, this.calculateLoadingStateFromJson(json))
 
     this.deserializeAttributes(this.getAttributesFromJson(json))
+    this.afterDeserializeAttributes()
+
     this.deserializeRelations(this.getRelationsFromJson(json))
 
     this.fetchAllRelations()
-
-    this.afterDeserialize()
   }
 
   fetchAllRelations () {
@@ -215,7 +215,7 @@ export default class Model {
   getRelationsFromJson (json) {
   }
 
-  afterDeserialize (json) {
+  afterDeserializeAttributes (json) {
   }
 
   serialize () {

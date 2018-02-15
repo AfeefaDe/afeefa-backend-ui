@@ -29,13 +29,6 @@ class TodosResource extends Resource {
 export default {
   getAll (params) {
     const resource = new TodosResource()
-    // loading all todos should trigger loading all annotations
-    // we are waiting till
-    return store.dispatch('api/getList', {resource, params}).then(entries => {
-      for (let entry of entries) {
-        entry.fetchAnnotations()
-      }
-      return entries
-    })
+    return store.dispatch('api/getList', {resource, params})
   }
 }

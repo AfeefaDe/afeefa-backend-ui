@@ -1,10 +1,8 @@
 import Vue from 'vue'
-import store from '@/store'
 import { BASE } from '@/store/api'
 import Contact from '@/models/Contact'
 import Resource from './base/Resource'
-import Orga from '@/models/Orga'
-import Event from '@/models/Event'
+import Query from './base/Query'
 
 class ContactsResource extends Resource {
   init ([owner]) {
@@ -50,6 +48,8 @@ class ContactsResource extends Resource {
   }
 
   itemDeleted (contact) {
+    // TODO invalidate CONTACT LIST after add and delete
+
     // refetch contact owners contact list
     const owner = this.findCachedItem(this.owner.type, this.owner.id)
     if (owner) {
@@ -75,34 +75,18 @@ class ContactListResource extends ContactsResource {
   }
 }
 
-export default {
-  getAllForOwner (owner) {
-    const resource = new ContactListResource(owner)
-    return store.dispatch('api/getList', {resource})
-  },
+class Contacts extends Query {
+  getApi () {
+    return ['forOwner', 'getAll', 'save', 'delete']
+  }
 
-  save (owner, contact) {
-    const action = contact.id ? 'saveItem' : 'addItem'
-    return store.dispatch(`api/${action}`, {
-      resource: new ContactsResource(owner),
-      item: contact,
-      options: {
-        wrapInDataProperty: false
-      }
-    })
-  },
+  createResource ({owner}) {
+    return new ContactListResource(owner)
+  }
 
-  delete (owner, contact) {
-    return store.dispatch('api/deleteItem', {
-      resource: new ContactsResource(owner),
-      item: contact
-    }).then(result => {
-      const Resource = owner.type === 'events' ? Event : Orga
-      Resource.get(owner.id, []).then(owner => {
-        // TODO let Orga fetch the contats by itself
-        owner.fetchContacts()
-      })
-      return result
-    })
+  save (contact) {
+    return super.save(contact, {wrapInDataProperty: false})
   }
 }
+
+export default new Contacts()

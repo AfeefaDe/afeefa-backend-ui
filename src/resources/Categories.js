@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import store from '@/store'
 import { BASE } from '@/store/api'
 import Category from '@/models/Category'
 import Resource from './base/Resource'
+import Query from './base/Query'
 
 class CategoriesResource extends Resource {
   init () {
@@ -32,16 +32,20 @@ class CategoriesResource extends Resource {
   }
 }
 
-export default {
-  getAll () {
-    const resource = new CategoriesResource()
-    return store.dispatch('api/getList', {resource})
-  },
+class Categories extends Query {
+  getApi () {
+    return ['getAll', 'get']
+  }
+
+  createResource () {
+    return new CategoriesResource()
+  }
 
   get (id) {
-    const resource = new CategoriesResource()
     return this.getAll().then(() => {
-      return store.dispatch('api/getItem', {resource, id})
+      return super.get(id)
     })
   }
 }
+
+export default new Categories()

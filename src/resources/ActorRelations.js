@@ -3,8 +3,9 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import ActorRelationsModel from '@/models/ActorRelations'
 import Resource from './base/Resource'
-import LoadingStrategy from '@/store/api/LoadingStrategy'
+// import LoadingStrategy from '@/store/api/LoadingStrategy'
 import Orga from '@/models/Orga'
+import Query from './base/Query'
 
 class ActorRelationsResource extends Resource {
   init ([orgaId]) {
@@ -36,11 +37,17 @@ class ActorRelationActorsResource extends Resource {
   }
 }
 
-const ActorRelations = {
-  getForOrga (orga) {
-    const resource = new ActorRelationsResource(orga.id)
+class ActorRelations extends Query {
+  getApi () {
+    return ['get']
+  }
 
-    return store.dispatch('api/getItem', {resource, id: orga.id, strategy: LoadingStrategy.LOAD_IF_NOT_CACHED}).then(actorRelations => {
+  createResource ({owner}) {
+    return new ActorRelationsResource(owner.id)
+  }
+
+  get (id) {
+    return super.get(id).then(actorRelations => {
       const promises = []
       Orga.ACTOR_RELATIONS.forEach(relationName => {
         const actorsResource = new ActorRelationActorsResource(actorRelations, relationName)
@@ -57,4 +64,4 @@ const ActorRelations = {
   }
 }
 
-export default ActorRelations
+export default new ActorRelations()

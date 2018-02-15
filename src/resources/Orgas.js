@@ -2,60 +2,53 @@ import Vue from 'vue'
 import store from '@/store'
 import { BASE } from '@/store/api'
 import Orga from '@/models/Orga'
-import OrgasResource from './OrgasResource'
-import toCamelCase from '@/filters/camel-case'
-import LoadingStrategy from '@/store/api/LoadingStrategy'
+import EntriesResource from './base/EntriesResource'
+import Query from './base/Query'
 
-class Orgas {
-  constructor () {
-    this.relationsToFetch = []
+class OrgasResource extends EntriesResource {
+  init () {
+    this.url = 'orgas'
+    this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
+    this.listType = 'orgas'
   }
 
-  with (...relations) {
-    const OrgasCopy = new Orgas()
-    OrgasCopy.relationsToFetch = relations
-    return OrgasCopy
+  getItemModel () {
+    return Orga
   }
 
-  getAll () {
-    const resource = new OrgasResource()
-    return store.dispatch('api/getList', {resource})
-  }
+  itemSaved (orgaOld, orga) {
+    super.itemSaved(orgaOld, orga)
 
-  get (id, relations, strategy, fetchingStrategies = {}) {
-    if (!id) {
-      const orga = new Orga()
-      return Promise.resolve(orga)
-    }
-    const resource = new OrgasResource()
-    return store.dispatch('api/getItem', {resource, id, strategy}).then(orga => {
-      if (orga) {
-        if (this.relationsToFetch) {
-          this.relationsToFetch.forEach(relationName => {
-            const fetchFunction = 'fetch' + toCamelCase(relationName)
-            if (!orga[fetchFunction]) {
-              console.error('Method to fetch a relation is not defined:', fetchFunction, this.info)
-            }
-            orga[fetchFunction](LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED)
-          })
-        }
+    // refetch relations to this orga
+    const allActorRelations = this.cacheGetAllItems('actor_relations')
+    for (let orgaId in allActorRelations) {
+      this.cachePurgeItem('actor_relations', orgaId)
+      const relatedOrga = this.findCachedItem('orgas', orgaId)
+      if (relatedOrga) {
+        console.log('TODO invalidate loaded actor relations')
+        // relatedOrga.invalidateLoadedActorRelations()
+        // this.fetched('actorRelations', false)
+        // Orga.ACTOR_RELATIONS.forEach(actorRelation => {
+        //   this[actorRelation] = []
+        // })
       }
-      return orga
-    })
+    }
+  }
+}
+
+class Orgas extends Query {
+  // TODO save new orga throws actor relation errors
+
+  init () {
+    this.Model = Orga
   }
 
-  save (orga) {
-    if (orga.id) {
-      return store.dispatch('api/saveItem', {
-        resource: new OrgasResource(),
-        item: orga
-      })
-    } else {
-      return store.dispatch('api/addItem', {
-        resource: new OrgasResource(),
-        item: orga
-      })
-    }
+  getApi () {
+    return super.getApi().concat(['joinActorRelation', 'leaveActorRelation'])
+  }
+
+  createResource () {
+    return new OrgasResource()
   }
 
   joinActorRelation (relationType, relatingOrga, relatedOrga) {
@@ -97,22 +90,6 @@ class Orgas {
       }, {root: true})
       console.log('error leave actor relation', response)
       return null
-    })
-  }
-
-  updateAttributes (orga, attributes) {
-    return store.dispatch('api/updateItemAttributes', {
-      resource: new OrgasResource(),
-      item: orga,
-      type: 'orgas',
-      attributes
-    })
-  }
-
-  delete (orga) {
-    return store.dispatch('api/deleteItem', {
-      resource: new OrgasResource(),
-      item: orga
     })
   }
 }

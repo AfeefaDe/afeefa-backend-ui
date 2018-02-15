@@ -1,6 +1,7 @@
 import Model from './base/Model'
 import Relation from './base/Relation'
 import toCamelCase from '@/filters/camel-case'
+import LoadingState from '@/store/api/LoadingState'
 
 export default class ActorRelations extends Model {
   static type = 'actor_relations'
@@ -22,6 +23,10 @@ export default class ActorRelations extends Model {
     })
 
     return relations
+  }
+
+  calculateLoadingStateFromJson (json) {
+    return LoadingState.FULLY_LOADED
   }
 
   getRelationsFromJson (json) {

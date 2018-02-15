@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import store from '@/store'
 import { BASE } from '@/store/api'
 import ResourceItem from '@/models/ResourceItem'
 import Resource from './base/Resource'
+import Query from './base/Query'
 
 class ResourceItemsResource extends Resource {
   init ([orga]) {
@@ -20,9 +20,14 @@ class ResourceItemsResource extends Resource {
   }
 }
 
-export default {
-  getAllForOrga (orga) {
-    const resource = new ResourceItemsResource(orga)
-    return store.dispatch('api/getList', {resource})
+class ResourceItems extends Query {
+  getApi () {
+    return ['forOwner', 'getAll']
+  }
+
+  createResource ({owner}) {
+    return new ResourceItemsResource(owner)
   }
 }
+
+export default new ResourceItems()

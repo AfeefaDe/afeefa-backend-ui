@@ -47,7 +47,7 @@ export default {
       if (owner) {
         this.owner = owner
         if (this.contactId) {
-          Contact.getAllForOwner(owner).then(contacts => {
+          Contact.forOwner(owner).getAll().then(contacts => {
             this.origContact = contacts.find(c => c.id === this.contactId)
             this.contact = this.origContact.clone()
           })
@@ -76,7 +76,7 @@ export default {
     },
 
     saveContact () {
-      Contact.save(this.owner, this.contact).then(contact => {
+      Contact.forOwner(this.owner).save(this.contact).then(contact => {
         if (contact) {
           // update contact's owner contact list
           this.$store.dispatch('messages/showAlert', {

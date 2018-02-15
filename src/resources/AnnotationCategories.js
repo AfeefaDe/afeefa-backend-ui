@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import store from '@/store'
 import { BASE } from '@/store/api'
 import AnnotationCategory from '@/models/AnnotationCategory'
 import Resource from './base/Resource'
+import Query from './base/Query'
 
 class AnnotationCategoriesResource extends Resource {
   init () {
@@ -16,24 +16,20 @@ class AnnotationCategoriesResource extends Resource {
   }
 }
 
-let annotationCategoriesLoaded = false
+class AnnotationCategories extends Query {
+  getApi () {
+    return ['getAll', 'get']
+  }
 
-
-export default {
-  getAll () {
-    const resource = new AnnotationCategoriesResource()
-    return store.dispatch('api/getList', {resource}).then(annotationCategories => {
-      if (!annotationCategoriesLoaded) {
-        annotationCategoriesLoaded = true
-      }
-      return annotationCategories
-    })
-  },
+  createResource () {
+    return new AnnotationCategoriesResource()
+  }
 
   get (id) {
-    const resource = new AnnotationCategoriesResource()
     return this.getAll().then(() => {
-      return store.dispatch('api/getItem', {resource, id})
+      return super.get(id)
     })
   }
 }
+
+export default new AnnotationCategories()

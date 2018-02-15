@@ -7,7 +7,6 @@ import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 import Orga from '@/models/Orga'
 import User from '@/models/User'
 import sortByTitle from '@/helpers/sort-by-title'
-import LoadingStrategy from '@/store/api/LoadingStrategy'
 
 export default {
   mixins: [RouteConfigAwareMixin],
@@ -23,9 +22,7 @@ export default {
   },
 
   created () {
-    this.Resource.get(this.id, null, null, {
-      'fetchParentOrga': LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED
-    }).then(entry => {
+    this.Resource.with('parent_orga').get(this.id).then(entry => {
       if (entry) {
         this.origItem = entry
         this.item = entry.clone()

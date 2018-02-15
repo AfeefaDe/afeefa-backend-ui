@@ -98,7 +98,7 @@ export default class Entry extends Model {
 
   fetchParentOrga (strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
     this.relation('parent_orga').fetch(id => {
-      return this.Resource('Orgas').get(id, [], strategy).then(orga => {
+      return this.Resource('Orgas').get(id, strategy).then(orga => {
         this.parent_orga = orga
       })
     })
@@ -122,7 +122,7 @@ export default class Entry extends Model {
 
   fetchContacts (clone) {
     this.relation('contacts').fetch(() => {
-      return this.Resource('Contacts').getAllForOwner(this).then(contacts => {
+      return this.Resource('Contacts').forOwner(this).getAll().then(contacts => {
         this.contacts = []
         contacts.forEach(contact => {
           contact = clone ? contact.clone() : contact
@@ -134,7 +134,7 @@ export default class Entry extends Model {
 
   fetchAnnotations (clone) {
     this.relation('annotations').fetch(() => {
-      return this.Resource('Annotations').getAllForOwner(this).then(annotations => {
+      return this.Resource('Annotations').forOwner(this).getAll().then(annotations => {
         this.annotations = []
         annotations.forEach(annotation => {
           annotation = clone ? annotation.clone() : annotation

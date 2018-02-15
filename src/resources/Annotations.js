@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import store from '@/store'
 import { BASE } from '@/store/api'
 import Annotation from '@/models/Annotation'
 import Resource from './base/Resource'
+import Query from './base/Query'
 
 class AnnotationsResource extends Resource {
   init ([owner]) {
@@ -18,9 +18,14 @@ class AnnotationsResource extends Resource {
   }
 }
 
-export default {
-  getAllForOwner (owner) {
-    const resource = new AnnotationsResource(owner)
-    return store.dispatch('api/getList', {resource})
+class Annotations extends Query {
+  getApi () {
+    return ['forOwner', 'getAll']
+  }
+
+  createResource ({owner}) {
+    return new AnnotationsResource(owner)
   }
 }
+
+export default new Annotations()

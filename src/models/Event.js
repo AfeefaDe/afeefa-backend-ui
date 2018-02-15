@@ -39,9 +39,7 @@ export default class Event extends Entry {
     }
   }
 
-  afterDeserialize () {
-    super.afterDeserialize()
-
+  afterDeserializeAttributes () {
     if (!this.date_end) {
       this.date_end = this.date_start
     }

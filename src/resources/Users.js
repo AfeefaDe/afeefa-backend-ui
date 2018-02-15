@@ -3,6 +3,7 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import User from '@/models/User'
 import Resource from './base/Resource'
+import Query from './base/Query'
 
 class UsersResource extends Resource {
   init () {
@@ -15,33 +16,32 @@ class UsersResource extends Resource {
   }
 }
 
-export default {
-  get _resourceCache () {
-    return store.state.api.resourceCache
-  },
+class Users extends Query {
+  init () {
+    this.resourceCache = store.state.api.resourceCache
+  }
+
+  getApi () {
+    return ['setCurrentUser', 'removeCurrentUser', 'get', 'getCurrentUser', 'save']
+  }
+
+  createResource () {
+    return new UsersResource()
+  }
 
   // current user is not delivered by api but by auth service
   // and must hence be added manually
   setCurrentUser (user, id) {
-    this._resourceCache.addItem('users', user)
-  },
+    this.resourceCache.addItem('users', user)
+  }
 
   removeCurrentUser (id) {
-    this._resourceCache.purgeItem('users', id)
-  },
-
-  get (id) {
-    return Promise.resolve(this._resourceCache.getItem('users', id))
-  },
+    this.resourceCache.purgeItem('users', id)
+  }
 
   getCurrentUser () {
-    return this._resourceCache.getItem('users', store.state.auth.currentUserId)
-  },
-
-  save (user) {
-    return store.dispatch('api/saveItem', {
-      resource: new UsersResource(),
-      item: user
-    })
+    return this.resourceCache.getItem('users', store.state.auth.currentUserId)
   }
 }
+
+export default new Users()

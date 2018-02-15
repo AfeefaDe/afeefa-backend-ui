@@ -38,19 +38,6 @@ class ModelRegistry {
     return this.models[name]
   }
 
-  getAllFuncs (obj) {
-    var props = []
-    do {
-      props = props.concat(Object.getOwnPropertyNames(obj).filter(name => {
-        return name !== 'constructor' && !props.includes(name)
-      }))
-    } while (
-      (obj = Object.getPrototypeOf(obj)) && obj.constructor.name !== 'Object'
-    )
-
-    return props
-  }
-
   checkType (Model) {
     if (!Model.hasOwnProperty('type')) {
       console.error('Das Model', Model.name, 'hat keinen Typ')
@@ -61,11 +48,13 @@ class ModelRegistry {
     if (Model.hasOwnProperty('query')) {
       const args = this.getArguments(Model.query).map(arg => ResourceRegistry.get(arg))
       Model.query = Model.query(...args)
-      for (let method of this.getAllFuncs(Model.query)) {
+      for (let method of Model.query.getApi()) {
         if (Model[method]) {
           console.error('Das Model', Model.name, 'hat bereits eine Methode', method)
         }
-        Model[method] = Model.query[method]
+        Model[method] = (...args2) => {
+          return Model.query[method](...args2)
+        }
       }
     }
   }
