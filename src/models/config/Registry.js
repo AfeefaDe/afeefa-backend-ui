@@ -130,24 +130,6 @@ class ModelRegistry {
     }
     return relations
   }
-
-  toCamelCase (str) {
-    // Todo!! currently not used
-    // https://stackoverflow.com/questions/2970525/converting-any-string-into-camel-case/32604073#32604073
-    // Lower cases the string
-    return 'fetch' + str
-      // first char to lower
-      .replace(/^(.)/, $1 => $1.toUpperCase())
-      // Replaces any - or _ characters with a space
-      .replace(/[-_]+/g, ' ')
-      // Removes any non alphanumeric characters
-      .replace(/[^\w\s]/g, '')
-      // Uppercases the first character in each group immediately following a space
-      // (delimited by spaces)
-      .replace(/ (.)/g, $1 => $1.toUpperCase())
-      // Removes spaces
-      .replace(/ /g, '')
-  }
 }
 
 export default new ModelRegistry()

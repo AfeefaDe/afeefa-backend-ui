@@ -32,7 +32,7 @@ export default class Annotation extends Model {
     this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
   }
 
-  fetchCategory () {
+  fetchAnnotationCategory () {
     this.relation('annotationCategory').fetch(id => {
       return this.Resource('AnnotationCategories').get(id).then(annotationCategory => {
         this.annotationCategory = annotationCategory
@@ -54,7 +54,7 @@ export default class Annotation extends Model {
   }
 
   afterDeserialize () {
-    this.fetchCategory()
+    this.fetchAnnotationCategory()
   }
 
   serialize () {
@@ -76,7 +76,7 @@ export default class Annotation extends Model {
 
   clone (annotation) {
     const clone = super.clone()
-    clone.fetchCategory()
+    clone.fetchAnnotationCategory()
     return clone
   }
 

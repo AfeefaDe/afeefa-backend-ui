@@ -74,7 +74,7 @@ export default class Orga extends Entry {
     })
   }
 
-  fetchResources (clone) {
+  fetchResourceItems (clone) {
     this.relation('resource_items').fetch(() => {
       return this.Resource('ResourceItems').getAllForOrga(this).then(resourceItems => {
         this.resource_items = []
@@ -127,7 +127,7 @@ export default class Orga extends Entry {
 
   clone (orga) {
     const clone = super.clone(orga)
-    clone.fetchResources()
+    clone.fetchResourceItems()
     clone.fetchActorRelations()
     return clone
   }

@@ -27,7 +27,7 @@ class Orgas {
       'fetchParentOrga', // must be here because of possible custom fetching strategy
       'fetchAnnotations',
       'fetchContacts',
-      'fetchResources',
+      'fetchResourceItems',
       'fetchActorRelations'
     ]
 

@@ -56,9 +56,9 @@ export default class Model {
 
     // init relations
     for (let name in this.constructor._relations) {
-      const relation = this.constructor._relations[name]
-      this[name] = relation.type === Relation.HAS_MANY ? [] : null
-      this._relations[name] = new Relation({owner: this, name, ...relation})
+      const relationConfig = this.constructor._relations[name]
+      this[name] = relationConfig.type === Relation.HAS_MANY ? [] : null
+      this._relations[name] = new Relation({owner: this, name, ...relationConfig})
     }
 
     this.init()
