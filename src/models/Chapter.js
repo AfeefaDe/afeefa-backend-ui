@@ -16,8 +16,12 @@ export default class Chapter extends Model {
     }
   }
 
-  getAttributesFromJson (json) {
-    return json
+  normalizeJson (json) {
+    let {title, content, order} = json
+    return {
+      id: json.id,
+      attributes: {title, content, order}
+    }
   }
 
   serialize () {

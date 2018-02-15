@@ -31,14 +31,6 @@ export default class Category extends Model {
     return Promise.resolve()
   }
 
-  getAttributesFromJson (json) {
-    return json.attributes
-  }
-
-  getRelationsFromJson (json) {
-    return json.relationships
-  }
-
   clone () {
     // do not allow cloning of a category by now
     // preselection of category selectors may disappears

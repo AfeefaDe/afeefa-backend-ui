@@ -78,27 +78,32 @@ export default class Orga extends Entry {
     })
   }
 
-  getRelationsFromJson (json) {
-    const relations = super.getRelationsFromJson(json)
+  normalizeJson (json) {
+    const relationships = json.relationships
 
-    // actor relations, create a merge json object for the different relations
-    const rels = json.relationships || {}
-    const actorRelationsJson = {}
-    Orga.ACTOR_RELATIONS.forEach(relationName => {
-      if (rels[relationName]) {
-        actorRelationsJson[relationName] = rels[relationName].data
+    // move all actor relations into container object
+    if (relationships) {
+      const actorRelationsJson = {}
+      Orga.ACTOR_RELATIONS.forEach(relationName => {
+        if (relationships[relationName]) {
+          actorRelationsJson[relationName] = relationships[relationName].data
+          delete json.relationships[relationName]
+        }
+      })
+      if (Object.keys(actorRelationsJson).length) {
+        // inject id of orga as actorRelations id
+        // also see ActorRelationsResource#itemJsonLoaded
+        actorRelationsJson.id = this.id
+        actorRelationsJson._requestId = json._requestId // inject requestId
+        relationships.actor_relations = actorRelationsJson
       }
-    })
-
-    if (Object.keys(actorRelationsJson).length) {
-      // inject id of orga as actorRelations id
-      // also see ActorRelationsResource#itemJsonLoaded
-      actorRelationsJson.id = this.id
-      actorRelationsJson._requestId = json._requestId // inject requestId
-      relations.actor_relations = actorRelationsJson
     }
 
-    return relations
+    return {
+      id: json.id,
+      attributes: json.attributes,
+      relationships
+    }
   }
 
   serialize () {

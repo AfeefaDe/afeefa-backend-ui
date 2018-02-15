@@ -13,10 +13,6 @@ export default class ContactPerson extends Model {
     }
   }
 
-  getAttributesFromJson (json) {
-    return json.attributes
-  }
-
   serialize () {
     const data = {
       name: this.name,

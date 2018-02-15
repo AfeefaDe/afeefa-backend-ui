@@ -192,6 +192,10 @@ export default class Model {
    */
 
   deserialize (json) {
+    if (!json._requestId && json._requestId !== 0) {
+      console.error('No requestId given in json. Might be an error in normalizeJson()', this.info, json)
+    }
+
     // we want to deserialize our model not multiple times in the same request
     const isSameRequest = json._requestId === this._requestId
     const jsonLoadingState = this.calculateLoadingStateFromJson(json)
@@ -205,18 +209,19 @@ export default class Model {
     this._requestId = json._requestId
     this._loadingState = Math.max(this._loadingState, this.calculateLoadingStateFromJson(json))
 
-    this.deserializeAttributes(this.getAttributesFromJson(json))
+    console.log(this.info, json, this.normalizeJson(json))
+    json = this.normalizeJson(json)
+
+    this.deserializeAttributes(json.attributes)
     this.afterDeserializeAttributes()
 
-    this.deserializeRelations(this.getRelationsFromJson(json))
+    this.deserializeRelations(json.relationships)
 
     this.fetchAllCachedRelations()
   }
 
-  getAttributesFromJson (json) {
-  }
-
-  getRelationsFromJson (json) {
+  normalizeJson (json) {
+    return json
   }
 
   afterDeserializeAttributes (json) {

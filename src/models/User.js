@@ -34,10 +34,6 @@ export default class User extends Model {
     return this.first_name + ' ' + this.last_name
   }
 
-  getAttributesFromJson (json) {
-    return json.attributes
-  }
-
   serialize () {
     const data = {
       id: this.id,

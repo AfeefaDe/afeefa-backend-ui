@@ -19,10 +19,6 @@ export default class AnnotationCategory extends Model {
     }
   }
 
-  getAttributesFromJson (json) {
-    return json.attributes
-  }
-
   get info () {
     return super.info + ` title="${this.title}"`
   }

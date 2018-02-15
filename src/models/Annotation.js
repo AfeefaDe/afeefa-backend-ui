@@ -32,14 +32,16 @@ export default class Annotation extends Model {
     })
   }
 
-  getAttributesFromJson (json) {
-    return json.attributes
-  }
-
-  getRelationsFromJson (json) {
+  normalizeJson (json) {
+    let {detail} = json.attributes
     return {
-      annotationCategory: {
-        id: json.attributes.annotation_category_id
+      id: json.id,
+      attributes: {detail},
+      relationships: {
+        annotationCategory: {
+          _requestId: json._requestId,
+          id: json.attributes.annotation_category_id
+        }
       }
     }
   }

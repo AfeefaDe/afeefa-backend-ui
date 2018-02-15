@@ -66,14 +66,6 @@ export default class Contact extends Model {
     return Promise.resolve()
   }
 
-  getAttributesFromJson (json) {
-    return json.attributes
-  }
-
-  getRelationsFromJson (json) {
-    return json.relationships
-  }
-
   serialize () {
     const data = {
       title: this.title,

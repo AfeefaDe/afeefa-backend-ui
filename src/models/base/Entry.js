@@ -146,14 +146,6 @@ export default class Entry extends Model {
     })
   }
 
-  getAttributesFromJson (json) {
-    return json.attributes
-  }
-
-  getRelationsFromJson (json) {
-    return json.relationships
-  }
-
   serialize () {
     const annotations = []
     for (let annotation of this.annotations) {

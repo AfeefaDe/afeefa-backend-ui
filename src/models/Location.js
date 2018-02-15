@@ -30,9 +30,8 @@ export default class Location extends Model {
     }
   }
 
-  getAttributesFromJson (json) {
+  normalizeJson (json) {
     const attributes = json.attributes
-
     const rels = json.relationships || {}
     if (rels.owner && rels.owner.data) {
       attributes.ownerTitle = rels.owner.data.attributes.title
@@ -40,12 +39,10 @@ export default class Location extends Model {
     if (rels.contact && rels.contact.data) {
       attributes.creatingContactId = rels.contact.data.id
     }
-
-    return attributes
-  }
-
-  getRelationsFromJson (json) {
-    return json.relationships
+    return {
+      id: json.id,
+      attributes
+    }
   }
 
   serialize () {

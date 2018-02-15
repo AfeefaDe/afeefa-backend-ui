@@ -22,10 +22,6 @@ export default class ResourceItem extends Model {
     }
   }
 
-  getAttributesFromJson (json) {
-    return json.attributes
-  }
-
   serialize () {
     let data = {
       type: this.type,

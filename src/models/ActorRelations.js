@@ -32,7 +32,12 @@ export default class ActorRelations extends Model {
     return LoadingState.FULLY_LOADED
   }
 
-  getRelationsFromJson (json) {
-    return json
+  normalizeJson (json) {
+    const jsonRelations = Object.keys(this.relations)
+      .reduce((obj, key) => ({...obj, [key]: json[key]}), {})
+    return {
+      id: json.id,
+      relationships: jsonRelations
+    }
   }
 }
