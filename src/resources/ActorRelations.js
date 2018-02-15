@@ -8,7 +8,7 @@ import Orga from '@/models/Orga'
 import Query from './base/Query'
 
 class ActorRelationsResource extends Resource {
-  init ([orgaId]) {
+  init (orgaId) {
     this.orgaId = orgaId
 
     this.url = BASE + `orgas{/id}/actor_relations`
@@ -25,7 +25,7 @@ class ActorRelationsResource extends Resource {
 }
 
 class ActorRelationActorsResource extends Resource {
-  init ([actorRelations, relationName]) {
+  init (actorRelations, relationName) {
     this.url = BASE + `orgas/${actorRelations.id}/actor_relations/${relationName}`
     this.http = Vue.resource(this.url)
     this.listType = 'orgas'

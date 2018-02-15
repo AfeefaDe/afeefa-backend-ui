@@ -5,7 +5,7 @@ import Resource from './base/Resource'
 import Query from './base/Query'
 
 class ResourceItemsResource extends Resource {
-  init ([orga]) {
+  init (orga) {
     this.orga = orga
 
     this.url = `orgas/${orga.id}/resource_items`

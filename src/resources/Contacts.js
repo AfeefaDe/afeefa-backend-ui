@@ -5,7 +5,7 @@ import Resource from './base/Resource'
 import Query from './base/Query'
 
 class ContactsResource extends Resource {
-  init ([owner]) {
+  init (owner) {
     this.owner = owner
 
     this.url = `${owner.type}/${owner.id}/contacts`
@@ -67,8 +67,8 @@ class ContactsResource extends Resource {
 }
 
 class ContactListResource extends ContactsResource {
-  init ([owner]) {
-    super.init([owner])
+  init (owner) {
+    super.init(owner)
 
     this.listType = 'contacts'
     this.listParams = owner.relation('contacts').listParams()

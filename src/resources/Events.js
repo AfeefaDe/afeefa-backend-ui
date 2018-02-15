@@ -45,7 +45,7 @@ class EventsResource extends EntriesResource {
 }
 
 class OrgaEventsResource extends EventsResource {
-  init ([orgaId, params]) {
+  init (orgaId, params) {
     this.url = `orgas/${orgaId}/events`
     this.http = Vue.resource(BASE + this.url)
 

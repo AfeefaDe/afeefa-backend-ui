@@ -5,7 +5,7 @@ import Resource from './base/Resource'
 import Query from './base/Query'
 
 class AnnotationsResource extends Resource {
-  init ([owner]) {
+  init (owner) {
     this.url = `${owner.type}/${owner.id}/annotations`
     this.http = Vue.resource(BASE + this.url)
 
