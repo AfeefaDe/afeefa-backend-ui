@@ -264,6 +264,7 @@ export default {
         // purge upon actor relation change @see Orgas.joinActorRelation
         // otherwise we get a notdefined error here
         if (!cachedItem) {
+          console.log('no cached item found', itemType, item.info)
           cachedItem = item.clone()
           resourceCache.addItem(itemType, cachedItem)
         }
@@ -300,8 +301,8 @@ export default {
       ).then(response => {
         const json = response.body.data || response.body
         resource.itemJsonLoaded(json)
-        item.deserialize(resource.getItemJson(json))
         resourceCache.addItem(itemType, item)
+        item.deserialize(resource.getItemJson(json))
 
         resource.itemAdded(item)
         dispatch('getMetaInformation')

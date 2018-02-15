@@ -14,10 +14,6 @@ class ActorRelationsResource extends Resource {
     this.http = Vue.resource(this.url, {id: orgaId})
   }
 
-  getItemType () {
-    return 'actor_relations'
-  }
-
   itemJsonLoaded (json) {
     json.id = this.orgaId
   }

@@ -26,6 +26,10 @@ export default class Category extends Model {
     }
   }
 
+  fetchParentCategory () {
+    // empty
+  }
+
   getAttributesFromJson (json) {
     return json.attributes
   }

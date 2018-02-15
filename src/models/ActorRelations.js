@@ -1,5 +1,6 @@
 import Model from './base/Model'
 import Relation from './base/Relation'
+import toCamelCase from '@/filters/camel-case'
 
 export default class ActorRelations extends Model {
   static type = 'actor_relations'
@@ -15,7 +16,11 @@ export default class ActorRelations extends Model {
         type: Relation.HAS_MANY,
         Model: Orga
       }
+
+      // make an empty fectch function
+      this.prototype['fetch' + toCamelCase(relationName)] = () => {}
     })
+
     return relations
   }
 

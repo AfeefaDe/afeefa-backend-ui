@@ -66,7 +66,6 @@ export default class Orga extends Entry {
         Orga.ACTOR_RELATIONS.forEach(relationName => {
           this[relationName] = actorRelations[relationName]
         })
-        return actorRelations
       })
     })
   }
@@ -79,7 +78,6 @@ export default class Orga extends Entry {
           resourceItem = clone ? resourceItem.clone() : resourceItem
           this.resource_items.push(resourceItem)
         })
-        return resourceItems
       })
     })
   }

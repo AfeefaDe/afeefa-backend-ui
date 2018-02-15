@@ -84,7 +84,7 @@ export default class Entry extends Model {
   }
 
   calculateLoadingStateFromJson (json) {
-    if (json.relationships && json.relationships.contacts) {
+    if (json.relationships && (json.relationships.contacts || json.relationships.contact_infos)) { // TODO exception for events
       return LoadingState.FULLY_LOADED
     }
     if (json.relationships) {
@@ -98,20 +98,16 @@ export default class Entry extends Model {
 
   fetchParentOrga (strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
     this.relation('parent_orga').fetch(id => {
-      return this.Resource('Orgas').get(id, ['fetchParentOrga'], strategy, { // fetch parent orga with only its own parent orga relation
-        'fetchParentOrga': LoadingStrategy.LOAD_IF_NOT_CACHED // do not force fully loading of parents parent orga
-      }).then(orga => {
+      return this.Resource('Orgas').get(id, [], strategy).then(orga => {
         this.parent_orga = orga
-        return orga
       })
-    }, strategy)
+    })
   }
 
   fetchCategory () {
     this.relation('category').fetch(id => {
       return this.Resource('Categories').get(id).then(category => {
         this.category = category
-        return category
       })
     })
   }
@@ -120,7 +116,6 @@ export default class Entry extends Model {
     this.relation('sub_category').fetch(id => {
       return this.Resource('Categories').get(id).then(category => {
         this.sub_category = category
-        return category
       })
     })
   }
@@ -133,7 +128,6 @@ export default class Entry extends Model {
           contact = clone ? contact.clone() : contact
           this.contacts.push(contact)
         })
-        return contacts
       })
     })
   }
@@ -146,7 +140,6 @@ export default class Entry extends Model {
           annotation = clone ? annotation.clone() : annotation
           this.annotations.push(annotation)
         })
-        return annotations
       })
     })
   }
@@ -155,7 +148,6 @@ export default class Entry extends Model {
     this.relation('creator').fetch(id => {
       return this.Resource('Users').get(id).then(creator => {
         this.creator = creator
-        return creator
       })
     })
   }
@@ -164,7 +156,6 @@ export default class Entry extends Model {
     this.relation('last_editor').fetch(id => {
       return this.Resource('Users').get(id).then(editor => {
         this.last_editor = editor
-        return editor
       })
     })
   }
@@ -175,14 +166,6 @@ export default class Entry extends Model {
 
   getRelationsFromJson (json) {
     return json.relationships
-  }
-
-  afterDeserialize () {
-    this.fetchParentOrga()
-    this.fetchCategory()
-    this.fetchSubCategory()
-    this.fetchCreator()
-    this.fetchLastEditor()
   }
 
   serialize () {

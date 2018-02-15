@@ -1,5 +1,6 @@
-import LoadingState from '@/store/api/LoadingState'
-import LoadingStrategy from '@/store/api/LoadingStrategy'
+import store from '@/store'
+
+let ID = 0
 
 export default class Relation {
   static HAS_ONE = 'has_one'
@@ -14,6 +15,9 @@ export default class Relation {
     this.type = type
     this.Model = Model
 
+    this.instanceId = ++ID
+    this.isClone = false
+
     this.init()
   }
 
@@ -22,19 +26,18 @@ export default class Relation {
   }
 
   reset () {
+    // console.log('---- RESET', this.info)
+
     this.json = null
     this.id = null
 
+    this.initialized = false
     // avoid recursions, if a relation has been cached,
     // there is no need to cache eagerly loaded data again,
     // even if we clone the item that holds the relation
-    this.syncedWithResourceCache = false
-
-    this.initialized = false
+    this.cached = false
     this.isFetching = false
     this.fetched = false
-    this.item = null
-    this.items = []
   }
 
   listParams () {
@@ -50,23 +53,10 @@ export default class Relation {
     if (this.json && this.type === Relation.HAS_ONE) {
       this.id = this.json.id
     }
-    this.syncedWithResourceCache = false
     this.initialized = true
   }
 
-  initWithId (id) {
-    this.id = id
-    this.syncedWithResourceCache = false
-    this.initialized = true
-  }
-
-  factory (json) {
-    const item = new this.Model()
-    item.deserialize(json)
-    return item
-  }
-
-  cache (resourceCache) {
+  cache () {
     // nothing to cache
     if (!this.json) {
       return
@@ -77,101 +67,89 @@ export default class Relation {
       return
     }
 
-    if (this.syncedWithResourceCache) {
+    // already cached
+    if (this.cached) {
       return
     }
-    this.syncedWithResourceCache = true
+
+    // early mark cached, before relations may want to
+    // cache this relation again
+    this.cached = true
+
+    const resourceCache = store.state.api.resourceCache
 
     // cache item
     if (this.type === Relation.HAS_ONE) {
-      const item = this.findOrCreateItem(resourceCache, this.json)
-      this.cacheItemRelations(resourceCache, item)
+      const item = this.findOrCreateItem(this.json)
+      this.cacheItemRelations(item)
     // cache list
     } else {
       const items = []
       this.json.forEach(json => {
-        const item = this.findOrCreateItem(resourceCache, json)
+        const item = this.findOrCreateItem(json)
         items.push(item)
       })
       items.forEach(item => {
-        this.cacheItemRelations(resourceCache, item)
+        this.cacheItemRelations(item)
       })
       const listParams = JSON.stringify(this.listParams())
       resourceCache.addList(this.Model.type, listParams, items)
     }
   }
 
-  findOrCreateItem (resourceCache, json) {
+  findOrCreateItem (json) {
+    const resourceCache = store.state.api.resourceCache
     let item = resourceCache.getItem(this.Model.type, json.id)
     if (!item) {
-      item = this.factory(json)
+      item = new this.Model()
+      item.id = json.id
       resourceCache.addItem(this.Model.type, item)
-    } else {
-      // we want to update our item not multiple times in the same request
-      const isSameRequest = json._requestId === item._requestId
-      const jsonLoadingState = item.calculateLoadingStateFromJson(json)
-      const wantToCacheMore = jsonLoadingState > item._loadingState
-      if (wantToCacheMore || !isSameRequest) {
-        item.deserialize(json)
-      }
     }
+    item.deserialize(json)
     return item
   }
 
-  cacheItemRelations (resourceCache, item) {
+  cacheItemRelations (item) {
     for (let name in item.relations) {
       const relation = item.relations[name]
-      relation.cache(resourceCache)
+      relation.cache()
     }
   }
 
-  deserialize (resourceCache, json) {
-    this.reset() // TODO
-
+  deserialize (json) {
     const data = json.hasOwnProperty('data') ? json.data : json // jsonapi-spec fallback
     if (data) {
+      this.reset() // TODO
       this.initWithJson(data)
-      this.cache(resourceCache)
+      this.cache()
     }
   }
 
-  fetch (callback, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
+  fetch (callback) {
+    if (this.fetched) {
+      return
+    }
+
+    if (this.isFetching) {
+      return
+    }
+
     // FETCH ITEM
     if (this.type === Relation.HAS_ONE) {
       if (!this.id) {
         return
       }
 
-      if (this.fetched) {
-        // fetch again if we want do fully load but havent yet
-        const wantToFetchMore = strategy === LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED &&
-          this.item._loadingState < LoadingState.FULLY_LOADED
-        if (!wantToFetchMore) {
-          return
-        }
-      }
-
-      if (this.isFetching) {
-        // fetch additionally if we want to fetch more detailed data
-        const wantToFetchMore = strategy === LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED &&
-          this.isFetching !== strategy
-        if (!wantToFetchMore) {
-          return
-        }
-      }
-
-      this.isFetching = strategy
-      callback(this.id).then(item => {
-        this.item = item
+      this.isFetching = true
+      callback(this.id).then(() => {
         this.isFetching = false
         this.fetched = true
       })
 
     // FETCH LIST
     } else {
-      this.isFetching = strategy
-      callback().then(items => {
-        this.items = items
+      this.isFetching = true
+      callback().then(() => {
         this.isFetching = false
         this.fetched = true
       })
@@ -195,19 +173,19 @@ export default class Relation {
       Model: this.Model
     })
 
-    if (this.json) {
-      clone.initWithJson(this.json)
-    } else {
-      clone.initWithId(this.id)
-    }
+    clone.initWithJson(this.json)
 
     clone.initialized = this.initialized
-    clone.syncedWithResourceCache = this.syncedWithResourceCache
+    clone.cached = this.cached
+
+    clone.isClone = true
 
     return clone
   }
 
   get info () {
-    return `[Relation] owner="${this.owner.type}(${this.owner.id})" type="${this.type}" name="${this.name}"`
+    const isClone = this.isClone ? '(CLONE)' : ''
+    return `[Relation] id="${this.instanceId}${isClone}" owner="${this.owner.type}(${this.owner.id})" type="${this.type}" name="${this.name}" ` +
+      `initialized="${this.initialized}" cached="${this.cached}" fetched="${this.fetched}"`
   }
 }

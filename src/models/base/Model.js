@@ -1,8 +1,8 @@
-import store from '@/store'
 import LoadingState from '@/store/api/LoadingState'
 import ResourceRegistry from '@/resources/config/Registry'
 import DataTypes from './DataTypes'
 import Relation from './Relation'
+import toCamelCase from '@/filters/camel-case'
 
 let ID = 0
 
@@ -47,6 +47,11 @@ export default class Model {
       value: {}
     })
 
+    Object.defineProperty(this, '_isFetchingIncludedRelations', {
+      value: false,
+      writable: true
+    })
+
     // init attributes
     for (let name in this.constructor._attributes) {
       const attr = this.constructor._attributes[name]
@@ -87,25 +92,6 @@ export default class Model {
   }
 
   /**
-   * Relations
-   */
-
-  get relations () {
-    return this._relations
-  }
-
-  relation (name) {
-    // return empty relation if model not loaded yet TODO
-    // to prevent http calls to get the relations on null objects
-    if (!this.id) {
-      return {
-        fetch: () => {}
-      }
-    }
-    return this._relations[name]
-  }
-
-  /**
    * Attributes
    */
 
@@ -133,6 +119,25 @@ export default class Model {
     }
   }
 
+  /**
+   * Relations
+   */
+
+  get relations () {
+    return this._relations
+  }
+
+  relation (name) {
+    // return empty relation if model not loaded yet TODO
+    // to prevent http calls to get the relations on null objects
+    if (!this.id) {
+      return {
+        fetch: () => {}
+      }
+    }
+    return this._relations[name]
+  }
+
   hasRelation (name) {
     return !!this.constructor._relations[name]
   }
@@ -149,29 +154,59 @@ export default class Model {
       }
 
       const relation = this._relations[localName]
-
-      const resourceCache = store.state.api.resourceCache
-      relation.deserialize(resourceCache, relationsJson[name])
+      relation.deserialize(relationsJson[name])
     }
   }
 
   /**
    * Serialization
    */
-  deserialize (json) {
-    this.id = json.id
 
-    this.deserializeAttributes(this.getAttributesFromJson(json))
-    this.deserializeRelations(this.getRelationsFromJson(json))
+  deserialize (json) {
+    // we want to deserialize our model not multiple times in the same request
+    const isSameRequest = json._requestId === this._requestId
+    const jsonLoadingState = this.calculateLoadingStateFromJson(json)
+    const wantToDeserializeMore = jsonLoadingState > this._loadingState
+    if (isSameRequest && !wantToDeserializeMore) {
+      return
+    }
+
+    this.id = json.id
 
     this._requestId = json._requestId
     this._loadingState = Math.max(this._loadingState, this.calculateLoadingStateFromJson(json))
 
-    // if (this.type === 'orgas' && this.id === '4274') {
-    //   console.log('DEZERIALIZE', this.info, json, this)
-    // }
+    this.deserializeAttributes(this.getAttributesFromJson(json))
+    this.deserializeRelations(this.getRelationsFromJson(json))
+
+    this.fetchAllRelations()
 
     this.afterDeserialize()
+  }
+
+  fetchAllRelations () {
+    if (this._isFetchingIncludedRelations) {
+      return
+    }
+
+    this._isFetchingIncludedRelations = true
+
+    // short timeout to allow the recursively running deserialization
+    // process to finish before fetching the data once
+    setTimeout(() => {
+      for (let name in this._relations) {
+        const relation = this._relations[name]
+        if (relation.cached && !relation.fetched) {
+          const fetchFunction = 'fetch' + toCamelCase(name)
+          if (!this[fetchFunction]) {
+            console.error('Method to fetch a relation is not defined:', fetchFunction, this.info)
+          }
+
+          this[fetchFunction]()
+        }
+      }
+      this._isFetchingIncludedRelations = false
+    })
   }
 
   getAttributesFromJson (json) {

@@ -3,40 +3,41 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import Orga from '@/models/Orga'
 import OrgasResource from './OrgasResource'
+import toCamelCase from '@/filters/camel-case'
+import LoadingStrategy from '@/store/api/LoadingStrategy'
 
 class Orgas {
+  constructor () {
+    this.relationsToFetch = []
+  }
+
+  with (...relations) {
+    const OrgasCopy = new Orgas()
+    OrgasCopy.relationsToFetch = relations
+    return OrgasCopy
+  }
+
   getAll () {
     const resource = new OrgasResource()
     return store.dispatch('api/getList', {resource})
   }
 
-  /**
-   * Orgas.get(id) - fetch all relations, fetch parent orga with cached_or_load
-   * Orgas.get(id, null) - fetch all relations, fetch parent orga with cached_or_load
-   * Orgas.get(id, []) - fetch no relation
-   * Orgas.get(id, [], strategy) - fetch no relation, use specific loading strategy
-   * Orgas.get(id, null, null, fetchingStrategies) - fetch all and apply custom loading strategies to specific relations
-   */
   get (id, relations, strategy, fetchingStrategies = {}) {
     if (!id) {
       const orga = new Orga()
       return Promise.resolve(orga)
     }
-
-    const fetchRelations = relations || [
-      'fetchParentOrga', // must be here because of possible custom fetching strategy
-      'fetchAnnotations',
-      'fetchContacts',
-      'fetchResourceItems',
-      'fetchActorRelations'
-    ]
-
     const resource = new OrgasResource()
     return store.dispatch('api/getItem', {resource, id, strategy}).then(orga => {
       if (orga) {
-        for (let fetchRelation of fetchRelations) {
-          const strategy = fetchingStrategies[fetchRelation] || null
-          orga[fetchRelation](strategy)
+        if (this.relationsToFetch) {
+          this.relationsToFetch.forEach(relationName => {
+            const fetchFunction = 'fetch' + toCamelCase(relationName)
+            if (!orga[fetchFunction]) {
+              console.error('Method to fetch a relation is not defined:', fetchFunction, this.info)
+            }
+            orga[fetchFunction](LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED)
+          })
         }
       }
       return orga

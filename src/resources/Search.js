@@ -19,14 +19,6 @@ class SearchResource extends Resource {
     }
   }
 
-  getItemType (json) {
-    return json.relationships.entry.data.type
-  }
-
-  getItemId (json) {
-    return json.relationships.entry.data.id
-  }
-
   getItemJson (json) {
     return json.relationships.entry.data
   }

@@ -19,11 +19,11 @@ export default class Resource {
    * @see Search or Todos resources
    */
   getItemType (json) {
-    return this.listType
+    return this.getItemModel(json).type
   }
 
   getItemId (json) {
-    return json.id
+    return this.getItemJson(json).id
   }
 
   getItemJson (json) {
