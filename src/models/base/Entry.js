@@ -96,7 +96,7 @@ export default class Entry extends Model {
     return LoadingState.NOT_LOADED
   }
 
-  fetchParentOrga (strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
+  fetchParentOrga (clone, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
     this.relation('parent_orga').fetch(id => {
       return this.Resource('Orgas').get(id, strategy).then(orga => {
         this.parent_orga = orga
@@ -208,16 +208,6 @@ export default class Entry extends Model {
       data.id = this.id
     }
     return data
-  }
-
-  clone () {
-    const clone = super.clone()
-    clone.fetchParentOrga()
-    clone.fetchCategory()
-    clone.fetchSubCategory()
-    clone.fetchAnnotations(true) // true => annotation.clone()
-    clone.fetchContacts(true) // true => contact.clone()
-    return clone
   }
 
   get info () {

@@ -184,7 +184,7 @@ export default class Model {
     this.fetchAllRelations()
   }
 
-  fetchAllRelations () {
+  fetchAllRelations (clone = false) {
     if (this._isFetchingIncludedRelations) {
       return
     }
@@ -202,7 +202,7 @@ export default class Model {
             console.error('Method to fetch a relation is not defined:', fetchFunction, this.info)
           }
 
-          this[fetchFunction]()
+          this[fetchFunction](clone)
         }
       }
       this._isFetchingIncludedRelations = false
@@ -298,6 +298,7 @@ export default class Model {
     for (let relationName in this._relations) {
       clone._relations[relationName] = this._relations[relationName].clone()
     }
+    clone.fetchAllRelations(true)
     return clone
   }
 

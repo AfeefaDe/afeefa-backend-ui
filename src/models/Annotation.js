@@ -63,12 +63,6 @@ export default class Annotation extends Model {
     return data
   }
 
-  clone (annotation) {
-    const clone = super.clone()
-    clone.fetchAnnotationCategory()
-    return clone
-  }
-
   get info () {
     return super.info + ` category="${this.relation('annotationCategory').id}"`
   }

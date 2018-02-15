@@ -109,13 +109,6 @@ export default class Contact extends Model {
     return data
   }
 
-  clone () {
-    const clone = super.clone(this)
-    clone.fetchContactPersons(true)
-    clone.fetchLocation(true)
-    return clone
-  }
-
   isEmpty () {
     const hasPerson = this.persons.some(cp => !cp.isEmpty())
     return !this.fax && !this.openingHours && !this.web && !this.socialMedia && !this.spokenLanguages && !hasPerson

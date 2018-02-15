@@ -119,11 +119,4 @@ export default class Orga extends Entry {
 
     return data
   }
-
-  clone (orga) {
-    const clone = super.clone(orga)
-    clone.fetchResourceItems()
-    clone.fetchActorRelations()
-    return clone
-  }
 }

@@ -68,7 +68,7 @@ export default class Query {
             if (!model[fetchFunction]) {
               console.error('Method to fetch a relation is not defined:', fetchFunction, this.info)
             }
-            model[fetchFunction](LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED)
+            model[fetchFunction](false, LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED)
           })
         }
       }
