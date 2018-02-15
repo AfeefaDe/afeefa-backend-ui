@@ -26,8 +26,6 @@ export default class Relation {
   }
 
   reset () {
-    // console.log('---- RESET', this.info)
-
     this.json = null
     this.id = null
 

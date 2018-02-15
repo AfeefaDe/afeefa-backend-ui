@@ -209,7 +209,6 @@ export default class Model {
     this._requestId = json._requestId
     this._loadingState = Math.max(this._loadingState, this.calculateLoadingStateFromJson(json))
 
-    console.log(this.info, json, this.normalizeJson(json))
     json = this.normalizeJson(json)
 
     this.deserializeAttributes(json.attributes)
