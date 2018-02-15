@@ -30,9 +30,15 @@ export default class Resource {
     return json
   }
 
+  getItemModel (json) {
+  }
+
   // creates a new model based on the given json response
   // @see Todos or Search
   createItem (json) {
+    const item = new (this.getItemModel(json))()
+    item.id = this.getItemId(json)
+    return item
   }
 
   // transforms the given list prior to caching

@@ -13,8 +13,7 @@ export default class ActorRelations extends Model {
     Orga.ACTOR_RELATIONS.forEach(relationName => {
       relations[relationName] = {
         type: Relation.HAS_MANY,
-        Model: Orga,
-        contains: Relation.CONTAINS_LIST_DATA
+        Model: Orga
       }
     })
     return relations

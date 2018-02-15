@@ -1,5 +1,4 @@
 import Model from './base/Model'
-import LoadingState from '@/store/api/LoadingState'
 import Relation from './base/Relation'
 import DataTypes from './base/DataTypes'
 
@@ -22,14 +21,9 @@ export default class Category extends Model {
     return {
       parent_category: {
         type: Relation.HAS_ONE,
-        Model: Category,
-        contains: Relation.CONTAINS_LINK
+        Model: Category
       }
     }
-  }
-
-  init () {
-    this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
   }
 
   getAttributesFromJson (json) {

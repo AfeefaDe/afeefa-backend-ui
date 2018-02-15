@@ -1,7 +1,6 @@
 import store from '@/store'
 import Model from './base/Model'
 import Relation from './base/Relation'
-import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class Contact extends Model {
@@ -40,20 +39,14 @@ export default class Contact extends Model {
     return {
       location: {
         type: Relation.HAS_ONE,
-        Model: Location,
-        contains: Relation.CONTAINS_FULL_DATA
+        Model: Location
       },
 
       contact_persons: {
         type: Relation.HAS_MANY,
-        Model: ContactPerson,
-        contains: Relation.CONTAINS_FULL_DATA
+        Model: ContactPerson
       }
     }
-  }
-
-  init () {
-    this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
   }
 
   fetchLocation (clone) {

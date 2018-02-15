@@ -1,5 +1,4 @@
 import Model from './base/Model'
-import LoadingState from '@/store/api/LoadingState'
 import Relation from './base/Relation'
 import DataTypes from './base/DataTypes'
 
@@ -22,14 +21,9 @@ export default class Annotation extends Model {
     return {
       annotationCategory: {
         type: Relation.HAS_ONE,
-        Model: AnnotationCategory,
-        contains: Relation.CONTAINS_LINK
+        Model: AnnotationCategory
       }
     }
-  }
-
-  init () {
-    this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
   }
 
   fetchAnnotationCategory () {

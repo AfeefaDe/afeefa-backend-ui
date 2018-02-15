@@ -11,8 +11,8 @@ class AnnotationCategoriesResource extends Resource {
     this.listType = 'annotationCategories'
   }
 
-  createItem () {
-    return new AnnotationCategory()
+  getItemModel () {
+    return AnnotationCategory
   }
 }
 

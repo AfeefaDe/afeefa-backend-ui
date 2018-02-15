@@ -12,8 +12,8 @@ class LocationsResource extends Resource {
     this.listType = 'locations'
   }
 
-  createItem () {
-    return new Location()
+  getItemModel () {
+    return Location
   }
 }
 

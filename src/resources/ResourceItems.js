@@ -15,8 +15,8 @@ class ResourceItemsResource extends Resource {
     this.listParams = orga.relation('resource_items').listParams()
   }
 
-  createItem () {
-    return new ResourceItem()
+  getItemModel () {
+    return ResourceItem
   }
 }
 

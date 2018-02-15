@@ -11,8 +11,8 @@ class ChaptersResource extends Resource {
     this.listType = 'chapters'
   }
 
-  createItem () {
-    return new Chapter()
+  getItemModel () {
+    return Chapter
   }
 
   itemAdded () {

@@ -1,5 +1,4 @@
 import Model from './base/Model'
-import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class Location extends Model {
@@ -29,10 +28,6 @@ export default class Location extends Model {
 
       creatingContactId: DataTypes.String
     }
-  }
-
-  init () {
-    this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
   }
 
   getAttributesFromJson (json) {

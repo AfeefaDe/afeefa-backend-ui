@@ -13,8 +13,8 @@ class AnnotationsResource extends Resource {
     this.listParams = owner.relation('annotations').listParams()
   }
 
-  createItem () {
-    return new Annotation()
+  getItemModel () {
+    return Annotation
   }
 }
 

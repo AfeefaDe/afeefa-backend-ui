@@ -14,8 +14,8 @@ class ContactsResource extends Resource {
     this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
   }
 
-  createItem () {
-    return new Contact()
+  getItemModel () {
+    return Contact
   }
 
   itemSaved (oldContact, contact) {

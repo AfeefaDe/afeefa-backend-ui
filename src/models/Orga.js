@@ -44,20 +44,17 @@ export default class Orga extends Entry {
       parent_orga: {
         type: Relation.HAS_ONE,
         Model: Orga,
-        contains: Relation.CONTAINS_ATTRIBUTE_DATA,
         remoteName: 'initiator'
       },
 
       resource_items: {
         type: Relation.HAS_MANY,
-        Model: ResourceItem,
-        contains: Relation.CONTAINS_FULL_DATA
+        Model: ResourceItem
       },
 
       actor_relations: {
         type: Relation.HAS_ONE,
-        Model: ActorRelations,
-        contains: Relation.CONTAINS_FULL_DATA
+        Model: ActorRelations
       }
     }
   }

@@ -1,5 +1,4 @@
 import Model from './base/Model'
-import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class AnnotationCategory extends Model {
@@ -18,10 +17,6 @@ export default class AnnotationCategory extends Model {
         remoteName: 'generated_by_system'
       }
     }
-  }
-
-  init () {
-    this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
   }
 
   getAttributesFromJson (json) {

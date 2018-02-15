@@ -10,8 +10,8 @@ export default class OrgasResource extends EntriesResource {
     this.listType = 'orgas'
   }
 
-  createItem () {
-    return new Orga()
+  getItemModel () {
+    return Orga
   }
 
   itemSaved (orgaOld, orga) {

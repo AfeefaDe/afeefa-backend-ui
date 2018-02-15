@@ -11,8 +11,8 @@ class CategoriesResource extends Resource {
     this.listType = 'categories'
   }
 
-  createItem () {
-    return new Category()
+  getItemModel () {
+    return Category
   }
 
   transformList (categories) {

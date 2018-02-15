@@ -11,8 +11,8 @@ export default class EventsResource extends EntriesResource {
     this.listType = 'events'
   }
 
-  createItem () {
-    return new Event()
+  getItemModel () {
+    return Event
   }
 
   itemAdded (event) {

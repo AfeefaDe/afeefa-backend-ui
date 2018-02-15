@@ -25,11 +25,11 @@ class TodosResource extends Resource {
     return json.relationships.entry.data
   }
 
-  createItem (json) {
+  getItemModel (json) {
     if (json.relationships.entry.data.type === 'orgas') {
-      return new Orga()
+      return Orga
     } else {
-      return new Event()
+      return Event
     }
   }
 }

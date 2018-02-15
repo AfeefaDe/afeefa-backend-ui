@@ -1,5 +1,4 @@
 import Model from './base/Model'
-import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class Chapter extends Model {
@@ -15,10 +14,6 @@ export default class Chapter extends Model {
       content: DataTypes.String,
       order: DataTypes.Int
     }
-  }
-
-  init () {
-    this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
   }
 
   getAttributesFromJson (json) {

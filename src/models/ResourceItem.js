@@ -1,5 +1,4 @@
 import Model from './base/Model'
-import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './base/DataTypes'
 
 export default class ResourceItem extends Model {
@@ -21,10 +20,6 @@ export default class ResourceItem extends Model {
 
       updated_at: DataTypes.Date
     }
-  }
-
-  init () {
-    this._loadingState = LoadingState.FULLY_LOADED // there is no half-loaded-state for this model
   }
 
   getAttributesFromJson (json) {

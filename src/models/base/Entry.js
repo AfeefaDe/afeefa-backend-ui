@@ -2,6 +2,7 @@ import LoadingStrategy from '@/store/api/LoadingStrategy'
 import DataTypes from './DataTypes'
 import Model from './Model'
 import Relation from './Relation'
+import LoadingState from '@/store/api/LoadingState'
 
 export default class Entry extends Model {
   static attributes () {
@@ -52,40 +53,47 @@ export default class Entry extends Model {
     return {
       category: {
         type: Relation.HAS_ONE,
-        Model: Category,
-        contains: Relation.CONTAINS_LINK
+        Model: Category
       },
 
       sub_category: {
         type: Relation.HAS_ONE,
-        Model: Category,
-        contains: Relation.CONTAINS_LINK
+        Model: Category
       },
 
       contacts: {
         type: Relation.HAS_MANY,
-        Model: Contact,
-        contains: Relation.CONTAINS_FULL_DATA
+        Model: Contact
       },
 
       annotations: {
         type: Relation.HAS_MANY,
-        Model: Annotation,
-        contains: Relation.CONTAINS_FULL_DATA
+        Model: Annotation
       },
 
       creator: {
         type: Relation.HAS_ONE,
-        Model: User,
-        contains: Relation.CONTAINS_FULL_DATA
+        Model: User
       },
 
       last_editor: {
         type: Relation.HAS_ONE,
-        Model: User,
-        contains: Relation.CONTAINS_FULL_DATA
+        Model: User
       }
     }
+  }
+
+  calculateLoadingStateFromJson (json) {
+    if (json.relationships && json.relationships.contacts) {
+      return LoadingState.FULLY_LOADED
+    }
+    if (json.relationships) {
+      return LoadingState.LOADED_FOR_LISTS
+    }
+    if (json.attributes) {
+      return LoadingState.LOADED_AS_ATTRIBUTE
+    }
+    return LoadingState.NOT_LOADED
   }
 
   fetchParentOrga (strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {

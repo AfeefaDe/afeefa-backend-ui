@@ -10,8 +10,8 @@ class UsersResource extends Resource {
     this.listType = 'users'
   }
 
-  createItem () {
-    return new User()
+  getItemModel () {
+    return User
   }
 }
 

@@ -34,7 +34,6 @@ export default class Event extends Entry {
       parent_orga: {
         type: Relation.HAS_ONE,
         Model: Orga,
-        contains: Relation.CONTAINS_ATTRIBUTE_DATA,
         remoteName: 'orga'
       }
     }

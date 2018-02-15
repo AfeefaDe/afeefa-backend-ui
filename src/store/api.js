@@ -166,11 +166,10 @@ export default {
             item = resourceCache.getItem(itemType, itemId)
           } else {
             item = resource.createItem(json)
+            resourceCache.addItem(itemType, item)
           }
           resource.itemJsonLoaded(json)
           item.deserialize(resource.getItemJson(json))
-
-          item._loadingState = Math.max(item._loadingState, LoadingState.LOADED_FOR_LISTS)
 
           // add model to list
           items.push(item)
@@ -233,10 +232,9 @@ export default {
           item.deserialize(resource.getItemJson(json))
         } else {
           item = resource.createItem(json)
-          item.deserialize(resource.getItemJson(json))
           resourceCache.addItem(itemType, item)
+          item.deserialize(resource.getItemJson(json))
         }
-        item._loadingState = LoadingState.FULLY_LOADED
 
         return item
       }).catch(response => {

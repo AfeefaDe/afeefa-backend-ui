@@ -22,8 +22,8 @@ class ActorRelationsResource extends Resource {
     json.id = this.orgaId
   }
 
-  createItem () {
-    return new ActorRelationsModel()
+  getItemModel () {
+    return ActorRelationsModel
   }
 }
 
@@ -35,8 +35,8 @@ class ActorRelationActorsResource extends Resource {
     this.listParams = actorRelations.relation(relationName).listParams()
   }
 
-  createItem () {
-    return new Orga()
+  getItemModel () {
+    return Orga
   }
 }
 

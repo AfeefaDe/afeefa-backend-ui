@@ -68,6 +68,17 @@ export default class Model {
   }
 
   /**
+   * Inspects the given JSON and calculates a richness
+   * value for the given data
+   */
+  calculateLoadingStateFromJson (json) {
+    if (!json.relationships && !json.attributes) {
+      return LoadingState.NOT_LOADED
+    }
+    return LoadingState.FULLY_LOADED
+  }
+
+  /**
    * Dependency injection for Resources
    * Prevents cyclic imports (Model -> Resource -> Model)
    */
@@ -154,12 +165,13 @@ export default class Model {
     this.deserializeRelations(this.getRelationsFromJson(json))
 
     this._requestId = json._requestId
-
-    this.afterDeserialize()
+    this._loadingState = Math.max(this._loadingState, this.calculateLoadingStateFromJson(json))
 
     // if (this.type === 'orgas' && this.id === '4274') {
-    //   console.log('DEZERIALIZE', json._requestId, this.info, json)
+    //   console.log('DEZERIALIZE', this.info, json, this)
     // }
+
+    this.afterDeserialize()
   }
 
   getAttributesFromJson (json) {

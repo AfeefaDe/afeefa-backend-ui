@@ -5,22 +5,14 @@ export default class Relation {
   static HAS_ONE = 'has_one'
   static HAS_MANY = 'has_many'
 
-  static CONTAINS_LINK = 'link'
-  static CONTAINS_ATTRIBUTE_DATA = 1
-  static CONTAINS_LIST_DATA = 2
-  static CONTAINS_FULL_DATA = 3
-
-  constructor ({owner, name, type, Model, contains}) {
-    if (!type || !Model || !contains) {
+  constructor ({owner, name, type, Model}) {
+    if (!type || !Model) {
       console.error('Relation configuration invalid', ...arguments)
     }
     this.owner = owner
     this.name = name
     this.type = type
     this.Model = Model
-
-    this.contains = contains
-    this.loadingState = contains
 
     this.init()
   }
@@ -71,7 +63,6 @@ export default class Relation {
   factory (json) {
     const item = new this.Model()
     item.deserialize(json)
-    item._loadingState = this.loadingState
     return item
   }
 
@@ -118,13 +109,10 @@ export default class Relation {
     } else {
       // we want to update our item not multiple times in the same request
       const isSameRequest = json._requestId === item._requestId
-      const wantToCacheMore = this.loadingState > item._loadingState
-      // if (this.Model.type === 'orgas' && json.id === '4274') {
-      //   console.log('--- wanttofetchmore', this.loadingState, item._loadingState, wantToCacheMore)
-      // }
+      const jsonLoadingState = item.calculateLoadingStateFromJson(json)
+      const wantToCacheMore = jsonLoadingState > item._loadingState
       if (wantToCacheMore || !isSameRequest) {
         item.deserialize(json)
-        item._loadingState = Math.max(item._loadingState, this.loadingState)
       }
     }
     return item
@@ -142,14 +130,9 @@ export default class Relation {
 
     const data = json.hasOwnProperty('data') ? json.data : json // jsonapi-spec fallback
     if (data) {
-      if (this.type === Relation.HAS_ONE && this.contains === Relation.CONTAINS_LINK) {
-        this.initWithId(data.id)
-      } else {
-        this.initWithJson(data)
-      }
+      this.initWithJson(data)
+      this.cache(resourceCache)
     }
-
-    this.cache(resourceCache)
   }
 
   fetch (callback, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
@@ -209,8 +192,7 @@ export default class Relation {
       owner: this.owner,
       name: this.name,
       type: this.type,
-      Model: this.Model,
-      contains: this.contains
+      Model: this.Model
     })
 
     if (this.json) {
