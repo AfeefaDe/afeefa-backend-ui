@@ -26,11 +26,9 @@ export default class Annotation extends Model {
     }
   }
 
-  fetchAnnotationCategory () {
-    this.relation('annotationCategory').fetch(id => {
-      return this.Resource('AnnotationCategories').get(id).then(annotationCategory => {
-        this.annotationCategory = annotationCategory
-      })
+  fetchAnnotationCategory (AnnotationCategory, id) {
+    return AnnotationCategory.get(id).then(annotationCategory => {
+      this.annotationCategory = annotationCategory
     })
   }
 

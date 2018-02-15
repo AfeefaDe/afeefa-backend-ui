@@ -96,67 +96,53 @@ export default class Entry extends Model {
     return LoadingState.NOT_LOADED
   }
 
-  fetchParentOrga (clone, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
-    this.relation('parent_orga').fetch(id => {
-      return this.Resource('Orgas').get(id, strategy).then(orga => {
-        this.parent_orga = orga
+  fetchParentOrga (Orga, id, clone, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
+    return Orga.get(id, strategy).then(orga => {
+      this.parent_orga = orga
+    })
+  }
+
+  fetchCategory (Category, id) {
+    return Category.get(id).then(category => {
+      this.category = category
+    })
+  }
+
+  fetchSubCategory (Category, id) {
+    return Category.get(id).then(category => {
+      this.sub_category = category
+    })
+  }
+
+  fetchContacts (Contact, clone) {
+    return Contact.forOwner(this).getAll().then(contacts => {
+      this.contacts = []
+      contacts.forEach(contact => {
+        contact = clone ? contact.clone() : contact
+        this.contacts.push(contact)
       })
     })
   }
 
-  fetchCategory () {
-    this.relation('category').fetch(id => {
-      return this.Resource('Categories').get(id).then(category => {
-        this.category = category
+  fetchAnnotations (Annotation, clone) {
+    return Annotation.forOwner(this).getAll().then(annotations => {
+      this.annotations = []
+      annotations.forEach(annotation => {
+        annotation = clone ? annotation.clone() : annotation
+        this.annotations.push(annotation)
       })
     })
   }
 
-  fetchSubCategory () {
-    this.relation('sub_category').fetch(id => {
-      return this.Resource('Categories').get(id).then(category => {
-        this.sub_category = category
-      })
+  fetchCreator (User, id) {
+    return User.get(id).then(creator => {
+      this.creator = creator
     })
   }
 
-  fetchContacts (clone) {
-    this.relation('contacts').fetch(() => {
-      return this.Resource('Contacts').forOwner(this).getAll().then(contacts => {
-        this.contacts = []
-        contacts.forEach(contact => {
-          contact = clone ? contact.clone() : contact
-          this.contacts.push(contact)
-        })
-      })
-    })
-  }
-
-  fetchAnnotations (clone) {
-    this.relation('annotations').fetch(() => {
-      return this.Resource('Annotations').forOwner(this).getAll().then(annotations => {
-        this.annotations = []
-        annotations.forEach(annotation => {
-          annotation = clone ? annotation.clone() : annotation
-          this.annotations.push(annotation)
-        })
-      })
-    })
-  }
-
-  fetchCreator () {
-    this.relation('creator').fetch(id => {
-      return this.Resource('Users').get(id).then(creator => {
-        this.creator = creator
-      })
-    })
-  }
-
-  fetchLastEditor () {
-    this.relation('last_editor').fetch(id => {
-      return this.Resource('Users').get(id).then(editor => {
-        this.last_editor = editor
-      })
+  fetchLastEditor (User, id) {
+    return User.get(id).then(editor => {
+      this.last_editor = editor
     })
   }
 

@@ -1,5 +1,4 @@
 import LoadingState from '@/store/api/LoadingState'
-import ResourceRegistry from '@/resources/config/Registry'
 import DataTypes from './DataTypes'
 import Relation from './Relation'
 import toCamelCase from '@/filters/camel-case'
@@ -60,10 +59,11 @@ export default class Model {
     this.type = this.constructor.type
 
     // init relations
-    for (let name in this.constructor._relations) {
-      const relationConfig = this.constructor._relations[name]
-      this[name] = relationConfig.type === Relation.HAS_MANY ? [] : null
-      this._relations[name] = new Relation({owner: this, name, ...relationConfig})
+    for (let relationName in this.constructor._relations) {
+      const relationConfig = this.constructor._relations[relationName]
+      this[relationName] = relationConfig.type === Relation.HAS_MANY ? [] : null
+      const relation = new Relation({owner: this, name: relationName, ...relationConfig})
+      this._relations[relationName] = relation
     }
 
     this.init()
@@ -81,14 +81,6 @@ export default class Model {
       return LoadingState.NOT_LOADED
     }
     return LoadingState.FULLY_LOADED
-  }
-
-  /**
-   * Dependency injection for Resources
-   * Prevents cyclic imports (Model -> Resource -> Model)
-   */
-  Resource (resourceName) {
-    return ResourceRegistry.get(resourceName)
   }
 
   /**
@@ -158,6 +150,43 @@ export default class Model {
     }
   }
 
+  fetchAllCachedRelations (clone = false) {
+    if (this._isFetchingIncludedRelations) {
+      return
+    }
+
+    this._isFetchingIncludedRelations = true
+
+    // short timeout to allow the recursively running deserialization
+    // process to finish before fetching the data once
+    setTimeout(() => {
+      for (let relationName in this._relations) {
+        const relation = this._relations[relationName]
+        if (relation.cached && !relation.fetched) {
+          this.fetchRelationByName(relationName, clone)
+        }
+      }
+      this._isFetchingIncludedRelations = false
+    })
+  }
+
+  fetchRelationByName (relationName, clone, strategy) {
+    const relation = this.relation(relationName)
+    const fetchFunction = 'fetch' + toCamelCase(relation.name)
+    if (!this[fetchFunction]) {
+      console.error('Method to fetch a relation is not defined:', fetchFunction, this.info)
+      return
+    }
+
+    relation.fetch(id => {
+      if (relation.type === Relation.HAS_ONE) {
+        return this[fetchFunction](relation.Model, id, clone, strategy)
+      } else {
+        return this[fetchFunction](relation.Model, clone, strategy)
+      }
+    })
+  }
+
   /**
    * Serialization
    */
@@ -181,32 +210,7 @@ export default class Model {
 
     this.deserializeRelations(this.getRelationsFromJson(json))
 
-    this.fetchAllRelations()
-  }
-
-  fetchAllRelations (clone = false) {
-    if (this._isFetchingIncludedRelations) {
-      return
-    }
-
-    this._isFetchingIncludedRelations = true
-
-    // short timeout to allow the recursively running deserialization
-    // process to finish before fetching the data once
-    setTimeout(() => {
-      for (let name in this._relations) {
-        const relation = this._relations[name]
-        if (relation.cached && !relation.fetched) {
-          const fetchFunction = 'fetch' + toCamelCase(name)
-          if (!this[fetchFunction]) {
-            console.error('Method to fetch a relation is not defined:', fetchFunction, this.info)
-          }
-
-          this[fetchFunction](clone)
-        }
-      }
-      this._isFetchingIncludedRelations = false
-    })
+    this.fetchAllCachedRelations()
   }
 
   getAttributesFromJson (json) {
@@ -294,16 +298,18 @@ export default class Model {
 
   clone () {
     const clone = this._clone(this)
+    clone._requestId = this._requestId
     clone._loadingState = this._loadingState
     for (let relationName in this._relations) {
       clone._relations[relationName] = this._relations[relationName].clone()
     }
-    clone.fetchAllRelations(true)
+    clone.fetchAllCachedRelations(true)
     return clone
   }
 
   get info () {
     const isClone = this._isClone ? '(CLONE)' : ''
-    return `[${this.constructor.name}] id="${this.id}" ID="${this._ID}${isClone}" request="${this._requestId}" loaded="${this._loadingState}"`
+    const loadedState = ['not', 'attributes', 'list', 'full'][this._loadingState]
+    return `[${this.constructor.name}] id="${this.id}" ID="${this._ID}${isClone}" loaded="${loadedState}" request="${this._requestId}"`
   }
 }

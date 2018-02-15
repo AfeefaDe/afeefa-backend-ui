@@ -3,7 +3,6 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import ActorRelationsModel from '@/models/ActorRelations'
 import Resource from './base/Resource'
-// import LoadingStrategy from '@/store/api/LoadingStrategy'
 import Orga from '@/models/Orga'
 import Query from './base/Query'
 
@@ -39,7 +38,7 @@ class ActorRelationActorsResource extends Resource {
 
 class ActorRelations extends Query {
   getApi () {
-    return ['get']
+    return ['forOwner', 'get']
   }
 
   createResource ({owner}) {

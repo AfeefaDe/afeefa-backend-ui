@@ -28,6 +28,7 @@ export default class Category extends Model {
 
   fetchParentCategory () {
     // empty
+    return Promise.resolve()
   }
 
   getAttributesFromJson (json) {
@@ -36,6 +37,13 @@ export default class Category extends Model {
 
   getRelationsFromJson (json) {
     return json.relationships
+  }
+
+  clone () {
+    // do not allow cloning of a category by now
+    // preselection of category selectors may disappears
+    // as we are creating a new instance here
+    return this
   }
 
   get info () {

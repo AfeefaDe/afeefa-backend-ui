@@ -1,5 +1,4 @@
 import store from '@/store'
-import toCamelCase from '@/filters/camel-case'
 import LoadingStrategy from '@/store/api/LoadingStrategy'
 
 export default class Query {
@@ -64,11 +63,7 @@ export default class Query {
       if (model) {
         if (this.relationsToFetch) {
           this.relationsToFetch.forEach(relationName => {
-            const fetchFunction = 'fetch' + toCamelCase(relationName)
-            if (!model[fetchFunction]) {
-              console.error('Method to fetch a relation is not defined:', fetchFunction, this.info)
-            }
-            model[fetchFunction](false, LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED)
+            model.fetchRelationByName(relationName, false, LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED)
           })
         }
       }

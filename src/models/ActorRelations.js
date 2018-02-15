@@ -19,7 +19,10 @@ export default class ActorRelations extends Model {
       }
 
       // make an empty fectch function
-      this.prototype['fetch' + toCamelCase(relationName)] = () => {}
+      this.prototype['fetch' + toCamelCase(relationName)] = () => {
+        // empty
+        return Promise.resolve()
+      }
     })
 
     return relations

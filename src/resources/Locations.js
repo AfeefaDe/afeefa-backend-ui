@@ -19,7 +19,7 @@ class LocationsResource extends Resource {
 
 class Locations extends Query {
   getApi () {
-    return ['getAll']
+    return ['get', 'getAll']
   }
 
   createResource () {

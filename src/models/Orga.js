@@ -59,25 +59,21 @@ export default class Orga extends Entry {
     }
   }
 
-  fetchActorRelations () {
-    this.relation('actor_relations').fetch(id => {
-      return this.Resource('ActorRelations').forOwner(this).get(this.id).then(actorRelations => {
-        this.actorRelations = actorRelations
-        Orga.ACTOR_RELATIONS.forEach(relationName => {
-          this[relationName] = actorRelations[relationName]
-        })
+  fetchActorRelations (ActorRelations, id) {
+    return ActorRelations.forOwner(this).get(this.id).then(actorRelations => {
+      this.actorRelations = actorRelations
+      Orga.ACTOR_RELATIONS.forEach(relationName => {
+        this[relationName] = actorRelations[relationName]
       })
     })
   }
 
-  fetchResourceItems (clone) {
-    this.relation('resource_items').fetch(() => {
-      return this.Resource('ResourceItems').forOwner(this).getAll().then(resourceItems => {
-        this.resource_items = []
-        resourceItems.forEach(resourceItem => {
-          resourceItem = clone ? resourceItem.clone() : resourceItem
-          this.resource_items.push(resourceItem)
-        })
+  fetchResourceItems (ResourceItem, clone) {
+    return ResourceItem.forOwner(this).getAll().then(resourceItems => {
+      this.resource_items = []
+      resourceItems.forEach(resourceItem => {
+        resourceItem = clone ? resourceItem.clone() : resourceItem
+        this.resource_items.push(resourceItem)
       })
     })
   }
