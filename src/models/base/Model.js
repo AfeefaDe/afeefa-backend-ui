@@ -2,6 +2,7 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './DataTypes'
 import Relation from './Relation'
 import toCamelCase from '@/filters/camel-case'
+import LoadingStrategy from '@/store/api/LoadingStrategy'
 
 let ID = 0
 
@@ -162,19 +163,38 @@ export default class Model {
     setTimeout(() => {
       for (let relationName in this._relations) {
         const relation = this._relations[relationName]
-        if (relation.cached && !relation.fetched) {
-          this.fetchRelationByName(relationName, clone)
+        if (relation.cached) {
+          this.fetchRelation(relationName, clone)
         }
       }
       this._isFetchingIncludedRelations = false
     })
   }
 
-  fetchRelationByName (relationName, clone, strategy) {
+  refetchInvalidatedRelations () {
+    for (let relationName in this._relations) {
+      const relation = this._relations[relationName]
+      if (relation.invalidated) {
+        this.fetchRelation(relationName, false)
+      }
+    }
+  }
+
+  refetchRelation (relationName) {
     const relation = this.relation(relationName)
-    const fetchFunction = 'fetch' + toCamelCase(relation.name)
-    if (!this[fetchFunction]) {
-      console.error('Method to fetch a relation is not defined:', fetchFunction, this.info)
+    relation.fetched = false
+    this.fetchRelation(relationName, false)
+  }
+
+  fetchRelation (relationName, clone, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
+    const relation = this.relation(relationName)
+
+    if (relation.fetched) {
+      return
+    }
+
+    const fetchFunction = this.checkFetchFunction(relation)
+    if (!fetchFunction) {
       return
     }
 
@@ -184,10 +204,19 @@ export default class Model {
         return this[fetchFunction](relation.Model, id, clone, strategy)
       }, currentItemState, strategy)
     } else {
-      relation.fetchHasMany(id => {
+      relation.fetchHasMany(() => {
         return this[fetchFunction](relation.Model, clone, strategy)
       })
     }
+  }
+
+  checkFetchFunction (relation) {
+    const fetchFunction = 'fetch' + toCamelCase(relation.name)
+    if (!this[fetchFunction]) {
+      console.error('Method to fetch a relation is not defined:', fetchFunction, this.info)
+      return false
+    }
+    return fetchFunction
   }
 
   /**

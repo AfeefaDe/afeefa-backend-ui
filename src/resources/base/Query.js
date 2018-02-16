@@ -7,7 +7,6 @@ export default class Query {
     this.owner = null
 
     this.resource = null
-    this.Model = null
 
     this.init()
   }
@@ -55,15 +54,15 @@ export default class Query {
 
   get (id, strategy) {
     if (!id) {
-      const model = new this.Model()
-      return Promise.resolve(model)
+      return Promise.resolve(null)
     }
     const resource = this.getResource()
     return store.dispatch('api/getItem', {resource, id, strategy}).then(model => {
       if (model) {
+        model.refetchInvalidatedRelations()
         if (this.relationsToFetch.length) {
           this.relationsToFetch.forEach(relationName => {
-            model.fetchRelationByName(relationName, false, LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED)
+            model.fetchRelation(relationName, false, LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED)
           })
         }
       }

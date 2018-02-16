@@ -14,7 +14,7 @@ class ActorRelationsResource extends Resource {
     this.http = Vue.resource(this.url, {id: orgaId})
   }
 
-  itemJsonLoaded (json) {
+  itemJsonLoaded (json) { // TODO might be unnecessary by now
     json.id = this.orgaId
   }
 
@@ -47,18 +47,22 @@ class ActorRelations extends Query {
 
   get (id) {
     return super.get(id).then(actorRelations => {
-      const promises = []
-      Orga.ACTOR_RELATIONS.forEach(relationName => {
-        const actorsResource = new ActorRelationActorsResource(actorRelations, relationName)
-        const promise = store.dispatch('api/getList', {resource: actorsResource}).then(actors => {
-          actorRelations[relationName] = actors
+      if (actorRelations) {
+        const promises = []
+        Orga.ACTOR_RELATIONS.forEach(relationName => {
+          const actorsResource = new ActorRelationActorsResource(actorRelations, relationName)
+          const promise = store.dispatch('api/getList', {resource: actorsResource}).then(actors => {
+            actorRelations[relationName] = actors
+          })
+          promises.push(promise)
         })
-        promises.push(promise)
-      })
 
-      return Promise.all(promises).then(() => {
-        return actorRelations
-      })
+        return Promise.all(promises).then(() => {
+          return actorRelations
+        })
+      } else {
+        return null
+      }
     })
   }
 }

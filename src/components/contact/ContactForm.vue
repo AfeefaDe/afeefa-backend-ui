@@ -48,6 +48,7 @@
     </div>
 
     <div v-if="contact.location && !locationIsLinked">
+      <button type="button" class="btn btn-small" @click="removeLocation">Ort löschen</button>
       <location-form :location="contact.location" />
       <button type="button" class="btn btn-small" @click="removeLocation">Ort löschen</button>
     </div>

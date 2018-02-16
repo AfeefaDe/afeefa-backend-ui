@@ -38,17 +38,21 @@ class OrgasResource extends EntriesResource {
 
 class Orgas extends Query {
   // TODO save new orga throws actor relation errors
-
-  init () {
-    this.Model = Orga
-  }
-
   getApi () {
     return super.getApi().concat(['joinActorRelation', 'leaveActorRelation'])
   }
 
   createResource () {
     return new OrgasResource()
+  }
+
+  get (id, strategy) {
+    // Todo remove this fallback as it causes uncertainty
+    if (!id) {
+      const model = new Orga()
+      return Promise.resolve(model)
+    }
+    return super.get(id, strategy)
   }
 
   joinActorRelation (relationType, relatingOrga, relatedOrga) {

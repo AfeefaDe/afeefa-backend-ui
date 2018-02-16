@@ -78,6 +78,10 @@ export default class Resource {
     resourceCache.purgeList(key, url)
   }
 
+  cachePurgeRelation (relation) {
+    relation.purgeFromCacheAndMarkInvalid()
+  }
+
   cachePurgeItem (key, id) {
     const resourceCache = store.state.api.resourceCache
     resourceCache.purgeItem(key, id)

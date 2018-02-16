@@ -38,6 +38,22 @@ export default class Relation {
     this.cached = false
     this.isFetching = false
     this.fetched = false
+    this.invalidated = false
+  }
+
+  purgeFromCacheAndMarkInvalid () {
+    const resourceCache = store.state.api.resourceCache
+    if (this.type === Relation.HAS_ONE) {
+      if (this.id) {
+        resourceCache.purgeItem(this.Model.type, this.id)
+      }
+    } else {
+      const listParams = JSON.stringify(this.listParams())
+      resourceCache.purgeList(this.Model.type, listParams)
+    }
+
+    this.reset()
+    this.invalidated = true
   }
 
   listParams () {
@@ -59,6 +75,12 @@ export default class Relation {
   cache () {
     // not initialized, no need to cache
     if (!this.hasDataToCache) {
+      // mark hasOne relations to be cached
+      // in order to allow to fetch them afterwards
+      // and return 'null' as the value
+      if (this.type === Relation.HAS_ONE) {
+        this.cached = true
+      }
       return
     }
 
@@ -88,7 +110,7 @@ export default class Relation {
         this.cacheItemRelations(item)
       })
       const listParams = JSON.stringify(this.listParams())
-      resourceCache.addList(this.Model.type, listParams, items)
+      resourceCache.addList(this.Model.type, listParams, items, this.json)
     }
   }
 
@@ -112,19 +134,14 @@ export default class Relation {
   }
 
   deserialize (json) {
+    this.reset()
     const data = json.hasOwnProperty('data') ? json.data : json // jsonapi-spec fallback
-    if (data) {
-      this.reset()
-      this.initWithJson(data)
-      this.cache()
-    }
+
+    this.initWithJson(data)
+    this.cache()
   }
 
   fetchHasOne (callback, currentItemState, fetchingStrategy) {
-    if (!this.id) {
-      return
-    }
-
     if (this.fetched) {
       // fetch again if we want do fully load but havent yet
       const wantToFetchMore = fetchingStrategy === LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED &&
@@ -147,6 +164,7 @@ export default class Relation {
     callback(this.id).then(() => {
       this.isFetching = false
       this.fetched = true
+      this.invalidated = false
     })
   }
 
@@ -163,6 +181,7 @@ export default class Relation {
     callback().then(() => {
       this.isFetching = false
       this.fetched = true
+      this.invalidated = false
     })
   }
 
@@ -183,12 +202,12 @@ export default class Relation {
       Model: this.Model
     })
 
-    clone.initWithJson(this.json)
 
     clone.hasDataToCache = this.hasDataToCache
     clone.cached = this.cached
-
     clone.isClone = true
+
+    clone.initWithJson(this.json)
 
     return clone
   }
@@ -196,6 +215,6 @@ export default class Relation {
   get info () {
     const isClone = this.isClone ? '(CLONE)' : ''
     return `[Relation] id="${this.instanceId}${isClone}" owner="${this.owner.type}(${this.owner.id})" type="${this.type}" name="${this.name}" ` +
-      `hasData="${this.hasDataToCache}" cached="${this.cached}" fetched="${this.fetched}"`
+      `hasData="${this.hasDataToCache}" cached="${this.cached}" fetched="${this.fetched}" invalidated="${this.invalidated}"`
   }
 }

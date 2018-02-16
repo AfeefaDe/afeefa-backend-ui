@@ -131,6 +131,7 @@ export default {
       }).then(result => {
         if (result === 'yes') {
           Contact.forOwner(this.item).delete(contact).then(result => {
+            this.item.refetchRelation('contacts')
             if (result) {
               this.$store.dispatch('messages/showAlert', {
                 description: 'Kontakt erfolgreich gelöscht.'

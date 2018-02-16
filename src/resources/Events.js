@@ -54,10 +54,6 @@ class OrgaEventsResource extends EventsResource {
 }
 
 class Events extends Query {
-  init () {
-    this.Model = Event
-  }
-
   getApi () {
     return super.getApi().concat(['forOwner'])
   }
@@ -68,6 +64,15 @@ class Events extends Query {
     } else {
       return new EventsResource()
     }
+  }
+
+  get (id, strategy) {
+    // Todo remove this fallback as it causes uncertainty
+    if (!id) {
+      const model = new Event()
+      return Promise.resolve(model)
+    }
+    return super.get(id, strategy)
   }
 }
 

@@ -51,11 +51,11 @@ export default class Contact extends Model {
 
   fetchLocation (Location, id, clone) {
     return Location.get(id).then(location => {
-      this.location = clone ? location.clone() : location
+      this.location = (location && clone) ? location.clone() : location
     })
   }
 
-  fetchContactPersons (ContactPerson, id, clone) {
+  fetchContactPersons (ContactPerson, clone) {
     const resourceCache = store.state.api.resourceCache
     this.contact_persons = []
     const contactPersons = resourceCache.getList('contact_persons', JSON.stringify({owner_type: this.type, owner_id: this.id, relation: 'contact_persons'}))

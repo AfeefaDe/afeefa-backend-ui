@@ -69,24 +69,26 @@ export default class Orga extends Entry {
     }
   }
 
-  fetchPastEvents (Event, id) {
+  fetchPastEvents (Event) {
     return Event.forOwner(this).getAll({'filter[date]': 'past'}).then(events => {
       this.past_events = events
     })
   }
 
-  fetchUpcomingEvents (Event, id) {
+  fetchUpcomingEvents (Event) {
     return Event.forOwner(this).getAll({'filter[date]': 'upcoming'}).then(events => {
       this.upcoming_events = events
     })
   }
 
   fetchActorRelations (ActorRelations, id) {
-    return ActorRelations.forOwner(this).get(this.id).then(actorRelations => {
+    return ActorRelations.forOwner(this).get(id).then(actorRelations => {
       this.actorRelations = actorRelations
-      Orga.ACTOR_RELATIONS.forEach(relationName => {
-        this[relationName] = actorRelations[relationName]
-      })
+      if (actorRelations) {
+        Orga.ACTOR_RELATIONS.forEach(relationName => {
+          this[relationName] = actorRelations[relationName]
+        })
+      }
     })
   }
 
