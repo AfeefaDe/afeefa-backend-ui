@@ -3,7 +3,7 @@ import LoadingStrategy from '@/store/api/LoadingStrategy'
 
 export default class Query {
   constructor () {
-    this.relationsToFetch = null
+    this.relationsToFetch = []
     this.owner = null
 
     this.resource = null
@@ -61,7 +61,7 @@ export default class Query {
     const resource = this.getResource()
     return store.dispatch('api/getItem', {resource, id, strategy}).then(model => {
       if (model) {
-        if (this.relationsToFetch) {
+        if (this.relationsToFetch.length) {
           this.relationsToFetch.forEach(relationName => {
             model.fetchRelationByName(relationName, false, LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED)
           })

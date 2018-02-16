@@ -39,7 +39,7 @@ export default class Orga extends Entry {
     }
   }
 
-  static relations (Orga, ResourceItem, ActorRelations) {
+  static relations (Orga, ResourceItem, ActorRelations, Event) {
     return {
       parent_orga: {
         type: Relation.HAS_ONE,
@@ -55,8 +55,30 @@ export default class Orga extends Entry {
       actor_relations: {
         type: Relation.HAS_ONE,
         Model: ActorRelations
+      },
+
+      past_events: {
+        type: Relation.HAS_MANY,
+        Model: Event
+      },
+
+      upcoming_events: {
+        type: Relation.HAS_MANY,
+        Model: Event
       }
     }
+  }
+
+  fetchPastEvents (Event, id) {
+    return Event.forOwner(this).getAll({'filter[date]': 'past'}).then(events => {
+      this.past_events = events
+    })
+  }
+
+  fetchUpcomingEvents (Event, id) {
+    return Event.forOwner(this).getAll({'filter[date]': 'upcoming'}).then(events => {
+      this.upcoming_events = events
+    })
   }
 
   fetchActorRelations (ActorRelations, id) {

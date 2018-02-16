@@ -32,7 +32,12 @@ export default {
     initItem (id) {
       this.loadingError = false
 
-      this.routeConfig.Model.with('parent_orga').get(id).then(entry => {
+      let relations = ['parent_orga']
+      if (this.routeConfig.routeName === 'orgas') {
+        relations = relations.concat(['past_events', 'upcoming_events'])
+      }
+
+      this.routeConfig.Model.with(...relations).get(id).then(entry => {
         this.item = entry
 
         if (!this.item) {

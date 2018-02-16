@@ -164,8 +164,8 @@
             <h5>{{ $t('headlines.upcomingEvents') }}</h5>
 
             <entry-list-items
-              :items="upcomingEvents"
-              v-if="upcomingEvents.length"
+              :items="entry.upcoming_events"
+              v-if="entry.upcoming_events.length"
               :sort-function="sortByDateMixin"
               sort-order="ASC"
               :options="{event_date: true}">
@@ -174,8 +174,8 @@
             <h5>{{ $t('headlines.pastEvents') }}</h5>
 
             <entry-list-items
-              :items="pastEvents"
-              v-if="pastEvents.length"
+              :items="entry.past_events"
+              v-if="entry.past_events.length"
               :sort-function="sortByDateStart"
               sort-order="DESC"
               :options="{event_date: true}">
@@ -189,7 +189,6 @@
 </template>
 
 <script>
-import Event from '@/models/Event'
 import User from '@/models/User'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByDateMixin from '@/helpers/sort-by-date-mixin'
@@ -217,8 +216,6 @@ export default {
   data () {
     const options = this.options || {}
     return {
-      pastEvents: [],
-      upcomingEvents: [],
       sortByDateStart,
       sortByDateMixin,
       currentTab: '',
@@ -235,20 +232,6 @@ export default {
 
   created () {
     this.currentUser = User.getCurrentUser()
-  },
-
-  watch: {
-    entry () {
-      // load past and upcoming events for orga
-      if (this.entry && this.has.events) {
-        Event.forOwner(this.entry).getAll({'filter[date]': 'upcoming'}).then(events => {
-          this.upcomingEvents = events
-        })
-        Event.forOwner(this.entry).getAll({'filter[date]': 'past'}).then(events => {
-          this.pastEvents = events
-        })
-      }
-    }
   },
 
   methods: {
@@ -283,7 +266,7 @@ export default {
           tabNames.push({name: 'networkMembersTab', hint: this.entry.network_members.length})
         }
         tabNames.push({name: 'projectsTab', hint: this.entry.projects.length})
-        tabNames.push({name: 'eventsTab', hint: this.upcomingEvents.length + this.pastEvents.length})
+        tabNames.push({name: 'eventsTab', hint: this.entry.upcoming_events.length + this.entry.past_events.length})
       }
       return tabNames
     }
