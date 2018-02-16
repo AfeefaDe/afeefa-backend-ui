@@ -2,6 +2,7 @@ import LoadingState from '@/store/api/LoadingState'
 import DataTypes from './DataTypes'
 import Relation from './Relation'
 import toCamelCase from '@/filters/camel-case'
+import LoadingStrategy from '@/store/api/LoadingStrategy'
 
 let ID = 0
 
@@ -178,13 +179,21 @@ export default class Model {
       return
     }
 
+    let forceFetch = false
+    if (relation.type === Relation.HAS_ONE) {
+      const itemState = (this[relationName] && this[relationName]._loadingState) || LoadingState.NOT_LOADED
+      if (strategy === LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED && itemState < LoadingState.FULLY_LOADED) {
+        forceFetch = true
+      }
+    }
+
     relation.fetch(id => {
       if (relation.type === Relation.HAS_ONE) {
         return this[fetchFunction](relation.Model, id, clone, strategy)
       } else {
         return this[fetchFunction](relation.Model, clone, strategy)
       }
-    })
+    }, forceFetch)
   }
 
   /**

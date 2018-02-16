@@ -123,8 +123,8 @@ export default class Relation {
     }
   }
 
-  fetch (callback) {
-    if (this.fetched) {
+  fetch (callback, force) {
+    if (this.fetched && !force) {
       return
     }
 
