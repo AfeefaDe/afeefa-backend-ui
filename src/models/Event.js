@@ -70,12 +70,6 @@ export default class Event extends Entry {
     return data
   }
 
-  clone () {
-    const clone = super.clone(this)
-    clone.parent_orga = this.parent_orga
-    return clone
-  }
-
   get isUpcoming () {
     const today = moment().startOf('day')
     const start = moment(this.date_start).startOf('day')
