@@ -264,7 +264,7 @@ export default {
         // purge upon actor relation change @see Orgas.joinActorRelation
         // otherwise we get a notdefined error here
         if (!cachedItem) {
-          console.log('no cached item found', itemType, item.info)
+          console.log('TODO no cached item found', itemType, item.info)
           cachedItem = item.clone()
           resourceCache.addItem(itemType, cachedItem)
         }

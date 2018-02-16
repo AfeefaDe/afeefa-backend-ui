@@ -1,4 +1,6 @@
 import store from '@/store'
+import LoadingStrategy from '@/store/api/LoadingStrategy'
+import LoadingState from '@/store/api/LoadingState'
 
 let ID = 0
 
@@ -29,7 +31,7 @@ export default class Relation {
     this.json = null
     this.id = null
 
-    this.initialized = false
+    this.hasDataToCache = false
     // avoid recursions, if a relation has been cached,
     // there is no need to cache eagerly loaded data again,
     // even if we clone the item that holds the relation
@@ -51,17 +53,12 @@ export default class Relation {
     if (this.json && this.type === Relation.HAS_ONE) {
       this.id = this.json.id
     }
-    this.initialized = true
+    this.hasDataToCache = !!this.json
   }
 
   cache () {
-    // nothing to cache
-    if (!this.json) {
-      return
-    }
-
     // not initialized, no need to cache
-    if (!this.initialized) {
+    if (!this.hasDataToCache) {
       return
     }
 
@@ -70,8 +67,8 @@ export default class Relation {
       return
     }
 
-    // early mark cached, before relations may want to
-    // cache this relation again
+    // early mark cached, before depending relations may want
+    // to cache this relation again
     this.cached = true
 
     const resourceCache = store.state.api.resourceCache
@@ -117,14 +114,44 @@ export default class Relation {
   deserialize (json) {
     const data = json.hasOwnProperty('data') ? json.data : json // jsonapi-spec fallback
     if (data) {
-      this.reset() // TODO
+      this.reset()
       this.initWithJson(data)
       this.cache()
     }
   }
 
-  fetch (callback, force) {
-    if (this.fetched && !force) {
+  fetchHasOne (callback, currentItemState, fetchingStrategy) {
+    if (!this.id) {
+      return
+    }
+
+    if (this.fetched) {
+      // fetch again if we want do fully load but havent yet
+      const wantToFetchMore = fetchingStrategy === LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED &&
+        currentItemState < LoadingState.FULLY_LOADED
+      if (!wantToFetchMore) {
+        return
+      }
+    }
+
+    if (this.isFetching) {
+      // fetch additionally if we want to fetch more detailed data
+      const wantToFetchMore = fetchingStrategy === LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED &&
+        this.isFetching !== fetchingStrategy
+      if (!wantToFetchMore) {
+        return
+      }
+    }
+
+    this.isFetching = fetchingStrategy
+    callback(this.id).then(() => {
+      this.isFetching = false
+      this.fetched = true
+    })
+  }
+
+  fetchHasMany (callback) {
+    if (this.isFetched) {
       return
     }
 
@@ -132,26 +159,11 @@ export default class Relation {
       return
     }
 
-    // FETCH ITEM
-    if (this.type === Relation.HAS_ONE) {
-      if (!this.id) {
-        return
-      }
-
-      this.isFetching = true
-      callback(this.id).then(() => {
-        this.isFetching = false
-        this.fetched = true
-      })
-
-    // FETCH LIST
-    } else {
-      this.isFetching = true
-      callback().then(() => {
-        this.isFetching = false
-        this.fetched = true
-      })
-    }
+    this.isFetching = true
+    callback().then(() => {
+      this.isFetching = false
+      this.fetched = true
+    })
   }
 
   /**
@@ -173,7 +185,7 @@ export default class Relation {
 
     clone.initWithJson(this.json)
 
-    clone.initialized = this.initialized
+    clone.hasDataToCache = this.hasDataToCache
     clone.cached = this.cached
 
     clone.isClone = true
@@ -184,6 +196,6 @@ export default class Relation {
   get info () {
     const isClone = this.isClone ? '(CLONE)' : ''
     return `[Relation] id="${this.instanceId}${isClone}" owner="${this.owner.type}(${this.owner.id})" type="${this.type}" name="${this.name}" ` +
-      `initialized="${this.initialized}" cached="${this.cached}" fetched="${this.fetched}"`
+      `hasData="${this.hasDataToCache}" cached="${this.cached}" fetched="${this.fetched}"`
   }
 }
