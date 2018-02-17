@@ -21,20 +21,17 @@ export default class Relation {
     this.isClone = false
     this.original = null
 
-    this.init()
-  }
-
-  init () {
     this.reset()
   }
 
   reset () {
+    // data that should be cached to the resource cache
     this.json = null
+    // id of a has_one relation, may be accompanied by json data but does not need to
     this.id = null
 
-    this.hasDataToCache = false
     // avoid recursions, if a relation has been cached,
-    // there is no need to cache eagerly loaded data again,
+    // there is no need to cache its data again,
     // even if we clone the item that holds the relation
     this.cached = false
     this.isFetching = false
@@ -48,17 +45,13 @@ export default class Relation {
       if (this.id) {
         resourceCache.purgeItem(this.Model.type, this.id)
       }
-      // reset but not id
-      this.json = null
-      this.isFetching = false
-      this.fetched = false
     } else {
       const listParams = JSON.stringify(this.listParams())
       resourceCache.purgeList(this.Model.type, listParams)
-      // make list empty
-      this.reset()
     }
-
+    this.json = null
+    this.isFetching = false
+    this.fetched = false
     this.invalidated = true
 
     if (this.original) {
@@ -79,12 +72,11 @@ export default class Relation {
     if (this.json && this.type === Relation.HAS_ONE) {
       this.id = this.json.id
     }
-    this.hasDataToCache = !!this.json
   }
 
   cache () {
     // not initialized, no need to cache
-    if (!this.hasDataToCache) {
+    if (!this.json) {
       // mark hasOne relations to be cached
       // in order to allow to fetch them afterwards
       // and return 'null' as the value
@@ -116,11 +108,11 @@ export default class Relation {
         const item = this.findOrCreateItem(json)
         items.push(item)
       })
+      const listParams = JSON.stringify(this.listParams())
+      resourceCache.addList(this.Model.type, listParams, items)
       items.forEach(item => {
         this.cacheItemRelations(item)
       })
-      const listParams = JSON.stringify(this.listParams())
-      resourceCache.addList(this.Model.type, listParams, items)
     }
   }
 
@@ -212,10 +204,7 @@ export default class Relation {
       Model: this.Model
     })
 
-
-    clone.hasDataToCache = this.hasDataToCache
     clone.id = this.id
-    clone.json = this.json
     clone.cached = this.cached
     clone.isClone = true
     clone.original = this
@@ -226,6 +215,6 @@ export default class Relation {
   get info () {
     const isClone = this.isClone ? '(CLONE)' : ''
     return `[Relation] id="${this.instanceId}${isClone}" owner="${this.owner.type}(${this.owner.id})" type="${this.type}" name="${this.name}" ` +
-      `hasData="${this.hasDataToCache}" cached="${this.cached}" fetched="${this.fetched}" invalidated="${this.invalidated}"`
+      `hasData="${!!this.json}" cached="${this.cached}" fetched="${this.fetched}" invalidated="${this.invalidated}"`
   }
 }

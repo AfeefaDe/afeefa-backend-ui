@@ -3,7 +3,7 @@ import Resource from './Resource'
 export default class EntriesResource extends Resource {
   itemAdded (entry) {
     // new entry added to lists
-    this.cachePurgeList(this.listType, '{}')
+    this.cachePurgeList(this.getListType(), '{}')
     // new entry may add a todo
     this.cachePurgeList('todos', '{}')
   }
@@ -12,7 +12,7 @@ export default class EntriesResource extends Resource {
     // remove old entry from cache
     this.cachePurgeItem(entry.type, entry.id)
     // old entry not in lists any longer
-    this.cachePurgeList(this.listType, '{}')
+    this.cachePurgeList(this.getListType(), '{}')
     // deleting an entry may change todo list
     this.cachePurgeList('todos', '{}')
   }

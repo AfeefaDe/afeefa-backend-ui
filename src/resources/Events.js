@@ -8,8 +8,6 @@ class EventsResource extends EntriesResource {
   init () {
     this.url = 'events'
     this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
-
-    this.listType = 'events'
   }
 
   getItemModel () {

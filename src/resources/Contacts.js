@@ -94,7 +94,6 @@ class ContactListResource extends ContactsResource {
   init (owner) {
     super.init(owner)
 
-    this.listType = 'contacts'
     this.listParams = owner.relation('contacts').listParams()
   }
 }

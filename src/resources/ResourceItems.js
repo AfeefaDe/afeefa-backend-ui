@@ -11,7 +11,6 @@ class ResourceItemsResource extends Resource {
     this.url = `orgas/${orga.id}/resource_items`
     this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
 
-    this.listType = 'resource_items'
     this.listParams = orga.relation('resource_items').listParams()
   }
 

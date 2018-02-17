@@ -8,8 +8,6 @@ class LocationsResource extends Resource {
   init () {
     this.url = 'locations'
     this.http = Vue.resource(BASE + this.url + '{/id}')
-
-    this.listType = 'locations'
   }
 
   getItemModel () {

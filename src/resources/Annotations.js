@@ -9,7 +9,6 @@ class AnnotationsResource extends Resource {
     this.url = `${owner.type}/${owner.id}/annotations`
     this.http = Vue.resource(BASE + this.url)
 
-    this.listType = 'annotations'
     this.listParams = owner.relation('annotations').listParams()
   }
 

@@ -8,7 +8,6 @@ class OrgasResource extends EntriesResource {
   init () {
     this.url = 'orgas'
     this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
-    this.listType = 'orgas'
   }
 
   getItemModel () {

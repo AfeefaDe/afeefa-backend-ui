@@ -12,6 +12,10 @@ export default class Resource {
    * Resource Config
    */
 
+  getListType () {
+    return this.getItemType()
+  }
+
   /**
    * Since Search or Todos resources return lists of mixed items
    * we need to decide what resource cache key is to be
@@ -50,11 +54,6 @@ export default class Resource {
   /**
    * Api Hooks
    */
-
-  // called after the json of an item has been loaded
-  // to enable modicificatoins on the json
-  itemJsonLoaded (json) {
-  }
 
   // called after an item has been added
   // to enable custom resource cache treatment

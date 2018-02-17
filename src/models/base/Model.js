@@ -47,11 +47,6 @@ export default class Model {
       value: {}
     })
 
-    Object.defineProperty(this, '_isFetchingIncludedRelations', {
-      value: false,
-      writable: true
-    })
-
     // init attributes
     for (let name in this.constructor._attributes) {
       const attr = this.constructor._attributes[name]
@@ -98,20 +93,6 @@ export default class Model {
     return attr.value ? attr.value(value) : attr.type.value(value)
   }
 
-  deserializeAttributes (attributesJson) {
-    if (!attributesJson) {
-      return
-    }
-    for (let name in attributesJson) {
-      const localName = this.constructor._attributeRemoteNameMap[name] || name
-      if (!this.hasAttr(localName)) {
-        // console.debug('Remote attribute not defined in Model:', this.constructor.name, name)
-        continue
-      }
-      this[localName] = this.getAttrValue(localName, attributesJson[name])
-    }
-  }
-
   /**
    * Relations
    */
@@ -121,13 +102,6 @@ export default class Model {
   }
 
   relation (name) {
-    // return empty relation if model not loaded yet TODO
-    // to prevent http calls to get the relations on null objects
-    if (!this.id) {
-      return {
-        fetch: () => {}
-      }
-    }
     return this._relations[name]
   }
 
@@ -135,43 +109,16 @@ export default class Model {
     return !!this.constructor._relations[name]
   }
 
-  deserializeRelations (relationsJson) {
-    if (!relationsJson) {
-      return
-    }
-    for (let name in relationsJson) {
-      const localName = this.constructor._relationRemoteNameMap[name] || name
-      if (!this.hasRelation(localName)) {
-        // console.debug('Remote relation not defined in Model:', this.constructor.name, name)
-        continue
-      }
-
-      const relation = this._relations[localName]
-      relation.deserialize(relationsJson[name])
-    }
-  }
-
   fetchAllCachedRelations (clone = false) {
-    if (this._isFetchingIncludedRelations) {
-      return
-    }
-
-    this._isFetchingIncludedRelations = true
-
-    // short timeout to allow the recursively running deserialization
-    // process to finish before fetching the data once
-    setTimeout(() => {
-      for (let relationName in this._relations) {
-        const relation = this._relations[relationName]
-        if (relation.cached) {
-          this.fetchRelation(relationName, clone)
-        }
+    for (let relationName in this._relations) {
+      const relation = this._relations[relationName]
+      if (relation.cached) {
+        this.fetchRelation(relationName, clone)
       }
-      this._isFetchingIncludedRelations = false
-    })
+    }
   }
 
-  refetchInvalidatedRelations () {
+  fetchAllInvalidatedRelations () {
     for (let relationName in this._relations) {
       const relation = this._relations[relationName]
       if (relation.invalidated) {
@@ -249,6 +196,31 @@ export default class Model {
     this.deserializeRelations(json.relationships)
 
     this.fetchAllCachedRelations()
+  }
+
+  deserializeAttributes (attributesJson) {
+    if (!attributesJson) {
+      return
+    }
+    for (let name in attributesJson) {
+      const localName = this.constructor._attributeRemoteNameMap[name] || name
+      if (this.hasAttr(localName)) {
+        this[localName] = this.getAttrValue(localName, attributesJson[name])
+      }
+    }
+  }
+
+  deserializeRelations (relationsJson) {
+    if (!relationsJson) {
+      return
+    }
+    for (let name in relationsJson) {
+      const localName = this.constructor._relationRemoteNameMap[name] || name
+      if (this.hasRelation(localName)) {
+        const relation = this._relations[localName]
+        relation.deserialize(relationsJson[name])
+      }
+    }
   }
 
   normalizeJson (json) {

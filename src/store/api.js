@@ -133,7 +133,7 @@ export default {
 
     getList: ({dispatch}, {resource, params}) => {
       // key of list in resource cache
-      const listType = resource.listType
+      const listType = resource.getListType()
       // different caches for different list params
       const listParams = JSON.stringify({...resource.listParams, ...params})
 
@@ -168,7 +168,6 @@ export default {
             item = resource.createItem(json)
             resourceCache.addItem(itemType, item)
           }
-          resource.itemJsonLoaded(json)
           item.deserialize(resource.getItemJson(json))
 
           // add model to list
@@ -223,7 +222,6 @@ export default {
 
       const promise = resource.http.get({id}).then(response => {
         const json = response.body.data || response.body // jsonapi spec || afeefa api spec
-        resource.itemJsonLoaded(json)
 
         let item
         // update existing cached items but not replace them in order to keep references alive
@@ -270,7 +268,6 @@ export default {
         }
 
         const json = response.body.data || response.body
-        resource.itemJsonLoaded(cachedItem)
         cachedItem.deserialize(resource.getItemJson(json))
 
         resource.itemSaved(item, cachedItem)
@@ -300,7 +297,6 @@ export default {
         {id: item.id}, body
       ).then(response => {
         const json = response.body.data || response.body
-        resource.itemJsonLoaded(json)
 
         item = resource.createItem(json)
         resourceCache.addItem(itemType, item)
@@ -349,7 +345,6 @@ export default {
 
         const json = response.body.data || response.body
         const cachedItem = resourceCache.getItem(itemType, item.id)
-        resource.itemJsonLoaded(cachedItem)
         cachedItem.deserialize(resource.getItemJson(json))
         return attributes
       }).catch(response => {

@@ -14,8 +14,9 @@ class ActorRelationsResource extends Resource {
     this.http = Vue.resource(this.url, {id: orgaId})
   }
 
-  itemJsonLoaded (json) { // TODO might be unnecessary by now
+  getItemJson (json) {
     json.id = this.orgaId
+    return json
   }
 
   getItemModel () {
@@ -27,7 +28,7 @@ class ActorRelationActorsResource extends Resource {
   init (actorRelations, relationName) {
     this.url = BASE + `orgas/${actorRelations.id}/actor_relations/${relationName}`
     this.http = Vue.resource(this.url)
-    this.listType = 'orgas'
+
     this.listParams = actorRelations.relation(relationName).listParams()
   }
 
@@ -37,7 +38,6 @@ class ActorRelationActorsResource extends Resource {
 }
 
 class ActorRelations extends Query {
-  // TODO save new orga throws actor relation errors
   getApi () {
     return ['forOwner', 'get', 'joinActorRelation', 'leaveActorRelation']
   }

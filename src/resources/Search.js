@@ -9,14 +9,16 @@ class SearchResource extends Resource {
   init () {
     this.url = 'entries'
     this.http = Vue.resource(BASE + this.url)
-
-    this.listType = 'search'
   }
 
   getSearchParams (searchRequest) {
     return {
       [`filter[${searchRequest.filterCriterion}]`]: searchRequest.keyword
     }
+  }
+
+  getListType (json) {
+    return 'search'
   }
 
   getItemJson (json) {

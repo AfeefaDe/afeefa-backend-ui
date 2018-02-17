@@ -8,7 +8,6 @@ class CategoriesResource extends Resource {
   init () {
     this.url = 'categories'
     this.http = Vue.resource(BASE + this.url + '{/id}')
-    this.listType = 'categories'
   }
 
   getItemModel () {

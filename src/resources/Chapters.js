@@ -8,7 +8,6 @@ class ChaptersResource extends Resource {
   init () {
     this.url = 'chapters'
     this.http = Vue.resource(BASE + this.url + '{/id}')
-    this.listType = 'chapters'
   }
 
   getItemModel () {

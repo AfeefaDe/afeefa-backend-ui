@@ -9,8 +9,10 @@ class TodosResource extends Resource {
   init () {
     this.url = 'todos'
     this.http = Vue.resource(BASE + this.url)
+  }
 
-    this.listType = 'todos'
+  getListType (json) {
+    return 'todos'
   }
 
   getItemJson (json) {

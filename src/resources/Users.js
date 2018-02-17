@@ -8,7 +8,6 @@ import Query from './base/Query'
 class UsersResource extends Resource {
   init () {
     this.http = Vue.resource(BASE + 'users{/id}', {}, {update: {method: 'PATCH'}})
-    this.listType = 'users'
   }
 
   getItemModel () {

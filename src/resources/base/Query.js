@@ -59,7 +59,7 @@ export default class Query {
     const resource = this.getResource()
     return store.dispatch('api/getItem', {resource, id, strategy}).then(model => {
       if (model) {
-        model.refetchInvalidatedRelations()
+        model.fetchAllInvalidatedRelations()
         if (this.relationsToFetch.length) {
           this.relationsToFetch.forEach(relationName => {
             model.fetchRelation(relationName, false, LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED)
