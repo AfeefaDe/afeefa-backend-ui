@@ -19,6 +19,7 @@ export default class Relation {
 
     this.instanceId = ++ID
     this.isClone = false
+    this.original = null
 
     this.init()
   }
@@ -47,13 +48,22 @@ export default class Relation {
       if (this.id) {
         resourceCache.purgeItem(this.Model.type, this.id)
       }
+      // reset but not id
+      this.json = null
+      this.isFetching = false
+      this.fetched = false
     } else {
       const listParams = JSON.stringify(this.listParams())
       resourceCache.purgeList(this.Model.type, listParams)
+      // make list empty
+      this.reset()
     }
 
-    this.reset()
     this.invalidated = true
+
+    if (this.original) {
+      this.original.purgeFromCacheAndMarkInvalid()
+    }
   }
 
   listParams () {
@@ -110,7 +120,7 @@ export default class Relation {
         this.cacheItemRelations(item)
       })
       const listParams = JSON.stringify(this.listParams())
-      resourceCache.addList(this.Model.type, listParams, items, this.json)
+      resourceCache.addList(this.Model.type, listParams, items)
     }
   }
 
@@ -204,10 +214,11 @@ export default class Relation {
 
 
     clone.hasDataToCache = this.hasDataToCache
+    clone.id = this.id
+    clone.json = this.json
     clone.cached = this.cached
     clone.isClone = true
-
-    clone.initWithJson(this.json)
+    clone.original = this
 
     return clone
   }

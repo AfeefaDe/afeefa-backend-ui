@@ -26,9 +26,11 @@ export default {
       if (entry) {
         this.origItem = entry
         this.item = entry.clone()
-        Orga.getAll().then(orgas => {
-          this.orgas = sortByTitle(orgas)
-        })
+        if (entry.id) {
+          Orga.getAll().then(orgas => {
+            this.orgas = sortByTitle(orgas)
+          })
+        }
       } else {
         console.log('error loading item')
         this.hasItemLoadingError = true
@@ -91,7 +93,7 @@ export default {
                 description: this.origItem.id ? this.messages.saveItemSuccess() : this.messages.addItemSuccess()
               })
               this.origItem = this.item // prevent route leave dialog after save
-              this.$router.push({name: this.routeName + '.show', params: {id: this.item.id}, query: {tab: this.currentTab}})
+              this.$router.push({name: this.routeName + '.show', params: {id: entry.id}, query: {tab: this.currentTab}})
             }
           })
         }

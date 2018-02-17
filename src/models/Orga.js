@@ -83,7 +83,7 @@ export default class Orga extends Entry {
 
   fetchActorRelations (ActorRelations, id) {
     return ActorRelations.forOwner(this).get(id).then(actorRelations => {
-      this.actorRelations = actorRelations
+      this.actor_relations = actorRelations
       if (actorRelations) {
         Orga.ACTOR_RELATIONS.forEach(relationName => {
           this[relationName] = actorRelations[relationName]

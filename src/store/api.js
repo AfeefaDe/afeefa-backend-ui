@@ -135,7 +135,7 @@ export default {
       // key of list in resource cache
       const listType = resource.listType
       // different caches for different list params
-      const listParams = JSON.stringify({...resource.listParams, ...params} || '')
+      const listParams = JSON.stringify({...resource.listParams, ...params})
 
       if (resourceCache.hasList(listType, listParams)) {
         // list already loaded
@@ -301,6 +301,8 @@ export default {
       ).then(response => {
         const json = response.body.data || response.body
         resource.itemJsonLoaded(json)
+
+        item = resource.createItem(json)
         resourceCache.addItem(itemType, item)
         item.deserialize(resource.getItemJson(json))
 

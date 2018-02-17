@@ -1,5 +1,6 @@
 <script>
 import Orga from '@/models/Orga'
+import ActorRelations from '@/models/ActorRelations'
 import sortByTitle from '@/helpers/sort-by-title'
 
 export default {
@@ -39,7 +40,7 @@ export default {
     },
 
     addChild (child) {
-      Orga.joinActorRelation(this.apiRelationName, this.actor, child).then(result => {
+      ActorRelations.joinActorRelation(this.apiRelationName, this.actor, child).then(result => {
         if (result) {
           this.actor[this.relationName].push(child)
           this.$store.dispatch('messages/showAlert', {
@@ -51,7 +52,7 @@ export default {
     },
 
     removeChild (child) {
-      Orga.leaveActorRelation(this.apiRelationName, this.actor, child).then(result => {
+      ActorRelations.leaveActorRelation(this.apiRelationName, this.actor, child).then(result => {
         if (result) {
           this.actor[this.relationName] = this.actor[this.relationName].filter(n => n.id !== child.id)
           this.$store.dispatch('messages/showAlert', {
@@ -63,7 +64,7 @@ export default {
     },
 
     addParent (parent) {
-      Orga.joinActorRelation(this.apiRelationName, parent, this.actor).then(result => {
+      ActorRelations.joinActorRelation(this.apiRelationName, parent, this.actor).then(result => {
         if (result) {
           this.actor[this.relationName].push(parent)
           this.$store.dispatch('messages/showAlert', {
@@ -75,7 +76,7 @@ export default {
     },
 
     removeParent (parent) {
-      Orga.leaveActorRelation(this.apiRelationName, parent, this.actor).then(result => {
+      ActorRelations.leaveActorRelation(this.apiRelationName, parent, this.actor).then(result => {
         if (result) {
           this.actor[this.relationName] = this.actor[this.relationName].filter(n => n.id !== parent.id)
           this.$store.dispatch('messages/showAlert', {
