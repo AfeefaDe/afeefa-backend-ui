@@ -84,7 +84,7 @@ export default class Entry extends Model {
   }
 
   calculateLoadingStateFromJson (json) {
-    if (json.relationships && (json.relationships.contacts || json.relationships.contact_infos)) { // TODO exception for events
+    if (json.relationships && json.relationships.contacts) {
       return LoadingState.FULLY_LOADED
     }
     if (json.relationships) {
