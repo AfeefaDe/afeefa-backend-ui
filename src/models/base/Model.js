@@ -109,19 +109,21 @@ export default class Model {
     return !!this.constructor._relations[name]
   }
 
-  fetchAllCachedRelations (clone = false) {
+  fetchAllIncludedRelations (clone = false) {
     for (let relationName in this._relations) {
       const relation = this._relations[relationName]
-      if (relation.cached) {
+      if (relation.hasIncludedData) {
         this.fetchRelation(relationName, clone)
       }
     }
   }
 
-  fetchAllInvalidatedRelations () {
+  fetchRelationsAfterGet (relationsToFullyFetch) {
     for (let relationName in this._relations) {
       const relation = this._relations[relationName]
-      if (relation.invalidated) {
+      if (relationsToFullyFetch.includes(relationName)) {
+        this.fetchRelation(relationName, false, LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED)
+      } else if (relation.invalidated) {
         this.fetchRelation(relationName, false)
       }
     }
@@ -175,9 +177,17 @@ export default class Model {
       console.error('No requestId given in json. Might be an error in normalizeJson()', this.info, json)
     }
 
-    // we want to deserialize our model not multiple times in the same request
+    // we do not want to deserialize our model multiple times in the same request
+    // unless we really have more data (e.g. first loaded as attributes, later got list data)
     const isSameRequest = json._requestId === this._requestId
     const jsonLoadingState = this.calculateLoadingStateFromJson(json)
+
+    // do not deserialize if we do not have any further attribute or relation data
+    if (!jsonLoadingState && this.id) {
+      return
+    }
+
+    // check if we want to push more data to the model
     const wantToDeserializeMore = jsonLoadingState > this._loadingState
     if (isSameRequest && !wantToDeserializeMore) {
       return
@@ -195,7 +205,7 @@ export default class Model {
 
     this.deserializeRelations(json.relationships)
 
-    this.fetchAllCachedRelations()
+    this.fetchAllIncludedRelations()
   }
 
   deserializeAttributes (attributesJson) {
@@ -311,7 +321,7 @@ export default class Model {
     for (let relationName in this._relations) {
       clone._relations[relationName] = this._relations[relationName].clone()
     }
-    clone.fetchAllCachedRelations(true)
+    clone.fetchAllIncludedRelations(true)
     return clone
   }
 

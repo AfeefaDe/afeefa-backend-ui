@@ -25,15 +25,13 @@ export default class Relation {
   }
 
   reset () {
-    // data that should be cached to the resource cache
-    this.json = null
     // id of a has_one relation, may be accompanied by json data but does not need to
     this.id = null
 
     // avoid recursions, if a relation has been cached,
     // there is no need to cache its data again,
     // even if we clone the item that holds the relation
-    this.cached = false
+    this.hasIncludedData = false
     this.isFetching = false
     this.fetched = false
     this.invalidated = false
@@ -49,7 +47,7 @@ export default class Relation {
       const listParams = JSON.stringify(this.listParams())
       resourceCache.purgeList(this.Model.type, listParams)
     }
-    this.json = null
+
     this.isFetching = false
     this.fetched = false
     this.invalidated = true
@@ -67,53 +65,32 @@ export default class Relation {
     }
   }
 
-  initWithJson (json) {
-    this.json = json
-    if (this.json && this.type === Relation.HAS_ONE) {
-      this.id = this.json.id
-    }
-  }
+  deserialize (json) {
+    this.reset()
 
-  cache () {
-    // not initialized, no need to cache
-    if (!this.json) {
-      // mark hasOne relations to be cached
-      // in order to allow to fetch them afterwards
-      // and return 'null' as the value
-      if (this.type === Relation.HAS_ONE) {
-        this.cached = true
-      }
-      return
-    }
-
-    // already cached
-    if (this.cached) {
-      return
-    }
-
-    // early mark cached, before depending relations may want
-    // to cache this relation again
-    this.cached = true
+    json = json.hasOwnProperty('data') ? json.data : json // jsonapi-spec fallback
 
     const resourceCache = store.state.api.resourceCache
 
     // cache item
     if (this.type === Relation.HAS_ONE) {
-      const item = this.findOrCreateItem(this.json)
-      this.cacheItemRelations(item)
+      // if no json given -> related object === null
+      if (json) {
+        this.id = json.id
+        this.findOrCreateItem(json)
+      }
     // cache list
     } else {
       const items = []
-      this.json.forEach(json => {
+      json.forEach(json => {
         const item = this.findOrCreateItem(json)
         items.push(item)
       })
       const listParams = JSON.stringify(this.listParams())
       resourceCache.addList(this.Model.type, listParams, items)
-      items.forEach(item => {
-        this.cacheItemRelations(item)
-      })
     }
+
+    this.hasIncludedData = true
   }
 
   findOrCreateItem (json) {
@@ -126,21 +103,6 @@ export default class Relation {
     }
     item.deserialize(json)
     return item
-  }
-
-  cacheItemRelations (item) {
-    for (let name in item.relations) {
-      const relation = item.relations[name]
-      relation.cache()
-    }
-  }
-
-  deserialize (json) {
-    this.reset()
-    const data = json.hasOwnProperty('data') ? json.data : json // jsonapi-spec fallback
-
-    this.initWithJson(data)
-    this.cache()
   }
 
   fetchHasOne (callback, currentItemState, fetchingStrategy) {
@@ -205,7 +167,7 @@ export default class Relation {
     })
 
     clone.id = this.id
-    clone.cached = this.cached
+    clone.hasIncludedData = this.hasIncludedData
     clone.isClone = true
     clone.original = this
 
@@ -214,7 +176,8 @@ export default class Relation {
 
   get info () {
     const isClone = this.isClone ? '(CLONE)' : ''
+    const itemId = this.type === Relation.HAS_ONE ? `itemId="${this.id}" ` : ''
     return `[Relation] id="${this.instanceId}${isClone}" owner="${this.owner.type}(${this.owner.id})" type="${this.type}" name="${this.name}" ` +
-      `hasData="${!!this.json}" cached="${this.cached}" fetched="${this.fetched}" invalidated="${this.invalidated}"`
+      `${itemId}hasIncludedData="${this.hasIncludedData}" fetched="${this.fetched}" invalidated="${this.invalidated}"`
   }
 }
