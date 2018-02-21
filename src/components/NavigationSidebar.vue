@@ -53,9 +53,9 @@ import NavigationMixin from './mixins/NavigationMixin'
 export default {
   mixins: [NavigationMixin],
   methods: {
-    /* hacky way to hide chapter feature in dresden */
+    /* hacky way to hide chapter feature in bautzen */
     showSideBarItem (item) {
-      if (this.currentUser.area === 'dresden' && item.route === 'chapters.list') {
+      if (this.currentUser.area === 'bautzen' && item.route === 'chapters.list') {
         return false
       } else {
         return true
