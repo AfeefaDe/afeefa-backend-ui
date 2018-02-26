@@ -1,8 +1,9 @@
 import LoadingState from '@/store/api/LoadingState'
+import LoadingStrategy from '@/store/api/LoadingStrategy'
+import toCamelCase from 'data/filter/camel-case'
+
 import DataTypes from './DataTypes'
 import Relation from './Relation'
-import toCamelCase from '@/filters/camel-case'
-import LoadingStrategy from '@/store/api/LoadingStrategy'
 
 let ID = 0
 

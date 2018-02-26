@@ -15,6 +15,7 @@
     "lint:css": "stylelint 'src/**/*.vue' 'src/**/*.scss'"
   },
   "dependencies": {
+    "afeefa-ui-data": "github:afeefade/afeefa-ui-data#master",
     "autoprefixer": "^7.2.5",
     "autosize": "^4.0.0",
     "avoriaz": "^6.3.0",

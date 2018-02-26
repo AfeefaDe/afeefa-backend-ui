@@ -1,6 +1,7 @@
+import RequestCache from 'data/cache/RequestCache'
+import ResourceCache from 'data/cache/ResourceCache'
 import Vue from 'vue'
-import ResourceCache from './api/ResourceCache'
-import RequestCache from './api/RequestCache'
+
 import LoadingState from './api/LoadingState'
 import LoadingStrategy from './api/LoadingStrategy'
 

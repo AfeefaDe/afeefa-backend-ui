@@ -23,6 +23,7 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      'data': resolve('/node_modules/afeefa-ui-data/lib'),
       'variables': resolve('src/assets/styles/variables.scss'),
       'mixins': resolve('src/assets/styles/mixins.scss'),
       'materialize': resolve('/node_modules/materialize-css/sass'),
