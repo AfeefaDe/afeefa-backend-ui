@@ -91,11 +91,6 @@ export default class Resource {
     return resourceCache.getCache(key).lists
   }
 
-  cacheGetAllItems (key) {
-    const resourceCache = store.state.api.resourceCache
-    return resourceCache.getCache(key).items
-  }
-
   findCachedItem (key, id) {
     const resourceCache = store.state.api.resourceCache
     return resourceCache.getItem(key, id)

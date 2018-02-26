@@ -39,31 +39,26 @@ export default class Contact extends Model {
     return {
       location: {
         type: Relation.HAS_ONE,
+        associationType: Relation.ASSOCIATION_COMPOSITION,
         Model: Location
       },
 
       contact_persons: {
         type: Relation.HAS_MANY,
+        associationType: Relation.ASSOCIATION_COMPOSITION,
         Model: ContactPerson
       }
     }
   }
 
-  fetchLocation (Location, id, clone) {
-    return Location.get(id).then(location => {
-      this.location = (location && clone) ? location.clone() : location
-    })
+  fetchLocation (Location, id) {
+    return Location.get(id)
   }
 
-  fetchContactPersons (ContactPerson, clone) {
+  fetchContactPersons (ContactPerson) {
     const resourceCache = store.state.api.resourceCache
-    this.contact_persons = []
-    const contactPersons = resourceCache.getList('contact_persons', JSON.stringify({owner_type: this.type, owner_id: this.id, relation: 'contact_persons'}))
-    contactPersons.forEach(person => {
-      person = clone ? person.clone() : person
-      this.contact_persons.push(person)
-    })
-    return Promise.resolve()
+    const contactPersons = resourceCache.getList('contact_persons', JSON.stringify(this.relation('contact_persons').listParams()))
+    return Promise.resolve(contactPersons)
   }
 
   serialize () {

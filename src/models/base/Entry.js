@@ -68,6 +68,7 @@ export default class Entry extends Model {
 
       annotations: {
         type: Relation.HAS_MANY,
+        associationType: Relation.ASSOCIATION_COMPOSITION,
         Model: Annotation
       },
 
@@ -99,56 +100,37 @@ export default class Entry extends Model {
   fetchParentOrga (Orga, id, clone, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
     // TODO remove creation of empty orga in Orga.get/Event.get when id = null
     if (!id) {
-      this.parent_orga = null
-      return Promise.resolve()
+      return Promise.resolve(null)
     }
-    return Orga.get(id, strategy).then(orga => {
-      this.parent_orga = orga
-    })
+    return Orga.get(id, strategy)
   }
 
   fetchCategory (Category, id) {
-    return Category.get(id).then(category => {
-      this.category = category
-    })
+    return Category.get(id)
   }
 
   fetchSubCategory (Category, id) {
-    return Category.get(id).then(category => {
-      this.sub_category = category
-    })
+    return Category.get(id)
   }
 
-  fetchContacts (Contact, clone) {
-    return Contact.forOwner(this).getAll().then(contacts => {
-      this.contacts = []
-      contacts.forEach(contact => {
-        contact = clone ? contact.clone() : contact
-        this.contacts.push(contact)
-      })
-    })
+  fetchContacts (Contact) {
+    return Contact.forOwner(this).getAll()
   }
 
-  fetchAnnotations (Annotation, clone) {
-    return Annotation.forOwner(this).getAll().then(annotations => {
-      this.annotations = []
-      annotations.forEach(annotation => {
-        annotation = clone ? annotation.clone() : annotation
-        this.annotations.push(annotation)
-      })
-    })
+  refetchContacts () {
+    this.refetchRelation('contacts')
+  }
+
+  fetchAnnotations (Annotation) {
+    return Annotation.forOwner(this).getAll()
   }
 
   fetchCreator (User, id) {
-    return User.get(id).then(creator => {
-      this.creator = creator
-    })
+    return User.get(id)
   }
 
   fetchLastEditor (User, id) {
-    return User.get(id).then(editor => {
-      this.last_editor = editor
-    })
+    return User.get(id)
   }
 
   serialize () {

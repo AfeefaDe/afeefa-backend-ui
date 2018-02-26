@@ -118,7 +118,7 @@ export default class Model {
     }
   }
 
-  fetchRelationsAfterGet (relationsToFullyFetch) {
+  fetchRelationsAfterGet (relationsToFullyFetch = []) {
     for (let relationName in this._relations) {
       const relation = this._relations[relationName]
       if (relationsToFullyFetch.includes(relationName)) {
@@ -150,11 +150,24 @@ export default class Model {
     if (relation.type === Relation.HAS_ONE) {
       const currentItemState = (this[relationName] && this[relationName]._loadingState) || LoadingState.NOT_LOADED
       relation.fetchHasOne(id => {
-        return this[fetchFunction](relation.Model, id, clone, strategy)
+        return this[fetchFunction](relation.Model, id, clone, strategy).then(item => {
+          if (item && clone && relation.associationType === Relation.ASSOCIATION_COMPOSITION) {
+            item = item.clone()
+          }
+          this[relationName] = item // (item && clone) ? item.clone() : item
+        })
       }, currentItemState, strategy)
     } else {
       relation.fetchHasMany(() => {
-        return this[fetchFunction](relation.Model, clone, strategy)
+        return this[fetchFunction](relation.Model, clone, strategy).then(items => {
+          this[relationName] = []
+          items.forEach(item => {
+            if (item && clone && relation.associationType === Relation.ASSOCIATION_COMPOSITION) {
+              item = item.clone()
+            }
+            this[relationName].push(item)
+          })
+        })
       })
     }
   }
@@ -177,17 +190,15 @@ export default class Model {
       console.error('No requestId given in json. Might be an error in normalizeJson()', this.info, json)
     }
 
-    // we do not want to deserialize our model multiple times in the same request
-    // unless we really have more data (e.g. first loaded as attributes, later got list data)
-    const isSameRequest = json._requestId === this._requestId
+    // do not deserialize if we do not have any attribute or relation data
     const jsonLoadingState = this.calculateLoadingStateFromJson(json)
-
-    // do not deserialize if we do not have any further attribute or relation data
-    if (!jsonLoadingState && this.id) {
+    if (!jsonLoadingState) {
       return
     }
 
-    // check if we want to push more data to the model
+    // we do not want to deserialize our model multiple times in the same request
+    // unless we really have more data (e.g. first loaded as attributes, later got list data)
+    const isSameRequest = json._requestId === this._requestId
     const wantToDeserializeMore = jsonLoadingState > this._loadingState
     if (isSameRequest && !wantToDeserializeMore) {
       return

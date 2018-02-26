@@ -26,9 +26,8 @@ export default class Category extends Model {
     }
   }
 
-  fetchParentCategory () {
-    // empty
-    return Promise.resolve()
+  fetchParentCategory (Category, id) {
+    return Category.get(id)
   }
 
   clone () {

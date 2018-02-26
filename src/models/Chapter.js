@@ -1,5 +1,6 @@
 import Model from './base/Model'
 import DataTypes from './base/DataTypes'
+import LoadingState from '@/store/api/LoadingState'
 
 export default class Chapter extends Model {
   static type = 'chapters'
@@ -14,6 +15,10 @@ export default class Chapter extends Model {
       content: DataTypes.String,
       order: DataTypes.Int
     }
+  }
+
+  calculateLoadingStateFromJson (json) {
+    return LoadingState.FULLY_LOADED
   }
 
   normalizeJson (json) {

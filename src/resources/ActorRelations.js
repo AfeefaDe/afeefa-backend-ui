@@ -3,7 +3,6 @@ import store from '@/store'
 import { BASE } from '@/store/api'
 import ActorRelationsModel from '@/models/ActorRelations'
 import Resource from './base/Resource'
-import Orga from '@/models/Orga'
 import Query from './base/Query'
 
 class ActorRelationsResource extends Resource {
@@ -24,19 +23,6 @@ class ActorRelationsResource extends Resource {
   }
 }
 
-class ActorRelationActorsResource extends Resource {
-  init (actorRelations, relationName) {
-    this.url = BASE + `orgas/${actorRelations.id}/actor_relations/${relationName}`
-    this.http = Vue.resource(this.url)
-
-    this.listParams = actorRelations.relation(relationName).listParams()
-  }
-
-  getItemModel () {
-    return Orga
-  }
-}
-
 class ActorRelations extends Query {
   getApi () {
     return ['forOwner', 'get', 'joinActorRelation', 'leaveActorRelation']
@@ -47,24 +33,7 @@ class ActorRelations extends Query {
   }
 
   get (id) {
-    return super.get(id).then(actorRelations => {
-      if (actorRelations) {
-        const promises = []
-        Orga.ACTOR_RELATIONS.forEach(relationName => {
-          const actorsResource = new ActorRelationActorsResource(actorRelations, relationName)
-          const promise = store.dispatch('api/getList', {resource: actorsResource}).then(actors => {
-            actorRelations[relationName] = actors
-          })
-          promises.push(promise)
-        })
-
-        return Promise.all(promises).then(() => {
-          return actorRelations
-        })
-      } else {
-        return null
-      }
-    })
+    return super.get(id)
   }
 
   joinActorRelation (relationType, relatingOrga, relatedOrga) {

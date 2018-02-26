@@ -1,9 +1,12 @@
+import store from '@/store'
 import Model from './base/Model'
 import Relation from './base/Relation'
 import toCamelCase from '@/filters/camel-case'
 import LoadingState from '@/store/api/LoadingState'
 
 export default class ActorRelations extends Model {
+  static RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
+
   static type = 'actor_relations'
 
   static query (ActorRelations) {
@@ -12,16 +15,17 @@ export default class ActorRelations extends Model {
 
   static relations (Orga) {
     const relations = {}
-    Orga.ACTOR_RELATIONS.forEach(relationName => {
+    ActorRelations.RELATIONS.forEach(relationName => {
       relations[relationName] = {
         type: Relation.HAS_MANY,
         Model: Orga
       }
 
-      // make an empty fectch function
-      this.prototype['fetch' + toCamelCase(relationName)] = () => {
-        // empty
-        return Promise.resolve()
+      // make a fetch function foreach relation
+      const resourceCache = store.state.api.resourceCache
+      this.prototype['fetch' + toCamelCase(relationName)] = function () {
+        const actors = resourceCache.getList('orgas', JSON.stringify(this.relation(relationName).listParams()))
+        return Promise.resolve(actors || [])
       }
     })
 

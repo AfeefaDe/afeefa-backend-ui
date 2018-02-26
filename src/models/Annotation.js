@@ -27,9 +27,7 @@ export default class Annotation extends Model {
   }
 
   fetchAnnotationCategory (AnnotationCategory, id) {
-    return AnnotationCategory.get(id).then(annotationCategory => {
-      this.annotationCategory = annotationCategory
-    })
+    return AnnotationCategory.get(id)
   }
 
   normalizeJson (json) {

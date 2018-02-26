@@ -249,21 +249,24 @@ export default {
 
     saveItem: ({dispatch}, {resource, item, options = {}}) => {
       const itemType = resource.getItemType()
-
       const itemJson = item.serialize()
       const body = options.wrapInDataProperty === false ? itemJson : {data: itemJson}
+
+      // store a deep clone of the old item
+      // we do not allow saving items that are not cached beforehand
+      const oldItem = resourceCache.getItem(itemType, item.id).clone()
 
       const promise = resource.http.update(
         {id: item.id}, body
       ).then(response => {
-        // we do not allow saving items that are not cached beforehand
-        let cachedItem = resourceCache.getItem(itemType, item.id)
-        const json = response.body.data || response.body
-        cachedItem.deserialize(resource.getItemJson(json))
+        // get the original item for the case the given item is a clone
+        item = resourceCache.getItem(itemType, item.id)
+        const json = response.body.data || response.body // jsonapi spec || afeefa api spec
+        item.deserialize(resource.getItemJson(json))
 
-        resource.itemSaved(item, cachedItem)
+        resource.itemSaved(oldItem, item)
         dispatch('getMetaInformation') // e.g. todos may change after annotation change
-        return cachedItem
+        return item
       }).catch(response => {
         dispatch('messages/showAlert', {
           isError: true,

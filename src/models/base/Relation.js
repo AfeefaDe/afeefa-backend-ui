@@ -7,15 +7,23 @@ let ID = 0
 export default class Relation {
   static HAS_ONE = 'has_one'
   static HAS_MANY = 'has_many'
+  static ASSOCIATION_COMPOSITION = 'composition'
+  static ASSOCIATION_LINK = 'link'
 
-  constructor ({owner, name, type, Model}) {
+  constructor ({owner, name, type, Model, associationType}) {
     if (!type || !Model) {
       console.error('Relation configuration invalid', ...arguments)
     }
+
+    if (!associationType) {
+      associationType = Relation.ASSOCIATION_LINK
+    }
+
     this.owner = owner
     this.name = name
     this.type = type
     this.Model = Model
+    this.associationType = associationType
 
     this.instanceId = ++ID
     this.isClone = false
@@ -163,7 +171,8 @@ export default class Relation {
       owner: this.owner,
       name: this.name,
       type: this.type,
-      Model: this.Model
+      Model: this.Model,
+      associationType: this.associationType
     })
 
     clone.id = this.id

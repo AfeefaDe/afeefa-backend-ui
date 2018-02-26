@@ -2,11 +2,10 @@ import Entry from './base/Entry'
 import OrgaType from './OrgaType'
 import Relation from './base/Relation'
 import DataTypes from './base/DataTypes'
+import ActorRelations from './ActorRelations'
 
 export default class Orga extends Entry {
   static type = 'orgas'
-
-  static ACTOR_RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
 
   static query (Orgas) {
     return Orgas
@@ -49,6 +48,7 @@ export default class Orga extends Entry {
 
       resource_items: {
         type: Relation.HAS_MANY,
+        associationType: Relation.ASSOCIATION_COMPOSITION,
         Model: ResourceItem
       },
 
@@ -70,36 +70,25 @@ export default class Orga extends Entry {
   }
 
   fetchPastEvents (Event) {
-    return Event.forOwner(this).getAll({'filter[date]': 'past'}).then(events => {
-      this.past_events = events
-    })
+    return Event.forOwner(this).getAll({'filter[date]': 'past'})
   }
 
   fetchUpcomingEvents (Event) {
-    return Event.forOwner(this).getAll({'filter[date]': 'upcoming'}).then(events => {
-      this.upcoming_events = events
-    })
+    return Event.forOwner(this).getAll({'filter[date]': 'upcoming'})
   }
 
   fetchActorRelations (ActorRelations, id) {
     return ActorRelations.forOwner(this).get(id).then(actorRelations => {
-      this.actor_relations = actorRelations
       if (actorRelations) {
-        Orga.ACTOR_RELATIONS.forEach(relationName => {
+        ActorRelations.RELATIONS.forEach(relationName => {
           this[relationName] = actorRelations[relationName]
         })
       }
     })
   }
 
-  fetchResourceItems (ResourceItem, clone) {
-    return ResourceItem.forOwner(this).getAll().then(resourceItems => {
-      this.resource_items = []
-      resourceItems.forEach(resourceItem => {
-        resourceItem = clone ? resourceItem.clone() : resourceItem
-        this.resource_items.push(resourceItem)
-      })
-    })
+  fetchResourceItems (ResourceItem) {
+    return ResourceItem.forOwner(this).getAll()
   }
 
   normalizeJson (json) {
@@ -108,7 +97,7 @@ export default class Orga extends Entry {
     // move all actor relations into container object
     if (relationships) {
       const actorRelationsJson = {}
-      Orga.ACTOR_RELATIONS.forEach(relationName => {
+      ActorRelations.RELATIONS.forEach(relationName => {
         if (relationships[relationName]) {
           actorRelationsJson[relationName] = relationships[relationName].data
           delete json.relationships[relationName]
