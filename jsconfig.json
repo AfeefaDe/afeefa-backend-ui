@@ -4,6 +4,9 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "data/*": [
+        "node_modules/afeefa-ui-data/lib/*"
       ]
     }
   }
