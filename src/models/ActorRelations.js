@@ -1,9 +1,8 @@
 import store from '@/store'
 import LoadingState from 'data/api/LoadingState'
 import toCamelCase from 'data/filter/camel-case'
-
-import Model from './base/Model'
-import Relation from './base/Relation'
+import Model from 'data/model/Model'
+import Relation from 'data/model/Relation'
 
 export default class ActorRelations extends Model {
   static RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']

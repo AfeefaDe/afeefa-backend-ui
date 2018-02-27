@@ -1,5 +1,5 @@
-import BaseModel from '../base/Model'
 import ResourceRegistry from '@/resources/config/Registry'
+import BaseModel from 'data/model/Model'
 
 class ModelRegistry {
   constructor () {

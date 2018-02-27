@@ -7,6 +7,8 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+var uiData = resolve('/node_modules/afeefa-ui-data/lib')
+
 module.exports = {
   entry: {
     app: './src/main.js'
@@ -23,12 +25,13 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-      'data': resolve('/node_modules/afeefa-ui-data/lib'),
+      'data': uiData,
       'variables': resolve('src/assets/styles/variables.scss'),
       'mixins': resolve('src/assets/styles/mixins.scss'),
       'materialize': resolve('/node_modules/materialize-css/sass'),
       'jquery': resolve('node_modules/jquery/dist/jquery')
-    }
+    },
+    symlinks: false
   },
   module: {
     rules: [
@@ -49,7 +52,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        include: [resolve('src'), resolve('test'), uiData]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

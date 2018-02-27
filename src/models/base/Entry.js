@@ -1,9 +1,8 @@
 import LoadingState from 'data/api/LoadingState'
 import LoadingStrategy from 'data/api/LoadingStrategy'
 import DataTypes from 'data/model/DataTypes'
-
-import Model from './Model'
-import Relation from './Relation'
+import Model from 'data/model/Model'
+import Relation from 'data/model/Relation'
 
 export default class Entry extends Model {
   static attributes () {

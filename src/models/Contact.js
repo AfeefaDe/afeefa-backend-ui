@@ -1,8 +1,7 @@
 import store from '@/store'
 import DataTypes from 'data/model/DataTypes'
-
-import Model from './base/Model'
-import Relation from './base/Relation'
+import Model from 'data/model/Model'
+import Relation from 'data/model/Relation'
 
 export default class Contact extends Model {
   static type = 'contacts'
