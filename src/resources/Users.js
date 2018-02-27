@@ -1,8 +1,9 @@
-import Vue from 'vue'
+import User from '@/models/User'
 import store from '@/store'
 import { BASE } from '@/store/api'
-import User from '@/models/User'
-import Resource from './base/Resource'
+import Resource from 'data/resource/Resource'
+import Vue from 'vue'
+
 import Query from './base/Query'
 
 class UsersResource extends Resource {

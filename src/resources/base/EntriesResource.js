@@ -1,4 +1,4 @@
-import Resource from './Resource'
+import Resource from 'data/resource/Resource'
 
 export default class EntriesResource extends Resource {
   itemAdded (entry) {

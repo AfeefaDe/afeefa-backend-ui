@@ -1,7 +1,8 @@
-import Vue from 'vue'
-import { BASE } from '@/store/api'
 import Contact from '@/models/Contact'
-import Resource from './base/Resource'
+import { BASE } from '@/store/api'
+import Resource from 'data/resource/Resource'
+import Vue from 'vue'
+
 import Query from './base/Query'
 
 class ContactsResource extends Resource {

@@ -1,7 +1,8 @@
-import Vue from 'vue'
-import { BASE } from '@/store/api'
 import ResourceItem from '@/models/ResourceItem'
-import Resource from './base/Resource'
+import { BASE } from '@/store/api'
+import Resource from 'data/resource/Resource'
+import Vue from 'vue'
+
 import Query from './base/Query'
 
 class ResourceItemsResource extends Resource {

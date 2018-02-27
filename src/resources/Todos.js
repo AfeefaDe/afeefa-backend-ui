@@ -1,9 +1,9 @@
-import Vue from 'vue'
-import store from '@/store'
-import { BASE } from '@/store/api'
 import Event from '@/models/Event'
 import Orga from '@/models/Orga'
-import Resource from './base/Resource'
+import store from '@/store'
+import { BASE } from '@/store/api'
+import Resource from 'data/resource/Resource'
+import Vue from 'vue'
 
 class TodosResource extends Resource {
   init () {

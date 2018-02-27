@@ -1,8 +1,9 @@
-import Vue from 'vue'
+import ActorRelationsModel from '@/models/ActorRelations'
 import store from '@/store'
 import { BASE } from '@/store/api'
-import ActorRelationsModel from '@/models/ActorRelations'
-import Resource from './base/Resource'
+import Resource from 'data/resource/Resource'
+import Vue from 'vue'
+
 import Query from './base/Query'
 
 class ActorRelationsResource extends Resource {
