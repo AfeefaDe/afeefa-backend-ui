@@ -1,7 +1,8 @@
+import DataTypes from 'data/model/DataTypes'
 import moment from 'moment'
+
 import Entry from './base/Entry'
 import Relation from './base/Relation'
-import DataTypes from './base/DataTypes'
 
 export default class Event extends Entry {
   static type = 'events'

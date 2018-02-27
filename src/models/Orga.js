@@ -1,8 +1,9 @@
-import Entry from './base/Entry'
-import OrgaType from './OrgaType'
-import Relation from './base/Relation'
-import DataTypes from './base/DataTypes'
+import DataTypes from 'data/model/DataTypes'
+
 import ActorRelations from './ActorRelations'
+import Entry from './base/Entry'
+import Relation from './base/Relation'
+import OrgaType from './OrgaType'
 
 export default class Orga extends Entry {
   static type = 'orgas'

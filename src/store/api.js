@@ -1,14 +1,10 @@
-import RequestCache from 'data/cache/RequestCache'
-import ResourceCache from 'data/cache/ResourceCache'
+import LoadingState from 'data/api/LoadingState'
+import LoadingStrategy from 'data/api/LoadingStrategy'
+import requestCache from 'data/cache/RequestCache'
+import resourceCache from 'data/cache/ResourceCache'
 import Vue from 'vue'
 
-import LoadingState from './api/LoadingState'
-import LoadingStrategy from './api/LoadingStrategy'
-
 export const BASE = '/api/v1/'
-
-const requestCache = new RequestCache()
-const resourceCache = new ResourceCache()
 
 const getErrorDescription = response => {
   let description = ''

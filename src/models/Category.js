@@ -1,6 +1,7 @@
+import DataTypes from 'data/model/DataTypes'
+
 import Model from './base/Model'
 import Relation from './base/Relation'
-import DataTypes from './base/DataTypes'
 
 export default class Category extends Model {
   static type = 'categories'

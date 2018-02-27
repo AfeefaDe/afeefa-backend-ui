@@ -1,5 +1,5 @@
 import store from '@/store'
-import LoadingState from '@/store/api/LoadingState'
+import LoadingState from 'data/api/LoadingState'
 import toCamelCase from 'data/filter/camel-case'
 
 import Model from './base/Model'

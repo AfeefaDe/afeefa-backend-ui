@@ -1,5 +1,6 @@
+import DataTypes from 'data/model/DataTypes'
+
 import Model from './base/Model'
-import DataTypes from './base/DataTypes'
 
 export default class ResourceItem extends Model {
   static type = 'resource_items'

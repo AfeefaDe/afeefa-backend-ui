@@ -1,5 +1,6 @@
+import DataTypes from 'data/model/DataTypes'
+
 import Model from './base/Model'
-import DataTypes from './base/DataTypes'
 
 export default class Location extends Model {
   static type = 'locations'

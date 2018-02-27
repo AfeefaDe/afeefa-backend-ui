@@ -1,6 +1,6 @@
 import store from '@/store'
-import LoadingStrategy from '@/store/api/LoadingStrategy'
-import LoadingState from '@/store/api/LoadingState'
+import LoadingState from 'data/api/LoadingState'
+import LoadingStrategy from 'data/api/LoadingStrategy'
 
 let ID = 0
 
