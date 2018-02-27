@@ -1,18 +1,16 @@
-import ModelRegistry from './Registry'
+import ModelRegistry from 'data/model/Registry'
 
-import Event from '../Event'
-import Orga from '../Orga'
+import ActorRelations from '../ActorRelations'
+import Annotation from '../Annotation'
+import AnnotationCategory from '../AnnotationCategory'
+import Category from '../Category'
+import Chapter from '../Chapter'
 import Contact from '../Contact'
 import ContactPerson from '../ContactPerson'
+import Event from '../Event'
 import Location from '../Location'
-import Category from '../Category'
-
-import AnnotationCategory from '../AnnotationCategory'
-import Annotation from '../Annotation'
+import Orga from '../Orga'
 import ResourceItem from '../ResourceItem'
-import ActorRelations from '../ActorRelations'
-import Chapter from '../Chapter'
-
 import User from '../User'
 
 ModelRegistry.add('Event', Event)
