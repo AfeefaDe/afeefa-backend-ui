@@ -66,7 +66,12 @@ export default class Query {
 
   getAll (params) {
     const resource = this.getResource(params)
-    return store.dispatch('api/getList', {resource, params})
+    return store.dispatch('api/getList', {resource, params}).then(models => {
+      models.forEach(model => {
+        model.fetchRelationsAfterGet()
+      })
+      return models
+    })
   }
 
   save (model, options) {

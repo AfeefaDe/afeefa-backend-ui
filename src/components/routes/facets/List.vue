@@ -16,6 +16,11 @@
           <div v-for="facet in facets" :key="facet.id">
             <router-link :to="{name: 'facets.show', params: {id: facet.id}}">
               <h4>{{ facet.title }}</h4>
+              <ul>
+                <li v-for="facetItem in facet.facet_items" :key="facetItem.id">
+                  {{ facetItem.title }}
+                </li>
+              </ul>
             </router-link>
             <router-link :to="{name: 'facets.edit', params: {id: facet.id}}">Ändern</router-link>
             <a href="" @click.prevent="removeFacet(facet)">Löschen</a>

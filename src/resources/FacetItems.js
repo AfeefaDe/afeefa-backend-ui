@@ -8,6 +8,7 @@ import Query from './base/Query'
 
 class FacetItemsResource extends Resource {
   init (owner) {
+    // owner can be a facet or an actor/event
     this.owner = owner
 
     this.url = `${owner.type}/${owner.id}/facet_items`
@@ -21,11 +22,16 @@ class FacetItemsResource extends Resource {
   }
 
   itemAdded (facetItem) {
+    // order reload of the facets facet_items by the next get() call
     this.cachePurgeRelation(this.owner.relation('facet_items'))
   }
 
   itemDeleted (facetItem) {
+    // order reload of the facets facet_items by the next get() call
     this.cachePurgeRelation(this.owner.relation('facet_items'))
+    // order reload of the entries facet items by the next get() call
+    // TODO
+    // remove the facet item from cache
     this.cachePurgeItem('facet_items', facetItem.id)
   }
 }
@@ -63,7 +69,6 @@ class Facets extends Query {
 
   detachFromOwner (owner, facetItem) {
     const resource = Vue.resource(BASE + `${owner.type}/${owner.id}/facet_items/${facetItem.id}`)
-
     return resource.delete().then(() => {
       owner.relation('facet_items').purgeFromCacheAndMarkInvalid()
       return true
