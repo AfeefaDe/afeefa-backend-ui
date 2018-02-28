@@ -1,6 +1,7 @@
 import User from '@/models/User'
 import store from '@/store'
 import { BASE } from '@/store/api'
+import resourceCache from 'data/cache/ResourceCache'
 import Resource from 'data/resource/Resource'
 import Vue from 'vue'
 
@@ -17,10 +18,6 @@ class UsersResource extends Resource {
 }
 
 class Users extends Query {
-  init () {
-    this.resourceCache = store.state.api.resourceCache
-  }
-
   getApi () {
     return ['setCurrentUser', 'removeCurrentUser', 'get', 'getCurrentUser', 'save']
   }
@@ -32,15 +29,15 @@ class Users extends Query {
   // current user is not delivered by api but by auth service
   // and must hence be added manually
   setCurrentUser (user, id) {
-    this.resourceCache.addItem('users', user)
+    resourceCache.addItem('users', user)
   }
 
   removeCurrentUser (id) {
-    this.resourceCache.purgeItem('users', id)
+    resourceCache.purgeItem('users', id)
   }
 
   getCurrentUser () {
-    return this.resourceCache.getItem('users', store.state.auth.currentUserId)
+    return resourceCache.getItem('users', store.state.auth.currentUserId)
   }
 }
 

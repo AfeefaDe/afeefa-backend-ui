@@ -1,4 +1,4 @@
-import store from '@/store'
+import resourceCache from 'data/cache/ResourceCache'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
@@ -56,7 +56,6 @@ export default class Contact extends Model {
   }
 
   fetchContactPersons (ContactPerson) {
-    const resourceCache = store.state.api.resourceCache
     const contactPersons = resourceCache.getList('contact_persons', JSON.stringify(this.relation('contact_persons').listParams()))
     return Promise.resolve(contactPersons)
   }

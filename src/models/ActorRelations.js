@@ -1,5 +1,5 @@
-import store from '@/store'
 import LoadingState from 'data/api/LoadingState'
+import resourceCache from 'data/cache/ResourceCache'
 import toCamelCase from 'data/filter/camel-case'
 import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
@@ -22,7 +22,6 @@ export default class ActorRelations extends Model {
       }
 
       // make a fetch function foreach relation
-      const resourceCache = store.state.api.resourceCache
       this.prototype['fetch' + toCamelCase(relationName)] = function () {
         const actors = resourceCache.getList('orgas', JSON.stringify(this.relation(relationName).listParams()))
         return Promise.resolve(actors || [])
