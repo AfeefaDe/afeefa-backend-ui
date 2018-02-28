@@ -1,38 +1,7 @@
-import LoadingState from 'data/api/LoadingState'
-import LoadingStrategy from 'data/api/LoadingStrategy'
-import requestCache from 'data/cache/RequestCache'
+import API from 'data/api/Api'
 import resourceCache from 'data/cache/ResourceCache'
 import Vue from 'vue'
-
 export const BASE = '/api/v1/'
-
-const getErrorDescription = response => {
-  let description = ''
-  if (response.body && response.body.errors) {
-    for (let error of response.body.errors) {
-      description += (error.detail || error) + '\n'
-    }
-  } else if (response.body && response.body.exception) {
-    description = response.body.exception
-  } else {
-    description = response.statusText || response + ''
-  }
-  return description
-}
-
-const setRequestId = (json, requestId) => {
-  if (typeof json !== 'object' || json === null) {
-    return
-  }
-
-  Object.defineProperty(json, '_requestId', {
-    value: requestId
-  })
-
-  for (let key in json) {
-    setRequestId(json[key], requestId)
-  }
-}
 
 let COUNT_SAVE_OPERATIONS = 0
 
@@ -42,8 +11,7 @@ export default {
 
   state: {
     resourceCache,
-    isSaving: false,
-    requestId: 0
+    isSaving: false
   },
 
 
@@ -54,11 +22,6 @@ export default {
 
     savingFinished (state) {
       state.isSaving = false
-    },
-
-    setRequestId (state, json) {
-      ++state.requestId
-      setRequestId(json, state.requestId)
     }
   },
 
@@ -80,8 +43,6 @@ export default {
         }
 
         next(response => {
-          commit('setRequestId', response.body)
-
           if (request.method !== 'GET') {
             return new Promise((resolve, reject) => {
               setTimeout(() => {
@@ -102,14 +63,14 @@ export default {
     },
 
 
-    loadingError: ({dispatch}, response) => {
-      if (!response.status) { // cancelled
+    loadingError: ({dispatch}, apiError) => {
+      if (!apiError.response.status) { // cancelled request, do not raise alert
         return
       }
       dispatch('messages/showAlert', {
         isError: true,
         title: 'Fehler beim Laden',
-        description: getErrorDescription(response)
+        description: apiError.message
       }, {root: true})
     },
 
@@ -129,222 +90,73 @@ export default {
 
 
     getList: ({dispatch}, {resource, params}) => {
-      // key of list in resource cache
-      const listType = resource.getListType()
-      // different caches for different list params
-      const listParams = JSON.stringify({...resource.listParams, ...params})
-
-      if (resourceCache.hasList(listType, listParams)) {
-        // list already loaded
-        return Promise.resolve(resourceCache.getList(listType, listParams))
-      }
-
-      if (!resource.url) {
-        console.error('Keine resource.url konfiguriert', listType, listParams)
-      }
-
-      // list currently loading
-      const requestKey = resource.url + (params ? JSON.stringify(params) : '')
-      if (requestCache.hasItem(requestKey)) {
-        return requestCache.getItem(requestKey)
-      }
-
-      // load list
-      const promise = resource.http.query(params).then(response => {
-        const items = []
-
-        const data = response.body.data || response.body // jsonapi spec || afeefa api spec
-        for (let json of data) {
-          let item
-          // update existing cached items but not replace them!
-          const itemType = resource.getItemType(json)
-          const itemId = resource.getItemId(json)
-          if (resourceCache.hasItem(itemType, itemId)) {
-            item = resourceCache.getItem(itemType, itemId)
-          } else {
-            item = resource.createItem(json)
-            resourceCache.addItem(itemType, item)
-          }
-          item.deserialize(resource.getItemJson(json))
-
-          // add model to list
-          items.push(item)
-        }
-
-        // apply custom map to items, e.g. to create a category tree from a flat list
-        resource.transformList(items)
-        // cache list, adds all items to the cache if not yet added
-        resourceCache.addList(listType, listParams, items)
-
-        return items
-      }).catch(response => {
-        dispatch('loadingError', response)
-        console.log('error loading list', response)
+      return API.getList({resource, params}).catch(error => {
+        dispatch('loadingError', error)
         return []
       })
-
-      // cache http call
-      requestCache.addItem(requestKey, promise)
-      return promise
     },
 
 
     getItem: ({dispatch}, {resource, id, strategy}) => {
-      if (!strategy) {
-        strategy = LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED
-      }
-
-      const itemType = resource.getItemType()
-
-      if (!id) {
-        console.debug(`API: getItem(${itemType}) - keine ID gegeben.`)
-        return Promise.resolve(null)
-      }
-
-      // check if item already loaded
-      if (resourceCache.hasItem(itemType, id)) {
-        const item = resourceCache.getItem(itemType, id)
-        if (item._loadingState === LoadingState.FULLY_LOADED && strategy === LoadingStrategy.LOAD_IF_NOT_FULLY_LOADED) {
-          return Promise.resolve(resourceCache.getItem(itemType, id))
-        }
-        if (strategy === LoadingStrategy.LOAD_IF_NOT_CACHED) {
-          return Promise.resolve(resourceCache.getItem(itemType, id))
-        }
-      }
-
-      // item loading
-      if (requestCache.hasItem(itemType + id)) {
-        return requestCache.getItem(itemType + id)
-      }
-
-      const promise = resource.http.get({id}).then(response => {
-        const json = response.body.data || response.body // jsonapi spec || afeefa api spec
-
-        let item
-        // update existing cached items but not replace them in order to keep references alive
-        if (resourceCache.hasItem(itemType, id)) {
-          item = resourceCache.getItem(itemType, id)
-          item.deserialize(resource.getItemJson(json))
-        } else {
-          item = resource.createItem(json)
-          resourceCache.addItem(itemType, item)
-          item.deserialize(resource.getItemJson(json))
-        }
-
-        return item
-      }).catch(response => {
-        dispatch('loadingError', response)
-        console.log('error loading item', response)
+      return API.getItem({resource, id, strategy}).catch(error => {
+        dispatch('loadingError', error)
         return null
       })
-
-      // cache http call
-      requestCache.addItem(itemType + id, promise)
-      return promise
     },
 
 
     saveItem: ({dispatch}, {resource, item, options = {}}) => {
-      const itemType = resource.getItemType()
-      const itemJson = item.serialize()
-      const body = options.wrapInDataProperty === false ? itemJson : {data: itemJson}
-
-      // store a deep clone of the old item
-      // we do not allow saving items that are not cached beforehand
-      const oldItem = resourceCache.getItem(itemType, item.id).clone()
-
-      const promise = resource.http.update(
-        {id: item.id}, body
-      ).then(response => {
-        // get the original item for the case the given item is a clone
-        item = resourceCache.getItem(itemType, item.id)
-        const json = response.body.data || response.body // jsonapi spec || afeefa api spec
-        item.deserialize(resource.getItemJson(json))
-
-        resource.itemSaved(oldItem, item)
+      return API.saveItem({resource, item, options}).then(item => {
         dispatch('getMetaInformation') // e.g. todos may change after annotation change
         return item
-      }).catch(response => {
+      }).catch(error => {
         dispatch('messages/showAlert', {
           isError: true,
           title: 'Fehler beim Speichern',
-          description: getErrorDescription(response)
+          description: error
         }, {root: true})
-        console.log('error saving item', response)
         return null
       })
-
-      return promise
     },
 
 
     addItem: ({dispatch}, {resource, item, options = {}}) => {
-      const itemType = resource.getItemType()
-
-      const itemJson = item.serialize()
-      const body = options.wrapInDataProperty === false ? itemJson : {data: itemJson}
-
-      return resource.http.save(
-        {id: item.id}, body
-      ).then(response => {
-        const json = response.body.data || response.body
-
-        item = resource.createItem(json)
-        resourceCache.addItem(itemType, item)
-        item.deserialize(resource.getItemJson(json))
-
-        resource.itemAdded(item)
-        dispatch('getMetaInformation')
+      return API.addItem({resource, item, options}).then(item => {
+        dispatch('getMetaInformation') // e.g. todos may change after annotation change
         return item
-      }).catch(response => {
+      }).catch(error => {
         dispatch('messages/showAlert', {
           isError: true,
-          title: 'Fehler beim Speichern',
-          description: getErrorDescription(response)
+          title: 'Fehler beim Hinzufügen',
+          description: error
         }, {root: true})
-        console.log('error adding item', response)
         return null
       })
     },
 
 
     deleteItem: ({dispatch}, {resource, item}) => {
-      return resource.http.delete({id: item.id}).then(response => {
-        resource.itemDeleted(item)
-        dispatch('getMetaInformation')
+      return API.deleteItem({resource, item}).then(() => {
+        dispatch('getMetaInformation') // e.g. todos may change after annotation change
         return true
-      }).catch(response => {
+      }).catch(error => {
         dispatch('messages/showAlert', {
           isError: true,
           title: 'Fehler beim Löschen',
-          description: getErrorDescription(response)
+          description: error
         }, {root: true})
-        console.log('error deleting item', response)
-        return null
+        return false
       })
     },
 
 
     updateItemAttributes: ({dispatch}, {resource, item, attributes}) => {
-      const data = {
-        id: item.id,
-        type: item.type,
-        attributes
-      }
-      return resource.http.update({id: item.id}, {data}).then(response => {
-        const itemType = resource.getItemType()
-
-        const json = response.body.data || response.body
-        const cachedItem = resourceCache.getItem(itemType, item.id)
-        cachedItem.deserialize(resource.getItemJson(json))
-        return attributes
-      }).catch(response => {
+      return API.updateItemAttributes({resource, item, attributes}).catch(error => {
         dispatch('messages/showAlert', {
           isError: true,
           title: 'Fehler beim Speichern',
-          description: getErrorDescription(response)
+          description: error
         }, {root: true})
-        console.log('error updating item', response)
         return null
       })
     }

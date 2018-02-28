@@ -1,7 +1,8 @@
-import Vue from 'vue'
-import { BASE } from '@/store/api'
-import router from '@/services/router'
 import User from '@/models/User'
+import router from '@/services/router'
+import { BASE } from '@/store/api'
+import API from 'data/api/Api'
+import Vue from 'vue'
 
 const STORAGE_KEY = 'session'
 
@@ -17,8 +18,14 @@ export default {
 
 
   mutations: {
-    setCurrentUser (state, user) {
-      if (user) {
+    setCurrentUser (state, json) {
+      if (json) {
+        // TODO - do not call private method setRequestId, find general solution
+        // to loading/deserializing data outside the API cosmos
+        API.setRequestId(json)
+        const user = new User()
+        user.deserialize(json)
+
         state.currentUserId = user.id
         User.setCurrentUser(user)
       } else {
@@ -67,9 +74,7 @@ export default {
                 }
                 commit('setLastAuthHeader', newAuthHeader)
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(newAuthHeader))
-                const user = new User()
-                user.deserialize(response.body.data)
-                commit('setCurrentUser', user)
+                commit('setCurrentUser', response.body.data)
                 next() // commit route change
               }).catch(response => {
                 if (response.status !== 401) {
@@ -158,9 +163,7 @@ export default {
       const url = BASE + 'users/sign_in'
       const request = Vue.http.post(url, loginData)
       return request.then(response => {
-        const user = new User()
-        user.deserialize(response.body.data)
-        commit('setCurrentUser', user)
+        commit('setCurrentUser', response.body.data)
         if (state.redirectAfterLogin) {
           // navigate to safed location
           router.push(state.redirectAfterLogin.fullPath)
