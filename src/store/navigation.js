@@ -72,7 +72,6 @@ const menuTree = {
       level: 2,
       hint: state => { return state.numChapters },
       children: [
-        { route: 'chapters.show', title: 'headlines.show', level: 4 },
         { route: 'chapters.edit', title: 'headlines.edit', level: 4 },
         { route: 'chapters.new', title: 'headlines.new', level: 4 }
       ]
