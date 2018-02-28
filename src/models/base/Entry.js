@@ -49,7 +49,7 @@ export default class Entry extends Model {
     }
   }
 
-  static relations (Contact, Annotation, User, Category) {
+  static relations (Contact, Annotation, User, Category, FacetItem) {
     return {
       category: {
         type: Relation.HAS_ONE,
@@ -80,6 +80,11 @@ export default class Entry extends Model {
       last_editor: {
         type: Relation.HAS_ONE,
         Model: User
+      },
+
+      facet_items: {
+        type: Relation.HAS_MANY,
+        Model: FacetItem
       }
     }
   }
@@ -131,6 +136,10 @@ export default class Entry extends Model {
 
   fetchLastEditor (User, id) {
     return User.get(id)
+  }
+
+  fetchFacetItems (FacetItem) {
+    return FacetItem.forOwner(this).getAll()
   }
 
   serialize () {

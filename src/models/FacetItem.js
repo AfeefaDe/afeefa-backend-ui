@@ -21,4 +21,8 @@ export default class FacetItem extends Model {
       color: this.color
     }
   }
+
+  get info () {
+    return super.info + ` title="${this.title}"`
+  }
 }

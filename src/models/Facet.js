@@ -36,4 +36,8 @@ export default class Facet extends Model {
       title: this.title
     }
   }
+
+  get info () {
+    return super.info + ` title="${this.title}"`
+  }
 }

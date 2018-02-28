@@ -12,6 +12,11 @@
         <section slot="generalTab">
 
           <div v-if="item.id">
+            <div v-for="facet in facets" :key="facet.id">
+              <h2>{{ facet.title }}</h2>
+              <facet-selector :owner="item" :facet="facet" />
+            </div>
+
             <h2>Projektträger</h2>
 
             <project-initiator-selector
@@ -96,6 +101,7 @@ import NetworkSelector from '@/components/entry/edit/actor-relations/NetworkSele
 import PartnerSelector from '@/components/entry/edit/actor-relations/PartnerSelector'
 import ProjectSelector from '@/components/entry/edit/actor-relations/ProjectSelector'
 import NetworkMemberSelector from '@/components/entry/edit/actor-relations/NetworkMemberSelector'
+import FacetSelector from '@/components/entry/edit/actor-relations/FacetSelector'
 
 export default {
   mixins: [BeforeRouteLeaveMixin, EntryEditApiSlotMixin],
@@ -165,7 +171,8 @@ export default {
     NetworkSelector,
     PartnerSelector,
     ProjectSelector,
-    NetworkMemberSelector
+    NetworkMemberSelector,
+    FacetSelector
   }
 }
 </script>

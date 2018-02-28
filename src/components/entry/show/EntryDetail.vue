@@ -16,6 +16,20 @@
           <section slot="generalTab" class="generalTab generalTab--splitView">
             <div class="entryDetail generalTab__splitViewChild">
               <entry-detail-property
+                name="Facetten"
+                iconName="bookmark_border">
+                <span>Hier kommen die Facetten hin</span>
+                <div v-for="facet in facets" :key="facet.id">
+                  <strong>{{ facet.title }}</strong>
+                  <ul>
+                    <li v-for="facetItem in getSelectedFacetItems(facet)" :key="facetItem.id">
+                      {{ facetItem.title }}
+                    </li>
+                  </ul>
+                </div>
+              </entry-detail-property>
+
+              <entry-detail-property
                 :name="$tc('entries.date')"
                 :iconName="'date_range'"
                 v-if="has.date && entry.date_start">
@@ -190,6 +204,8 @@
 
 <script>
 import User from '@/models/User'
+import Facet from '@/models/Facet'
+
 import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 
@@ -221,6 +237,7 @@ export default {
       currentTab: '',
       currentlyPublishing: false,
       currentUser: null,
+      facets: [],
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
@@ -232,11 +249,21 @@ export default {
 
   created () {
     this.currentUser = User.getCurrentUser()
+
+    Facet.getAll().then(facets => {
+      this.facets = facets
+    })
   },
 
   methods: {
     setCurrentTab (newCurrentTab) {
       this.currentTab = newCurrentTab
+    },
+
+    getSelectedFacetItems (facet) {
+      return facet.facet_items.filter(item => {
+        return this.entry.facet_items.includes(item)
+      })
     }
   },
 

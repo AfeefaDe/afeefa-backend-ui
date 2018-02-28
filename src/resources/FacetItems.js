@@ -1,4 +1,5 @@
 import FacetItem from '@/models/FacetItem'
+import store from '@/store'
 import { BASE } from '@/store/api'
 import Resource from 'data/resource/Resource'
 import Vue from 'vue'
@@ -20,19 +21,18 @@ class FacetItemsResource extends Resource {
   }
 
   itemAdded (facetItem) {
-    this.cachePurgeItem('facet_items', facetItem.id)
-    this.cachePurgeItem('facets', this.owner.id)
+    this.cachePurgeRelation(this.owner.relation('facet_items'))
   }
 
   itemDeleted (facetItem) {
+    this.cachePurgeRelation(this.owner.relation('facet_items'))
     this.cachePurgeItem('facet_items', facetItem.id)
-    this.cachePurgeItem('facets', this.owner.id)
   }
 }
 
 class Facets extends Query {
   getApi () {
-    return ['forOwner', 'save', 'delete']
+    return ['forOwner', 'save', 'delete', 'attachToOwner', 'detachFromOwner']
   }
 
   createResource ({owner}) {
@@ -41,6 +41,41 @@ class Facets extends Query {
 
   save (facet) {
     return super.save(facet, {wrapInDataProperty: false})
+  }
+
+  attachToOwner (owner, facetItem) {
+    const resource = Vue.resource(BASE + `${owner.type}/${owner.id}/facet_items{/facet_item_id}`)
+    return resource.save({
+      facet_item_id: facetItem.id
+    }, {}).then(() => {
+      owner.relation('facet_items').purgeFromCacheAndMarkInvalid()
+      return true
+    }).catch(response => {
+      store.dispatch('messages/showAlert', {
+        isError: true,
+        title: 'Fehler beim Hinzufügen',
+        description: `Die Facette ${facetItem.title} konnte nicht hinzugefügt werden.`
+      }, {root: true})
+      console.log('error attach facet item', response)
+      return null
+    })
+  }
+
+  detachFromOwner (owner, facetItem) {
+    const resource = Vue.resource(BASE + `${owner.type}/${owner.id}/facet_items/${facetItem.id}`)
+
+    return resource.delete().then(() => {
+      owner.relation('facet_items').purgeFromCacheAndMarkInvalid()
+      return true
+    }).catch(response => {
+      store.dispatch('messages/showAlert', {
+        isError: true,
+        title: 'Fehler beim Löschen',
+        description: `Die Facette ${facetItem.title} konnte nicht entfernt werden.`
+      }, {root: true})
+      console.log('error detach facet item', response)
+      return null
+    })
   }
 }
 

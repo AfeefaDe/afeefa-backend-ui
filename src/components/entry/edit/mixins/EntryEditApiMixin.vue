@@ -6,6 +6,7 @@
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 import Orga from '@/models/Orga'
 import User from '@/models/User'
+import Facet from '@/models/Facet'
 import sortByTitle from '@/helpers/sort-by-title'
 
 export default {
@@ -16,6 +17,7 @@ export default {
       origItem: null,
       item: null,
       orgas: [],
+      facets: [],
       currentUser: null,
       hasItemLoadingError: false
     }
@@ -38,6 +40,10 @@ export default {
     })
 
     this.currentUser = User.getCurrentUser()
+
+    Facet.getAll().then(facets => {
+      this.facets = facets
+    })
   },
 
   methods: {
