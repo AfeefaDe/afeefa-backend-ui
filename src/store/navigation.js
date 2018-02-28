@@ -78,10 +78,14 @@ const menuTree = {
       ]
     },
     {
-      route: 'categories',
+      route: 'facets.list',
       title: 'headlines.categories',
       action: null,
-      level: 1
+      level: 1,
+      hint: state => { return state.numChapters },
+      children: [
+        { route: 'facets.edit', title: 'headlines.edit', level: 4 }
+      ]
     },
     {
       route: 'search',
