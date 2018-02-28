@@ -1,4 +1,5 @@
 import store from '@/store'
+import API from 'data/api/Api'
 
 export default class Query {
   constructor () {
@@ -56,45 +57,60 @@ export default class Query {
       return Promise.resolve(null)
     }
     const resource = this.getResource()
-    return store.dispatch('api/getItem', {resource, id, strategy}).then(model => {
+
+    return API.getItem({resource, id, strategy}).then(model => {
       if (model) {
         model.fetchRelationsAfterGet(this.relationsToFetch)
       }
       return model
+    }).catch(apiError => {
+      store.dispatch('api/apiError', {title: 'Fehler beim Laden', apiError})
+      return null
     })
   }
 
   getAll (params) {
     const resource = this.getResource(params)
-    return store.dispatch('api/getList', {resource, params}).then(models => {
+    return API.getList({resource, params}).then(models => {
       models.forEach(model => {
         model.fetchRelationsAfterGet()
       })
       return models
+    }).catch(apiError => {
+      store.dispatch('api/apiError', {title: 'Fehler beim Laden', apiError})
+      return []
     })
   }
 
   save (model, options) {
+    const resource = this.getResource()
     const action = model.id ? 'saveItem' : 'addItem'
-    return store.dispatch(`api/${action}`, {
-      resource: this.getResource(),
-      item: model,
-      options
+
+    return API[action]({resource, item: model, options}).then(item => {
+      store.dispatch('api/getMetaInformation') // e.g. todos may change after annotation change
+      return item
+    }).catch(apiError => {
+      store.dispatch('api/apiError', {title: 'Fehler beim ' + (model.id ? 'Speichern' : 'Hinzufügen'), apiError})
+      return null
     })
   }
 
   updateAttributes (model, attributes) {
-    return store.dispatch('api/updateItemAttributes', {
-      resource: this.getResource(),
-      item: model,
-      attributes
+    const resource = this.getResource()
+    return API.updateItemAttributes({resource, item: model, attributes}).catch(apiError => {
+      store.dispatch('api/apiError', {title: 'Fehler beim Speichern', apiError})
+      return null
     })
   }
 
   delete (model) {
-    return store.dispatch('api/deleteItem', {
-      resource: this.getResource(),
-      item: model
+    const resource = this.getResource()
+    return API.deleteItem({resource, item: model}).then(() => {
+      store.dispatch('api/getMetaInformation') // e.g. todos may change after annotation change
+      return true
+    }).catch(apiError => {
+      store.dispatch('api/apiError', {title: 'Fehler beim Löschen', apiError})
+      return false
     })
   }
 }

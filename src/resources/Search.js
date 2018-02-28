@@ -1,6 +1,6 @@
 import Event from '@/models/Event'
 import Orga from '@/models/Orga'
-import store from '@/store'
+import Query from '@/resources/base/Query'
 import { BASE } from '@/store/api'
 import Resource from 'data/resource/Resource'
 import Vue from 'vue'
@@ -9,12 +9,6 @@ class SearchResource extends Resource {
   init () {
     this.url = 'entries'
     this.http = Vue.resource(BASE + this.url)
-  }
-
-  getSearchParams (searchRequest) {
-    return {
-      [`filter[${searchRequest.filterCriterion}]`]: searchRequest.keyword
-    }
   }
 
   getListType (json) {
@@ -34,10 +28,21 @@ class SearchResource extends Resource {
   }
 }
 
-export default {
+class Search extends Query {
+  getApi () {
+    return ['find']
+  }
+
+  createResource () {
+    return new SearchResource()
+  }
+
   find (searchRequest) {
-    const resource = new SearchResource()
-    const params = resource.getSearchParams(searchRequest)
-    return store.dispatch('api/getList', {resource, params})
+    const params = {
+      [`filter[${searchRequest.filterCriterion}]`]: searchRequest.keyword
+    }
+    return super.getAll(params)
   }
 }
+
+export default new Search()

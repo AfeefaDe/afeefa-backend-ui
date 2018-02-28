@@ -1,6 +1,6 @@
 import Event from '@/models/Event'
 import Orga from '@/models/Orga'
-import store from '@/store'
+import Query from '@/resources/base/Query'
 import { BASE } from '@/store/api'
 import Resource from 'data/resource/Resource'
 import Vue from 'vue'
@@ -28,9 +28,14 @@ class TodosResource extends Resource {
   }
 }
 
-export default {
-  getAll (params) {
-    const resource = new TodosResource()
-    return store.dispatch('api/getList', {resource, params})
+class Todos extends Query {
+  getApi () {
+    return ['getAll']
+  }
+
+  createResource () {
+    return new TodosResource()
   }
 }
+
+export default new Todos()
