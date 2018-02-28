@@ -22,11 +22,10 @@ import ShowEvent from '@/components/routes/events/Show'
 import ListChapters from '@/components/routes/chapters/List'
 import NewChapter from '@/components/routes/chapters/New'
 import EditChapter from '@/components/routes/chapters/Edit'
-import ShowChapter from '@/components/routes/chapters/Show'
-
 
 import ListFacets from '@/components/routes/facets/List'
 import EditFacet from '@/components/routes/facets/Edit'
+import ShowFacet from '@/components/routes/facets/Show'
 
 import Search from '@/components/routes/Search'
 import UserSettings from '@/components/routes/UserSettings'
@@ -170,12 +169,6 @@ const routes = [
             component: NewChapter
           },
           {
-            path: ':id',
-            name: 'chapters.show',
-            component: ShowChapter,
-            props: true
-          },
-          {
             path: ':id/edit',
             name: 'chapters.edit',
             component: EditChapter,
@@ -191,6 +184,12 @@ const routes = [
             path: '',
             name: 'facets.list',
             component: ListFacets
+          },
+          {
+            path: ':id/show',
+            name: 'facets.show',
+            component: ShowFacet,
+            props: true
           },
           {
             path: ':id/edit',

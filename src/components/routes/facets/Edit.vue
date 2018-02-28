@@ -1,7 +1,7 @@
 <template>
-  <div v-if="facet">
+  <div>
     <div class="col s12 m12">
-      <div class="mainCard">
+      <div class="mainCard" v-if="facet">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">Facette ändern</h2>
         </div>

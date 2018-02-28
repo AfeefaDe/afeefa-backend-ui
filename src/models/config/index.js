@@ -9,6 +9,7 @@ import Contact from '../Contact'
 import ContactPerson from '../ContactPerson'
 import Event from '../Event'
 import Facet from '../Facet'
+import FacetItem from '../FacetItem'
 import Location from '../Location'
 import Orga from '../Orga'
 import ResourceItem from '../ResourceItem'
@@ -21,6 +22,7 @@ ModelRegistry.add('ContactPerson', ContactPerson)
 ModelRegistry.add('Location', Location)
 ModelRegistry.add('Category', Category)
 ModelRegistry.add('Facet', Facet)
+ModelRegistry.add('FacetItem', FacetItem)
 
 ModelRegistry.add('AnnotationCategory', AnnotationCategory)
 ModelRegistry.add('Annotation', Annotation)

@@ -10,7 +10,8 @@ export default {
 
 
   state: {
-    resourceCache,
+    resourceCache: resourceCache,
+    cache: resourceCache.cache, // TODO duplication
     isSaving: false
   },
 

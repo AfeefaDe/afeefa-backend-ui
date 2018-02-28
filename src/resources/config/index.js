@@ -8,6 +8,7 @@ import Chapters from '../Chapters'
 import Contacts from '../Contacts'
 import Events from '../Events'
 import Facets from '../Facets'
+import FacetItems from '../FacetItems'
 import Locations from '../Locations'
 import Orgas from '../Orgas'
 import ResourceItems from '../ResourceItems'
@@ -21,6 +22,7 @@ ResourceRegistry.add('Contacts', Contacts)
 ResourceRegistry.add('Locations', Locations)
 ResourceRegistry.add('Categories', Categories)
 ResourceRegistry.add('Facets', Facets)
+ResourceRegistry.add('FacetItems', FacetItems)
 
 ResourceRegistry.add('AnnotationCategories', AnnotationCategories)
 ResourceRegistry.add('Annotations', Annotations)
