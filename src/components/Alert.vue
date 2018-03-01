@@ -1,7 +1,7 @@
 <template>
   <div class="alertContainer">
     <transition-group name="slideInTop" tag="div">
-    <div v-for="alert in alerts" :key="alert.description"
+    <div v-for="alert in alerts" :key="alert.id"
       @click="close(alert)" @keydown.esc="close(alert)"
       :class="['alert',
         alert.isError ? 'alert--error' : 'alert--success']">
