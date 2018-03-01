@@ -27,14 +27,12 @@ export default {
 
   data () {
     return {
-      origFacet: null,
       facet: null
     }
   },
 
   created () {
     Facet.get(this.id).then(facet => {
-      this.origFacet = facet
       this.facet = facet.clone()
     })
   },
@@ -45,16 +43,10 @@ export default {
      * to raise a alert in case of unsaved changes
      */
     $canLeaveRoute () {
-      if (!this.facet) { // loading error
-        return true
+      if (this.facet && this.facet.hasChanges()) {
+        return 'Soll das Editieren beendet werden?'
       }
-      const hashOrig = JSON.stringify(this.origFacet.serialize())
-      const hashItem = JSON.stringify(this.facet.serialize())
-
-      if (hashOrig === hashItem) {
-        return true
-      }
-      return 'Soll das Editieren beendet werden?'
+      return true
     },
 
     updateFacet () {

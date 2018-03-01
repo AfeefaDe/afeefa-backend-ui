@@ -14,7 +14,6 @@ export default {
 
   data () {
     return {
-      origItem: null,
       item: null,
       orgas: [],
       facets: [],
@@ -26,7 +25,6 @@ export default {
   created () {
     this.Model.with('parent_orga').get(this.id).then(entry => {
       if (entry) {
-        this.origItem = entry
         this.item = entry.clone()
         if (entry.id) {
           Orga.getAll().then(orgas => {
@@ -52,16 +50,10 @@ export default {
      * to raise a alert in case of unsaved changes
      */
     $canLeaveRoute () {
-      if (!this.item) { // loading error
-        return true
+      if (this.item && this.item.hasChanges()) {
+        return 'Soll das Editieren beendet werden?'
       }
-      const hashOrig = JSON.stringify(this.origItem.serialize())
-      const hashItem = JSON.stringify(this.item.serialize())
-
-      if (hashOrig === hashItem) {
-        return true
-      }
-      return 'Soll das Editieren beendet werden?'
+      return true
     },
 
     validateCustomFields (validationErrors) {
@@ -96,9 +88,8 @@ export default {
           this.Model.save(this.item).then(entry => {
             if (entry) {
               this.$store.dispatch('messages/showAlert', {
-                description: this.origItem.id ? this.messages.saveItemSuccess() : this.messages.addItemSuccess()
+                description: this.item.id ? this.messages.saveItemSuccess() : this.messages.addItemSuccess()
               })
-              this.origItem = this.item // prevent route leave dialog after save
               this.$router.push({name: this.routeName + '.show', params: {id: entry.id}, query: {tab: this.currentTab}})
             }
           })
@@ -117,7 +108,6 @@ export default {
               this.$store.dispatch('messages/showAlert', {
                 description: this.messages.deleteItemSuccess()
               })
-              this.origItem = this.item // prevent route leave dialog after save
               this.$router.push({name: this.routeName + '.list'})
             }
           })

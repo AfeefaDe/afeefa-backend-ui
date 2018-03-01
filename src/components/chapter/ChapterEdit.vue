@@ -72,7 +72,6 @@ export default {
   data () {
     return {
       item: null,
-      origItem: null,
       loadingError: false
     }
   },
@@ -89,21 +88,18 @@ export default {
     updateContent (content) {
       this.item.content = content
     },
-    $canLeaveRoute () {
-      const hashOrig = JSON.stringify(this.origItem.serialize())
-      const hashItem = JSON.stringify(this.item.serialize())
-      if (hashOrig === hashItem) {
-        return true
-      }
 
-      return 'Soll das Ändern des Kapitels beendet werden?'
+    $canLeaveRoute () {
+      if (this.item && this.item.hasChanges()) {
+        return 'Soll das Ändern des Kapitels beendet werden?'
+      }
+      return true
     },
 
     loadChapter () {
       if (this.id) { // edit
         Chapter.get(this.id).then(chapter => {
           if (chapter) {
-            this.origItem = chapter
             this.item = chapter.clone()
           } else {
             console.log('error loading item')
@@ -111,8 +107,8 @@ export default {
           }
         })
       } else { // create
-        this.origItem = new Chapter()
-        this.item = this.origItem.clone()
+        // create a cloned chapter to later detect changes
+        this.item = new Chapter().clone()
       }
     },
 
@@ -142,7 +138,6 @@ export default {
           this.$store.dispatch('messages/showAlert', {
             description: `Das Kapitel "${this.item.title}" wurde geändert.`
           })
-          this.origItem = this.item // prevent route leave dialog after save
           this.$router.push({name: 'chapters.list'})
         })
       })
@@ -159,7 +154,6 @@ export default {
               this.$store.dispatch('messages/showAlert', {
                 description: 'Das Kapitel wurde gelöscht.'
               })
-              this.origItem = this.item // prevent route leave dialog after save
               this.$router.push({name: 'chapters.list'})
             }
           })

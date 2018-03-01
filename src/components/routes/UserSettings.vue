@@ -73,7 +73,6 @@ export default {
 
   data () {
     return {
-      userOrig: null,
       user: null,
       passwordConfirm: null
     }
@@ -96,17 +95,14 @@ export default {
 
   methods: {
     initCurrentUser () {
-      this.userOrig = User.getCurrentUser()
-      this.user = this.userOrig.clone()
+      this.user = User.getCurrentUser().clone()
     },
 
     $canLeaveRoute () {
-      const hashOrig = JSON.stringify(this.userOrig.serialize())
-      const hashItem = JSON.stringify(this.user.serialize())
-      if (hashOrig === hashItem) {
-        return true
+      if (this.user && this.user.hasChanges()) {
+        return 'Soll das Ändern des Nutzers beendet werden?'
       }
-      return 'Soll das Ändern des Nutzers beendet werden?'
+      return true
     },
 
     save () {

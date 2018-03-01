@@ -36,7 +36,6 @@ export default {
   data () {
     return {
       owner: null,
-      origContact: null,
       contact: null,
       hasItemLoadingError: false
     }
@@ -48,12 +47,11 @@ export default {
         this.owner = owner
         if (this.contactId) {
           Contact.forOwner(owner).getAll().then(contacts => {
-            this.origContact = contacts.find(c => c.id === this.contactId)
-            this.contact = this.origContact.clone()
+            const origContact = contacts.find(c => c.id === this.contactId)
+            this.contact = origContact.clone()
           })
         } else {
-          this.origContact = new Contact()
-          this.contact = new Contact()
+          this.contact = new Contact().clone()
         }
       } else {
         this.hasItemLoadingError = true
@@ -63,16 +61,10 @@ export default {
 
   methods: {
     $canLeaveRoute () {
-      if (!this.contact) { // loading error
-        return true
+      if (this.contact && this.contact.hasChanges()) {
+        return 'Soll das Editieren beendet werden?'
       }
-      const hashOrig = JSON.stringify(this.origContact.serialize())
-      const hashItem = JSON.stringify(this.contact.serialize())
-
-      if (hashOrig === hashItem) {
-        return true
-      }
-      return 'Soll das Editieren beendet werden?'
+      return true
     },
 
     saveContact () {
@@ -81,7 +73,6 @@ export default {
           this.$store.dispatch('messages/showAlert', {
             description: 'Kontakt erfolgreich gespeichert.'
           })
-          this.origContact = this.contact // prevent route leave dialog after save
           this.$router.push({name: this.routeName + '.show', params: {id: this.owner.id}})
         }
       })
