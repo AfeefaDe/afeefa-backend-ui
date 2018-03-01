@@ -12,7 +12,6 @@ import './services/leaflet'
 
 import './helpers/directives'
 
-import './resources/config'
 import './models/config'
 
 // import materialize js

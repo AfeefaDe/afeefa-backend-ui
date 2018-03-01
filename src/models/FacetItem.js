@@ -1,12 +1,11 @@
+import FacetItems from '@/resources/FacetItems'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 
 export default class FacetItem extends Model {
   static type = 'facet_items'
 
-  static query (FacetItems) {
-    return FacetItems
-  }
+  static query = FacetItems
 
   static attributes () {
     return {

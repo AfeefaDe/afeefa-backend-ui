@@ -1,3 +1,4 @@
+import Categories from '@/resources/Categories'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
@@ -5,9 +6,7 @@ import Relation from 'data/model/Relation'
 export default class Category extends Model {
   static type = 'categories'
 
-  static query (Categories) {
-    return Categories
-  }
+  static query = Categories
 
   static attributes () {
     return {

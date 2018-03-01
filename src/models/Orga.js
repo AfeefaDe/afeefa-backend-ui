@@ -1,3 +1,6 @@
+import Event from '@/models/Event'
+import ResourceItem from '@/models/ResourceItem'
+import Orgas from '@/resources/Orgas'
 import DataTypes from 'data/model/DataTypes'
 import Relation from 'data/model/Relation'
 
@@ -8,9 +11,7 @@ import OrgaType from './OrgaType'
 export default class Orga extends Entry {
   static type = 'orgas'
 
-  static query (Orgas) {
-    return Orgas
-  }
+  static query = Orgas
 
   static attributes () {
     return {
@@ -39,7 +40,7 @@ export default class Orga extends Entry {
     }
   }
 
-  static relations (Orga, ResourceItem, ActorRelations, Event) {
+  static relations () {
     return {
       parent_orga: {
         type: Relation.HAS_ONE,

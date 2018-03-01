@@ -1,12 +1,11 @@
+import Users from '@/resources/Users'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 
 export default class User extends Model {
   static type = 'users'
 
-  static query (Users) {
-    return Users
-  }
+  static query = Users
 
   static attributes () {
     return {

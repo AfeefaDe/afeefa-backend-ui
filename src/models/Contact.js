@@ -1,3 +1,6 @@
+import ContactPerson from '@/models/ContactPerson'
+import Location from '@/models/Location'
+import Contacts from '@/resources/Contacts'
 import resourceCache from 'data/cache/ResourceCache'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
@@ -6,9 +9,7 @@ import Relation from 'data/model/Relation'
 export default class Contact extends Model {
   static type = 'contacts'
 
-  static query (Contacts) {
-    return Contacts
-  }
+  static query = Contacts
 
   static attributes () {
     return {
@@ -35,7 +36,7 @@ export default class Contact extends Model {
     }
   }
 
-  static relations (Location, ContactPerson) {
+  static relations () {
     return {
       location: {
         type: Relation.HAS_ONE,

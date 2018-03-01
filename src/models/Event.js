@@ -1,3 +1,5 @@
+import Orga from '@/models/Orga'
+import Events from '@/resources/Events'
 import DataTypes from 'data/model/DataTypes'
 import Relation from 'data/model/Relation'
 import moment from 'moment'
@@ -7,9 +9,7 @@ import Entry from './base/Entry'
 export default class Event extends Entry {
   static type = 'events'
 
-  static query (Events) {
-    return Events
-  }
+  static query = Events
 
   static attributes () {
     return {
@@ -30,7 +30,7 @@ export default class Event extends Entry {
   }
 
 
-  static relations (Orga) {
+  static relations () {
     return {
       parent_orga: {
         type: Relation.HAS_ONE,

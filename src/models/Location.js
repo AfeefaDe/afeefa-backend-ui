@@ -1,12 +1,11 @@
+import Locations from '@/resources/Locations'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 
 export default class Location extends Model {
   static type = 'locations'
 
-  static query (Locations) {
-    return Locations
-  }
+  static query = Locations
 
   static attributes () {
     return {

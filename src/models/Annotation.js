@@ -1,3 +1,5 @@
+import AnnotationCategory from '@/models/AnnotationCategory'
+import Annotations from '@/resources/Annotations'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
@@ -5,9 +7,7 @@ import Relation from 'data/model/Relation'
 export default class Annotation extends Model {
   static type = 'annotations'
 
-  static query (Annotations) {
-    return Annotations
-  }
+  static query = Annotations
 
   static attributes () {
     return {
@@ -17,7 +17,7 @@ export default class Annotation extends Model {
     }
   }
 
-  static relations (AnnotationCategory) {
+  static relations () {
     return {
       annotationCategory: {
         type: Relation.HAS_ONE,

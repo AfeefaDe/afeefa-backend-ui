@@ -1,3 +1,4 @@
+import Chapters from '@/resources/Chapters'
 import LoadingState from 'data/api/LoadingState'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
@@ -5,9 +6,7 @@ import Model from 'data/model/Model'
 export default class Chapter extends Model {
   static type = 'chapters'
 
-  static query (Chapters) {
-    return Chapters
-  }
+  static query = Chapters
 
   static attributes () {
     return {

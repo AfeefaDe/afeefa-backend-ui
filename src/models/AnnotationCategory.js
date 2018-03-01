@@ -1,12 +1,11 @@
+import AnnotationCategories from '@/resources/AnnotationCategories'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 
 export default class AnnotationCategory extends Model {
   static type = 'annotationCategories'
 
-  static query (AnnotationCategories) {
-    return AnnotationCategories
-  }
+  static query = AnnotationCategories
 
   static attributes () {
     return {

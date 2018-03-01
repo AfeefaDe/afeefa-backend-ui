@@ -1,3 +1,5 @@
+import Orga from '@/models/Orga'
+import ActorRelationsResource from '@/resources/ActorRelations'
 import LoadingState from 'data/api/LoadingState'
 import resourceCache from 'data/cache/ResourceCache'
 import toCamelCase from 'data/filter/camel-case'
@@ -9,11 +11,9 @@ export default class ActorRelations extends Model {
 
   static type = 'actor_relations'
 
-  static query (ActorRelations) {
-    return ActorRelations
-  }
+  static query = ActorRelationsResource
 
-  static relations (Orga) {
+  static relations () {
     const relations = {}
     ActorRelations.RELATIONS.forEach(relationName => {
       relations[relationName] = {

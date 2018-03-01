@@ -1,3 +1,8 @@
+import Annotation from '@/models/Annotation'
+import Category from '@/models/Category'
+import Contact from '@/models/Contact'
+import FacetItem from '@/models/FacetItem'
+import User from '@/models/User'
 import LoadingState from 'data/api/LoadingState'
 import LoadingStrategy from 'data/api/LoadingStrategy'
 import DataTypes from 'data/model/DataTypes'
@@ -49,7 +54,7 @@ export default class Entry extends Model {
     }
   }
 
-  static relations (Contact, Annotation, User, Category, FacetItem) {
+  static relations () {
     return {
       category: {
         type: Relation.HAS_ONE,
