@@ -1,8 +1,9 @@
-import Vue from 'vue'
-import { BASE } from '@/store/api'
 import Event from '@/models/Event'
+import { BASE } from '@/store/api'
+import Query from 'data/resource/Query'
+import Vue from 'vue'
+
 import EntriesResource from './base/EntriesResource'
-import Query from './base/Query'
 
 class EventsResource extends EntriesResource {
   init () {

@@ -1,9 +1,8 @@
 import Chapter from '@/models/Chapter'
 import { BASE } from '@/store/api'
+import Query from 'data/resource/Query'
 import Resource from 'data/resource/Resource'
 import Vue from 'vue'
-
-import Query from './base/Query'
 
 class ChaptersResource extends Resource {
   init () {

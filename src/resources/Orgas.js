@@ -1,8 +1,9 @@
-import Vue from 'vue'
-import { BASE } from '@/store/api'
 import Orga from '@/models/Orga'
+import { BASE } from '@/store/api'
+import Query from 'data/resource/Query'
+import Vue from 'vue'
+
 import EntriesResource from './base/EntriesResource'
-import Query from './base/Query'
 
 class OrgasResource extends EntriesResource {
   init () {

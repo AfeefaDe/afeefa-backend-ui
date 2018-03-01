@@ -1,4 +1,5 @@
 import MetaData from '@/models/MetaData'
+import API from 'data/api/Api'
 import ApiError from 'data/api/ApiError'
 import resourceCache from 'data/cache/ResourceCache'
 import Vue from 'vue'
@@ -26,6 +27,8 @@ export default {
 
   actions: {
     initApp ({commit, dispatch}) {
+      dispatch('setupApiHooks')
+
       Vue.http.interceptors.push((request, next) => {
         if (request.method === 'POST' || request.method === 'PATCH') {
           if (request.body && typeof request.body === 'object') {
@@ -57,6 +60,36 @@ export default {
 
     logout () {
       resourceCache.purge()
+    },
+
+    setupApiHooks ({dispatch}) {
+      API.onGetError = apiError => {
+        dispatch('apiError', {title: 'Fehler beim Laden', apiError})
+      }
+
+      API.onAdd = model => {
+        dispatch('getMetaInformation') // e.g. todos may change after annotation change
+      }
+
+      API.onAddError = apiError => {
+        dispatch('apiError', {title: 'Fehler beim Hinzufügen', apiError})
+      }
+
+      API.onSave = model => {
+        dispatch('getMetaInformation') // e.g. todos may change after annotation change
+      }
+
+      API.onSaveError = apiError => {
+        dispatch('apiError', {title: 'Fehler beim Speichern', apiError})
+      }
+
+      API.onDelete = model => {
+        dispatch('getMetaInformation') // e.g. todos may change after annotation change
+      }
+
+      API.onDeleteError = apiError => {
+        dispatch('apiError', {title: 'Fehler beim Löschen', apiError})
+      }
     },
 
     apiError: ({dispatch}, {title, apiError}) => {

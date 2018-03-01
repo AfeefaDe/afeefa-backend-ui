@@ -1,9 +1,8 @@
 import MetaDataModel from '@/models/MetaData'
 import { BASE } from '@/store/api'
+import Query from 'data/resource/Query'
 import Resource from 'data/resource/Resource'
 import Vue from 'vue'
-
-import Query from './base/Query'
 
 class MetaDataResource extends Resource {
   init () {

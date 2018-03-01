@@ -1,7 +1,7 @@
 import Event from '@/models/Event'
 import Orga from '@/models/Orga'
-import Query from '@/resources/base/Query'
 import { BASE } from '@/store/api'
+import Query from 'data/resource/Query'
 import Resource from 'data/resource/Resource'
 import Vue from 'vue'
 

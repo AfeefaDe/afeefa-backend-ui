@@ -1,10 +1,9 @@
 import ActorRelationsModel from '@/models/ActorRelations'
 import store from '@/store'
 import { BASE } from '@/store/api'
+import Query from 'data/resource/Query'
 import Resource from 'data/resource/Resource'
 import Vue from 'vue'
-
-import Query from './base/Query'
 
 class ActorRelationsResource extends Resource {
   init (orgaId) {
@@ -51,7 +50,7 @@ class ActorRelations extends Query {
         isError: true,
         title: 'Fehler beim Hinzufügen',
         description: `Die Orga ${relatedOrga.title} konnte nicht hinzugefügt werden.`
-      }, {root: true})
+      })
       console.log('error join actor relation', response)
       return null
     })
@@ -71,7 +70,7 @@ class ActorRelations extends Query {
         isError: true,
         title: 'Fehler beim Entfernen',
         description: 'Der Orga konnte nicht entfernt werden.'
-      }, {root: true})
+      })
       console.log('error leave actor relation', response)
       return null
     })

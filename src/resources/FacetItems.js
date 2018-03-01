@@ -1,10 +1,9 @@
 import FacetItem from '@/models/FacetItem'
 import store from '@/store'
 import { BASE } from '@/store/api'
+import Query from 'data/resource/Query'
 import Resource from 'data/resource/Resource'
 import Vue from 'vue'
-
-import Query from './base/Query'
 
 class FacetItemsResource extends Resource {
   init (owner) {
@@ -61,7 +60,7 @@ class Facets extends Query {
         isError: true,
         title: 'Fehler beim Hinzufügen',
         description: `Die Facette ${facetItem.title} konnte nicht hinzugefügt werden.`
-      }, {root: true})
+      })
       console.log('error attach facet item', response)
       return null
     })
@@ -77,7 +76,7 @@ class Facets extends Query {
         isError: true,
         title: 'Fehler beim Löschen',
         description: `Die Facette ${facetItem.title} konnte nicht entfernt werden.`
-      }, {root: true})
+      })
       console.log('error detach facet item', response)
       return null
     })

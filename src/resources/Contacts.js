@@ -1,9 +1,8 @@
 import Contact from '@/models/Contact'
 import { BASE } from '@/store/api'
+import Query from 'data/resource/Query'
 import Resource from 'data/resource/Resource'
 import Vue from 'vue'
-
-import Query from './base/Query'
 
 class ContactsResource extends Resource {
   init (owner) {
