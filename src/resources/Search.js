@@ -8,7 +8,7 @@ import Vue from 'vue'
 class SearchResource extends Resource {
   init () {
     this.url = 'entries'
-    this.http = Vue.resource(BASE + this.url)
+    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getListType (json) {

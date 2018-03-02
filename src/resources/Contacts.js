@@ -8,8 +8,8 @@ class ContactsResource extends Resource {
   init (relation) {
     this.owner = relation.owner
 
-    this.url = `${this.owner.type}/${this.owner.id}/contacts`
-    this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
+    this.url = `${this.owner.type}/${this.owner.id}/contacts{/id}`
+    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {

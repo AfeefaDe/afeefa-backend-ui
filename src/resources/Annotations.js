@@ -7,7 +7,7 @@ import Vue from 'vue'
 class AnnotationsResource extends Resource {
   init (relation) {
     this.url = `${relation.owner.type}/${relation.owner.id}/annotations`
-    this.http = Vue.resource(BASE + this.url)
+    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {

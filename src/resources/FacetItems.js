@@ -10,8 +10,8 @@ class FacetItemsResource extends Resource {
     // owner can be a facet or an actor/event
     this.owner = relation.owner
 
-    this.url = `${this.owner.type}/${this.owner.id}/facet_items`
-    this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
+    this.url = `${this.owner.type}/${this.owner.id}/facet_items{/id}`
+    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {

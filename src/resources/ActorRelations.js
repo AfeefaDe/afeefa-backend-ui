@@ -6,15 +6,15 @@ import Resource from 'data/resource/Resource'
 import Vue from 'vue'
 
 class ActorRelationsResource extends Resource {
-  init (orgaId) {
-    this.orgaId = orgaId
+  init (relation) {
+    this.relation = relation
 
-    this.url = BASE + `orgas{/id}/actor_relations`
-    this.http = Vue.resource(this.url, {id: orgaId})
+    this.url = 'orgas{/id}/actor_relations'
+    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemJson (json) {
-    json.id = this.orgaId
+    json.id = this.relation.owner.id
     return json
   }
 
@@ -29,7 +29,7 @@ class ActorRelations extends Query {
   }
 
   createResource ({relation}) {
-    return new ActorRelationsResource(relation.owner.id)
+    return new ActorRelationsResource(relation)
   }
 
   get (id) {

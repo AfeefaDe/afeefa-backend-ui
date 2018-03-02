@@ -6,8 +6,8 @@ import Vue from 'vue'
 
 class AnnotationCategoriesResource extends Resource {
   init () {
-    this.url = 'annotation_categories'
-    this.http = Vue.resource(BASE + this.url + '{/id}')
+    this.url = 'annotation_categories{/id}'
+    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {

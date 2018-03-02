@@ -6,8 +6,8 @@ import Vue from 'vue'
 
 class CategoriesResource extends Resource {
   init () {
-    this.url = 'categories'
-    this.http = Vue.resource(BASE + this.url + '{/id}')
+    this.url = 'categories{/id}'
+    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {

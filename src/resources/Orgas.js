@@ -7,8 +7,8 @@ import EntriesResource from './base/EntriesResource'
 
 class OrgasResource extends EntriesResource {
   init () {
-    this.url = 'orgas'
-    this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
+    this.url = 'orgas{/id}'
+    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {

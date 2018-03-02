@@ -6,8 +6,8 @@ import Vue from 'vue'
 
 class ResourceItemsResource extends Resource {
   init (relation) {
-    this.url = `orgas/${relation.owner.id}/resource_items`
-    this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
+    this.url = `orgas/${relation.owner.id}/resource_items{/id}`
+    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {

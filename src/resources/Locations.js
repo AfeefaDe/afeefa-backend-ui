@@ -6,8 +6,8 @@ import Vue from 'vue'
 
 class LocationsResource extends Resource {
   init () {
-    this.url = 'locations'
-    this.http = Vue.resource(BASE + this.url + '{/id}')
+    this.url = 'locations{/id}'
+    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {

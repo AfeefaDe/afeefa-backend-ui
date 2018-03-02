@@ -6,8 +6,8 @@ import Vue from 'vue'
 
 class FacetsResource extends Resource {
   init () {
-    this.url = 'facets'
-    this.http = Vue.resource(BASE + this.url + '{/id}')
+    this.url = 'facets{/id}'
+    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {

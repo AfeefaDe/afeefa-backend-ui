@@ -6,9 +6,9 @@ import Vue from 'vue'
 import EntriesResource from './base/EntriesResource'
 
 class EventsResource extends EntriesResource {
-  init () {
-    this.url = 'events'
-    this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
+  init (relation) {
+    this.url = relation ? `orgas/${relation.owner.id}/events` : 'events{/id}'
+    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {
@@ -43,22 +43,9 @@ class EventsResource extends EntriesResource {
   }
 }
 
-class OrgaEventsResource extends EventsResource {
-  init (orgaId, params) {
-    super.init(orgaId, params)
-
-    this.url = `orgas/${orgaId}/events`
-    this.http = Vue.resource(BASE + this.url)
-  }
-}
-
 class Events extends Query {
-  createResource ({relation, params}) {
-    if (relation) {
-      return new OrgaEventsResource(relation.owner.id, params)
-    } else {
-      return new EventsResource()
-    }
+  createResource ({relation}) {
+    return new EventsResource(relation)
   }
 
   get (id, strategy) {

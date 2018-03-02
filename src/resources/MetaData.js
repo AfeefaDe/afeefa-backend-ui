@@ -7,7 +7,7 @@ import Vue from 'vue'
 class MetaDataResource extends Resource {
   init () {
     this.url = 'meta'
-    this.http = Vue.resource(BASE + this.url)
+    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemJson (json) {
