@@ -1,13 +1,10 @@
 import Category from '@/models/Category'
-import { BASE } from '@/store/api'
 import Query from 'data/resource/Query'
 import Resource from 'data/resource/Resource'
-import Vue from 'vue'
 
 class CategoriesResource extends Resource {
   init () {
     this.url = 'categories{/id}'
-    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {

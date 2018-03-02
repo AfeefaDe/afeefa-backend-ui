@@ -10,7 +10,6 @@ class ActorRelationsResource extends Resource {
     this.relation = relation
 
     this.url = 'orgas{/id}/actor_relations'
-    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemJson (json) {

@@ -1,13 +1,10 @@
 import AnnotationCategory from '@/models/AnnotationCategory'
-import { BASE } from '@/store/api'
 import Query from 'data/resource/Query'
 import Resource from 'data/resource/Resource'
-import Vue from 'vue'
 
 class AnnotationCategoriesResource extends Resource {
   init () {
     this.url = 'annotation_categories{/id}'
-    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {

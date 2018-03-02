@@ -1,14 +1,11 @@
 import Orga from '@/models/Orga'
-import { BASE } from '@/store/api'
 import Query from 'data/resource/Query'
-import Vue from 'vue'
 
 import EntriesResource from './base/EntriesResource'
 
 class OrgasResource extends EntriesResource {
   init () {
     this.url = 'orgas{/id}'
-    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {

@@ -1,13 +1,10 @@
 import Location from '@/models/Location'
-import { BASE } from '@/store/api'
 import Query from 'data/resource/Query'
 import Resource from 'data/resource/Resource'
-import Vue from 'vue'
 
 class LocationsResource extends Resource {
   init () {
     this.url = 'locations{/id}'
-    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {

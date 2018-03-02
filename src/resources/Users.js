@@ -1,15 +1,12 @@
 import User from '@/models/User'
 import store from '@/store'
-import { BASE } from '@/store/api'
 import resourceCache from 'data/cache/ResourceCache'
 import Query from 'data/resource/Query'
 import Resource from 'data/resource/Resource'
-import Vue from 'vue'
 
 class UsersResource extends Resource {
   init () {
     this.url = 'users{/id}'
-    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {

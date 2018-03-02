@@ -27,6 +27,10 @@ export default {
 
   actions: {
     initApp ({commit, dispatch}) {
+      API.resourceProviderFactory = url => {
+        return Vue.resource(BASE + url, {}, {update: {method: 'PATCH'}})
+      }
+
       dispatch('setupApiHooks')
 
       Vue.http.interceptors.push((request, next) => {

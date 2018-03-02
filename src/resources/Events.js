@@ -1,14 +1,11 @@
 import Event from '@/models/Event'
-import { BASE } from '@/store/api'
 import Query from 'data/resource/Query'
-import Vue from 'vue'
 
 import EntriesResource from './base/EntriesResource'
 
 class EventsResource extends EntriesResource {
   init (relation) {
     this.url = relation ? `orgas/${relation.owner.id}/events` : 'events{/id}'
-    this.http = Vue.resource(BASE + this.url, {}, {update: {method: 'PATCH'}})
   }
 
   getItemModel () {
