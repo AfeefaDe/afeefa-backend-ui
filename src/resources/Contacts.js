@@ -5,10 +5,10 @@ import Resource from 'data/resource/Resource'
 import Vue from 'vue'
 
 class ContactsResource extends Resource {
-  init (owner) {
-    this.owner = owner
+  init (relation) {
+    this.owner = relation.owner
 
-    this.url = `${owner.type}/${owner.id}/contacts`
+    this.url = `${this.owner.type}/${this.owner.id}/contacts`
     this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
   }
 
@@ -90,21 +90,13 @@ class ContactsResource extends Resource {
   }
 }
 
-class ContactListResource extends ContactsResource {
-  init (owner) {
-    super.init(owner)
-
-    this.listParams = owner.relation('contacts').listParams()
-  }
-}
-
 class Contacts extends Query {
   getApi () {
-    return ['forOwner', 'getAll', 'save', 'delete']
+    return ['forRelation', 'getAll', 'save', 'delete']
   }
 
-  createResource ({owner}) {
-    return new ContactListResource(owner)
+  createResource ({relation}) {
+    return new ContactsResource(relation)
   }
 
   save (contact) {

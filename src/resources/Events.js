@@ -37,8 +37,8 @@ class EventsResource extends EntriesResource {
   _updateParentOrgasEventList (event) {
     const orgaId = event.relation('parent_orga').id
     if (orgaId) {
-      this.cachePurgeList('events', JSON.stringify({orga_id: orgaId, 'filter[date]': 'upcoming'}))
-      this.cachePurgeList('events', JSON.stringify({orga_id: orgaId, 'filter[date]': 'past'}))
+      this.cachePurgeList('events', JSON.stringify({owner_type: 'orgas', owner_id: orgaId, 'filter[date]': 'upcoming'}))
+      this.cachePurgeList('events', JSON.stringify({owner_type: 'orgas', owner_id: orgaId, 'filter[date]': 'past'}))
     }
   }
 }
@@ -49,19 +49,13 @@ class OrgaEventsResource extends EventsResource {
 
     this.url = `orgas/${orgaId}/events`
     this.http = Vue.resource(BASE + this.url)
-
-    this.listParams = {orga_id: orgaId, ...params}
   }
 }
 
 class Events extends Query {
-  getApi () {
-    return super.getApi().concat(['forOwner'])
-  }
-
-  createResource ({owner, params}) {
-    if (owner) {
-      return new OrgaEventsResource(owner.id, params)
+  createResource ({relation, params}) {
+    if (relation) {
+      return new OrgaEventsResource(relation.owner.id, params)
     } else {
       return new EventsResource()
     }

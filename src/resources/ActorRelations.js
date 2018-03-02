@@ -25,11 +25,11 @@ class ActorRelationsResource extends Resource {
 
 class ActorRelations extends Query {
   getApi () {
-    return ['forOwner', 'get', 'joinActorRelation', 'leaveActorRelation']
+    return ['forRelation', 'get', 'joinActorRelation', 'leaveActorRelation']
   }
 
-  createResource ({owner}) {
-    return new ActorRelationsResource(owner.id)
+  createResource ({relation}) {
+    return new ActorRelationsResource(relation.owner.id)
   }
 
   get (id) {

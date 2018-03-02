@@ -124,7 +124,7 @@ export default class Entry extends Model {
   }
 
   fetchContacts (Contact) {
-    return Contact.forOwner(this).getAll()
+    return Contact.forRelation(this.relation('contacts')).getAll()
   }
 
   refetchContacts () {
@@ -132,7 +132,7 @@ export default class Entry extends Model {
   }
 
   fetchAnnotations (Annotation) {
-    return Annotation.forOwner(this).getAll()
+    return Annotation.forRelation(this.relation('annotations')).getAll()
   }
 
   fetchCreator (User, id) {
@@ -144,7 +144,7 @@ export default class Entry extends Model {
   }
 
   fetchFacetItems (FacetItem) {
-    return FacetItem.forOwner(this).getAll()
+    return FacetItem.forRelation(this.relation('facet_items')).getAll()
   }
 
   serialize () {

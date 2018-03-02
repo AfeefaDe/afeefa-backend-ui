@@ -130,7 +130,7 @@ export default {
         message: 'Soll der Kontakt gelöscht werden?'
       }).then(result => {
         if (result === 'yes') {
-          Contact.forOwner(this.item).delete(contact).then(result => {
+          Contact.forRelation(this.item.relation('contacts')).delete(contact).then(result => {
             this.item.refetchContacts()
             if (result) {
               this.$store.dispatch('messages/showAlert', {

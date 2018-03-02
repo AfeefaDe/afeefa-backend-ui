@@ -5,11 +5,9 @@ import Resource from 'data/resource/Resource'
 import Vue from 'vue'
 
 class AnnotationsResource extends Resource {
-  init (owner) {
-    this.url = `${owner.type}/${owner.id}/annotations`
+  init (relation) {
+    this.url = `${relation.owner.type}/${relation.owner.id}/annotations`
     this.http = Vue.resource(BASE + this.url)
-
-    this.listParams = owner.relation('annotations').listParams()
   }
 
   getItemModel () {
@@ -19,11 +17,11 @@ class AnnotationsResource extends Resource {
 
 class Annotations extends Query {
   getApi () {
-    return ['forOwner', 'getAll']
+    return ['forRelation', 'getAll']
   }
 
-  createResource ({owner}) {
-    return new AnnotationsResource(owner)
+  createResource ({relation}) {
+    return new AnnotationsResource(relation)
   }
 }
 

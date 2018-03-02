@@ -6,14 +6,12 @@ import Resource from 'data/resource/Resource'
 import Vue from 'vue'
 
 class FacetItemsResource extends Resource {
-  init (owner) {
+  init (relation) {
     // owner can be a facet or an actor/event
-    this.owner = owner
+    this.owner = relation.owner
 
-    this.url = `${owner.type}/${owner.id}/facet_items`
+    this.url = `${this.owner.type}/${this.owner.id}/facet_items`
     this.http = Vue.resource(BASE + this.url + '{/id}', {}, {update: {method: 'PATCH'}})
-
-    this.listParams = owner.relation('facet_items').listParams()
   }
 
   getItemModel () {
@@ -37,11 +35,11 @@ class FacetItemsResource extends Resource {
 
 class Facets extends Query {
   getApi () {
-    return ['forOwner', 'save', 'delete', 'attachToOwner', 'detachFromOwner']
+    return ['forRelation', 'save', 'delete', 'attachToOwner', 'detachFromOwner']
   }
 
-  createResource ({owner}) {
-    return new FacetItemsResource(owner)
+  createResource ({relation}) {
+    return new FacetItemsResource(relation)
   }
 
   save (facet) {

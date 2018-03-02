@@ -27,7 +27,7 @@ export default class Facet extends Model {
   }
 
   fetchFacetItems (FacetItem) {
-    return FacetItem.forOwner(this).getAll()
+    return FacetItem.forRelation(this.relation('facet_items')).getAll()
   }
 
   serialize () {
