@@ -19,12 +19,12 @@ class FacetItemsResource extends Resource {
 
   itemAdded (facetItem) {
     // order reload of the facets facet_items by the next get() call
-    this.cachePurgeRelation(this.owner.relation('facet_items'))
+    this.cachePurgeRelation(this.owner.$rels.facet_items)
   }
 
   itemDeleted (facetItem) {
     // order reload of the facets facet_items by the next get() call
-    this.cachePurgeRelation(this.owner.relation('facet_items'))
+    this.cachePurgeRelation(this.owner.$rels.facet_items)
     // order reload of the entries facet items by the next get() call
     // TODO
     // remove the facet item from cache
@@ -50,7 +50,7 @@ class Facets extends Query {
     return resource.save({
       facet_item_id: facetItem.id
     }, {}).then(() => {
-      owner.relation('facet_items').purgeFromCacheAndMarkInvalid()
+      owner.$rels.facet_items.purgeFromCacheAndMarkInvalid()
       return true
     }).catch(response => {
       store.dispatch('messages/showAlert', {
@@ -66,7 +66,7 @@ class Facets extends Query {
   detachFromOwner (owner, facetItem) {
     const resource = Vue.resource(BASE + `${owner.type}/${owner.id}/facet_items/${facetItem.id}`)
     return resource.delete().then(() => {
-      owner.relation('facet_items').purgeFromCacheAndMarkInvalid()
+      owner.$rels.facet_items.purgeFromCacheAndMarkInvalid()
       return true
     }).catch(response => {
       store.dispatch('messages/showAlert', {

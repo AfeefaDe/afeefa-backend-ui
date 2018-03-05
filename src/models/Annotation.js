@@ -62,6 +62,6 @@ export default class Annotation extends Model {
   }
 
   get info () {
-    return super.info + ` category="${this.relation('annotationCategory').id}"`
+    return super.info + ` category="${this.$rels.annotationCategory.id}"`
   }
 }

@@ -15,14 +15,14 @@ class ContactsResource extends Resource {
 
   itemSaved (oldContact, contact) {
     if (this.ownLocationDeleted(oldContact, contact)) {
-      const oldLocationId = oldContact.relation('location').id
+      const oldLocationId = oldContact.$rels.location.id
       const ownersWithLocation = this.findOwnersOfContactsWithLocationId(oldLocationId)
       // refetch others contact list
       ownersWithLocation.forEach(owner => {
-        this.cachePurgeRelation(owner.relation('contacts'))
+        this.cachePurgeRelation(owner.$rels.contacts)
       })
       // refetch own contact list
-      this.cachePurgeRelation(this.owner.relation('contacts'))
+      this.cachePurgeRelation(this.owner.$rels.contacts)
       // reload all locations
       this.cachePurgeList('locations')
     }
@@ -35,7 +35,7 @@ class ContactsResource extends Resource {
 
   itemDeleted (contact) {
     // reload contact list of owner
-    this.cachePurgeRelation(this.owner.relation('contacts'))
+    this.cachePurgeRelation(this.owner.$rels.contacts)
     // reload all locations
     this.cachePurgeList('locations')
   }
@@ -50,7 +50,7 @@ class ContactsResource extends Resource {
     for (let key in contactLists) {
       const contacts = contactLists[key]
       contacts.forEach(contact => {
-        if (contact.relation('location').id === locationId) {
+        if (contact.$rels.location.id === locationId) {
           const {owner_type, owner_id} = JSON.parse(key) // eslint-disable-line camelcase
           const owner = this.findCachedItem(owner_type, owner_id)
           if (owner) {
@@ -63,8 +63,8 @@ class ContactsResource extends Resource {
   }
 
   ownLocationDeleted (oldContact, contact) {
-    const oldLocationId = oldContact.relation('location').id
-    const newLocationId = contact.relation('location').id
+    const oldLocationId = oldContact.$rels.location.id
+    const newLocationId = contact.$rels.location.id
     if (oldLocationId && oldLocationId !== newLocationId) {
       const oldLocation = this.findCachedItem('locations', oldLocationId)
       if (oldLocation.creatingContactId === contact.id) {
@@ -75,8 +75,8 @@ class ContactsResource extends Resource {
   }
 
   newLocationCreated (oldContact, contact) {
-    const oldLocationId = oldContact.relation('location').id
-    const newLocationId = contact.relation('location').id
+    const oldLocationId = oldContact.$rels.location.id
+    const newLocationId = contact.$rels.location.id
     if (newLocationId && newLocationId !== oldLocationId) {
       const newLocation = this.findCachedItem('locations', newLocationId)
       if (newLocation.creatingContactId === contact.id) {

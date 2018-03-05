@@ -72,15 +72,15 @@ export default class Orga extends Entry {
   }
 
   fetchPastEvents (Event) {
-    return Event.forRelation(this.relation('past_events')).getAll({'filter[date]': 'past'})
+    return Event.forRelation(this.$rels.past_events).getAll({'filter[date]': 'past'})
   }
 
   fetchUpcomingEvents (Event) {
-    return Event.forRelation(this.relation('past_events')).getAll({'filter[date]': 'upcoming'})
+    return Event.forRelation(this.$rels.past_events).getAll({'filter[date]': 'upcoming'})
   }
 
   fetchActorRelations (ActorRelations, id) {
-    return ActorRelations.forRelation(this.relation('actor_relations')).get(id).then(actorRelations => {
+    return ActorRelations.forRelation(this.$rels.actor_relations).get(id).then(actorRelations => {
       if (actorRelations) {
         ActorRelations.RELATIONS.forEach(relationName => {
           this[relationName] = actorRelations[relationName]
@@ -90,7 +90,7 @@ export default class Orga extends Entry {
   }
 
   fetchResourceItems (ResourceItem) {
-    return ResourceItem.forRelation(this.relation('resource_items')).getAll()
+    return ResourceItem.forRelation(this.$rels.resource_items).getAll()
   }
 
   normalizeJson (json) {

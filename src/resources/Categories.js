@@ -18,7 +18,7 @@ class CategoriesResource extends Resource {
     }
 
     for (let category of categories) {
-      const parentId = category.relation('parent_category').id
+      const parentId = category.$rels.parent_category.id
       const parentCategory = categoriesMap[parentId]
       if (parentCategory) {
         category.parent_category = parentCategory

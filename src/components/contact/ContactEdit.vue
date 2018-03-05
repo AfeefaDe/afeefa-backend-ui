@@ -46,7 +46,7 @@ export default {
       if (owner) {
         this.owner = owner
         if (this.contactId) {
-          Contact.forRelation(owner.relation('contacts')).getAll().then(contacts => {
+          Contact.forRelation(owner.$rels.contacts).getAll().then(contacts => {
             const origContact = contacts.find(c => c.id === this.contactId)
             this.contact = origContact.clone()
           })
@@ -68,7 +68,7 @@ export default {
     },
 
     saveContact () {
-      Contact.forRelation(this.owner.relation('contacts')).save(this.contact).then(contact => {
+      Contact.forRelation(this.owner.$rels.contacts).save(this.contact).then(contact => {
         if (contact) {
           this.$store.dispatch('messages/showAlert', {
             description: 'Kontakt erfolgreich gespeichert.'

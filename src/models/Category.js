@@ -37,7 +37,7 @@ export default class Category extends Model {
   }
 
   get info () {
-    const subCat = !!this.relation('parent_category').id
+    const subCat = !!this.$rels.parent_category.id
     return super.info + ` subCat="${subCat}" title="${this.title}"`
   }
 }

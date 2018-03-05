@@ -57,7 +57,7 @@ export default class Contact extends Model {
   }
 
   fetchContactPersons (ContactPerson) {
-    const contactPersons = resourceCache.getList('contact_persons', JSON.stringify(this.relation('contact_persons').listParams()))
+    const contactPersons = resourceCache.getList('contact_persons', JSON.stringify(this.$rels.contact_persons.listParams()))
     return Promise.resolve(contactPersons)
   }
 
@@ -98,7 +98,7 @@ export default class Contact extends Model {
   }
 
   get info () {
-    const location = this.location ? this.location.info : `[Location] id="${this.relation('location').id}"`
+    const location = this.location ? this.location.info : `[Location] id="${this.$rels.location.id}"`
     return super.info + ` title="${this.title}"` + `\n\t${location}`
   }
 }

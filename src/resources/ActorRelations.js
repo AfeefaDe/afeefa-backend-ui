@@ -41,8 +41,8 @@ class ActorRelations extends Query {
       relating_id: relatingOrga.id,
       related_id: relatedOrga.id
     }, {}).then(() => {
-      relatingOrga.relation('actor_relations').purgeFromCacheAndMarkInvalid()
-      relatedOrga.relation('actor_relations').purgeFromCacheAndMarkInvalid()
+      relatingOrga.$rels.actor_relations.purgeFromCacheAndMarkInvalid()
+      relatedOrga.$rels.actor_relations.purgeFromCacheAndMarkInvalid()
       return true
     }).catch(response => {
       store.dispatch('messages/showAlert', {
@@ -61,8 +61,8 @@ class ActorRelations extends Query {
       relating_id: relatingOrga.id,
       related_id: relatedOrga.id
     }, {}).then(() => {
-      relatingOrga.relation('actor_relations').purgeFromCacheAndMarkInvalid()
-      relatedOrga.relation('actor_relations').purgeFromCacheAndMarkInvalid()
+      relatingOrga.$rels.actor_relations.purgeFromCacheAndMarkInvalid()
+      relatedOrga.$rels.actor_relations.purgeFromCacheAndMarkInvalid()
       return true
     }).catch(response => {
       store.dispatch('messages/showAlert', {
