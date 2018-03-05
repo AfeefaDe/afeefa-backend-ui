@@ -36,7 +36,8 @@ export default class ActorRelations extends Model {
   }
 
   normalizeJson (json) {
-    const jsonRelations = Object.keys(this.relations)
+    // move all flat members to relationships attribute
+    const jsonRelations = Object.keys(this.$rels)
       .reduce((obj, key) => ({...obj, [key]: json[key]}), {})
     return {
       id: json.id,
