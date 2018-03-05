@@ -1,6 +1,7 @@
 import Event from '@/models/Event'
 import ResourceItem from '@/models/ResourceItem'
 import Orgas from '@/resources/Orgas'
+import ActorRelationsResource from '@/resources/ActorRelations'
 import DataTypes from 'data/model/DataTypes'
 import Relation from 'data/model/Relation'
 
@@ -56,7 +57,8 @@ export default class Orga extends Entry {
 
       actor_relations: {
         type: Relation.HAS_ONE,
-        Model: ActorRelations
+        Model: ActorRelations,
+        Query: ActorRelationsResource
       },
 
       past_events: {
@@ -80,12 +82,13 @@ export default class Orga extends Entry {
   }
 
   fetchActorRelations (ActorRelations, id) {
-    return ActorRelations.forRelation(this.$rels.actor_relations).get(id).then(actorRelations => {
+    return this.$rels.actor_relations.get(id).then(actorRelations => {
       if (actorRelations) {
         ActorRelations.RELATIONS.forEach(relationName => {
           this[relationName] = actorRelations[relationName]
         })
       }
+      return actorRelations
     })
   }
 

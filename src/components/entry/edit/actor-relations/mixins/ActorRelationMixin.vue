@@ -1,6 +1,5 @@
 <script>
 import Orga from '@/models/Orga'
-import ActorRelations from '@/models/ActorRelations'
 import sortByTitle from '@/helpers/sort-by-title'
 
 export default {
@@ -25,6 +24,10 @@ export default {
   computed: {
     selectedActors () {
       return this.actor[this.relationName]
+    },
+
+    relation () {
+      return this.actor.$rels.actor_relations
     }
   },
 
@@ -40,7 +43,7 @@ export default {
     },
 
     addChild (child) {
-      ActorRelations.joinActorRelation(this.apiRelationName, this.actor, child).then(result => {
+      this.relation.joinActorRelation(this.apiRelationName, this.actor, child).then(result => {
         if (result) {
           this.actor[this.relationName].push(child)
           this.$store.dispatch('messages/showAlert', {
@@ -52,7 +55,7 @@ export default {
     },
 
     removeChild (child) {
-      ActorRelations.leaveActorRelation(this.apiRelationName, this.actor, child).then(result => {
+      this.relation.leaveActorRelation(this.apiRelationName, this.actor, child).then(result => {
         if (result) {
           this.actor[this.relationName] = this.actor[this.relationName].filter(n => n.id !== child.id)
           this.$store.dispatch('messages/showAlert', {
@@ -64,7 +67,7 @@ export default {
     },
 
     addParent (parent) {
-      ActorRelations.joinActorRelation(this.apiRelationName, parent, this.actor).then(result => {
+      this.relation.joinActorRelation(this.apiRelationName, parent, this.actor).then(result => {
         if (result) {
           this.actor[this.relationName].push(parent)
           this.$store.dispatch('messages/showAlert', {
@@ -76,7 +79,7 @@ export default {
     },
 
     removeParent (parent) {
-      ActorRelations.leaveActorRelation(this.apiRelationName, parent, this.actor).then(result => {
+      this.relation.leaveActorRelation(this.apiRelationName, parent, this.actor).then(result => {
         if (result) {
           this.actor[this.relationName] = this.actor[this.relationName].filter(n => n.id !== parent.id)
           this.$store.dispatch('messages/showAlert', {

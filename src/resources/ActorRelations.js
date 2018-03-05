@@ -1,16 +1,12 @@
-import ActorRelationsModel from '@/models/ActorRelations'
 import store from '@/store'
 import { BASE } from '@/store/api'
-import Query from 'data/resource/Query'
-import Resource from 'data/resource/Resource'
+import RelationQuery from 'data/resource/RelationQuery'
+import RelationResource from 'data/resource/RelationResource'
 import Vue from 'vue'
 
-class ActorRelationsResource extends Resource {
-  init (relation) {
-    this.relation = relation
-
+class ActorRelationsResource extends RelationResource {
+  init () {
     this.url = 'orgas{/id}/actor_relations'
-    this.Model = ActorRelationsModel
   }
 
   getItemJson (json) {
@@ -19,13 +15,13 @@ class ActorRelationsResource extends Resource {
   }
 }
 
-class ActorRelations extends Query {
+export default class ActorRelations extends RelationQuery {
   getApi () {
-    return ['forRelation', 'get', 'joinActorRelation', 'leaveActorRelation']
+    return ['get', 'joinActorRelation', 'leaveActorRelation']
   }
 
-  createResource (relation) {
-    return new ActorRelationsResource(relation)
+  getResource () {
+    return new ActorRelationsResource(this.relation)
   }
 
   get (id) {
@@ -72,5 +68,3 @@ class ActorRelations extends Query {
     })
   }
 }
-
-export default new ActorRelations()

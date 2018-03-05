@@ -1,5 +1,4 @@
 import Orga from '@/models/Orga'
-import ActorRelationsResource from '@/resources/ActorRelations'
 import LoadingState from 'data/api/LoadingState'
 import resourceCache from 'data/cache/ResourceCache'
 import toCamelCase from 'data/filter/camel-case'
@@ -10,8 +9,6 @@ export default class ActorRelations extends Model {
   static RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
 
   static type = 'actor_relations'
-
-  static query = ActorRelationsResource
 
   static relations () {
     const relations = {}
