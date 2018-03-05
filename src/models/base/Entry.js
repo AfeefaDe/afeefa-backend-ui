@@ -132,7 +132,7 @@ export default class Entry extends Model {
   }
 
   fetchAnnotations (Annotation) {
-    return Annotation.forRelation(this.$rels.annotations).getAll()
+    return this.$rels.annotations.getAll()
   }
 
   fetchCreator (User, id) {
