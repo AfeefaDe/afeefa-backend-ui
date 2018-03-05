@@ -6,10 +6,7 @@ import EntriesResource from './base/EntriesResource'
 class OrgasResource extends EntriesResource {
   init () {
     this.url = 'orgas{/id}'
-  }
-
-  getItemModel () {
-    return Orga
+    this.Model = Orga
   }
 }
 

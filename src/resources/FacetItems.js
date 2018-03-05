@@ -11,10 +11,7 @@ class FacetItemsResource extends Resource {
     this.owner = relation.owner
 
     this.url = `${this.owner.type}/${this.owner.id}/facet_items{/id}`
-  }
-
-  getItemModel () {
-    return FacetItem
+    this.Model = FacetItem
   }
 
   itemAdded (facetItem) {
@@ -37,7 +34,7 @@ class Facets extends Query {
     return ['forRelation', 'save', 'delete', 'attachToOwner', 'detachFromOwner']
   }
 
-  createResource ({relation}) {
+  createResource (relation) {
     return new FacetItemsResource(relation)
   }
 

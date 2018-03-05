@@ -5,10 +5,7 @@ import Resource from 'data/resource/Resource'
 class FacetsResource extends Resource {
   init () {
     this.url = 'facets{/id}'
-  }
-
-  getItemModel () {
-    return Facet
+    this.Model = Facet
   }
 
   itemAdded () {

@@ -7,10 +7,7 @@ import Resource from 'data/resource/Resource'
 class UsersResource extends Resource {
   init () {
     this.url = 'users{/id}'
-  }
-
-  getItemModel () {
-    return User
+    this.Model = User
   }
 }
 

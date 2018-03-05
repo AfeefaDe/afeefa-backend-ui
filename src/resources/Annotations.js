@@ -5,10 +5,7 @@ import Resource from 'data/resource/Resource'
 class AnnotationsResource extends Resource {
   init (relation) {
     this.url = `${relation.owner.type}/${relation.owner.id}/annotations`
-  }
-
-  getItemModel () {
-    return Annotation
+    this.Model = Annotation
   }
 }
 
@@ -17,7 +14,7 @@ class Annotations extends Query {
     return ['forRelation', 'getAll']
   }
 
-  createResource ({relation}) {
+  createResource (relation) {
     return new AnnotationsResource(relation)
   }
 }

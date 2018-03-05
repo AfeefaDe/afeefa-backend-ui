@@ -5,10 +5,7 @@ import Resource from 'data/resource/Resource'
 class ChaptersResource extends Resource {
   init () {
     this.url = 'chapters{/id}'
-  }
-
-  getItemModel () {
-    return Chapter
+    this.Model = Chapter
   }
 
   itemAdded () {

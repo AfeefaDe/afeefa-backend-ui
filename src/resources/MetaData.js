@@ -5,15 +5,12 @@ import Resource from 'data/resource/Resource'
 class MetaDataResource extends Resource {
   init () {
     this.url = 'meta'
+    this.Model = MetaDataModel
   }
 
   getItemJson (json) {
     json.id = 'app'
     return json
-  }
-
-  getItemModel () {
-    return MetaDataModel
   }
 }
 

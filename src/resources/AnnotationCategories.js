@@ -5,10 +5,7 @@ import Resource from 'data/resource/Resource'
 class AnnotationCategoriesResource extends Resource {
   init () {
     this.url = 'annotation_categories{/id}'
-  }
-
-  getItemModel () {
-    return AnnotationCategory
+    this.Model = AnnotationCategory
   }
 }
 

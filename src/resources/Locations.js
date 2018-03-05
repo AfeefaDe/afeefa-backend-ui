@@ -5,10 +5,7 @@ import Resource from 'data/resource/Resource'
 class LocationsResource extends Resource {
   init () {
     this.url = 'locations{/id}'
-  }
-
-  getItemModel () {
-    return Location
+    this.Model = Location
   }
 }
 

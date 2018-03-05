@@ -5,10 +5,7 @@ import Resource from 'data/resource/Resource'
 class ResourceItemsResource extends Resource {
   init (relation) {
     this.url = `orgas/${relation.owner.id}/resource_items{/id}`
-  }
-
-  getItemModel () {
-    return ResourceItem
+    this.Model = ResourceItem
   }
 }
 
@@ -17,7 +14,7 @@ class ResourceItems extends Query {
     return ['forRelation', 'getAll']
   }
 
-  createResource ({relation}) {
+  createResource (relation) {
     return new ResourceItemsResource(relation)
   }
 }

@@ -5,10 +5,7 @@ import Resource from 'data/resource/Resource'
 class CategoriesResource extends Resource {
   init () {
     this.url = 'categories{/id}'
-  }
-
-  getItemModel () {
-    return Category
+    this.Model = Category
   }
 
   transformList (categories) {

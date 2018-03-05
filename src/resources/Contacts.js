@@ -7,10 +7,7 @@ class ContactsResource extends Resource {
     this.owner = relation.owner
 
     this.url = `${this.owner.type}/${this.owner.id}/contacts{/id}`
-  }
-
-  getItemModel () {
-    return Contact
+    this.Model = Contact
   }
 
   itemSaved (oldContact, contact) {
@@ -92,7 +89,7 @@ class Contacts extends Query {
     return ['forRelation', 'getAll', 'save', 'delete']
   }
 
-  createResource ({relation}) {
+  createResource (relation) {
     return new ContactsResource(relation)
   }
 

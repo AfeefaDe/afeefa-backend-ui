@@ -10,15 +10,12 @@ class ActorRelationsResource extends Resource {
     this.relation = relation
 
     this.url = 'orgas{/id}/actor_relations'
+    this.Model = ActorRelationsModel
   }
 
   getItemJson (json) {
     json.id = this.relation.owner.id
     return json
-  }
-
-  getItemModel () {
-    return ActorRelationsModel
   }
 }
 
@@ -27,7 +24,7 @@ class ActorRelations extends Query {
     return ['forRelation', 'get', 'joinActorRelation', 'leaveActorRelation']
   }
 
-  createResource ({relation}) {
+  createResource (relation) {
     return new ActorRelationsResource(relation)
   }
 
