@@ -23,7 +23,7 @@ export default class ActorRelations extends Model {
 
       // make a fetch function foreach relation
       this.prototype['fetch' + toCamelCase(relationName)] = function () {
-        const actors = resourceCache.getList('orgas', JSON.stringify(this.relation(relationName).listParams()))
+        const actors = resourceCache.getList('orgas', JSON.stringify(this.$rels[relationName].listParams()))
         return Promise.resolve(actors || [])
       }
     })
