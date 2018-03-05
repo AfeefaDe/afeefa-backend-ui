@@ -28,7 +28,7 @@ export default class Facet extends Model {
     }
   }
 
-  fetchFacetItems (FacetItem) {
+  fetchFacetItems () {
     return this.$rels.facet_items.getAll()
   }
 

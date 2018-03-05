@@ -3,6 +3,7 @@ import Category from '@/models/Category'
 import Contact from '@/models/Contact'
 import FacetItem from '@/models/FacetItem'
 import User from '@/models/User'
+import CategoriesRelation from '@/resources/relations/CategoriesRelation'
 import Contacts from '@/resources/relations/ContactsRelation'
 import EntryFacetItems from '@/resources/relations/EntryFacetItems'
 import LoadingState from 'data/api/LoadingState'
@@ -60,12 +61,14 @@ export default class Entry extends Model {
     return {
       category: {
         type: Relation.HAS_ONE,
-        Model: Category
+        Model: Category,
+        Query: CategoriesRelation
       },
 
       sub_category: {
         type: Relation.HAS_ONE,
-        Model: Category
+        Model: Category,
+        Query: CategoriesRelation
       },
 
       contacts: {
@@ -111,23 +114,23 @@ export default class Entry extends Model {
     return LoadingState.NOT_LOADED
   }
 
-  fetchParentOrga (Orga, id, clone, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
+  fetchParentOrga (id, clone, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
     // TODO remove creation of empty orga in Orga.get/Event.get when id = null
     if (!id) {
       return Promise.resolve(null)
     }
-    return Orga.get(id, strategy)
+    return this.$rels.parent_orga.get(id, strategy)
   }
 
-  fetchCategory (Category, id) {
-    return Category.get(id)
+  fetchCategory (id) {
+    return this.$rels.category.get(id)
   }
 
-  fetchSubCategory (Category, id) {
-    return Category.get(id)
+  fetchSubCategory (id) {
+    return this.$rels.sub_category.get(id)
   }
 
-  fetchContacts (Contact) {
+  fetchContacts () {
     return this.$rels.contacts.getAll()
   }
 
@@ -135,19 +138,19 @@ export default class Entry extends Model {
     this.refetchRelation('contacts')
   }
 
-  fetchAnnotations (Annotation) {
+  fetchAnnotations () {
     return this.$rels.annotations.getAll()
   }
 
-  fetchCreator (User, id) {
-    return User.get(id)
+  fetchCreator (id) {
+    return this.$rels.creator.get(id)
   }
 
-  fetchLastEditor (User, id) {
-    return User.get(id)
+  fetchLastEditor (id) {
+    return this.$rels.last_editor.get(id)
   }
 
-  fetchFacetItems (FacetItem) {
+  fetchFacetItems () {
     return this.$rels.facet_items.getAll()
   }
 

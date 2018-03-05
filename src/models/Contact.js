@@ -49,11 +49,11 @@ export default class Contact extends Model {
     }
   }
 
-  fetchLocation (Location, id) {
-    return Location.get(id)
+  fetchLocation (id) {
+    return this.$rels.location.get(id)
   }
 
-  fetchContactPersons (ContactPerson) {
+  fetchContactPersons () {
     const contactPersons = resourceCache.getList('contact_persons', JSON.stringify(this.$rels.contact_persons.listParams()))
     return Promise.resolve(contactPersons)
   }

@@ -1,7 +1,8 @@
 import Event from '@/models/Event'
 import ResourceItem from '@/models/ResourceItem'
 import Orgas from '@/resources/Orgas'
-import ActorRelationsResource from '@/resources/relations/ActorRelations'
+import ActorRelationsRelation from '@/resources/relations/ActorRelations'
+import ParentOrgaRelation from '@/resources/relations/ParentOrgaRelation'
 import DataTypes from 'data/model/DataTypes'
 import Relation from 'data/model/Relation'
 
@@ -46,7 +47,8 @@ export default class Orga extends Entry {
       parent_orga: {
         type: Relation.HAS_ONE,
         Model: Orga,
-        remoteName: 'initiator'
+        remoteName: 'initiator',
+        Query: ParentOrgaRelation
       },
 
       resource_items: {
@@ -58,7 +60,7 @@ export default class Orga extends Entry {
       actor_relations: {
         type: Relation.HAS_ONE,
         Model: ActorRelations,
-        Query: ActorRelationsResource
+        Query: ActorRelationsRelation
       },
 
       past_events: {
@@ -73,15 +75,15 @@ export default class Orga extends Entry {
     }
   }
 
-  fetchPastEvents (Event) {
+  fetchPastEvents () {
     return this.$rels.past_events.getAll({'filter[date]': 'past'})
   }
 
-  fetchUpcomingEvents (Event) {
+  fetchUpcomingEvents () {
     return this.$rels.past_events.getAll({'filter[date]': 'upcoming'})
   }
 
-  fetchActorRelations (ActorRelations, id) {
+  fetchActorRelations (id) {
     return this.$rels.actor_relations.get(id).then(actorRelations => {
       if (actorRelations) {
         ActorRelations.RELATIONS.forEach(relationName => {
@@ -92,7 +94,7 @@ export default class Orga extends Entry {
     })
   }
 
-  fetchResourceItems (ResourceItem) {
+  fetchResourceItems () {
     return this.$rels.resource_items.getAll()
   }
 

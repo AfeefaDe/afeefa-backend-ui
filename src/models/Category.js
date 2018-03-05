@@ -1,4 +1,5 @@
 import Categories from '@/resources/Categories'
+import CategoriesRelation from '@/resources/relations/CategoriesRelation'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
@@ -20,13 +21,14 @@ export default class Category extends Model {
     return {
       parent_category: {
         type: Relation.HAS_ONE,
-        Model: Category
+        Model: Category,
+        Query: CategoriesRelation
       }
     }
   }
 
-  fetchParentCategory (Category, id) {
-    return Category.get(id)
+  fetchParentCategory (id) {
+    return this.$rels.parent_category.get(id)
   }
 
   clone () {
