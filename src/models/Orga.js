@@ -90,7 +90,7 @@ export default class Orga extends Entry {
   }
 
   fetchResourceItems (ResourceItem) {
-    return ResourceItem.forRelation(this.$rels.resource_items).getAll()
+    return this.$rels.resource_items.getAll()
   }
 
   normalizeJson (json) {
