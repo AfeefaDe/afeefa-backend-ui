@@ -11,17 +11,11 @@ class AnnotationCategoriesResource extends Resource {
 
 class AnnotationCategories extends Query {
   getApi () {
-    return ['getAll', 'get']
+    return ['getAll']
   }
 
   getResource () {
     return new AnnotationCategoriesResource()
-  }
-
-  get (id) {
-    return this.getAll().then(() => {
-      return super.get(id)
-    })
   }
 }
 

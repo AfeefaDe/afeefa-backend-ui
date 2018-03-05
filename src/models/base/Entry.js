@@ -115,10 +115,6 @@ export default class Entry extends Model {
   }
 
   fetchParentOrga (id, clone, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
-    // TODO remove creation of empty orga in Orga.get/Event.get when id = null
-    if (!id) {
-      return Promise.resolve(null)
-    }
     return this.$rels.parent_orga.get(id, strategy)
   }
 

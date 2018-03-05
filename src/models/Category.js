@@ -1,5 +1,6 @@
 import Categories from '@/resources/Categories'
 import CategoriesRelation from '@/resources/relations/CategoriesRelation'
+import SubCategoriesRelation from '@/resources/relations/SubCategoriesRelation'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
@@ -11,9 +12,7 @@ export default class Category extends Model {
 
   static attributes () {
     return {
-      title: DataTypes.String,
-
-      sub_categories: DataTypes.Array
+      title: DataTypes.String
     }
   }
 
@@ -23,12 +22,22 @@ export default class Category extends Model {
         type: Relation.HAS_ONE,
         Model: Category,
         Query: CategoriesRelation
+      },
+
+      sub_categories: {
+        type: Relation.HAS_MANY,
+        Model: Category,
+        Query: SubCategoriesRelation
       }
     }
   }
 
   fetchParentCategory (id) {
     return this.$rels.parent_category.get(id)
+  }
+
+  fetchSubCategories () {
+    return this.$rels.sub_categories.getAll()
   }
 
   clone () {
