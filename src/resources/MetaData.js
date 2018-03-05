@@ -19,7 +19,7 @@ class MetaData extends Query {
     return ['get']
   }
 
-  createResource () {
+  getResource () {
     return new MetaDataResource()
   }
 }

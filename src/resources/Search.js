@@ -30,7 +30,7 @@ class Search extends Query {
     return ['find']
   }
 
-  createResource () {
+  getResource () {
     return new SearchResource()
   }
 

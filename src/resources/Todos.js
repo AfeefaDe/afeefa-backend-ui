@@ -30,7 +30,7 @@ class Todos extends Query {
     return ['getAll']
   }
 
-  createResource () {
+  getResource () {
     return new TodosResource()
   }
 }

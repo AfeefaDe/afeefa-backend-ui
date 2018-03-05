@@ -15,7 +15,7 @@ class Orgas extends Query {
     return super.getApi().concat(['joinActorRelation', 'leaveActorRelation'])
   }
 
-  createResource () {
+  getResource () {
     return new OrgasResource()
   }
 

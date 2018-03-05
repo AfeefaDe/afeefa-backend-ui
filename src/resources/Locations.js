@@ -14,7 +14,7 @@ class Locations extends Query {
     return ['get', 'getAll']
   }
 
-  createResource () {
+  getResource () {
     return new LocationsResource()
   }
 }

@@ -16,7 +16,7 @@ class Users extends Query {
     return ['setCurrentUser', 'removeCurrentUser', 'get', 'getCurrentUser', 'save']
   }
 
-  createResource () {
+  getResource () {
     return new UsersResource()
   }
 

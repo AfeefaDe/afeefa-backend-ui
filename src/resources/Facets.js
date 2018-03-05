@@ -23,7 +23,7 @@ class Facets extends Query {
     return ['getAll', 'get', 'save', 'delete']
   }
 
-  createResource () {
+  getResource () {
     return new FacetsResource()
   }
 

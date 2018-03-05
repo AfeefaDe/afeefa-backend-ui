@@ -23,7 +23,7 @@ class Chapters extends Query {
     return ['getAll', 'get', 'save', 'delete']
   }
 
-  createResource () {
+  getResource () {
     return new ChaptersResource()
   }
 

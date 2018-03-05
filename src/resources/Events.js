@@ -4,8 +4,8 @@ import Query from 'data/resource/Query'
 import EntriesResource from './base/EntriesResource'
 
 class EventsResource extends EntriesResource {
-  init (relation) {
-    this.url = relation ? `orgas/${relation.owner.id}/events` : 'events{/id}'
+  init () {
+    this.url = 'events{/id}'
     this.Model = Event
   }
 
@@ -38,8 +38,8 @@ class EventsResource extends EntriesResource {
 }
 
 class Events extends Query {
-  createResource (relation) {
-    return new EventsResource(relation)
+  getResource () {
+    return new EventsResource()
   }
 
   get (id, strategy) {

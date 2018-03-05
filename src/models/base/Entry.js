@@ -3,6 +3,7 @@ import Category from '@/models/Category'
 import Contact from '@/models/Contact'
 import FacetItem from '@/models/FacetItem'
 import User from '@/models/User'
+import Contacts from '@/resources/relations/ContactsRelation'
 import EntryFacetItems from '@/resources/relations/EntryFacetItems'
 import LoadingState from 'data/api/LoadingState'
 import LoadingStrategy from 'data/api/LoadingStrategy'
@@ -69,7 +70,8 @@ export default class Entry extends Model {
 
       contacts: {
         type: Relation.HAS_MANY,
-        Model: Contact
+        Model: Contact,
+        Query: Contacts
       },
 
       annotations: {
@@ -126,7 +128,7 @@ export default class Entry extends Model {
   }
 
   fetchContacts (Contact) {
-    return Contact.forRelation(this.$rels.contacts).getAll()
+    return this.$rels.contacts.getAll()
   }
 
   refetchContacts () {

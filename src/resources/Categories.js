@@ -30,7 +30,7 @@ class Categories extends Query {
     return ['getAll', 'get']
   }
 
-  createResource () {
+  getResource () {
     return new CategoriesResource()
   }
 

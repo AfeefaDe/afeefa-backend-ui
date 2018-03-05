@@ -101,8 +101,6 @@
 <script>
 import Languages from '@/helpers/iso_639_languages.js'
 
-import Contact from '@/models/Contact'
-
 import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
 import LocationMap from '@/components/Map'
 
@@ -130,7 +128,7 @@ export default {
         message: 'Soll der Kontakt gelöscht werden?'
       }).then(result => {
         if (result === 'yes') {
-          Contact.forRelation(this.item.$rels.contacts).delete(contact).then(result => {
+          this.item.$rels.contacts.delete(contact).then(result => {
             this.item.refetchContacts()
             if (result) {
               this.$store.dispatch('messages/showAlert', {
