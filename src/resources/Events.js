@@ -6,10 +6,7 @@ import EntriesResource from './base/EntriesResource'
 class EventsResource extends EntriesResource {
   init (relation) {
     this.url = relation ? `orgas/${relation.owner.id}/events` : 'events{/id}'
-  }
-
-  getItemModel () {
-    return Event
+    this.Model = Event
   }
 
   itemAdded (event) {
@@ -41,7 +38,7 @@ class EventsResource extends EntriesResource {
 }
 
 class Events extends Query {
-  createResource ({relation}) {
+  createResource (relation) {
     return new EventsResource(relation)
   }
 
