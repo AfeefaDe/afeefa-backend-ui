@@ -1,7 +1,7 @@
 import Event from '@/models/Event'
 import ResourceItem from '@/models/ResourceItem'
 import Orgas from '@/resources/Orgas'
-import ActorRelationsResource from '@/resources/ActorRelations'
+import ActorRelationsResource from '@/resources/relations/ActorRelations'
 import DataTypes from 'data/model/DataTypes'
 import Relation from 'data/model/Relation'
 
@@ -74,11 +74,11 @@ export default class Orga extends Entry {
   }
 
   fetchPastEvents (Event) {
-    return Event.forRelation(this.$rels.past_events).getAll({'filter[date]': 'past'})
+    return this.$rels.past_events.getAll({'filter[date]': 'past'})
   }
 
   fetchUpcomingEvents (Event) {
-    return Event.forRelation(this.$rels.past_events).getAll({'filter[date]': 'upcoming'})
+    return this.$rels.past_events.getAll({'filter[date]': 'upcoming'})
   }
 
   fetchActorRelations (ActorRelations, id) {

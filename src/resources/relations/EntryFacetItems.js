@@ -1,45 +1,17 @@
-import FacetItem from '@/models/FacetItem'
 import store from '@/store'
 import { BASE } from '@/store/api'
-import Query from 'data/resource/Query'
-import Resource from 'data/resource/Resource'
+import RelationQuery from 'data/resource/RelationQuery'
 import Vue from 'vue'
 
-class FacetItemsResource extends Resource {
-  init (relation) {
-    // owner can be a facet or an actor/event
-    this.owner = relation.owner
-
-    this.url = `${this.owner.type}/${this.owner.id}/facet_items{/id}`
-    this.Model = FacetItem
-  }
-
-  itemAdded (facetItem) {
-    // order reload of the facets facet_items by the next get() call
-    this.cachePurgeRelation(this.owner.$rels.facet_items)
-  }
-
-  itemDeleted (facetItem) {
-    // order reload of the facets facet_items by the next get() call
-    this.cachePurgeRelation(this.owner.$rels.facet_items)
-    // order reload of the entries facet items by the next get() call
-    // TODO
-    // remove the facet item from cache
-    this.cachePurgeItem('facet_items', facetItem.id)
-  }
-}
-
-class Facets extends Query {
+export default class EntryFacetItems extends RelationQuery {
   getApi () {
-    return ['forRelation', 'save', 'delete', 'attachToOwner', 'detachFromOwner']
+    return ['getAll', 'attachToOwner', 'detachFromOwner']
   }
 
-  createResource (relation) {
-    return new FacetItemsResource(relation)
-  }
-
-  save (facet) {
-    return super.save(facet, {wrapInDataProperty: false})
+  getSaveOptions () {
+    return {
+      wrapInDataProperty: false
+    }
   }
 
   attachToOwner (owner, facetItem) {
@@ -76,5 +48,3 @@ class Facets extends Query {
     })
   }
 }
-
-export default new Facets()

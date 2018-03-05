@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import FacetItem from '@/models/FacetItem'
 import PowerSelector from '@/components/PowerSelector'
 
 export default {
@@ -44,7 +43,7 @@ export default {
 
   methods: {
     addFacetItem (facetItem) {
-      FacetItem.attachToOwner(this.owner, facetItem).then(result => {
+      this.owner.$rels.facet_items.attachToOwner(this.owner, facetItem).then(result => {
         if (result) {
           this.owner.facet_items.push(facetItem)
           this.$store.dispatch('messages/showAlert', {
@@ -55,7 +54,7 @@ export default {
     },
 
     removeFacetItem (facetItem) {
-      FacetItem.detachFromOwner(this.owner, facetItem).then(result => {
+      this.owner.$rels.facet_items.detachFromOwner(this.owner, facetItem).then(result => {
         if (result) {
           this.owner.facet_items = this.owner.facet_items.filter(n => n.id !== facetItem.id)
           this.$store.dispatch('messages/showAlert', {

@@ -1,4 +1,5 @@
 import Facets from '@/resources/Facets'
+import FacetFacetItems from '@/resources/relations/FacetFacetItems'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
@@ -21,13 +22,14 @@ export default class Facet extends Model {
       facet_items: {
         type: Relation.HAS_MANY,
         associationType: Relation.ASSOCIATION_COMPOSITION,
-        Model: FacetItem
+        Model: FacetItem,
+        Query: FacetFacetItems
       }
     }
   }
 
   fetchFacetItems (FacetItem) {
-    return FacetItem.forRelation(this.$rels.facet_items).getAll()
+    return this.$rels.facet_items.getAll()
   }
 
   serialize () {

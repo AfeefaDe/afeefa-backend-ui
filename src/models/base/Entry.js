@@ -3,6 +3,7 @@ import Category from '@/models/Category'
 import Contact from '@/models/Contact'
 import FacetItem from '@/models/FacetItem'
 import User from '@/models/User'
+import EntryFacetItems from '@/resources/relations/EntryFacetItems'
 import LoadingState from 'data/api/LoadingState'
 import LoadingStrategy from 'data/api/LoadingStrategy'
 import DataTypes from 'data/model/DataTypes'
@@ -89,7 +90,8 @@ export default class Entry extends Model {
 
       facet_items: {
         type: Relation.HAS_MANY,
-        Model: FacetItem
+        Model: FacetItem,
+        Query: EntryFacetItems
       }
     }
   }
@@ -144,7 +146,7 @@ export default class Entry extends Model {
   }
 
   fetchFacetItems (FacetItem) {
-    return FacetItem.forRelation(this.$rels.facet_items).getAll()
+    return this.$rels.facet_items.getAll()
   }
 
   serialize () {
