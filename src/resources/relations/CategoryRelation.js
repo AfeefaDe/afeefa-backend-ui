@@ -9,10 +9,6 @@ class CategoriesResource extends RelationResource {
 }
 
 export default class CategoryRelation extends RelationQuery {
-  getApi () {
-    return ['get']
-  }
-
   getResource () {
     return new CategoriesResource(this.relation)
   }

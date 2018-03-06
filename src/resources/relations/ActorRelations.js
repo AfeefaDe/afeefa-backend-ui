@@ -13,10 +13,6 @@ class ActorRelationsResource extends RelationResource {
 }
 
 export default class ActorRelations extends RelationQuery {
-  getApi () {
-    return ['get']
-  }
-
   getResource () {
     return new ActorRelationsResource(this.relation)
   }

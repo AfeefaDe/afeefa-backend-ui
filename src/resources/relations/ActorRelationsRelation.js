@@ -8,10 +8,6 @@ class ActorRelationsRelationResource extends RelationResource {
 }
 
 export default class ActorRelationsRelation extends RelationQuery {
-  getApi () {
-    return ['attach', 'detach']
-  }
-
   getResource () {
     return new ActorRelationsRelationResource(this.relation)
   }

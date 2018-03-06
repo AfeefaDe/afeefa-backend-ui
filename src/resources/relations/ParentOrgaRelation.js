@@ -8,10 +8,6 @@ class ParentOrgaResource extends RelationResource {
 }
 
 export default class ParentOrgaRelation extends RelationQuery {
-  getApi () {
-    return ['get']
-  }
-
   getResource () {
     return new ParentOrgaResource(this.relation)
   }

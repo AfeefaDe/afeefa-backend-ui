@@ -5,7 +5,6 @@ import FacetItem from '@/models/FacetItem'
 import User from '@/models/User'
 import CategoryRelation from '@/resources/relations/CategoryRelation'
 import Contacts from '@/resources/relations/ContactsRelation'
-import EntryFacetItems from '@/resources/relations/EntryFacetItems'
 import LoadingState from 'data/api/LoadingState'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
@@ -94,8 +93,7 @@ export default class Entry extends Model {
 
       facet_items: {
         type: Relation.HAS_MANY,
-        Model: FacetItem,
-        Query: EntryFacetItems
+        Model: FacetItem
       }
     }
   }
