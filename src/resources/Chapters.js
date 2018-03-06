@@ -22,10 +22,6 @@ class Chapters extends Query {
   getResource () {
     return new ChaptersResource()
   }
-
-  save (chapter) {
-    return super.save(chapter, {wrapInDataProperty: false})
-  }
 }
 
 export default new Chapters()

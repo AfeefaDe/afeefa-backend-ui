@@ -22,10 +22,6 @@ class Facets extends Query {
   getResource () {
     return new FacetsResource()
   }
-
-  save (facet) {
-    return super.save(facet, {wrapInDataProperty: false})
-  }
 }
 
 export default new Facets()
