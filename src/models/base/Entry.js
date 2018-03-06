@@ -77,7 +77,6 @@ export default class Entry extends Model {
 
       annotations: {
         type: Relation.HAS_MANY,
-        associationType: Relation.ASSOCIATION_COMPOSITION,
         Model: Annotation
       },
 

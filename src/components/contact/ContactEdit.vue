@@ -47,9 +47,9 @@ export default {
         this.owner = owner
         if (this.contactId) {
           const origContact = owner.contacts.find(c => c.id === this.contactId)
-          this.contact = origContact.clone()
+          this.contact = origContact.cloneWith('location', 'contact_persons')
         } else {
-          this.contact = new Contact().clone()
+          this.contact = new Contact().cloneWith('location', 'contact_persons')
         }
       } else {
         this.hasItemLoadingError = true

@@ -31,7 +31,7 @@ export default {
 
   data () {
     return {
-      Resource: Todos,
+      Query: Todos,
       categories: [],
       sortByUpdatedAt,
       selectedCategory: 'all',

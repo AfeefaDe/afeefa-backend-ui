@@ -56,7 +56,6 @@ class Orga extends Entry {
 
       resource_items: {
         type: Relation.HAS_MANY,
-        associationType: Relation.ASSOCIATION_COMPOSITION,
         Model: ResourceItem
       },
 

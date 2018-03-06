@@ -19,7 +19,7 @@ export default {
 
   data () {
     return {
-      Resource: Orga,
+      Query: Orga.Query,
       sortByCreatedAt,
       messages: {
         headline: () => this.$t('status.all') + ' ' + this.$tc('headlines.organisations', 2)

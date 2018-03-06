@@ -21,7 +21,6 @@ class Facet extends Model {
     return {
       facet_items: {
         type: Relation.HAS_MANY,
-        associationType: Relation.ASSOCIATION_COMPOSITION,
         Model: FacetItem,
         Query: FacetFacetItems
       }

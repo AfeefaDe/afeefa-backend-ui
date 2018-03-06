@@ -43,7 +43,7 @@ export default {
 
   data () {
     return {
-      Resource: Event,
+      Query: Event.Query,
       sortFunction: null,
       sortOrder: null,
       currentTab: null,

@@ -36,13 +36,11 @@ class Contact extends Model {
     return {
       location: {
         type: Relation.HAS_ONE,
-        associationType: Relation.ASSOCIATION_COMPOSITION,
         Model: Location
       },
 
       contact_persons: {
         type: Relation.HAS_MANY,
-        associationType: Relation.ASSOCIATION_COMPOSITION,
         Model: ContactPerson
       }
     }

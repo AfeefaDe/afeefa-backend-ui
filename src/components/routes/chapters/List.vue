@@ -17,7 +17,7 @@ export default {
 
   data () {
     return {
-      Resource: Chapter,
+      Query: Chapter.Query,
       messages: {
         headline: () => {
           return this.$tc('headlines.chapters', 2)

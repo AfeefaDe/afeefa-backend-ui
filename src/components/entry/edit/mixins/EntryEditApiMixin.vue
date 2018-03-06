@@ -25,7 +25,7 @@ export default {
   created () {
     this.Model.Query.with('parent_orga').get(this.id).then(entry => {
       if (entry) {
-        this.item = entry.clone()
+        this.item = entry.cloneWith('annotations', 'resource_items')
         if (entry.id) {
           Orga.Query.getAll().then(orgas => {
             this.orgas = sortByTitle(orgas)
