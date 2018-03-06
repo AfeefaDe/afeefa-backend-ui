@@ -1,7 +1,7 @@
 import AnnotationCategory from '@/models/AnnotationCategory'
-import DataTypes from 'data/model/DataTypes'
-import Model from 'data/model/Model'
-import Relation from 'data/model/Relation'
+import DataTypes from 'uidata/model/DataTypes'
+import Model from 'uidata/model/Model'
+import Relation from 'uidata/model/Relation'
 
 class Annotation extends Model {
   static type = 'annotations'

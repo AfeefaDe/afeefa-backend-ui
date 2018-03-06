@@ -1,5 +1,5 @@
-import RelationResource from 'data/resource/RelationResource'
-import RelationQuery from 'data/resource/RelationQuery'
+import RelationResource from 'uidata/resource/RelationResource'
+import RelationQuery from 'uidata/resource/RelationQuery'
 
 class ContactsResource extends RelationResource {
   itemSaved (oldContact, contact) {

@@ -1,9 +1,9 @@
 import Categories from '@/resources/Categories'
 import CategoryRelation from '@/resources/relations/CategoryRelation'
 import SubCategoriesRelation from '@/resources/relations/SubCategoriesRelation'
-import DataTypes from 'data/model/DataTypes'
-import Model from 'data/model/Model'
-import Relation from 'data/model/Relation'
+import DataTypes from 'uidata/model/DataTypes'
+import Model from 'uidata/model/Model'
+import Relation from 'uidata/model/Relation'
 
 class Category extends Model {
   static type = 'categories'

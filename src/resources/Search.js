@@ -1,7 +1,7 @@
 import Event from '@/models/Event'
 import Orga from '@/models/Orga'
-import Query from 'data/resource/Query'
-import Resource from 'data/resource/Resource'
+import Query from 'uidata/resource/Query'
+import Resource from 'uidata/resource/Resource'
 
 class SearchResource extends Resource {
   init () {

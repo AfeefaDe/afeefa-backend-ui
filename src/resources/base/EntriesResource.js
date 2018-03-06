@@ -1,4 +1,4 @@
-import Resource from 'data/resource/Resource'
+import Resource from 'uidata/resource/Resource'
 
 export default class EntriesResource extends Resource {
   itemAdded (entry) {

@@ -1,8 +1,8 @@
 import Orga from '@/models/Orga'
 import ActorRelationsRelation from '@/resources/relations/ActorRelationsRelation'
-import LoadingState from 'data/api/LoadingState'
-import Model from 'data/model/Model'
-import Relation from 'data/model/Relation'
+import LoadingState from 'uidata/api/LoadingState'
+import Model from 'uidata/model/Model'
+import Relation from 'uidata/model/Relation'
 
 class ActorRelations extends Model {
   static RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']

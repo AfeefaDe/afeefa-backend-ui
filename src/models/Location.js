@@ -1,6 +1,6 @@
 import Locations from '@/resources/Locations'
-import DataTypes from 'data/model/DataTypes'
-import Model from 'data/model/Model'
+import DataTypes from 'uidata/model/DataTypes'
+import Model from 'uidata/model/Model'
 
 class Location extends Model {
   static type = 'locations'

@@ -1,8 +1,8 @@
 import Orga from '@/models/Orga'
 import Events from '@/resources/Events'
-import DataTypes from 'data/model/DataTypes'
-import Model from 'data/model/Model'
-import Relation from 'data/model/Relation'
+import DataTypes from 'uidata/model/DataTypes'
+import Model from 'uidata/model/Model'
+import Relation from 'uidata/model/Relation'
 import moment from 'moment'
 
 import Entry from './base/Entry'

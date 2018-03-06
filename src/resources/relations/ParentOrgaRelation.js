@@ -1,5 +1,5 @@
-import RelationQuery from 'data/resource/RelationQuery'
-import RelationResource from 'data/resource/RelationResource'
+import RelationQuery from 'uidata/resource/RelationQuery'
+import RelationResource from 'uidata/resource/RelationResource'
 
 class ParentOrgaResource extends RelationResource {
   init () {

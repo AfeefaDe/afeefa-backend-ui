@@ -1,7 +1,7 @@
 import MetaDataResource from '@/resources/MetaData'
-import LoadingState from 'data/api/LoadingState'
-import DataTypes from 'data/model/DataTypes'
-import Model from 'data/model/Model'
+import LoadingState from 'uidata/api/LoadingState'
+import DataTypes from 'uidata/model/DataTypes'
+import Model from 'uidata/model/Model'
 
 class MetaData extends Model {
   static type = 'meta'

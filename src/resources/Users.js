@@ -1,8 +1,8 @@
 import User from '@/models/User'
 import store from '@/store'
-import resourceCache from 'data/cache/ResourceCache'
-import Query from 'data/resource/Query'
-import Resource from 'data/resource/Resource'
+import resourceCache from 'uidata/cache/ResourceCache'
+import Query from 'uidata/resource/Query'
+import Resource from 'uidata/resource/Resource'
 
 class UsersResource extends Resource {
   init () {

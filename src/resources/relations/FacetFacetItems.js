@@ -1,4 +1,4 @@
-import RelationQuery from 'data/resource/RelationQuery'
+import RelationQuery from 'uidata/resource/RelationQuery'
 
 export default class FacetFacetItems extends RelationQuery {
   getSaveOptions () {

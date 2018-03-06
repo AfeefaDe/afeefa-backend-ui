@@ -1,7 +1,7 @@
 import MetaData from '@/models/MetaData'
-import API from 'data/api/Api'
-import ApiError from 'data/api/ApiError'
-import resourceCache from 'data/cache/ResourceCache'
+import API from 'uidata/api/Api'
+import ApiError from 'uidata/api/ApiError'
+import resourceCache from 'uidata/cache/ResourceCache'
 import Vue from 'vue'
 export const BASE = '/api/v1/'
 

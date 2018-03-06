@@ -1,4 +1,4 @@
-import RelationQuery from 'data/resource/RelationQuery'
+import RelationQuery from 'uidata/resource/RelationQuery'
 import Categories from '../Categories'
 
 export default class SubCategoriesRelation extends RelationQuery {

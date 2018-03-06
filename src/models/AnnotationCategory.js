@@ -1,6 +1,6 @@
 import AnnotationCategories from '@/resources/AnnotationCategories'
-import DataTypes from 'data/model/DataTypes'
-import Model from 'data/model/Model'
+import DataTypes from 'uidata/model/DataTypes'
+import Model from 'uidata/model/Model'
 
 class AnnotationCategory extends Model {
   static type = 'annotationCategories'

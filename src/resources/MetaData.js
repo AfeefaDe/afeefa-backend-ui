@@ -1,6 +1,6 @@
 import MetaDataModel from '@/models/MetaData'
-import Query from 'data/resource/Query'
-import Resource from 'data/resource/Resource'
+import Query from 'uidata/resource/Query'
+import Resource from 'uidata/resource/Resource'
 
 class MetaDataResource extends Resource {
   init () {

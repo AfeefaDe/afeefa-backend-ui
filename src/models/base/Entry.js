@@ -5,10 +5,10 @@ import FacetItem from '@/models/FacetItem'
 import User from '@/models/User'
 import CategoryRelation from '@/resources/relations/CategoryRelation'
 import Contacts from '@/resources/relations/ContactsRelation'
-import LoadingState from 'data/api/LoadingState'
-import DataTypes from 'data/model/DataTypes'
-import Model from 'data/model/Model'
-import Relation from 'data/model/Relation'
+import LoadingState from 'uidata/api/LoadingState'
+import DataTypes from 'uidata/model/DataTypes'
+import Model from 'uidata/model/Model'
+import Relation from 'uidata/model/Relation'
 
 export default class Entry extends Model {
   static attributes () {

@@ -1,7 +1,7 @@
 import User from '@/models/User'
 import router from '@/services/router'
 import { BASE } from '@/store/api'
-import API from 'data/api/Api'
+import API from 'uidata/api/Api'
 import Vue from 'vue'
 
 const STORAGE_KEY = 'session'

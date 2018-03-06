@@ -1,5 +1,5 @@
 import Orga from '@/models/Orga'
-import Query from 'data/resource/Query'
+import Query from 'uidata/resource/Query'
 
 import EntriesResource from './base/EntriesResource'
 
