@@ -23,19 +23,22 @@ export default {
   },
 
   created () {
-    this.Model.Query.with('parent_orga').get(this.id).then(entry => {
-      if (entry) {
-        this.item = entry.cloneWith('annotations', 'resource_items')
-        if (entry.id) {
+    if (this.id) {
+      this.Model.Query.with('parent_orga').get(this.id).then(entry => {
+        if (entry) {
+          this.item = entry.cloneWith('annotations', 'resource_items')
+          // load orgas only for edit not for new
           Orga.Query.getAll().then(orgas => {
             this.orgas = sortByTitle(orgas)
           })
+        } else {
+          console.log('error loading item')
+          this.hasItemLoadingError = true
         }
-      } else {
-        console.log('error loading item')
-        this.hasItemLoadingError = true
-      }
-    })
+      })
+    } else {
+      this.item = new this.Model().clone()
+    }
 
     this.currentUser = User.Query.getCurrentUser()
 

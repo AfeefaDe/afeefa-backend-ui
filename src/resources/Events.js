@@ -41,15 +41,6 @@ class Events extends Query {
   getResource () {
     return new EventsResource()
   }
-
-  get (id, strategy) {
-    // Todo remove this fallback as it causes uncertainty
-    if (!id) {
-      const model = new Event()
-      return Promise.resolve(model)
-    }
-    return super.get(id, strategy)
-  }
 }
 
 export default new Events()
