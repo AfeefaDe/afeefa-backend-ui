@@ -109,7 +109,7 @@ export default {
 
     getMetaInformation: ({dispatch}) => {
       resourceCache.purgeItem('meta', 'app')
-      return MetaData.get('app').then(metaData => {
+      return MetaData.Query.get('app').then(metaData => {
         dispatch('navigation/setNumItemFromMetaInformation', {metaInformation: metaData}, {root: true})
       }).catch(response => {
         const apiError = new ApiError(response)

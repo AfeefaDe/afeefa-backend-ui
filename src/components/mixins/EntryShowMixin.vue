@@ -37,7 +37,7 @@ export default {
         relations = relations.concat(['past_events', 'upcoming_events'])
       }
 
-      this.routeConfig.Model.with(...relations).get(id).then(entry => {
+      this.routeConfig.Model.Query.with(...relations).get(id).then(entry => {
         this.item = entry
 
         if (!this.item) {

@@ -5,7 +5,7 @@ import Model from 'data/model/Model'
 export default class Location extends Model {
   static type = 'locations'
 
-  static query = Locations
+  static Query = Locations
 
   static attributes () {
     return {

@@ -27,11 +27,11 @@ export default {
         user.deserialize(json)
 
         state.currentUserId = user.id
-        User.setCurrentUser(user)
+        User.Query.setCurrentUser(user)
       } else {
         const id = state.currentUserId
         state.currentUserId = null
-        User.removeCurrentUser(id)
+        User.Query.removeCurrentUser(id)
       }
     },
     setRedirectAfterLogin (state, route) {

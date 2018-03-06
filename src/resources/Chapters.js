@@ -19,10 +19,6 @@ class ChaptersResource extends Resource {
 }
 
 class Chapters extends Query {
-  getApi () {
-    return ['getAll', 'get', 'save', 'delete']
-  }
-
   getResource () {
     return new ChaptersResource()
   }

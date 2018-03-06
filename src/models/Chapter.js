@@ -6,7 +6,7 @@ import Model from 'data/model/Model'
 export default class Chapter extends Model {
   static type = 'chapters'
 
-  static query = Chapters
+  static Query = Chapters
 
   static attributes () {
     return {

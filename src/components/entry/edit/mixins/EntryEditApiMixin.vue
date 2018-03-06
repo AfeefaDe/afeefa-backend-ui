@@ -23,11 +23,11 @@ export default {
   },
 
   created () {
-    this.Model.with('parent_orga').get(this.id).then(entry => {
+    this.Model.Query.with('parent_orga').get(this.id).then(entry => {
       if (entry) {
         this.item = entry.clone()
         if (entry.id) {
-          Orga.getAll().then(orgas => {
+          Orga.Query.getAll().then(orgas => {
             this.orgas = sortByTitle(orgas)
           })
         }
@@ -37,9 +37,9 @@ export default {
       }
     })
 
-    this.currentUser = User.getCurrentUser()
+    this.currentUser = User.Query.getCurrentUser()
 
-    Facet.getAll().then(facets => {
+    Facet.Query.getAll().then(facets => {
       this.facets = facets
     })
   },
@@ -85,7 +85,7 @@ export default {
           })
         } else {
           // actual save routine on the resource
-          this.Model.save(this.item).then(entry => {
+          this.Model.Query.save(this.item).then(entry => {
             if (entry) {
               this.$store.dispatch('messages/showAlert', {
                 description: this.item.id ? this.messages.saveItemSuccess() : this.messages.addItemSuccess()
@@ -103,7 +103,7 @@ export default {
         message: this.messages.deleteItemDialogMessage(this.item)
       }).then(result => {
         if (result === 'yes') {
-          this.Model.delete(this.item).then(result => {
+          this.Model.Query.delete(this.item).then(result => {
             if (result) {
               this.$store.dispatch('messages/showAlert', {
                 description: this.messages.deleteItemSuccess()

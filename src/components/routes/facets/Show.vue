@@ -60,7 +60,7 @@ export default {
 
   methods: {
     loadFacet () {
-      Facet.get(this.id).then(facet => {
+      Facet.Query.get(this.id).then(facet => {
         this.facet = facet
       })
     },

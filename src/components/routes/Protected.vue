@@ -31,8 +31,8 @@ export default {
   created () {
     this.$store.dispatch('api/getMetaInformation')
     // categories and annotations are used multiple times
-    Category.getAll()
-    AnnotationCategory.getAll()
+    Category.Query.getAll()
+    AnnotationCategory.Query.getAll()
   }
 }
 

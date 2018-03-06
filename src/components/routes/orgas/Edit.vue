@@ -138,7 +138,7 @@ export default {
     projectInitiatorChanged () {
       const parentOrga = this.item.project_initiators[0]
       if (parentOrga) {
-        Orga.get(parentOrga.id).then(orga => {
+        Orga.Query.get(parentOrga.id).then(orga => {
           this.item.parent_orga = orga
         })
       } else {

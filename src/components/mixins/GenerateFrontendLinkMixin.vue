@@ -8,7 +8,7 @@ export default {
      */
     frontendURL () {
       let url = '//'
-      const currentUser = User.getCurrentUser()
+      const currentUser = User.Query.getCurrentUser()
       if (currentUser && currentUser.area && currentUser.area.toLowerCase() !== 'dresden') {
         url += currentUser.area + '.'
       }

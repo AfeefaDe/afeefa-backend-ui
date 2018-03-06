@@ -12,10 +12,6 @@ class UsersResource extends Resource {
 }
 
 class Users extends Query {
-  getApi () {
-    return ['setCurrentUser', 'removeCurrentUser', 'get', 'getCurrentUser', 'save']
-  }
-
   getResource () {
     return new UsersResource()
   }

@@ -94,14 +94,14 @@ export default {
     }
   },
   created () {
-    Orga.getAll().then(orgas => {
+    Orga.Query.getAll().then(orgas => {
       orgas = orgas.map(orga => {
         return {title: orga.title, id: orga.id}
       })
       this.entrySelector.orgasSimplified = sortByTitle(orgas)
     })
 
-    Chapter.getAll().then(chapters => {
+    Chapter.Query.getAll().then(chapters => {
       this.chapterSelector.chapters = chapters
     })
   },

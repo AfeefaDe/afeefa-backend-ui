@@ -98,7 +98,7 @@ export default {
 
     loadChapter () {
       if (this.id) { // edit
-        Chapter.get(this.id).then(chapter => {
+        Chapter.Query.get(this.id).then(chapter => {
           if (chapter) {
             this.item = chapter.clone()
           } else {
@@ -134,7 +134,7 @@ export default {
           return
         }
 
-        Chapter.save(this.item).then(chapter => {
+        Chapter.Query.save(this.item).then(chapter => {
           this.$store.dispatch('messages/showAlert', {
             description: `Das Kapitel "${this.item.title}" wurde geändert.`
           })
@@ -149,7 +149,7 @@ export default {
         message: `Soll das Kaptiel "${this.item.title}" gelöscht werden?`
       }).then(result => {
         if (result === 'yes') {
-          Chapter.delete(this.item).then(result => {
+          Chapter.Query.delete(this.item).then(result => {
             if (result) {
               this.$store.dispatch('messages/showAlert', {
                 description: 'Das Kapitel wurde gelöscht.'

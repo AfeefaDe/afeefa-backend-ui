@@ -9,7 +9,7 @@ import Entry from './base/Entry'
 export default class Event extends Entry {
   static type = 'events'
 
-  static query = Events
+  static Query = Events
 
   static attributes () {
     return {

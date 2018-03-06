@@ -32,7 +32,7 @@ export default {
   },
 
   created () {
-    Facet.get(this.id).then(facet => {
+    Facet.Query.get(this.id).then(facet => {
       this.facet = facet.clone()
     })
   },
@@ -50,7 +50,7 @@ export default {
     },
 
     updateFacet () {
-      Facet.save(this.facet).then(facet => {
+      Facet.Query.save(this.facet).then(facet => {
         if (facet) {
           this.$store.dispatch('messages/showAlert', {
             description: 'Die Facette wurde geändert.'

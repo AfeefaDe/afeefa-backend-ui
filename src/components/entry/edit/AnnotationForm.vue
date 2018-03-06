@@ -41,7 +41,7 @@ export default {
   },
 
   created () {
-    AnnotationCategory.getAll().then(annotationCategories => {
+    AnnotationCategory.Query.getAll().then(annotationCategories => {
       this.annotationCategories = annotationCategories
     })
   },

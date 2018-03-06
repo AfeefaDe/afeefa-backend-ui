@@ -10,10 +10,6 @@ class CategoriesResource extends Resource {
 }
 
 class Categories extends Query {
-  getApi () {
-    return ['with', 'getAll']
-  }
-
   getResource () {
     return new CategoriesResource()
   }

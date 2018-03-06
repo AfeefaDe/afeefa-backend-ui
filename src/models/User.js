@@ -5,7 +5,7 @@ import Model from 'data/model/Model'
 export default class User extends Model {
   static type = 'users'
 
-  static query = Users
+  static Query = Users
 
   static attributes () {
     return {

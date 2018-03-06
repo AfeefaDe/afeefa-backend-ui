@@ -8,7 +8,7 @@ import Relation from 'data/model/Relation'
 export default class Category extends Model {
   static type = 'categories'
 
-  static query = Categories
+  static Query = Categories
 
   static attributes () {
     return {

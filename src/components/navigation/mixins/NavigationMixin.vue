@@ -10,7 +10,7 @@ export default {
     }
   },
   created () {
-    this.currentUser = User.getCurrentUser()
+    this.currentUser = User.Query.getCurrentUser()
   },
   computed: {
     ...mapState({

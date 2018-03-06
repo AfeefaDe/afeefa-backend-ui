@@ -26,10 +26,6 @@ class SearchResource extends Resource {
 }
 
 class Search extends Query {
-  getApi () {
-    return ['find']
-  }
-
   getResource () {
     return new SearchResource()
   }

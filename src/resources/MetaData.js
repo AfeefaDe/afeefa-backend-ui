@@ -15,10 +15,6 @@ class MetaDataResource extends Resource {
 }
 
 class MetaData extends Query {
-  getApi () {
-    return ['get']
-  }
-
   getResource () {
     return new MetaDataResource()
   }

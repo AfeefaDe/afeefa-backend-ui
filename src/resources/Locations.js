@@ -10,10 +10,6 @@ class LocationsResource extends Resource {
 }
 
 class Locations extends Query {
-  getApi () {
-    return ['getAll']
-  }
-
   getResource () {
     return new LocationsResource()
   }

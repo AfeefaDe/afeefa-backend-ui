@@ -33,7 +33,7 @@ export default {
   },
 
   created () {
-    Orga.getAll().then(actors => {
+    Orga.Query.getAll().then(actors => {
       this.selectableActors = this.sortSelectableActors(actors)
     })
   },

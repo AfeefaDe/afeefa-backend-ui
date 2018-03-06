@@ -15,7 +15,7 @@ import OrgaType from './OrgaType'
 export default class Orga extends Entry {
   static type = 'orgas'
 
-  static query = Orgas
+  static Query = Orgas
 
   static attributes () {
     return {

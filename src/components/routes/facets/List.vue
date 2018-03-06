@@ -48,13 +48,13 @@ export default {
 
   methods: {
     loadFacets () {
-      Facet.getAll().then(facets => {
+      Facet.Query.getAll().then(facets => {
         this.facets = facets
       })
     },
 
     addFacet () {
-      Facet.save(this.newFacet).then(facet => {
+      Facet.Query.save(this.newFacet).then(facet => {
         if (facet) {
           this.$store.dispatch('messages/showAlert', {
             description: 'Die Facette wurde hinzugefügt'
@@ -71,7 +71,7 @@ export default {
         message: 'Soll die Facette gelöscht werden?\n\nAlle Akteure verlieren die Facette.'
       }).then(result => {
         if (result === 'yes') {
-          Facet.delete(facet).then(deleted => {
+          Facet.Query.delete(facet).then(deleted => {
             if (deleted) {
               this.$store.dispatch('messages/showAlert', {
                 description: 'Die Facette wurde gelöscht'

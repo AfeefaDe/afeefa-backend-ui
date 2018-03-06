@@ -5,7 +5,7 @@ import Model from 'data/model/Model'
 export default class AnnotationCategory extends Model {
   static type = 'annotationCategories'
 
-  static query = AnnotationCategories
+  static Query = AnnotationCategories
 
   static attributes () {
     return {

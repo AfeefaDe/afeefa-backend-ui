@@ -57,7 +57,7 @@ export default {
           const attributes = {
             active: !this.entry.active
           }
-          this.Model.updateAttributes(this.entry, attributes).then(attributes => {
+          this.Model.Query.updateAttributes(this.entry, attributes).then(attributes => {
             this.currentlyPublishing = false
             if (attributes) {
               this.$store.dispatch('messages/showAlert', {

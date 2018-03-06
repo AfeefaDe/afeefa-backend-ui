@@ -185,7 +185,7 @@ export default {
   },
 
   created () {
-    Location.getAll().then(locations => {
+    Location.Query.getAll().then(locations => {
       this.locations = sortByTitle(locations, 'ownerTitle')
     })
   },

@@ -10,10 +10,6 @@ class AnnotationCategoriesResource extends Resource {
 }
 
 class AnnotationCategories extends Query {
-  getApi () {
-    return ['getAll']
-  }
-
   getResource () {
     return new AnnotationCategoriesResource()
   }

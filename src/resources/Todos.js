@@ -26,10 +26,6 @@ class TodosResource extends Resource {
 }
 
 class Todos extends Query {
-  getApi () {
-    return ['getAll']
-  }
-
   getResource () {
     return new TodosResource()
   }

@@ -42,7 +42,7 @@ export default {
   },
 
   created () {
-    this.Model.get(this.id).then(owner => {
+    this.Model.Query.get(this.id).then(owner => {
       if (owner) {
         this.owner = owner
         if (this.contactId) {

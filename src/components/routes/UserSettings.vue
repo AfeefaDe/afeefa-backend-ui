@@ -95,7 +95,7 @@ export default {
 
   methods: {
     initCurrentUser () {
-      this.user = User.getCurrentUser().clone()
+      this.user = User.Query.getCurrentUser().clone()
     },
 
     $canLeaveRoute () {
@@ -123,7 +123,7 @@ export default {
           return
         }
 
-        User.save(this.user).then(() => {
+        User.Query.save(this.user).then(() => {
           const pwChanged = this.passwordConfirm ? 'und das Passwort ' : ''
           this.$store.dispatch('messages/showAlert', {
             description: `Die Nutzerdaten ${pwChanged}wurden geändert.`

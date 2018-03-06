@@ -9,7 +9,7 @@ import FacetItem from './FacetItem'
 export default class Facet extends Model {
   static type = 'facets'
 
-  static query = Facets
+  static Query = Facets
 
   static attributes () {
     return {

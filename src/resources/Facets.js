@@ -19,10 +19,6 @@ class FacetsResource extends Resource {
 }
 
 class Facets extends Query {
-  getApi () {
-    return ['getAll', 'get', 'save', 'delete']
-  }
-
   getResource () {
     return new FacetsResource()
   }

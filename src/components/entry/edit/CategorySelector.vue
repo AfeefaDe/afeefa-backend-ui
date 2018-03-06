@@ -47,7 +47,7 @@ export default {
   },
 
   created () {
-    Category.with('sub_categories').getAll().then(categories => {
+    Category.Query.with('sub_categories').getAll().then(categories => {
       this.categories = categories.filter(
         c => c.parent_category === null
       )

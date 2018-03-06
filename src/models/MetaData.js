@@ -6,7 +6,7 @@ import Model from 'data/model/Model'
 export default class MetaData extends Model {
   static type = 'meta'
 
-  static query = MetaDataResource
+  static Query = MetaDataResource
 
   static attributes () {
     return {

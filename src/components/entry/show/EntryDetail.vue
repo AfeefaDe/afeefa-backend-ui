@@ -248,9 +248,9 @@ export default {
   },
 
   created () {
-    this.currentUser = User.getCurrentUser()
+    this.currentUser = User.Query.getCurrentUser()
 
-    Facet.getAll().then(facets => {
+    Facet.Query.getAll().then(facets => {
       this.facets = facets
     })
   },

@@ -108,11 +108,11 @@ export default {
       this.todos = todos
     })
 
-    Orga.getAll().then(orgas => {
+    Orga.Query.getAll().then(orgas => {
       this.orgas = orgas
     })
 
-    Event.getAll().then(events => {
+    Event.Query.getAll().then(events => {
       this.events = events
     })
   },
