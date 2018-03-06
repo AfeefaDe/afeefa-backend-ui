@@ -1,6 +1,5 @@
 import ContactPerson from '@/models/ContactPerson'
 import Location from '@/models/Location'
-import resourceCache from 'data/cache/ResourceCache'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
@@ -47,15 +46,6 @@ export default class Contact extends Model {
         Model: ContactPerson
       }
     }
-  }
-
-  fetchLocation (id) {
-    return this.$rels.location.get(id)
-  }
-
-  fetchContactPersons () {
-    const contactPersons = resourceCache.getList('contact_persons', JSON.stringify(this.$rels.contact_persons.listParams()))
-    return Promise.resolve(contactPersons)
   }
 
   serialize () {

@@ -7,7 +7,6 @@ import CategoryRelation from '@/resources/relations/CategoryRelation'
 import Contacts from '@/resources/relations/ContactsRelation'
 import EntryFacetItems from '@/resources/relations/EntryFacetItems'
 import LoadingState from 'data/api/LoadingState'
-import LoadingStrategy from 'data/api/LoadingStrategy'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
@@ -114,40 +113,8 @@ export default class Entry extends Model {
     return LoadingState.NOT_LOADED
   }
 
-  fetchParentOrga (id, clone, strategy = LoadingStrategy.LOAD_IF_NOT_CACHED) {
-    return this.$rels.parent_orga.get(id, strategy)
-  }
-
-  fetchCategory (id) {
-    return this.$rels.category.get(id)
-  }
-
-  fetchSubCategory (id) {
-    return this.$rels.sub_category.get(id)
-  }
-
-  fetchContacts () {
-    return this.$rels.contacts.getAll()
-  }
-
   refetchContacts () {
     this.refetchRelation('contacts')
-  }
-
-  fetchAnnotations () {
-    return this.$rels.annotations.getAll()
-  }
-
-  fetchCreator (id) {
-    return this.$rels.creator.get(id)
-  }
-
-  fetchLastEditor (id) {
-    return this.$rels.last_editor.get(id)
-  }
-
-  fetchFacetItems () {
-    return this.$rels.facet_items.getAll()
   }
 
   serialize () {

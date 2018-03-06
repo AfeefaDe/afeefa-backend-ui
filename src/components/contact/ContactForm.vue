@@ -55,7 +55,8 @@
 
     <h2>Kontaktperson</h2>
 
-    <div v-for="person in contact.contact_persons" :key="person.id">
+    <!-- TODO new persons do not have an id and result in 'Duplicate keys detected: ''. This may cause an update error.' -->
+    <div v-for="person in contact.contact_persons" :key="person.id"> // wrong
       <h3>{{ person.role }}</h3>
 
       <a href="" @click.prevent="removeContactPerson(person)">Person löschen</a>

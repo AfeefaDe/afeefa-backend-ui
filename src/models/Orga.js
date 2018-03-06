@@ -2,6 +2,8 @@ import Event from '@/models/Event'
 import ResourceItem from '@/models/ResourceItem'
 import Orgas from '@/resources/Orgas'
 import ActorRelationsRelation from '@/resources/relations/ActorRelations'
+import OrgaPastEventsRelation from '@/resources/relations/OrgaPastEventsRelation'
+import OrgaUpcomingEventsRelation from '@/resources/relations/OrgaUpcomingEventsRelation'
 import ParentOrgaRelation from '@/resources/relations/ParentOrgaRelation'
 import DataTypes from 'data/model/DataTypes'
 import Relation from 'data/model/Relation'
@@ -65,37 +67,24 @@ export default class Orga extends Entry {
 
       past_events: {
         type: Relation.HAS_MANY,
-        Model: Event
+        Model: Event,
+        Query: OrgaPastEventsRelation
       },
 
       upcoming_events: {
         type: Relation.HAS_MANY,
-        Model: Event
+        Model: Event,
+        Query: OrgaUpcomingEventsRelation
       }
     }
   }
 
-  fetchPastEvents () {
-    return this.$rels.past_events.getAll({'filter[date]': 'past'})
-  }
-
-  fetchUpcomingEvents () {
-    return this.$rels.past_events.getAll({'filter[date]': 'upcoming'})
-  }
-
-  fetchActorRelations (id) {
-    return this.$rels.actor_relations.get(id).then(actorRelations => {
-      if (actorRelations) {
-        ActorRelations.RELATIONS.forEach(relationName => {
-          this[relationName] = actorRelations[relationName]
-        })
-      }
-      return actorRelations
-    })
-  }
-
-  fetchResourceItems () {
-    return this.$rels.resource_items.getAll()
+  onActorRelations (actorRelations) {
+    if (actorRelations) {
+      ActorRelations.RELATIONS.forEach(relationName => {
+        this[relationName] = actorRelations[relationName]
+      })
+    }
   }
 
   normalizeJson (json) {

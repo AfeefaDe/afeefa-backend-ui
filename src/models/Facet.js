@@ -28,10 +28,6 @@ export default class Facet extends Model {
     }
   }
 
-  fetchFacetItems () {
-    return this.$rels.facet_items.getAll()
-  }
-
   serialize () {
     return {
       title: this.title

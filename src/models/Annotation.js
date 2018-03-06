@@ -23,10 +23,6 @@ export default class Annotation extends Model {
     }
   }
 
-  fetchAnnotationCategory (id) {
-    return this.$rels.annotationCategory.get(id)
-  }
-
   normalizeJson (json) {
     let {detail} = json.attributes
     return {
