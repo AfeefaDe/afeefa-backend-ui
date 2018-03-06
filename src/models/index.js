@@ -1,3 +1,5 @@
+import Model from 'uidata/model/Model'
+
 import './ActorRelations'
 import './Annotation'
 import './AnnotationCategory'
@@ -13,3 +15,5 @@ import './Orga'
 import './ResourceItem'
 import './User'
 import './MetaData'
+
+Model.initializeAll()
