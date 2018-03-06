@@ -6,7 +6,7 @@ import Relation from 'data/model/Relation'
 
 import FacetItem from './FacetItem'
 
-export default class Facet extends Model {
+class Facet extends Model {
   static type = 'facets'
 
   static Query = Facets
@@ -38,3 +38,5 @@ export default class Facet extends Model {
     return super.info + ` title="${this.title}"`
   }
 }
+
+export default Model.register(Facet)

@@ -2,7 +2,7 @@ import Locations from '@/resources/Locations'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 
-export default class Location extends Model {
+class Location extends Model {
   static type = 'locations'
 
   static Query = Locations
@@ -65,3 +65,5 @@ export default class Location extends Model {
     return super.info + ` title="${this.title}" street="${this.street}"`
   }
 }
+
+export default Model.register(Location)

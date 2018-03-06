@@ -23,7 +23,7 @@ export default {
     loadItems () {
       const queryParams = this.getQueryParams()
       const currentRouteQuery = this.$route.query
-      this.Resource.getAll(queryParams).then(entries => {
+      this.Resource.Query.getAll(queryParams).then(entries => {
         // protect loading items into already left view
         if (currentRouteQuery === this.$route.query) {
           this.items = entries

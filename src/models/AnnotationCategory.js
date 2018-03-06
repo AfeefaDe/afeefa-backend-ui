@@ -2,7 +2,7 @@ import AnnotationCategories from '@/resources/AnnotationCategories'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 
-export default class AnnotationCategory extends Model {
+class AnnotationCategory extends Model {
   static type = 'annotationCategories'
 
   static Query = AnnotationCategories
@@ -22,3 +22,5 @@ export default class AnnotationCategory extends Model {
     return super.info + ` title="${this.title}"`
   }
 }
+
+export default Model.register(AnnotationCategory)

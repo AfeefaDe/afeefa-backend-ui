@@ -3,7 +3,7 @@ import LoadingState from 'data/api/LoadingState'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 
-export default class Chapter extends Model {
+class Chapter extends Model {
   static type = 'chapters'
 
   static Query = Chapters
@@ -40,3 +40,5 @@ export default class Chapter extends Model {
     return data
   }
 }
+
+export default Model.register(Chapter)

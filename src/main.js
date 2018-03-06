@@ -12,8 +12,6 @@ import './services/leaflet'
 
 import './helpers/directives'
 
-import './models/config'
-
 // import materialize js
 import 'materialize-css/dist/js/materialize.min.js'
 // import vue multiselect style

@@ -1,7 +1,7 @@
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 
-export default class ResourceItem extends Model {
+class ResourceItem extends Model {
   static type = 'resource_items'
 
   static attributes () {
@@ -35,3 +35,5 @@ export default class ResourceItem extends Model {
     return data
   }
 }
+
+export default Model.register(ResourceItem)

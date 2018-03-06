@@ -5,7 +5,7 @@ import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
 
-export default class Category extends Model {
+class Category extends Model {
   static type = 'categories'
 
   static Query = Categories
@@ -37,3 +37,5 @@ export default class Category extends Model {
     return super.info + ` subCat="${subCat}" title="${this.title}"`
   }
 }
+
+export default Model.register(Category)

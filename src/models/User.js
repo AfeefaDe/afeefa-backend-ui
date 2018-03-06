@@ -2,7 +2,7 @@ import Users from '@/resources/Users'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 
-export default class User extends Model {
+class User extends Model {
   static type = 'users'
 
   static Query = Users
@@ -49,3 +49,5 @@ export default class User extends Model {
     return data
   }
 }
+
+export default Model.register(User)

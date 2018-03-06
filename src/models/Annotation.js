@@ -3,7 +3,7 @@ import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
 
-export default class Annotation extends Model {
+class Annotation extends Model {
   static type = 'annotations'
 
   static attributes () {
@@ -58,3 +58,5 @@ export default class Annotation extends Model {
     return super.info + ` category="${this.$rels.annotationCategory.id}"`
   }
 }
+
+export default Model.register(Annotation)

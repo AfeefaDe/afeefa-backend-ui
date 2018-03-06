@@ -6,13 +6,14 @@ import OrgaPastEventsRelation from '@/resources/relations/OrgaPastEventsRelation
 import OrgaUpcomingEventsRelation from '@/resources/relations/OrgaUpcomingEventsRelation'
 import ParentOrgaRelation from '@/resources/relations/ParentOrgaRelation'
 import DataTypes from 'data/model/DataTypes'
+import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
 
 import ActorRelations from './ActorRelations'
 import Entry from './base/Entry'
 import OrgaType from './OrgaType'
 
-export default class Orga extends Entry {
+class Orga extends Entry {
   static type = 'orgas'
 
   static Query = Orgas
@@ -130,3 +131,5 @@ export default class Orga extends Entry {
     return data
   }
 }
+
+export default Model.register(Orga)

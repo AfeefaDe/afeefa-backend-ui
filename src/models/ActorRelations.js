@@ -4,7 +4,7 @@ import LoadingState from 'data/api/LoadingState'
 import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
 
-export default class ActorRelations extends Model {
+class ActorRelations extends Model {
   static RELATIONS = ['project_initiators', 'projects', 'networks', 'network_members', 'partners']
 
   static type = 'actor_relations'
@@ -35,3 +35,5 @@ export default class ActorRelations extends Model {
     }
   }
 }
+
+export default Model.register(ActorRelations)

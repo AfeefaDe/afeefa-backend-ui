@@ -1,12 +1,13 @@
 import Orga from '@/models/Orga'
 import Events from '@/resources/Events'
 import DataTypes from 'data/model/DataTypes'
+import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
 import moment from 'moment'
 
 import Entry from './base/Entry'
 
-export default class Event extends Entry {
+class Event extends Entry {
   static type = 'events'
 
   static Query = Events
@@ -86,3 +87,5 @@ export default class Event extends Entry {
     return false
   }
 }
+
+export default Model.register(Event)

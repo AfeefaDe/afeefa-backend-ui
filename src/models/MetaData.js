@@ -3,7 +3,7 @@ import LoadingState from 'data/api/LoadingState'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 
-export default class MetaData extends Model {
+class MetaData extends Model {
   static type = 'meta'
 
   static Query = MetaDataResource
@@ -29,3 +29,5 @@ export default class MetaData extends Model {
     }
   }
 }
+
+export default Model.register(MetaData)

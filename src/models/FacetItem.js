@@ -1,7 +1,7 @@
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 
-export default class FacetItem extends Model {
+class FacetItem extends Model {
   static type = 'facet_items'
 
   static attributes () {
@@ -22,3 +22,5 @@ export default class FacetItem extends Model {
     return super.info + ` title="${this.title}"`
   }
 }
+
+export default Model.register(FacetItem)

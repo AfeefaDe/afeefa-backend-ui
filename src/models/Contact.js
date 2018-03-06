@@ -4,7 +4,7 @@ import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 import Relation from 'data/model/Relation'
 
-export default class Contact extends Model {
+class Contact extends Model {
   static type = 'contacts'
 
   static attributes () {
@@ -89,3 +89,5 @@ export default class Contact extends Model {
     return super.info + ` title="${this.title}"` + `\n\t${location}`
   }
 }
+
+export default Model.register(Contact)

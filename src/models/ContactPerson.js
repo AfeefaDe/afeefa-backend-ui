@@ -1,7 +1,7 @@
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
 
-export default class ContactPerson extends Model {
+class ContactPerson extends Model {
   static type = 'contact_persons'
 
   static attributes () {
@@ -27,3 +27,5 @@ export default class ContactPerson extends Model {
     return !this.name && !this.role && !this.mail && !this.phone
   }
 }
+
+export default Model.register(ContactPerson)
