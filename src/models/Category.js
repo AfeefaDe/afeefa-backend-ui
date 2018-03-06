@@ -8,7 +8,7 @@ import Relation from 'uidata/model/Relation'
 class Category extends Model {
   static type = 'categories'
 
-  static Query = Categories
+  static Resource = new Categories(Category)
 
   static attributes () {
     return {

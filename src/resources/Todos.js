@@ -4,9 +4,7 @@ import Query from 'uidata/resource/Query'
 import Resource from 'uidata/resource/Resource'
 
 class TodosResource extends Resource {
-  init () {
-    this.url = 'todos'
-  }
+  url = 'todos'
 
   getListType (json) {
     return 'todos'

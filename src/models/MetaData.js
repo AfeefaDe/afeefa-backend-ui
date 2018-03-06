@@ -6,7 +6,7 @@ import Model from 'uidata/model/Model'
 class MetaData extends Model {
   static type = 'meta'
 
-  static Query = MetaDataResource
+  static Resource = new MetaDataResource(MetaData)
 
   static attributes () {
     return {

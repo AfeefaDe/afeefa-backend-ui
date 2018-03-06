@@ -16,7 +16,7 @@ import OrgaType from './OrgaType'
 class Orga extends Entry {
   static type = 'orgas'
 
-  static Query = Orgas
+  static Resource = new Orgas(Orga)
 
   static attributes () {
     return {

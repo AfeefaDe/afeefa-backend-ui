@@ -1,13 +1,7 @@
-import Event from '@/models/Event'
-import Query from 'uidata/resource/Query'
-
 import EntriesResource from './base/EntriesResource'
 
-class EventsResource extends EntriesResource {
-  init () {
-    this.url = 'events{/id}'
-    this.Model = Event
-  }
+export default class EventsResource extends EntriesResource {
+  url = 'events{/id}'
 
   itemAdded (event) {
     super.itemAdded(event)
@@ -36,11 +30,3 @@ class EventsResource extends EntriesResource {
     }
   }
 }
-
-class Events extends Query {
-  getResource () {
-    return new EventsResource()
-  }
-}
-
-export default new Events()

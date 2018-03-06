@@ -4,9 +4,7 @@ import Query from 'uidata/resource/Query'
 import Resource from 'uidata/resource/Resource'
 
 class SearchResource extends Resource {
-  init () {
-    this.url = 'entries'
-  }
+  url = 'entries'
 
   getListType (json) {
     return 'search'

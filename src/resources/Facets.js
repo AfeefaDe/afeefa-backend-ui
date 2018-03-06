@@ -1,12 +1,7 @@
-import Facet from '@/models/Facet'
-import Query from 'uidata/resource/Query'
 import Resource from 'uidata/resource/Resource'
 
-class FacetsResource extends Resource {
-  init () {
-    this.url = 'facets{/id}'
-    this.Model = Facet
-  }
+export default class FacetsResource extends Resource {
+  url = 'facets{/id}'
 
   itemAdded () {
     this.cachePurgeList('facets')
@@ -18,10 +13,3 @@ class FacetsResource extends Resource {
   }
 }
 
-class Facets extends Query {
-  getResource () {
-    return new FacetsResource()
-  }
-}
-
-export default new Facets()

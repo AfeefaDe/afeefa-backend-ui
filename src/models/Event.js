@@ -10,7 +10,7 @@ import Entry from './base/Entry'
 class Event extends Entry {
   static type = 'events'
 
-  static Query = Events
+  static Resource = new Events(Event)
 
   static attributes () {
     return {

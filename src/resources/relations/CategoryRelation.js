@@ -1,6 +1,6 @@
+import Category from '@/models/Category'
 import RelationQuery from 'uidata/resource/RelationQuery'
 import RelationResource from 'uidata/resource/RelationResource'
-import Categories from '../Categories'
 
 class CategoriesResource extends RelationResource {
   init () {
@@ -14,7 +14,7 @@ export default class CategoryRelation extends RelationQuery {
   }
 
   get (id) {
-    return Categories.getAll().then(() => {
+    return Category.Query.getAll().then(() => {
       return super.get(id)
     })
   }

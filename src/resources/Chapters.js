@@ -1,12 +1,7 @@
-import Chapter from '@/models/Chapter'
-import Query from 'uidata/resource/Query'
 import Resource from 'uidata/resource/Resource'
 
-class ChaptersResource extends Resource {
-  init () {
-    this.url = 'chapters{/id}'
-    this.Model = Chapter
-  }
+export default class ChaptersResource extends Resource {
+  url = 'chapters{/id}'
 
   itemAdded () {
     this.cachePurgeList('chapters')
@@ -17,11 +12,3 @@ class ChaptersResource extends Resource {
     this.cachePurgeList('chapters')
   }
 }
-
-class Chapters extends Query {
-  getResource () {
-    return new ChaptersResource()
-  }
-}
-
-export default new Chapters()

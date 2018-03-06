@@ -9,7 +9,7 @@ import FacetItem from './FacetItem'
 class Facet extends Model {
   static type = 'facets'
 
-  static Query = Facets
+  static Resource = new Facets(Facet)
 
   static attributes () {
     return {

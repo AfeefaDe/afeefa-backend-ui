@@ -6,7 +6,7 @@ import Model from 'uidata/model/Model'
 class Chapter extends Model {
   static type = 'chapters'
 
-  static Query = Chapters
+  static Resource = new Chapters(Chapter)
 
   static attributes () {
     return {
