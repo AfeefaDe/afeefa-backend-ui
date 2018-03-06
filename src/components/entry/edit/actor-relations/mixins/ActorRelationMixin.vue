@@ -44,7 +44,7 @@ export default {
     },
 
     addChild (child) {
-      return this.actor.actor_relations.$rels[this.apiRelationName].attach(child).then(result => {
+      return this.actor.actor_relations.$rels[this.apiRelationName].Query.attach(child).then(result => {
         if (result) {
           this.actor[this.relationName].push(child) // add child to our cloned actor to edit to show up instantly
           this.$store.dispatch('messages/showAlert', {
@@ -56,7 +56,7 @@ export default {
     },
 
     removeChild (child) {
-      return this.actor.actor_relations.$rels[this.apiRelationName].detach(child).then(result => {
+      return this.actor.actor_relations.$rels[this.apiRelationName].Query.detach(child).then(result => {
         if (result) {
           this.actor[this.relationName] = this.actor[this.relationName].filter(n => n.id !== child.id)
           this.$store.dispatch('messages/showAlert', {
@@ -71,7 +71,7 @@ export default {
       // we might not have the parent's relations initialized, so we just create a runtime model
       const actorRelations = new ActorRelations()
       actorRelations.id = parent.id
-      return actorRelations.$rels[this.apiRelationName].attach(this.actor).then(result => {
+      return actorRelations.$rels[this.apiRelationName].Query.attach(this.actor).then(result => {
         if (result) {
           this.actor[this.relationName].push(parent)
           this.$store.dispatch('messages/showAlert', {
@@ -86,7 +86,7 @@ export default {
       // we might not have the parent's relations initialized, so we just create a runtime model
       const actorRelations = new ActorRelations()
       actorRelations.id = parent.id
-      return actorRelations.$rels[this.apiRelationName].detach(this.actor).then(result => {
+      return actorRelations.$rels[this.apiRelationName].Query.detach(this.actor).then(result => {
         if (result) {
           this.actor[this.relationName] = this.actor[this.relationName].filter(n => n.id !== parent.id)
           this.$store.dispatch('messages/showAlert', {

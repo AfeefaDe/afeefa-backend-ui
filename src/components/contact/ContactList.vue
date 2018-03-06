@@ -128,7 +128,7 @@ export default {
         message: 'Soll der Kontakt gelöscht werden?'
       }).then(result => {
         if (result === 'yes') {
-          this.item.$rels.contacts.delete(contact).then(result => {
+          this.item.$rels.contacts.Query.delete(contact).then(result => {
             this.item.refetchContacts()
             if (result) {
               this.$store.dispatch('messages/showAlert', {

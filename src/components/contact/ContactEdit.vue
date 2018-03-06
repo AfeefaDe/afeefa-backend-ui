@@ -46,10 +46,8 @@ export default {
       if (owner) {
         this.owner = owner
         if (this.contactId) {
-          owner.$rels.contacts.getAll().then(contacts => {
-            const origContact = contacts.find(c => c.id === this.contactId)
-            this.contact = origContact.clone()
-          })
+          const origContact = owner.contacts.find(c => c.id === this.contactId)
+          this.contact = origContact.clone()
         } else {
           this.contact = new Contact().clone()
         }
@@ -68,7 +66,7 @@ export default {
     },
 
     saveContact () {
-      this.owner.$rels.contacts.save(this.contact).then(contact => {
+      this.owner.$rels.contacts.Query.save(this.contact).then(contact => {
         if (contact) {
           this.$store.dispatch('messages/showAlert', {
             description: 'Kontakt erfolgreich gespeichert.'

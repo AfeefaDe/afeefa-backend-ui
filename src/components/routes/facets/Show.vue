@@ -70,7 +70,7 @@ export default {
     },
 
     addFacetItem () {
-      this.facet.$rels.facet_items.save(this.newFacetItem).then(facetItem => {
+      this.facet.$rels.facet_items.Query.save(this.newFacetItem).then(facetItem => {
         if (facetItem) {
           this.$store.dispatch('messages/showAlert', {
             description: 'Das Facettenitem wurde hinzugefügt'
@@ -87,7 +87,7 @@ export default {
         message: 'Soll das Facettenitem gelöscht werden?\n\nAlle Akteure verlieren dieses Item.'
       }).then(result => {
         if (result === 'yes') {
-          this.facet.$rels.facet_items.delete(facetItem).then(deleted => {
+          this.facet.$rels.facet_items.Query.delete(facetItem).then(deleted => {
             if (deleted) {
               this.$store.dispatch('messages/showAlert', {
                 description: 'Das Facettenitem wurde gelöscht'

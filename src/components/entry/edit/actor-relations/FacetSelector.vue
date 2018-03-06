@@ -43,7 +43,7 @@ export default {
 
   methods: {
     addFacetItem (facetItem) {
-      this.owner.$rels.facet_items.attach(facetItem).then(result => {
+      this.owner.$rels.facet_items.Query.attach(facetItem).then(result => {
         if (result) {
           this.owner.facet_items.push(facetItem)
           this.$store.dispatch('messages/showAlert', {
@@ -54,7 +54,7 @@ export default {
     },
 
     removeFacetItem (facetItem) {
-      this.owner.$rels.facet_items.detach(facetItem).then(result => {
+      this.owner.$rels.facet_items.Query.detach(facetItem).then(result => {
         if (result) {
           this.owner.facet_items = this.owner.facet_items.filter(n => n.id !== facetItem.id)
           this.$store.dispatch('messages/showAlert', {
