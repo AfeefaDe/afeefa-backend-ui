@@ -9,6 +9,12 @@ class UsersResource extends Resource {
     this.url = 'users{/id}'
     this.Model = User
   }
+
+  transformJsonBeforeSave (json) {
+    return {
+      data: json
+    }
+  }
 }
 
 class Users extends Query {

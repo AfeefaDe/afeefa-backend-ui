@@ -76,10 +76,4 @@ export default class ContactsRelation extends RelationQuery {
   getResource () {
     return new ContactsResource(this.relation)
   }
-
-  getSaveOptions () {
-    return {
-      wrapInDataProperty: false
-    }
-  }
 }

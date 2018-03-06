@@ -21,16 +21,14 @@ class ResourceItem extends Model {
   serialize () {
     let data = {
       type: this.type,
-      id: this.id,
       attributes: {
         title: this.title,
         description: this.description,
         tags: this.category
       }
     }
-    // in case we are creating a new resource strip away the id attribute
-    if (this.id === null) {
-      delete data['id']
+    if (this.id) {
+      data['id'] = this.id
     }
     return data
   }

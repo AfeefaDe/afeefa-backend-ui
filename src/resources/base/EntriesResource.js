@@ -1,6 +1,12 @@
 import Resource from 'uidata/resource/Resource'
 
 export default class EntriesResource extends Resource {
+  transformJsonBeforeSave (json) {
+    return {
+      data: json
+    }
+  }
+
   itemAdded (entry) {
     // new entry added to lists
     this.cachePurgeList(this.getListType(), '{}')

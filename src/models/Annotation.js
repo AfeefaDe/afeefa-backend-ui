@@ -38,18 +38,15 @@ class Annotation extends Model {
   }
 
   serialize () {
-    // always send full annotation cause the title could have changed
     let data = {
       type: this.type,
-      id: this.id,
       attributes: {
         detail: this.detail,
         annotation_category_id: this.annotationCategory.id
       }
     }
-    // in case we are creating a new annotation strip away the id attribute
-    if (this.id === null) {
-      delete data['id']
+    if (this.id) {
+      data['id'] = this.id
     }
     return data
   }

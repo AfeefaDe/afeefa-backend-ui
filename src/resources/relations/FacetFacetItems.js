@@ -1,12 +1,6 @@
 import RelationQuery from 'uidata/resource/RelationQuery'
 
 export default class FacetFacetItems extends RelationQuery {
-  getSaveOptions () {
-    return {
-      wrapInDataProperty: false
-    }
-  }
-
   // todo, itemDeleted
   // -  itemDeleted (facetItem) {
   //   -    // order reload of the facets facet_items by the next get() call
