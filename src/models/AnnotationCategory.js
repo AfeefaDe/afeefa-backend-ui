@@ -5,7 +5,7 @@ import Model from 'uidata/model/Model'
 class AnnotationCategory extends Model {
   static type = 'annotationCategories'
 
-  static Query = AnnotationCategories
+  static Resource = new AnnotationCategories(AnnotationCategory)
 
   static attributes () {
     return {

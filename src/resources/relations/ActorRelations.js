@@ -16,8 +16,4 @@ export default class ActorRelations extends RelationQuery {
   getResource () {
     return new ActorRelationsResource(this.relation)
   }
-
-  get (id) {
-    return super.get(id)
-  }
 }
