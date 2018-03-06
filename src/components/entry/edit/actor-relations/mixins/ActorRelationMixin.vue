@@ -1,5 +1,6 @@
 <script>
 import Orga from '@/models/Orga'
+import ActorRelations from '@/models/ActorRelations'
 import sortByTitle from '@/helpers/sort-by-title'
 
 export default {
@@ -43,9 +44,9 @@ export default {
     },
 
     addChild (child) {
-      this.relation.joinActorRelation(this.apiRelationName, this.actor, child).then(result => {
+      return this.actor.actor_relations.$rels[this.apiRelationName].attach(child).then(result => {
         if (result) {
-          this.actor[this.relationName].push(child)
+          this.actor[this.relationName].push(child) // add child to our cloned actor to edit to show up instantly
           this.$store.dispatch('messages/showAlert', {
             description: this.messages.addChildSuccess(child)
           })
@@ -55,7 +56,7 @@ export default {
     },
 
     removeChild (child) {
-      this.relation.leaveActorRelation(this.apiRelationName, this.actor, child).then(result => {
+      return this.actor.actor_relations.$rels[this.apiRelationName].detach(child).then(result => {
         if (result) {
           this.actor[this.relationName] = this.actor[this.relationName].filter(n => n.id !== child.id)
           this.$store.dispatch('messages/showAlert', {
@@ -67,7 +68,10 @@ export default {
     },
 
     addParent (parent) {
-      this.relation.joinActorRelation(this.apiRelationName, parent, this.actor).then(result => {
+      // we might not have the parent's relations initialized, so we just create a runtime model
+      const actorRelations = new ActorRelations()
+      actorRelations.id = parent.id
+      return actorRelations.$rels[this.apiRelationName].attach(this.actor).then(result => {
         if (result) {
           this.actor[this.relationName].push(parent)
           this.$store.dispatch('messages/showAlert', {
@@ -79,7 +83,10 @@ export default {
     },
 
     removeParent (parent) {
-      this.relation.leaveActorRelation(this.apiRelationName, parent, this.actor).then(result => {
+      // we might not have the parent's relations initialized, so we just create a runtime model
+      const actorRelations = new ActorRelations()
+      actorRelations.id = parent.id
+      return actorRelations.$rels[this.apiRelationName].detach(this.actor).then(result => {
         if (result) {
           this.actor[this.relationName] = this.actor[this.relationName].filter(n => n.id !== parent.id)
           this.$store.dispatch('messages/showAlert', {

@@ -8,7 +8,7 @@ class CategoriesResource extends RelationResource {
   }
 }
 
-export default class CategoriesRelation extends RelationQuery {
+export default class CategoryRelation extends RelationQuery {
   getApi () {
     return ['get']
   }

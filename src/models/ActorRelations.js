@@ -1,4 +1,5 @@
 import Orga from '@/models/Orga'
+import ActorRelationsRelation from '@/resources/relations/ActorRelationsRelation'
 import LoadingState from 'data/api/LoadingState'
 import resourceCache from 'data/cache/ResourceCache'
 import toCamelCase from 'data/filter/camel-case'
@@ -15,7 +16,8 @@ export default class ActorRelations extends Model {
     ActorRelations.RELATIONS.forEach(relationName => {
       relations[relationName] = {
         type: Relation.HAS_MANY,
-        Model: Orga
+        Model: Orga,
+        Query: ActorRelationsRelation
       }
 
       // make a fetch function foreach relation

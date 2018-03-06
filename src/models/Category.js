@@ -1,5 +1,5 @@
 import Categories from '@/resources/Categories'
-import CategoriesRelation from '@/resources/relations/CategoriesRelation'
+import CategoryRelation from '@/resources/relations/CategoryRelation'
 import SubCategoriesRelation from '@/resources/relations/SubCategoriesRelation'
 import DataTypes from 'data/model/DataTypes'
 import Model from 'data/model/Model'
@@ -21,7 +21,7 @@ export default class Category extends Model {
       parent_category: {
         type: Relation.HAS_ONE,
         Model: Category,
-        Query: CategoriesRelation
+        Query: CategoryRelation
       },
 
       sub_categories: {

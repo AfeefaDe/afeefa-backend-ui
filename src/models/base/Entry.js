@@ -3,7 +3,7 @@ import Category from '@/models/Category'
 import Contact from '@/models/Contact'
 import FacetItem from '@/models/FacetItem'
 import User from '@/models/User'
-import CategoriesRelation from '@/resources/relations/CategoriesRelation'
+import CategoryRelation from '@/resources/relations/CategoryRelation'
 import Contacts from '@/resources/relations/ContactsRelation'
 import EntryFacetItems from '@/resources/relations/EntryFacetItems'
 import LoadingState from 'data/api/LoadingState'
@@ -62,13 +62,13 @@ export default class Entry extends Model {
       category: {
         type: Relation.HAS_ONE,
         Model: Category,
-        Query: CategoriesRelation
+        Query: CategoryRelation
       },
 
       sub_category: {
         type: Relation.HAS_ONE,
         Model: Category,
-        Query: CategoriesRelation
+        Query: CategoryRelation
       },
 
       contacts: {
