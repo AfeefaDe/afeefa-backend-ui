@@ -2,6 +2,7 @@ import CategoriesResource from '@/resources/Categories'
 import CategorySubCategoriesResource from '@/resources/relations/CategorySubCategories'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
 
 class Category extends Model {
@@ -36,4 +37,4 @@ class Category extends Model {
   }
 }
 
-export default Model.register(Category)
+export default Registry.add(Category)

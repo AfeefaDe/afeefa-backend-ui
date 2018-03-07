@@ -1,6 +1,7 @@
 import AnnotationCategoriesResource from '@/resources/AnnotationCategories'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 
 class AnnotationCategory extends Model {
   static type = 'annotation_categories'
@@ -23,4 +24,4 @@ class AnnotationCategory extends Model {
   }
 }
 
-export default Model.register(AnnotationCategory)
+export default Registry.add(AnnotationCategory)

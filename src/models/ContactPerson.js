@@ -1,5 +1,6 @@
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 
 class ContactPerson extends Model {
   static type = 'contact_persons'
@@ -28,4 +29,4 @@ class ContactPerson extends Model {
   }
 }
 
-export default Model.register(ContactPerson)
+export default Registry.add(ContactPerson)

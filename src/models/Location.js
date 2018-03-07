@@ -1,5 +1,6 @@
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 
 class Location extends Model {
   static type = 'locations'
@@ -65,4 +66,4 @@ class Location extends Model {
   }
 }
 
-export default Model.register(Location)
+export default Registry.add(Location)

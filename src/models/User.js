@@ -1,6 +1,7 @@
 import UsersResource from '@/resources/Users'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 
 class User extends Model {
   static type = 'users'
@@ -50,4 +51,4 @@ class User extends Model {
   }
 }
 
-export default Model.register(User)
+export default Registry.add(User)

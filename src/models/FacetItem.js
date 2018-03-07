@@ -1,5 +1,6 @@
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 
 class FacetItem extends Model {
   static type = 'facet_items'
@@ -23,4 +24,4 @@ class FacetItem extends Model {
   }
 }
 
-export default Model.register(FacetItem)
+export default Registry.add(FacetItem)

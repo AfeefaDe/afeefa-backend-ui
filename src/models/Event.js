@@ -2,7 +2,7 @@ import Orga from '@/models/Orga'
 import EventsResource from '@/resources/Events'
 import moment from 'moment'
 import DataTypes from 'uidata/model/DataTypes'
-import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
 
 import Entry from './base/Entry'
@@ -88,4 +88,4 @@ class Event extends Entry {
   }
 }
 
-export default Model.register(Event)
+export default Registry.add(Event)

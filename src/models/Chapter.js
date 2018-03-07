@@ -1,6 +1,7 @@
 import LoadingState from 'uidata/api/LoadingState'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 
 class Chapter extends Model {
   static type = 'chapters'
@@ -40,4 +41,4 @@ class Chapter extends Model {
   }
 }
 
-export default Model.register(Chapter)
+export default Registry.add(Chapter)

@@ -2,6 +2,7 @@ import MetaDataResource from '@/resources/MetaData'
 import LoadingState from 'uidata/api/LoadingState'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 
 class MetaData extends Model {
   static type = 'meta'
@@ -30,4 +31,4 @@ class MetaData extends Model {
   }
 }
 
-export default Model.register(MetaData)
+export default Registry.add(MetaData)

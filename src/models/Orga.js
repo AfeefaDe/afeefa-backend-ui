@@ -4,7 +4,7 @@ import ActorRelationsResource from '@/resources/relations/ActorRelations'
 import OrgaPastEventsResource from '@/resources/relations/OrgaPastEvents'
 import OrgaUpcomingEventsResource from '@/resources/relations/OrgaUpcomingEvents'
 import DataTypes from 'uidata/model/DataTypes'
-import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
 
 import ActorRelations from './ActorRelations'
@@ -128,4 +128,4 @@ class Orga extends Entry {
   }
 }
 
-export default Model.register(Orga)
+export default Registry.add(Orga)

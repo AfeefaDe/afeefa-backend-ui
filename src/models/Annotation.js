@@ -1,6 +1,7 @@
 import AnnotationCategory from '@/models/AnnotationCategory'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
 
 class Annotation extends Model {
@@ -56,4 +57,4 @@ class Annotation extends Model {
   }
 }
 
-export default Model.register(Annotation)
+export default Registry.add(Annotation)

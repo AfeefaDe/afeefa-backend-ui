@@ -1,5 +1,6 @@
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 
 class ResourceItem extends Model {
   static type = 'resource_items'
@@ -34,4 +35,4 @@ class ResourceItem extends Model {
   }
 }
 
-export default Model.register(ResourceItem)
+export default Registry.add(ResourceItem)

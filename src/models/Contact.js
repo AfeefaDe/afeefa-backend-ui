@@ -2,6 +2,7 @@ import ContactPerson from '@/models/ContactPerson'
 import Location from '@/models/Location'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
 
 class Contact extends Model {
@@ -88,4 +89,4 @@ class Contact extends Model {
   }
 }
 
-export default Model.register(Contact)
+export default Registry.add(Contact)

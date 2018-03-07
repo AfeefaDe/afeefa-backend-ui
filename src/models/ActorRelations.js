@@ -2,6 +2,7 @@ import Orga from '@/models/Orga'
 import ActorRelationsRelationResource from '@/resources/relations/ActorRelationsRelation'
 import LoadingState from 'uidata/api/LoadingState'
 import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
 
 class ActorRelations extends Model {
@@ -36,4 +37,4 @@ class ActorRelations extends Model {
   }
 }
 
-export default Model.register(ActorRelations)
+export default Registry.add(ActorRelations)

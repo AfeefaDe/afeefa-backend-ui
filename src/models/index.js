@@ -1,4 +1,4 @@
-import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 
 import './ActorRelations'
 import './Annotation'
@@ -16,4 +16,4 @@ import './ResourceItem'
 import './User'
 import './MetaData'
 
-Model.initializeAll()
+Registry.initializeAll()

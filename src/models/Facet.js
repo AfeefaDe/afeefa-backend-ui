@@ -1,5 +1,6 @@
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
 
 import FacetItem from './FacetItem'
@@ -35,4 +36,4 @@ class Facet extends Model {
   }
 }
 
-export default Model.register(Facet)
+export default Registry.add(Facet)
