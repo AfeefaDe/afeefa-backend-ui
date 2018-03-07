@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  props: ['name', 'iconName', 'isMultiline', 'entryIconType', 'entryIconStatus', 'entryIconClass']
+  props: ['name', 'iconName', 'isMultiline']
 }
 </script>
 
