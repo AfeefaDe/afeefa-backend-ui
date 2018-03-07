@@ -1,6 +1,6 @@
 import RelationResource from 'uidata/resource/RelationResource'
 
-export default class ContactsResource extends RelationResource {
+export default class EntryContactsResource extends RelationResource {
   itemSaved (oldContact, contact) {
     super.itemSaved(oldContact, contact)
 
