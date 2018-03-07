@@ -3,7 +3,7 @@ import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 
 class AnnotationCategory extends Model {
-  static type = 'annotationCategories'
+  static type = 'annotation_categories'
 
   static Resource = AnnotationCategoriesResource
 
