@@ -1,13 +1,9 @@
-import User from '@/models/User'
 import store from '@/store'
 import resourceCache from 'uidata/cache/ResourceCache'
 import Resource from 'uidata/resource/Resource'
 
 export default class UsersResource extends Resource {
-  init () {
-    this.url = 'users{/id}'
-    this.Model = User
-  }
+  url = 'users{/id}'
 
   transformJsonBeforeSave (json) {
     return {

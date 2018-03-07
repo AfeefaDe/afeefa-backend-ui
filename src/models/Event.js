@@ -1,6 +1,5 @@
 import Orga from '@/models/Orga'
 import EventsResource from '@/resources/Events'
-import OrgasResource from '@/resources/Orgas'
 import moment from 'moment'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
@@ -37,8 +36,7 @@ class Event extends Entry {
       parent_orga: {
         type: Relation.HAS_ONE,
         Model: Orga,
-        remoteName: 'orga',
-        Resource: OrgasResource
+        remoteName: 'orga'
       }
     }
   }

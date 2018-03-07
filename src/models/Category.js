@@ -19,8 +19,7 @@ class Category extends Model {
     return {
       parent_category: {
         type: Relation.HAS_ONE,
-        Model: Category,
-        Resource: CategoriesResource
+        Model: Category
       },
 
       sub_categories: {

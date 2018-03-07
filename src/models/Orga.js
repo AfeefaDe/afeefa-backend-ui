@@ -1,6 +1,5 @@
 import Event from '@/models/Event'
 import ResourceItem from '@/models/ResourceItem'
-import OrgasResource from '@/resources/Orgas'
 import ActorRelationsResource from '@/resources/relations/ActorRelations'
 import OrgaPastEventsResource from '@/resources/relations/OrgaPastEvents'
 import OrgaUpcomingEventsResource from '@/resources/relations/OrgaUpcomingEvents'
@@ -15,7 +14,7 @@ import OrgaType from './OrgaType'
 class Orga extends Entry {
   static type = 'orgas'
 
-  static Resource = OrgasResource
+  static ResourceUrl = 'orgas{/id}'
 
   static attributes () {
     return {
@@ -49,8 +48,7 @@ class Orga extends Entry {
       parent_orga: {
         type: Relation.HAS_ONE,
         Model: Orga,
-        remoteName: 'initiator',
-        Resource: OrgasResource
+        remoteName: 'initiator'
       },
 
       resource_items: {

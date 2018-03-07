@@ -1,5 +1,4 @@
 import AnnotationCategory from '@/models/AnnotationCategory'
-import AnnotationCategoriesResource from '@/resources/AnnotationCategories'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Relation from 'uidata/model/Relation'
@@ -19,8 +18,7 @@ class Annotation extends Model {
     return {
       annotationCategory: {
         type: Relation.HAS_ONE,
-        Model: AnnotationCategory,
-        Resource: AnnotationCategoriesResource
+        Model: AnnotationCategory
       }
     }
   }

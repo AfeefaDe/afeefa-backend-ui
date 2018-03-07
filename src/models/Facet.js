@@ -1,4 +1,3 @@
-import FacetsResource from '@/resources/Facets'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Relation from 'uidata/model/Relation'
@@ -8,7 +7,7 @@ import FacetItem from './FacetItem'
 class Facet extends Model {
   static type = 'facets'
 
-  static Resource = FacetsResource
+  static ResourceUrl = 'facets{/id}'
 
   static attributes () {
     return {
