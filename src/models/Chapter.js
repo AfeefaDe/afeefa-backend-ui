@@ -1,4 +1,4 @@
-import Chapters from '@/resources/Chapters'
+import ChaptersResource from '@/resources/Chapters'
 import LoadingState from 'uidata/api/LoadingState'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
@@ -6,7 +6,7 @@ import Model from 'uidata/model/Model'
 class Chapter extends Model {
   static type = 'chapters'
 
-  static Resource = Chapters
+  static Resource = ChaptersResource
 
   static attributes () {
     return {

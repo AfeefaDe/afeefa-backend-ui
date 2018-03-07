@@ -4,8 +4,8 @@ import Contact from '@/models/Contact'
 import FacetItem from '@/models/FacetItem'
 import User from '@/models/User'
 import CategoriesResource from '@/resources/Categories'
-import ContactsRelationResource from '@/resources/relations/ContactsRelation'
-import Users from '@/resources/Users'
+import ContactsResource from '@/resources/relations/EntryContacts'
+import UsersResource from '@/resources/Users'
 import LoadingState from 'uidata/api/LoadingState'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
@@ -73,7 +73,7 @@ export default class Entry extends Model {
       contacts: {
         type: Relation.HAS_MANY,
         Model: Contact,
-        Resource: ContactsRelationResource
+        Resource: ContactsResource
       },
 
       annotations: {
@@ -84,13 +84,13 @@ export default class Entry extends Model {
       creator: {
         type: Relation.HAS_ONE,
         Model: User,
-        Resource: Users
+        Resource: UsersResource
       },
 
       last_editor: {
         type: Relation.HAS_ONE,
         Model: User,
-        Resource: Users
+        Resource: UsersResource
       },
 
       facet_items: {

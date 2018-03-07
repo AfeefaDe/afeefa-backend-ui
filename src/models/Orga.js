@@ -1,9 +1,9 @@
 import Event from '@/models/Event'
 import ResourceItem from '@/models/ResourceItem'
-import Orgas from '@/resources/Orgas'
-import ActorRelationsRelation from '@/resources/relations/ActorRelations'
-import OrgaPastEventsRelation from '@/resources/relations/OrgaPastEventsRelation'
-import OrgaUpcomingEventsRelation from '@/resources/relations/OrgaUpcomingEventsRelation'
+import OrgasResource from '@/resources/Orgas'
+import ActorRelationsResource from '@/resources/relations/ActorRelations'
+import OrgaPastEventsResource from '@/resources/relations/OrgaPastEvents'
+import OrgaUpcomingEventsResource from '@/resources/relations/OrgaUpcomingEvents'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Relation from 'uidata/model/Relation'
@@ -15,7 +15,7 @@ import OrgaType from './OrgaType'
 class Orga extends Entry {
   static type = 'orgas'
 
-  static Resource = Orgas
+  static Resource = OrgasResource
 
   static attributes () {
     return {
@@ -50,7 +50,7 @@ class Orga extends Entry {
         type: Relation.HAS_ONE,
         Model: Orga,
         remoteName: 'initiator',
-        Resource: Orgas
+        Resource: OrgasResource
       },
 
       resource_items: {
@@ -61,19 +61,19 @@ class Orga extends Entry {
       actor_relations: {
         type: Relation.HAS_ONE,
         Model: ActorRelations,
-        Resource: ActorRelationsRelation
+        Resource: ActorRelationsResource
       },
 
       past_events: {
         type: Relation.HAS_MANY,
         Model: Event,
-        Resource: OrgaPastEventsRelation
+        Resource: OrgaPastEventsResource
       },
 
       upcoming_events: {
         type: Relation.HAS_MANY,
         Model: Event,
-        Resource: OrgaUpcomingEventsRelation
+        Resource: OrgaUpcomingEventsResource
       }
     }
   }

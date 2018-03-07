@@ -1,5 +1,4 @@
-import Facets from '@/resources/Facets'
-import FacetFacetItemsResource from '@/resources/relations/FacetFacetItems'
+import FacetsResource from '@/resources/Facets'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Relation from 'uidata/model/Relation'
@@ -9,7 +8,7 @@ import FacetItem from './FacetItem'
 class Facet extends Model {
   static type = 'facets'
 
-  static Resource = Facets
+  static Resource = FacetsResource
 
   static attributes () {
     return {
@@ -21,8 +20,7 @@ class Facet extends Model {
     return {
       facet_items: {
         type: Relation.HAS_MANY,
-        Model: FacetItem,
-        Resource: FacetFacetItemsResource
+        Model: FacetItem
       }
     }
   }

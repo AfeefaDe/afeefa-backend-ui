@@ -83,7 +83,7 @@ import sortByCreatedAt from '@/helpers/sort-by-created-at'
 import { mapState } from 'vuex'
 import Event from '@/models/Event'
 import Orga from '@/models/Orga'
-import Todos from '@/resources/Todos'
+import TodosQuery from '@/resources/Todos'
 
 export default {
   data () {
@@ -104,7 +104,7 @@ export default {
   }),
 
   created () {
-    Todos.getAll().then(todos => {
+    TodosQuery.getAll().then(todos => {
       this.todos = todos
     })
 

@@ -23,7 +23,7 @@
 <script>
 import EntryListMixin from '@/components/mixins/EntryListMixin'
 import sortByUpdatedAt from '@/helpers/sort-by-updated-at'
-import Todos from '@/resources/Todos'
+import TodosQuery from '@/resources/Todos'
 import AnnotationCategory from '@/models/AnnotationCategory'
 
 export default {
@@ -31,7 +31,7 @@ export default {
 
   data () {
     return {
-      Query: Todos,
+      Query: TodosQuery,
       categories: [],
       sortByUpdatedAt,
       selectedCategory: 'all',

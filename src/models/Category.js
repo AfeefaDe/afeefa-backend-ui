@@ -1,5 +1,5 @@
 import CategoriesResource from '@/resources/Categories'
-import SubCategoriesRelationResource from '@/resources/relations/SubCategoriesRelation'
+import CategorySubCategoriesResource from '@/resources/relations/CategorySubCategories'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Relation from 'uidata/model/Relation'
@@ -26,7 +26,7 @@ class Category extends Model {
       sub_categories: {
         type: Relation.HAS_MANY,
         Model: Category,
-        Resource: SubCategoriesRelationResource
+        Resource: CategorySubCategoriesResource
       }
     }
   }

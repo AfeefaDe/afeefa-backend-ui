@@ -1,11 +1,11 @@
-import Users from '@/resources/Users'
+import UsersResource from '@/resources/Users'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 
 class User extends Model {
   static type = 'users'
 
-  static Resource = Users
+  static Resource = UsersResource
 
   static attributes () {
     return {
