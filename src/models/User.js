@@ -5,7 +5,7 @@ import Model from 'uidata/model/Model'
 class User extends Model {
   static type = 'users'
 
-  static Query = Users
+  static Resource = Users
 
   static attributes () {
     return {

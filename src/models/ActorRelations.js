@@ -1,5 +1,5 @@
 import Orga from '@/models/Orga'
-import ActorRelationsRelation from '@/resources/relations/ActorRelationsRelation'
+import ActorRelationsRelationResource from '@/resources/relations/ActorRelationsRelation'
 import LoadingState from 'uidata/api/LoadingState'
 import Model from 'uidata/model/Model'
 import Relation from 'uidata/model/Relation'
@@ -15,7 +15,7 @@ class ActorRelations extends Model {
       relations[relationName] = {
         type: Relation.HAS_MANY,
         Model: Orga,
-        Query: ActorRelationsRelation
+        Resource: ActorRelationsRelationResource
       }
     })
     return relations

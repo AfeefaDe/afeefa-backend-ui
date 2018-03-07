@@ -1,16 +1,17 @@
 import Orga from '@/models/Orga'
 import Events from '@/resources/Events'
+import Orgas from '@/resources/Orgas'
+import moment from 'moment'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Relation from 'uidata/model/Relation'
-import moment from 'moment'
 
 import Entry from './base/Entry'
 
 class Event extends Entry {
   static type = 'events'
 
-  static Resource = new Events(Event)
+  static Resource = Events
 
   static attributes () {
     return {
@@ -36,7 +37,8 @@ class Event extends Entry {
       parent_orga: {
         type: Relation.HAS_ONE,
         Model: Orga,
-        remoteName: 'orga'
+        remoteName: 'orga',
+        Resource: Orgas
       }
     }
   }

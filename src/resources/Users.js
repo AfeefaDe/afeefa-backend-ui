@@ -1,10 +1,9 @@
 import User from '@/models/User'
 import store from '@/store'
 import resourceCache from 'uidata/cache/ResourceCache'
-import Query from 'uidata/resource/Query'
 import Resource from 'uidata/resource/Resource'
 
-class UsersResource extends Resource {
+export default class UsersResource extends Resource {
   init () {
     this.url = 'users{/id}'
     this.Model = User
@@ -14,12 +13,6 @@ class UsersResource extends Resource {
     return {
       data: json
     }
-  }
-}
-
-class Users extends Query {
-  getResource () {
-    return new UsersResource()
   }
 
   // current user is not delivered by api but by auth service
@@ -36,5 +29,3 @@ class Users extends Query {
     return resourceCache.getItem('users', store.state.auth.currentUserId)
   }
 }
-
-export default new Users()

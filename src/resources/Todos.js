@@ -1,6 +1,5 @@
 import Event from '@/models/Event'
 import Orga from '@/models/Orga'
-import Query from 'uidata/resource/Query'
 import Resource from 'uidata/resource/Resource'
 
 class TodosResource extends Resource {
@@ -23,10 +22,4 @@ class TodosResource extends Resource {
   }
 }
 
-class Todos extends Query {
-  getResource () {
-    return new TodosResource()
-  }
-}
-
-export default new Todos()
+export default new TodosResource()

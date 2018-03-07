@@ -1,6 +1,6 @@
-import RelationQuery from 'uidata/resource/RelationQuery'
+import RelationResource from 'uidata/resource/RelationResource'
 
-export default class FacetFacetItems extends RelationQuery {
+export default class FacetFacetItems extends RelationResource {
   // todo, itemDeleted
   // -  itemDeleted (facetItem) {
   //   -    // order reload of the facets facet_items by the next get() call

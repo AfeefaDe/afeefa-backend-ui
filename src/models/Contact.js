@@ -1,5 +1,6 @@
 import ContactPerson from '@/models/ContactPerson'
 import Location from '@/models/Location'
+import Locations from '@/resources/Locations'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Relation from 'uidata/model/Relation'
@@ -36,7 +37,8 @@ class Contact extends Model {
     return {
       location: {
         type: Relation.HAS_ONE,
-        Model: Location
+        Model: Location,
+        Resource: Locations
       },
 
       contact_persons: {

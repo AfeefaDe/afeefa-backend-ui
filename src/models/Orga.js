@@ -4,7 +4,6 @@ import Orgas from '@/resources/Orgas'
 import ActorRelationsRelation from '@/resources/relations/ActorRelations'
 import OrgaPastEventsRelation from '@/resources/relations/OrgaPastEventsRelation'
 import OrgaUpcomingEventsRelation from '@/resources/relations/OrgaUpcomingEventsRelation'
-import ParentOrgaRelation from '@/resources/relations/ParentOrgaRelation'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Relation from 'uidata/model/Relation'
@@ -16,7 +15,7 @@ import OrgaType from './OrgaType'
 class Orga extends Entry {
   static type = 'orgas'
 
-  static Resource = new Orgas(Orga)
+  static Resource = Orgas
 
   static attributes () {
     return {
@@ -51,7 +50,7 @@ class Orga extends Entry {
         type: Relation.HAS_ONE,
         Model: Orga,
         remoteName: 'initiator',
-        Query: ParentOrgaRelation
+        Resource: Orgas
       },
 
       resource_items: {
@@ -62,19 +61,19 @@ class Orga extends Entry {
       actor_relations: {
         type: Relation.HAS_ONE,
         Model: ActorRelations,
-        Query: ActorRelationsRelation
+        Resource: ActorRelationsRelation
       },
 
       past_events: {
         type: Relation.HAS_MANY,
         Model: Event,
-        Query: OrgaPastEventsRelation
+        Resource: OrgaPastEventsRelation
       },
 
       upcoming_events: {
         type: Relation.HAS_MANY,
         Model: Event,
-        Query: OrgaUpcomingEventsRelation
+        Resource: OrgaUpcomingEventsRelation
       }
     }
   }

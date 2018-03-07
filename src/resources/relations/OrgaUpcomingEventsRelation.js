@@ -1,6 +1,6 @@
-import RelationQuery from 'uidata/resource/RelationQuery'
+import RelationResource from 'uidata/resource/RelationResource'
 
-export default class OrgaUpcomingEventsRelation extends RelationQuery {
+export default class OrgaUpcomingEventsRelation extends RelationResource {
   getAll () {
     return super.getAll({'filter[date]': 'upcoming'})
   }

@@ -1,6 +1,5 @@
 import Event from '@/models/Event'
 import Orga from '@/models/Orga'
-import Query from 'uidata/resource/Query'
 import Resource from 'uidata/resource/Resource'
 
 class SearchResource extends Resource {
@@ -21,12 +20,6 @@ class SearchResource extends Resource {
       return Event
     }
   }
-}
-
-class Search extends Query {
-  getResource () {
-    return new SearchResource()
-  }
 
   find (searchRequest) {
     const params = {
@@ -36,4 +29,4 @@ class Search extends Query {
   }
 }
 
-export default new Search()
+export default new SearchResource()

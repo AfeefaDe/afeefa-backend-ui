@@ -5,7 +5,7 @@ import Model from 'uidata/model/Model'
 class Location extends Model {
   static type = 'locations'
 
-  static Resource = new Locations(Location)
+  static Resource = Locations
 
   static attributes () {
     return {

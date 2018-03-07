@@ -1,8 +1,9 @@
 import RelationResource from 'uidata/resource/RelationResource'
-import RelationQuery from 'uidata/resource/RelationQuery'
 
-class ContactsResource extends RelationResource {
+export default class ContactsResource extends RelationResource {
   itemSaved (oldContact, contact) {
+    super.itemSaved(oldContact, contact)
+
     if (this.ownLocationDeleted(oldContact, contact)) {
       const oldLocationId = oldContact.$rels.location.id
       const ownersWithLocation = this.findOwnersOfContactsWithLocationId(oldLocationId)
@@ -21,12 +22,17 @@ class ContactsResource extends RelationResource {
   }
 
   itemDeleted (contact) {
+    super.itemDeleted(contact)
+
     // reload all locations
     this.cachePurgeList('locations')
   }
 
   itemAdded (contact) {
-    this.itemDeleted(contact)
+    super.itemAdded(contact)
+
+    // reload all locations
+    this.cachePurgeList('locations')
   }
 
   findOwnersOfContactsWithLocationId (locationId) {
@@ -69,11 +75,5 @@ class ContactsResource extends RelationResource {
       }
     }
     return false
-  }
-}
-
-export default class ContactsRelation extends RelationQuery {
-  getResource () {
-    return new ContactsResource(this.relation)
   }
 }
