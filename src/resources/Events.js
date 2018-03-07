@@ -25,8 +25,11 @@ export default class EventsResource extends EntriesResource {
   _updateParentOrgasEventList (event) {
     const orgaId = event.$rels.parent_orga.id
     if (orgaId) {
-      this.cachePurgeList('events', JSON.stringify({owner_type: 'orgas', owner_id: orgaId, 'filter[date]': 'upcoming'}))
-      this.cachePurgeList('events', JSON.stringify({owner_type: 'orgas', owner_id: orgaId, 'filter[date]': 'past'}))
+      const orga = this.findCachedItem('orgas', orgaId)
+      if (orga) {
+        this.cachePurgeRelation(orga.$rels.past_events)
+        this.cachePurgeRelation(orga.$rels.upcoming_events)
+      }
     }
   }
 }

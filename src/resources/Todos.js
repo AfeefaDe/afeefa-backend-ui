@@ -14,7 +14,7 @@ class TodosResource extends Resource {
   }
 
   getItemModel (json) {
-    if (json.relationships.entry.data.type === 'orgas') {
+    if (json.type === 'orgas') {
       return Orga
     } else {
       return Event
