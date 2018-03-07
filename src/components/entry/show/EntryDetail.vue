@@ -14,7 +14,16 @@
 
         <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
           <section slot="generalTab" class="generalTab generalTab--splitView">
+
             <div class="entryDetail generalTab__splitViewChild">
+
+            <entry-text-attribute
+              :name="$t('entries.title')"
+              :isMultiline="false"
+              :editable="true">
+                {{ entry.title }}
+            </entry-text-attribute>
+
               <entry-detail-property
                 name="Facetten"
                 iconName="bookmark_border">
@@ -220,6 +229,8 @@ import AnnotationTag from '@/components/AnnotationTag'
 import ResourceItem from '@/components/ResourceItem'
 
 import EntryDetailProperty from './EntryDetailProperty'
+import EntryTextAttribute from './EntryTextAttribute'
+
 import EntryDetailHeader from './EntryDetailHeader'
 import EntryDetailFooter from './EntryDetailFooter'
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
@@ -305,6 +316,7 @@ export default {
     EntryListItems,
     ImageContainer,
     EntryDetailProperty,
+    EntryTextAttribute,
     TabBar,
     AnnotationTag,
     ContactList,
