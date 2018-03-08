@@ -5,7 +5,7 @@ import Resource from 'uidata/resource/Resource'
 class SearchResource extends Resource {
   url = 'entries'
 
-  getListType (json) {
+  getListType () {
     return 'search'
   }
 

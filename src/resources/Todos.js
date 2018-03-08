@@ -5,7 +5,7 @@ import Resource from 'uidata/resource/Resource'
 class TodosResource extends Resource {
   url = 'todos'
 
-  getListType (json) {
+  getListType () {
     return 'todos'
   }
 
