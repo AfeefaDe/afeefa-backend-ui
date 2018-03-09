@@ -1,5 +1,6 @@
 import Event from '@/models/Event'
 import ResourceItem from '@/models/ResourceItem'
+import OrgasResource from '@/resources/Orgas'
 import ActorRelationsResource from '@/resources/relations/ActorRelations'
 import OrgaPastEventsResource from '@/resources/relations/OrgaPastEvents'
 import OrgaUpcomingEventsResource from '@/resources/relations/OrgaUpcomingEvents'
@@ -14,7 +15,7 @@ import OrgaType from './OrgaType'
 class Orga extends Entry {
   static type = 'orgas'
 
-  static ResourceUrl = 'orgas{/id}'
+  static Resource = OrgasResource
 
   static attributes () {
     return {
