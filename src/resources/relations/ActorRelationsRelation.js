@@ -6,18 +6,22 @@ export default class ActorRelationsRelationResource extends RelationResource {
   }
 
   itemAttached (model) {
+    super.itemAttached(model)
+
     this.purgeActorRelations(model)
   }
 
   itemDetached (model) {
+    super.itemDetached(model)
+
     this.purgeActorRelations(model)
   }
 
   purgeActorRelations (model) {
-    // purge the relation of the attached/detached model
+    // purge the actor relation the model belongs to
     model.$rels.actor_relations.purgeFromCacheAndMarkInvalid()
 
-    // find the actors actor_relation, this (actor_relations_relation) relation belongs to
+    // purge the actor relation this relation belongs to
     const actorRelations = this.relation.owner
     actorRelations.getParentRelations().forEach(relation => {
       if (relation.name === 'actor_relations') {

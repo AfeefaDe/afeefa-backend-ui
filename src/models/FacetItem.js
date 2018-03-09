@@ -8,7 +8,8 @@ class FacetItem extends Model {
   static attributes () {
     return {
       title: DataTypes.String,
-      color: DataTypes.String
+      color: DataTypes.String,
+      facet_id: DataTypes.String
     }
   }
 
