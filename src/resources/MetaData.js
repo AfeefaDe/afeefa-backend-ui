@@ -1,6 +1,6 @@
-import Resource from 'uidata/resource/Resource'
+import ModelResource from 'uidata/resource/ModelResource'
 
-export default class MetaDataResource extends Resource {
+export default class MetaDataResource extends ModelResource {
   url = 'meta'
 
   getItemJson (json) {

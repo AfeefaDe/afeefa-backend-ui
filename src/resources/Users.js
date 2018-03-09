@@ -1,8 +1,8 @@
 import store from '@/store'
 import resourceCache from 'uidata/cache/ResourceCache'
-import Resource from 'uidata/resource/Resource'
+import ModelResource from 'uidata/resource/ModelResource'
 
-export default class UsersResource extends Resource {
+export default class UsersResource extends ModelResource {
   url = 'users{/id}'
 
   transformJsonBeforeSave (json) {

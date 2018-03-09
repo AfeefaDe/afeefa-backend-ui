@@ -1,6 +1,6 @@
-import Resource from 'uidata/resource/Resource'
+import ModelResource from 'uidata/resource/ModelResource'
 
-export default class EntriesResource extends Resource {
+export default class EntriesResource extends ModelResource {
   transformJsonBeforeSave (json) {
     return {
       data: json

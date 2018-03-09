@@ -1,6 +1,6 @@
-import Resource from 'uidata/resource/Resource'
+import ModelResource from 'uidata/resource/ModelResource'
 
-export default class CategoriesResource extends Resource {
+export default class CategoriesResource extends ModelResource {
   url = 'categories{/id}'
 
   get (id) {
