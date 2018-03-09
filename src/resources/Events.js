@@ -6,30 +6,34 @@ export default class EventsResource extends EntriesResource {
   itemAdded (event) {
     super.itemAdded(event)
     // parent orgas events might change
-    this._updateParentOrgasEventList(event)
+    this.updateParentOrgasEventList(event)
   }
 
   itemDeleted (event) {
     super.itemDeleted(event)
-    // parent orgas events might change
-    this._updateParentOrgasEventList(event)
+
+    event.getParentRelations().forEach(relation => {
+      relation.purgeFromCacheAndMarkInvalid()
+    })
   }
 
   itemSaved (eventOld, event) {
     super.itemSaved(eventOld, event)
-    // parent orgas events might change
-    this._updateParentOrgasEventList(eventOld)
-    this._updateParentOrgasEventList(event)
+
+    eventOld.getParentRelations().forEach(relation => {
+      relation.purgeFromCacheAndMarkInvalid()
+    })
+
+    event.getParentRelations().forEach(relation => {
+      relation.purgeFromCacheAndMarkInvalid()
+    })
   }
 
-  _updateParentOrgasEventList (event) {
-    const orgaId = event.$rels.parent_orga.id
-    if (orgaId) {
-      const orga = this.findCachedItem('orgas', orgaId)
-      if (orga) {
-        this.cachePurgeRelation(orga.$rels.past_events)
-        this.cachePurgeRelation(orga.$rels.upcoming_events)
-      }
+  updateParentOrgasEventList (event) {
+    const orga = event.$rels.parent_orga.Query.find()
+    if (orga) {
+      orga.$rels.past_events.purgeFromCacheAndMarkInvalid()
+      orga.$rels.upcoming_events.purgeFromCacheAndMarkInvalid()
     }
   }
 }
