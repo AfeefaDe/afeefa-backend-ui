@@ -9,7 +9,7 @@ export default class EntryContactsResource extends RelationResource {
       const ownersWithLocation = this.findOwnersOfContactsWithLocationId(oldLocationId)
       // refetch others contact list
       ownersWithLocation.forEach(owner => {
-        this.cachePurgeRelation(owner.$rels.contacts)
+        owner.$rels.contacts.purgeFromCacheAndMarkInvalid()
       })
       // reload all locations
       this.cachePurgeList('locations')
