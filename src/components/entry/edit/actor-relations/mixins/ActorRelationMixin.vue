@@ -69,8 +69,11 @@ export default {
 
     addParent (parent) {
       // we might not have the parent's relations initialized, so we just create a runtime model
-      const actorRelations = new ActorRelations()
-      actorRelations.id = parent.id
+      let actorRelations = parent.actor_relations
+      if (!actorRelations) {
+        actorRelations = new ActorRelations()
+        actorRelations.id = parent.id
+      }
       return actorRelations.$rels[this.apiRelationName].Query.attach(this.actor).then(result => {
         if (result) {
           this.actor[this.relationName].push(parent)
@@ -84,8 +87,11 @@ export default {
 
     removeParent (parent) {
       // we might not have the parent's relations initialized, so we just create a runtime model
-      const actorRelations = new ActorRelations()
-      actorRelations.id = parent.id
+      let actorRelations = parent.actor_relations
+      if (!actorRelations) {
+        actorRelations = new ActorRelations()
+        actorRelations.id = parent.id
+      }
       return actorRelations.$rels[this.apiRelationName].Query.detach(this.actor).then(result => {
         if (result) {
           this.actor[this.relationName] = this.actor[this.relationName].filter(n => n.id !== parent.id)
