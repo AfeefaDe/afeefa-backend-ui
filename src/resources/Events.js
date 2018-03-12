@@ -3,37 +3,38 @@ import EntriesResource from './base/EntriesResource'
 export default class EventsResource extends EntriesResource {
   url = 'events{/id}'
 
-  itemAdded (event) {
-    super.itemAdded(event)
-    // parent orgas events might change
-    this.updateParentOrgasEventList(event)
-  }
-
   itemDeleted (event) {
     super.itemDeleted(event)
 
-    event.getParentRelations().forEach(relation => {
-      relation.purgeFromCacheAndMarkInvalid()
-    })
+    if (event.parent_orga) {
+      event.parent_orga.count_events--
+    }
   }
+
 
   itemSaved (eventOld, event) {
     super.itemSaved(eventOld, event)
 
-    eventOld.getParentRelations().forEach(relation => {
-      relation.purgeFromCacheAndMarkInvalid()
-    })
+    // upcoming changed
+    if (eventOld.isUpcoming !== event.isUpcoming) {
+      this.cachePurgeList('events', '{}')
 
-    event.getParentRelations().forEach(relation => {
-      relation.purgeFromCacheAndMarkInvalid()
-    })
-  }
+      event.parent_orga.$rels.upcoming_events.reloadOnNextGet()
+      event.parent_orga.$rels.past_events.reloadOnNextGet()
+    }
 
-  updateParentOrgasEventList (event) {
-    const orga = event.$rels.parent_orga.Query.find()
-    if (orga) {
-      orga.$rels.past_events.purgeFromCacheAndMarkInvalid()
-      orga.$rels.upcoming_events.purgeFromCacheAndMarkInvalid()
+    // parent orga changed
+    if (eventOld.parent_orga !== event.parent_orga) {
+      if (eventOld.parent_orga) {
+        eventOld.parent_orga.count_events--
+        eventOld.parent_orga.$rels.upcoming_events.reloadOnNextGet()
+        eventOld.parent_orga.$rels.past_events.reloadOnNextGet()
+      }
+      if (event.parent_orga) {
+        // current parent_orga.count_events loaded in event save payload
+        event.parent_orga.$rels.upcoming_events.reloadOnNextGet()
+        event.parent_orga.$rels.past_events.reloadOnNextGet()
+      }
     }
   }
 }

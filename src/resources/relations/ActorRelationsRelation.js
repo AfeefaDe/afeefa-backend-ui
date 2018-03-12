@@ -19,12 +19,12 @@ export default class ActorRelationsRelationResource extends RelationResource {
 
   purgeActorRelations (model) {
     // purge the actor relation the model belongs to
-    model.$rels.actor_relations.purgeFromCacheAndMarkInvalid()
+    model.$rels.actor_relations.reloadOnNextGet()
 
     // purge the actor relation this relation belongs to
     const actorRelations = this.relation.owner
     actorRelations.getParentRelations().forEach(relation => {
-      relation.purgeFromCacheAndMarkInvalid()
+      relation.reloadOnNextGet()
     })
   }
 }

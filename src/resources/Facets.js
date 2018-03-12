@@ -8,10 +8,10 @@ export default class FacetsResource extends ModelResource {
 
     // find all facet_items that link to this facet
     // and order reload of the appropriate relation
-    const facetItems = this.findCachedItemsBy('facet_items', {facet_id: facet.id})
-    facetItems.forEach(facetItem => {
+    // e.g. event.$rels.facet_items
+    facet.facet_items.forEach(facetItem => {
       facetItem.getParentRelations().forEach(relation => {
-        relation.purgeFromCacheAndMarkInvalid()
+        relation.reloadOnNextGet()
       })
     })
   }
