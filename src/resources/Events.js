@@ -1,4 +1,4 @@
-import EntriesResource from './base/EntriesResource'
+import EntriesResource from './base/Entries'
 
 export default class EventsResource extends EntriesResource {
   url = 'events{/id}'
