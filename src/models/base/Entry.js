@@ -107,10 +107,6 @@ export default class Entry extends Model {
     return LoadingState.NOT_LOADED
   }
 
-  refetchContacts () {
-    this.refetchRelation('contacts')
-  }
-
   serialize () {
     const annotations = []
     for (let annotation of this.annotations) {
