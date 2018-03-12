@@ -1,6 +1,6 @@
-import ModelResource from 'uidata/resource/ModelResource'
+import Resource from 'uidata/resource/Resource'
 
-export default class AnnotationCategoriesResource extends ModelResource {
+export default class AnnotationCategoriesResource extends Resource {
   url = 'annotation_categories{/id}'
 
   get (id) {

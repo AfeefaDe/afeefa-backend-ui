@@ -1,7 +1,7 @@
 import Category from '@/models/Category'
-import RelationResource from 'uidata/resource/RelationResource'
+import Resource from 'uidata/resource/Resource'
 
-export default class CategorySubCategoriesResource extends RelationResource {
+export default class CategorySubCategoriesResource extends Resource {
   getAll () {
     return Category.Query.getAll().then(categories => {
       const parentCategory = this.relation.owner

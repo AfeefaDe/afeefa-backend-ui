@@ -1,6 +1,6 @@
-import RelationResource from 'uidata/resource/RelationResource'
+import Resource from 'uidata/resource/Resource'
 
-export default class ActorRelationsRelationResource extends RelationResource {
+export default class ActorRelationsRelationResource extends Resource {
   getUrl () {
     return `orgas/${this.relation.owner.id}/${this.relation.name}{/id}`
   }
