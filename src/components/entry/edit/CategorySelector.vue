@@ -57,16 +57,24 @@ export default {
   watch: {
     // https://github.com/baianat/vee-validate/issues/923
     // apparently vee-validate does not revalidate if our
-    // item.category is initially null and loaded afterwards
+    // category/categories is/are initially null and loaded afterwards
     // so we have to revalidate manually
     'item.category' () {
-      Vue.nextTick(() => {
-        this.$validator.validate()
-      })
+      this.revalidate()
+    },
+
+    'categories' () {
+      this.revalidate()
     }
   },
 
   methods: {
+    revalidate () {
+      Vue.nextTick(() => {
+        this.$validator.validate()
+      })
+    },
+
     categoryChanged () {
       this.item.sub_category = null
     }
