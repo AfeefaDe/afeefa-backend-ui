@@ -82,6 +82,8 @@ class Orga extends Entry {
       ActorRelations.RELATIONS.forEach(relationName => {
         this[relationName] = actorRelations[relationName]
       })
+      this.count_projects = this.projects.length
+      this.count_network_members = this.network_members.length
     }
   }
 

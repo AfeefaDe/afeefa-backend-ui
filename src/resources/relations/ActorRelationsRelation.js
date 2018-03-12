@@ -8,16 +8,16 @@ export default class ActorRelationsRelationResource extends RelationResource {
   itemAttached (model) {
     super.itemAttached(model)
 
-    this.purgeActorRelations(model)
+    this.updateActorRelations(model)
   }
 
   itemDetached (model) {
     super.itemDetached(model)
 
-    this.purgeActorRelations(model)
+    this.updateActorRelations(model)
   }
 
-  purgeActorRelations (model) {
+  updateActorRelations (model) {
     // purge the actor relation the model belongs to
     model.$rels.actor_relations.reloadOnNextGet()
 
