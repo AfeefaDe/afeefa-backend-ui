@@ -24,9 +24,7 @@ export default class ActorRelationsRelationResource extends RelationResource {
     // purge the actor relation this relation belongs to
     const actorRelations = this.relation.owner
     actorRelations.getParentRelations().forEach(relation => {
-      if (relation.name === 'actor_relations') {
-        relation.purgeFromCacheAndMarkInvalid()
-      }
+      relation.purgeFromCacheAndMarkInvalid()
     })
   }
 }
