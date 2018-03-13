@@ -29,7 +29,7 @@ class Location extends Model {
     }
   }
 
-  normalizeJson (json) {
+  beforeDeserialize (json) {
     const attributes = json.attributes
     const rels = json.relationships || {}
     if (rels.owner && rels.owner.data) {

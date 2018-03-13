@@ -1,12 +1,6 @@
 import Resource from 'uidata/resource/Resource'
 
 export default class EntriesResource extends Resource {
-  transformJsonBeforeSave (json) {
-    return {
-      data: json
-    }
-  }
-
   itemSaved (entryOld, entry) {
     super.itemSaved(entryOld, entry)
 

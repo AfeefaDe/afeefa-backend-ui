@@ -1,4 +1,3 @@
-import LoadingState from 'uidata/api/LoadingState'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Registry from 'uidata/model/Registry'
@@ -13,18 +12,6 @@ class Chapter extends Model {
       title: DataTypes.String,
       content: DataTypes.String,
       order: DataTypes.Int
-    }
-  }
-
-  calculateLoadingStateFromJson (json) {
-    return LoadingState.FULLY_LOADED
-  }
-
-  normalizeJson (json) {
-    let {title, content, order} = json
-    return {
-      id: json.id,
-      attributes: {title, content, order}
     }
   }
 

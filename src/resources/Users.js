@@ -5,12 +5,6 @@ import Resource from 'uidata/resource/Resource'
 export default class UsersResource extends Resource {
   url = 'users{/id}'
 
-  transformJsonBeforeSave (json) {
-    return {
-      data: json
-    }
-  }
-
   // current user is not delivered by api but by auth service
   // and must hence be added manually
   setCurrentUser (user, id) {

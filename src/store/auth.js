@@ -22,9 +22,8 @@ export default {
       if (json) {
         // TODO - do not call private method setRequestId, find general solution
         // to loading/deserializing data outside the API cosmos
-        API.setRequestId(json)
         const user = new User()
-        user.deserialize(json)
+        user.deserialize(json, API.setRequestId())
 
         state.currentUserId = user.id
         User.Query.setCurrentUser(user)

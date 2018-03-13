@@ -24,14 +24,11 @@ class Annotation extends Model {
     }
   }
 
-  normalizeJson (json) {
-    let {detail} = json.attributes
+  beforeDeserialize (json) {
     return {
-      id: json.id,
-      attributes: {detail},
+      ...json,
       relationships: {
         annotationCategory: {
-          _requestId: json._requestId,
           id: json.attributes.annotation_category_id
         }
       }

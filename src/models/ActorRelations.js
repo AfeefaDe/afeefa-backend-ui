@@ -1,6 +1,5 @@
 import Orga from '@/models/Orga'
 import ActorRelationsRelationResource from '@/resources/relations/ActorRelationsRelation'
-import LoadingState from 'uidata/api/LoadingState'
 import Model from 'uidata/model/Model'
 import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
@@ -20,20 +19,6 @@ class ActorRelations extends Model {
       }
     })
     return relations
-  }
-
-  calculateLoadingStateFromJson (json) {
-    return LoadingState.FULLY_LOADED
-  }
-
-  normalizeJson (json) {
-    // move all flat members to relationships attribute
-    const jsonRelations = Object.keys(this.$rels)
-      .reduce((obj, key) => ({...obj, [key]: json[key]}), {})
-    return {
-      id: json.id,
-      relationships: jsonRelations
-    }
   }
 }
 

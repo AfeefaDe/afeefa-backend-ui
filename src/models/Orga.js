@@ -87,7 +87,7 @@ class Orga extends Entry {
     }
   }
 
-  normalizeJson (json) {
+  beforeDeserialize (json) {
     const relationships = json.relationships
 
     // move all actor relations into container object
@@ -103,7 +103,6 @@ class Orga extends Entry {
         // inject id of orga as actorRelations id
         // also see ActorRelationsResource#itemJsonLoaded
         actorRelationsJson.id = this.id
-        actorRelationsJson._requestId = json._requestId // inject requestId
         relationships.actor_relations = actorRelationsJson
       }
     }

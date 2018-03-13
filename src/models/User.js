@@ -34,6 +34,12 @@ class User extends Model {
     return this.first_name + ' ' + this.last_name
   }
 
+  toJson () {
+    return {
+      data: this.serialize()
+    }
+  }
+
   serialize () {
     const data = {
       id: this.id,

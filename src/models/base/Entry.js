@@ -4,7 +4,6 @@ import Contact from '@/models/Contact'
 import FacetItem from '@/models/FacetItem'
 import User from '@/models/User'
 import ContactsResource from '@/resources/relations/EntryContacts'
-import LoadingState from 'uidata/api/LoadingState'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Relation from 'uidata/model/Relation'
@@ -94,17 +93,10 @@ export default class Entry extends Model {
     }
   }
 
-  calculateLoadingStateFromJson (json) {
-    if (json.relationships && json.relationships.contacts) {
-      return LoadingState.FULLY_LOADED
+  toJson () {
+    return {
+      data: this.serialize()
     }
-    if (json.relationships) {
-      return LoadingState.LOADED_FOR_LISTS
-    }
-    if (json.attributes) {
-      return LoadingState.LOADED_AS_ATTRIBUTE
-    }
-    return LoadingState.NOT_LOADED
   }
 
   serialize () {
