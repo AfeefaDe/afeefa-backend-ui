@@ -39,7 +39,6 @@
         </div>
 
         <div class="entryList__content">
-
           <div class="entryList__attributes" v-if="has.event_date && item.type === 'events'">
             <p class="item entryList--lightColor">
               {{item | formatEventDate}}
