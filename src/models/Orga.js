@@ -84,6 +84,7 @@ class Orga extends Entry {
       })
       this.count_projects = this.projects.length
       this.count_network_members = this.network_members.length
+      this.parent_orga = this.project_initiators[0] || null
     }
   }
 
