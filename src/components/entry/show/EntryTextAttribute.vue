@@ -1,16 +1,16 @@
 <template>
   <div class="textAttribute">
       <p class="textAttribute__name">{{ name }}</p>
-      <div :class="['textAttribute__container']">
-        <div :class="['content', {multiline: isMultiline}, {editing: isEditing}]"
-          contenteditable="true"
+      <div :class="['textAttribute__container', {editing: isEditing}, {dirty: isDirty}]">
+        <input type="text" :class="['browser-default', 'input']"
           ref="editable"
+          v-model="value"
           v-on:focus="focusElement"
           v-on:blur="blurElement"
-          @keyup.enter="save">
-          {{attribute}}
-        </div>
-        <i v-show="isEditing" class="material-icons icon" v-on:click="save">check</i>
+          @keyup.enter="save"
+          @input="updateValue($event.target.value)"
+          />
+        <i v-show="saveButtonVisible" class="material-icons icon" v-on:click="save">check</i>
         <i v-show="!isEditing" class="material-icons icon" v-on:click="startEditing">edit</i>
       </div>
   </div>
@@ -21,21 +21,48 @@ export default {
   props: ['attribute', 'name', 'isMultiline'],
   data () {
     return {
-      isEditing: false
+      isEditing: false,
+      isDirty: false,
+      saveButtonVisible: false,
+      value: ''
+    }
+  },
+  created () {
+    this.value = this.attribute
+  },
+  watch: {
+    attribute () {
+      this.value = this.attribute
     }
   },
   methods: {
+    startEditing () {
+      this.$nextTick(() => this.$refs.editable.focus())
+    },
     focusElement () {
       this.isEditing = true
     },
     blurElement () {
       this.isEditing = false
+      if (this.isDirty) {
+        this.isDirty = false
+        this.value = this.attribute
+      }
     },
     save () {
       console.log('@todo: save action')
+      this.$emit('save')
+      this.saveButtonVisible = false
     },
-    startEditing () {
-      this.$nextTick(() => this.$refs.editable.focus())
+    updateValue (value) {
+      if (value === this.attribute) {
+        this.isDirty = false
+        this.saveButtonVisible = false
+      } else {
+        this.isDirty = true
+        this.saveButtonVisible = true
+        this.$emit('input', value)
+      }
     }
   }
 }
@@ -53,32 +80,30 @@ export default {
     display: flex;
     align-items: center;
     transition: all 0.3s ease;
-    .content {
+    .input {
         padding: 0.5em 0.2em;
         min-width: 200px;
         line-height: 160%;
         white-space: nowrap;
         overflow: hidden;
         outline: 0;
+        border: 0;
         border-bottom: 2px solid transparent;
         /* hover state */
         &:hover {
           border-bottom-color: $gray50;
         }
-        /* edit state */
-        &.editing {
-          border-bottom-color: $green;
-        }
-        br {
-          display: none;
-        }
-        * {
-          display: inline;
-          white-space: nowrap;
-        }
-        &.multiline * { /* '*' means: ignore v-if=false comments that force empty lines */
-          white-space: pre-wrap;
-        }
+    }
+    /* edit state */
+    &.editing {
+      .input {
+        border-bottom-color: $green;
+      }
+    }
+    &.dirty {
+      .input {
+        border-bottom-color: $yellow;
+      }
     }
     .icon {
       font-size: 0;
@@ -93,17 +118,5 @@ export default {
       }
     }
   }
-}
-
-[contenteditable="true"] {
-    white-space: nowrap;
-    overflow: hidden;
-}
-[contenteditable="true"] br {
-    display:none;
-}
-[contenteditable="true"] * {
-    display:inline;
-    white-space:nowrap;
 }
 </style>
