@@ -11,7 +11,6 @@ export default class EventsResource extends EntriesResource {
     }
   }
 
-
   itemSaved (eventOld, event) {
     super.itemSaved(eventOld, event)
 
