@@ -8,6 +8,7 @@ export default class OrgasResource extends EntriesResource {
   itemDeleted (orga) {
     super.itemDeleted(orga)
 
+    // invalidate actor relations to this orga
     orga.getParentRelations().forEach(relation => {
       if (relation.owner instanceof ActorRelations) {
         const actorRelations = relation.owner
