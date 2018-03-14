@@ -6,7 +6,6 @@ var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 var StylelintPlugin = require('stylelint-webpack-plugin')
-var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
@@ -33,25 +32,6 @@ module.exports = merge(baseWebpackConfig, {
     // css linting
     new StylelintPlugin({
       files: ['src/**/*.vue', 'src/**/*.scss']
-    }),
-
-    new HardSourceWebpackPlugin({
-      // Either an absolute path or relative to webpack's options.context.
-      cacheDirectory: '../node_modules/.cache/hard-source/[confighash]',
-      // Either an absolute path or relative to webpack's options.context.
-      // Sets webpack's recordsPath if not already set.
-      recordsPath: '../node_modules/.cache/hard-source/[confighash]/records.json',
-      // Either a string of object hash function given a webpack config.
-      configHash: function(webpackConfig) {
-        // node-object-hash on npm can be used to build this.
-        return require('node-object-hash')({sort: false}).hash(webpackConfig);
-      },
-      // Either false, a string, an object, or a project hashing function.
-      environmentHash: {
-        root: process.cwd(),
-        directories: [],
-        files: ['package-lock.json', 'yarn.lock'],
-      },
     }),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
