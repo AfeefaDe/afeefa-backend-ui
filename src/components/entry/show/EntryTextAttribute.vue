@@ -2,6 +2,7 @@
   <div class="textAttribute">
       <p class="textAttribute__name">{{ name }}</p>
       <div :class="['textAttribute__container', {editing: isEditing}, {dirty: isDirty}]">
+        <i v-show="!isEditing" class="material-icons icon" v-on:click="startEditing">edit</i>
         <input type="text" :class="['browser-default', 'input']"
           ref="editable"
           v-model="value"
@@ -10,8 +11,6 @@
           @keyup.enter="save"
           @input="updateValue($event.target.value)"
           />
-        <i v-show="saveButtonVisible" class="material-icons icon" v-on:click="save">check</i>
-        <i v-show="!isEditing" class="material-icons icon" v-on:click="startEditing">edit</i>
       </div>
   </div>
 </template>
@@ -23,7 +22,6 @@ export default {
     return {
       isEditing: false,
       isDirty: false,
-      saveButtonVisible: false,
       value: ''
     }
   },
@@ -45,22 +43,23 @@ export default {
     blurElement () {
       this.isEditing = false
       if (this.isDirty) {
-        this.isDirty = false
-        this.value = this.attribute
+        this.save()
       }
     },
     save () {
-      console.log('@todo: save action')
-      this.$emit('save')
-      this.saveButtonVisible = false
+      if (this.isDirty) {
+        this.$emit('save')
+        console.log('@todo: save action')
+        // simulate save; the save action should be propagated to the parent wich passes a new attribute prop down
+        this.attribute = this.value
+        this.isDirty = false
+      }
     },
     updateValue (value) {
       if (value === this.attribute) {
         this.isDirty = false
-        this.saveButtonVisible = false
       } else {
         this.isDirty = true
-        this.saveButtonVisible = true
         this.$emit('input', value)
       }
     }
@@ -82,7 +81,7 @@ export default {
     transition: all 0.3s ease;
     .input {
         padding: 0.5em 0.2em;
-        min-width: 200px;
+        width: 100%;
         line-height: 160%;
         white-space: nowrap;
         overflow: hidden;
@@ -106,16 +105,10 @@ export default {
       }
     }
     .icon {
-      font-size: 0;
+      font-size: 1.1rem;
       padding: 0 0.2em;
       color: $gray50;
       cursor: pointer;
-    }
-    /* both states combined */
-    &:hover, &.editing {
-      .icon {
-        font-size: 1.1rem;
-      }
     }
   }
 }
