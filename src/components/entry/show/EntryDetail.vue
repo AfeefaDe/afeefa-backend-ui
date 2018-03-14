@@ -18,11 +18,10 @@
             <div class="entryDetail generalTab__splitViewChild">
 
             <entry-text-attribute
+              :attribute="entry.title"
               :name="$t('entries.title')"
               :isMultiline="false"
-              :editable="true">
-                {{ entry.title }}
-            </entry-text-attribute>
+              :editable="true"/>
 
               <entry-detail-property
                 name="Facetten"

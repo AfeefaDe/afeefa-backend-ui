@@ -1,23 +1,24 @@
 <template>
   <div class="textAttribute">
       <p class="textAttribute__name">{{ name }}</p>
-      <div :class="['textAttribute__container', {editing: isEditing}]">
-        <p :class="['content', {multiline: isMultiline}]"
+      <div :class="['textAttribute__container']">
+        <div :class="['content', {multiline: isMultiline}, {editing: isEditing}]"
           contenteditable="true"
           ref="editable"
           v-on:focus="focusElement"
-          v-on:blur="blurElement">
-          <slot/>
-        </p>
-        <i v-if="isEditing" class="material-icons icon" v-on:click="saveElement">check</i>
-        <i v-else class="material-icons icon" v-on:click="focusElement">edit</i>
+          v-on:blur="blurElement"
+          @keyup.enter="save">
+          {{attribute}}
+        </div>
+        <i v-show="isEditing" class="material-icons icon" v-on:click="save">check</i>
+        <i v-show="!isEditing" class="material-icons icon" v-on:click="startEditing">edit</i>
       </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['name', 'isMultiline'],
+  props: ['attribute', 'name', 'isMultiline'],
   data () {
     return {
       isEditing: false
@@ -26,14 +27,15 @@ export default {
   methods: {
     focusElement () {
       this.isEditing = true
-      this.$nextTick(() => this.$refs.editable.focus())
     },
     blurElement () {
       this.isEditing = false
-      this.$nextTick(() => this.$refs.editable.blur())
     },
-    saveElement () {
+    save () {
       console.log('@todo: save action')
+    },
+    startEditing () {
+      this.$nextTick(() => this.$refs.editable.focus())
     }
   }
 }
@@ -50,15 +52,30 @@ export default {
   &__container {
     display: flex;
     align-items: center;
-    border-bottom: 2px solid transparent;
     transition: all 0.3s ease;
     .content {
         padding: 0.5em 0.2em;
-        flex-grow: 2;
-        margin: 0;
+        min-width: 200px;
         line-height: 160%;
         white-space: nowrap;
+        overflow: hidden;
         outline: 0;
+        border-bottom: 2px solid transparent;
+        /* hover state */
+        &:hover {
+          border-bottom-color: $gray50;
+        }
+        /* edit state */
+        &.editing {
+          border-bottom-color: $green;
+        }
+        br {
+          display: none;
+        }
+        * {
+          display: inline;
+          white-space: nowrap;
+        }
         &.multiline * { /* '*' means: ignore v-if=false comments that force empty lines */
           white-space: pre-wrap;
         }
@@ -69,23 +86,24 @@ export default {
       color: $gray50;
       cursor: pointer;
     }
-
-    /* hover state */
-    &:hover {
-      border-bottom-color: $gray50;
-    }
-    /* edit state */
-    &.editing {
-      border-bottom-color: $green;
-    }
     /* both states combined */
     &:hover, &.editing {
       .icon {
-        font-size: 1.3rem;
-        color: $black;
+        font-size: 1.1rem;
       }
     }
   }
 }
 
+[contenteditable="true"] {
+    white-space: nowrap;
+    overflow: hidden;
+}
+[contenteditable="true"] br {
+    display:none;
+}
+[contenteditable="true"] * {
+    display:inline;
+    white-space:nowrap;
+}
 </style>
