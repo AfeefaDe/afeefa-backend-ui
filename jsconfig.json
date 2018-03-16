@@ -5,9 +5,13 @@
       "@/*": [
         "src/*"
       ],
-      "data/*": [
+      "uidata/*": [
         "node_modules/afeefa-ui-data/lib/*"
       ]
     }
-  }
+  },
+  "include": [
+    "src",
+    "node_modules/afeefa-ui-data/lib"
+  ]
 }
