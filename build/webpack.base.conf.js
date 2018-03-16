@@ -26,10 +26,7 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
       'uidata': uiData,
-      'variables': resolve('src/assets/styles/variables.scss'),
-      'mixins': resolve('src/assets/styles/mixins.scss'),
-      'materialize': resolve('/node_modules/materialize-css/sass'),
-      'jquery': resolve('node_modules/jquery/dist/jquery')
+      'materialize': resolve('/node_modules/materialize-css/sass')
     },
     symlinks: false
   },
@@ -52,7 +49,10 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), uiData]
+        include: [resolve('src'), resolve('test'), uiData],
+        options: {
+          cacheDirectory: process.env.NODE_ENV === 'production' ? false : resolve('.babel')
+        }
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

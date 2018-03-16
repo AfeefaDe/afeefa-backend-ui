@@ -1,5 +1,5 @@
 // import materialize js
-import 'materialize-css/dist/js/materialize.min.js'
+import 'materialize-css'
 // import vue multiselect style
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 
