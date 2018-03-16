@@ -21,6 +21,9 @@
               :attribute="entry.title"
               :name="$t('entries.title')"
               :isMultiline="false"
+              :maxChar="150"
+              validate="required|max:150"
+              fieldName="title"
               :editable="true"/>
 
               <entry-detail-property
@@ -336,6 +339,7 @@ export default {
   }
   > .generalTab__splitViewChild {
     width: 50%;
+    padding: 1em;
     @media screen and (max-width: $break-medium) {
       width: 100%;
     }

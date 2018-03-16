@@ -1,23 +1,38 @@
 <template>
   <div class="textAttribute">
-      <p class="textAttribute__name">{{ name }}</p>
-      <div :class="['textAttribute__container', {editing: isEditing}, {dirty: isDirty}]">
-        <i v-show="!isEditing" class="material-icons icon" v-on:click="startEditing">edit</i>
-        <input type="text" :class="['browser-default', 'input']"
+      <label class="textAttribute__label" :for="fieldName">
+        <span>{{ name }}</span>
+        <span class="textAttribute__hint" v-if="maxChar && isEditing"> ({{value.length}}/{{maxChar}})</span>
+      </label>
+      <div :class="['textAttribute__container']">
+        <i :class="['material-icons', 'icon', {editing: isEditing}]" v-on:click="startEditing">edit</i>
+        <div class="textAttribute__inputContainer">
+          <input
+          type="text"
+          :id="fieldName"
+          :name="fieldName"
+          :class="['browser-default', 'input', {'input--error': errors.has(fieldName) }, {editing: isEditing}, {dirty: isDirty}]"
           ref="editable"
+
           v-model="value"
           v-on:focus="focusElement"
           v-on:blur="blurElement"
-          @keyup.enter="save"
-          @input="updateValue($event.target.value)"
-          />
+
+          data-vv-validate-on="input|blur"
+          v-validate.initial="validate"
+          :data-vv-as="name"
+
+          @keyup.enter="save"/>
+          <span v-show="errors.has(fieldName)" class="validation-error">{{ errors.first(fieldName) }}</span>
+        </div>
       </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['attribute', 'name', 'isMultiline'],
+  props: ['attribute', 'name', 'isMultiline', 'maxChar', 'validate', 'fieldName'],
+  inject: ['$validator'],
   data () {
     return {
       isEditing: false,
@@ -31,6 +46,10 @@ export default {
   watch: {
     attribute () {
       this.value = this.attribute
+    },
+    value () {
+      this.isDirty = !(this.value === this.attribute)
+      console.log(this.isDirty)
     }
   },
   methods: {
@@ -47,20 +66,18 @@ export default {
       }
     },
     save () {
-      if (this.isDirty) {
+      console.log(this.errors.has(this.fieldName))
+      if (this.isDirty && !this.errors.has(this.fieldName)) {
         this.$emit('save')
         console.log('@todo: save action')
         // simulate save; the save action should be propagated to the parent wich passes a new attribute prop down
         this.attribute = this.value
         this.isDirty = false
-      }
-    },
-    updateValue (value) {
-      if (value === this.attribute) {
-        this.isDirty = false
+        this.$nextTick(() => this.$refs.editable.blur())
+        // reset sate for failed navigation
       } else {
-        this.isDirty = true
-        this.$emit('input', value)
+        this.value = this.attribute
+        this.isDirty = false
       }
     }
   }
@@ -70,45 +87,56 @@ export default {
 <style lang="scss" scoped>
 .textAttribute {
   margin: 2em 0;
-  &__name {
+  &__label {
     text-transform: uppercase;
+    font-size: 1rem;
     color: $gray50;
     margin: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__hint {
+    font-size: 0.8em;
+  }
+  &__inputContainer {
+    width: 100%;
   }
   &__container {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     transition: all 0.3s ease;
     .input {
         padding: 0.5em 0.2em;
-        width: 100%;
         line-height: 160%;
+        width: 100%;
         white-space: nowrap;
         overflow: hidden;
         outline: 0;
         border: 0;
         border-bottom: 2px solid transparent;
+        transition: border-bottom-color 0.4s ease;
         /* hover state */
         &:hover {
           border-bottom-color: $gray50;
         }
-    }
-    /* edit state */
-    &.editing {
-      .input {
-        border-bottom-color: $green;
-      }
-    }
-    &.dirty {
-      .input {
-        border-bottom-color: $yellow;
-      }
+        &--error {
+          border-bottom-color: $red!important;
+        }
+        &.editing {
+          border-bottom-color: $green;
+        }
+        &.dirty {
+          border-bottom-color: $yellow;
+        }
     }
     .icon {
       font-size: 1.1rem;
       padding: 0 0.2em;
       color: $gray50;
       cursor: pointer;
+      &.editing {
+        color: inherit;
+      }
     }
   }
 }
