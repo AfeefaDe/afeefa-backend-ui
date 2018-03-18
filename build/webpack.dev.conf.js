@@ -9,7 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const StylelintPlugin = require('stylelint-webpack-plugin')
-const AutoDllPlugin = require('autodll-webpack-plugin')
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 
 const portfinder = require('portfinder')
 
@@ -68,30 +68,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new webpack.PrefetchPlugin('tinymce'),
     new webpack.PrefetchPlugin('materialize-css'),
 
-    new AutoDllPlugin({
-      inject: true, // will inject the DLL bundles to index.html
-      filename: '[name]_[hash].js',
-      entry: {
-        vendor: [
-          'autosize',
-          'flatpickr',
-          'lodash',
-          'materialize-css',
-          'moment',
-          'spin.js',
-          'timeago.js',
-          'tinymce',
-          'vee-validate',
-          'vue',
-          'vue-i18n',
-          'vue-multiselect',
-          'vue-resource',
-          'vue-router',
-          'vue-swatches',
-          'vue2-leaflet',
-          'vuex'
-        ]
-      }
+    new webpack.DllReferencePlugin({
+      context: __dirname + '/..',
+      manifest: 'dist/vendor.manifest.json',
     }),
 
     // https://github.com/ampedandwired/html-webpack-plugin
@@ -100,6 +79,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true
     }),
+
+    new AddAssetHtmlPlugin({
+      filepath: require.resolve('../dist/vendor.js'),
+      includeSourcemap: false
+    }),
+
     // copy custom static assets
     new CopyWebpackPlugin([
       {
