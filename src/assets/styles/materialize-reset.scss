@@ -1,0 +1,23 @@
+/* stylelint-disable selector-class-pattern */
+
+input[type=text].browser-default {
+  border: 1px solid #DDDDDD;
+  background-color: white;
+  margin: 0;
+  padding: 3px;
+  height: auto;
+  line-height: 1em;
+
+  &:focus {
+    border: 1px solid #DDDDDD;
+    box-shadow: none;
+  }
+}
+
+select.browser-default {
+  padding: 2px 0;
+  height: auto;
+  line-height: 1em;
+}
+
+/* stylelint-enable selector-class-pattern */
