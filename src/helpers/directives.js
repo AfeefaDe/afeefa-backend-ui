@@ -8,3 +8,19 @@ Vue.directive('autosize', {
     })
   }
 })
+
+Vue.directive('focus', {
+  inserted: function (el) {
+    const x = window.scrollX
+    const y = window.scrollY
+    el.focus()
+    // prevent browser autoscrolling to focused input
+    window.scrollTo(x, y)
+  }
+})
+
+Vue.directive('select', {
+  inserted: function (el) {
+    el.select()
+  }
+})
