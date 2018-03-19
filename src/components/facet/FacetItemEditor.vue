@@ -69,11 +69,16 @@ export default {
 
   created () {
     this.facetItem = this.item.clone()
-    console.log(this.facetItem, this.item)
 
     Facet.Query.getAll().then(facets => {
       this.facets = facets
     })
+  },
+
+  watch: {
+    'facetItem.color' () {
+      this.item.previewColor = this.facetItem.color
+    }
   },
 
   methods: {
@@ -104,6 +109,7 @@ export default {
     },
 
     cancel () {
+      this.item.previewColor = null
       this.$emit('cancel', this.facetItem)
     },
 

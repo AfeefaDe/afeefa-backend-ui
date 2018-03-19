@@ -32,6 +32,12 @@ class Facet extends Model {
     }
   }
 
+  constructor () {
+    super()
+
+    this.previewColor = null
+  }
+
   serialize () {
     return {
       title: this.title,

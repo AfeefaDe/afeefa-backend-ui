@@ -80,6 +80,7 @@ export default {
     },
 
     cancel () {
+      this.facetItem.previewColor = null
       this.isEdit = false
     },
 

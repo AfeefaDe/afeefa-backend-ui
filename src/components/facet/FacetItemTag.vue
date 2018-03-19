@@ -28,12 +28,12 @@ export default {
     },
 
     // parent color may change
-    'facetItem.parent.color' () {
+    'facetItem.parent.previewColor' () {
       this.setColor()
     },
 
     // facet color may change
-    'facetItem.facet.color' () {
+    'facetItem.facet.previewColor' () {
       this.setColor()
     },
 
@@ -47,10 +47,10 @@ export default {
     setColor () {
       this.color = null
       if (this.facetItem.facet) {
-        this.color = this.facetItem.facet.color
+        this.color = this.facetItem.facet.previewColor || this.facetItem.facet.color
       }
       if (this.facetItem.parent) {
-        this.color = this.facetItem.parent.color || this.color
+        this.color = this.facetItem.parent.previewColor || this.facetItem.parent.color || this.color
       }
       this.color = this.facetItem.color || this.color
     },

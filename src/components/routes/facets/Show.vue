@@ -10,6 +10,7 @@
       <div>
         <div class="facet">
           <div class="facetInfo">
+            <div class="facetColorIcon" :style="facetColor ? {'background-color': facetColor} : ''"></div>
             <h4>{{ facet.title }}</h4>
             <a href="" @click.prevent="editFacet()" class="inlineEditLink" v-if="!isEditable">
               Ändern
@@ -94,6 +95,24 @@ export default {
     this.loadFacet()
   },
 
+  computed: {
+    facetColor () {
+      let color = null
+      if (this.editableFacet) {
+        color = this.editableFacet.color
+      } else {
+        color = this.facet.color
+      }
+      return color
+    }
+  },
+
+  watch: {
+    'editableFacet.color' (color) {
+      this.facet.previewColor = color || null
+    }
+  },
+
   methods: {
     createNewFacetItem (parentItem) {
       const newFacetItem = new FacetItem()
@@ -113,6 +132,7 @@ export default {
     },
 
     cancelEditFacet (facet) {
+      this.facet.previewColor = null
       this.editableFacet = null
       this.isEditable = false
     },
@@ -187,6 +207,13 @@ export default {
     line-height: 1.4em;
     margin: 0;
   }
+}
+
+.facetColorIcon {
+  width: 1.3em;
+  height: 1.3em;
+  margin-right: 8px;
+  background-color: $gray30;
 }
 
 .inlineEditLink {

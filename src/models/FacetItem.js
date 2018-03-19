@@ -38,10 +38,7 @@ class FacetItem extends Model {
     super()
 
     this.new_facet_id = null
-  }
-
-  afterDeserialize () {
-    // console.log(this.parent)
+    this.previewColor = null
   }
 
   serialize () {
