@@ -62,6 +62,17 @@ class Facet extends Model {
     }
     return null
   }
+
+  getAllFacetItems () {
+    const facetItems = []
+    for (const facetItem of this.facet_items) {
+      facetItems.push(facetItem)
+      for (const subFacetItem of facetItem.sub_items) {
+        facetItems.push(subFacetItem)
+      }
+    }
+    return facetItems
+  }
 }
 
 export default Registry.add(Facet)

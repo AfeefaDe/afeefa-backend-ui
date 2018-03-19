@@ -66,6 +66,12 @@
               </span>
             </p>
 
+            <span v-for="facet in facets" :key="facet.id">
+              <span v-for="facetItem in getSelectedFacetItems(facet, item)" :key="facetItem.id">
+                <facet-item-tag :facetItem="facetItem" />
+              </span>
+            </span>
+
             <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
 
             <div>
@@ -112,6 +118,8 @@ import AnnotationTag from '@/components/AnnotationTag'
 import EntryIcon from '@/components/entry/EntryIcon'
 import Spinner from '@/components/Spinner'
 import moment from 'moment'
+import Facet from '@/models/Facet'
+import FacetItemTag from '@/components/facet/FacetItemTag'
 
 export default {
   props: {items: {}, limit: {}, sortFunction: {}, sortOrder: {}, showIcon: {}, options: {}, modifyRoute: {default: true}},
@@ -119,6 +127,7 @@ export default {
   data () {
     const options = this.options || {}
     return {
+      facets: [],
       currentPageSize: 15,
       currentPage: 1,
       currentNumItems: 0,
@@ -139,6 +148,10 @@ export default {
 
   created () {
     this.initPageProperties()
+
+    Facet.Query.getAll().then(facets => {
+      this.facets = facets
+    })
   },
 
   watch: {
@@ -164,6 +177,12 @@ export default {
   },
 
   methods: {
+    getSelectedFacetItems (facet, item) {
+      return facet.getAllFacetItems().filter(facetItem => {
+        return item.facet_items.includes(facetItem)
+      })
+    },
+
     dayOfEvent (item) {
       let day = moment(item.date_start).date()
       if (day < 10) {
@@ -213,7 +232,8 @@ export default {
     Pagination,
     Spinner,
     AnnotationTag,
-    EntryIcon
+    EntryIcon,
+    FacetItemTag
   }
 }
 </script>
@@ -232,6 +252,12 @@ export default {
     top: .5em;
     right: 0;
   }
+}
+
+.facetItemTag {
+  display: inline-block;
+  margin-right: .4em;
+  margin-bottom: .4em;
 }
 
 .entryList {

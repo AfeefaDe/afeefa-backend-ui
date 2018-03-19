@@ -1,5 +1,5 @@
 <template>
-  <ul class="categoryItemTagList">
+  <ul class="facetItemTagList">
     <li v-for="facetItem in facetItems" :key="facetItem.id">
       <facet-item-tag :facetItem="facetItem" />
     </li>
@@ -21,7 +21,7 @@ export default {
 
 
 <style lang="scss" scoped>
-.categoryItemTagList {
+.facetItemTagList {
   margin: 0;
 
   li {

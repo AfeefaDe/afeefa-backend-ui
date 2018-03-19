@@ -76,10 +76,12 @@ export default {
 
 <style lang="scss" scoped>
 .facetItemTag {
-  border-radius: .1em;
+  border-radius: .2em;
   background-color: $gray30;
   display: inline-block;
   color: $black;
-  padding: 0 0.4em;
+  padding: 0.3em 0.4em;
+  line-height: 1em;
+  font-size: .9em;
 }
 </style>

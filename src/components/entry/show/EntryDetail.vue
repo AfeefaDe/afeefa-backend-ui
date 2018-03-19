@@ -27,17 +27,13 @@
               :editable="true"/>
 
               <entry-detail-property
-                name="Facetten"
+                name="Kategorien"
                 iconName="bookmark_border">
-                <span>Hier kommen die Facetten hin</span>
-                <div v-for="facet in facets" :key="facet.id">
-                  <strong>{{ facet.title }}</strong>
-                  <ul>
-                    <li v-for="facetItem in getSelectedFacetItems(facet)" :key="facetItem.id">
-                      {{ facetItem.title }}
-                    </li>
-                  </ul>
-                </div>
+                <span v-for="facet in facets" :key="facet.id">
+                  <span v-for="facetItem in getSelectedFacetItems(facet)" :key="facetItem.id">
+                    <facet-item-tag :facetItem="facetItem" />
+                  </span>
+                </span>
               </entry-detail-property>
 
               <entry-detail-property
@@ -229,6 +225,7 @@ import ImageContainer from '@/components/ImageContainer'
 import TabBar from '@/components/TabBar'
 import AnnotationTag from '@/components/AnnotationTag'
 import ResourceItem from '@/components/ResourceItem'
+import FacetItemTag from '@/components/facet/FacetItemTag'
 
 import EntryDetailProperty from './EntryDetailProperty'
 import EntryTextAttribute from './EntryTextAttribute'
@@ -274,7 +271,7 @@ export default {
     },
 
     getSelectedFacetItems (facet) {
-      return facet.facet_items.filter(item => {
+      return facet.getAllFacetItems().filter(item => {
         return this.entry.facet_items.includes(item)
       })
     }
@@ -323,6 +320,7 @@ export default {
     AnnotationTag,
     ContactList,
     ResourceItem,
+    FacetItemTag,
     EntryDetailHeader,
     EntryDetailFooter
   }
@@ -330,6 +328,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.facetItemTag {
+  display: inline-block;
+  margin-right: .4em;
+  margin-bottom: .4em;
+}
+
 .generalTab--splitView {
   display: flex;
   justify-content: space-between;
