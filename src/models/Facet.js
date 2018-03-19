@@ -14,7 +14,11 @@ class Facet extends Model {
 
   static attributes () {
     return {
-      title: DataTypes.String
+      title: DataTypes.String,
+
+      color: DataTypes.String,
+
+      color_sub_items: DataTypes.Boolean
     }
   }
 
@@ -30,7 +34,8 @@ class Facet extends Model {
 
   serialize () {
     return {
-      title: this.title
+      title: this.title,
+      color: this.color
     }
   }
 

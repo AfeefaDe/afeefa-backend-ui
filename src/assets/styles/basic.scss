@@ -191,3 +191,13 @@ $sidebarWidth: 350px;
 .spacingLeft {
     margin-left: 0.2em;
 }
+
+.inlineEditLink {
+  color: $gray30;
+  font-size: .8em;
+  text-decoration: underline;
+
+  &:hover {
+    color: $secondaryBlue;
+  }
+}

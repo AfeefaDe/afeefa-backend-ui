@@ -32,6 +32,11 @@ export default {
       this.setColor()
     },
 
+    // facet color may change
+    'facetItem.facet.color' () {
+      this.setColor()
+    },
+
     // color may change
     'facetItem.color' () {
       this.setColor()
@@ -40,10 +45,14 @@ export default {
 
   methods: {
     setColor () {
-      this.color = this.facetItem.color
-      if (this.facetItem.parent) {
-        this.color = this.facetItem.parent.color
+      this.color = null
+      if (this.facetItem.facet) {
+        this.color = this.facetItem.facet.color
       }
+      if (this.facetItem.parent) {
+        this.color = this.facetItem.parent.color || this.color
+      }
+      this.color = this.facetItem.color || this.color
     },
 
     hasDarkBackground () {

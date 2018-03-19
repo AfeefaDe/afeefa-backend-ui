@@ -11,32 +11,28 @@
         <div class="facet">
           <div class="facetInfo">
             <h4>{{ facet.title }}</h4>
-            <a href="" @click.prevent="editFacet()" class="editLink" v-if="!isEditable">
+            <a href="" @click.prevent="editFacet()" class="inlineEditLink" v-if="!isEditable">
               Ändern
             </a>
-            <a href="" @click.prevent="removeFacet()" class="editLink" v-if="!isEditable">
+            <a href="" @click.prevent="removeFacet()" class="inlineEditLink" v-if="!isEditable">
               Löschen
             </a>
-            <a href="" @click.prevent="cancelEditFacet()" class="editLink" v-if="isEditable">
+            <a href="" @click.prevent="cancelEditFacet()" class="inlineEditLink" v-if="isEditable">
               Abbrechen
             </a>
           </div>
 
-          <div v-if="isEditable" class="facetEditor editor">
-            <div class="editorForm">
-              <input class="browser-default" type="text" placeholder="Titel"
-                v-focus v-select
-                v-model="editableFacet.title"
-                @keyup.enter="updateFacet()"
-                @keyup.esc="cancelEditFacet()">
-              <button type="button" class="btn btn-small waves-effect waves-light deleteButton" @click="updateFacet()">
-                <i class="material-icons left">done</i>
-              </button>
-            </div>
+          <div v-if="isEditable">
+            <facet-item-editor-form
+              :item="editableFacet"
+              :hasAttributes="true"
+              :hasColor="true"
+              @update="updateFacet"
+              @cancel="cancelEditFacet" />
           </div>
         </div>
 
-        <div v-for="facetItem in this.facetItems" :key="facetItem.id" class="facetItem mainFacetItem">
+        <div v-for="facetItem in this.facetItems" :key="facetItem.id">
           <facet-item-view
             :facetItem="facetItem"
             :bus="bus"
@@ -44,7 +40,7 @@
             @update="loadFacetItems"
             @remove="loadFacetItems" />
 
-          <div v-for="subFacetItem in facetItem.sub_items" :key="subFacetItem.id" class="facetItem subFacetItem">
+          <div v-for="subFacetItem in facetItem.sub_items" :key="subFacetItem.id">
             <facet-item-view
               :facetItem="subFacetItem"
               :bus="bus"
@@ -77,8 +73,7 @@ import Vue from 'vue'
 import Facet from '@/models/Facet'
 import FacetItem from '@/models/FacetItem'
 import FacetItemView from '@/components/facet/FacetItem'
-import FacetItemTag from '@/components/facet/FacetItemTag'
-import FacetItemEditor from '@/components/facet/FacetItemEditor'
+import FacetItemEditorForm from '@/components/facet/FacetItemEditorForm'
 import Swatches from 'vue-swatches'
 import 'vue-swatches/dist/vue-swatches.min.css'
 
@@ -90,7 +85,6 @@ export default {
       facet: null,
       facetItems: [],
       editableFacet: null,
-      newFacetItem: new FacetItem(),
       isEditable: false,
       bus: new Vue()
     }
@@ -103,10 +97,12 @@ export default {
   methods: {
     createNewFacetItem (parentItem) {
       const newFacetItem = new FacetItem()
-      newFacetItem.title = 'Neu'
-      newFacetItem.facet = this.facet
+      newFacetItem.title = 'Neues Attribut'
+      // push facet and parent to new items relations
+      // in order to make them cloneable
+      newFacetItem.$rels.facet.id = this.facet.id
       if (parentItem) {
-        newFacetItem.parent = parentItem
+        newFacetItem.$rels.parent.id = parentItem.id
       }
       return newFacetItem
     },
@@ -171,52 +167,30 @@ export default {
 
   components: {
     FacetItemView,
-    FacetItemTag,
-    FacetItemEditor,
+    FacetItemEditorForm,
     ColorPicker: Swatches
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.facet {
+  margin-bottom: 20px;
+}
+
 .facetInfo {
   display: flex;
   align-items: center;
 
   h4 {
     font-size: 2em;
-    line-height: 0;
+    line-height: 1.4em;
+    margin: 0;
   }
 }
 
-.facetEditor {
-  margin-bottom: 20px;
-}
-
-.editor {
-  .editorForm {
-    display: inline-flex;
-    align-items: center;
-    margin-top: .2em;
-    background-color: #EEEEEE;
-    padding: .3em;
-  }
-
-  .editorForm > * {
-    line-height: 1em;
-    margin-right: .4em !important;
-  }
-}
-
-.editLink {
+.inlineEditLink {
   margin-top: 8px;
   margin-left: 10px;
-  color: $gray30;
-  font-size: .8em;
-  text-decoration: underline;
-
-  &:hover {
-    color: $secondaryBlue;
-  }
 }
 </style>
