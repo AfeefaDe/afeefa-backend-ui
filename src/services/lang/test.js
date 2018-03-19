@@ -34,7 +34,8 @@ export default {
     spokenLanguages: '*',
     tags: '*',
     chapters: '*',
-    singleChapter: '*'
+    singleChapter: '*',
+    facetItemAssociate: '*'
   },
   orgaTypes: {
     '2': {

@@ -34,7 +34,8 @@ export default {
     spokenLanguages: 'Gesprochene Sprache | Gesprochene Sprachen',
     tags: 'Tags',
     chapters: 'Wissensportal',
-    singleChapter: 'Kapitel'
+    singleChapter: 'Kapitel',
+    facetItemAssociate: 'Zuordnen'
   },
   tabs: {
     generalTab: 'Allgemeines',

@@ -3,13 +3,19 @@
     <div v-if="facetItem.id" :class="['facetItem', {parentItem: !isSub, subItem: isSub, editItem: isEdit}]">
       <div>
         <facet-item-tag :facetItem="facetItem" v-if="!isEdit" />
+
         <span v-if="!isEdit">
-          <a href="" @click.prevent="edit()">
+          <a href="" @click.prevent="edit()" class="inlineEditLink">
             Ändern
           </a>
+          <router-link :to="{name: 'facetitem.associate', params: {facetItemId: facetItem.id}}" class="inlineEditLink">
+            Zuordnen
+          </router-link>
         </span>
+
         <facet-item-editor
           v-if="isEdit"
+          class="editor"
           :item="facetItem"
           :hasColor="!isSub"
           @cancel="cancel"
@@ -21,11 +27,12 @@
     <div v-else :class="['facetItem', 'lastItem', {parentItem: !isSub, subItem: isSub, editItem: isEdit}]">
       <div>
         <div>
-          <a href="" @click.prevent="edit()" v-if="!isEdit">
+          <a href="" @click.prevent="edit()" v-if="!isEdit" class="inlineEditLink">
             Hinzufügen
           </a>
           <facet-item-editor
             v-if="isEdit"
+            class="editor"
             :item="facetItem"
             :hasColor="!isSub"
             @cancel="cancel"
@@ -133,15 +140,9 @@ export default {
 
 
 <style lang="scss" scoped>
-a {
+.inlineEditLink {
   margin-left: 6px;
-  color: $gray30;
   font-size: .8em;
-  text-decoration: underline;
-
-  &:hover {
-    color: $secondaryBlue;
-  }
 }
 
 .facetItemTag {
@@ -172,7 +173,7 @@ a {
   > div:before {
     content: "";
     position: absolute;
-    top: 17px;
+    top: 14px;
     width: 1px;
     height: 0;
     padding-left: 12px;
@@ -219,10 +220,16 @@ a {
   }
 }
 
-.editor {
+.facetItemEditor {
   margin-bottom: 10px;
   .parentItem & {
-    margin-bottom: 5px;
+    margin-bottom: 0;
+  }
+}
+
+.editor {
+  .subItem & {
+    margin-bottom: 6px;
   }
 }
 </style>

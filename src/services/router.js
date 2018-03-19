@@ -25,6 +25,7 @@ import EditChapter from '@/components/routes/chapters/Edit'
 
 import ListFacets from '@/components/routes/facets/List'
 import ShowFacet from '@/components/routes/facets/Show'
+import AssociateFacetItem from '@/components/routes/facets/Associate'
 
 import Search from '@/components/routes/Search'
 import UserSettings from '@/components/routes/UserSettings'
@@ -188,6 +189,12 @@ const routes = [
             path: ':id',
             name: 'facets.show',
             component: ShowFacet,
+            props: true
+          },
+          {
+            path: ':id/associate/:facetItemId',
+            name: 'facetitem.associate',
+            component: AssociateFacetItem,
             props: true
           }
         ]

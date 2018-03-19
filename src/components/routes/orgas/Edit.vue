@@ -10,7 +10,6 @@
         @setCurrentTab="setCurrentTab">
 
         <section slot="generalTab">
-
           <div v-if="item.id">
             <div v-for="facet in facets" :key="facet.id">
               <h2>{{ facet.title }}</h2>
@@ -101,7 +100,8 @@ import NetworkSelector from '@/components/entry/edit/actor-relations/NetworkSele
 import PartnerSelector from '@/components/entry/edit/actor-relations/PartnerSelector'
 import ProjectSelector from '@/components/entry/edit/actor-relations/ProjectSelector'
 import NetworkMemberSelector from '@/components/entry/edit/actor-relations/NetworkMemberSelector'
-import FacetSelector from '@/components/entry/edit/actor-relations/FacetSelector'
+
+import FacetSelector from '@/components/facet/FacetSelector'
 
 export default {
   mixins: [BeforeRouteLeaveMixin, EntryEditApiSlotMixin],

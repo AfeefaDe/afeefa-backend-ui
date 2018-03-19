@@ -17,7 +17,7 @@
       Löschen
     </a>
 
-    <div>
+    <div class="editorForm">
       <facet-item-editor-form
         v-if="!isMove"
         :item="facetItem"
@@ -133,6 +133,10 @@ export default {
 <style lang="scss" scoped>
 .facetItemTag {
   font-size: 1.1em;
+}
+
+.editorForm {
+  margin-top: 2px;
 }
 
 .inlineEditLink {

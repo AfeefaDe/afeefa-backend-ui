@@ -1,4 +1,5 @@
 import Facet from '@/models/Facet'
+import FacetItemOwnersResource from '@/resources/relations/FacetItemOwners'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Registry from 'uidata/model/Registry'
@@ -11,7 +12,9 @@ class FacetItem extends Model {
     return {
       title: DataTypes.String,
 
-      color: DataTypes.String
+      color: DataTypes.String,
+
+      count_owners: DataTypes.Int
     }
   }
 
@@ -30,6 +33,11 @@ class FacetItem extends Model {
       facet: {
         type: Relation.HAS_ONE,
         Model: Facet
+      },
+
+      owners: {
+        type: Relation.HAS_MANY,
+        Resource: FacetItemOwnersResource
       }
     }
   }

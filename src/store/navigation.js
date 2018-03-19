@@ -27,14 +27,14 @@ const menuTree = {
         {
           route: 'orgas.show',
           title: 'headlines.show',
-          level: 4,
+          level: 3,
           children: [
-            { route: 'orgas.edit', title: 'headlines.edit', level: 5 },
-            { route: 'orgas.contactedit', title: 'headlines.contactEdit', level: 5 },
-            { route: 'orgas.contactnew', title: 'headlines.contactNew', level: 5 }
+            { route: 'orgas.edit', title: 'headlines.edit', level: 4 },
+            { route: 'orgas.contactedit', title: 'headlines.contactEdit', level: 4 },
+            { route: 'orgas.contactnew', title: 'headlines.contactNew', level: 4 }
           ]
         },
-        { route: 'orgas.new', title: 'headlines.new', level: 4 }
+        { route: 'orgas.new', title: 'headlines.new', level: 3 }
       ]
     },
     {
@@ -51,14 +51,14 @@ const menuTree = {
         {
           route: 'events.show',
           title: 'headlines.show',
-          level: 4,
+          level: 3,
           children: [
-            { route: 'events.edit', title: 'headlines.edit', level: 5 },
-            { route: 'events.contactedit', title: 'headlines.contactEdit', level: 5 },
-            { route: 'events.contactnew', title: 'headlines.contactNew', level: 5 }
+            { route: 'events.edit', title: 'headlines.edit', level: 4 },
+            { route: 'events.contactedit', title: 'headlines.contactEdit', level: 4 },
+            { route: 'events.contactnew', title: 'headlines.contactNew', level: 4 }
           ]
         },
-        { route: 'events.new', title: 'headlines.new', level: 4 }
+        { route: 'events.new', title: 'headlines.new', level: 3 }
       ]
     },
     {
@@ -72,8 +72,8 @@ const menuTree = {
       level: 2,
       hint: state => { return state.numChapters },
       children: [
-        { route: 'chapters.edit', title: 'headlines.edit', level: 4 },
-        { route: 'chapters.new', title: 'headlines.new', level: 4 }
+        { route: 'chapters.edit', title: 'headlines.edit', level: 3 },
+        { route: 'chapters.new', title: 'headlines.new', level: 3 }
       ]
     },
     {
@@ -82,7 +82,14 @@ const menuTree = {
       action: null,
       level: 1,
       children: [
-        { route: 'facets.show', title: 'headlines.show', level: 4 }
+        {
+          route: 'facets.show',
+          title: 'headlines.show',
+          level: 3,
+          children: [
+            { route: 'facetitem.associate', title: 'headlines.facetItemAssociate', level: 3 }
+          ]
+        }
       ]
     },
     {
@@ -121,7 +128,7 @@ const createPathNavigation = (node, tmpPath, currentRouteName) => {
 
 const createLevel1Navigation = (state, node, level1) => {
   node = Object.assign({}, node)
-  if (node.level < 4) {
+  if (node.level < 3) {
     if (node.hint) {
       node.hint = node.hint(state)
     } else {

@@ -48,6 +48,20 @@ class Facet extends Model {
   get info () {
     return super.info + ` title="${this.title}"`
   }
+
+  findFacetItem (facetItemId) {
+    for (const facetItem of this.facet_items) {
+      if (facetItem.id === facetItemId) {
+        return facetItem
+      }
+      for (const subFacetItem of facetItem.sub_items) {
+        if (subFacetItem.id === facetItemId) {
+          return subFacetItem
+        }
+      }
+    }
+    return null
+  }
 }
 
 export default Registry.add(Facet)

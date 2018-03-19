@@ -145,7 +145,6 @@ export default {
     },
 
     loadFacetItems () {
-      console.log('load facet items')
       this.facet.$rels.facet_items.Query.getAll().then(facetItems => {
         this.facetItems = facetItems
       })

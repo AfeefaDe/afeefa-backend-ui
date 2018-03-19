@@ -12,6 +12,11 @@
         <section slot="generalTab">
           <h2>Titel</h2>
 
+          <div v-for="facet in facets" :key="facet.id">
+            <h2>{{ facet.title }}</h2>
+            <facet-selector :owner="item" :facet="facet" />
+          </div>
+
           <title-input :item="item" />
 
           <h2>{{ $t("headlines.time") }}</h2>
@@ -105,6 +110,8 @@ import TitleInput from '@/components/entry/edit/TitleInput'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 import MediaImageInput from '@/components/entry/edit/MediaImageInput'
 
+import FacetSelector from '@/components/facet/FacetSelector'
+
 export default {
   mixins: [BeforeRouteLeaveMixin, EntryEditApiSlotMixin],
 
@@ -175,6 +182,7 @@ export default {
     HelpWantedForm,
     DescriptionForm,
     MediaImageInput,
+    FacetSelector,
 
     ImageContainer,
     CategorySelector,

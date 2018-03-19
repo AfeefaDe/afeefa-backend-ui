@@ -34,7 +34,8 @@ export default {
     spokenLanguages: 'Spoken Language | Spoken Languages',
     tags: 'Tags',
     chapters: 'Wiki',
-    singleChapter: 'Chapter'
+    singleChapter: 'Chapter',
+    facetItemAssociate: 'Associate'
   },
   orgaTypes: {
     '2': {
