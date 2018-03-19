@@ -3,6 +3,7 @@ import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
+import FacetFacetItemsResource from '@/resources/relations/FacetFacetItems'
 
 import FacetItem from './FacetItem'
 
@@ -21,7 +22,8 @@ class Facet extends Model {
     return {
       facet_items: {
         type: Relation.HAS_MANY,
-        Model: FacetItem
+        Model: FacetItem,
+        Resource: FacetFacetItemsResource
       }
     }
   }

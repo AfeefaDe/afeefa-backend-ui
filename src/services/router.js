@@ -24,7 +24,6 @@ import NewChapter from '@/components/routes/chapters/New'
 import EditChapter from '@/components/routes/chapters/Edit'
 
 import ListFacets from '@/components/routes/facets/List'
-import EditFacet from '@/components/routes/facets/Edit'
 import ShowFacet from '@/components/routes/facets/Show'
 
 import Search from '@/components/routes/Search'
@@ -177,7 +176,7 @@ const routes = [
         ]
       },
       {
-        path: 'facets',
+        path: 'categories',
         component: { template: '<router-view></router-view>' },
         children: [
           {
@@ -186,15 +185,9 @@ const routes = [
             component: ListFacets
           },
           {
-            path: ':id/show',
+            path: ':id',
             name: 'facets.show',
             component: ShowFacet,
-            props: true
-          },
-          {
-            path: ':id/edit',
-            name: 'facets.edit',
-            component: EditFacet,
             props: true
           }
         ]

@@ -81,9 +81,8 @@ const menuTree = {
       title: 'headlines.categories',
       action: null,
       level: 1,
-      hint: state => { return state.numChapters },
       children: [
-        { route: 'facets.edit', title: 'headlines.edit', level: 4 }
+        { route: 'facets.show', title: 'headlines.show', level: 4 }
       ]
     },
     {

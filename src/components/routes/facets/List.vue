@@ -1,30 +1,30 @@
 <template>
-  <div>
+  <div class="row">
     <div class="col s12 m12">
       <div class="mainCard">
         <div class="mainCard__header">
           <h2 class="mainCard__headerTitle">Kategorien</h2>
         </div>
 
-        <input type="text" v-model="newFacet.title" @keyup.enter="addFacet">
-        <button class="btn waves-effect waves-light saveButton" type="submit" @click="addFacet">
-          <i class="material-icons left">done</i>
-          Hinzufügen
-        </button>
+        <div>
+          <div v-for="facet in facets" :key="facet.id" class="facet">
+            <div>
+              <router-link :to="{name: 'facets.show', params: {id: facet.id}}" class="nav">
+                <h4 class="title">{{ facet.title }}</h4>
+                <span class="icon"><i class="material-icons">navigate_next</i></span>
+              </router-link>
+              <facet-item-tag-list :facetItems="facet.facet_items" />
+            </div>
+          </div>
+        </div>
 
         <div>
-          <div v-for="facet in facets" :key="facet.id">
-            <router-link :to="{name: 'facets.show', params: {id: facet.id}}">
-              <h4>{{ facet.title }}</h4>
-              <ul>
-                <li v-for="facetItem in facet.facet_items" :key="facetItem.id">
-                  {{ facetItem.title }}
-                </li>
-              </ul>
-            </router-link>
-            <router-link :to="{name: 'facets.edit', params: {id: facet.id}}">Ändern</router-link>
-            <a href="" @click.prevent="removeFacet(facet)">Löschen</a>
-          </div>
+          <h4>Neue Kategorie erstellen</h4>
+          <input type="text" placeholder="Titel" v-model="newFacet.title" @keyup.enter="addFacet">
+          <button class="btn btn-small waves-effect waves-light saveButton" type="submit" @click="addFacet">
+            <i class="material-icons left">done</i>
+            Anlegen
+          </button>
         </div>
       </div>
     </div>
@@ -32,13 +32,16 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import Facet from '@/models/Facet'
+import FacetItemTagList from '@/components/facet/FacetItemTagList'
 
 export default {
   data () {
     return {
       facets: [],
-      newFacet: new Facet()
+      newFacet: new Facet(),
+      editableFacets: {}
     }
   },
 
@@ -47,6 +50,20 @@ export default {
   },
 
   methods: {
+    editFacet (facet) {
+      facet.__clone = facet.clone()
+      Vue.set(this.editableFacets, facet.id, true)
+    },
+
+    cancelEditFacet (facet) {
+      delete facet.__clone
+      Vue.delete(this.editableFacets, facet.id)
+    },
+
+    isEditable (facet) {
+      return !!this.editableFacets[facet.id]
+    },
+
     loadFacets () {
       Facet.Query.getAll().then(facets => {
         this.facets = facets
@@ -62,7 +79,17 @@ export default {
           this.loadFacets()
         }
       })
-      this.newFacet = new Facet()
+    },
+
+    updateFacet (facet) {
+      Facet.Query.save(facet).then(facet => {
+        if (facet) {
+          this.$store.dispatch('messages/showAlert', {
+            description: 'Die Facette wurde geändert.'
+          })
+        }
+        this.cancelEditFacet(facet)
+      })
     },
 
     removeFacet (facet) {
@@ -82,15 +109,39 @@ export default {
         }
       })
     }
+  },
+
+  components: {
+    FacetItemTagList
   }
 }
 </script>
 
-<style>
-ul {
-  padding-left: 20px;
+<style lang="scss" scoped>
+.facet {
+  border-bottom: 1px solid $gray20;
+  padding: 1em 0;
 }
-li {
-  list-style-type: circle;
+
+.nav {
+  cursor: pointer;
+  color: inherit;
+  display: flex;
+  align-items: flex-end;
+  word-break: break-word;
+  hyphens: auto;
+  .title {
+    flex-grow: 2;
+    font-size: 1.4em;
+    margin: 0 0 0.6em;
+    font-weight: 500;
+    line-height: 120%;
+  }
+}
+
+h4 {
+  font-size: 1.4em;
+  font-weight: 500;
+  margin-bottom: 0;
 }
 </style>
