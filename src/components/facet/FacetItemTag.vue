@@ -1,7 +1,7 @@
 <template>
   <div class="facetItemTag" :style="color ? {backgroundColor: color} : ''">
     <span class="title" :style="hasDarkBackground() ? {color: 'white'} : ''">
-      {{ facetItem.title || 'Kein Titel' }} ({{ facetItem.count_owners }})
+      {{ facetItem.title || 'Kein Titel' }} <span class="count">({{ facetItem.count_owners }})</span>
     </span>
   </div>
 </template>
@@ -83,5 +83,10 @@ export default {
   padding: 0.3em 0.4em;
   line-height: 1em;
   font-size: .9em;
+}
+
+.count {
+  font-size: .8em;
+  margin-left: .3em;
 }
 </style>
