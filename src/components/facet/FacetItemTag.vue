@@ -1,7 +1,12 @@
 <template>
   <div class="facetItemTag" :style="color ? {backgroundColor: color} : ''">
     <span class="title" :style="hasDarkBackground() ? {color: 'white'} : ''">
-      {{ facetItem.title || 'Kein Titel' }} <span class="count">({{ facetItem.count_owners }})</span>
+      <router-link v-if="link" :to="link">
+        {{ facetItem.title || 'Kein Titel' }} <span class="count">({{ facetItem.count_owners }})</span>
+      </router-link>
+      <span v-else>
+        {{ facetItem.title || 'Kein Titel' }} <span class="count">({{ facetItem.count_owners }})</span>
+      </span>
     </span>
   </div>
 </template>
@@ -9,7 +14,7 @@
 
 <script>
 export default {
-  props: ['facetItem'],
+  props: ['facetItem', 'link'],
 
   data () {
     return {
@@ -83,6 +88,10 @@ export default {
   padding: 0.3em 0.4em;
   line-height: 1em;
   font-size: .9em;
+}
+
+a {
+  color: inherit;
 }
 
 .count {

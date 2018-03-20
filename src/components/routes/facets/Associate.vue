@@ -4,10 +4,17 @@
     <div class="mainCard" v-if="facetItem">
       <div class="mainCard__header">
         <a href="" @click.prevent="goBack"><i class="material-icons goBack">chevron_left</i></a>
-        <h2 class="mainCard__headerTitle">{{ facetItem.title || 'Kein Titel' }}</h2>
+        <span v-if="facetItem.parent">
+          <router-link :to="{name: 'facetitem.associate', params: {id: facetItem.parent.facet.id, facetItemId: facetItem.parent.id}}">
+            <h2 class="mainCard__headerTitle parentItemHeader">{{ facetItem.parent.title }}</h2>
+          </router-link>
+          <i class="material-icons">chevron_left</i>
+        </span>
+        <h2 class="mainCard__headerTitle">{{ facetItem.title }}</h2>
       </div>
 
       <div>
+        <h4>{{ facetItem.title }}</h4>
         <facet-item-owner-selector :facetItem="facetItem" />
       </div>
     </div>
@@ -30,19 +37,26 @@ export default {
   },
 
   created () {
-    this.loadFacetItem()
+    this.loadFacetItem(this.id, this.facetItemId)
   },
 
   methods: {
-    loadFacetItem () {
-      Facet.Query.get(this.id).then(facet => {
-        this.facetItem = facet.findFacetItem(this.facetItemId)
+    loadFacetItem (facetId, facetItemId) {
+      Facet.Query.get(facetId).then(facet => {
+        this.facetItem = facet.findFacetItem(facetItemId)
       })
     },
 
     goBack () {
       this.$router.go(-1)
     }
+  },
+
+  beforeRouteUpdate (to, from, next) {
+    if (this.facetItemId !== to.params.facetItemId) {
+      this.loadFacetItem(to.params.id, to.params.facetItemId)
+    }
+    next()
   },
 
   components: {
@@ -52,4 +66,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h4 {
+  font-size: 2em;
+  line-height: 1.4em;
+  margin: 0;
+}
+
+.parentItemHeader {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <ul class="facetItemTagList">
     <li v-for="facetItem in facetItems" :key="facetItem.id">
-      <facet-item-tag :facetItem="facetItem" />
+      <facet-item-tag :facetItem="facetItem" :link="{name: 'facetitem.associate', params: {id: facetItem.facet.id, facetItemId: facetItem.id}}" />
     </li>
   </ul>
 </template>

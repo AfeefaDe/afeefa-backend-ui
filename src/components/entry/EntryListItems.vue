@@ -66,7 +66,7 @@
               </span>
             </p>
 
-            <span v-for="facet in facets" :key="facet.id">
+            <span v-for="facet in facets" :key="facet.id" v-if="item.facet_items">
               <span v-for="facetItem in getSelectedFacetItems(facet, item)" :key="facetItem.id">
                 <facet-item-tag :facetItem="facetItem" />
               </span>

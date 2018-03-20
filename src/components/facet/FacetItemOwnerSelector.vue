@@ -41,13 +41,22 @@ export default {
     Orga.Query.getAll().then(orgas => {
       this.orgas = orgas
     })
+    this.fetchSelectedOwners()
+  },
 
-    this.facetItem.$rels.owners.Query.getAll().then(owners => {
-      this.selectedOwners = owners
-    })
+  watch: {
+    facetItem () {
+      this.fetchSelectedOwners()
+    }
   },
 
   methods: {
+    fetchSelectedOwners () {
+      this.facetItem.$rels.owners.Query.getAll().then(owners => {
+        this.selectedOwners = owners
+      })
+    },
+
     addOwner (owner) {
       owner.$rels.facet_items.Query.attach(this.facetItem).then(result => {
         if (result) {

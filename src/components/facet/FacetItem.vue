@@ -2,7 +2,7 @@
   <div class="facetItemContainer">
     <div v-if="facetItem.id" :class="['facetItem', {parentItem: !isSub, subItem: isSub, editItem: isEdit}]">
       <div>
-        <facet-item-tag :facetItem="facetItem" v-if="!isEdit" />
+        <facet-item-tag :facetItem="facetItem" v-if="!isEdit" :link="{name: 'facetitem.associate', params: {facetItemId: facetItem.id}}" />
 
         <span v-if="!isEdit">
           <a href="" @click.prevent="edit()" class="inlineEditLink">
