@@ -31,6 +31,12 @@ class Category extends Model {
     }
   }
 
+  constructor () {
+    super()
+
+    this.area = null
+  }
+
   get info () {
     const subCat = !!this.$rels.parent_category.id
     return super.info + ` subCat="${subCat}" title="${this.title}"`

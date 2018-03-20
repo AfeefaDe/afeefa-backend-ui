@@ -11,7 +11,7 @@
 
     <div class="navigationMobile__menu" v-if="visible">
       <div v-for="item in items" :class="['navigationMobile__item', 'level' + item.level]" :key="item.title">
-        <router-link :to="{name: item.route}">
+        <router-link :to="{name: item.route, params: item.params}">
           {{ translateTitle(item) }}
           <template v-if="item.hint || item.hint === 0">({{item.hint}})</template>
         </router-link>

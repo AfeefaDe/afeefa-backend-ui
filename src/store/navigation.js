@@ -89,6 +89,24 @@ const menuTree = {
           children: [
             { route: 'facetitem.associate', title: 'headlines.facetItemAssociate', level: 3 }
           ]
+        },
+        {
+          route: 'categories.migrate',
+          params: {area: 'dresden'},
+          title: 'headlines.categoriesDresden',
+          level: 2
+        },
+        {
+          route: 'categories.migrate',
+          params: {area: 'leipzig'},
+          title: 'headlines.categoriesLeipzig',
+          level: 2
+        },
+        {
+          route: 'categories.migrate',
+          params: {area: 'bautzen'},
+          title: 'headlines.categoriesBautzen',
+          level: 2
         }
       ]
     },
@@ -102,19 +120,27 @@ const menuTree = {
 }
 
 
-const createPathNavigation = (node, tmpPath, currentRouteName) => {
+const createPathNavigation = (node, tmpPath, currentRouteName, currentRouteParams) => {
   node = Object.assign({}, node)
   node.hint = false
   tmpPath.push(node)
 
-  if (node.route === currentRouteName) {
+  let paramsMatch = false
+  if (node.params) {
+    paramsMatch = JSON.stringify(node.params) === JSON.stringify(currentRouteParams)
+  } else {
+    paramsMatch = true
+    node.params = {}
+  }
+
+  if (node.route === currentRouteName && paramsMatch) {
     node.route = null // hide link on active route
     return tmpPath
   }
 
   if (node.children) {
     for (let child of node.children) {
-      const foundChild = createPathNavigation(child, tmpPath, currentRouteName)
+      const foundChild = createPathNavigation(child, tmpPath, currentRouteName, currentRouteParams)
       if (foundChild) {
         return tmpPath
       }
@@ -128,6 +154,7 @@ const createPathNavigation = (node, tmpPath, currentRouteName) => {
 
 const createLevel1Navigation = (state, node, level1) => {
   node = Object.assign({}, node)
+  node.params = node.params || {}
   if (node.level < 3) {
     if (node.hint) {
       node.hint = node.hint(state)
@@ -193,8 +220,9 @@ export default {
 
     updateNavigation ({state, commit}) {
       const routeName = router.currentRoute.name
+      const routeParams = router.currentRoute.params
 
-      const pathNavigation = createPathNavigation(menuTree, [], routeName) || [menuTree]
+      const pathNavigation = createPathNavigation(menuTree, [], routeName, routeParams) || [menuTree]
       commit('setPathNavigation', pathNavigation)
 
       const level1Navigation = createLevel1Navigation(state, menuTree, [])
