@@ -221,7 +221,10 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+// import TinyMCE skin
+@import '../../../node_modules/tinymce/skins/lightgray/skin.min.css';
+
 .overlay {
   position: fixed;
   z-index: $z-index-overlay;

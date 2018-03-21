@@ -52,7 +52,8 @@ module.exports = {
       'tinymce/plugins/code',
       'tinymce/plugins/wordcount',
       'tinymce/themes/modern/theme',
-      'tinymce/skins/lightgray/skin.min.css',
+      //moved to ChapterEditor.vue
+      //'tinymce/skins/lightgray/skin.min.css',
 
       'vee-validate',
       'vue',
