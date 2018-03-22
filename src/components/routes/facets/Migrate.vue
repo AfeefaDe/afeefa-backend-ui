@@ -12,12 +12,12 @@
           <li v-for="category in categories" :key="category.id">
             <div>
               <span :class="['category', categoryClass(category)]">
-                {{ $t('categories.' + category.title) }}
+                {{ category.id }} {{ $t('categories.' + category.title) }} ({{ category.count_owners }})
               </span>
               <ul>
                 <li v-for="subCategory in category.sub_categories" :key="subCategory.id">
                   <span :class="['category', categoryClass(category)]">
-                    {{ $t('categories.' + subCategory.title) }}
+                    {{ subCategory.id }} {{ $t('categories.' + subCategory.title) }} ({{ subCategory.count_owners }})
                   </span>
                 </li>
               </ul>

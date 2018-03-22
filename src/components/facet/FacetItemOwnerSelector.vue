@@ -7,7 +7,11 @@
     @remove="removeOwner"
     :messages="messages">
     <div slot="selected-item" slot-scope="props">
-      <div>{{ props.item.title }}</div>
+      <div>
+        <router-link :to="{name: 'orgas.show', params: {id: props.item.id}}">
+          {{ props.item.title }}
+        </router-link>
+      </div>
     </div>
     <div slot="item" slot-scope="props">
       <div>{{ props.item.title }}</div>

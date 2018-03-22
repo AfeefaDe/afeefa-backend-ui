@@ -12,7 +12,9 @@ class Category extends Model {
 
   static attributes () {
     return {
-      title: DataTypes.String
+      title: DataTypes.String,
+
+      count_owners: DataTypes.Int
     }
   }
 

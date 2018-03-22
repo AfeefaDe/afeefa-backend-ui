@@ -13,7 +13,7 @@
                 <h4 class="title">{{ facet.title }}</h4>
                 <span class="icon"><i class="material-icons">navigate_next</i></span>
               </router-link>
-              <facet-item-tag-list :facetItems="facet.facet_items" />
+              <facet-item-tag-list :facetItems="facet.getAllFacetItems()" />
             </div>
           </div>
         </div>
