@@ -42,6 +42,17 @@ class FacetItem extends Model {
     }
   }
 
+  static create (facet, parent) {
+    const facetItem = new FacetItem()
+    facetItem.facet = facet
+    facetItem.$rels.facet.id = facet.id
+    if (parent) {
+      facetItem.parent = parent
+      facetItem.$rels.parent.id = parent.id
+    }
+    return facetItem
+  }
+
   constructor () {
     super()
 

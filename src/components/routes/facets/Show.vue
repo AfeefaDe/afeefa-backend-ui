@@ -115,14 +115,8 @@ export default {
 
   methods: {
     createNewFacetItem (parentItem) {
-      const newFacetItem = new FacetItem()
+      const newFacetItem = FacetItem.create(this.facet, parentItem)
       newFacetItem.title = 'Neues Attribut'
-      // push facet and parent to new items relations
-      // in order to make them cloneable
-      newFacetItem.$rels.facet.id = this.facet.id
-      if (parentItem) {
-        newFacetItem.$rels.parent.id = parentItem.id
-      }
       return newFacetItem
     },
 
