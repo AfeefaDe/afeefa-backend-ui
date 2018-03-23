@@ -40,6 +40,11 @@ export default {
     singleChapter: 'Kapitel',
     facetItemAssociate: 'Zuordnen'
   },
+  facets: {
+    ownerTypeOrga: 'Akteur',
+    ownerTypeOffer: 'Angebot',
+    ownerTypeEvent: 'Veranstaltung'
+  },
   tabs: {
     generalTab: 'Allgemeines',
     annotationsTab: 'Anmerkungen',

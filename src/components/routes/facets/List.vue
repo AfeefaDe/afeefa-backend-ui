@@ -13,6 +13,11 @@
                 <h4 class="title">{{ facet.title }}</h4>
                 <span class="icon"><i class="material-icons">navigate_next</i></span>
               </router-link>
+
+              <div class="ownerTypes">
+                <span v-for="type in facet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
+              </div>
+
               <facet-item-tag-list :facetItems="facet.getAllFacetItems()" />
             </div>
           </div>
@@ -121,6 +126,16 @@ export default {
 .facet {
   border-bottom: 1px solid $gray20;
   padding: 1em 0;
+}
+
+.ownerType:not(:last-child) {
+  &:after {
+    content: ', ';
+  }
+}
+
+.ownerTypes {
+  margin-bottom: 1em;
 }
 
 .nav {

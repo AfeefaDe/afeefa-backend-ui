@@ -1,9 +1,10 @@
 import FacetsResource from '@/resources/Facets'
+import FacetFacetItemsResource from '@/resources/relations/FacetFacetItems'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
+import PlainJson from 'uidata/model/PlainJson'
 import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
-import FacetFacetItemsResource from '@/resources/relations/FacetFacetItems'
 
 import FacetItem from './FacetItem'
 
@@ -28,6 +29,11 @@ class Facet extends Model {
         type: Relation.HAS_MANY,
         Model: FacetItem,
         Resource: FacetFacetItemsResource
+      },
+
+      owner_types: {
+        type: Relation.HAS_MANY,
+        Model: PlainJson
       }
     }
   }

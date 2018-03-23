@@ -58,6 +58,11 @@ export default {
       description: 'Description for Network @todo'
     }
   },
+  facets: {
+    ownerTypeOrga: 'Actor',
+    ownerTypeOffer: 'Offer',
+    ownerTypeEvent: 'Event'
+  },
   tabs: {
     generalTab: 'General',
     annotationsTab: 'Annotations',
