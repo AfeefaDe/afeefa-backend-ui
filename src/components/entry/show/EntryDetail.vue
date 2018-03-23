@@ -27,6 +27,17 @@
               :editable="true"/>
 
               <entry-detail-property
+                v-if="entry.type === 'orgas'"
+                name="Angebote"
+                iconName="bookmark_border">
+                <div v-for="offer in entry.offers" :key="offer.id">
+                  <router-link :to="{name: 'offers.show', params: {id: offer.id}}">
+                    {{ offer.title }}
+                  </router-link>
+                </div>
+              </entry-detail-property>
+
+              <entry-detail-property
                 name="Kategorien"
                 iconName="bookmark_border">
                 <span v-for="facet in facets" :key="facet.id">

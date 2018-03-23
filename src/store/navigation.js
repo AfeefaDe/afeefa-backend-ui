@@ -38,6 +38,28 @@ const menuTree = {
       ]
     },
     {
+      route: 'offers.list',
+      title: 'offers.offer',
+      action: {
+        name: 'Neues Angebot erstellen',
+        icon: 'add_circle_outline',
+        route: 'offers.new'
+      },
+      level: 2,
+      hint: state => state.numOffers,
+      children: [
+        {
+          route: 'offers.show',
+          title: 'headlines.show',
+          level: 3,
+          children: [
+            { route: 'offers.edit', title: 'headlines.edit', level: 4 }
+          ]
+        },
+        { route: 'offers.new', title: 'headlines.new', level: 3 }
+      ]
+    },
+    {
       route: 'events.list',
       title: 'headlines.events',
       action: {
@@ -180,6 +202,7 @@ export default {
     numOrgas: 0,
     numEvents: 0,
     numTodos: 0,
+    numOffers: 0,
     numChapters: 0,
     pathNavigation: null,
     level1Navigation: null

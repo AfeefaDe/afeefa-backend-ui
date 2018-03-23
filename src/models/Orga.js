@@ -1,5 +1,3 @@
-import Event from '@/models/Event'
-import ResourceItem from '@/models/ResourceItem'
 import OrgasResource from '@/resources/Orgas'
 import ActorRelationsResource from '@/resources/relations/ActorRelations'
 import OrgaPastEventsResource from '@/resources/relations/OrgaPastEvents'
@@ -9,8 +7,11 @@ import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
 
 import ActorRelations from './ActorRelations'
+import Event from './Event' // import before entry important (cyclic imports)!
 import Entry from './base/Entry'
+import Offer from './Offer'
 import OrgaType from './OrgaType'
+import ResourceItem from './ResourceItem'
 
 class Orga extends Entry {
   static type = 'orgas'
@@ -23,6 +24,8 @@ class Orga extends Entry {
         type: DataTypes.Int,
         default: OrgaType.ORGANIZATION
       },
+
+      count_offers: DataTypes.Int,
 
       count_events: DataTypes.Int,
 
@@ -73,6 +76,11 @@ class Orga extends Entry {
         type: Relation.HAS_MANY,
         Model: Event,
         Resource: OrgaUpcomingEventsResource
+      },
+
+      offers: {
+        type: Relation.HAS_MANY,
+        Model: Offer
       }
     }
   }

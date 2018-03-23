@@ -13,7 +13,8 @@ class MetaData extends Model {
       chapters: DataTypes.Int,
       events: DataTypes.Custom,
       orgas: DataTypes.Int,
-      todos: DataTypes.Int
+      todos: DataTypes.Int,
+      offers: DataTypes.Int
     }
   }
 

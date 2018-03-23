@@ -45,6 +45,9 @@ export default {
     ownerTypeOffer: 'Angebot',
     ownerTypeEvent: 'Veranstaltung'
   },
+  offers: {
+    offer: 'Angebot | Angebote'
+  },
   tabs: {
     generalTab: 'Allgemeines',
     annotationsTab: 'Anmerkungen',
@@ -84,7 +87,8 @@ export default {
     noSubOrgaPresent: 'Keine untergeordneten Orgas vorhanden',
     noEventsForOrga: 'Keine Events zu dieser Orga vorhanden',
     loadingImageError: 'Fehler beim Laden des Bildes',
-    loadingEntryError: 'Fehler beim Laden des Eintrags'
+    loadingEntryError: 'Fehler beim Laden des Eintrags',
+    loadingOfferError: 'Fehler beim Laden des Angebots'
   },
   entries: {
     date_start: 'Startdatum',
@@ -135,6 +139,7 @@ export default {
   status: {
     load_event: 'Lade Event',
     load_orga: 'Lade Orga',
+    load_offer: 'Lade Angebot',
     no: 'Keine',
     all: 'Alle',
     any: 'Alles',

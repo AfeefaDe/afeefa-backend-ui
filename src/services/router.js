@@ -6,6 +6,11 @@ import Protected from '@/components/routes/Protected'
 import Dashboard from '@/components/routes/Dashboard'
 import Todos from '@/components/routes/Todos'
 
+import ListOffers from '@/components/routes/offers/List'
+import NewOffer from '@/components/routes/offers/New'
+import ShowOffer from '@/components/routes/offers/Show'
+import EditOffer from '@/components/routes/offers/Edit'
+
 import ListOrgas from '@/components/routes/orgas/List'
 import NewOrga from '@/components/routes/orgas/New'
 import EditOrga from '@/components/routes/orgas/Edit'
@@ -50,6 +55,40 @@ const routes = [
         path: 'todos',
         name: 'todos',
         component: Todos
+      },
+      {
+        path: 'offers',
+        component: { template: '<router-view></router-view>' },
+        children: [
+          {
+            path: '',
+            name: 'offers.list',
+            component: ListOffers
+          },
+          {
+            path: 'new',
+            name: 'offers.new',
+            component: NewOffer
+          },
+          {
+            path: ':id',
+            component: { template: '<router-view></router-view>' },
+            children: [
+              {
+                path: '',
+                name: 'offers.show',
+                component: ShowOffer,
+                props: true
+              }
+            ]
+          },
+          {
+            path: ':id/edit',
+            name: 'offers.edit',
+            component: EditOffer,
+            props: true
+          }
+        ]
       },
       {
         path: 'orgas',

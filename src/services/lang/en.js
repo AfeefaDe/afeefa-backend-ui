@@ -63,6 +63,9 @@ export default {
     ownerTypeOffer: 'Offer',
     ownerTypeEvent: 'Event'
   },
+  offers: {
+    offer: 'Offer | Offers'
+  },
   tabs: {
     generalTab: 'General',
     annotationsTab: 'Annotations',
@@ -84,7 +87,8 @@ export default {
     noSubOrgaPresent: 'No sub organizations present',
     noEventsForOrga: 'No events for organiszation present',
     loadingImageError: 'Error loading image',
-    loadingEntryError: 'Error loading entry'
+    loadingEntryError: 'Error loading entry',
+    loadingOfferError: 'Error loading offer'
   },
   entries: {
     date_start: 'Start date',
@@ -135,6 +139,7 @@ export default {
   status: {
     load_event: 'Load Event',
     load_orga: 'Load Orga',
+    load_offer: 'Load Offer',
     no: 'No',
     all: 'All',
     any: 'Any',
