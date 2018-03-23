@@ -30,6 +30,10 @@
   background-color: #FFEEEE;
 }
 
+textarea.validation-error {
+  margin-bottom: 0;
+}
+
 span.validation-error {
   margin-top: 2px;
   display: block;
