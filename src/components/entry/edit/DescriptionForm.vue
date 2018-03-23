@@ -4,7 +4,7 @@
       {{item.parent_orga.short_description}}
     </p>
 
-    <div class=" input-field">
+    <div class="input-field">
       <label for="short_description" :class="{active: item.short_description}">
         {{ $t('entries.short_description') }}
         <span class="labelCharacterCount" v-if="item.short_description.length">{{item.short_description.length}}/350</span>
