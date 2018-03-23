@@ -11,7 +11,7 @@
 
         <section slot="generalTab">
           <div v-if="item.id">
-            <div v-for="facet in facets" :key="facet.id">
+            <div v-for="facet in facets" :key="facet.id" v-if="facet.owner_types.includes('Orga')">
               <h2>{{ facet.title }}</h2>
               <facet-selector :owner="item" :facet="facet" />
             </div>
