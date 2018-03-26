@@ -3,7 +3,8 @@
     <a href="" @click.prevent="goBack"><i class="material-icons goBack">chevron_left</i></a>
 
     <div class="mainCard__headerTitle">
-      <span class="mainCard__type" v-if="entry.type === 'orgas'">{{$t('orgaTypes.'+entry.orga_type_id+'.name')}}</span>
+      <span class="mainCard__type" v-if="entry.type === 'orgas'">{{ $t('orgaTypes.'+entry.orga_type_id+'.name') }}</span>
+      <span class="mainCard__type" v-if="entry.type === 'events'">{{ $tc('headlines.events', 1) }}</span>
       <h2 class="mainCard__headerTitleHeading">{{ entry.title || 'Kein Titel' }}</h2>
       <span v-if="entry.parent_orga" class="mainCard__headerSubtitle">
         <router-link :to="{name: entry.parent_orga.type + '.show', params: {id: entry.parent_orga.id}}">
