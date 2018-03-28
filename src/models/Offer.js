@@ -1,4 +1,3 @@
-import OwnerFacetItemsResource from '@/resources/relations/OwnerFacetItems'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Registry from 'uidata/model/Registry'
@@ -29,8 +28,7 @@ class Offer extends Model {
 
       facet_items: {
         type: Relation.HAS_MANY,
-        Model: FacetItem,
-        Resource: OwnerFacetItemsResource
+        Model: FacetItem
       }
     }
   }

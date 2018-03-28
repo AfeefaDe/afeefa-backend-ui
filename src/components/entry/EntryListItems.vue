@@ -24,6 +24,16 @@
       </pagination>
     </div>
 
+    <div>
+      Auswahl: {{ selectedItems.length }}
+      <div v-if="selectedItems.length">
+        <div v-for="facet in facets" :key="facet.id" v-if="facet.owner_types.includes('Orga')">
+          <h2>{{ facet.title }}</h2>
+          <multi-facet-selector :owners="selectedItems" :facet="facet" />
+        </div>
+      </div>
+    </div>
+
     <ul class="entryList">
       <li v-for="item in itemsSorted" :key="item.type + item.id">
 
@@ -36,6 +46,8 @@
               <div class="year" v-if="yearOfEvent(item)">{{ yearOfEvent(item) }}</div>
             </div>
           </div>
+          <input type="checkbox" class="filled-in" :id="'select' + item.id" @change="select(item)">
+          <label :for="'select' + item.id"></label>
         </div>
 
         <div class="entryList__content">
@@ -72,11 +84,13 @@
               </span>
             </p>
 
-            <span v-for="facet in facets" :key="facet.id" v-if="item.facet_items">
-              <span v-for="facetItem in getSelectedFacetItems(facet, item)" :key="facetItem.id">
-                <facet-item-tag :facetItem="facetItem" />
+            <div>
+              <span v-for="facet in facets" :key="facet.id" v-if="item.facet_items">
+                <span v-for="facetItem in getSelectedFacetItems(facet, item)" :key="facetItem.id">
+                  <facet-item-tag :facetItem="facetItem" />
+                </span>
               </span>
-            </span>
+            </div>
 
             <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
 
@@ -127,6 +141,7 @@ import Spinner from '@/components/Spinner'
 import moment from 'moment'
 import Facet from '@/models/Facet'
 import FacetItemTag from '@/components/facet/FacetItemTag'
+import MultiFacetSelector from '@/components/facet/MultiFacetSelector'
 
 export default {
   props: {items: {}, limit: {}, sortFunction: {}, sortOrder: {}, showIcon: {}, options: {}, modifyRoute: {default: true}},
@@ -139,6 +154,7 @@ export default {
       currentPage: 1,
       currentNumItems: 0,
       searchKeyword: '',
+      selectedItems: [],
       has: {
         filter: options.filter,
         pagination: options.pagination,
@@ -184,6 +200,14 @@ export default {
   },
 
   methods: {
+    select (item) {
+      if (this.selectedItems.includes(item)) {
+        this.selectedItems = this.selectedItems.filter(si => si !== item)
+      } else {
+        this.selectedItems.push(item)
+      }
+    },
+
     getSelectedFacetItems (facet, item) {
       return facet.getAllFacetItems().filter(facetItem => {
         return item.facet_items.includes(facetItem)
@@ -240,7 +264,8 @@ export default {
     Spinner,
     AnnotationTag,
     EntryIcon,
-    FacetItemTag
+    FacetItemTag,
+    MultiFacetSelector
   }
 }
 </script>

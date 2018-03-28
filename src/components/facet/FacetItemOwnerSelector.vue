@@ -8,7 +8,7 @@
     :messages="messages">
     <div slot="selected-item" slot-scope="props">
       <div>
-        <router-link :to="{name: 'orgas.show', params: {id: props.item.id}}">
+        <router-link :to="{name: props.item.type + '.show', params: {id: props.item.id}}">
           {{ props.item.title }}
         </router-link>
       </div>
@@ -62,7 +62,7 @@ export default {
     },
 
     addOwner (owner) {
-      owner.$rels.facet_items.Query.attach(this.facetItem).then(result => {
+      this.facetItem.$rels.owners.Query.attach(owner).then(result => {
         if (result) {
           this.selectedOwners.push(owner)
           this.$store.dispatch('messages/showAlert', {
@@ -73,7 +73,7 @@ export default {
     },
 
     removeOwner (owner) {
-      owner.$rels.facet_items.Query.detach(this.facetItem).then(result => {
+      this.facetItem.$rels.owners.Query.detach(owner).then(result => {
         if (result) {
           this.selectedOwners = this.selectedOwners.filter(n => n.id !== owner.id)
           this.$store.dispatch('messages/showAlert', {

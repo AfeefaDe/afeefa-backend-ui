@@ -4,7 +4,6 @@ import Contact from '@/models/Contact'
 import FacetItem from '@/models/FacetItem'
 import User from '@/models/User'
 import ContactsResource from '@/resources/relations/EntryContacts'
-import OwnerFacetItemsResource from '@/resources/relations/OwnerFacetItems'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Relation from 'uidata/model/Relation'
@@ -89,8 +88,7 @@ export default class Entry extends Model {
 
       facet_items: {
         type: Relation.HAS_MANY,
-        Model: FacetItem,
-        Resource: OwnerFacetItemsResource
+        Model: FacetItem
       }
     }
   }
