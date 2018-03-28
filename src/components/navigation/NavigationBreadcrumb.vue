@@ -14,6 +14,7 @@ import { mapState } from 'vuex'
 
 export default {
   props: ['translateTitle'],
+
   computed: {
     ...mapState({
       items: state => state.navigation.pathNavigation
@@ -21,6 +22,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss" scoped>
 .navigationBreadcrumb {
   display: inline-block;

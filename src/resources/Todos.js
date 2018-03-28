@@ -9,10 +9,6 @@ class TodosResource extends Resource {
     return 'todos'
   }
 
-  getItemJson (json) {
-    return json.relationships.entry.data
-  }
-
   getItemModel (json) {
     if (json.type === 'orgas') {
       return Orga

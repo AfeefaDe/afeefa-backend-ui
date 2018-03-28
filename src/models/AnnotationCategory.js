@@ -15,7 +15,9 @@ class AnnotationCategory extends Model {
       generatedBySystem: {
         type: DataTypes.Boolean,
         remoteName: 'generated_by_system'
-      }
+      },
+
+      count_entries: DataTypes.Int
     }
   }
 
