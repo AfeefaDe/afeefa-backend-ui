@@ -38,7 +38,8 @@ export default {
     tags: 'Tags',
     chapters: 'Wissensportal',
     singleChapter: 'Kapitel',
-    facetItemAssociate: 'Zuordnen'
+    facetItemAssociate: 'Zuordnen',
+    menu: 'Navigation'
   },
   facets: {
     ownerTypeOrga: 'Akteur',

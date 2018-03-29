@@ -28,6 +28,8 @@ import ListChapters from '@/components/routes/chapters/List'
 import NewChapter from '@/components/routes/chapters/New'
 import EditChapter from '@/components/routes/chapters/Edit'
 
+import ListMenuItems from '@/components/routes/menu/List'
+
 import ListFacets from '@/components/routes/facets/List'
 import ShowFacet from '@/components/routes/facets/Show'
 import AssociateFacetItem from '@/components/routes/facets/Associate'
@@ -232,7 +234,7 @@ const routes = [
             props: true
           },
           {
-            path: '/:area',
+            path: ':area',
             name: 'categories.migrate',
             component: MigrateCategory,
             props: true
@@ -254,11 +256,16 @@ const routes = [
         path: 'usersettings',
         name: 'usersettings',
         component: UserSettings
+      },
+      {
+        path: '/menu',
+        name: 'menu',
+        component: ListMenuItems
       }
     ]
   },
   {
-    path: '/login',
+    path: 'login',
     name: 'login',
     component: Login
   },

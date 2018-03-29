@@ -38,7 +38,8 @@ export default {
     tags: 'Tags',
     chapters: 'Wiki',
     singleChapter: 'Chapter',
-    facetItemAssociate: 'Associate'
+    facetItemAssociate: 'Associate',
+    menu: 'Navigation'
   },
   orgaTypes: {
     '2': {
