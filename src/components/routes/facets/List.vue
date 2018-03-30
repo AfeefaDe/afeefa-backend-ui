@@ -6,7 +6,11 @@
           <h2 class="mainCard__headerTitle">Kategorien</h2>
         </div>
 
-        <div>
+        <div v-if="!facetsLoaded" class="loadingInfo">
+          <spinner :show="true" :width="1" :radius="5" :length="3" /> {{ $t('status.load_categories') }}
+        </div>
+
+        <div v-else>
           <div v-for="facet in facets" :key="facet.id" class="facet">
             <div>
 
@@ -53,6 +57,7 @@
 import Facet from '@/models/Facet'
 import FacetItemTagList from '@/components/facet/FacetItemTagList'
 import TreeItemEditorForm from '@/components/tree/TreeItemEditorForm'
+import Spinner from '@/components/Spinner'
 
 export default {
   data () {
@@ -60,7 +65,9 @@ export default {
       facets: [],
 
       editableFacet: null,
-      editableFacetOriginal: null
+      editableFacetOriginal: null,
+
+      facetsLoaded: false
     }
   },
 
@@ -96,6 +103,7 @@ export default {
     loadFacets () {
       Facet.Query.getAll().then(facets => {
         this.facets = facets
+        this.facetsLoaded = true
       })
     },
 
@@ -113,12 +121,17 @@ export default {
 
   components: {
     FacetItemTagList,
-    TreeItemEditorForm
+    TreeItemEditorForm,
+    Spinner
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.loadingInfo {
+  margin-top: .8em;
+}
+
 .facet {
   border-bottom: 1px solid $gray20;
   padding: 1em 0;

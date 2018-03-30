@@ -89,7 +89,11 @@ export default {
     noEventsForOrga: 'Keine Events zu dieser Orga vorhanden',
     loadingImageError: 'Fehler beim Laden des Bildes',
     loadingEntryError: 'Fehler beim Laden des Eintrags',
-    loadingOfferError: 'Fehler beim Laden des Angebots'
+    loadingOfferError: 'Fehler beim Laden des Angebots',
+    loadingDataError: 'Fehler beim Laden von Daten',
+    loadingNavigationError: 'Fehler beim Laden der Navigation',
+    loadingNavigationItemError: 'Fehler beim Laden des Menüpunktes',
+    loadingCategoryError: 'Fehler beim Laden der Kategorie'
   },
   entries: {
     date_start: 'Startdatum',
@@ -141,6 +145,11 @@ export default {
     load_event: 'Lade Event',
     load_orga: 'Lade Orga',
     load_offer: 'Lade Angebot',
+    load_data: 'Lade Daten',
+    load_navigation: 'Lade Navigation',
+    load_navigation_item: 'Lade Menüpunkt',
+    load_categories: 'Lade Kategorien',
+    load_category: 'Lade Kategorie',
     no: 'Keine',
     all: 'Alle',
     any: 'Alles',

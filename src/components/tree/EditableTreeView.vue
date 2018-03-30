@@ -41,6 +41,8 @@
           @update="loadTreeItems" />
       </div>
     </div>
+
+    <entry-loading-message v-else :error="hasItemLoadingError" :messages="messages" />
   </div>
 </div>
 </template>
@@ -50,6 +52,7 @@
 import Vue from 'vue'
 import TreeItemView from './TreeItemView'
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
+import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 
 export default {
   mixins: [RouteConfigAwareMixin],
@@ -60,7 +63,8 @@ export default {
     return {
       container: null,
       treeItems: [],
-      bus: new Vue()
+      bus: new Vue(),
+      hasItemLoadingError: false
     }
   },
 
@@ -85,8 +89,12 @@ export default {
 
     loadContainer () {
       this.Model.Query.get(this.containerId).then(container => {
-        this.container = container
-        this.treeItems = this.getTreeItems()
+        if (container) {
+          this.container = container
+          this.treeItems = this.getTreeItems()
+        } else {
+          this.hasItemLoadingError = true
+        }
       })
     },
 
@@ -96,7 +104,8 @@ export default {
   },
 
   components: {
-    TreeItemView
+    TreeItemView,
+    EntryLoadingMessage
   }
 }
 </script>

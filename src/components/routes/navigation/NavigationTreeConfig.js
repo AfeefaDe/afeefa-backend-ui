@@ -6,8 +6,12 @@ export default class Config extends TreeConfig {
   constructor (routeComponent) {
     super(routeComponent)
 
-    this.routeName = 'navigation'
     this.Model = Navigation
+
+    this.messages = {
+      loadingItem: () => this.$t('status.load_navigation'),
+      loadingItemError: () => this.$t('errors.loadingNavigationError')
+    }
 
     this.containerName = 'navigation'
     this.relationName = 'navigation_items'

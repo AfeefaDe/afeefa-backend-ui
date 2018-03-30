@@ -18,6 +18,8 @@
         <facet-item-owner-selector :facetItem="facetItem" />
       </div>
     </div>
+
+    <entry-loading-message v-else :error="hasItemLoadingError" :messages="loadingMessages" />
   </div>
 </div>
 </template>
@@ -26,13 +28,19 @@
 <script>
 import Facet from '@/models/Facet'
 import FacetItemOwnerSelector from '@/components/facet/FacetItemOwnerSelector'
+import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 
 export default {
   props: ['id', 'facetItemId'],
 
   data () {
     return {
-      facetItem: null
+      facetItem: null,
+      hasItemLoadingError: false,
+      loadingMessages: {
+        loadingItem: () => this.$t('status.load_category') + ' ' + this.facetItemId,
+        loadingItemError: () => this.$t('errors.loadingCategoryError') + ' ' + this.facetItemId
+      }
     }
   },
 
@@ -43,7 +51,12 @@ export default {
   methods: {
     loadFacetItem (facetId, facetItemId) {
       Facet.Query.get(facetId).then(facet => {
-        this.facetItem = facet.findFacetItem(facetItemId)
+        if (facet) {
+          this.facetItem = facet.findFacetItem(facetItemId)
+        }
+        if (!facet || !this.facetItem) {
+          this.hasItemLoadingError = true
+        }
       })
     },
 
@@ -60,7 +73,8 @@ export default {
   },
 
   components: {
-    FacetItemOwnerSelector
+    FacetItemOwnerSelector,
+    EntryLoadingMessage
   }
 }
 </script>

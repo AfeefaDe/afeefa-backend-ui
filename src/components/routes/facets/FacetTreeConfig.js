@@ -6,8 +6,12 @@ export default class Config extends TreeConfig {
   constructor (routeComponent, facetId) {
     super(routeComponent, facetId)
 
-    this.routeName = 'facets'
     this.Model = Facet
+
+    this.messages = {
+      loadingItem: () => this.$t('status.load_category'),
+      loadingItemError: () => this.$t('errors.loadingCategoryError')
+    }
 
     this.containerName = 'facet'
     this.relationName = 'facet_items'

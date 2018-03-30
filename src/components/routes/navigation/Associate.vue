@@ -26,6 +26,8 @@
         <navigation-item-owner-selector :navigationItem="navigationItem" />
       </div>
     </div>
+
+    <entry-loading-message v-else :error="hasItemLoadingError" :messages="loadingMessages" />
   </div>
 </div>
 </template>
@@ -38,6 +40,7 @@ import NavigationItem from '@/models/NavigationItem'
 import NavigationItemOwnerSelector from '@/components/navigation/NavigationItemOwnerSelector'
 import NavigationItemFacetSelector from '@/components/navigation/NavigationItemFacetSelector'
 import TreeItemTag from '@/components/tree/TreeItemTag'
+import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 
 export default {
   props: ['id'],
@@ -45,7 +48,12 @@ export default {
   data () {
     return {
       navigationItem: null,
-      facets: []
+      facets: [],
+      hasItemLoadingError: false,
+      loadingMessages: {
+        loadingItem: () => this.$t('status.load_navigation_item') + ' ' + this.id,
+        loadingItemError: () => this.$t('errors.loadingNavigationItemError') + ' ' + this.id
+      }
     }
   },
 
@@ -66,8 +74,11 @@ export default {
 
     loadNavigationItem (id) {
       NavigationItem.Query.get(id).then(navigationItem => {
-        console.log(navigationItem)
-        this.navigationItem = navigationItem
+        if (navigationItem) {
+          this.navigationItem = navigationItem
+        } else {
+          this.hasItemLoadingError = true
+        }
       })
     },
 
@@ -86,7 +97,8 @@ export default {
   components: {
     NavigationItemFacetSelector,
     NavigationItemOwnerSelector,
-    TreeItemTag
+    TreeItemTag,
+    EntryLoadingMessage
   }
 }
 </script>

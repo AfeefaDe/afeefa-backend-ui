@@ -28,7 +28,7 @@ import ListChapters from '@/components/routes/chapters/List'
 import NewChapter from '@/components/routes/chapters/New'
 import EditChapter from '@/components/routes/chapters/Edit'
 
-import ListNavigationItems from '@/components/routes/navigation/List'
+import ListNavigationItems from '@/components/routes/navigation/Show'
 import AssociateNavigationItem from '@/components/routes/navigation/Associate'
 
 import ListFacets from '@/components/routes/facets/List'

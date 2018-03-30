@@ -7,6 +7,11 @@ export default class Config extends RouteConfig {
     this.containerName = null
     this.relationName = null
     this.canColorizeItems = false
+
+    this.messages = {
+      loadingItem: () => this.$t('status.load_data'),
+      loadingItemError: () => this.$t('errors.loadingDataError')
+    }
   }
 
   getContainer (treeItem) {

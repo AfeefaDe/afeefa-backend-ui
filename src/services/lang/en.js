@@ -20,7 +20,7 @@ export default {
     contactNew: 'Add Contact',
     contactEdit: 'Edit Contact',
     status: 'Status',
-    time: 'Zeit',
+    time: 'Time',
     parentOrga: 'Parent Organization',
     subOrgas: 'Sub Organizations',
     organizer: 'Organizer',
@@ -40,24 +40,6 @@ export default {
     singleChapter: 'Chapter',
     facetItemAssociate: 'Associate',
     navigation: 'Navigation'
-  },
-  orgaTypes: {
-    '2': {
-      name: 'Organization',
-      description: 'Description for Organization @todo'
-    },
-    '3': {
-      name: 'Project',
-      description: 'Description for Project @todo'
-    },
-    '4': {
-      name: 'Location',
-      description: 'Description for Location @todo'
-    },
-    '5': {
-      name: 'Network',
-      description: 'Description for Network @todo'
-    }
   },
   facets: {
     ownerTypeOrga: 'Actor',
@@ -79,6 +61,24 @@ export default {
     pastEventsTab: 'Past',
     resourceTab: 'Resources'
   },
+  orgaTypes: {
+    '2': {
+      name: 'Organization',
+      description: 'Description for Organization @todo'
+    },
+    '3': {
+      name: 'Project',
+      description: 'Description for Project @todo'
+    },
+    '4': {
+      name: 'Location',
+      description: 'Description for Location @todo'
+    },
+    '5': {
+      name: 'Network',
+      description: 'Description for Network @todo'
+    }
+  },
   errors: {
     noContactPresent: 'No contact information present',
     noLocationPresent: 'No location information present',
@@ -89,7 +89,11 @@ export default {
     noEventsForOrga: 'No events for organiszation present',
     loadingImageError: 'Error loading image',
     loadingEntryError: 'Error loading entry',
-    loadingOfferError: 'Error loading offer'
+    loadingOfferError: 'Error loading offer',
+    loadingDataError: 'Error loading data',
+    loadingNavigationError: 'Error loading navigation',
+    loadingNavigationItemError: 'Error loading navigation item',
+    loadingCategoryError: 'Error loading category'
   },
   entries: {
     date_start: 'Start date',
@@ -138,9 +142,14 @@ export default {
     organization: 'Organization'
   },
   status: {
-    load_event: 'Load Event',
-    load_orga: 'Load Orga',
-    load_offer: 'Load Offer',
+    load_event: 'Load event',
+    load_orga: 'Load orga',
+    load_offer: 'Load offer',
+    load_data: 'Load data',
+    load_navigation: 'Load navigation',
+    load_navigation_item: 'Load navigation item',
+    load_categories: 'Load categories',
+    load_category: 'Load category',
     no: 'No',
     all: 'All',
     any: 'Any',
