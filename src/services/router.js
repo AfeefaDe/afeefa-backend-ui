@@ -34,7 +34,6 @@ import AssociateNavigationItem from '@/components/routes/navigation/Associate'
 import ListFacets from '@/components/routes/facets/List'
 import ShowFacet from '@/components/routes/facets/Show'
 import AssociateFacetItem from '@/components/routes/facets/Associate'
-import MigrateCategory from '@/components/routes/facets/Migrate'
 
 import Search from '@/components/routes/Search'
 import UserSettings from '@/components/routes/UserSettings'
@@ -227,12 +226,6 @@ const routes = [
             path: '',
             name: 'facets.list',
             component: ListFacets
-          },
-          {
-            path: 'area/:area',
-            name: 'categories.migrate',
-            component: MigrateCategory,
-            props: true
           },
           {
             path: ':id',

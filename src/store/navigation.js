@@ -120,24 +120,6 @@ const menuTree = {
           children: [
             { route: 'facetitem.associate', title: 'headlines.facetItemAssociate', level: 3 }
           ]
-        },
-        {
-          route: 'categories.migrate',
-          params: {area: 'dresden'},
-          title: 'headlines.categoriesDresden',
-          level: 2
-        },
-        {
-          route: 'categories.migrate',
-          params: {area: 'leipzig'},
-          title: 'headlines.categoriesLeipzig',
-          level: 2
-        },
-        {
-          route: 'categories.migrate',
-          params: {area: 'bautzen'},
-          title: 'headlines.categoriesBautzen',
-          level: 2
         }
       ]
     },
