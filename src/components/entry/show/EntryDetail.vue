@@ -42,7 +42,7 @@
                 iconName="bookmark_border">
                 <span v-for="facet in facets" :key="facet.id">
                   <span v-for="facetItem in getSelectedFacetItems(facet)" :key="facetItem.id">
-                    <facet-item-tag :facetItem="facetItem" />
+                    <tree-item-tag :treeItem="facetItem" />
                   </span>
                 </span>
               </entry-detail-property>
@@ -236,7 +236,7 @@ import ImageContainer from '@/components/ImageContainer'
 import TabBar from '@/components/TabBar'
 import AnnotationTag from '@/components/AnnotationTag'
 import ResourceItem from '@/components/ResourceItem'
-import FacetItemTag from '@/components/facet/FacetItemTag'
+import TreeItemTag from '@/components/tree/TreeItemTag'
 
 import EntryDetailProperty from './EntryDetailProperty'
 import EntryTextAttribute from './EntryTextAttribute'
@@ -331,7 +331,7 @@ export default {
     AnnotationTag,
     ContactList,
     ResourceItem,
-    FacetItemTag,
+    TreeItemTag,
     EntryDetailHeader,
     EntryDetailFooter
   }
@@ -339,8 +339,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.facetItemTag {
+.treeItemTag {
   display: inline-block;
   margin-right: .4em;
   margin-bottom: .4em;

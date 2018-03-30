@@ -87,7 +87,7 @@
             <div>
               <span v-for="facet in facets" :key="facet.id" v-if="item.facet_items">
                 <span v-for="facetItem in getSelectedFacetItems(facet, item)" :key="facetItem.id">
-                  <facet-item-tag :facetItem="facetItem" />
+                  <tree-item-tag :treeItem="facetItem" />
                 </span>
               </span>
             </div>
@@ -140,7 +140,7 @@ import EntryIcon from '@/components/entry/EntryIcon'
 import Spinner from '@/components/Spinner'
 import moment from 'moment'
 import Facet from '@/models/Facet'
-import FacetItemTag from '@/components/facet/FacetItemTag'
+import TreeItemTag from '@/components/tree/TreeItemTag'
 import MultiFacetSelector from '@/components/facet/MultiFacetSelector'
 
 export default {
@@ -264,7 +264,7 @@ export default {
     Spinner,
     AnnotationTag,
     EntryIcon,
-    FacetItemTag,
+    TreeItemTag,
     MultiFacetSelector
   }
 }
@@ -286,7 +286,7 @@ export default {
   }
 }
 
-.facetItemTag {
+.treeItemTag {
   display: inline-block;
   margin-right: .4em;
   margin-bottom: .4em;

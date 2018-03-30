@@ -1,11 +1,11 @@
 <template>
-  <div class="facetItemTag" :style="color ? {backgroundColor: color} : ''">
+  <div class="treeItemTag" :style="color ? {backgroundColor: color} : ''">
     <span class="title" :style="hasDarkBackground() ? {color: 'white'} : ''">
       <router-link v-if="link" :to="link">
-        {{ facetItem.title || 'Kein Titel' }} <span class="count">({{ facetItem.count_owners }})</span>
+        {{ treeItem.title || 'Kein Titel' }} <span class="count">({{ treeItem.count_owners }})</span>
       </router-link>
       <span v-else>
-        {{ facetItem.title || 'Kein Titel' }} <span class="count">({{ facetItem.count_owners }})</span>
+        {{ treeItem.title || 'Kein Titel' }} <span class="count">({{ treeItem.count_owners }})</span>
       </span>
     </span>
   </div>
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  props: ['facetItem', 'link'],
+  props: ['treeItem', 'link'],
 
   data () {
     return {
@@ -28,22 +28,22 @@ export default {
 
   watch: {
     // parent comes late
-    'facetItem.parent' () {
+    'treeItem.parent' () {
       this.setColor()
     },
 
     // parent color may change
-    'facetItem.parent.previewColor' () {
+    'treeItem.parent.previewColor' () {
       this.setColor()
     },
 
-    // facet color may change
-    'facetItem.facet.previewColor' () {
+    // container color may change
+    'treeItem.container.previewColor' () {
       this.setColor()
     },
 
     // color may change
-    'facetItem.color' () {
+    'treeItem.color' () {
       this.setColor()
     }
   },
@@ -51,13 +51,16 @@ export default {
   methods: {
     setColor () {
       this.color = null
-      if (this.facetItem.facet) {
-        this.color = this.facetItem.facet.previewColor || this.facetItem.facet.color
+
+      if (this.treeItem.container) { // may be fetched later
+        this.color = this.treeItem.container.previewColor || this.treeItem.container.color
       }
-      if (this.facetItem.parent) {
-        this.color = this.facetItem.parent.previewColor || this.facetItem.parent.color || this.color
+
+      if (this.treeItem.parent) { // may be fetched later
+        this.color = this.treeItem.parent.previewColor || this.treeItem.parent.color || this.color
+      } else {
+        this.color = this.treeItem.color || this.color
       }
-      this.color = this.facetItem.color || this.color
     },
 
     hasDarkBackground () {
@@ -80,12 +83,12 @@ export default {
 
 
 <style lang="scss" scoped>
-.facetItemTag {
+.treeItemTag {
   border-radius: .2em;
   background-color: $gray30;
   display: inline-block;
   color: $black;
-  padding: 0.3em 0.4em;
+  padding: 0.3em 0.5em;
   line-height: 1em;
   font-size: .9em;
 }

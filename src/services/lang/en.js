@@ -39,7 +39,7 @@ export default {
     chapters: 'Wiki',
     singleChapter: 'Chapter',
     facetItemAssociate: 'Associate',
-    menu: 'Navigation'
+    navigation: 'Navigation'
   },
   orgaTypes: {
     '2': {

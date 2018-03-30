@@ -43,21 +43,13 @@ import 'vue-swatches/dist/vue-swatches.min.css'
 export default {
   props: ['item', 'hasAttributes', 'hasColor', 'hasMove'],
 
-  data () {
-    return {
-      facetItem: null,
-      facets: [],
-      isMove: false
-    }
-  },
-
   methods: {
     cancel () {
-      this.$emit('cancel', this.facetItem)
+      this.$emit('cancel', this.item)
     },
 
     update () {
-      this.$emit('update', this.facetItem)
+      this.$emit('update', this.item)
     }
   },
 

@@ -9,27 +9,40 @@
         <div>
           <div v-for="facet in facets" :key="facet.id" class="facet">
             <div>
-              <router-link :to="{name: 'facets.show', params: {id: facet.id}}" class="nav">
-                <h4 class="title">{{ facet.title }}</h4>
-                <span class="icon"><i class="material-icons">navigate_next</i></span>
-              </router-link>
 
-              <div class="ownerTypes">
-                <span v-for="type in facet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
+              <div class="facetAttributes">
+                <div class="facetAttributesView">
+                  <router-link :to="{name: 'facets.show', params: {id: facet.id}}" class="title">
+                    <h4>{{ facet.title }}</h4>
+                  </router-link>
+                  <a href="" @click.prevent="editFacet(facet)" class="inlineEditLink" v-if="!isEditable(facet)">
+                    Ändern
+                  </a>
+                  <router-link :to="{name: 'facets.show', params: {id: facet.id}}" class="inlineEditLink" v-if="!isEditable(facet)">
+                    Verwalten
+                  </router-link>
+                  <a href="" @click.prevent="cancelEditFacet()" class="inlineEditLink" v-if="isEditable(facet)">
+                    Abbrechen
+                  </a>
+                </div>
+
+                <div v-if="isEditable(facet)">
+                  <tree-item-editor-form
+                    :item="editableFacet"
+                    :hasAttributes="true"
+                    :hasColor="true"
+                    @update="updateFacet"
+                    @cancel="cancelEditFacet" />
+                </div>
               </div>
 
-              <facet-item-tag-list :facetItems="facet.getAllFacetItems()" />
+              <div class="ownerTypes">
+                für: <span v-for="type in facet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
+              </div>
+
+              <facet-item-tag-list :facetItems="facet.facet_items" />
             </div>
           </div>
-        </div>
-
-        <div>
-          <h4>Neue Kategorie erstellen</h4>
-          <input type="text" placeholder="Titel" v-model="newFacet.title" @keyup.enter="addFacet">
-          <button class="btn btn-small waves-effect waves-light saveButton" type="submit" @click="addFacet">
-            <i class="material-icons left">done</i>
-            Anlegen
-          </button>
         </div>
       </div>
     </div>
@@ -37,16 +50,17 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Facet from '@/models/Facet'
 import FacetItemTagList from '@/components/facet/FacetItemTagList'
+import TreeItemEditorForm from '@/components/tree/TreeItemEditorForm'
 
 export default {
   data () {
     return {
       facets: [],
-      newFacet: new Facet(),
-      editableFacets: {}
+
+      editableFacet: null,
+      editableFacetOriginal: null
     }
   },
 
@@ -54,19 +68,29 @@ export default {
     this.loadFacets()
   },
 
+  watch: {
+    'editableFacet.color' (color) {
+      if (this.editableFacetOriginal) {
+        this.editableFacetOriginal.previewColor = color || null
+      }
+    }
+  },
+
   methods: {
     editFacet (facet) {
-      facet.__clone = facet.clone()
-      Vue.set(this.editableFacets, facet.id, true)
+      this.editableFacetOriginal = facet
+      this.editableFacet = facet.clone()
     },
 
-    cancelEditFacet (facet) {
-      delete facet.__clone
-      Vue.delete(this.editableFacets, facet.id)
+    cancelEditFacet () {
+      this.editableFacetOriginal.previewColor = null
+      this.editableFacetOriginal = null
+
+      this.editableFacet = null
     },
 
     isEditable (facet) {
-      return !!this.editableFacets[facet.id]
+      return this.editableFacet && this.editableFacet.id === facet.id
     },
 
     loadFacets () {
@@ -75,49 +99,21 @@ export default {
       })
     },
 
-    addFacet () {
-      Facet.Query.save(this.newFacet).then(facet => {
-        if (facet) {
-          this.$store.dispatch('messages/showAlert', {
-            description: 'Die Facette wurde hinzugefügt'
-          })
-          this.loadFacets()
-        }
-      })
-    },
-
     updateFacet (facet) {
       Facet.Query.save(facet).then(facet => {
         if (facet) {
           this.$store.dispatch('messages/showAlert', {
-            description: 'Die Facette wurde geändert.'
+            description: 'Die Kategorie wurde geändert.'
           })
         }
-        this.cancelEditFacet(facet)
-      })
-    },
-
-    removeFacet (facet) {
-      this.$store.dispatch('messages/showDialog', {
-        title: 'Facette löschen',
-        message: 'Soll die Facette gelöscht werden?\n\nAlle Akteure verlieren die Facette.'
-      }).then(result => {
-        if (result === 'yes') {
-          Facet.Query.delete(facet).then(deleted => {
-            if (deleted) {
-              this.$store.dispatch('messages/showAlert', {
-                description: 'Die Facette wurde gelöscht'
-              })
-              this.loadFacets()
-            }
-          })
-        }
+        this.cancelEditFacet()
       })
     }
   },
 
   components: {
-    FacetItemTagList
+    FacetItemTagList,
+    TreeItemEditorForm
   }
 }
 </script>
@@ -128,6 +124,31 @@ export default {
   padding: 1em 0;
 }
 
+.inlineEditLink {
+  margin-left: 10px;
+}
+
+.facetAttributes {
+  margin-bottom: 10px;
+}
+
+.facetAttributesView {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+
+  a.title {
+    color: inherit;
+  }
+
+  h4 {
+    line-height: 1em;
+    font-size: 1.4em;
+    font-weight: 500;
+    margin: 0;
+  }
+}
+
 .ownerType:not(:last-child) {
   &:after {
     content: ', ';
@@ -135,28 +156,12 @@ export default {
 }
 
 .ownerTypes {
+  font-size: .9em;
+  color: $gray50;
   margin-bottom: 1em;
 }
 
-.nav {
-  cursor: pointer;
-  color: inherit;
-  display: flex;
-  align-items: flex-end;
-  word-break: break-word;
-  hyphens: auto;
-  .title {
-    flex-grow: 2;
-    font-size: 1.4em;
-    margin: 0 0 0.6em;
-    font-weight: 500;
-    line-height: 120%;
-  }
-}
-
-h4 {
-  font-size: 1.4em;
-  font-weight: 500;
-  margin-bottom: 0;
+.facetItemTagList {
+  max-width: 800px;
 }
 </style>

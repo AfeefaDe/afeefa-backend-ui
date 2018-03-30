@@ -30,7 +30,7 @@
             iconName="bookmark_border">
             <span v-for="facet in facets" :key="facet.id">
               <span v-for="facetItem in getSelectedFacetItems(facet)" :key="facetItem.id">
-                <facet-item-tag :facetItem="facetItem" />
+                <tree-item-tag :treeItem="facetItem" />
               </span>
             </span>
           </entry-detail-property>
@@ -63,7 +63,7 @@ import Offer from '@/models/Offer'
 import Facet from '@/models/Facet'
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
-import FacetItemTag from '@/components/facet/FacetItemTag'
+import TreeItemTag from '@/components/tree/TreeItemTag'
 
 export default {
   props: ['id'],
@@ -109,13 +109,13 @@ export default {
   components: {
     EntryLoadingMessage,
     EntryDetailProperty,
-    FacetItemTag
+    TreeItemTag
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.facetItemTag {
+.treeItemTag {
   display: inline-block;
   margin-right: .4em;
   margin-bottom: .4em;

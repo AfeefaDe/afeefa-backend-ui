@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "debug": "webpack --config=build/webpack.dev.conf --progress --colors --profile --json > stats.json",
-    "dev": "npm run dll && webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "npm run dll && npm run dev-no-dll",
+    "dev-no-dll": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dll": "webpack --config=build/webpack.dev.dll.conf --progress --colors --profile --json > stats.json",
     "build-staging": "IS_STAGING=true node build/build.js",
     "build": "IS_STAGING=false node build/build.js",

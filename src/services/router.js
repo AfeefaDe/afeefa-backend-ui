@@ -28,7 +28,8 @@ import ListChapters from '@/components/routes/chapters/List'
 import NewChapter from '@/components/routes/chapters/New'
 import EditChapter from '@/components/routes/chapters/Edit'
 
-import ListMenuItems from '@/components/routes/menu/List'
+import ListNavigationItems from '@/components/routes/navigation/List'
+import AssociateNavigationItem from '@/components/routes/navigation/Associate'
 
 import ListFacets from '@/components/routes/facets/List'
 import ShowFacet from '@/components/routes/facets/Show'
@@ -228,15 +229,15 @@ const routes = [
             component: ListFacets
           },
           {
-            path: ':id',
-            name: 'facets.show',
-            component: ShowFacet,
+            path: 'area/:area',
+            name: 'categories.migrate',
+            component: MigrateCategory,
             props: true
           },
           {
-            path: ':area',
-            name: 'categories.migrate',
-            component: MigrateCategory,
+            path: ':id',
+            name: 'facets.show',
+            component: ShowFacet,
             props: true
           },
           {
@@ -258,9 +259,21 @@ const routes = [
         component: UserSettings
       },
       {
-        path: '/menu',
-        name: 'menu',
-        component: ListMenuItems
+        path: 'navigation',
+        component: { template: '<router-view></router-view>' },
+        children: [
+          {
+            path: '',
+            name: 'navigation.show',
+            component: ListNavigationItems
+          },
+          {
+            path: 'associate/:id',
+            name: 'navigation.associate',
+            component: AssociateNavigationItem,
+            props: true
+          }
+        ]
       }
     ]
   },

@@ -2,8 +2,8 @@
   <ul class="facetItemTagList">
     <li v-for="facetItem in facetItems" :key="facetItem.id"
       :class="{parentItem: !facetItem.parent, subItem: facetItem.parent}">
-      <facet-item-tag
-        :facetItem="facetItem"
+      <tree-item-tag
+        :treeItem="facetItem"
         :link="{name: 'facetitem.associate', params: {id: facetItem.facet.id, facetItemId: facetItem.id}}" />
     </li>
   </ul>
@@ -11,13 +11,13 @@
 
 
 <script>
-import FacetItemTag from './FacetItemTag'
+import TreeItemTag from '@/components/tree/TreeItemTag'
 
 export default {
   props: ['facetItems'],
 
   components: {
-    FacetItemTag
+    TreeItemTag
   }
 }
 </script>
@@ -31,17 +31,6 @@ export default {
     display: inline-block;
     margin-right: .4em;
     margin-bottom: .4em;
-  }
-}
-
-.parentItem .facetItemTag {
-  font-size: 1.1em;
-}
-
-.subItem {
-  .facetItemTag {
-    opacity: .7;
-    font-size: .8em;
   }
 }
 </style>

@@ -4,7 +4,7 @@
       <div class="ps__glassframe" v-if="show" @click="close"></div>
     </transition>
     <ul class="ps__selectedItems" v-if="selectedItems">
-      <li v-for="item in selectedItems" :key="item.id" class="ps__selectedItem">
+      <li v-for="item in selectedItems" :key="item.type + item.id" class="ps__selectedItem">
         <div>
           <slot name="selected-item" :item="item"></slot>
         </div>

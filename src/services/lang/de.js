@@ -39,7 +39,7 @@ export default {
     chapters: 'Wissensportal',
     singleChapter: 'Kapitel',
     facetItemAssociate: 'Zuordnen',
-    menu: 'Navigation'
+    navigation: 'Navigation'
   },
   facets: {
     ownerTypeOrga: 'Akteur',

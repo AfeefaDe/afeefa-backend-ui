@@ -60,6 +60,10 @@ class FacetItem extends Model {
     this.previewColor = null
   }
 
+  get container () {
+    return this.facet
+  }
+
   serialize () {
     const data = {
       title: this.title,

@@ -1,40 +1,40 @@
 <template>
-  <div class="facetItemContainer">
-    <div v-if="facetItem.id" :class="['facetItem', {parentItem: !isSub, subItem: isSub, editItem: isEdit}]">
+  <div class="treeItemContainer">
+    <div v-if="treeItem.id" :class="['treeItem', {parentItem: !treeItem.parent, subItem: treeItem.parent, editItem: isEdit}]">
       <div>
-        <facet-item-tag :facetItem="facetItem" v-if="!isEdit" :link="{name: 'facetitem.associate', params: {facetItemId: facetItem.id}}" />
+        <tree-item-tag :treeItem="treeItem" v-if="!isEdit" :link="associateItemLink(treeItem)" />
 
         <span v-if="!isEdit">
           <a href="" @click.prevent="edit()" class="inlineEditLink">
             Ändern
           </a>
-          <router-link :to="{name: 'facetitem.associate', params: {facetItemId: facetItem.id}}" class="inlineEditLink">
+          <router-link :to="associateItemLink(treeItem)" class="inlineEditLink">
             Zuordnen
           </router-link>
         </span>
 
-        <facet-item-editor
+        <tree-item-editor
           v-if="isEdit"
           class="editor"
-          :item="facetItem"
-          :hasColor="!isSub"
+          :item="treeItem"
+          :routeConfig="routeConfig"
           @cancel="cancel"
           @update="update"
           @remove="remove" />
       </div>
     </div>
 
-    <div v-else :class="['facetItem', 'lastItem', {parentItem: !isSub, subItem: isSub, editItem: isEdit}]">
+    <div v-else :class="['treeItem', 'lastItem', {parentItem: !treeItem.parent, subItem: treeItem.parent, editItem: isEdit}]">
       <div>
         <div>
           <a href="" @click.prevent="edit()" v-if="!isEdit" class="inlineEditLink">
             Hinzufügen
           </a>
-          <facet-item-editor
+          <tree-item-editor
             v-if="isEdit"
             class="editor"
-            :item="facetItem"
-            :hasColor="!isSub"
+            :item="treeItem"
+            :routeConfig="routeConfig"
             @cancel="cancel"
             @update="update"
             @remove="remove" />
@@ -46,11 +46,11 @@
 
 
 <script>
-import FacetItemTag from '@/components/facet/FacetItemTag'
-import FacetItemEditor from '@/components/facet/FacetItemEditor'
+import TreeItemTag from './TreeItemTag'
+import TreeItemEditor from './TreeItemEditor'
 
 export default {
-  props: ['facetItem', 'bus', 'isSub'],
+  props: ['treeItem', 'routeConfig', 'bus'],
 
   data () {
     return {
@@ -67,15 +67,19 @@ export default {
   },
 
   methods: {
-    checkCancel (facetItem) {
-      if (facetItem !== this.facetItem) {
+    associateItemLink (treeItem) {
+      return this.routeConfig.associateItemLink(treeItem)
+    },
+
+    checkCancel (treeItem) {
+      if (treeItem !== this.treeItem) {
         this.cancel()
       }
     },
 
     edit () {
       this.isEdit = true
-      this.bus.$emit('edit', this.facetItem)
+      this.bus.$emit('edit', this.treeItem)
 
       this.$nextTick(() => {
         const elBottom = this.$el.offsetTop + this.$el.offsetHeight
@@ -87,42 +91,62 @@ export default {
     },
 
     cancel () {
-      this.facetItem.previewColor = null
+      this.treeItem.previewColor = null
       this.isEdit = false
     },
 
-    update (facetItemToSave) {
-      this.facetItem.facet.$rels.facet_items.Query.save(facetItemToSave).then(savedFacetItem => {
-        // tmp add item to parent in order to fill the
-        // delay/gap until the facet ist reloaded again
-        if (!facetItemToSave.id) {
-          if (facetItemToSave.parent) {
-            facetItemToSave.parent.sub_items.push(savedFacetItem)
-          } else {
-            this.facetItem.facet.facet_items.push(savedFacetItem)
+    getContainerTreeItemsRelation () {
+      const container = this.treeItem.container
+      return this.routeConfig.getTreeItemsRelation(container)
+    },
+
+    getContainerTreeItems () {
+      const container = this.treeItem.container
+      return this.routeConfig.getTreeItems(container)
+    },
+
+    update (treeItemToSave) {
+      this.getContainerTreeItemsRelation().Query.save(treeItemToSave).then(savedTreeItem => {
+        if (savedTreeItem) {
+          // tmp add item to parent in order to fill the
+          // delay/gap until the container items are reloaded again
+          if (!treeItemToSave.id) {
+            if (treeItemToSave.parent) {
+              treeItemToSave.parent.sub_items.push(savedTreeItem)
+            } else {
+              this.getContainerTreeItems().push(savedTreeItem)
+            }
           }
-        }
-        if (savedFacetItem) {
+
           this.$store.dispatch('messages/showAlert', {
             description: 'Das Attribut wurde geändert.'
           })
+
+          this.cancel()
+          this.$emit('update')
         }
-        this.$emit('update')
-        this.cancel()
       })
     },
 
     remove () {
       this.$store.dispatch('messages/showDialog', {
-        title: `Attribut ${this.facetItem.title} löschen`,
+        title: `Attribut ${this.treeItem.title} löschen`,
         message: 'Soll das Attribut gelöscht werden?\n\nAlle Akteure verlieren dieses Attribut.'
       }).then(result => {
         if (result === 'yes') {
-          this.facetItem.facet.$rels.facet_items.Query.delete(this.facetItem).then(deleted => {
+          this.getContainerTreeItemsRelation().Query.delete(this.treeItem).then(deleted => {
             if (deleted) {
+              // tmp add item to parent in order to fill the
+              // delay/gap until the container items are reloaded again
+              const items = this.treeItem.parent ? this.treeItem.parent.sub_items : this.getContainerTreeItems()
+              const index = items.indexOf(this.treeItem)
+              items.splice(index, 1)
+
               this.$store.dispatch('messages/showAlert', {
                 description: 'Das Attribut wurde gelöscht'
               })
+
+              this.cancel()
               this.$emit('remove')
             }
           })
@@ -132,8 +156,8 @@ export default {
   },
 
   components: {
-    FacetItemTag,
-    FacetItemEditor
+    TreeItemTag,
+    TreeItemEditor
   }
 }
 </script>
@@ -145,20 +169,15 @@ export default {
   font-size: .8em;
 }
 
-.facetItemTag {
-  font-size: 1.1em;
-}
-
-.facetItemContainer {
+.treeItemContainer {
   position: relative;
 }
 
-.facetItem {
-  padding: .5em 0;
+.treeItem {
+  padding: .2em 0;
 }
 
 .subItem {
-  padding: .2em 0;
   margin-left: 8px;
 
   &:before {
@@ -220,7 +239,7 @@ export default {
   }
 }
 
-.facetItemEditor {
+.treeItemEditor {
   margin-bottom: 10px;
   .parentItem & {
     margin-bottom: 0;

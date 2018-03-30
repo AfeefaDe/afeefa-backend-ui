@@ -11,9 +11,12 @@ import './Event'
 import './Facet'
 import './FacetItem'
 import './Location'
+import './MetaData'
+import './Navigation'
+import './NavigationItem'
+import './Offer'
 import './Orga'
 import './ResourceItem'
 import './User'
-import './MetaData'
 
 Registry.initializeAll()
