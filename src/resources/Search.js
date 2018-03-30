@@ -1,50 +1,32 @@
-import Vue from 'vue'
-import store from '@/store'
-import { BASE } from '@/store/api'
 import Event from '@/models/Event'
 import Orga from '@/models/Orga'
-import Entries from './base/Entries'
-import BaseResource from './base/BaseResource'
+import Resource from 'uidata/resource/Resource'
 
-class SearchResource extends BaseResource {
-  init ([searchRequest]) {
-    const filterUrl = this.generateFilterUrl(searchRequest)
-    this.listCacheKey = 'search' + filterUrl
-    this.http = Vue.resource(BASE + filterUrl)
+class SearchResource extends Resource {
+  url = 'entries'
+
+  getListType () {
+    return 'search'
   }
 
-  generateFilterUrl (searchRequest) {
-    const filter = 'filter[' + searchRequest.filterCriterion + ']=' + searchRequest.keyword
-    const url = 'entries?' + filter
-    return url
+  getItemJson (json) {
+    return json.relationships.entry.data
   }
 
-  getItemCacheKey (json) {
-    return json.type
-  }
-
-  createItem (json) {
-    if (json.relationships.entry.data.type === 'orgas') {
-      return new Orga()
+  getItemModel (json) {
+    if (json.type === 'orgas') {
+      return Orga
     } else {
-      return new Event()
+      return Event
     }
   }
 
-  deserialize (item, json) {
-    item.deserialize(json.relationships.entry.data)
+  find (searchRequest) {
+    const params = {
+      [`filter[${searchRequest.filterCriterion}]`]: searchRequest.keyword
+    }
+    return super.getAll(params)
   }
 }
 
-export default {
-  find (searchRequest) {
-    const resource = new SearchResource(searchRequest)
-    return store.dispatch('api/getList', {resource}).then(entries => {
-      for (let entry of entries) {
-        Entries.fetchCategory(entry)
-        Entries.fetchSubCategory(entry)
-      }
-      return entries
-    })
-  }
-}
+export default new SearchResource()

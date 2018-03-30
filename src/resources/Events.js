@@ -1,123 +1,39 @@
-import Vue from 'vue'
-import store from '@/store'
-import { BASE } from '@/store/api'
-import Event from '@/models/Event'
-import Entries from './base/Entries'
-import BaseEntriesResource from './base/BaseEntriesResource'
+import EntriesResource from './base/Entries'
 
-class EventsResource extends BaseEntriesResource {
-  init () {
-    this.http = Vue.resource(BASE + 'events{/id}', {}, {update: {method: 'PATCH'}})
-    this.listCacheKey = 'events'
-  }
-
-  createItem () {
-    return new Event()
-  }
-
-  itemAdded (event) {
-    super.itemAdded(event)
-    // parent orgas events might change
-    this._updateParentOrgasEventList(event)
-  }
+export default class EventsResource extends EntriesResource {
+  url = 'events{/id}'
 
   itemDeleted (event) {
     super.itemDeleted(event)
-    // parent orgas events might change
-    this._updateParentOrgasEventList(event)
+
+    if (event.parent_orga) {
+      event.parent_orga.count_events--
+    }
   }
 
   itemSaved (eventOld, event) {
     super.itemSaved(eventOld, event)
-    // parent orgas events might change
-    this._updateParentOrgasEventList(eventOld)
-    this._updateParentOrgasEventList(event)
-  }
 
-  _updateParentOrgasEventList (event) {
-    const orgaId = event._relationIds.parent_orga
-    if (orgaId) {
-      this.cachePurgeList(`orgas/${orgaId}/events?filter[date]=upcoming`)
-      this.cachePurgeList(`orgas/${orgaId}/events?filter[date]=past`)
+    // upcoming changed
+    if (eventOld.isUpcoming !== event.isUpcoming) {
+      this.cachePurgeList('events', '{}')
+
+      event.parent_orga.$rels.upcoming_events.reloadOnNextGet()
+      event.parent_orga.$rels.past_events.reloadOnNextGet()
     }
-  }
-}
 
-export default {
-  getAllForOrga (id, filter) {
-    const resource = new EventsResource()
-    resource.http = Vue.resource(BASE + `orgas/${id}/events?filter[date]=${filter}`)
-    resource.listCacheKey = `orgas/${id}/events?filter[date]=${filter}`
-    return store.dispatch('api/getList', {resource}).then(events => {
-      for (let event of events) {
-        Entries.fetchCategory(event)
-        Entries.fetchSubCategory(event)
+    // parent orga changed
+    if (eventOld.parent_orga !== event.parent_orga) {
+      if (eventOld.parent_orga) {
+        eventOld.parent_orga.count_events--
+        eventOld.parent_orga.$rels.upcoming_events.reloadOnNextGet()
+        eventOld.parent_orga.$rels.past_events.reloadOnNextGet()
       }
-      return events
-    })
-  },
-
-  getAll (params) {
-    const resource = new EventsResource()
-    return store.dispatch('api/getList', {resource, params}).then(events => {
-      for (let event of events) {
-        Entries.fetchCategory(event)
-        Entries.fetchSubCategory(event)
+      if (event.parent_orga) {
+        // current parent_orga.count_events loaded in event save payload
+        event.parent_orga.$rels.upcoming_events.reloadOnNextGet()
+        event.parent_orga.$rels.past_events.reloadOnNextGet()
       }
-      return events
-    })
-  },
-
-  get (id) {
-    if (!id) {
-      const event = Entries.create(new Event())
-      return Promise.resolve(event)
     }
-    const resource = new EventsResource()
-    return store.dispatch('api/getItem', {resource, id}).then(event => {
-      if (event) {
-        Entries.fetchParentOrga(event)
-        Entries.fetchCategory(event)
-        Entries.fetchSubCategory(event)
-        Entries.fetchLocation(event)
-        Entries.fetchContact(event)
-        Entries.fetchAnnotations(event)
-      }
-      return event
-    })
-  },
-
-  clone (event) {
-    return Entries.clone(event)
-  },
-
-  save (event) {
-    if (event.id) {
-      return store.dispatch('api/saveItem', {
-        resource: new EventsResource(),
-        item: event
-      })
-    } else {
-      return store.dispatch('api/addItem', {
-        resource: new EventsResource(),
-        item: event
-      })
-    }
-  },
-
-  updateAttributes (event, attributes) {
-    return store.dispatch('api/updateItemAttributes', {
-      resource: new EventsResource(),
-      item: event,
-      type: 'events',
-      attributes
-    })
-  },
-
-  delete (event) {
-    return store.dispatch('api/deleteItem', {
-      resource: new EventsResource(),
-      item: event
-    })
   }
 }

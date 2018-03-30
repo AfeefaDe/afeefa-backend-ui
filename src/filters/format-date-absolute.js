@@ -1,4 +1,5 @@
 import moment from 'moment'
+
 export default function (date) {
   function addZero (i) {
     if (i < 10) {

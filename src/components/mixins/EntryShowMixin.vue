@@ -1,5 +1,5 @@
 <script>
-import EntryDetail from '@/components/EntryDetail/EntryDetail'
+import EntryDetail from '@/components/entry/show/EntryDetail'
 
 export default {
   props: ['id'],
@@ -7,7 +7,7 @@ export default {
   data () {
     return {
       item: null,
-      Resource: null,
+      routeConfig: null,
       loadingError: false
     }
   },
@@ -24,8 +24,6 @@ export default {
       setTimeout(() => {
         this.initItem(to.params.id)
       }, 100)
-    } else {
-      this.initItem(to.params.id)
     }
     next()
   },
@@ -33,8 +31,15 @@ export default {
   methods: {
     initItem (id) {
       this.loadingError = false
-      this.Resource.get(id).then(entry => {
+
+      let relations = ['parent_orga']
+      if (this.routeConfig.routeName === 'orgas') {
+        relations = relations.concat(['past_events', 'upcoming_events'])
+      }
+
+      this.routeConfig.Model.Query.with(...relations).get(id).then(entry => {
         this.item = entry
+
         if (!this.item) {
           this.loadingError = true
         }

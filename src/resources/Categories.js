@@ -1,46 +1,19 @@
-import Vue from 'vue'
-import store from '@/store'
-import { BASE } from '@/store/api'
-import Category from '@/models/Category'
-import BaseResource from './base/BaseResource'
+import Resource from 'uidata/resource/Resource'
 
-class CategoriesResource extends BaseResource {
-  init () {
-    this.http = Vue.resource(BASE + 'categories{/id}')
-    this.listCacheKey = 'categories'
-  }
+export default class CategoriesResource extends Resource {
+  url = 'categories{/id}'
 
-  createItem () {
-    return new Category()
-  }
-
-  transformList (items) {
-    const categoriesMap = {}
-    for (let category of items) {
-      categoriesMap[category.id] = category
-    }
-
-    for (let category of items) {
-      const parentId = category._relationIds.parent_category
-      const parentCategory = categoriesMap[parentId]
-      if (parentCategory) {
-        category.parent_category = parentCategory
-        parentCategory.sub_categories.push(category)
-      }
+  listLoaded (categories, params) {
+    if (params && params.area) {
+      categories.forEach(category => {
+        category.area = params.area
+      })
     }
   }
-}
-
-export default {
-  getAll () {
-    const resource = new CategoriesResource()
-    return store.dispatch('api/getList', {resource})
-  },
 
   get (id) {
-    const resource = new CategoriesResource()
-    return this.getAll().then(() => {
-      return store.dispatch('api/getItem', {resource, id})
+    return super.getAll().then(() => {
+      return super.get(id)
     })
   }
 }

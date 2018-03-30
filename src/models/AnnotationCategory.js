@@ -1,18 +1,29 @@
-import BaseModel from './base/BaseModel'
+import AnnotationCategoriesResource from '@/resources/AnnotationCategories'
+import DataTypes from 'uidata/model/DataTypes'
+import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 
-export default class AnnotionCategory extends BaseModel {
-  init () {
-    this._fullyLoaded = true // there is no half-loaded-state
+class AnnotationCategory extends Model {
+  static type = 'annotation_categories'
 
-    this.id = null
-    this.type = 'annotationCategories'
-    this.generatedBySystem = false
-    this.title = ''
+  static Resource = AnnotationCategoriesResource
+
+  static attributes () {
+    return {
+      title: DataTypes.String,
+
+      generatedBySystem: {
+        type: DataTypes.Boolean,
+        remoteName: 'generated_by_system'
+      },
+
+      count_entries: DataTypes.Int
+    }
   }
 
-  deserialize (json) {
-    this.id = json.id
-    this.generatedBySystem = json.attributes.generated_by_system
-    this.title = json.attributes.title
+  get info () {
+    return super.info + ` title="${this.title}"`
   }
 }
+
+export default Registry.add(AnnotationCategory)

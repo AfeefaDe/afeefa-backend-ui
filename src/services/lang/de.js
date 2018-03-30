@@ -9,10 +9,16 @@ export default {
     annotations: 'Anmerkung | Anmerkungen',
     search: 'Suche',
     searchPlaceholder: 'Suche nach',
+    categories: 'Kategorien',
+    categoriesDresden: 'Dresden',
+    categoriesLeipzig: 'Leipzig',
+    categoriesBautzen: 'Bautzen',
     logout: 'Logout',
     new: 'Neu',
     edit: 'Ändern',
     show: 'Anzeigen',
+    contactNew: 'Kontakt hinzufügen',
+    contactEdit: 'Kontakt ändern',
     status: 'Status',
     time: 'Zeit',
     parentOrga: 'Übergeordnete Orga',
@@ -31,14 +37,47 @@ export default {
     spokenLanguages: 'Gesprochene Sprache | Gesprochene Sprachen',
     tags: 'Tags',
     chapters: 'Wissensportal',
-    singleChapter: 'Kapitel'
+    singleChapter: 'Kapitel',
+    facetItemAssociate: 'Zuordnen',
+    navigation: 'Navigation'
+  },
+  facets: {
+    ownerTypeOrga: 'Akteur',
+    ownerTypeOffer: 'Angebot',
+    ownerTypeEvent: 'Veranstaltung'
+  },
+  offers: {
+    offer: 'Angebot | Angebote'
   },
   tabs: {
     generalTab: 'Allgemeines',
+    annotationsTab: 'Anmerkungen',
     placeTab: 'Ort',
     contactTab: 'Kontakt',
-    linkTab: 'Zugehörigkeiten',
+    networkMembersTab: 'Netzwerkmitglieder',
+    projectsTab: 'Projekte',
+    eventsTab: 'Veranstaltungen',
+    upcomingEventsTab: 'Kommende',
+    pastEventsTab: 'Vergangene',
     resourceTab: 'Ressourcen'
+  },
+  orgaTypes: {
+    '2': {
+      name: 'Organisation',
+      description: 'Organisationen bilden Vereine und Zusammenschlüsse in der Realität ab.'
+    },
+    '3': {
+      name: 'Projekt',
+      description: 'Projekte sind kleinere Einheiten und immer Teil einer Organisation. Dabei können sie zu mehreren Organisationen hinzugefügt werden.'
+    },
+    '4': {
+      name: 'Ort',
+      description: 'Der Typ "Ort" befindet sich noch in der Entwicklung. Langfristig sollen damit reele Orte abgebildet werden.'
+    },
+    '5': {
+      name: 'Netzwerk',
+      description: 'Mit Netzwerken werden komplexere Strukturen, bestehende aus Organisationen, abgebildet. Ein Netzwerk hat immer einen Träger und beliebig viele Teilnehmer.'
+    }
   },
   errors: {
     noContactPresent: 'Keine Kontaktinformationen vorhanden',
@@ -49,7 +88,12 @@ export default {
     noSubOrgaPresent: 'Keine untergeordneten Orgas vorhanden',
     noEventsForOrga: 'Keine Events zu dieser Orga vorhanden',
     loadingImageError: 'Fehler beim Laden des Bildes',
-    loadingEntryError: 'Fehler beim Laden des Eintrags'
+    loadingEntryError: 'Fehler beim Laden des Eintrags',
+    loadingOfferError: 'Fehler beim Laden des Angebots',
+    loadingDataError: 'Fehler beim Laden von Daten',
+    loadingNavigationError: 'Fehler beim Laden der Navigation',
+    loadingNavigationItemError: 'Fehler beim Laden des Menüpunktes',
+    loadingCategoryError: 'Fehler beim Laden der Kategorie'
   },
   entries: {
     date_start: 'Startdatum',
@@ -76,6 +120,7 @@ export default {
     person: 'Ansprechpartner*in',
     mail: 'Email',
     phone: 'Telefonnummer',
+    fax: 'Fax',
     openingHours: 'Öffnungszeiten',
     web: 'Homepage',
     socialMedia: 'Social Media',
@@ -99,6 +144,12 @@ export default {
   status: {
     load_event: 'Lade Event',
     load_orga: 'Lade Orga',
+    load_offer: 'Lade Angebot',
+    load_data: 'Lade Daten',
+    load_navigation: 'Lade Navigation',
+    load_navigation_item: 'Lade Menüpunkt',
+    load_categories: 'Lade Kategorien',
+    load_category: 'Lade Kategorie',
     no: 'Keine',
     all: 'Alle',
     any: 'Alles',
@@ -240,12 +291,13 @@ export default {
     'youth-club': 'Jugendtreff',
 
     // LEIPZIG
+    'hotspots': 'Hot Spots',
+    'social-advice': 'Sozialberatung',
     'advice-and-support': 'Rat und Begleitung',
     'buddy-programme': 'Patenschaften',
     'daily-life': 'Alltag',
     'family': 'Kinder, Familie & Co',
     'health': 'Gesundheit',
-    'hotspots': 'Hot Spots',
     'housing': 'Wohnen',
     'kita-and-school': 'Kindergarten und Schule',
     'learning-german': 'Deutsch lernen',
@@ -253,7 +305,6 @@ export default {
     'mobility': 'Mobil sein',
     'participate': 'Mitwirken und sich einmischen',
     'religion': 'Religion',
-    'social-advice': 'Sozialberatung',
     'work-and-education': 'Bildung + Arbeit',
     'work-learn-study': 'Arbeit, Ausbildung, Studium'
   }

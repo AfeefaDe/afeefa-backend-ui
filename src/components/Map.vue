@@ -16,7 +16,7 @@
 import Vue2Leaflet from 'vue2-leaflet'
 
 export default {
-  props: ['mapCenter', 'location', 'draggable', 'currentTab'],
+  props: ['mapCenter', 'initialZoom', 'location', 'draggable', 'currentTab'],
 
   data () {
     return {
@@ -35,7 +35,9 @@ export default {
     },
     /*
      * this recalculates the size of the map after every tab change
-     * allows us to use v-show in the EntryTabbedContent Component
+     * allows us to use v-show in the TabBar Component
+     *
+     * @TODO what is the problem solved by this currentTab injection?
      */
     currentTab: function (currentTab) {
       const map = this.$refs.map.mapObject
@@ -90,7 +92,7 @@ export default {
           lat: this.location.lat,
           lng: this.location.lon
         }
-        this.zoom = 18
+        this.zoom = this.initialZoom || 18
       } else {
         this.marker = null
         this.zoom = 11
@@ -164,7 +166,7 @@ export default {
   height: 300px;
 
   &.active {
-    border: 1px solid #26a69a;
+    border: 1px solid #26A69A;
     padding: 0;
   }
 }

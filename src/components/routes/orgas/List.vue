@@ -3,7 +3,7 @@
     :items="items"
     addEntryButton="orgas.new"
     :sort-function="sortByCreatedAt"
-    :options="{pagination: true, created_at: true}"
+    :options="{filter: true, pagination: true, created_at: true}"
     :messages="messages">
   </entry-list>
 </template>
@@ -12,14 +12,14 @@
 <script>
 import EntryListMixin from '@/components/mixins/EntryListMixin'
 import sortByCreatedAt from '@/helpers/sort-by-created-at'
-import Orgas from '@/resources/Orgas'
+import Orga from '@/models/Orga'
 
 export default {
   mixins: [EntryListMixin],
 
   data () {
     return {
-      Resource: Orgas,
+      Query: Orga.Query,
       sortByCreatedAt,
       messages: {
         headline: () => this.$t('status.all') + ' ' + this.$tc('headlines.organisations', 2)

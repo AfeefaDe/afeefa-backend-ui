@@ -1,5 +1,5 @@
 <script>
-import EntryList from '@/components/EntryList'
+import EntryList from '@/components/entry/EntryList'
 
 export default {
   data () {
@@ -9,17 +9,25 @@ export default {
   },
 
   created () {
+    this.beforeCreated()
     this.loadItems()
   },
 
   methods: {
+    beforeCreated () {
+      return null
+    },
     getQueryParams () {
       return null
     },
     loadItems () {
       const queryParams = this.getQueryParams()
-      this.Resource.getAll(queryParams).then(entries => {
-        this.items = entries
+      const currentRouteQuery = this.$route.query
+      this.Query.getAll(queryParams).then(entries => {
+        // protect loading items into already left view
+        if (currentRouteQuery === this.$route.query) {
+          this.items = entries
+        }
       })
     }
   },

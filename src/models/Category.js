@@ -1,30 +1,48 @@
-import BaseModel from './base/BaseModel'
+import CategoriesResource from '@/resources/Categories'
+import CategorySubCategoriesResource from '@/resources/relations/CategorySubCategories'
+import DataTypes from 'uidata/model/DataTypes'
+import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
+import Relation from 'uidata/model/Relation'
 
-export default class Category extends BaseModel {
-  init () {
-    this._fullyLoaded = true // there is no half-loaded-state
+class Category extends Model {
+  static type = 'categories'
 
-    this.id = null
-    this.type = 'categories'
-    this.title = ''
+  static Resource = CategoriesResource
 
-    this.parent_category = null
-    this.sub_categories = []
+  static attributes () {
+    return {
+      title: DataTypes.String,
 
-    this._relationIds = {
-      parent_category: null
+      count_owners: DataTypes.Int
     }
   }
 
-  deserialize (json) {
-    this.id = json.id
-    this.title = json.attributes.title
+  static relations () {
+    return {
+      parent_category: {
+        type: Relation.HAS_ONE,
+        Model: Category
+      },
 
-    const rels = json.relationships
-
-    // category
-    if (rels.parent_category.data) {
-      this._relationIds.parent_category = rels.parent_category.data.id
+      sub_categories: {
+        type: Relation.HAS_MANY,
+        Model: Category,
+        Resource: CategorySubCategoriesResource
+      }
     }
+  }
+
+  constructor () {
+    super()
+
+    this.area = null
+  }
+
+  get info () {
+    const subCat = !!this.$rels.parent_category.id
+    return super.info + ` subCat="${subCat}" title="${this.title}"`
   }
 }
+
+export default Registry.add(Category)

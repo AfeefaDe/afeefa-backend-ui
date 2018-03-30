@@ -1,34 +1,26 @@
 <template>
-  <div class="list-pagination">
-    <div class="list-pagination__info">
+  <div class="listPagination">
+    <p class="listPagination__infoText">
+      {{ currentNumItems }} {{ $tc('pagination.entries', currentNumItems) }}
+    </p>
 
-      <p class="list-pagination__infoText">
-        {{ currentNumItems }} {{ $tc('pagination.entries', currentNumItems) }}
-        <template v-if="currentNumItems > 0">
-          ({{ $t('pagination.page') }} {{ currentPage }} {{ $t('pagination.of') }} {{ currentNumPages }})
-        </template>
-      </p>
-      <label class="list-pagination__pagesizeSelectLabel" for="pageSizeSelect" v-if="currentNumItems > 15">{{ $t('pagination.set_page_size') }}:</label>
-      <select v-model="currentPageSize"
-        @change="pageSizeChanged"
-        class="list-pagination__pagesizeSelect browser-default"
-        v-if="currentNumItems > 15"
-        id="pageSizeSelect">
-        <option value="15">15 {{ $t('pagination.per_page') }}</option>
-        <option value="30">30 {{ $t('pagination.per_page') }}</option>
-        <option value="1000">{{ $t('status.all') }}</option>
-      </select>
-
-    </div>
-
-    <div class="list-pagination__navigation" v-if="currentNumPages > 1">
+    <div class="listPagination__navigation" v-if="currentNumPages > 1">
       <a
-          :class="[(currentPage > 1 ? 'enabled' : 'disabled')]"
-          class="list-pagination--arrowButton"
-          @click.prevent="gotoPrev()">
+        :class="[(currentPage > 1 ? 'enabled' : 'disabled')]"
+        class="listPagination--arrowButton"
+        @click.prevent="goto(1)">
+        <i class="material-icons">first_page</i>
+      </a>
+      <a
+        :class="[(currentPage > 1 ? 'enabled' : 'disabled')]"
+        class="listPagination--arrowButton"
+        @click.prevent="gotoPrev()">
         <i class="material-icons">navigate_before</i>
       </a>
-      <div class="list-pagination__navigationPages">
+
+      <div>{{ $t('pagination.page') }} {{ currentPage }} {{ $t('pagination.of') }} {{ currentNumPages }}</div>
+
+      <div class="listPagination__navigationPages" v-if="false">
         <a v-for="pageNumber in currentNumPages" :key="pageNumber"
           href="" @click.prevent="goto(pageNumber)"
           :class="[(pageNumber == currentPage ? 'active' : 'inactive')]">
@@ -36,77 +28,30 @@
         </a>
       </div>
       <a
-          :class="[(currentPage < currentNumPages ? 'enabled' : 'disabled')]"
-          class="list-pagination--arrowButton"
-          @click.prevent="gotoNext()">
+        :class="[(currentPage < currentNumPages ? 'enabled' : 'disabled')]"
+        class="listPagination--arrowButton"
+        @click.prevent="gotoNext()">
         <i class="material-icons">navigate_next</i>
+      </a>
+      <a
+        :class="[(currentPage < currentNumPages ? 'enabled' : 'disabled')]"
+        class="listPagination--arrowButton"
+        @click.prevent="goto(currentNumPages)">
+        <i class="material-icons">last_page</i>
       </a>
     </div>
 
+    <select v-model="currentPageSize"
+      @change="pageSizeChanged"
+      class="listPagination__pagesizeSelect browser-default"
+      v-if="currentNumItems > 15"
+      id="pageSizeSelect">
+      <option value="15">15 {{ $t('pagination.per_page') }}</option>
+      <option value="30">30 {{ $t('pagination.per_page') }}</option>
+      <option value="1000">{{ $t('status.all') }}</option>
+    </select>
   </div>
 </template>
-
-
-<style lang="scss">
-@import "~variables";
-
-.list-pagination {
-  margin-bottom: 1em;
-  &__info {
-    display: flex;
-    align-items: baseline;
-    margin-bottom: 0.7em;
-    @media screen and (max-width: $break-medium) {
-      display: block;
-    }
-  }
-  &__infoText {
-    flex-grow: 2;
-    margin: 0;
-  }
-  &__pagesizeSelect {
-    display: inline-block;
-    width: auto;
-    height: auto;
-  }
-  &__pagesizeSelectLabel {
-    margin-right: 1em;
-  }
-
-  &__navigation {
-    display: flex;
-    justify-content: center;
-    word-wrap: break-word;
-    a {
-      display: inline-block;
-      cursor: pointer;
-      font-size: 1rem;
-      padding: 0.3em 0.6em;
-      border-radius: 2px;
-      color: $black;
-      vertical-align: middle;
-    }
-    a:hover {
-      background: $gray20;
-    }
-    a.active {
-      background: $secondaryBlue;
-      color: white;
-    }
-  }
-  &--arrowButton {
-    height: 24px;
-    box-sizing: initial;
-  }
-  &--arrowButton.disabled {
-    cursor: initial;
-    color: $gray20;
-  }
-  &--arrowButton.disabled:hover {
-    background: transparent;
-  }
-}
-</style>
 
 
 <script>
@@ -199,3 +144,77 @@ export default {
   }
 }
 </script>
+
+
+<style lang="scss">
+.listPagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .8em;
+
+  @media screen and (max-width: $break-medium) {
+    display: block;
+  }
+
+  &__infoText {
+    flex-grow: 0;
+    margin: 0;
+    margin-bottom: 0.2em;
+  }
+
+  &__pagesizeSelect {
+    display: inline-block;
+    width: auto;
+    height: auto;
+  }
+
+  &__pagesizeSelectLabel {
+    margin-right: 1em;
+  }
+
+  &__navigation {
+    display: flex;
+    word-wrap: break-word;
+    margin-bottom: 0.2em;
+
+    div {
+      line-height: 24px;
+    }
+
+    a {
+      @include user-select();
+
+      display: inline-block;
+      cursor: pointer;
+      font-size: 1rem;
+      border-radius: 2px;
+      color: $black;
+      vertical-align: middle;
+    }
+
+    a:hover {
+      background: $gray20;
+    }
+
+    a.active {
+      background: $secondaryBlue;
+      color: white;
+    }
+  }
+
+  &--arrowButton {
+    height: 24px;
+    box-sizing: initial;
+  }
+
+  &--arrowButton.disabled {
+    cursor: initial;
+    color: $gray20;
+  }
+
+  &--arrowButton.disabled:hover {
+    background: transparent;
+  }
+}
+</style>

@@ -7,7 +7,6 @@ $roboto-font-path: "../../../node_modules/materialize-css/dist/fonts/roboto/" !d
 //@import "~materialize/components/mixins";
 @import "~materialize/components/color";
 
-
 // Variables;
 @import "~materialize/components/variables";
 
@@ -23,7 +22,6 @@ $button-floating-background: $secondary-color !default;
 $button-raised-background-hover: lighten($secondaryBlue, 5%);
 $input-focus-color: $secondaryBlue;
 /* =======================> overwrite end <======================= */
-
 
 // Reset
 @import "~materialize/components/normalize";
@@ -68,12 +66,14 @@ $input-focus-color: $secondaryBlue;
 @import 'fonts';
 /* customize materialize styles */
 @import 'materialize-custom';
+@import 'materialize-reset';
 /* customize vue-select styles */
 @import 'vueselect-custom';
 /* style for entry detail */
 @import 'entry-detail-form';
 /* style for entry edit */
 @import 'entry-edit-form';
-
-// import TinyMCE skin
-@import '../../../node_modules/tinymce/skins/lightgray/skin.min.css';
+/* global mixins */
+@import 'mixins';
+/* tranistions */
+@import 'transitions';

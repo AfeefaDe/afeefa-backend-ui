@@ -1,15 +1,32 @@
-import BaseModel from './base/BaseModel'
+import UsersResource from '@/resources/Users'
+import DataTypes from 'uidata/model/DataTypes'
+import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 
-export default class User extends BaseModel {
+class User extends Model {
+  static type = 'users'
+
+  static Resource = UsersResource
+
+  static attributes () {
+    return {
+      first_name: {
+        type: DataTypes.String,
+        remoteName: 'forename'
+      },
+
+      last_name: {
+        type: DataTypes.String,
+        remoteName: 'surname'
+      },
+
+      area: DataTypes.String,
+
+      organization: DataTypes.String
+    }
+  }
+
   init () {
-    this._fullyLoaded = true // there is no half-loaded-state
-
-    this.id = null
-    this.type = 'users'
-    this.first_name = ''
-    this.last_name = ''
-    this.area = ''
-    this.organization = ''
     this.password = ''
   }
 
@@ -17,12 +34,10 @@ export default class User extends BaseModel {
     return this.first_name + ' ' + this.last_name
   }
 
-  deserialize (json) {
-    this.id = json.id
-    this.first_name = json.attributes.forename
-    this.last_name = json.attributes.surname
-    this.area = json.attributes.area
-    this.organization = json.attributes.organization
+  toJson () {
+    return {
+      data: this.serialize()
+    }
   }
 
   serialize () {
@@ -41,3 +56,5 @@ export default class User extends BaseModel {
     return data
   }
 }
+
+export default Registry.add(User)

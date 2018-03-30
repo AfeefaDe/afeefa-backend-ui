@@ -1,38 +1,23 @@
 <template>
   <entry-detail
     :entry="item"
+    :routeConfig="routeConfig"
     :entry-loading-error="loadingError"
-    route-name="orgas"
-    :Resource="Resource"
-    :messages="messages"
     :options="{hasParentOrga: true, hasEvents: true}">
   </entry-detail>
 </template>
 
 
 <script>
-import Orgas from '@/resources/Orgas'
 import EntryShowMixin from '@/components/mixins/EntryShowMixin'
+import OrgaRouteConfig from './OrgaRouteConfig'
 
 export default {
   mixins: [EntryShowMixin],
 
   data () {
     return {
-      Resource: Orgas,
-      messages: {
-        loading: () => this.$t('status.load_orga') + ' ' + this.id,
-        loadingError: () => this.$t('errors.loadingEntryError') + ' ' + this.id,
-        activateHeadline: active => {
-          return `Orga ${active ? 'verbergen' : 'veröffentlichen'}`
-        },
-        activate: active => {
-          return `Soll die Orga "${this.item.title}" ${active ? 'verborgen' : 'veröffentlicht'} werden?`
-        },
-        activated: active => {
-          return `Die Orga ${active ? 'wurde veröffentlicht' : 'ist nun nicht mehr öffentlich sichtbar'}.`
-        }
-      }
+      routeConfig: new OrgaRouteConfig(this, this.id)
     }
   }
 }

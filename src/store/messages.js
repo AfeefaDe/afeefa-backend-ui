@@ -1,3 +1,5 @@
+let ALERT_ID = 0
+
 export default {
   namespaced: true,
 
@@ -8,6 +10,7 @@ export default {
 
   mutations: {
     addAlert (state, alert) {
+      alert.id = ++ALERT_ID
       state.alerts.push(alert)
     },
 

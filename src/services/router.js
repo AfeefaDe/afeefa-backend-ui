@@ -6,10 +6,18 @@ import Protected from '@/components/routes/Protected'
 import Dashboard from '@/components/routes/Dashboard'
 import Todos from '@/components/routes/Todos'
 
+import ListOffers from '@/components/routes/offers/List'
+import NewOffer from '@/components/routes/offers/New'
+import ShowOffer from '@/components/routes/offers/Show'
+import EditOffer from '@/components/routes/offers/Edit'
+
 import ListOrgas from '@/components/routes/orgas/List'
 import NewOrga from '@/components/routes/orgas/New'
 import EditOrga from '@/components/routes/orgas/Edit'
 import ShowOrga from '@/components/routes/orgas/Show'
+
+import EditContact from '@/components/routes/contacts/Edit'
+import NewContact from '@/components/routes/contacts/New'
 
 import ListEvents from '@/components/routes/events/List'
 import NewEvent from '@/components/routes/events/New'
@@ -19,8 +27,13 @@ import ShowEvent from '@/components/routes/events/Show'
 import ListChapters from '@/components/routes/chapters/List'
 import NewChapter from '@/components/routes/chapters/New'
 import EditChapter from '@/components/routes/chapters/Edit'
-import ShowChapter from '@/components/routes/chapters/Show'
 
+import ListNavigationItems from '@/components/routes/navigation/Show'
+import AssociateNavigationItem from '@/components/routes/navigation/Associate'
+
+import ListFacets from '@/components/routes/facets/List'
+import ShowFacet from '@/components/routes/facets/Show'
+import AssociateFacetItem from '@/components/routes/facets/Associate'
 
 import Search from '@/components/routes/Search'
 import UserSettings from '@/components/routes/UserSettings'
@@ -46,6 +59,40 @@ const routes = [
         component: Todos
       },
       {
+        path: 'offers',
+        component: { template: '<router-view></router-view>' },
+        children: [
+          {
+            path: '',
+            name: 'offers.list',
+            component: ListOffers
+          },
+          {
+            path: 'new',
+            name: 'offers.new',
+            component: NewOffer
+          },
+          {
+            path: ':id',
+            component: { template: '<router-view></router-view>' },
+            children: [
+              {
+                path: '',
+                name: 'offers.show',
+                component: ShowOffer,
+                props: true
+              }
+            ]
+          },
+          {
+            path: ':id/edit',
+            name: 'offers.edit',
+            component: EditOffer,
+            props: true
+          }
+        ]
+      },
+      {
         path: 'orgas',
         component: { template: '<router-view></router-view>' },
         children: [
@@ -61,9 +108,27 @@ const routes = [
           },
           {
             path: ':id',
-            name: 'orgas.show',
-            component: ShowOrga,
-            props: true
+            component: { template: '<router-view></router-view>' },
+            children: [
+              {
+                path: '',
+                name: 'orgas.show',
+                component: ShowOrga,
+                props: true
+              },
+              {
+                path: 'contacts/:contactId/edit',
+                name: 'orgas.contactedit',
+                component: EditContact,
+                props: true
+              },
+              {
+                path: 'contacts/new',
+                name: 'orgas.contactnew',
+                component: NewContact,
+                props: true
+              }
+            ]
           },
           {
             path: ':id/edit',
@@ -101,9 +166,27 @@ const routes = [
           },
           {
             path: ':id',
-            name: 'events.show',
-            component: ShowEvent,
-            props: true
+            component: { template: '<router-view></router-view>' },
+            children: [
+              {
+                path: '',
+                name: 'events.show',
+                component: ShowEvent,
+                props: true
+              },
+              {
+                path: 'contacts/:contactId/edit',
+                name: 'events.contactedit',
+                component: EditContact,
+                props: true
+              },
+              {
+                path: 'contacts/new',
+                name: 'events.contactnew',
+                component: NewContact,
+                props: true
+              }
+            ]
           },
           {
             path: ':id/edit',
@@ -128,15 +211,32 @@ const routes = [
             component: NewChapter
           },
           {
-            path: ':id',
-            name: 'chapters.show',
-            component: ShowChapter,
-            props: true
-          },
-          {
             path: ':id/edit',
             name: 'chapters.edit',
             component: EditChapter,
+            props: true
+          }
+        ]
+      },
+      {
+        path: 'categories',
+        component: { template: '<router-view></router-view>' },
+        children: [
+          {
+            path: '',
+            name: 'facets.list',
+            component: ListFacets
+          },
+          {
+            path: ':id',
+            name: 'facets.show',
+            component: ShowFacet,
+            props: true
+          },
+          {
+            path: ':id/associate/:facetItemId',
+            name: 'facetitem.associate',
+            component: AssociateFacetItem,
             props: true
           }
         ]
@@ -150,11 +250,28 @@ const routes = [
         path: 'usersettings',
         name: 'usersettings',
         component: UserSettings
+      },
+      {
+        path: 'navigation',
+        component: { template: '<router-view></router-view>' },
+        children: [
+          {
+            path: '',
+            name: 'navigation.show',
+            component: ListNavigationItems
+          },
+          {
+            path: 'associate/:id',
+            name: 'navigation.associate',
+            component: AssociateNavigationItem,
+            props: true
+          }
+        ]
       }
     ]
   },
   {
-    path: '/login',
+    path: 'login',
     name: 'login',
     component: Login
   },

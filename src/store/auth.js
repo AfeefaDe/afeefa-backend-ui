@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import { BASE } from '@/store/api'
-import router from '@/services/router'
 import User from '@/models/User'
-import Users from '@/resources/Users'
+import router from '@/services/router'
+import { BASE } from '@/store/api'
+import API from 'uidata/api/Api'
+import Vue from 'vue'
 
 const STORAGE_KEY = 'session'
 
@@ -18,14 +18,19 @@ export default {
 
 
   mutations: {
-    setCurrentUser (state, user) {
-      if (user) {
+    setCurrentUser (state, json) {
+      if (json) {
+        // TODO - do not call private method setRequestId, find general solution
+        // to loading/deserializing data outside the API cosmos
+        const user = new User()
+        user.deserialize(json, API.setRequestId())
+
         state.currentUserId = user.id
-        Users.setCurrentUser(user)
+        User.Query.setCurrentUser(user)
       } else {
         const id = state.currentUserId
         state.currentUserId = null
-        Users.removeCurrentUser(id)
+        User.Query.removeCurrentUser(id)
       }
     },
     setRedirectAfterLogin (state, route) {
@@ -68,9 +73,7 @@ export default {
                 }
                 commit('setLastAuthHeader', newAuthHeader)
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(newAuthHeader))
-                const user = new User()
-                user.deserialize(response.body.data)
-                commit('setCurrentUser', user)
+                commit('setCurrentUser', response.body.data)
                 next() // commit route change
               }).catch(response => {
                 if (response.status !== 401) {
@@ -159,9 +162,7 @@ export default {
       const url = BASE + 'users/sign_in'
       const request = Vue.http.post(url, loginData)
       return request.then(response => {
-        const user = new User()
-        user.deserialize(response.body.data)
-        commit('setCurrentUser', user)
+        commit('setCurrentUser', response.body.data)
         if (state.redirectAfterLogin) {
           // navigate to safed location
           router.push(state.redirectAfterLogin.fullPath)
@@ -188,6 +189,8 @@ export default {
 
 
     logout ({state, commit, dispatch}) {
+      window.stop() // cancel all requests, prevent 'session invalid' for running requests
+
       const url = BASE + 'users/sign_out'
       const request = Vue.http.delete(url, {headers: state.lastAuthHeader})
       request.then(response => {

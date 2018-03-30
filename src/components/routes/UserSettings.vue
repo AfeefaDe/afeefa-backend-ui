@@ -11,21 +11,21 @@
             <input-field
               field-name="first_name"
               v-model="user.first_name"
-              validation="required|max:20"
+              validate="required|max:20"
               :label="$t('usersettings.first_name')">
             </input-field>
 
             <input-field
               field-name="last_name"
               v-model="user.last_name"
-              validation="required|max:20"
+              validate="required|max:20"
               :label="$t('usersettings.last_name')">
             </input-field>
 
             <input-field
               field-name="organization"
               v-model="user.organization"
-              validation="required|max:20"
+              validate="required|max:20"
               :label="$t('usersettings.organization')">
             </input-field>
 
@@ -37,7 +37,7 @@
               field-name="password"
               type="password"
               v-model="user.password"
-              validation="min:8|max:40"
+              validate="min:8|max:40"
               label="Neues Passwort">
             </input-field>
 
@@ -45,12 +45,12 @@
               field-name="password_confirm"
               type="password"
               v-model="passwordConfirm"
-              validation="password-confirm:#password"
+              validate="password-confirm:#password"
               label="Passwortbestätigung">
             </input-field>
 
             <section class="entryForm__actionFooter">
-              <button v-bind:class="[{disabled: currentlySaving}, 'btn', 'waves-effect', 'waves-light', 'saveButton']" type="submit">
+              <button class="btn waves-effect waves-light saveButton" type="submit">
                 <i class="material-icons left">done</i>
                 Speichern
               </button>
@@ -65,7 +65,7 @@
 
 <script>
 import InputField from '@/components/InputField'
-import Users from '@/resources/Users'
+import User from '@/models/User'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 
 export default {
@@ -73,9 +73,7 @@ export default {
 
   data () {
     return {
-      userOrig: null,
       user: null,
-      currentlySaving: false,
       passwordConfirm: null
     }
   },
@@ -97,17 +95,14 @@ export default {
 
   methods: {
     initCurrentUser () {
-      this.userOrig = Users.getCurrentUser()
-      this.user = this.userOrig.clone()
+      this.user = User.Query.getCurrentUser().clone()
     },
 
     $canLeaveRoute () {
-      const hashOrig = JSON.stringify(this.userOrig.serialize())
-      const hashItem = JSON.stringify(this.user.serialize())
-      if (hashOrig === hashItem) {
-        return true
+      if (this.user && this.user.hasChanges()) {
+        return 'Soll das Ändern des Nutzers beendet werden?'
       }
-      return 'Soll das Ändern des Nutzers beendet werden?'
+      return true
     },
 
     save () {
@@ -128,16 +123,13 @@ export default {
           return
         }
 
-        this.currentlySaving = true
-        Users.save(this.user).then(() => {
+        User.Query.save(this.user).then(() => {
           const pwChanged = this.passwordConfirm ? 'und das Passwort ' : ''
           this.$store.dispatch('messages/showAlert', {
             description: `Die Nutzerdaten ${pwChanged}wurden geändert.`
           })
           this.initCurrentUser()
           this.passwordConfirm = null
-        }).finally(() => {
-          this.currentlySaving = false
         })
       })
     }

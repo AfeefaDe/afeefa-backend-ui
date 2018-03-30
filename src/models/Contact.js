@@ -1,54 +1,92 @@
-import BaseModel from './base/BaseModel'
+import ContactPerson from '@/models/ContactPerson'
+import Location from '@/models/Location'
+import DataTypes from 'uidata/model/DataTypes'
+import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
+import Relation from 'uidata/model/Relation'
 
-export default class Contact extends BaseModel {
-  init () {
-    this._fullyLoaded = true // there is no half-loaded-state
+class Contact extends Model {
+  static type = 'contacts'
 
-    this.id = null
-    this.type = 'contacts'
-    this.person = ''
-    this.mail = ''
-    this.phone = ''
-    this.fax = ''
-    this.openingHours = ''
-    this.web = ''
-    this.socialMedia = ''
-    this.spokenLanguages = ''
+  static attributes () {
+    return {
+      title: DataTypes.String,
+
+      fax: DataTypes.String,
+
+      openingHours: {
+        type: DataTypes.String,
+        remoteName: 'opening_hours'
+      },
+
+      web: DataTypes.String,
+
+      socialMedia: {
+        type: DataTypes.String,
+        remoteName: 'social_media'
+      },
+
+      spokenLanguages: {
+        type: DataTypes.String,
+        remoteName: 'spoken_languages'
+      }
+    }
   }
 
-  deserialize (json) {
-    this.id = json.id
-    this.person = json.attributes.contact_person || ''
-    this.mail = json.attributes.mail || ''
-    this.phone = json.attributes.phone || ''
-    this.fax = json.attributes.fax || ''
-    this.openingHours = json.attributes.opening_hours || ''
-    this.web = json.attributes.web || ''
-    this.socialMedia = json.attributes.social_media || ''
-    this.spokenLanguages = json.attributes.spoken_languages || ''
+  static relations () {
+    return {
+      location: {
+        type: Relation.HAS_ONE,
+        Model: Location
+      },
+
+      contact_persons: {
+        type: Relation.HAS_MANY,
+        Model: ContactPerson
+      }
+    }
   }
 
   serialize () {
     const data = {
-      type: 'contact_infos',
-      attributes: {
-        contact_person: this.person,
-        mail: this.mail,
-        phone: this.phone,
-        fax: this.fax,
-        opening_hours: this.openingHours,
-        web: this.web,
-        social_media: this.socialMedia,
-        spoken_languages: this.spokenLanguages
+      title: this.title,
+      fax: this.fax,
+      opening_hours: this.openingHours,
+      web: this.web,
+      social_media: this.socialMedia,
+      spoken_languages: this.spokenLanguages
+    }
+
+    if (this.location) {
+      if (this.location.creatingContactId === this.id) {
+        // post own location data
+        data.location = this.location.serialize()
+      } else {
+        // link to any other location
+        data.location_id = this.location.id
       }
+    } else {
+      // remove location
+      data.location_id = null
     }
-    if (this.id) {
-      data.id = this.id
+
+    data.contact_persons = []
+    for (let person of this.contact_persons) {
+      data.contact_persons.push(person.serialize())
     }
+
     return data
   }
 
   isEmpty () {
-    return !this.person && !this.mail && !this.phone && !this.fax && !this.openingHours && !this.web && !this.socialMedia && !this.spokenLanguages
+    const hasPerson = this.persons.some(cp => !cp.isEmpty())
+    return !this.fax && !this.openingHours && !this.web && !this.socialMedia && !this.spokenLanguages && !hasPerson
+  }
+
+  get info () {
+    const location = this.location ? this.location.info : `[Location] id="${this.$rels.location.id}"`
+    return super.info + ` title="${this.title}"` + `\n\t${location}`
   }
 }
+
+export default Registry.add(Contact)

@@ -1,7 +1,7 @@
 <template>
-  <div class="alert-container">
-    <transition-group name="alert" tag="div">
-    <div v-for="alert in alerts" :key="alert.description"
+  <div class="alertContainer">
+    <transition-group name="slideInTop" tag="div">
+    <div v-for="alert in alerts" :key="alert.id"
       @click="close(alert)" @keydown.esc="close(alert)"
       :class="['alert',
         alert.isError ? 'alert--error' : 'alert--success']">
@@ -70,9 +70,7 @@ export default {
 
 
 <style lang="scss" scoped>
-@import "~variables";
-
-.alert-container {
+.alertContainer {
   position: fixed;
   z-index: $z-index-overlay;
   top: ($header-height*1.1);
@@ -131,14 +129,6 @@ $alert-border-width: 7px;
 
 .alert--success {
   border-left: $alert-border-width solid $green;
-}
-
-.alert-enter-active, .alert-leave-active {
-  transition: all .4s;
-}
-.alert-enter, .alert-leave-to {
-  opacity: 0;
-  transform: translateY(-50px);
 }
 
 </style>

@@ -1,48 +1,101 @@
-import BaseModel from './BaseModel'
-import User from '../User'
+import Annotation from '@/models/Annotation'
+import Category from '@/models/Category'
+import Contact from '@/models/Contact'
+import FacetItem from '@/models/FacetItem'
+import User from '@/models/User'
+import ContactsResource from '@/resources/relations/EntryContacts'
+import DataTypes from 'uidata/model/DataTypes'
+import Model from 'uidata/model/Model'
+import Relation from 'uidata/model/Relation'
 
-export default class Entry extends BaseModel {
-  init () {
-    this.id = null
-    this.type = null
+export default class Entry extends Model {
+  static attributes () {
+    return {
+      title: DataTypes.String,
 
-    this.title = ''
-    this.description = ''
-    this.short_description = ''
-    this.media_url = ''
-    this.support_wanted = false
-    this.support_wanted_detail = ''
-    this.certified_sfr = false
-    this.tags = ''
+      description: DataTypes.String,
 
-    this.active = false
-    this.created_at = new Date()
-    this.updated_at = new Date()
-    this.state_changed_at = new Date()
+      short_description: DataTypes.String,
 
-    this.parent_orga = null
-    this.category = null
-    this.sub_category = null
-    this.location = null
-    this.contact = null
-    this.annotations = []
-    this.creator = null
-    this.lastEditor = null
+      media_url: DataTypes.String,
 
-    this.facebook_id = null
+      support_wanted: DataTypes.Boolean,
 
-    this.inheritance = {
-      short_description: false,
-      contact_infos: false
+      support_wanted_detail: DataTypes.String,
+
+      certified_sfr: DataTypes.Boolean,
+
+      tags: DataTypes.String,
+
+      facebook_id: DataTypes.String,
+
+      inheritance: {
+        type: DataTypes.Custom,
+        default: {},
+        value (value) {
+          const inheritance = {}
+          if (value) {
+            value.split('|').forEach(key => {
+              inheritance[key] = true
+            })
+          }
+          return inheritance
+        }
+      },
+
+      active: DataTypes.Boolean,
+
+      created_at: DataTypes.Date,
+
+      updated_at: DataTypes.Date,
+
+      state_changed_at: DataTypes.Date
     }
+  }
 
-    this._relationIds = {
-      parent_orga: null,
-      category: null,
-      sub_category: null,
-      location: null,
-      contact: null,
-      annotations: []
+  static relations () {
+    return {
+      category: {
+        type: Relation.HAS_ONE,
+        Model: Category
+      },
+
+      sub_category: {
+        type: Relation.HAS_ONE,
+        Model: Category
+      },
+
+      contacts: {
+        type: Relation.HAS_MANY,
+        Model: Contact,
+        Resource: ContactsResource
+      },
+
+      annotations: {
+        type: Relation.HAS_MANY,
+        Model: Annotation
+      },
+
+      creator: {
+        type: Relation.HAS_ONE,
+        Model: User
+      },
+
+      last_editor: {
+        type: Relation.HAS_ONE,
+        Model: User
+      },
+
+      facet_items: {
+        type: Relation.HAS_MANY,
+        Model: FacetItem
+      }
+    }
+  }
+
+  toJson () {
+    return {
+      data: this.serialize()
     }
   }
 
@@ -71,16 +124,6 @@ export default class Entry extends BaseModel {
         inheritance: inheritance
       },
       relationships: {
-        contact_infos: {
-          data: !this.contact || this.contact.isEmpty()
-            ? []
-            : [this.contact.serialize()]
-        },
-        locations: {
-          data: !this.location || this.location.isEmpty()
-            ? []
-            : [this.location.serialize()]
-        },
         category: this.category
           ? { data: this.category.serialize() }
           : null,
@@ -98,82 +141,7 @@ export default class Entry extends BaseModel {
     return data
   }
 
-  deserialize (json) {
-    this.init()
-
-    this.id = json.id
-    this.type = json.type
-
-    this.title = json.attributes.title || ''
-    this.description = json.attributes.description || ''
-    this.short_description = json.attributes.short_description || ''
-    this.media_url = json.attributes.media_url || ''
-    this.support_wanted = json.attributes.support_wanted
-    this.support_wanted_detail = json.attributes.support_wanted_detail
-    this.certified_sfr = json.attributes.certified_sfr
-    this.tags = json.attributes.tags
-
-    this.facebook_id = json.attributes.facebook_id
-
-    // feed inheritance object with values
-    if (json.attributes.inheritance) {
-      json.attributes.inheritance.split('|').forEach(key => {
-        this.inheritance[key] = true
-      })
-    }
-
-    this.active = json.attributes.active === true
-    this.created_at = new Date(json.attributes.created_at)
-    this.updated_at = new Date(json.attributes.updated_at)
-    this.state_changed_at = new Date(json.attributes.state_changed_at)
-
-    const rels = json.relationships
-
-    // parent orga / orga
-    if (this.type === 'orgas' && rels.parent_orga && rels.parent_orga.data) {
-      this._relationIds.parent_orga = rels.parent_orga.data.id
-    }
-    if (this.type === 'events' && rels.orga && rels.orga.data) {
-      this._relationIds.parent_orga = rels.orga.data.id
-    }
-
-    // category
-    if (rels.category.data) {
-      this._relationIds.category = rels.category.data.id
-    }
-
-    // subcategory
-    if (rels.sub_category.data) {
-      this._relationIds.sub_category = rels.sub_category.data.id
-    }
-
-    // annotations
-    if (rels.annotations.data.length) {
-      for (let jsonAnnotation of rels.annotations.data) {
-        if (!this._relationIds.annotations.includes(jsonAnnotation.id)) {
-          this._relationIds.annotations.push(jsonAnnotation.id)
-        }
-      }
-    }
-
-    // location
-    if (rels.locations && rels.locations.data.length) {
-      this._relationIds.location = rels.locations.data[0].id
-    }
-
-    // contact
-    if (rels.contact_infos && rels.contact_infos.data.length) {
-      this._relationIds.contact = rels.contact_infos.data[0].id
-    }
-
-    // creator, last editor
-    if (rels.creator.data) {
-      this.creator = new User()
-      this.creator.deserialize(rels.creator.data)
-    }
-    if (rels.last_editor.data) {
-      this.lastEditor = new User()
-      this.lastEditor.deserialize(rels.last_editor.data)
-    }
+  get info () {
+    return super.info + ` title="${this.title}"`
   }
 }

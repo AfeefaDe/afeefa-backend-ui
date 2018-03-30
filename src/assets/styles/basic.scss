@@ -45,7 +45,6 @@ $sidebarWidth: 350px;
   }
 }
 
-
 .cursor {
   cursor: pointer;
 }
@@ -94,20 +93,13 @@ $sidebarWidth: 350px;
 			font-size: 1.4em;
 		}
   }
-  &__headerGreen {
-    background-color: $secondaryBlue;
-    color: white;
-    h2 {
-      font-size: 1.4em;
-      font-weight: normal;
-    }
-  }
   /* output background color depending on category */
   &__headerCategories {
     @include categoryColors($alpha_background: 1, $alpha_border: 0);
   }
   &__headerTitle {
     flex-grow: 2;
+    font-size: 1.2em;
     overflow: hidden;
     padding-right: 1em;
     margin: 0;
@@ -120,9 +112,7 @@ $sidebarWidth: 350px;
   }
   &__headerTitleHeading {
     margin: 0;
-  }
-  &__headerTitleHeading {
-    margin: 0;
+    font-size: 1.5em;
   }
   &__headerSubtitle {
     font-size: 0.9rem;
@@ -135,6 +125,12 @@ $sidebarWidth: 350px;
     @media screen and (max-width: $break-medium) {
       display: block;
     }
+  }
+  &__type {
+    text-transform: uppercase;
+    color: $gray20;
+    padding-bottom: 0.5em;
+    font-size: 0.9rem;
   }
   &__headerButton {
     font-size: 0.93em;
@@ -156,7 +152,7 @@ $sidebarWidth: 350px;
     &:hover {
       background-color: $gray80;
     }
-    .material-icons {
+    i {
       font-size: 1.4em;
       margin-left: 0.5em;
     }
@@ -169,7 +165,7 @@ $sidebarWidth: 350px;
 }
 
 /* entry icon for events and orgas; used in list and detail view */
-.entryType-icon {
+.entryTypeIcon {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -189,9 +185,19 @@ $sidebarWidth: 350px;
 }
 
 //proper inline spacing for material icons
-.spacing-right {
+.spacingRight {
     margin-right: 0.2em;
 }
-.spacing-left {
+.spacingLeft {
     margin-left: 0.2em;
+}
+
+.inlineEditLink {
+  color: $gray30;
+  font-size: .8em;
+  text-decoration: underline;
+
+  &:hover {
+    color: $secondaryBlue;
+  }
 }

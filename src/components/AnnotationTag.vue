@@ -1,20 +1,23 @@
 <template>
-  <div v-bind:class="['annotationTag', annotation.annotationCategory.generatedBySystem ? 'annotationTag--system' : '', editMode ? 'annotationTag--editMode' : '']" :title= "$t('hints.edit_annotations')">
+  <div :class="[
+    'annotationTag', generatedBySystem ? 'annotationTag--system' : '',
+    editMode ? 'annotationTag--editMode' : '']"
+    :title= "$t('hints.edit_annotations')">
     <div class="annotationTag__header">
       <span>
-        {{annotation.annotationCategory.title}}
+        {{ title }}
       </span>
       <a v-if="editMode" href="" @click.prevent="removeAnnotation(annotation)" class="annotationTag__icon">
         <i class="material-icons">close</i>
       </a>
     </div>
     <div class="annotationTag__body">
-        <textarea v-if="editMode && !annotation.annotationCategory.generatedBySystem"
+        <textarea v-if="editMode && !generatedBySystem"
           class="annotationTag__detailInput"
           type="text"
           :placeholder="$t('hints.annotation_detail')"
           v-model="annotation.detail"></textarea>
-        <span v-else class="annotation-detail">{{annotation.detail}}</span>
+        <span v-else class="annotationDetail">{{ annotation.detail }}</span>
     </div>
   </div>
 </template>
@@ -23,6 +26,20 @@
 <script>
 export default {
   props: ['annotation', 'editMode'],
+
+  computed: {
+    generatedBySystem () {
+      // category fetched with delay
+      const category = this.annotation.annotationCategory
+      return (category && category.generatedBySystem) || false
+    },
+    title () {
+      // category fetched with delay
+      const category = this.annotation.annotationCategory
+      return (category && category.title) || ''
+    }
+  },
+
   methods: {
     removeAnnotation: function (annotation) {
       this.$emit('remove', annotation)
@@ -33,8 +50,6 @@ export default {
 
 
 <style lang="scss" scoped>
-@import "~variables";
-
 $annotationUserColor: $secondaryBlue;
 .annotationTag {
     display: inline-block;
@@ -50,7 +65,7 @@ $annotationUserColor: $secondaryBlue;
     padding: 0.4em;
     margin: 0.5em 1em 0.5em 0;
     vertical-align: top;
-    span.annotation-detail {
+    span.annotationDetail {
       color: grey;
       font-size: 12px;
       white-space: pre-line;
@@ -61,7 +76,6 @@ $annotationUserColor: $secondaryBlue;
       outline: 0;
       background: $backgroundColor;
       color: $black;
-      border: 0;
       &::placeholder {
         color: lighten($black, 20);
       }
@@ -97,7 +111,7 @@ $annotationUserColor: $secondaryBlue;
     }
     &--editMode {
       a {
-        color: inherit
+        color: inherit;
       }
     }
 }

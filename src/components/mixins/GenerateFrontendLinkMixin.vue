@@ -1,5 +1,5 @@
 <script>
-import Users from '@/resources/Users'
+import User from '@/models/User'
 
 export default {
   computed: {
@@ -8,7 +8,7 @@ export default {
      */
     frontendURL () {
       let url = '//'
-      const currentUser = Users.getCurrentUser()
+      const currentUser = User.Query.getCurrentUser()
       if (currentUser && currentUser.area && currentUser.area.toLowerCase() !== 'dresden') {
         url += currentUser.area + '.'
       }

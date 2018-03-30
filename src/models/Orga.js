@@ -1,57 +1,142 @@
+import OrgasResource from '@/resources/Orgas'
+import ActorRelationsResource from '@/resources/relations/ActorRelations'
+import OrgaPastEventsResource from '@/resources/relations/OrgaPastEvents'
+import OrgaUpcomingEventsResource from '@/resources/relations/OrgaUpcomingEvents'
+import DataTypes from 'uidata/model/DataTypes'
+import Registry from 'uidata/model/Registry'
+import Relation from 'uidata/model/Relation'
+
+import ActorRelations from './ActorRelations'
+import Event from './Event' // import before entry important (cyclic imports)!
 import Entry from './base/Entry'
+import Offer from './Offer'
+import OrgaType from './OrgaType'
+import ResourceItem from './ResourceItem'
 
-export default class Orga extends Entry {
-  init () {
-    super.init()
+class Orga extends Entry {
+  static type = 'orgas'
 
-    this.type = 'orgas'
-    this.sub_orgas = []
-    this.resource_items = []
-    // extend _relationIds
-    this._relationIds.sub_orgas = []
-    this._relationIds.resource_items = []
+  static Resource = OrgasResource
+
+  static attributes () {
+    return {
+      orga_type_id: {
+        type: DataTypes.Int,
+        default: OrgaType.ORGANIZATION
+      },
+
+      count_offers: DataTypes.Int,
+
+      count_events: DataTypes.Int,
+
+      count_resource_items: DataTypes.Int,
+
+      count_projects: DataTypes.Int,
+
+      count_network_members: DataTypes.Int,
+
+      networks: DataTypes.Array,
+
+      network_members: DataTypes.Array,
+
+      projects: DataTypes.Array,
+
+      project_initiators: DataTypes.Array,
+
+      partners: DataTypes.Array
+    }
   }
 
-  deserialize (json) {
-    super.deserialize(json)
+  static relations () {
+    return {
+      parent_orga: {
+        type: Relation.HAS_ONE,
+        Model: Orga,
+        remoteName: 'initiator'
+      },
 
-    const rels = json.relationships
+      resource_items: {
+        type: Relation.HAS_MANY,
+        Model: ResourceItem
+      },
 
-    // sub orgas
-    if (rels.sub_orgas && rels.sub_orgas.data.length) {
-      for (let jsonOrga of rels.sub_orgas.data) {
-        if (!this._relationIds.sub_orgas.includes(jsonOrga.id)) {
-          this._relationIds.sub_orgas.push(jsonOrga.id)
+      actor_relations: {
+        type: Relation.HAS_ONE,
+        Model: ActorRelations,
+        Resource: ActorRelationsResource
+      },
+
+      past_events: {
+        type: Relation.HAS_MANY,
+        Model: Event,
+        Resource: OrgaPastEventsResource
+      },
+
+      upcoming_events: {
+        type: Relation.HAS_MANY,
+        Model: Event,
+        Resource: OrgaUpcomingEventsResource
+      },
+
+      offers: {
+        type: Relation.HAS_MANY,
+        Model: Offer
+      }
+    }
+  }
+
+  onActorRelations (actorRelations) {
+    if (actorRelations) {
+      ActorRelations.RELATIONS.forEach(relationName => {
+        this[relationName] = actorRelations[relationName]
+      })
+      this.count_projects = this.projects.length
+      this.count_network_members = this.network_members.length
+      this.parent_orga = this.project_initiators[0] || null
+    }
+  }
+
+  beforeDeserialize (json) {
+    const relationships = json.relationships
+
+    // move all actor relations into container object
+    if (relationships) {
+      const actorRelationsJson = {}
+      ActorRelations.RELATIONS.forEach(relationName => {
+        if (relationships[relationName]) {
+          actorRelationsJson[relationName] = relationships[relationName].data
+          delete json.relationships[relationName]
         }
+      })
+      if (Object.keys(actorRelationsJson).length) {
+        // inject id of orga as actorRelations id
+        // also see ActorRelationsResource#itemJsonLoaded
+        actorRelationsJson.id = this.id
+        relationships.actor_relations = actorRelationsJson
       }
     }
 
-    // resourceItems
-    if (rels.resource_items && rels.resource_items.data.length) {
-      for (let jsonResource of rels.resource_items.data) {
-        if (!this._relationIds.resource_items.includes(jsonResource.id)) {
-          this._relationIds.resource_items.push(jsonResource.id)
-        }
-      }
+    return {
+      id: json.id,
+      attributes: json.attributes,
+      relationships
     }
   }
 
   serialize () {
     const data = super.serialize()
 
+    data.attributes.orga_type_id = this.orga_type_id
     data.attributes.facebook_id = this.facebook_id
-
-    data.relationships.parent_orga = this.parent_orga
-      ? { data: {id: this.parent_orga.id, type: 'orgas'} }
-      : null
 
     const resourceItemsSerialized = []
     for (let resourceItem of this.resource_items) {
       resourceItemsSerialized.push(resourceItem.serialize())
     }
-
-    data.relationships.resource_items = {data: resourceItemsSerialized}
+    data.relationships.resource_items = { data: resourceItemsSerialized }
 
     return data
   }
 }
+
+export default Registry.add(Orga)

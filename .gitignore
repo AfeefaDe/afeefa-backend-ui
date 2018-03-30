@@ -16,6 +16,8 @@
 npm-debug.log
 testem.log
 test/unit/coverage/*
+.babel
+stats.json
 
 # sass-cache
 app/styles/.sass-cache/*

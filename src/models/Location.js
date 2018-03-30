@@ -1,51 +1,69 @@
-import BaseModel from './base/BaseModel'
+import DataTypes from 'uidata/model/DataTypes'
+import Model from 'uidata/model/Model'
+import Registry from 'uidata/model/Registry'
 
-export default class Location extends BaseModel {
-  init () {
-    this._fullyLoaded = true // there is no half-loaded-state
+class Location extends Model {
+  static type = 'locations'
 
-    this.id = null
-    this.type = 'locations'
-    this.lat = ''
-    this.lon = ''
-    this.street = ''
-    this.zip = ''
-    this.city = ''
-    this.placename = ''
-    this.directions = ''
+  static ResourceUrl = 'locations{/id}'
+
+  static attributes () {
+    return {
+      title: DataTypes.String,
+
+      street: DataTypes.String,
+
+      zip: DataTypes.String,
+
+      city: DataTypes.String,
+
+      lat: DataTypes.String,
+
+      lon: DataTypes.String,
+
+      directions: DataTypes.String,
+
+      ownerTitle: DataTypes.String,
+
+      creatingContactId: DataTypes.String
+    }
   }
 
-  deserialize (json) {
-    this.id = json.id
-    this.lat = json.attributes.lat || ''
-    this.lon = json.attributes.lon || ''
-    this.street = json.attributes.street || ''
-    this.zip = json.attributes.zip || ''
-    this.city = json.attributes.city || ''
-    this.placename = json.attributes.placename || ''
-    this.directions = json.attributes.directions || ''
+  beforeDeserialize (json) {
+    const attributes = json.attributes
+    const rels = json.relationships || {}
+    if (rels.owner && rels.owner.data) {
+      attributes.ownerTitle = rels.owner.data.attributes.title
+    }
+    if (rels.contact && rels.contact.data) {
+      attributes.creatingContactId = rels.contact.data.id
+    }
+    return {
+      id: json.id,
+      attributes
+    }
   }
 
   serialize () {
     const data = {
-      type: this.type,
-      attributes: {
-        lat: this.lat || '', // if unknown, it's set to null in entry edit
-        lon: this.lon || '',
-        street: this.street,
-        zip: this.zip,
-        city: this.city,
-        placename: this.placename,
-        directions: this.directions
-      }
-    }
-    if (this.id) {
-      data.id = this.id
+      title: this.title,
+      street: this.street,
+      zip: this.zip,
+      city: this.city,
+      lat: this.lat || '', // if unknown, it's set to null in entry edit
+      lon: this.lon || '',
+      directions: this.directions
     }
     return data
   }
 
   isEmpty () {
-    return !this.street && !this.zip && !this.city && !this.placename && !this.directions
+    return !this.street && !this.zip && !this.city && !this.title && !this.directions
+  }
+
+  get info () {
+    return super.info + ` title="${this.title}" street="${this.street}"`
   }
 }
+
+export default Registry.add(Location)

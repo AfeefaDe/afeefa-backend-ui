@@ -3,7 +3,7 @@
     :items="items"
     addEntryButton="chapters.new"
     :sort-function="sortByTitle"
-    :options="{pagination: true, hideTypeIcon: true, linkToItem: 'edit'}"
+    :options="{filter: true, pagination: true, hideTypeIcon: true, linkToItem: 'edit'}"
     :messages="messages">
   </entry-list>
 </template>
@@ -11,7 +11,7 @@
 
 <script>
 import EntryListMixin from '@/components/mixins/EntryListMixin'
-import Chapters from '@/resources/Chapters'
+import Chapter from '@/models/Chapter'
 import sortByTitle from '@/helpers/sort-by-title'
 
 export default {
@@ -19,7 +19,7 @@ export default {
 
   data () {
     return {
-      Resource: Chapters,
+      Query: Chapter.Query,
       sortByTitle,
       messages: {
         headline: () => {

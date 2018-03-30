@@ -1,0 +1,30 @@
+import Resource from 'uidata/resource/Resource'
+
+export default class ActorRelationsRelationResource extends Resource {
+  getUrl () {
+    return `orgas/${this.relation.owner.id}/${this.relation.name}{/id}`
+  }
+
+  itemAttached (model) {
+    super.itemAttached(model)
+
+    this.updateActorRelations(model)
+  }
+
+  itemDetached (model) {
+    super.itemDetached(model)
+
+    this.updateActorRelations(model)
+  }
+
+  updateActorRelations (model) {
+    // purge the actor relation the model belongs to
+    model.$rels.actor_relations.reloadOnNextGet()
+
+    // purge the actor relation this relation belongs to
+    const actorRelations = this.relation.owner
+    actorRelations.getParentRelations().forEach(relation => {
+      relation.reloadOnNextGet()
+    })
+  }
+}

@@ -1,18 +1,22 @@
-import Vue from 'vue'
-import VueResource from 'vue-resource'
-import store from './store'
-import router from './services/router'
-import i18n from './services/lang'
-import App from './components/routes/App'
-import Filters from './filters'
-import VeeValidate from 'vee-validate'
-import './services/validation'
-import './services/leaflet'
-
 // import materialize js
-import 'materialize-css/dist/js/materialize.min.js'
+import 'materialize-css'
 // import vue multiselect style
 import 'vue-multiselect/dist/vue-multiselect.min.css'
+
+import './services/validation'
+import './services/leaflet'
+import './helpers/directives'
+import './models'
+
+import VeeValidate from 'vee-validate'
+import Vue from 'vue'
+import VueResource from 'vue-resource'
+
+import App from './components/routes/App'
+import Filters from './filters'
+import i18n from './services/lang'
+import router from './services/router'
+import store from './store'
 
 Vue.use(VeeValidate, {delay: 0, locale: 'de'})
 Vue.use(Filters)

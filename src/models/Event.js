@@ -1,26 +1,50 @@
-import Entry from './base/Entry'
+import Orga from '@/models/Orga'
+import EventsResource from '@/resources/Events'
 import moment from 'moment'
+import DataTypes from 'uidata/model/DataTypes'
+import Registry from 'uidata/model/Registry'
+import Relation from 'uidata/model/Relation'
 
-export default class Event extends Entry {
-  init () {
-    super.init()
+import Entry from './base/Entry'
 
-    this.type = 'events'
-    this.date_start = moment(new Date()).startOf('day').toDate()
-    this.has_time_start = false
-    this.date_end = moment(new Date()).startOf('day').toDate()
-    this.has_time_end = false
-    this.upcoming = false
+class Event extends Entry {
+  static type = 'events'
+
+  static Resource = EventsResource
+
+  static attributes () {
+    return {
+      date_start: {
+        type: DataTypes.Date,
+        default: moment(new Date()).startOf('day').toDate()
+      },
+
+      has_time_start: DataTypes.Boolean,
+
+      date_end: {
+        type: DataTypes.Date,
+        default: moment(new Date()).startOf('day').toDate()
+      },
+
+      has_time_end: DataTypes.Boolean
+    }
   }
 
-  deserialize (json) {
-    super.deserialize(json)
 
-    this.date_start = (json.attributes.date_start === null) ? null : new Date(json.attributes.date_start)
-    this.has_time_start = json.attributes.has_time_start === true
-    this.date_end = json.attributes.date_end ? new Date(json.attributes.date_end) : this.date_start
-    this.has_time_end = json.attributes.has_time_end === true
-    this.upcoming = json.attributes.upcoming
+  static relations () {
+    return {
+      parent_orga: {
+        type: Relation.HAS_ONE,
+        Model: Orga,
+        remoteName: 'orga'
+      }
+    }
+  }
+
+  afterDeserializeAttributes () {
+    if (!this.date_end) {
+      this.date_end = this.date_start
+    }
   }
 
   serialize () {
@@ -47,4 +71,21 @@ export default class Event extends Entry {
 
     return data
   }
+
+  get isUpcoming () {
+    const today = moment().startOf('day')
+    const start = moment(this.date_start).startOf('day')
+    if (start.diff(today, 'days') >= 0) { // start >= today
+      return true
+    }
+    if (this.date_end) {
+      const end = moment(this.date_end).startOf('day')
+      if (end.diff(today, 'days') >= 0) { // end >= today
+        return true
+      }
+    }
+    return false
+  }
 }
+
+export default Registry.add(Event)

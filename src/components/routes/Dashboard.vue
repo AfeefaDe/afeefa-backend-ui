@@ -76,14 +76,14 @@
 
 
 <script>
-import EntryListItems from '@/components/EntryListItems'
+import EntryListItems from '@/components/entry/EntryListItems'
 import SearchItems from '@/components/SearchItems'
 import sortByUpdatedAt from '@/helpers/sort-by-updated-at'
 import sortByCreatedAt from '@/helpers/sort-by-created-at'
 import { mapState } from 'vuex'
-import Events from '@/resources/Events'
-import Orgas from '@/resources/Orgas'
-import Todos from '@/resources/Todos'
+import Event from '@/models/Event'
+import Orga from '@/models/Orga'
+import TodosQuery from '@/resources/Todos'
 
 export default {
   data () {
@@ -99,20 +99,21 @@ export default {
 
   computed: mapState({
     numTodos: state => state.navigation.numTodos,
+    numOffers: state => state.navigation.numOffers,
     numOrgas: state => state.navigation.numOrgas,
     numEvents: state => state.navigation.numEvents ? state.navigation.numEvents.all : 0
   }),
 
   created () {
-    Todos.getAll().then(todos => {
+    TodosQuery.getAll().then(todos => {
       this.todos = todos
     })
 
-    Orgas.getAll().then(orgas => {
+    Orga.Query.getAll().then(orgas => {
       this.orgas = orgas
     })
 
-    Events.getAll().then(events => {
+    Event.Query.getAll().then(events => {
       this.events = events
     })
   },

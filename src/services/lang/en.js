@@ -9,12 +9,18 @@ export default {
     annotations: 'Annotation | Annotations',
     search: 'Search',
     searchPlaceholder: 'search for',
+    categories: 'Categories',
+    categoriesDresden: 'Dresden',
+    categoriesLeipzig: 'Leipzig',
+    categoriesBautzen: 'Bautzen',
     logout: 'Logout',
     new: 'New',
     edit: 'Edit',
     show: 'Show',
+    contactNew: 'Add Contact',
+    contactEdit: 'Edit Contact',
     status: 'Status',
-    time: 'Zeit',
+    time: 'Time',
     parentOrga: 'Parent Organization',
     subOrgas: 'Sub Organizations',
     organizer: 'Organizer',
@@ -31,14 +37,47 @@ export default {
     spokenLanguages: 'Spoken Language | Spoken Languages',
     tags: 'Tags',
     chapters: 'Wiki',
-    singleChapter: 'Chapter'
+    singleChapter: 'Chapter',
+    facetItemAssociate: 'Associate',
+    navigation: 'Navigation'
+  },
+  facets: {
+    ownerTypeOrga: 'Actor',
+    ownerTypeOffer: 'Offer',
+    ownerTypeEvent: 'Event'
+  },
+  offers: {
+    offer: 'Offer | Offers'
   },
   tabs: {
     generalTab: 'General',
+    annotationsTab: 'Annotations',
     placeTab: 'Place',
     contactTab: 'Contact',
-    linkTab: 'Links',
+    networkMembersTab: 'Network Members',
+    projectsTab: 'Projects',
+    eventsTab: 'Events',
+    upcomingEventsTab: 'Upcoming',
+    pastEventsTab: 'Past',
     resourceTab: 'Resources'
+  },
+  orgaTypes: {
+    '2': {
+      name: 'Organization',
+      description: 'Description for Organization @todo'
+    },
+    '3': {
+      name: 'Project',
+      description: 'Description for Project @todo'
+    },
+    '4': {
+      name: 'Location',
+      description: 'Description for Location @todo'
+    },
+    '5': {
+      name: 'Network',
+      description: 'Description for Network @todo'
+    }
   },
   errors: {
     noContactPresent: 'No contact information present',
@@ -49,8 +88,12 @@ export default {
     noSubOrgaPresent: 'No sub organizations present',
     noEventsForOrga: 'No events for organiszation present',
     loadingImageError: 'Error loading image',
-    loadingEntryError: 'Error loading entry'
-
+    loadingEntryError: 'Error loading entry',
+    loadingOfferError: 'Error loading offer',
+    loadingDataError: 'Error loading data',
+    loadingNavigationError: 'Error loading navigation',
+    loadingNavigationItemError: 'Error loading navigation item',
+    loadingCategoryError: 'Error loading category'
   },
   entries: {
     date_start: 'Start date',
@@ -77,6 +120,7 @@ export default {
     person: 'Contact Person',
     mail: 'Email',
     phone: 'Phone number',
+    fax: 'Fax',
     openingHours: 'Opening hours',
     web: 'Webpage',
     socialMedia: 'Social Media',
@@ -98,8 +142,14 @@ export default {
     organization: 'Organization'
   },
   status: {
-    load_event: 'Load Event',
-    load_orga: 'Load Orga',
+    load_event: 'Load event',
+    load_orga: 'Load orga',
+    load_offer: 'Load offer',
+    load_data: 'Load data',
+    load_navigation: 'Load navigation',
+    load_navigation_item: 'Load navigation item',
+    load_categories: 'Load categories',
+    load_category: 'Load category',
     no: 'No',
     all: 'All',
     any: 'Any',
@@ -239,17 +289,23 @@ export default {
     'workshop': 'Workshop',
     'workspace': 'Rooms + Workplaces',
     'youth-club': 'Youth club',
+
     // LEIPZIG
     'hotspots': 'Hotspots',
     'social-advice': 'Social Advice',
+    'advice-and-support': 'Rat und Begleitung',
+    'buddy-programme': 'Patenschaften',
+    'daily-life': 'Daily Life',
     'family': 'Family, Children & Co',
     'health': 'Health',
     'housing': 'Housing',
-    'religion': 'Religion',
-    'mobility': 'Mobility',
-    'daily-life': 'Daily Life',
+    'kita-and-school': 'Kindergarden and School',
     'learning-german': 'Learning German',
-    'kita-and-school': 'Kindergarten und School',
-    'work-and-education': 'Work and Education'
+    'living-in-leipzig': 'Living in Leipzig',
+    'mobility': 'Mobility',
+    'participate': 'Participate',
+    'religion': 'Religion',
+    'work-and-education': 'Work and Education',
+    'work-learn-study': 'Arbeit, Ausbildung, Studium'
   }
 }

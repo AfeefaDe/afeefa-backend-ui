@@ -29,9 +29,9 @@
 
 
 <script>
-import EntryListItems from '@/components/EntryListItems'
+import EntryListItems from '@/components/entry/EntryListItems'
 import sortByTitle from '@/helpers/sort-by-title'
-import Search from '@/resources/Search'
+import SearchQuery from '@/resources/Search'
 import Spinner from '@/components/Spinner'
 import SearchField from '@/components/SearchField'
 
@@ -67,7 +67,7 @@ export default {
     search (request) {
       this.loading = true
       this.status = this.$t('status.searching')
-      Search.find(request).then(result => {
+      SearchQuery.find(request).then(result => {
         this.status = result.length ? null : this.$t('status.noResults')
         this.items = result
         this.loading = false

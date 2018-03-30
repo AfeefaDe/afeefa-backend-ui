@@ -1,0 +1,7 @@
+/*
+ * Avaible in global context:
+ * build/utils.js: function generateLoaders
+ */
+@mixin user-select() {
+  user-select: none;
+}

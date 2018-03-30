@@ -24,9 +24,39 @@ const menuTree = {
       level: 2,
       hint: state => state.numOrgas,
       children: [
-        { route: 'orgas.show', title: 'headlines.show', level: 4 },
-        { route: 'orgas.edit', title: 'headlines.edit', level: 4 },
-        { route: 'orgas.new', title: 'headlines.new', level: 4 }
+        {
+          route: 'orgas.show',
+          title: 'headlines.show',
+          level: 3,
+          children: [
+            { route: 'orgas.edit', title: 'headlines.edit', level: 4 },
+            { route: 'orgas.contactedit', title: 'headlines.contactEdit', level: 4 },
+            { route: 'orgas.contactnew', title: 'headlines.contactNew', level: 4 }
+          ]
+        },
+        { route: 'orgas.new', title: 'headlines.new', level: 3 }
+      ]
+    },
+    {
+      route: 'offers.list',
+      title: 'offers.offer',
+      action: {
+        name: 'Neues Angebot erstellen',
+        icon: 'add_circle_outline',
+        route: 'offers.new'
+      },
+      level: 2,
+      hint: state => state.numOffers,
+      children: [
+        {
+          route: 'offers.show',
+          title: 'headlines.show',
+          level: 3,
+          children: [
+            { route: 'offers.edit', title: 'headlines.edit', level: 4 }
+          ]
+        },
+        { route: 'offers.new', title: 'headlines.new', level: 3 }
       ]
     },
     {
@@ -41,20 +71,16 @@ const menuTree = {
       hint: state => { return state.numEvents.upcoming + state.numEvents.past },
       children: [
         {
-          route: 'events.upcoming',
-          title: 'headlines.upcomingEventsShort',
+          route: 'events.show',
+          title: 'headlines.show',
           level: 3,
-          hint: state => state.numEvents.upcoming
+          children: [
+            { route: 'events.edit', title: 'headlines.edit', level: 4 },
+            { route: 'events.contactedit', title: 'headlines.contactEdit', level: 4 },
+            { route: 'events.contactnew', title: 'headlines.contactNew', level: 4 }
+          ]
         },
-        {
-          route: 'events.past',
-          title: 'headlines.pastEventsShort',
-          level: 3,
-          hint: state => state.numEvents.past
-        },
-        { route: 'events.show', title: 'headlines.show', level: 4 },
-        { route: 'events.edit', title: 'headlines.edit', level: 4 },
-        { route: 'events.new', title: 'headlines.new', level: 4 }
+        { route: 'events.new', title: 'headlines.new', level: 3 }
       ]
     },
     {
@@ -68,9 +94,33 @@ const menuTree = {
       level: 2,
       hint: state => { return state.numChapters },
       children: [
-        { route: 'chapters.show', title: 'headlines.show', level: 4 },
-        { route: 'chapters.edit', title: 'headlines.edit', level: 4 },
-        { route: 'chapters.new', title: 'headlines.new', level: 4 }
+        { route: 'chapters.edit', title: 'headlines.edit', level: 3 },
+        { route: 'chapters.new', title: 'headlines.new', level: 3 }
+      ]
+    },
+    {
+      route: 'navigation.show',
+      title: 'headlines.navigation',
+      action: null,
+      level: 1,
+      children: [
+        { route: 'navigation.associate', title: 'headlines.facetItemAssociate', level: 3 }
+      ]
+    },
+    {
+      route: 'facets.list',
+      title: 'headlines.categories',
+      action: null,
+      level: 1,
+      children: [
+        {
+          route: 'facets.show',
+          title: 'headlines.show',
+          level: 3,
+          children: [
+            { route: 'facetitem.associate', title: 'headlines.facetItemAssociate', level: 3 }
+          ]
+        }
       ]
     },
     {
@@ -83,19 +133,27 @@ const menuTree = {
 }
 
 
-const createPathNavigation = (node, tmpPath, currentRouteName) => {
+const createPathNavigation = (node, tmpPath, currentRouteName, currentRouteParams) => {
   node = Object.assign({}, node)
   node.hint = false
   tmpPath.push(node)
 
-  if (node.route === currentRouteName) {
+  let paramsMatch = false
+  if (node.params) {
+    paramsMatch = JSON.stringify(node.params) === JSON.stringify(currentRouteParams)
+  } else {
+    paramsMatch = true
+    node.params = {}
+  }
+
+  if (node.route === currentRouteName && paramsMatch) {
     node.route = null // hide link on active route
     return tmpPath
   }
 
   if (node.children) {
     for (let child of node.children) {
-      const foundChild = createPathNavigation(child, tmpPath, currentRouteName)
+      const foundChild = createPathNavigation(child, tmpPath, currentRouteName, currentRouteParams)
       if (foundChild) {
         return tmpPath
       }
@@ -109,7 +167,8 @@ const createPathNavigation = (node, tmpPath, currentRouteName) => {
 
 const createLevel1Navigation = (state, node, level1) => {
   node = Object.assign({}, node)
-  if (node.level < 4) {
+  node.params = node.params || {}
+  if (node.level < 3) {
     if (node.hint) {
       node.hint = node.hint(state)
     } else {
@@ -134,6 +193,7 @@ export default {
     numOrgas: 0,
     numEvents: 0,
     numTodos: 0,
+    numOffers: 0,
     numChapters: 0,
     pathNavigation: null,
     level1Navigation: null
@@ -174,8 +234,9 @@ export default {
 
     updateNavigation ({state, commit}) {
       const routeName = router.currentRoute.name
+      const routeParams = router.currentRoute.params
 
-      const pathNavigation = createPathNavigation(menuTree, [], routeName) || [menuTree]
+      const pathNavigation = createPathNavigation(menuTree, [], routeName, routeParams) || [menuTree]
       commit('setPathNavigation', pathNavigation)
 
       const level1Navigation = createLevel1Navigation(state, menuTree, [])
