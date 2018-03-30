@@ -10,6 +10,8 @@
   $turquoise: #318B86;
   $violet: #693E75;
   $orange: #CA7311;
+  $olive: #5E6823;
+  $blue_dark: #085272;
 
   &.cat-general   {
     background-color: rgba($gray50, $alpha_background);
@@ -57,5 +59,20 @@
     border-color: rgba($orange, $alpha_border);
     color: $white;
   }
+
+	&.cat-advice-and-support {
+		background-color: rgba($olive,$alpha_background);
+		border-color: rgba($olive, $alpha_border);
+  }
+
+	&.cat-living-in-leipzig {
+		background-color: rgba($yellow, $alpha_background);
+		border-color: rgba($yellow, $alpha_border);
+  }
+
+	&.cat-work-and-education {
+		background-color: rgba($blue_dark,$alpha_background);
+		border-color: rgba($blue_dark, $alpha_border);
+	}
 }
 /* stylelint-enable */
