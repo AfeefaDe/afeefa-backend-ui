@@ -1,4 +1,5 @@
 import NavigationItemsResource from '@/resources/NavigationItems'
+import NavigationItemFacetItemsResource from '@/resources/relations/NavigationItemFacetItems'
 import NavigationItemOwnersResource from '@/resources/relations/NavigationItemOwners'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
@@ -42,7 +43,8 @@ class NavigationItem extends Model {
 
       facet_items: {
         type: Relation.HAS_MANY,
-        Model: FacetItem
+        Model: FacetItem,
+        Resource: NavigationItemFacetItemsResource
       },
 
       owners: {

@@ -16,12 +16,7 @@
       <div>
         <h4>{{ navigationItem.title }}</h4>
 
-        <span v-for="facet in facets" :key="facet.id">
-          <span v-for="facetItem in getSelectedFacetItems(facet)" :key="facetItem.id">
-            <tree-item-tag :treeItem="facetItem" />
-          </span>
-          <navigation-item-facet-selector :navigationItem="navigationItem" :facet="facet" />
-        </span>
+        <entry-facet-items :entry="navigationItem" :isEdit="true" />
 
         <navigation-item-owner-selector :navigationItem="navigationItem" />
       </div>
@@ -38,9 +33,9 @@ import Facet from '@/models/Facet'
 import NavigationItem from '@/models/NavigationItem'
 
 import NavigationItemOwnerSelector from '@/components/navigation/NavigationItemOwnerSelector'
-import NavigationItemFacetSelector from '@/components/navigation/NavigationItemFacetSelector'
 import TreeItemTag from '@/components/tree/TreeItemTag'
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
+import EntryFacetItems from '@/components/entry/EntryFacetItems'
 
 export default {
   props: ['id'],
@@ -95,10 +90,10 @@ export default {
   },
 
   components: {
-    NavigationItemFacetSelector,
     NavigationItemOwnerSelector,
     TreeItemTag,
-    EntryLoadingMessage
+    EntryLoadingMessage,
+    EntryFacetItems
   }
 }
 </script>

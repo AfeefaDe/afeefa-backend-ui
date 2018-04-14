@@ -67,18 +67,13 @@
             </textarea>
             <span v-show="errors.has('description')" class="validation-error">{{ errors.first('description') }}</span>
           </div>
+
+          <entry-edit-footer
+            :item="offer"
+            @save="save"
+            @cancel="cancel" />
         </div>
 
-        <div>
-          <form @submit.prevent="save" class="entryForm" novalidate>
-            <section class="entryForm__actionFooter">
-              <button class="btn waves-effect waves-light saveButton" type="submit">
-                <i class="material-icons left">done</i>
-                Anlegen
-              </button>
-            </section>
-          </form>
-        </div>
       </div>
     </div>
   </div>
@@ -88,6 +83,7 @@
 <script>
 import Offer from '@/models/Offer'
 import Orga from '@/models/Orga'
+import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 import TitleInput from '@/components/entry/edit/TitleInput'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
@@ -123,7 +119,7 @@ export default {
     },
 
     cancel () {
-      this.$router.push({name: 'offers.show', params: {id: this.id}})
+      this.$router.push({name: 'offers.list'})
     },
 
     $canLeaveRoute () {
@@ -179,6 +175,7 @@ export default {
   },
 
   components: {
+    EntryEditFooter,
     TitleInput,
     DescriptionForm,
     PowerSelector

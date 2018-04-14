@@ -14,7 +14,7 @@
       </li>
     </ul>
 
-    <button type="button" class="btn btn-small waves-effect waves-light saveButton" @click.prevent="showSelector">
+    <button type="button" class="btn btn-small waves-effect waves-light green" @click.prevent="showSelector">
       <i class="material-icons left">add</i>
       {{ messages.addButtonTitle }}
     </button>
@@ -210,7 +210,11 @@ export default {
     width: 100%;
     height: 100%;
     background-color: black;
-    opacity: .3;
+
+    /* stylelint-disable selector-class-pattern */
+    &:not(.fade-enter):not(.fade-leave-to) {
+      opacity: .3;
+    }
   }
 
   .ps__selector {

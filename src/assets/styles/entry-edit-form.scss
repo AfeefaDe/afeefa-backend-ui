@@ -5,33 +5,14 @@
     font-size: 1.4em;
     font-weight: 500;
   }
-  &__actionFooter {
-    margin-top: 1.2em;
-    display: flex;
-    justify-content: space-between;
-    @media screen and (max-width: $break-small) {
-      flex-wrap: wrap;
-      button {
-        flex-grow: 2;
-        margin-bottom: 1.5em;
-      }
-    }
-  }
   .mandatoryField {
     color: darken($secondaryBlue, 15);
-  }
-  .saveButton {
-    background: $green;
   }
 }
 
 /* stylelint-disable selector-class-pattern */
 .datePicker.validation-error {
   background-color: #FFEEEE;
-}
-
-textarea.validation-error {
-  margin-bottom: 0;
 }
 
 span.validation-error {

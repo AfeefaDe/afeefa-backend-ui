@@ -34,7 +34,7 @@
 
             <br>
             <section class="entryForm__actionFooter">
-              <button class="btn waves-effect waves-light saveButton" type="submit">
+              <button class="btn waves-effect waves-light green" type="submit">
                 <i class="material-icons left">done</i>
                 Speichern
               </button>

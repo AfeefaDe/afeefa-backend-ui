@@ -16,7 +16,7 @@ export default class EventsResource extends EntriesResource {
 
     // upcoming changed
     if (eventOld.isUpcoming !== event.isUpcoming) {
-      this.cachePurgeList('events', '{}')
+      this.cachePurgeList('events')
 
       event.parent_orga.$rels.upcoming_events.reloadOnNextGet()
       event.parent_orga.$rels.past_events.reloadOnNextGet()

@@ -26,12 +26,6 @@
 
     <div>
       Auswahl: {{ selectedItems.length }}
-      <div v-if="selectedItems.length">
-        <div v-for="facet in facets" :key="facet.id" v-if="facet.owner_types.includes('Orga')">
-          <h2>{{ facet.title }}</h2>
-          <multi-facet-selector :owners="selectedItems" :facet="facet" />
-        </div>
-      </div>
     </div>
 
     <ul class="entryList">
@@ -46,8 +40,10 @@
               <div class="year" v-if="yearOfEvent(item)">{{ yearOfEvent(item) }}</div>
             </div>
           </div>
-          <input type="checkbox" class="filled-in" :id="'select' + item.id" @change="select(item)">
-          <label :for="'select' + item.id"></label>
+          <div v-if="item.type === 'orgas'">
+            <input type="checkbox" class="filled-in" :id="'select' + item.id" @change="select(item)">
+            <label :for="'select' + item.id"></label>
+          </div>
         </div>
 
         <div class="entryList__content">
@@ -75,7 +71,7 @@
             </router-link>
           </span>
 
-          <div class="entryList__attributes">
+          <div class="entryList__attributes" v-if="item.type !== 'chapters'">
             <p class="item category" v-if="item.category">
               {{ $t('categories.' + item.category.title) }}
               <span v-if="item.sub_category">
@@ -84,12 +80,8 @@
               </span>
             </p>
 
-            <div>
-              <span v-for="facet in facets" :key="facet.id" v-if="item.facet_items">
-                <span v-for="facetItem in getSelectedFacetItems(facet, item)" :key="facetItem.id">
-                  <tree-item-tag :treeItem="facetItem" />
-                </span>
-              </span>
+            <div v-if="item.facet_items">
+              <entry-facet-items :entry="item" />
             </div>
 
             <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
@@ -139,8 +131,7 @@ import AnnotationTag from '@/components/AnnotationTag'
 import EntryIcon from '@/components/entry/EntryIcon'
 import Spinner from '@/components/Spinner'
 import moment from 'moment'
-import Facet from '@/models/Facet'
-import TreeItemTag from '@/components/tree/TreeItemTag'
+import EntryFacetItems from '@/components/entry/EntryFacetItems'
 import MultiFacetSelector from '@/components/facet/MultiFacetSelector'
 
 export default {
@@ -149,7 +140,6 @@ export default {
   data () {
     const options = this.options || {}
     return {
-      facets: [],
       currentPageSize: 15,
       currentPage: 1,
       currentNumItems: 0,
@@ -171,10 +161,6 @@ export default {
 
   created () {
     this.initPageProperties()
-
-    Facet.Query.getAll().then(facets => {
-      this.facets = facets
-    })
   },
 
   watch: {
@@ -206,12 +192,6 @@ export default {
       } else {
         this.selectedItems.push(item)
       }
-    },
-
-    getSelectedFacetItems (facet, item) {
-      return facet.getAllFacetItems().filter(facetItem => {
-        return item.facet_items.includes(facetItem)
-      })
     },
 
     dayOfEvent (item) {
@@ -264,7 +244,7 @@ export default {
     Spinner,
     AnnotationTag,
     EntryIcon,
-    TreeItemTag,
+    EntryFacetItems,
     MultiFacetSelector
   }
 }

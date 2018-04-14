@@ -129,7 +129,7 @@ export default {
       }).then(result => {
         if (result === 'yes') {
           this.item.$rels.contacts.Query.delete(contact).then(result => {
-            this.item.$rels.contacts.Query.refetch()
+            this.item.$rels.contacts.refetch()
             if (result) {
               this.$store.dispatch('messages/showAlert', {
                 description: 'Kontakt erfolgreich gelöscht.'

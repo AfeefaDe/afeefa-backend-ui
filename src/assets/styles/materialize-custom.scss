@@ -3,6 +3,7 @@
 .inputField__spacing:not(:first-child) {
   margin-top: 2rem;
 }
+
 .inputField__indented {
   margin-left: 2em;
 }
@@ -19,6 +20,36 @@ a {
   background-color: $secondaryBlue;
 }
 
+.btn.red {
+  background-color: #F44336 !important;
+  &:hover {
+    background-color: lighten(#F44336, 10%) !important;
+  }
+}
+
+.btn.green {
+  background-color: $green !important;
+  &:hover {
+    background-color: lighten($green, 10%) !important;
+  }
+}
+
+.btn.gray {
+  background-color: $gray20;
+  color: $gray80;
+
+  &:hover {
+    background-color: lighten($gray20, 5%);
+  }
+}
+
+.btn {
+  padding: 0 1rem;
+  i.left {
+    margin-right: 8px;
+  }
+}
+
 .btn-small {
   font-size: .8rem;
   height: 22px;
@@ -28,10 +59,47 @@ a {
     margin-right: 2px;
   }
 }
-input:not([type]).valid, input:not([type]):focus.valid, input[type=text].valid, input[type=text]:focus.valid, input[type=password].valid, input[type=password]:focus.valid, input[type=email].valid, input[type=email]:focus.valid, input[type=url].valid, input[type=url]:focus.valid, input[type=time].valid, input[type=time]:focus.valid, input[type=date].valid, input[type=date]:focus.valid, input[type=datetime].valid, input[type=datetime]:focus.valid, input[type=datetime-local].valid, input[type=datetime-local]:focus.valid, input[type=tel].valid, input[type=tel]:focus.valid, input[type=number].valid, input[type=number]:focus.valid, input[type=search].valid, input[type=search]:focus.valid, textarea.materialize-textarea.valid, textarea.materialize-textarea:focus.valid {
+
+.btn-medium {
+  font-size: .9rem;
+  height: 26px;
+  line-height: 26px;
+  padding: 0 0.7rem;
+  i.left {
+    margin-right: 2px;
+  }
+}
+
+input:not([type]).valid,
+input:not([type]):focus.valid,
+input[type=text].valid,
+input[type=text]:focus.valid,
+input[type=password].valid,
+input[type=password]:focus.valid,
+input[type=email].valid,
+input[type=email]:focus.valid,
+input[type=url].valid,
+input[type=url]:focus.valid,
+input[type=time].valid,
+input[type=time]:focus.valid,
+input[type=date].valid,
+input[type=date]:focus.valid,
+input[type=datetime].valid,
+input[type=datetime]:focus.valid,
+input[type=datetime-local].valid,
+input[type=datetime-local]:focus.valid,
+input[type=tel].valid,
+input[type=tel]:focus.valid,
+input[type=number].valid,
+input[type=number]:focus.valid,
+input[type=search].valid,
+input[type=search]:focus.valid,
+textarea.materialize-textarea.valid,
+textarea.materialize-textarea:focus.valid {
   border-bottom: 1px solid $secondaryBlue;
   box-shadow: 0 1px 0 0 $secondaryBlue;
 }
+
 select.validation-error,
 textarea.validation-error,
 input.validation-error,
@@ -47,6 +115,17 @@ div.validation-error {
   }
 }
 
+textarea.validation-error,
+input.validation-error,
+input:not(.browser-default).validation-error {
+  margin-bottom: 0;
+}
+
+input + .validation-error,
+textarea + .validation-error {
+  padding-bottom: 20px;
+}
+
 // fix for https://github.com/Dogfalo/materialize/pull/5061
 // should be removed after the official fix is released
 .input-field {
@@ -56,3 +135,28 @@ div.validation-error {
     pointer-events: auto;
   }
 }/* stylelint-enable */
+
+// small checkbox
+
+/* stylelint-disable selector-class-pattern */
+input[type="checkbox"].filled-in.checkboxSmall + label {
+  margin: 0;
+  padding-left: 16px;
+  height: 11px;
+  line-height: 1em;
+  font-size: .9em;
+
+  &:before {
+    top: -1px;
+    left: 0;
+    width: 6px;
+    height: 10px;
+  }
+
+  &:after {
+    border-width: 1px;
+    border-radius: 0;
+    width: 14px;
+    height: 14px;
+  }
+}

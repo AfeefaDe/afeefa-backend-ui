@@ -28,11 +28,7 @@
           <entry-detail-property
             name="Kategorien"
             iconName="bookmark_border">
-            <span v-for="facet in facets" :key="facet.id">
-              <span v-for="facetItem in getSelectedFacetItems(facet)" :key="facetItem.id">
-                <tree-item-tag :treeItem="facetItem" />
-              </span>
-            </span>
+            <entry-facet-items :entry="offer" :isEdit="true" />
           </entry-detail-property>
 
           <entry-detail-property
@@ -60,10 +56,9 @@
 
 <script>
 import Offer from '@/models/Offer'
-import Facet from '@/models/Facet'
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
-import TreeItemTag from '@/components/tree/TreeItemTag'
+import EntryFacetItems from '@/components/entry/EntryFacetItems'
 
 export default {
   props: ['id'],
@@ -71,7 +66,6 @@ export default {
   data () {
     return {
       offer: null,
-      facets: [],
       hasItemLoadingError: false,
       loadingMessages: {
         loadingItem: () => this.$t('status.load_offer') + ' ' + this.id,
@@ -88,19 +82,9 @@ export default {
         this.hasItemLoadingError = true
       }
     })
-
-    Facet.Query.getAll().then(facets => {
-      this.facets = facets
-    })
   },
 
   methods: {
-    getSelectedFacetItems (facet) {
-      return facet.getAllFacetItems().filter(item => {
-        return this.offer.facet_items.includes(item)
-      })
-    },
-
     goBack () {
       this.$router.go(-1)
     }
@@ -109,15 +93,7 @@ export default {
   components: {
     EntryLoadingMessage,
     EntryDetailProperty,
-    TreeItemTag
+    EntryFacetItems
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.treeItemTag {
-  display: inline-block;
-  margin-right: .4em;
-  margin-bottom: .4em;
-}
-</style>

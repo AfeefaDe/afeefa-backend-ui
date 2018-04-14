@@ -40,11 +40,7 @@
               <entry-detail-property
                 name="Kategorien"
                 iconName="bookmark_border">
-                <span v-for="facet in facets" :key="facet.id">
-                  <span v-for="facetItem in getSelectedFacetItems(facet)" :key="facetItem.id">
-                    <tree-item-tag :treeItem="facetItem" />
-                  </span>
-                </span>
+                <entry-facet-items :entry="entry" :isEdit="true" />
               </entry-detail-property>
 
               <entry-detail-property
@@ -222,7 +218,6 @@
 
 <script>
 import User from '@/models/User'
-import Facet from '@/models/Facet'
 
 import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByDateMixin from '@/helpers/sort-by-date-mixin'
@@ -230,13 +225,13 @@ import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryListItems from '@/components/entry/EntryListItems'
 import EntryIcon from '@/components/entry/EntryIcon'
+import EntryFacetItems from '@/components/entry/EntryFacetItems'
 import ContactList from '@/components/contact/ContactList'
 
 import ImageContainer from '@/components/ImageContainer'
 import TabBar from '@/components/TabBar'
 import AnnotationTag from '@/components/AnnotationTag'
 import ResourceItem from '@/components/ResourceItem'
-import TreeItemTag from '@/components/tree/TreeItemTag'
 
 import EntryDetailProperty from './EntryDetailProperty'
 import EntryTextAttribute from './EntryTextAttribute'
@@ -258,7 +253,6 @@ export default {
       currentTab: '',
       currentlyPublishing: false,
       currentUser: null,
-      facets: [],
       has: {
         date: options.hasDate,
         parentOrga: options.hasParentOrga,
@@ -270,21 +264,11 @@ export default {
 
   created () {
     this.currentUser = User.Query.getCurrentUser()
-
-    Facet.Query.getAll().then(facets => {
-      this.facets = facets
-    })
   },
 
   methods: {
     setCurrentTab (newCurrentTab) {
       this.currentTab = newCurrentTab
-    },
-
-    getSelectedFacetItems (facet) {
-      return facet.getAllFacetItems().filter(item => {
-        return this.entry.facet_items.includes(item)
-      })
     }
   },
 
@@ -331,7 +315,7 @@ export default {
     AnnotationTag,
     ContactList,
     ResourceItem,
-    TreeItemTag,
+    EntryFacetItems,
     EntryDetailHeader,
     EntryDetailFooter
   }

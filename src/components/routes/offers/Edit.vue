@@ -22,13 +22,6 @@
         </div>
 
         <div>
-          <h2>Kategorien</h2>
-
-          <div v-for="facet in facets" :key="facet.id" v-if="facet.owner_types.includes('Offer')">
-            <h2>{{ facet.title }}</h2>
-            <facet-selector :owner="offer" :facet="facet" />
-          </div>
-
           <h2>Titel und Beschreibung</h2>
           <title-input :item="offer" />
 
@@ -49,22 +42,12 @@
             </textarea>
             <span v-show="errors.has('description')" class="validation-error">{{ errors.first('description') }}</span>
           </div>
-        </div>
 
-        <div>
-          <form @submit.prevent="save" class="entryForm" novalidate>
-            <section class="entryForm__actionFooter">
-              <button class="btn waves-effect waves-light saveButton" type="submit">
-                <i class="material-icons left">done</i>
-                {{ offer.id ? 'Speichern' : 'Anlegen' }}
-              </button>
-              <button class="btn waves-effect waves-light red" @click.prevent="remove" v-if="offer.id">
-                <i class="material-icons left">delete</i>
-                Löschen
-              </button>
-            </section>
-
-          </form>
+          <entry-edit-footer
+            :item="offer"
+            @remove="remove"
+            @save="save"
+            @cancel="cancel" />
         </div>
       </div>
 
@@ -76,12 +59,11 @@
 
 <script>
 import Offer from '@/models/Offer'
-import Facet from '@/models/Facet'
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
+import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 import TitleInput from '@/components/entry/edit/TitleInput'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
-import FacetSelector from '@/components/facet/FacetSelector'
 
 export default {
   mixins: [BeforeRouteLeaveMixin],
@@ -91,7 +73,6 @@ export default {
   data () {
     return {
       offer: null,
-      facets: [],
       hasItemLoadingError: false,
       messages: {
         loadingItem: () => this.$t('status.load_offer') + ' ' + this.id,
@@ -119,10 +100,6 @@ export default {
       } else {
         this.hasItemLoadingError = true
       }
-    })
-
-    Facet.Query.getAll().then(facets => {
-      this.facets = facets
     })
   },
 
@@ -199,9 +176,9 @@ export default {
 
   components: {
     EntryLoadingMessage,
+    EntryEditFooter,
     TitleInput,
-    DescriptionForm,
-    FacetSelector
+    DescriptionForm
   }
 }
 </script>

@@ -11,11 +11,6 @@
 
         <section slot="generalTab">
           <div v-if="item.id">
-            <div v-for="facet in facets" :key="facet.id" v-if="facet.owner_types.includes('Orga')">
-              <h2>{{ facet.title }}</h2>
-              <facet-selector :owner="item" :facet="facet" />
-            </div>
-
             <h2>Projektträger</h2>
 
             <project-initiator-selector
@@ -101,8 +96,6 @@ import PartnerSelector from '@/components/entry/edit/actor-relations/PartnerSele
 import ProjectSelector from '@/components/entry/edit/actor-relations/ProjectSelector'
 import NetworkMemberSelector from '@/components/entry/edit/actor-relations/NetworkMemberSelector'
 
-import FacetSelector from '@/components/facet/FacetSelector'
-
 export default {
   mixins: [BeforeRouteLeaveMixin, EntryEditApiSlotMixin],
 
@@ -171,8 +164,7 @@ export default {
     NetworkSelector,
     PartnerSelector,
     ProjectSelector,
-    NetworkMemberSelector,
-    FacetSelector
+    NetworkMemberSelector
   }
 }
 </script>

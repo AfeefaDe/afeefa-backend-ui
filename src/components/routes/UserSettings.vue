@@ -49,12 +49,11 @@
               label="Passwortbestätigung">
             </input-field>
 
-            <section class="entryForm__actionFooter">
-              <button class="btn waves-effect waves-light saveButton" type="submit">
-                <i class="material-icons left">done</i>
-                Speichern
-              </button>
-            </section>
+            <entry-edit-footer
+              :item="user"
+              :hasCancel="false"
+              :hasRemove="false"
+              @save="save" />
           </form>
         </div>
       </div>
@@ -67,6 +66,7 @@
 import InputField from '@/components/InputField'
 import User from '@/models/User'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
+import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 
 export default {
   mixins: [BeforeRouteLeaveMixin],
@@ -136,7 +136,8 @@ export default {
   },
 
   components: {
-    InputField
+    InputField,
+    EntryEditFooter
   }
 }
 </script>

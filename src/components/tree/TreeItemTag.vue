@@ -84,6 +84,8 @@ export default {
 
 <style lang="scss" scoped>
 .treeItemTag {
+  @include user-select();
+
   border-radius: .2em;
   background-color: $gray30;
   display: inline-block;

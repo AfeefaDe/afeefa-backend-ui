@@ -6,7 +6,7 @@ export default class EntriesResource extends Resource {
 
     // has now annotations or does not have annotations any longer
     if (entry.annotations.length === entryOld.annotations.length + entry.annotations.length) {
-      this.cachePurgeList('todos', '{}')
+      this.cachePurgeList('todos')
     }
   }
 }
