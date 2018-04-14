@@ -27,10 +27,25 @@ export default {
 
   methods: {
     show () {
+      // prevent background scrolling + retain scroll position and vertical scrollbar
+      const element = document.documentElement || document.body
+      const scroll = element.scrollTop
+      const hasScrollbar = element.scrollHeight > element.clientHeight
+      element.style.top = -scroll + 'px'
+      element.style.position = 'fixed'
+      element.style.overflowY = hasScrollbar ? 'scroll' : 'hidden'
+
       this.visible = true
     },
 
     close () {
+      // reset background scrolling + retain scroll position and vertical scrollbar
+      const element = document.documentElement || document.body
+      const top = element.offsetTop
+      element.style.position = 'static'
+      element.style.overflowY = ''
+      element.scrollTop = -top
+
       this.visible = false
     }
   }
