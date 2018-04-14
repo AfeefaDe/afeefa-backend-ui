@@ -5,6 +5,10 @@ export default class ActorRelationsRelationResource extends Resource {
     return `orgas/${this.relation.owner.id}/${this.relation.name}{/id}`
   }
 
+  serializeAttachOrDetach (model) {
+    return model.id
+  }
+
   itemAttached (model) {
     super.itemAttached(model)
 
