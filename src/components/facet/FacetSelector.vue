@@ -308,7 +308,6 @@ export default {
 }
 
 .selectedFacetItems {
-  // width: 33%;
   padding-left: 10px;
 }
 

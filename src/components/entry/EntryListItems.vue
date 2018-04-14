@@ -24,7 +24,7 @@
       </pagination>
     </div>
 
-    <div>
+    <div v-if="false">
       Auswahl: {{ selectedItems.length }}
     </div>
 
@@ -40,7 +40,7 @@
               <div class="year" v-if="yearOfEvent(item)">{{ yearOfEvent(item) }}</div>
             </div>
           </div>
-          <div v-if="item.type === 'orgas'">
+          <div v-if="item.type === 'orgas' && false">
             <input type="checkbox" class="filled-in" :id="'select' + item.id" @change="select(item)">
             <label :for="'select' + item.id"></label>
           </div>

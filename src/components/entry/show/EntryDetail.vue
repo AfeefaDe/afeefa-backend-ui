@@ -18,6 +18,7 @@
             <div class="entryDetail generalTab__splitViewChild">
 
             <entry-text-attribute
+              v-if="false"
               :attribute="entry.title"
               :name="$t('entries.title')"
               :isMultiline="false"
@@ -58,6 +59,8 @@
                   </router-link>
                 </div>
                 <div v-if="!entry.project_initiators.length" class="entryDetail__error">Kein Projektträger angegeben</div>
+
+                <actor-selector title="Projektträger ändern" :actor="entry" relationName="project_initiators" @saved="actorRelationSaved" />
               </entry-detail-property>
 
               <entry-detail-property v-if="entry.type === 'orgas'" name="Netzwerke">
@@ -67,6 +70,8 @@
                   </router-link>
                 </div>
                 <div v-if="!entry.networks.length" class="entryDetail__error">In keinem Netzwerk Mitglied</div>
+
+                <actor-selector title="Netzwerke ändern" :actor="entry" relationName="networks" @saved="actorRelationSaved" />
               </entry-detail-property>
 
               <entry-detail-property v-if="entry.type === 'orgas'" name="Partner">
@@ -76,6 +81,8 @@
                   </router-link>
                 </div>
                 <div v-if="!entry.partners.length" class="entryDetail__error">Keine Partner angegeben</div>
+
+                <actor-selector title="Partner ändern" :actor="entry" relationName="partners" @saved="actorRelationSaved" />
               </entry-detail-property>
 
               <ul v-if="entry.type === 'events'">
@@ -89,14 +96,14 @@
                 </entry-detail-property>
               </ul>
 
-              <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'">
+              <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'" v-if="false">
                 {{ entry.category ? $t('categories.' + entry.category.title) : 'Keine Kategorie angegeben' }}
                 <span v-if="entry.sub_category">> {{ $t('categories.' + entry.sub_category.title) }}</span>
               </entry-detail-property>
 
               <entry-detail-property
                 v-if="showShortDescription"
-                :name="$t('entries.short_description')"
+                :name="$t('entries.description')"
                 :iconName="'more_horiz'"
                 :isMultiline="true">
                 <div class="inheritedValue" v-if="entry.inheritance.short_description && entry.parent_orga">{{entry.parent_orga.short_description}}</div>
@@ -104,7 +111,7 @@
               </entry-detail-property>
 
               <entry-detail-property
-                v-if="entry.description"
+                v-if="entry.description && false"
                 :name="$t('entries.description')"
                 :iconName="showShortDescription ? null : 'more_horiz'"
                 :isMultiline="true">
@@ -168,17 +175,22 @@
           </section>
 
           <section slot="networkMembersTab" v-if="entry.type === 'orgas'">
-            <entry-detail-property v-if="entry.type === 'orgas'" name="Netzwerkmitglieder" :iconName="'device_hub'">
-              <div v-for="member in entry.network_members" :key="member.id">
-                <router-link :to="{name: member.type + '.show', params: {id: member.id}}">
-                  {{ member.title }}
-                </router-link>
-              </div>
-              <div v-if="!entry.network_members.length" class="entryDetail__error">Keine Netzwerkmitglieder</div>
-            </entry-detail-property>
+            <actor-selector title="Netzwerkmitglieder ändern" :actor="entry" relationName="network_members" @saved="actorRelationSaved" />
+
+            <entry-list-items
+              :items="entry.network_members"
+              v-if="entry.network_members.length">
+            </entry-list-items>
+            <div v-else class="entryDetail__error">
+              Keine Mitglieder zugeordnet
+            </div>
+
+            <actor-selector title="Netzwerkmitglieder ändern" :actor="entry" relationName="network_members" @saved="actorRelationSaved" />
           </section>
 
           <section slot="projectsTab" v-if="entry.type === 'orgas'">
+            <actor-selector title="Projekte ändern" :actor="entry" relationName="projects" @saved="actorRelationSaved" />
+
             <entry-list-items
               :items="entry.projects"
               v-if="entry.projects.length">
@@ -186,6 +198,8 @@
             <div v-else class="entryDetail__error">
               Keine Projekte zugeordnet
             </div>
+
+            <actor-selector title="Projekte ändern" :actor="entry" relationName="projects" @saved="actorRelationSaved" />
           </section>
 
           <section slot="eventsTab" v-if="entry.type === 'orgas'">
@@ -240,6 +254,8 @@ import EntryDetailHeader from './EntryDetailHeader'
 import EntryDetailFooter from './EntryDetailFooter'
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 
+import ActorSelector from '@/components/entry/edit/actor-relations/ActorSelector'
+
 export default {
   mixins: [RouteConfigAwareMixin],
 
@@ -269,6 +285,10 @@ export default {
   methods: {
     setCurrentTab (newCurrentTab) {
       this.currentTab = newCurrentTab
+    },
+
+    actorRelationSaved () {
+      this.entry.$rels.actor_relations.refetch()
     }
   },
 
@@ -294,9 +314,7 @@ export default {
         tabNames.push({name: 'resourceTab', hint: this.entry.resource_items.length})
       }
       if (this.entry.type === 'orgas') {
-        if (this.entry.network_members.length) {
-          tabNames.push({name: 'networkMembersTab', hint: this.entry.network_members.length})
-        }
+        tabNames.push({name: 'networkMembersTab', hint: this.entry.network_members.length})
         tabNames.push({name: 'projectsTab', hint: this.entry.projects.length})
         tabNames.push({name: 'eventsTab', hint: this.entry.upcoming_events.length + this.entry.past_events.length})
       }
@@ -317,7 +335,8 @@ export default {
     ResourceItem,
     EntryFacetItems,
     EntryDetailHeader,
-    EntryDetailFooter
+    EntryDetailFooter,
+    ActorSelector
   }
 }
 </script>

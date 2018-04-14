@@ -16,6 +16,14 @@
       <div>
         <h4>{{ facetItem.title }}</h4>
         <facet-item-owner-selector :facetItem="facetItem" />
+
+        <entry-list-items
+          :items="selectedOwners"
+          v-if="selectedOwners.length">
+        </entry-list-items>
+        <div v-else class="entryDetail__error">
+          Keine Einträge zugeordnet
+        </div>
       </div>
     </div>
 
@@ -29,6 +37,8 @@
 import Facet from '@/models/Facet'
 import FacetItemOwnerSelector from '@/components/facet/FacetItemOwnerSelector'
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
+import EntryListItems from '@/components/entry/EntryListItems'
+import ActorSelector from '@/components/entry/edit/actor-relations/ActorSelector'
 
 export default {
   props: ['id', 'facetItemId'],
@@ -36,6 +46,7 @@ export default {
   data () {
     return {
       facetItem: null,
+      selectedOwners: [],
       hasItemLoadingError: false,
       loadingMessages: {
         loadingItem: () => this.$t('status.load_category') + ' ' + this.facetItemId,
@@ -53,6 +64,9 @@ export default {
       Facet.Query.get(facetId).then(facet => {
         if (facet) {
           this.facetItem = facet.findFacetItem(facetItemId)
+          this.facetItem.$rels.owners.Query.getAll().then(owners => {
+            this.selectedOwners = owners
+          })
         }
         if (!facet || !this.facetItem) {
           this.hasItemLoadingError = true
@@ -74,7 +88,9 @@ export default {
 
   components: {
     FacetItemOwnerSelector,
-    EntryLoadingMessage
+    EntryLoadingMessage,
+    EntryListItems,
+    ActorSelector
   }
 }
 </script>

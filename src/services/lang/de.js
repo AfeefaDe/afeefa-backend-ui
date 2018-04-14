@@ -103,7 +103,7 @@ export default {
     date: 'Datum',
     title: 'Titel',
     image_link: 'Link zum Bild',
-    description: 'Ausführliche Beschreibung',
+    description: 'Beschreibung',
     active: 'Aktiv',
     created_at: 'Erstellt',
     updated_at: 'Geändert',

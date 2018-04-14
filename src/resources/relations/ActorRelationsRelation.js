@@ -9,6 +9,30 @@ export default class ActorRelationsRelationResource extends Resource {
     return model.id
   }
 
+  serializeAttachOrDetachMany (models) {
+    return {
+      actors: models.map(model => model.id)
+    }
+  }
+
+  itemsAttached (models) {
+    super.itemsAttached(models)
+
+    const actorRelations = this.relation.owner
+
+    // reload actor relations of current actor
+    actorRelations.getParentRelations().forEach(relation => {
+      relation.reloadOnNextGet()
+    })
+
+    // reload all not longer linked actors
+    actorRelations[this.relation.name].map(relatedActor => {
+      if (!models.includes(relatedActor)) {
+        relatedActor.$rels.actor_relations.reloadOnNextGet()
+      }
+    })
+  }
+
   itemAttached (model) {
     super.itemAttached(model)
 

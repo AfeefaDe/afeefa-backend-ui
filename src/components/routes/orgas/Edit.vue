@@ -10,21 +10,6 @@
         @setCurrentTab="setCurrentTab">
 
         <section slot="generalTab">
-          <div v-if="item.id">
-            <h2>Projektträger</h2>
-
-            <project-initiator-selector
-              :actor="item"
-              @itemAdded="projectInitiatorChanged"
-              @itemRemoved="projectInitiatorChanged" />
-
-            <h2>Netzwerke</h2>
-            <network-selector :actor="item" />
-
-            <h2>Partner</h2>
-            <partner-selector :actor="item" />
-          </div>
-
           <h2>Kategorien</h2>
           <category-selector :item="item" />
 
@@ -49,14 +34,6 @@
 
         <section slot="annotationsTab">
           <annotation-form :item="item" />
-        </section>
-
-        <section slot="networkMembersTab">
-          <network-member-selector :actor="item" />
-        </section>
-
-        <section slot="projectsTab">
-          <project-selector :actor="item" />
         </section>
 
         <section slot="resourceTab" v-if="item.type === 'orgas'">
@@ -121,8 +98,6 @@ export default {
       if (this.currentUser && this.currentUser.area === 'dresden') {
         tabNames.push({name: 'resourceTab', hint: this.item.resource_items.length})
       }
-      tabNames.push({name: 'networkMembersTab', hint: this.item.network_members.length})
-      tabNames.push({name: 'projectsTab', hint: this.item.projects.length})
       return tabNames
     }
   },
