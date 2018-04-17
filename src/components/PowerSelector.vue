@@ -1,55 +1,38 @@
 <template>
-  <div class="ps">
-    <transition name="fade">
-      <div class="ps__glassframe" v-if="show" @click="close"></div>
-    </transition>
-    <ul class="ps__selectedItems" v-if="selectedItems">
-      <li v-for="item in selectedItems" :key="item.type + item.id" class="ps__selectedItem">
-        <div>
-          <slot name="selected-item" :item="item"></slot>
-        </div>
-        <div>
-          <a href="" @click.prevent="removeItem(item)">Entfernen</a>
-        </div>
-      </li>
-    </ul>
-
-    <button type="button" class="btn btn-small waves-effect waves-light green" @click.prevent="showSelector">
-      <i class="material-icons left">add</i>
-      {{ messages.addButtonTitle }}
-    </button>
-
-    <transition name="fade">
-      <div v-if="show" class="ps__selector">
-        <div class="ps__closeIcon" @click="close">
-          <i class="material-icons">close</i>
+  <div>
+    <modal ref="modal">
+      <div class="modalContent">
+        <div class="ownerInfo">
+          Auswählen
         </div>
 
-        <h3>Netzwerk auswählen</h3>
-
-        <input type="text" v-model="keyword" ref="keywordInput"
-          placeholder="Tippen, um zu filtern"
-          @input="keywordChanged"
-          @keydown.up.prevent="selectPrevious"
-          @keydown.down.prevent="selectNext"
-          @keydown.esc.prevent="close"
-          @keydown.enter.prevent="submitCurrentItem">
-
-        <ul class="ps__items">
-          <li v-for="(item, index) in filteredItems" :key="item.id"
-            @click="submitItem(item)"
-            :class="['ps__item', {'ps__item--selected': index === selectedItemIndex}]">
-            <slot name="item" :item="item"></slot>
-          </li>
-        </ul>
+        <selectable-list
+          :items="filteredItems"
+          :messages="{}"
+          @cancel="hideModal"
+          @select="submitItem">
+          <div slot="item" slot-scope="props">
+            <slot name="item" :item="props.item"></slot>
+          </div>
+        </selectable-list>
       </div>
-    </transition>
+    </modal>
+
+    <div class="infos">
+      {{ selectedItems.length }} Einträge ausgewählt
+
+      <a href="" class="inlineEditLink" @click.prevent="showModal">
+        Zeige Liste
+      </a>
+    </div>
+
   </div>
 </template>
 
 
 <script>
-import Vue from 'vue'
+import Modal from '@/components/Modal'
+import SelectableList from '@/components/selector/SelectableList'
 
 export default {
   props: ['items', 'selectedItems', 'searchFields', 'messages'],
@@ -57,17 +40,11 @@ export default {
   data () {
     return {
       show: false,
-      keyword: '',
-      filteredItems: [],
-      selectedItemIndex: null
+      filteredItems: []
     }
   },
 
   methods: {
-    keywordChanged (event) {
-      this.filterItems()
-    },
-
     filterItems () {
       const selectedItems = this.selectedItems || []
       const filteredItems = this.items.filter(item => {
@@ -76,107 +53,24 @@ export default {
         })
         if (isSelected) {
           return false
+        } else {
+          return true
         }
-
-        const keywords = this.keyword.split(' ')
-        let findCount = 0
-        for (let keyword of keywords) {
-          const hasFound = this.searchFields.some(field => {
-            let value = item[field]
-            if (!value) {
-              if (!keyword) {
-                return true
-              }
-            } else {
-              if (value.toLowerCase().includes(keyword.toLowerCase())) {
-                return true
-              }
-            }
-            return false
-          })
-          if (hasFound) {
-            findCount++
-          }
-        }
-        return findCount === keywords.length
       })
       this.filteredItems = filteredItems
-
-      this.selectedItemIndex = this.keyword && filteredItems.length ? 0 : null
     },
 
-    selectNext () {
-      if (this.selectedItemIndex === null) {
-        return
-      }
-
-      if (this.selectedItemIndex === this.filteredItems.length - 1) {
-        this.selectedItemIndex = 0
-      } else {
-        this.selectedItemIndex++
-      }
-      this.scrollResults()
-    },
-
-    selectPrevious () {
-      if (this.selectedItemIndex === null) {
-        return
-      }
-
-      if (this.selectedItemIndex === 0) {
-        this.selectedItemIndex = this.filteredItems.length - 1
-      } else {
-        this.selectedItemIndex--
-      }
-      this.scrollResults()
-    },
-
-    submitCurrentItem () {
-      if (this.selectedItemIndex === null) {
-        return
-      }
-
-      const item = this.filteredItems[this.selectedItemIndex]
-      this.submitItem(item)
-    },
-
-    scrollResults () {
-      if (this.selectedItemIndex === null) {
-        return
-      }
-
-      const ul = document.querySelector('.ps__items')
-      const li = document.querySelectorAll('.ps__items li')[this.selectedItemIndex]
-
-      if (li.offsetTop < ul.scrollTop) {
-        ul.scrollTop = li.offsetTop
-      }
-
-      if (li.offsetTop + li.offsetHeight > ul.scrollTop + ul.offsetHeight) {
-        ul.scrollTop = li.offsetTop + li.offsetHeight - ul.offsetHeight
-      }
-    },
-
-    focusInput () {
-      Vue.nextTick(() => {
-        this.$refs.keywordInput.focus()
-      })
-    },
-
-    showSelector () {
-      this.selectedItemIndex = null
-      this.keyword = ''
+    showModal () {
       this.filterItems()
-      this.show = true
-      this.focusInput()
+      this.$refs.modal.show()
     },
 
-    close () {
-      this.show = false
+    hideModal () {
+      this.$refs.modal.close()
     },
 
     submitItem (item) {
-      this.close()
+      this.hideModal()
       this.$emit('select', item)
     },
 
@@ -196,89 +90,22 @@ export default {
     items () {
       this.filterItems()
     }
+  },
+
+  components: {
+    SelectableList,
+    Modal
   }
 }
 </script>
 
 
 <style lang="scss" scoped>
-  .ps__glassframe {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 5;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-
-    /* stylelint-disable selector-class-pattern */
-    &:not(.fade-enter):not(.fade-leave-to) {
-      opacity: .3;
-    }
+  .modalContent {
+    width: 800px;
   }
 
-  .ps__selector {
-    position: fixed;
-    top: ($header-height*1.1);
-    left: 50%;
-    width: 600px;
-    z-index: 6;
-    background-color: white;
-    padding: 20px;
-    transform: translateX(-50%);
-    border-radius: 2px;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
-    h3 {
-      font-size: 1.2rem;
-      margin: 0 0 20px;
-    }
-  }
-  .ps__closeIcon {
-    position: absolute;
-    cursor: pointer;
-    top: 10px;
-    right: 10px;
-    i {
-      font-size: 30px;
-    }
-  }
-  .ps__selectedItems {
-    .item {
-      background-color: red;
-    }
-  }
-
-  .ps__selectedItem {
-    > div {
-      display: inline-block;
-    }
-  }
-
-  .ps__items {
-    overflow: auto;
-    height: 400px;
-    position: relative;
-  }
-
-  .ps__item {
-    background-color: #EEEEEE;
-    padding: 5px;
-    cursor: pointer;
-
-    &:nth-child(2n) {
-      background-color: white;
-    }
-
-    &:hover,
-    &:nth-child(2n):hover {
-      background-color: lighten($blueHightlight, 20);
-      color: white;
-    }
-
-    &--selected,
-    &--selected:nth-child(2n) {
-      background-color: $blueHightlight;
-      color: white;
-    }
+  .infos {
+    margin-top: 20px;
   }
 </style>

@@ -31,6 +31,7 @@ export default {
       const element = document.documentElement || document.body
       const scroll = element.scrollTop
       const hasScrollbar = element.scrollHeight > element.clientHeight
+      element.style.width = '100%'
       element.style.top = -scroll + 'px'
       element.style.position = 'fixed'
       element.style.overflowY = hasScrollbar ? 'scroll' : 'hidden'
@@ -80,6 +81,7 @@ export default {
     transform: translateX(-50%);
     // border-radius: 1px;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    color: $black;
   }
 
   .modal__closeIcon {

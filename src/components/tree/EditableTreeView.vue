@@ -10,6 +10,8 @@
       </div>
 
       <div>
+        <slot name="content"></slot>
+
         <div v-for="treeItem in this.treeItems" :key="treeItem.id">
           <tree-item-view
             :treeItem="treeItem"

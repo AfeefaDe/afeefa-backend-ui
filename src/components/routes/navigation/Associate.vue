@@ -4,13 +4,18 @@
     <div class="mainCard" v-if="navigationItem">
       <div class="mainCard__header">
         <a href="" @click.prevent="goBack"><i class="material-icons goBack">chevron_left</i></a>
-        <span v-if="navigationItem.parent">
-          <router-link :to="{name: 'navigation.associate', params: {id: navigationItem.parent.id}}">
-            <h2 class="mainCard__headerTitle parentItemHeader">{{ navigationItem.parent.title }}</h2>
-          </router-link>
-          <i class="material-icons">chevron_left</i>
-        </span>
-        <h2 class="mainCard__headerTitle">{{ navigationItem.title }}</h2>
+
+        <div>
+          <div class="mainCard__type">{{ $tc('headlines.navigation') }}</div>
+          <span v-if="navigationItem.parent">
+            <router-link :to="{name: 'navigation.associate', params: {id: navigationItem.parent.id}}">
+              <h2 class="mainCard__headerTitle parentItemHeader">{{ navigationItem.parent.title }}</h2>
+            </router-link>
+            <i class="material-icons">chevron_left</i>
+          </span>
+          <h2 class="mainCard__headerTitle">{{ navigationItem.title }}</h2>
+        </div>
+
       </div>
 
       <div>

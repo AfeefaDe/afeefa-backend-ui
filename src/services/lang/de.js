@@ -9,7 +9,7 @@ export default {
     annotations: 'Anmerkung | Anmerkungen',
     search: 'Suche',
     searchPlaceholder: 'Suche nach',
-    categories: 'Kategorien',
+    categories: 'Kategorie | Kategorien',
     categoriesDresden: 'Dresden',
     categoriesLeipzig: 'Leipzig',
     categoriesBautzen: 'Bautzen',
@@ -59,7 +59,9 @@ export default {
     eventsTab: 'Veranstaltungen',
     upcomingEventsTab: 'Kommende',
     pastEventsTab: 'Vergangene',
-    resourceTab: 'Ressourcen'
+    resourceTab: 'Ressourcen',
+    actorsTab: 'Akteure',
+    offersTab: 'Angebote'
   },
   orgaTypes: {
     '2': {

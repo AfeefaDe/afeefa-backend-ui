@@ -4,24 +4,26 @@
       <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Liste
     </div>
 
-    <div v-if="items && items.length > 1 && has.filter" class="filter">
-      <input
-        type="text"
-        placeholder="Tippen zum Filtern"
-        v-model="searchKeyword"
-        @keydown.esc.prevent="searchKeyword = ''" />
-      <a v-if="searchKeyword" @click.prevent="searchKeyword = ''" href="">
-        <i class="material-icons">cancel</i>
-      </a>
-    </div>
+    <div class="navigation">
+      <div v-if="items && items.length > 1 && has.filter" class="filter">
+        <input
+          type="text"
+          placeholder="Tippen zum Filtern"
+          v-model="searchKeyword"
+          @keydown.esc.prevent="searchKeyword = ''" />
+        <a v-if="searchKeyword" @click.prevent="searchKeyword = ''" href="">
+          <i class="material-icons">cancel</i>
+        </a>
+      </div>
 
-    <div v-if="items && has.pagination">
-      <pagination
-        :num-items="currentNumItems"
-        :page-size="currentPageSize"
-        :page="currentPage"
-        @changed="setPage">
-      </pagination>
+      <div v-if="items && has.pagination">
+        <pagination
+          :num-items="currentNumItems"
+          :page-size="currentPageSize"
+          :page="currentPage"
+          @changed="setPage">
+        </pagination>
+      </div>
     </div>
 
     <div v-if="false">
@@ -40,10 +42,6 @@
               <div class="year" v-if="yearOfEvent(item)">{{ yearOfEvent(item) }}</div>
             </div>
           </div>
-          <div v-if="item.type === 'orgas' && false">
-            <input type="checkbox" class="filled-in" :id="'select' + item.id" @change="select(item)">
-            <label :for="'select' + item.id"></label>
-          </div>
         </div>
 
         <div class="entryList__content">
@@ -56,30 +54,22 @@
 
           <router-link :to="routerLinkObject(item)" class="entryList__nav">
             <h4 class="title">{{ item.title || 'Kein Titel' }}</h4>
-            <span class="icon"><i v-if="!showIcon" class="material-icons">navigate_next</i></span>
+            <span class="icon"><i v-if="!showIcon && false" class="material-icons">navigate_next</i></span>
           </router-link>
 
-          <span v-if="item.parent_orga">
+          <div v-if="item.parent_orga" class="entryList__parentLink">
             <router-link :to="{name: item.parent_orga.type + '.show', params: {id: item.parent_orga.id}}">
               <u>{{ item.parent_orga.title }}</u>
             </router-link>
-          </span>
+          </div>
 
-          <span v-if="item.type === 'offers'">
+          <div v-if="item.type === 'offers'" class="entryList__parentLink">
             <router-link :to="{name: 'orgas.show', params: {id: actor.id}}" v-for="actor in item.actors" :key="actor.id">
               <u>{{ actor.title }}</u>
             </router-link>
-          </span>
+          </div>
 
           <div class="entryList__attributes" v-if="item.type !== 'chapters'">
-            <p class="item category" v-if="item.category">
-              {{ $t('categories.' + item.category.title) }}
-              <span v-if="item.sub_category">
-                <i class="material-icons">navigate_next</i>
-                {{ $t('categories.' + item.sub_category.title) }}
-              </span>
-            </p>
-
             <div v-if="item.facet_items">
               <entry-facet-items :entry="item" />
             </div>
@@ -109,6 +99,11 @@
             </p>
           </div>
         </div>
+
+        <div class="entryList__actionButton">
+          <slot name="actionButton" :item="item"></slot>
+        </div>
+
       </li>
     </ul>
 
@@ -132,7 +127,6 @@ import EntryIcon from '@/components/entry/EntryIcon'
 import Spinner from '@/components/Spinner'
 import moment from 'moment'
 import EntryFacetItems from '@/components/entry/EntryFacetItems'
-import MultiFacetSelector from '@/components/facet/MultiFacetSelector'
 
 export default {
   props: {items: {}, limit: {}, sortFunction: {}, sortOrder: {}, showIcon: {}, options: {}, modifyRoute: {default: true}},
@@ -244,8 +238,7 @@ export default {
     Spinner,
     AnnotationTag,
     EntryIcon,
-    EntryFacetItems,
-    MultiFacetSelector
+    EntryFacetItems
   }
 }
 </script>
@@ -256,6 +249,13 @@ export default {
   margin-top: .8em;
 }
 
+.navigation {
+  input {
+    height: 2.3rem;
+    margin-bottom: .4em;
+  }
+}
+
 .filter {
   position: relative;
 
@@ -263,6 +263,10 @@ export default {
     position: absolute;
     top: .5em;
     right: 0;
+  }
+
+  i {
+    font-size: 20px;
   }
 }
 
@@ -278,7 +282,7 @@ export default {
   list-style: none;
 
   li {
-    border-bottom: 2px solid $gray20;
+    border-bottom: 1px solid $gray20;
     padding: 1em 0;
     display: flex;
     align-items: flex-start;
@@ -291,21 +295,31 @@ export default {
   &__nav {
     cursor: pointer;
     color: inherit;
-    display: flex;
+    // display: flex;
     align-items: flex-end;
     word-break: break-word;
     hyphens: auto;
     .title {
-      flex-grow: 2;
+      // flex-grow: 2;
       font-size: 1.4em;
       margin: 0 0 0.2em;
       font-weight: 500;
       line-height: 120%;
+      display: inline-block;
     }
   }
 
   div + &__nav .title {
     margin-top: 0.2em;
+  }
+
+  &__parentLink {
+    margin: -.2em 0 .6em;
+  }
+
+  &__actionButton {
+    align-self: center;
+    margin: 0 1em;
   }
 
   &__content {

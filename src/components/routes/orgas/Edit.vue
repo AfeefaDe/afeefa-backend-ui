@@ -67,12 +67,6 @@ import TitleInput from '@/components/entry/edit/TitleInput'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 import MediaImageInput from '@/components/entry/edit/MediaImageInput'
 
-import ProjectInitiatorSelector from '@/components/entry/edit/actor-relations/ProjectInitiatorSelector'
-import NetworkSelector from '@/components/entry/edit/actor-relations/NetworkSelector'
-import PartnerSelector from '@/components/entry/edit/actor-relations/PartnerSelector'
-import ProjectSelector from '@/components/entry/edit/actor-relations/ProjectSelector'
-import NetworkMemberSelector from '@/components/entry/edit/actor-relations/NetworkMemberSelector'
-
 export default {
   mixins: [BeforeRouteLeaveMixin, EntryEditApiSlotMixin],
 
@@ -133,13 +127,7 @@ export default {
     TagSelector,
     HelpWantedForm,
     DescriptionForm,
-    MediaImageInput,
-
-    ProjectInitiatorSelector,
-    NetworkSelector,
-    PartnerSelector,
-    ProjectSelector,
-    NetworkMemberSelector
+    MediaImageInput
   }
 }
 </script>

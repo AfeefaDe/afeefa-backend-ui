@@ -16,35 +16,19 @@
 
               <div class="facetAttributes">
                 <div class="facetAttributesView">
+                  <div :style="{'background-color': facet.color}" class="colorIcon"></div>
                   <router-link :to="{name: 'facets.show', params: {id: facet.id}}" class="title">
                     <h4>{{ facet.title }}</h4>
                   </router-link>
-                  <a href="" @click.prevent="editFacet(facet)" class="inlineEditLink" v-if="!isEditable(facet)">
-                    Ändern
-                  </a>
-                  <router-link :to="{name: 'facets.show', params: {id: facet.id}}" class="inlineEditLink" v-if="!isEditable(facet)">
-                    Verwalten
-                  </router-link>
-                  <a href="" @click.prevent="cancelEditFacet()" class="inlineEditLink" v-if="isEditable(facet)">
-                    Abbrechen
-                  </a>
-                </div>
-
-                <div v-if="isEditable(facet)">
-                  <tree-item-editor-form
-                    :item="editableFacet"
-                    :hasAttributes="true"
-                    :hasColor="true"
-                    @update="updateFacet"
-                    @cancel="cancelEditFacet" />
                 </div>
               </div>
 
               <div class="ownerTypes">
                 für: <span v-for="type in facet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
               </div>
-
-              <facet-item-tag-list :facetItems="facet.facet_items" />
+              <div>
+                {{ countItems(facet) }} Kategorien {{ countOwners(facet) }} Einträge zugeordnet
+              </div>
             </div>
           </div>
         </div>
@@ -55,18 +39,12 @@
 
 <script>
 import Facet from '@/models/Facet'
-import FacetItemTagList from '@/components/facet/FacetItemTagList'
-import TreeItemEditorForm from '@/components/tree/TreeItemEditorForm'
 import Spinner from '@/components/Spinner'
 
 export default {
   data () {
     return {
       facets: [],
-
-      editableFacet: null,
-      editableFacetOriginal: null,
-
       facetsLoaded: false
     }
   },
@@ -75,29 +53,15 @@ export default {
     this.loadFacets()
   },
 
-  watch: {
-    'editableFacet.color' (color) {
-      if (this.editableFacetOriginal) {
-        this.editableFacetOriginal.previewColor = color || null
-      }
-    }
-  },
-
   methods: {
-    editFacet (facet) {
-      this.editableFacetOriginal = facet
-      this.editableFacet = facet.clone()
+    countItems (facet) {
+      return facet.getAllFacetItems().length
     },
 
-    cancelEditFacet () {
-      this.editableFacetOriginal.previewColor = null
-      this.editableFacetOriginal = null
-
-      this.editableFacet = null
-    },
-
-    isEditable (facet) {
-      return this.editableFacet && this.editableFacet.id === facet.id
+    countOwners (facet) {
+      return facet.getAllFacetItems().reduce((count, item) => {
+        return count + item.count_owners
+      }, 0)
     },
 
     loadFacets () {
@@ -105,23 +69,10 @@ export default {
         this.facets = facets
         this.facetsLoaded = true
       })
-    },
-
-    updateFacet (facet) {
-      Facet.Query.save(facet).then(facet => {
-        if (facet) {
-          this.$store.dispatch('messages/showAlert', {
-            description: 'Die Kategorie wurde geändert.'
-          })
-        }
-        this.cancelEditFacet()
-      })
     }
   },
 
   components: {
-    FacetItemTagList,
-    TreeItemEditorForm,
     Spinner
   }
 }
@@ -133,12 +84,19 @@ export default {
 }
 
 .facet {
-  border-bottom: 1px solid $gray20;
   padding: 1em 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid $gray20;
+  }
 }
 
-.inlineEditLink {
-  margin-left: 10px;
+.colorIcon {
+  vertical-align: middle;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
 }
 
 .facetAttributes {
@@ -171,7 +129,6 @@ export default {
 .ownerTypes {
   font-size: .9em;
   color: $gray50;
-  margin-bottom: 1em;
 }
 
 .facetItemTagList {

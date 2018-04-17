@@ -32,6 +32,10 @@ a {
   &:hover {
     background-color: lighten($green, 10%) !important;
   }
+  &[disabled] {
+    background-color: lighten($green, 30%) !important;
+    color: white !important;
+  }
 }
 
 .btn.gray {
@@ -55,6 +59,9 @@ a {
   height: 22px;
   line-height: 22px;
   padding: 0 0.4rem;
+  i {
+    font-size: 1rem;
+  }
   i.left {
     margin-right: 2px;
   }

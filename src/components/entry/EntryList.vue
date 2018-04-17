@@ -7,7 +7,7 @@
             {{ messages.headline() }} ({{ currentNumItems }})
           </h2>
 
-          <router-link v-if="addEntryButton" :to="{name: addEntryButton}"  class="mainCard__headerButton">
+          <router-link v-if="addEntryButton" :to="{name: addEntryButton}" class="mainCard__headerButton">
             {{$t('buttons.add')}}
             <i class="material-icons">add</i>
           </router-link>

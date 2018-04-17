@@ -1,9 +1,9 @@
 <template>
   <div>
-    <modal ref="modal">
+    <modal ref="modal" class="modalWindow">
       <div class="modalContent">
         <div class="ownerInfo">
-          {{ owner.title }}
+          {{ owner.title }} <i class="material-icons">chevron_right</i> Kategorien ändern
         </div>
 
         <div class="facetSelector">
@@ -247,12 +247,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modalContent {
-  width: 800px;
+.modalWindow /deep/ .modal__window {
+  width: 80%;
+  max-width: 1000px;
 }
 
 .ownerInfo {
   margin-bottom: 20px;
+
+  i {
+    vertical-align: middle;
+    font-size: 1.2em;
+  }
 }
 
 .navigation {

@@ -43,7 +43,7 @@
 
     <select v-model="currentPageSize"
       @change="pageSizeChanged"
-      class="listPagination__pagesizeSelect browser-default"
+      class="listPagination__pagesizeSelect"
       v-if="currentNumItems > 15"
       id="pageSizeSelect">
       <option value="15">15 {{ $t('pagination.per_page') }}</option>

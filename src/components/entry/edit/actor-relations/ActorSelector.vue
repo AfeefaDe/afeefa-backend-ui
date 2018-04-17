@@ -1,37 +1,38 @@
 <template>
   <div>
-    <modal ref="modal">
+    <modal ref="modal" class="modalWindow">
       <div class="modalContent">
         <div class="ownerInfo">
-          {{ actor.title }}
-        </div>
-
-        <div class="selectableActorsContainer">
-          <input type="text" v-model="keyword" v-focus
-            placeholder="Tippen, um zu filtern"
-            @input="keywordChanged"
-            @keydown.up.prevent="selectPrevious"
-            @keydown.down.prevent="selectNext"
-            @keydown.esc.prevent="hideModal"
-            @keydown.enter.prevent="submitCurrentItem">
+          {{ actor.title }} <i class="material-icons">chevron_right</i> {{ title }}
         </div>
 
         <div class="actorSelector">
-          <div class="selectableActors">
-            <div v-for="(actor, index) in selectableActors" :key="actor.id"
-              :class="['actor', {'actor--selected': index === selectedItemIndex}]"
-              @click="addActor(actor)">
-              {{ actor.title }}
+          <selectable-list
+            :items="selectableActors"
+            :messages="messagesSelectable"
+            :isLoading="isLoading"
+            @cancel="hideModal"
+            @select="addActor">
+            <div slot="item" slot-scope="props" class="listEntry">
+              <entry-icon :item="props.item" />
+              <div>{{ props.item.title }}</div>
             </div>
-          </div>
+          </selectable-list>
 
-          <div class="selectedActors">
-            <div v-for="actor in selectedActors" :key="actor.id"
-              class="actor"
-              @click="removeActor(actor)">
-              {{ actor.title }}
+          <i class="material-icons selectorIcon">chevron_right</i>
+
+          <selectable-list
+            class="list2"
+            :items="selectedActors"
+            :messages="messagesSelected"
+            :hasFilter="false"
+            @cancel="hideModal"
+            @select="removeActor">
+            <div slot="item" slot-scope="props" class="listEntry">
+              <entry-icon :item="props.item" />
+              <div>{{ props.item.title }}</div>
             </div>
-          </div>
+          </selectable-list>
         </div>
       </div>
       <div class="footer">
@@ -53,7 +54,9 @@
 <script>
 import Orga from '@/models/Orga'
 import Modal from '@/components/Modal'
+import SelectableList from '@/components/selector/SelectableList'
 import sortByTitle from '@/helpers/sort-by-title'
+import EntryIcon from '@/components/entry/EntryIcon'
 
 export default {
   props: ['title', 'actor', 'relationName'],
@@ -62,52 +65,32 @@ export default {
     return {
       actors: [],
       selectableActors: [],
-      selectedItemIndex: null,
       selectedActors: [],
-      keyword: '',
-      searchFields: ['title']
+      isLoading: false,
+
+      messagesSelectable: {
+        title: 'Alle',
+        notFound: 'Nichts gefunden'
+      },
+      messagesSelected: {
+        title: 'Ausgewählt',
+        notFound: 'Nichts ausgewählt'
+      }
     }
   },
 
   created () {
+    this.isLoading = true
     Orga.Query.getAll().then(actors => {
       this.actors = sortByTitle(actors)
       this.initSelectableActors()
+      this.isLoading = false
     })
   },
 
   methods: {
     initSelectableActors () {
-      this.selectableActors = this.actors.filter(a => {
-        if (this.selectedActors.includes(a)) {
-          return false
-        }
-
-        const keywords = this.keyword.split(' ')
-        let findCount = 0
-        for (let keyword of keywords) {
-          const hasFound = this.searchFields.some(field => {
-            let value = a[field]
-            if (!value) {
-              if (!keyword) {
-                return true
-              }
-            } else {
-              if (value.toLowerCase().includes(keyword.toLowerCase())) {
-                return true
-              }
-            }
-            return false
-          })
-          if (hasFound) {
-            findCount++
-          }
-        }
-
-        return findCount === keywords.length
-      })
-
-      this.selectedItemIndex = this.keyword && this.selectableActors.length ? 0 : null
+      this.selectableActors = this.actors.filter(a => !this.selectedActors.includes(a))
     },
 
     initSelectedActors () {
@@ -117,52 +100,7 @@ export default {
       })
     },
 
-    selectNext () {
-      if (this.selectedItemIndex === null) {
-        return
-      }
-
-      if (this.selectedItemIndex === this.selectableActors.length - 1) {
-        this.selectedItemIndex = 0
-      } else {
-        this.selectedItemIndex++
-      }
-      this.scrollResults()
-    },
-
-    selectPrevious () {
-      if (this.selectedItemIndex === null) {
-        return
-      }
-
-      if (this.selectedItemIndex === 0) {
-        this.selectedItemIndex = this.selectableActors.length - 1
-      } else {
-        this.selectedItemIndex--
-      }
-      this.scrollResults()
-    },
-
-    scrollResults () {
-      if (this.selectedItemIndex === null) {
-        return
-      }
-
-      const ul = document.querySelector('.selectableActors')
-      const li = document.querySelectorAll('.selectableActors > div')[this.selectedItemIndex]
-
-      if (li.offsetTop < ul.scrollTop) {
-        ul.scrollTop = li.offsetTop
-      }
-
-      if (li.offsetTop + li.offsetHeight > ul.scrollTop + ul.offsetHeight) {
-        ul.scrollTop = li.offsetTop + li.offsetHeight - ul.offsetHeight
-      }
-    },
-
     showModal () {
-      this.selectedItemIndex = null
-      this.keyword = ''
       this.initSelectedActors()
       this.initSelectableActors()
       this.$refs.modal.show()
@@ -170,19 +108,6 @@ export default {
 
     hideModal () {
       this.$refs.modal.close()
-    },
-
-    keywordChanged () {
-      this.initSelectableActors()
-    },
-
-    submitCurrentItem () {
-      if (this.selectedItemIndex === null) {
-        return
-      }
-
-      const actor = this.selectableActors[this.selectedItemIndex]
-      this.addActor(actor)
     },
 
     addActor (actor) {
@@ -215,18 +140,26 @@ export default {
   },
 
   components: {
-    Modal
+    Modal,
+    SelectableList,
+    EntryIcon
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.modalContent {
-  width: 800px;
+.modalWindow /deep/ .modal__window {
+  width: 80%;
+  max-width: 1000px;
 }
 
 .ownerInfo {
   margin-bottom: 20px;
+
+  i {
+    vertical-align: middle;
+    font-size: 1.2em;
+  }
 }
 
 .actorSelector {
@@ -237,43 +170,32 @@ export default {
   > * {
     width: 50%;
   }
-}
 
-.selectableActors {
-  height: 500px;
-  overflow-y: auto;
-  position: relative;
-  margin-right: 10px;
-}
-
-.actor {
-  @include user-select();
-
-  background-color: #EEEEEE;
-  padding: 5px;
-  cursor: pointer;
-
-  &:nth-child(2n) {
-    background-color: white;
+  .selectorIcon {
+    width: auto;
+    margin: 0 10px;
+    align-self: center;
   }
 
-  &:hover,
-  &:nth-child(2n):hover {
-    background-color: lighten($blueHightlight, 20);
-    color: white;
-  }
+  .list2 {
+    align-self: flex-end;
 
-  &--selected,
-  &--selected:nth-child(2n) {
-    background-color: $blueHightlight;
-    color: white;
+    /deep/ .title {
+      margin-bottom: 2.8em;
+    }
   }
 }
 
-.selectedActors {
-  height: 500px;
-  overflow-y: auto;
-  margin-left: 10px;
+.listEntry {
+  display: flex;
+  align-items: center;
+  line-height: 1.4em;
+
+  .entryTypeIcon {
+    width: 12px;
+    height: 12px;
+    margin-right: 8px;
+  }
 }
 
 .footer {

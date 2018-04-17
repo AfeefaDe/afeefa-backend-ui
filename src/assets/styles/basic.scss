@@ -98,6 +98,7 @@ $sidebarWidth: 350px;
     @include categoryColors($alpha_background: 1, $alpha_border: 0);
   }
   &__headerTitle {
+    display: inline-block;
     flex-grow: 2;
     font-size: 1.2em;
     overflow: hidden;
@@ -196,6 +197,10 @@ $sidebarWidth: 350px;
   color: $gray30;
   font-size: .8em;
   text-decoration: underline;
+
+  &.medium {
+    font-size: .9em;
+  }
 
   &:hover {
     color: $secondaryBlue;
