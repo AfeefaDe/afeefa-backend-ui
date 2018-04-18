@@ -9,12 +9,14 @@
         </a>
       </li>
     </ul>
-    <section v-for="tab in tabs" :key="tab.name" v-show="activeTab === tab">
+    <section v-for="tab in tabs" :key="tab.name" v-show="activeTab === tab" class="tabContent">
       <slot :name="tab.name"></slot>
     </section>
   </div>
   <div v-else>
-    <slot :name="tabs[0].name"></slot>
+    <section class="tabContent">
+      <slot :name="tabs[0].name"></slot>
+    </section>
   </div>
 </div>
 </template>
@@ -103,21 +105,26 @@ export default {
 
 <style lang="scss" scoped>
 .tabBar {
+  margin-top: -1em;
+  margin-left: -1em;
+  margin-right: -1em;
   $activeBorderWidth: 3px;
   &__navItemContainer {
-    margin: 0 0 1em;
-    width: 100%;
+    margin: 0;
     /* fixes strange chrome bug (#200) */
     overflow-x: hidden;
-    background: transparent;
+    background-color: $white;
     color: inherit;
     box-shadow: none;
-    border-bottom: 1px solid $black;
     display: flex;
-    justify-content: space-around;
   }
+
+  .tabContent {
+    padding: 1em;
+  }
+
   &__navItem {
-    flex-grow: 2;
+    padding: 0 2em;
     text-align: center;
     line-height: 150%;
     a {
@@ -126,13 +133,12 @@ export default {
       color: inherit;
     }
     &:hover {
-      border-bottom: $activeBorderWidth solid $black;
       transition: all 0.2s ease;
     }
   }
   &__navItem.active {
+    background-color: #FFFFFF;
     font-weight: bold;
-    border-bottom: $activeBorderWidth solid $black;
   }
 }
 
