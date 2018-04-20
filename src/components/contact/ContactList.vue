@@ -24,7 +24,7 @@
             </span>
             <location-map
               :map-center="mapCenter(contact.location)"
-              :initial-zoom="13"
+              :initial-zoom="16"
               :location="contact.location"
               style="max-width:400px;">
             </location-map>
