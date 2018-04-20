@@ -1,5 +1,5 @@
 <script>
-import EntryDetail from '@/components/entry/show/EntryDetail'
+import User from '@/models/User'
 
 export default {
   props: ['id'],
@@ -8,12 +8,15 @@ export default {
     return {
       item: null,
       routeConfig: null,
+      currentUser: null,
       loadingError: false
     }
   },
 
   created () {
     this.initItem(this.id)
+
+    this.currentUser = User.Query.getCurrentUser()
   },
 
   beforeRouteUpdate (to, from, next) {
@@ -45,10 +48,6 @@ export default {
         }
       })
     }
-  },
-
-  components: {
-    EntryDetail
   }
 }
 </script>

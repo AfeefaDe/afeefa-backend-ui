@@ -8,9 +8,8 @@
       :options="{filter: true, pagination: true, updated_at: true, annotations: true, event_date: true}"
       :messages="messages">
 
-      <div>
-        <label for="annoationCategory">Todos filtern</label>
-        <select id="annotationCategory" v-model="selectedCategory" style="display: block;">
+      <div v-if="items">
+        <select id="annotationCategory" v-model="selectedCategory" class="filterSelect">
           <option value="all" selected>Alle Anmerkungen</option>
           <option v-for="cat in categories" :key="cat.id" :value="cat.id" v-if="cat.count_entries">
             {{ cat.title }} ({{ cat.count_entries }})
@@ -73,3 +72,13 @@ export default {
   }
 }
 </script>
+
+
+<style lang="scss" scoped>
+.filterSelect {
+  display: block;
+  margin-bottom: .5em;
+  width: auto;
+  height: auto;
+}
+</style>

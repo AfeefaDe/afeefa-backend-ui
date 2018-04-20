@@ -1,52 +1,53 @@
 <template>
-<div class="row">
-  <div class="col s12 m12">
-    <div class="mainCard" v-if="container">
-      <div class="mainCard__header">
+  <afeefa-page>
+
+    <afeefa-header slot="header">
+      <div slot="title">
         <slot name="header">
-          <a href="" @click.prevent="goBack"><i class="material-icons goBack">chevron_left</i></a>
-          <h2 class="mainCard__headerTitle">{{ container.title || 'Kein Titel' }}</h2>
+          {{ container && container.title || 'Kein Titel' }}
         </slot>
       </div>
+    </afeefa-header>
 
-      <div>
-        <slot name="content"></slot>
+    <div slot="content" v-if="container">
+      <slot name="content"></slot>
 
-        <div v-for="treeItem in this.treeItems" :key="treeItem.id">
+      <div v-for="treeItem in this.treeItems" :key="treeItem.id">
+        <tree-item-view
+          :treeItem="treeItem"
+          :routeConfig="routeConfig"
+          :bus="bus"
+          @update="loadTreeItems"
+          @remove="loadTreeItems" />
+
+        <div v-for="subTreeItem in treeItem.sub_items" :key="subTreeItem.id">
           <tree-item-view
-            :treeItem="treeItem"
+            :treeItem="subTreeItem"
             :routeConfig="routeConfig"
             :bus="bus"
             @update="loadTreeItems"
             @remove="loadTreeItems" />
-
-          <div v-for="subTreeItem in treeItem.sub_items" :key="subTreeItem.id">
-            <tree-item-view
-              :treeItem="subTreeItem"
-              :routeConfig="routeConfig"
-              :bus="bus"
-              @update="loadTreeItems"
-              @remove="loadTreeItems" />
-          </div>
-
-          <tree-item-view
-            :treeItem="createNewTreeItem(treeItem)"
-            :routeConfig="routeConfig"
-            :bus="bus"
-            @update="loadTreeItems" />
         </div>
 
         <tree-item-view
-          :treeItem="createNewTreeItem()"
+          :treeItem="createNewTreeItem(treeItem)"
           :routeConfig="routeConfig"
           :bus="bus"
           @update="loadTreeItems" />
       </div>
+
+      <tree-item-view
+        :treeItem="createNewTreeItem()"
+        :routeConfig="routeConfig"
+        :bus="bus"
+        @update="loadTreeItems" />
     </div>
 
-    <entry-loading-message v-else :error="hasItemLoadingError" :messages="messages" />
-  </div>
-</div>
+    <div slot="content" v-else>
+      <entry-loading-message2 :error="hasItemLoadingError" :messages="messages" />
+    </div>
+
+  </afeefa-page>
 </template>
 
 
@@ -54,7 +55,7 @@
 import Vue from 'vue'
 import TreeItemView from './TreeItemView'
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
-import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
+import EntryLoadingMessage2 from '@/components/entry/EntryLoadingMessage2'
 
 export default {
   mixins: [RouteConfigAwareMixin],
@@ -107,7 +108,7 @@ export default {
 
   components: {
     TreeItemView,
-    EntryLoadingMessage
+    EntryLoadingMessage2
   }
 }
 </script>

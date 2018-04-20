@@ -204,9 +204,8 @@ export default {
   align-items: center;
   line-height: 1.4em;
 
-  .entryTypeIcon {
-    width: 12px;
-    height: 12px;
+  .entryIcon /deep/ i {
+    font-size: 1.1em;
     margin-right: 8px;
   }
 }

@@ -6,9 +6,16 @@
     </button>
     <div v-else></div>
     <div>
-      <button class="btn waves-effect waves-light gray" @click.prevent="cancel" v-if="has.cancel">
-        Abbrechen
-      </button>
+      <router-link :to="{name: this.routeName + '.show', params: {id: item.id}}" class="btn waves-effect waves-light gray" v-if="has.cancel && item.id">
+        <i class="material-icons left">cancel</i>
+        {{ $t('buttons.cancel') }}
+      </router-link>
+
+      <router-link :to="{name: this.routeName + '.list'}" class="btn waves-effect waves-light gray" v-else-if="has.cancel && !item.id">
+        <i class="material-icons left">cancel</i>
+        {{ $t('buttons.cancel') }}
+      </router-link>
+
       <button class="btn waves-effect waves-light green" @click.prevent="save">
         <i class="material-icons left">done</i>
         {{ item.id ? 'Speichern' : 'Anlegen' }}
@@ -19,7 +26,11 @@
 
 
 <script>
+import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
+
 export default {
+  mixins: [RouteConfigAwareMixin],
+
   props: ['item', 'hasCancel', 'hasRemove'],
 
   data () {
@@ -36,10 +47,6 @@ export default {
       this.$emit('remove')
     },
 
-    cancel () {
-      this.$emit('cancel')
-    },
-
     save () {
       this.$emit('save')
     }
@@ -52,7 +59,7 @@ export default {
   margin-top: 1.2em;
   display: flex;
   justify-content: space-between;
-  button + button {
+  .btn + .btn {
     margin-left: .6em;
   }
   @media screen and (max-width: $break-small) {

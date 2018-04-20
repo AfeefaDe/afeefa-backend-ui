@@ -18,6 +18,18 @@ import i18n from './services/lang'
 import router from './services/router'
 import store from './store'
 
+import Page from '@/components/afeefa/Page'
+import Header from '@/components/afeefa/Header'
+import EntryHeader from '@/components/entry/EntryHeader'
+import EntryDetail2 from '@/components/entry/EntryDetail2'
+import EntryEdit2 from '@/components/entry/EntryEdit2'
+
+Vue.component('AfeefaPage', Page)
+Vue.component('AfeefaHeader', Header)
+Vue.component('EntryHeader', EntryHeader)
+Vue.component('EntryDetail2', EntryDetail2)
+Vue.component('EntryEdit2', EntryEdit2)
+
 Vue.use(VeeValidate, {delay: 0, locale: 'de'})
 Vue.use(Filters)
 Vue.use(VueResource)

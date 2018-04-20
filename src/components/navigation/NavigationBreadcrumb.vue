@@ -1,6 +1,6 @@
 <template>
   <div class="navigationBreadcrumb">
-    <span v-for="(item, index) in items" :key="item.title">
+    <span v-for="(item, index) in items" :key="item.title" v-if="index">
       <i class="material-icons" v-if="index">&nbsp;chevron_right</i>
       <router-link :to="{name: item.route}" v-if="item.route"> {{ translateTitle(item) }} </router-link>
       <span v-else> {{ translateTitle(item) }} </span>
@@ -25,6 +25,7 @@ export default {
 
 <style lang="scss" scoped>
 .navigationBreadcrumb {
+  margin-left: -.5em;
   display: inline-block;
   font-size: 1em;
   a {

@@ -20,7 +20,7 @@
             :sort-function="todosSort"
             :options="{updated_at: true, annotations: true}">
           </entry-list-items>
-          <router-link :to="{name: 'todos'}">{{ $t('status.all') }} {{ $t('headlines.todos') }}</router-link>
+          <router-link :to="{name: 'todos'}" v-if="todos">{{ $t('status.all') }} {{ $t('headlines.todos') }}</router-link>
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@
             :sort-function="orgaSort"
             :options="{created_at: true}">
           </entry-list-items>
-          <router-link :to="{name: 'orgas.list'}">{{ $t('status.all') }} {{ $tc('headlines.organisations', numOrgas) }}</router-link>
+          <router-link :to="{name: 'orgas.list'}" v-if="orgas">{{ $t('status.all') }} {{ $tc('headlines.organisations', numOrgas) }}</router-link>
         </div>
       </div>
     </div>
@@ -66,7 +66,7 @@
             :sort-function="eventsSort"
             :options="{created_at: true, event_date: true}">
           </entry-list-items>
-          <router-link :to="{name: 'events.list'}">{{ $t('status.all') }} {{ $tc('headlines.events', 2) }}</router-link>
+          <router-link :to="{name: 'events.list'}" v-if="events">{{ $t('status.all') }} {{ $tc('headlines.events', 2) }}</router-link>
         </div>
       </div>
     </div>

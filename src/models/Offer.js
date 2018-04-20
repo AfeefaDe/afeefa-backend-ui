@@ -43,8 +43,8 @@ class Offer extends Model {
       description: this.description
     }
 
-    if (!this.id && this.actors.length) {
-      data.actor_id = this.actors[0].id
+    if (!this.id && this.owners.length) {
+      data.actors = this.owners.map(o => o.id)
     }
     return data
   }

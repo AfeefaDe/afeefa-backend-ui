@@ -47,7 +47,8 @@ export default {
     ownerTypeEvent: 'Event'
   },
   offers: {
-    offer: 'Offer | Offers'
+    offer: 'Offer | Offers',
+    newOffer: 'New Offer'
   },
   tabs: {
     generalTab: 'General',
@@ -173,7 +174,8 @@ export default {
     deactivate: 'Unpublish',
     edit: 'Edit',
     add: 'Add',
-    search: 'Search'
+    search: 'Search',
+    cancel: 'Cancel'
   },
   infos: {
     mandatory_field: 'mandatory',

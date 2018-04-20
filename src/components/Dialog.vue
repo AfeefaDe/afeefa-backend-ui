@@ -107,7 +107,7 @@ export default {
   position: fixed;
   z-index: $z-index-overlay;
   left: 50%;
-  top: ($header-height*1.1);
+  top: 1em;
   transform: translate(-50%, 0);
   width: 90%;
   max-width: 500px;

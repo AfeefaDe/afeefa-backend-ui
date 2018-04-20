@@ -34,19 +34,25 @@ export default {
   },
 
   methods: {
-    actorRelationSaved () {
-      this.isLoading = 1
+    actorRelationSaved (actors) {
+      if (this.owner.id) {
+        this.isLoading = 1
 
-      // show loading spinner min 500 ms for good ux
-      setTimeout(() => {
-        this.isLoading++
-        this.setItemsAfterLoading()
-      }, 500)
+        // show loading spinner min 500 ms for good ux
+        setTimeout(() => {
+          this.isLoading++
+          this.setItemsAfterLoading()
+        }, 500)
 
-      this.reloadActors().then(() => {
-        this.isLoading++
+        this.reloadActors().then(() => {
+          this.isLoading++
+          this.setItemsAfterLoading()
+        })
+      } else { // new items add directly
+        this.owner[this.relationName] = actors
+        this.isLoading = 3
         this.setItemsAfterLoading()
-      })
+      }
     },
 
     setItemsAfterLoading () {

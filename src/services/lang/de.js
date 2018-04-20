@@ -47,7 +47,8 @@ export default {
     ownerTypeEvent: 'Veranstaltung'
   },
   offers: {
-    offer: 'Angebot | Angebote'
+    offer: 'Angebot | Angebote',
+    newOffer: 'Neues Angebot'
   },
   tabs: {
     generalTab: 'Allgemeines',
@@ -173,7 +174,8 @@ export default {
     deactivate: 'Verbergen',
     edit: 'Bearbeiten',
     add: 'Hinzufügen',
-    search: 'Suche'
+    search: 'Suche',
+    cancel: 'Abbrechen'
   },
   infos: {
     mandatory_field: 'Pflichtfeld',

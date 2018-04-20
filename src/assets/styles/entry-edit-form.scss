@@ -5,6 +5,11 @@
     font-size: 1.4em;
     font-weight: 500;
   }
+
+  h2:first-child {
+    margin-top: 1em;
+  }
+
   .mandatoryField {
     color: darken($secondaryBlue, 15);
   }

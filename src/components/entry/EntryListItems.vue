@@ -4,7 +4,7 @@
       <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Liste
     </div>
 
-    <div class="navigation">
+    <div class="navigation" v-if="items">
       <div v-if="items && items.length > 1 && has.filter" class="filter">
         <input
           type="text"
@@ -16,7 +16,7 @@
         </a>
       </div>
 
-      <div v-if="items && has.pagination">
+      <div v-if="items && has.pagination" class="pagination">
         <pagination
           :num-items="currentNumItems"
           :page-size="currentPageSize"
@@ -26,14 +26,10 @@
       </div>
     </div>
 
-    <div v-if="false">
-      Auswahl: {{ selectedItems.length }}
-    </div>
-
-    <ul class="entryList">
+    <ul class="entryList" v-if="items">
       <li v-for="item in itemsSorted" :key="item.type + item.id">
 
-        <div v-if="!showIcon">
+        <div>
           <div v-if="has.typeIcon" class="entryList__icon">
             <entry-icon :item="item" />
             <div class="eventDate" v-if="item.type === 'events'">
@@ -54,25 +50,19 @@
 
           <router-link :to="routerLinkObject(item)" class="entryList__nav">
             <h4 class="title">{{ item.title || 'Kein Titel' }}</h4>
-            <span class="icon"><i v-if="!showIcon && false" class="material-icons">navigate_next</i></span>
+            <span class="icon"><i v-if="false" class="material-icons">navigate_next</i></span>
           </router-link>
 
-          <div v-if="item.type === 'orgas'" class="entryList__parentLink">
-            <router-link :to="{name: 'orgas.show', params: {id: actor.id}}" v-for="actor in item.project_initiators" :key="actor.id">
-              <u>{{ actor.title }}</u>  {{ actor.created_at }}
-            </router-link>
+          <div v-if="item.type === 'orgas' && item.project_initiators.length" class="entryList__parentLink">
+            <entry-list-item-owners :items="item.project_initiators"></entry-list-item-owners>
           </div>
 
-          <div v-if="item.type === 'offers'" class="entryList__parentLink">
-            <router-link :to="{name: 'orgas.show', params: {id: actor.id}}" v-for="actor in item.owners" :key="actor.id">
-              <u>{{ actor.title }}</u>  {{ actor.created_at }}
-            </router-link>
+          <div v-if="item.type === 'offers' && item.owners.length" class="entryList__parentLink">
+            <entry-list-item-owners :items="item.owners"></entry-list-item-owners>
           </div>
 
-          <div v-if="item.type === 'events'" class="entryList__parentLink">
-            <router-link :to="{name: 'orgas.show', params: {id: actor.id}}" v-for="actor in item.hosts" :key="actor.id">
-              <u>{{ actor.title }}</u>  {{ actor.created_at }}
-            </router-link>
+          <div v-if="item.type === 'events' && item.hosts.length" class="entryList__parentLink">
+            <entry-list-item-owners :items="item.hosts"></entry-list-item-owners>
           </div>
 
           <div class="entryList__attributes" v-if="item.type !== 'chapters'">
@@ -133,9 +123,10 @@ import EntryIcon from '@/components/entry/EntryIcon'
 import Spinner from '@/components/Spinner'
 import moment from 'moment'
 import EntryFacetItems from '@/components/entry/EntryFacetItems'
+import EntryListItemOwners from '@/components/entry/EntryListItemOwners'
 
 export default {
-  props: {items: {}, limit: {}, sortFunction: {}, sortOrder: {}, showIcon: {}, options: {}, modifyRoute: {default: true}},
+  props: {items: {}, limit: {}, sortFunction: {}, sortOrder: {}, options: {}, modifyRoute: {default: true}},
 
   data () {
     const options = this.options || {}
@@ -166,6 +157,10 @@ export default {
   watch: {
     '$route' () {
       this.initPageProperties()
+    },
+
+    'items' () {
+      this.searchKeyword = ''
     }
   },
 
@@ -238,16 +233,13 @@ export default {
     Spinner,
     AnnotationTag,
     EntryIcon,
-    EntryFacetItems
+    EntryFacetItems,
+    EntryListItemOwners
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
-.loadingInfo {
-  margin-top: .8em;
-}
 
 .navigation {
   input {
@@ -268,6 +260,10 @@ export default {
   i {
     font-size: 20px;
   }
+}
+
+.pagination:first-child {
+  margin-top: 1em;
 }
 
 .treeItemTag {
@@ -314,7 +310,7 @@ export default {
   }
 
   &__parentLink {
-    margin: -.2em 0 .6em;
+    margin: -.1em 0 .6em;
   }
 
   &__actionButton {

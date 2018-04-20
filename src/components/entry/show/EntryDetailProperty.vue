@@ -8,7 +8,12 @@
     </span>
 
     <div class="detailProperty__propertyContainer">
-      <p class="detailProperty__propertyName">{{ name }}</p>
+      <p class="detailProperty__propertyName">
+        <span>{{ name }}</span>
+        <span class="editLink">
+          <slot name="editLink" class="test" />
+        </span>
+      </p>
       <p :class="['detailProperty__propertyContent', {multiline: isMultiline}]">
         <slot />
       </p>
@@ -27,6 +32,11 @@ export default {
   display: flex;
   list-style: none;
   margin: 2em 0;
+
+  &:first-child {
+    margin-top: 1em;
+  }
+
   &__propertyIcon {
     margin-left: 0.3em;
     margin-right: 2em;
@@ -40,18 +50,26 @@ export default {
       margin-left: -2px;
       margin-right: 2px;
     }
-    .emptyIcon,
-    .entryTypeIcon {
+    .emptyIcon {
       width: 24px;
       height: 24px;
       font-size: 2.3em;
     }
-}
+  }
 
   &__propertyName {
     text-transform: uppercase;
     color: $gray50;
     margin: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .editLink > * {
+    display: inline-block;
+    text-transform: none;
+    margin-left: .5em;
+    vertical-align: middle;
   }
 
   &__propertyContent {

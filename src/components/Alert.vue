@@ -73,7 +73,7 @@ export default {
 .alertContainer {
   position: fixed;
   z-index: $z-index-overlay;
-  top: ($header-height*1.1);
+  top: 1em;
   left: 50%;
   transform: translate(-50%, 0);
   width: 90%;

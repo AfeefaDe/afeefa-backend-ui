@@ -58,6 +58,7 @@ $sidebarWidth: 350px;
 
 .mainCard {
   $height: 24px;
+  max-width: 1000px;
   background-color: white;
   margin-top: 2em;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
@@ -77,7 +78,8 @@ $sidebarWidth: 350px;
     }
   }
   &__header {
-    background-color: $black_alpha;
+    // background-color: $black_alpha;
+    background-color: $gray80;
     color: $white;
     display: flex;
     align-items: flex-start;
@@ -159,23 +161,6 @@ $sidebarWidth: 350px;
   &__headerAction {
     color: inherit;
     max-height: $height;
-  }
-}
-
-/* entry icon for events and orgas; used in list and detail view */
-.entryTypeIcon {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background-color: $black;
-  border: 2px solid $black;
-  border-radius: 2px;
-  &--events {
-    transform: rotate(45deg) scale(0.9);
-  }
-  &--inactive {
-    /* important is neccesary cause the inactive information is way more important than the category cclor */
-    background-color: transparent!important;
   }
 }
 

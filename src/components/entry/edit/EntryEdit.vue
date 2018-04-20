@@ -1,39 +1,41 @@
 <template>
-  <div class="row">
-    <div class="col s12 m12">
-      <div class="mainCard" v-if="item">
-        <entry-edit-header ref="header" :item="item" :routeConfig="routeConfig" />
+  <afeefa-page>
 
-        <image-container v-if="item" v-show="!imageError"
-          :image-url="item.media_url"
-          @state="updateImageContainerState">
-        </image-container>
+    <entry-header :entry="item" :isEdit="true" :routeConfig="routeConfig" slot="header" />
 
-        <div>
-          <form @submit.prevent="save" class="entryForm" novalidate>
+    <div slot="content" v-if="item">
+      <image-container v-if="item" v-show="!imageError"
+        :image-url="item.media_url"
+        @state="updateImageContainerState">
+      </image-container>
 
-            <slot />
+      <div>
+        <form @submit.prevent="save" class="entryForm" novalidate>
 
-            <entry-edit-footer
-              :item="item"
-              @remove="remove"
-              @save="save"
-              @cancel="cancel" />
-          </form>
-        </div>
+          <slot />
+
+          <entry-edit-footer
+            :item="item"
+            :routeConfig="routeConfig"
+            @remove="remove"
+            @save="save"
+            @cancel="cancel" />
+        </form>
       </div>
-
-      <entry-loading-message v-else :error="hasItemLoadingError" :messages="messages" />
     </div>
-  </div>
+
+    <div slot="content" v-else>
+      <entry-loading-message2 :error="hasItemLoadingError" :messages="messages" />
+    </div>
+
+  </afeefa-page>
 </template>
 
 
 <script>
 import ImageContainer from '@/components/ImageContainer'
 
-import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
-import EntryEditHeader from '@/components/entry/edit/EntryEditHeader'
+import EntryLoadingMessage2 from '@/components/entry/EntryLoadingMessage2'
 import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 
 import EntryEditApiMixin from '@/components/entry/edit/mixins/EntryEditApiMixin'
@@ -70,8 +72,7 @@ export default {
   components: {
     ImageContainer,
 
-    EntryLoadingMessage,
-    EntryEditHeader,
+    EntryLoadingMessage2,
     EntryEditFooter
   }
 }

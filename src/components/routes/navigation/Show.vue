@@ -1,6 +1,6 @@
 <template>
   <editable-tree-view containerId="app" :routeConfig="treeConfig">
-    <h2 class="mainCard__headerTitle" slot="header">Navigation</h2>
+    <span slot="header">Navigation</span>
   </editable-tree-view>
 </template>
 

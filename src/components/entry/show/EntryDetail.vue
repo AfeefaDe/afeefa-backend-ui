@@ -1,222 +1,213 @@
 <template>
-  <div class="row">
-    <div class="col s12 m12">
-      <div class="mainCard" v-if="entry">
-        <entry-detail-header
-          :entry="entry"
-          :routeConfig="routeConfig"
-          :currentTab="currentTab">
-          </entry-detail-header>
+  <afeefa-page>
 
-        <image-container
-          :image-url="entry.media_url">
-        </image-container>
+    <entry-header :entry="entry" :routeConfig="routeConfig" slot="header" />
 
-        <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
-          <section slot="generalTab" class="generalTab generalTab--splitView">
+    <div slot="content" v-if="entry">
+      <image-container
+        :image-url="entry.media_url">
+      </image-container>
 
-            <div class="entryDetail generalTab__splitViewChild">
+      <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
+        <section slot="generalTab" class="generalTab generalTab--splitView">
 
-            <entry-text-attribute
-              v-if="false"
-              :attribute="entry.title"
-              :name="$t('entries.title')"
-              :isMultiline="false"
-              :maxChar="150"
-              validate="required|max:150"
-              fieldName="title"
-              :editable="true"/>
+          <div class="entryDetail generalTab__splitViewChild">
 
-              <entry-detail-property
-                v-if="entry.type === 'orgas'"
-                name="Angebote"
-                iconName="bookmark_border">
-                <div v-for="offer in entry.offers" :key="offer.id">
-                  <router-link :to="{name: 'offers.show', params: {id: offer.id}}">
-                    {{ offer.title }}
-                  </router-link>
-                </div>
-              </entry-detail-property>
+          <entry-text-attribute
+            v-if="false"
+            :attribute="entry.title"
+            :name="$t('entries.title')"
+            :isMultiline="false"
+            :maxChar="150"
+            validate="required|max:150"
+            fieldName="title"
+            :editable="true"/>
 
-              <entry-detail-property
-                name="Kategorien"
-                iconName="bookmark_border">
-                <entry-facet-items :entry="entry" :isEdit="true" />
-              </entry-detail-property>
-
-              <entry-detail-property
-                :name="$tc('entries.date')"
-                :iconName="'date_range'"
-                v-if="has.date && entry.date_start">
-                  {{ entry | formatEventDate }}
-                  <span>({{entry.date_start | formatDateRelative}})</span>
-              </entry-detail-property>
-
-              <entry-detail-property name="Veranstalter" :iconName="'device_hub'" v-if="entry.type==='events'">
-                <event-hosts :owner="entry" relationName="hosts" title="Veranstalter">
-                  <div slot="actor" slot-scope="props">
-                    <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
-                      {{ props.actor.title }}
-                  </router-link>
-                </div>
-                </event-hosts>
-              </entry-detail-property>
-
-              <entry-detail-property v-if="entry.type === 'orgas'" name="Projektträger" :iconName="'device_hub'">
-                <actor-actors :owner="entry" relationName="project_initiators" title="Projektträger">
-                  <div slot="actor" slot-scope="props">
-                    <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
-                      {{ props.actor.title }}
-                    </router-link>
-                  </div>
-                </actor-actors>
-              </entry-detail-property>
-
-              <entry-detail-property v-if="entry.type === 'orgas'" name="Netzwerke">
-                <actor-actors :owner="entry" relationName="networks" title="Netzwerke">
-                  <div slot="actor" slot-scope="props">
-                    <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
-                      {{ props.actor.title }}
-                  </router-link>
-                </div>
-                </actor-actors>
-              </entry-detail-property>
-
-              <entry-detail-property v-if="entry.type === 'orgas'" name="Partner">
-                <actor-actors :owner="entry" relationName="partners" title="Partner">
-                  <div slot="actor" slot-scope="props">
-                    <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
-                      {{ props.actor.title }}
-                  </router-link>
-                </div>
-                </actor-actors>
-                </entry-detail-property>
-
-              <entry-detail-property
-                :name="$t('entries.description')"
-                :iconName="'more_horiz'"
-                :isMultiline="true">
-                <div v-if="entry.short_description">{{entry.short_description}}</div>
-              </entry-detail-property>
-
-              <entry-detail-property
-                v-if="entry.description && false"
-                :name="$t('entries.description')"
-                :iconName="showShortDescription ? null : 'more_horiz'"
-                :isMultiline="true">
-                <span>{{ entry.description }}</span>
-              </entry-detail-property>
-
-              <entry-detail-property
-                :name="$t('entries.support_wanted')"
-                :iconName="'pan_tool'"
-                v-if="entry.support_wanted">
-                  <template v-if="entry.support_wanted_detail">
-                    {{entry.support_wanted_detail}}
-                  </template>
-                  <template v-else>
-                    {{$t('entries.support_wanted_yes')}}
-                  </template>
-              </entry-detail-property>
-
-              <entry-detail-property
-                :name="$t('entries.certified_sfr')"
-                :iconName="'check_circle'"
-                v-if="entry.certified_sfr">
-                  {{$t('entries.certified_sfr_yes')}}
-              </entry-detail-property>
-
-              <entry-detail-property
-                v-if="entry.tags"
-                :name="$tc('entries.tags', entry.tags.split(',').length)"
-                :iconName="'more_vert'">
-                  <ul>
-                    <li v-for="tag in entry.tags.split(',')" :key="tag" class="singleTag">
-                      {{tag}}
-                    </li>
-                  </ul>
-              </entry-detail-property>
-
-              <entry-detail-property
-                name="Facebook ID für Events"
-                iconName="share"
-                v-if="entry.type === 'orgas'">
-                {{ entry.facebook_id || 'Keine ID angegeben'}}
-              </entry-detail-property>
-
-              <entry-detail-property
-                :name="$tc('headlines.annotations', entry.annotations.length)"
-                :iconName="'label_outline'"
-                v-if="entry.annotations.length">
-                <div>
-                  <annotation-tag v-for="annotation in entry.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
-                </div>
-              </entry-detail-property>
-
+            <entry-detail-property
+              v-if="entry.type === 'orgas'"
+              name="Angebote"
+              iconName="bookmark_border">
+              <div v-for="offer in entry.offers" :key="offer.id">
+                <router-link :to="{name: 'offers.show', params: {id: offer.id}}">
+                  {{ offer.title }}
+                </router-link>
               </div>
-              <contact-list :item="entry" class="generalTab__splitViewChild"/>
-              <entry-detail-footer :entry="entry"/>
-          </section>
+            </entry-detail-property>
 
-          <section slot="resourceTab" v-if="entry.type === 'orgas' && entry.resource_items.length">
-            <resource-item v-for="resourceItem in entry.resource_items" :key="resourceItem.id" :resourceItem="resourceItem"
-            :editEnabled="false"></resource-item>
-          </section>
+            <entry-detail-property
+              name="Kategorien"
+              iconName="bookmark_border">
+              <entry-facet-items :entry="entry" :isEdit="true" />
+            </entry-detail-property>
 
-          <section slot="networkMembersTab" v-if="entry.type === 'orgas'">
-            <actor-selector title="Netzwerkmitglieder ändern" :actor="entry" relationName="network_members" @saved="actorRelationSaved" />
+            <entry-detail-property
+              :name="$tc('entries.date')"
+              :iconName="'date_range'"
+              v-if="has.date && entry.date_start">
+                {{ entry | formatEventDate }}
+                <span>({{entry.date_start | formatDateRelative}})</span>
+            </entry-detail-property>
 
-            <entry-list-items
-              :items="entry.network_members"
-              v-if="entry.network_members.length">
-            </entry-list-items>
-            <div v-else class="entryDetail__error">
-              Keine Mitglieder zugeordnet
+            <entry-detail-property name="Veranstalter" :iconName="'device_hub'" v-if="entry.type==='events'">
+              <event-hosts :owner="entry" relationName="hosts" title="Veranstalter">
+                <div slot="actor" slot-scope="props">
+                  <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
+                    {{ props.actor.title }}
+                  </router-link>
+                </div>
+              </event-hosts>
+            </entry-detail-property>
+
+            <entry-detail-property v-if="entry.type === 'orgas'" name="Projektträger" :iconName="'device_hub'">
+              <actor-actors :owner="entry" relationName="project_initiators" title="Projektträger">
+                <div slot="actor" slot-scope="props">
+                  <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
+                    {{ props.actor.title }}
+                  </router-link>
+                </div>
+              </actor-actors>
+            </entry-detail-property>
+
+            <entry-detail-property v-if="entry.type === 'orgas'" name="Netzwerke">
+              <actor-actors :owner="entry" relationName="networks" title="Netzwerke">
+                <div slot="actor" slot-scope="props">
+                  <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
+                    {{ props.actor.title }}
+                  </router-link>
+                </div>
+              </actor-actors>
+            </entry-detail-property>
+
+            <entry-detail-property v-if="entry.type === 'orgas'" name="Partner">
+              <actor-actors :owner="entry" relationName="partners" title="Partner">
+                <div slot="actor" slot-scope="props">
+                  <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
+                    {{ props.actor.title }}
+                  </router-link>
+                </div>
+              </actor-actors>
+            </entry-detail-property>
+
+            <entry-detail-property
+              :name="$t('entries.description')"
+              :iconName="'more_horiz'"
+              :isMultiline="true">
+              <div v-if="entry.short_description">{{entry.short_description}}</div>
+            </entry-detail-property>
+
+            <entry-detail-property
+              :name="$t('entries.support_wanted')"
+              :iconName="'pan_tool'"
+              v-if="entry.support_wanted">
+                <template v-if="entry.support_wanted_detail">
+                  {{entry.support_wanted_detail}}
+                </template>
+                <template v-else>
+                  {{$t('entries.support_wanted_yes')}}
+                </template>
+            </entry-detail-property>
+
+            <entry-detail-property
+              :name="$t('entries.certified_sfr')"
+              :iconName="'check_circle'"
+              v-if="entry.certified_sfr">
+                {{$t('entries.certified_sfr_yes')}}
+            </entry-detail-property>
+
+            <entry-detail-property
+              v-if="entry.tags"
+              :name="$tc('entries.tags', entry.tags.split(',').length)"
+              :iconName="'more_vert'">
+                <ul>
+                  <li v-for="tag in entry.tags.split(',')" :key="tag" class="singleTag">
+                    {{tag}}
+                  </li>
+                </ul>
+            </entry-detail-property>
+
+            <entry-detail-property
+              name="Facebook ID für Events"
+              iconName="share"
+              v-if="entry.type === 'orgas'">
+              {{ entry.facebook_id || 'Keine ID angegeben'}}
+            </entry-detail-property>
+
+            <entry-detail-property
+              :name="$tc('headlines.annotations', entry.annotations.length)"
+              :iconName="'label_outline'"
+              v-if="entry.annotations.length">
+              <div>
+                <annotation-tag v-for="annotation in entry.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
+              </div>
+            </entry-detail-property>
+
             </div>
+            <contact-list :item="entry" class="generalTab__splitViewChild"/>
+            <entry-detail-footer :entry="entry"/>
+        </section>
 
-            <actor-selector title="Netzwerkmitglieder ändern" :actor="entry" relationName="network_members" @saved="actorRelationSaved" />
-          </section>
+        <section slot="resourceTab" v-if="entry.type === 'orgas' && entry.resource_items.length">
+          <resource-item v-for="resourceItem in entry.resource_items" :key="resourceItem.id" :resourceItem="resourceItem"
+          :editEnabled="false"></resource-item>
+        </section>
 
-          <section slot="projectsTab" v-if="entry.type === 'orgas'">
-            <actor-selector title="Projekte ändern" :actor="entry" relationName="projects" @saved="actorRelationSaved" />
+        <section slot="networkMembersTab" v-if="entry.type === 'orgas'">
+          <actor-selector title="Netzwerkmitglieder ändern" :actor="entry" relationName="network_members" @saved="actorRelationSaved" />
 
-            <entry-list-items
-              :items="entry.projects"
-              v-if="entry.projects.length">
-            </entry-list-items>
-            <div v-else class="entryDetail__error">
-              Keine Projekte zugeordnet
-            </div>
+          <entry-list-items
+            :items="entry.network_members"
+            v-if="entry.network_members.length">
+          </entry-list-items>
+          <div v-else class="entryDetail__error">
+            Keine Mitglieder zugeordnet
+          </div>
 
-            <actor-selector title="Projekte ändern" :actor="entry" relationName="projects" @saved="actorRelationSaved" />
-          </section>
+          <actor-selector title="Netzwerkmitglieder ändern" :actor="entry" relationName="network_members" @saved="actorRelationSaved" />
+        </section>
 
-          <section slot="eventsTab" v-if="entry.type === 'orgas'">
-            <h5>{{ $t('headlines.upcomingEvents') }}</h5>
+        <section slot="projectsTab" v-if="entry.type === 'orgas'">
+          <actor-selector title="Projekte ändern" :actor="entry" relationName="projects" @saved="actorRelationSaved" />
 
-            <entry-list-items
-              :items="entry.upcoming_events"
-              v-if="entry.upcoming_events.length"
-              :sort-function="sortByDateMixin"
-              sort-order="ASC"
-              :options="{event_date: true}">
-            </entry-list-items>
+          <entry-list-items
+            :items="entry.projects"
+            v-if="entry.projects.length">
+          </entry-list-items>
+          <div v-else class="entryDetail__error">
+            Keine Projekte zugeordnet
+          </div>
 
-            <h5>{{ $t('headlines.pastEvents') }}</h5>
+          <actor-selector title="Projekte ändern" :actor="entry" relationName="projects" @saved="actorRelationSaved" />
+        </section>
 
-            <entry-list-items
-              :items="entry.past_events"
-              v-if="entry.past_events.length"
-              :sort-function="sortByDateStart"
-              sort-order="DESC"
-              :options="{event_date: true}">
-            </entry-list-items>
-          </section>
-        </tab-bar>
-      </div>
-      <entry-loading-message v-else :error="entryLoadingError" :messages="messages" />
+        <section slot="eventsTab" v-if="entry.type === 'orgas'">
+          <h5>{{ $t('headlines.upcomingEvents') }}</h5>
+
+          <entry-list-items
+            :items="entry.upcoming_events"
+            v-if="entry.upcoming_events.length"
+            :sort-function="sortByDateMixin"
+            sort-order="ASC"
+            :options="{event_date: true}">
+          </entry-list-items>
+
+          <h5>{{ $t('headlines.pastEvents') }}</h5>
+
+          <entry-list-items
+            :items="entry.past_events"
+            v-if="entry.past_events.length"
+            :sort-function="sortByDateStart"
+            sort-order="DESC"
+            :options="{event_date: true}">
+          </entry-list-items>
+        </section>
+      </tab-bar>
     </div>
-  </div>
+
+    <div slot="content" v-else>
+      <entry-loading-message2 :error="entryLoadingError" :messages="messages" />
+    </div>
+
+  </afeefa-page>
 </template>
 
 <script>
@@ -225,7 +216,7 @@ import User from '@/models/User'
 import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 
-import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
+import EntryLoadingMessage2 from '@/components/entry/EntryLoadingMessage2'
 import EntryListItems from '@/components/entry/EntryListItems'
 import EntryIcon from '@/components/entry/EntryIcon'
 import EntryFacetItems from '@/components/entry/EntryFacetItems'
@@ -239,7 +230,6 @@ import ResourceItem from '@/components/ResourceItem'
 import EntryDetailProperty from './EntryDetailProperty'
 import EntryTextAttribute from './EntryTextAttribute'
 
-import EntryDetailHeader from './EntryDetailHeader'
 import EntryDetailFooter from './EntryDetailFooter'
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 
@@ -302,7 +292,7 @@ export default {
   },
 
   components: {
-    EntryLoadingMessage,
+    EntryLoadingMessage2,
     EntryIcon,
     EntryListItems,
     ImageContainer,
@@ -313,7 +303,6 @@ export default {
     ContactList,
     ResourceItem,
     EntryFacetItems,
-    EntryDetailHeader,
     EntryDetailFooter,
     EventHosts,
     ActorActors,

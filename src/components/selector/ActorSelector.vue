@@ -36,10 +36,10 @@
         </div>
       </div>
       <div class="footer">
-        <button class="btn btn-medium gray waves-effect waves-light" @click="hideModal">
+        <button type="button" class="btn btn-medium gray waves-effect waves-light" @click="hideModal">
           Abbrechen
         </button>
-        <button class="btn btn-medium green waves-effect waves-light" @click="save">
+        <button type="button" class="btn btn-medium green waves-effect waves-light" @click="save">
           Speichern
         </button>
       </div>
@@ -126,9 +126,14 @@ export default {
 
     save () {
       this.hideModal()
-      this.saveSelectedActors().then(() => {
-        this.$emit('saved')
-      })
+
+      if (this.actor.id) {
+        this.saveSelectedActors().then(() => {
+          this.$emit('saved', this.selectedActors)
+        })
+      } else {
+        this.$emit('saved', this.selectedActors)
+      }
     },
 
     saveSelectedActors () {
@@ -194,9 +199,8 @@ export default {
   align-items: center;
   line-height: 1.4em;
 
-  .entryTypeIcon {
-    width: 12px;
-    height: 12px;
+  .entryIcon /deep/ i {
+    font-size: 1.1em;
     margin-right: 8px;
   }
 }

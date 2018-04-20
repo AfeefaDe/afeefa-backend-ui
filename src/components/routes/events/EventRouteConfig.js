@@ -41,4 +41,8 @@ export default class Config extends RouteConfig {
       }
     }
   }
+
+  entryOwners (entry) {
+    return entry.hosts
+  }
 }

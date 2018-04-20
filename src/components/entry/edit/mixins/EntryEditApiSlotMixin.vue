@@ -14,9 +14,7 @@ export default {
 
       item: null,
       imageError: false,
-      currentUser: null,
-      orgas: null,
-      facets: null
+      currentUser: null
     }
   },
 
@@ -34,12 +32,6 @@ export default {
     },
     'editEntry.currentUser' (currentUser) {
       this.currentUser = currentUser
-    },
-    'editEntry.orgas' (orgas) {
-      this.orgas = orgas
-    },
-    'editEntry.facets' (facets) {
-      this.facets = facets
     }
   }
 }

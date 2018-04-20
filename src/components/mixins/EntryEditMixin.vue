@@ -1,19 +1,13 @@
 <script>
-/**
- * The mixin provides all necessary functions to load,
- * validate and save entries.
- */
-import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 import User from '@/models/User'
 
 export default {
-  mixins: [RouteConfigAwareMixin],
-
   data () {
     return {
       item: null,
+      routeConfig: null,
       currentUser: null,
-      hasItemLoadingError: false
+      loadingError: false
     }
   },
 
@@ -21,9 +15,9 @@ export default {
     if (this.id) {
       this.Model.Query.with().get(this.id).then(entry => {
         if (entry) {
-          this.item = entry.cloneWith('annotations', 'resource_items')
+          this.item = this.cloneEntry(entry)
         } else {
-          this.hasItemLoadingError = true
+          this.loadingError = true
         }
       })
     } else {
@@ -33,7 +27,26 @@ export default {
     this.currentUser = User.Query.getCurrentUser()
   },
 
+  computed: {
+    Model () {
+      return this.routeConfig.Model
+    },
+
+    routeName () {
+      return this.routeConfig.routeName
+    },
+
+    messages () {
+      return this.routeConfig.messages
+    }
+  },
+
   methods: {
+    cloneEntry (entry) {
+      // override to add relations to clone additionally
+      return entry.clone()
+    },
+
     /*
      * called by the BeforeRouteLeaveMixin
      * to raise a alert in case of unsaved changes
@@ -53,6 +66,7 @@ export default {
       this.$validator.setLocale(this.$i18n.locale)
 
       this.$validator.validateAll().then(result => {
+        console.log(this.$validator)
         let validationErrors = []
         if (!result) {
           validationErrors = this.$validator.errors.items

@@ -10,11 +10,17 @@ export default {
     Model () {
       return this.routeConfig.Model
     },
+
     routeName () {
       return this.routeConfig.routeName
     },
+
     messages () {
       return this.routeConfig.messages
+    },
+
+    entryOwners () {
+      return this.routeConfig.entryOwners
     }
   }
 }

@@ -1,51 +1,54 @@
 <template>
-  <div class="row">
-    <div class="col s12 m12">
-      <div class="mainCard">
-        <div class="mainCard__header">
-          <h2 class="mainCard__headerTitle">Kategorien</h2>
-        </div>
+  <afeefa-page>
 
-        <div v-if="!facetsLoaded" class="loadingInfo">
-          <spinner :show="true" :width="1" :radius="5" :length="3" /> {{ $t('status.load_categories') }}
-        </div>
+    <afeefa-header slot="header">
+      <div slot="title">
+        {{ $tc('headlines.categories', 2) }}
+      </div>
+    </afeefa-header>
 
-        <div v-else>
-          <div v-for="facet in facets" :key="facet.id" class="facet">
-            <div>
+    <div slot="content" v-if="facetsLoaded">
+      <div v-for="facet in facets" :key="facet.id" class="facet">
+        <div>
 
-              <div class="facetAttributes">
-                <div class="facetAttributesView">
-                  <div :style="{'background-color': facet.color}" class="colorIcon"></div>
-                  <router-link :to="{name: 'facets.show', params: {id: facet.id}}" class="title">
-                    <h4>{{ facet.title }}</h4>
-                  </router-link>
-                </div>
-              </div>
-
-              <div class="ownerTypes">
-                für: <span v-for="type in facet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
-              </div>
-              <div>
-                {{ countItems(facet) }} Kategorien {{ countOwners(facet) }} Einträge zugeordnet
-              </div>
+          <div class="facetAttributes">
+            <div class="facetAttributesView">
+              <div :style="{'background-color': facet.color}" class="colorIcon"></div>
+              <router-link :to="{name: 'facets.show', params: {id: facet.id}}" class="title">
+                <h4>{{ facet.title }}</h4>
+              </router-link>
             </div>
+          </div>
+
+          <div class="ownerTypes">
+            für: <span v-for="type in facet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
+          </div>
+          <div>
+            {{ countItems(facet) }} Kategorien {{ countOwners(facet) }} Einträge zugeordnet
           </div>
         </div>
       </div>
     </div>
-  </div>
+
+    <div slot="content" v-else>
+      <entry-loading-message2 :messages="messages" />
+    </div>
+
+  </afeefa-page>
 </template>
 
 <script>
 import Facet from '@/models/Facet'
-import Spinner from '@/components/Spinner'
+import EntryLoadingMessage2 from '@/components/entry/EntryLoadingMessage2'
 
 export default {
   data () {
     return {
       facets: [],
-      facetsLoaded: false
+      facetsLoaded: false,
+      messages: {
+        loadingItem: () => this.$t('status.load_categories')
+      }
     }
   },
 
@@ -73,16 +76,12 @@ export default {
   },
 
   components: {
-    Spinner
+    EntryLoadingMessage2
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.loadingInfo {
-  margin-top: .8em;
-}
-
 .facet {
   padding: 1em 0;
 

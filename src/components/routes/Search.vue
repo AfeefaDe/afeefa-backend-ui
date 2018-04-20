@@ -1,18 +1,16 @@
 <template>
   <div class="search-container">
     <div class="search-field row">
-      <div class="col s12 m12">
-        <div class="mainCard">
-          <div class="mainCard__header">
-            <h2 class="mainCard__headerTitle"> {{$t('headlines.search')}} </h2>
-          </div>
-          <div>
-            <search-items
-              :modifyRoute="true">
-            </search-items>
-          </div>
-        </div>
-      </div>
+      <afeefa-page>
+
+        <afeefa-header slot="header">
+          <div slot="title">{{ $t('headlines.search') }}</div>
+        </afeefa-header>
+
+        <search-items slot="content"
+          :modifyRoute="true">
+        </search-items>
+      </afeefa-page>
     </div>
   </div>
 </template>

@@ -1,64 +1,63 @@
 <template>
-  <div class="row" v-if="user">
-    <div class="col s12 m12">
-      <div class="mainCard">
-        <div class="mainCard__header">
-          <h2 class="mainCard__headerTitle">{{ user.name }}</h2>
-        </div>
-        <div>
-          <form @submit.prevent="save" class="entryForm" novalidate>
+  <afeefa-page>
 
-            <input-field
-              field-name="first_name"
-              v-model="user.first_name"
-              validate="required|max:20"
-              :label="$t('usersettings.first_name')">
-            </input-field>
+    <afeefa-header slot="header">
+      <div slot="title">{{ user.name }}</div>
+    </afeefa-header>
 
-            <input-field
-              field-name="last_name"
-              v-model="user.last_name"
-              validate="required|max:20"
-              :label="$t('usersettings.last_name')">
-            </input-field>
+    <div slot="content" v-if="user">
+      <form @submit.prevent="save" class="entryForm" novalidate>
 
-            <input-field
-              field-name="organization"
-              v-model="user.organization"
-              validate="required|max:20"
-              :label="$t('usersettings.organization')">
-            </input-field>
+        <input-field
+          field-name="first_name"
+          v-model="user.first_name"
+          validate="required|max:20"
+          :label="$t('usersettings.first_name')">
+        </input-field>
 
-            <h2>Passwort ändern (optional)</h2>
+        <input-field
+          field-name="last_name"
+          v-model="user.last_name"
+          validate="required|max:20"
+          :label="$t('usersettings.last_name')">
+        </input-field>
 
-            Um das Passwort zu ändern, bitte beide Felder ausfüllen. Andernfalls einfach leer lassen.
+        <input-field
+          field-name="organization"
+          v-model="user.organization"
+          validate="required|max:20"
+          :label="$t('usersettings.organization')">
+        </input-field>
 
-            <input-field
-              field-name="password"
-              type="password"
-              v-model="user.password"
-              validate="min:8|max:40"
-              label="Neues Passwort">
-            </input-field>
+        <h2>Passwort ändern (optional)</h2>
 
-            <input-field
-              field-name="password_confirm"
-              type="password"
-              v-model="passwordConfirm"
-              validate="password-confirm:#password"
-              label="Passwortbestätigung">
-            </input-field>
+        Um das Passwort zu ändern, bitte beide Felder ausfüllen. Andernfalls einfach leer lassen.
 
-            <entry-edit-footer
-              :item="user"
-              :hasCancel="false"
-              :hasRemove="false"
-              @save="save" />
-          </form>
-        </div>
-      </div>
+        <input-field
+          field-name="password"
+          type="password"
+          v-model="user.password"
+          validate="min:8|max:40"
+          label="Neues Passwort">
+        </input-field>
+
+        <input-field
+          field-name="password_confirm"
+          type="password"
+          v-model="passwordConfirm"
+          validate="password-confirm:#password"
+          label="Passwortbestätigung">
+        </input-field>
+
+        <entry-edit-footer
+          :item="user"
+          :hasCancel="false"
+          :hasRemove="false"
+          @save="save" />
+      </form>
     </div>
-  </div>
+
+  </afeefa-page>
 </template>
 
 

@@ -11,6 +11,7 @@
 <script>
 import EntryShowMixin from '@/components/mixins/EntryShowMixin'
 import OrgaRouteConfig from './OrgaRouteConfig'
+import EntryDetail from '@/components/entry/show/EntryDetail'
 
 export default {
   mixins: [EntryShowMixin],
@@ -19,6 +20,10 @@ export default {
     return {
       routeConfig: new OrgaRouteConfig(this, this.id)
     }
+  },
+
+  components: {
+    EntryDetail
   }
 }
 </script>

@@ -1,36 +1,47 @@
 <template>
-  <entry-list
-    :items="items"
-    addEntryButton="offers.new"
-    :options="{filter: true, pagination: true, hideTypeIcon: true}"
-    :messages="messages">
-  </entry-list>
+  <afeefa-page>
+
+    <afeefa-header slot="header">
+      <div slot="title">
+        Alle {{ $tc('offers.offer', 2) }} ({{ offers && offers.length || 0 }})
+      </div>
+
+      <div slot="buttons" v-if="offers">
+        <router-link :to="{name: 'offers.new'}" class="btn btn-medium green">
+          <i class="material-icons left">add</i>
+          {{$t('buttons.add')}}
+        </router-link>
+      </div>
+    </afeefa-header>
+
+    <div slot="content">
+      <entry-list-items
+        :items="offers"
+        :options="{filter: true, pagination: true, hideTypeIcon: false}" />
+    </div>
+  </afeefa-page>
 </template>
 
 
 <script>
-import EntryListMixin from '@/components/mixins/EntryListMixin'
+import EntryListItems from '@/components/entry/EntryListItems'
 import Offer from '@/models/Offer'
 
 export default {
-  mixins: [EntryListMixin],
-
   data () {
     return {
-      Query: Offer.Query,
-      messages: {
-        headline: () => {
-          return this.$tc('offers.offer', 2)
-        }
-      }
+      offers: null
     }
   },
 
-  watch: {
-    '$route.name': function () {
-      this.items = null
-      this.loadItems()
-    }
+  created () {
+    Offer.Query.getAll().then(offers => {
+      this.offers = offers
+    })
+  },
+
+  components: {
+    EntryListItems
   }
 }
 </script>

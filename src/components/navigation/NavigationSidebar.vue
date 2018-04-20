@@ -1,9 +1,13 @@
 <template>
   <div class="navigationSidebar mainCard">
-    <div class="mainCard__header">
-      <navigation-breadcrumb :translate-title="translateTitle"></navigation-breadcrumb>
+    <div class="logoContainer">
+      <img class="logo" src="../../assets/images/afeefa_light_withoutLink.svg" alt="Afeefa Logo with white background">
     </div>
-    <div>
+
+    <div class="mainCard__header" v-if="false">
+      Afeefa Backend
+    </div>
+    <div class="">
       <ul class="navigationSidebar__navContainer">
         <li :class="['navigationSidebar__navItem', 'level' + item.level]" v-for="item in items" :key="item.id" v-if="showSideBarItem(item)">
           <router-link :to="{name: item.route, params: item.params}" :exact="item.route==='dashboard'"> {{ translateTitle(item) }}</router-link>
@@ -67,12 +71,25 @@ export default {
 
 <style lang="scss" scoped>
 .navigationSidebar {
+  .logoContainer {
+    height: $header_height;
+    padding: 1.5em;
+    .logo {
+      height: 80%;
+    }
+  }
   &__navContainer {
     margin: 0;
   }
   &__navItem {
     padding: 0.8em 0 0.5em 0;
     border-bottom: 1px solid $gray20;
+    &:first-child {
+      padding-top: 0;
+    }
+    &:last-child {
+      border: none;
+    }
   }
   &__navItem.level2 {
     margin-left: 1.5em;
