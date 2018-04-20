@@ -84,7 +84,6 @@ export default {
   data () {
     return {
       currentTab: null,
-      parentOrgas: [],
       routeConfig: new EventRouteConfig(this, this.id)
     }
   },
