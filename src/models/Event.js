@@ -1,5 +1,6 @@
 import Orga from '@/models/Orga'
 import EventsResource from '@/resources/Events'
+import EventHostsResource from '@/resources/relations/EventHosts'
 import moment from 'moment'
 import DataTypes from 'uidata/model/DataTypes'
 import Registry from 'uidata/model/Registry'
@@ -33,10 +34,10 @@ class Event extends Entry {
 
   static relations () {
     return {
-      parent_orga: {
-        type: Relation.HAS_ONE,
+      hosts: {
+        type: Relation.HAS_MANY,
         Model: Orga,
-        remoteName: 'orga'
+        Resource: EventHostsResource
       }
     }
   }
@@ -64,10 +65,6 @@ class Event extends Entry {
       date_end: dateEnd,
       has_time_end: this.has_time_end
     }
-
-    data.relationships.orga = this.parent_orga
-      ? { data: {id: this.parent_orga.id, type: 'orgas'} }
-      : null
 
     return data
   }

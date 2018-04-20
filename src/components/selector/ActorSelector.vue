@@ -79,15 +79,6 @@ export default {
     }
   },
 
-  created () {
-    this.isLoading = true
-    Orga.Query.getAll().then(actors => {
-      this.actors = sortByTitle(actors)
-      this.initSelectableActors()
-      this.isLoading = false
-    })
-  },
-
   methods: {
     initSelectableActors () {
       this.selectableActors = this.actors.filter(a => !this.selectedActors.includes(a))
@@ -101,9 +92,17 @@ export default {
     },
 
     showModal () {
-      this.initSelectedActors()
-      this.initSelectableActors()
       this.$refs.modal.show()
+
+      this.initSelectedActors()
+
+      this.isLoading = true
+      Orga.Query.getAll().then(actors => {
+        this.actors = sortByTitle(actors)
+        this.initSelectedActors()
+        this.initSelectableActors()
+        this.isLoading = false
+      })
     },
 
     hideModal () {
@@ -127,13 +126,17 @@ export default {
 
     save () {
       this.hideModal()
+      this.saveSelectedActors().then(() => {
+        this.$emit('saved')
+      })
+    },
 
-      this.actor.actor_relations.$rels[this.relationName].Query.attachMany(this.selectedActors).then(result => {
+    saveSelectedActors () {
+      return this.actor.actor_relations.$rels[this.relationName].Query.attachMany(this.selectedActors).then(result => {
         if (result) {
           this.$store.dispatch('messages/showAlert', {
             description: 'Die Netzwerke wurden gespeichert.'
           })
-          this.$emit('saved')
         }
       })
     }

@@ -28,8 +28,6 @@
 
       <title-input :item="item"/>
 
-      <category-selector :item="item" />
-
       <description-form :item="item" :options="{description: false}" />
     </div>
 
@@ -46,7 +44,6 @@ import OrgaType from '@/models/OrgaType'
 import EntryEdit from '@/components/entry/edit/EntryEdit'
 import TitleInput from '@/components/entry/edit/TitleInput'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
-import CategorySelector from '@/components/entry/edit/CategorySelector'
 
 export default {
   mixins: [BeforeRouteLeaveMixin, EntryEditApiSlotMixin],
@@ -66,8 +63,7 @@ export default {
   components: {
     EntryEdit,
     TitleInput,
-    DescriptionForm,
-    CategorySelector
+    DescriptionForm
   }
 }
 </script>

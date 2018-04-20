@@ -57,15 +57,21 @@
             <span class="icon"><i v-if="!showIcon && false" class="material-icons">navigate_next</i></span>
           </router-link>
 
-          <div v-if="item.parent_orga" class="entryList__parentLink">
-            <router-link :to="{name: item.parent_orga.type + '.show', params: {id: item.parent_orga.id}}">
-              <u>{{ item.parent_orga.title }}</u>
+          <div v-if="item.type === 'orgas'" class="entryList__parentLink">
+            <router-link :to="{name: 'orgas.show', params: {id: actor.id}}" v-for="actor in item.project_initiators" :key="actor.id">
+              <u>{{ actor.title }}</u>  {{ actor.created_at }}
             </router-link>
           </div>
 
           <div v-if="item.type === 'offers'" class="entryList__parentLink">
-            <router-link :to="{name: 'orgas.show', params: {id: actor.id}}" v-for="actor in item.actors" :key="actor.id">
-              <u>{{ actor.title }}</u>
+            <router-link :to="{name: 'orgas.show', params: {id: actor.id}}" v-for="actor in item.owners" :key="actor.id">
+              <u>{{ actor.title }}</u>  {{ actor.created_at }}
+            </router-link>
+          </div>
+
+          <div v-if="item.type === 'events'" class="entryList__parentLink">
+            <router-link :to="{name: 'orgas.show', params: {id: actor.id}}" v-for="actor in item.hosts" :key="actor.id">
+              <u>{{ actor.title }}</u>  {{ actor.created_at }}
             </router-link>
           </div>
 
@@ -219,12 +225,6 @@ export default {
         query.page = config.page === 1 ? undefined : config.page
         query.pageSize = config.pageSize === 15 ? undefined : config.pageSize
         this.$router.push({query: query})
-      }
-    },
-
-    categoryClass (item) {
-      if (item.category && item.category.title) {
-        return 'cat-' + item.category.title
       }
     },
 

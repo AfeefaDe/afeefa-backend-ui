@@ -1,5 +1,5 @@
 <template>
-  <div :class="['mainCard__header', 'mainCard__headerCategories', categoryClass]">
+  <div class="mainCard__header">
     <a href="" @click.prevent="goBack"><i class="material-icons goBack">chevron_left</i></a>
 
     <div class="mainCard__headerTitle">
@@ -89,12 +89,6 @@ export default {
         return `${this.frontendURL}/project/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
       } else if (this.entry.type === 'events') {
         return `${this.frontendURL}/event/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
-      }
-    },
-
-    categoryClass () {
-      if (this.entry.category && this.entry.category.title) {
-        return 'cat-' + this.entry.category.title
       }
     }
   }

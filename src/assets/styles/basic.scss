@@ -94,9 +94,6 @@ $sidebarWidth: 350px;
 		}
   }
   /* output background color depending on category */
-  &__headerCategories {
-    @include categoryColors($alpha_background: 1, $alpha_border: 0);
-  }
   &__headerTitle {
     display: inline-block;
     flex-grow: 2;
@@ -175,9 +172,6 @@ $sidebarWidth: 350px;
   border-radius: 2px;
   &--events {
     transform: rotate(45deg) scale(0.9);
-  }
-  &--categoryColors {
-    @include categoryColors($alpha_background: 1, $alpha_border: 1);
   }
   &--inactive {
     /* important is neccesary cause the inactive information is way more important than the category cclor */

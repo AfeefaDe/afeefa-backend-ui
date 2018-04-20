@@ -52,61 +52,50 @@
                   <span>({{entry.date_start | formatDateRelative}})</span>
               </entry-detail-property>
 
-              <entry-detail-property v-if="entry.type === 'orgas'" name="Projektträger" :iconName="'device_hub'">
-                <div v-for="projectInitiator in entry.project_initiators" :key="projectInitiator.id">
-                  <router-link :to="{name: projectInitiator.type + '.show', params: {id: projectInitiator.id}}">
-                    {{ projectInitiator.title }}
+              <entry-detail-property name="Veranstalter" :iconName="'device_hub'" v-if="entry.type==='events'">
+                <event-hosts :owner="entry" relationName="hosts" title="Veranstalter">
+                  <div slot="actor" slot-scope="props">
+                    <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
+                      {{ props.actor.title }}
                   </router-link>
                 </div>
-                <div v-if="!entry.project_initiators.length" class="entryDetail__error">Kein Projektträger angegeben</div>
+                </event-hosts>
+              </entry-detail-property>
 
-                <actor-selector title="Projektträger ändern" :actor="entry" relationName="project_initiators" @saved="actorRelationSaved" />
+              <entry-detail-property v-if="entry.type === 'orgas'" name="Projektträger" :iconName="'device_hub'">
+                <actor-actors :owner="entry" relationName="project_initiators" title="Projektträger">
+                  <div slot="actor" slot-scope="props">
+                    <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
+                      {{ props.actor.title }}
+                    </router-link>
+                  </div>
+                </actor-actors>
               </entry-detail-property>
 
               <entry-detail-property v-if="entry.type === 'orgas'" name="Netzwerke">
-                <div v-for="network in entry.networks" :key="network.id">
-                  <router-link :to="{name: network.type + '.show', params: {id: network.id}}">
-                    {{ network.title }}
+                <actor-actors :owner="entry" relationName="networks" title="Netzwerke">
+                  <div slot="actor" slot-scope="props">
+                    <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
+                      {{ props.actor.title }}
                   </router-link>
                 </div>
-                <div v-if="!entry.networks.length" class="entryDetail__error">In keinem Netzwerk Mitglied</div>
-
-                <actor-selector title="Netzwerke ändern" :actor="entry" relationName="networks" @saved="actorRelationSaved" />
+                </actor-actors>
               </entry-detail-property>
 
               <entry-detail-property v-if="entry.type === 'orgas'" name="Partner">
-                <div v-for="partner in entry.partners" :key="partner.id">
-                  <router-link :to="{name: partner.type + '.show', params: {id: partner.id}}">
-                    {{ partner.title }}
+                <actor-actors :owner="entry" relationName="partners" title="Partner">
+                  <div slot="actor" slot-scope="props">
+                    <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
+                      {{ props.actor.title }}
                   </router-link>
                 </div>
-                <div v-if="!entry.partners.length" class="entryDetail__error">Keine Partner angegeben</div>
-
-                <actor-selector title="Partner ändern" :actor="entry" relationName="partners" @saved="actorRelationSaved" />
-              </entry-detail-property>
-
-              <ul v-if="entry.type === 'events'">
-                <entry-detail-property :name="$t('headlines.organizer')" :iconName="'device_hub'">
-                  <entry-list-items
-                    :items="[entry.parent_orga]"
-                    v-if="entry.parent_orga"
-                    showIcon="false">
-                  </entry-list-items>
-                  <div v-if="!entry.parent_orga" class="entryDetail__error">Kein Veranstalter angegeben</div>
+                </actor-actors>
                 </entry-detail-property>
-              </ul>
-
-              <entry-detail-property :name="$t('entries.category')" :iconName="'bookmark_border'" v-if="false">
-                {{ entry.category ? $t('categories.' + entry.category.title) : 'Keine Kategorie angegeben' }}
-                <span v-if="entry.sub_category">> {{ $t('categories.' + entry.sub_category.title) }}</span>
-              </entry-detail-property>
 
               <entry-detail-property
-                v-if="showShortDescription"
                 :name="$t('entries.description')"
                 :iconName="'more_horiz'"
                 :isMultiline="true">
-                <div class="inheritedValue" v-if="entry.inheritance.short_description && entry.parent_orga">{{entry.parent_orga.short_description}}</div>
                 <div v-if="entry.short_description">{{entry.short_description}}</div>
               </entry-detail-property>
 
@@ -254,7 +243,9 @@ import EntryDetailHeader from './EntryDetailHeader'
 import EntryDetailFooter from './EntryDetailFooter'
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 
-import ActorSelector from '@/components/entry/edit/actor-relations/ActorSelector'
+import EventHosts from './relations/EventHosts'
+import ActorActors from './relations/ActorActors'
+import ActorSelector from '@/components/selector/ActorSelector'
 
 export default {
   mixins: [RouteConfigAwareMixin],
@@ -293,18 +284,6 @@ export default {
   },
 
   computed: {
-    showShortDescription () {
-      return this.entry.short_description ||
-        (this.entry.inheritance.short_description &&
-        this.entry.parent_orga &&
-        this.entry.parent_orga.short_description)
-    },
-
-    categoryClass () {
-      if (this.entry.category && this.entry.category.title) {
-        return 'cat-' + this.entry.category.title
-      }
-    },
     /*
      * define tabNames according to the entry type and the area of the current user
      */
@@ -336,6 +315,8 @@ export default {
     EntryFacetItems,
     EntryDetailHeader,
     EntryDetailFooter,
+    EventHosts,
+    ActorActors,
     ActorSelector
   }
 }

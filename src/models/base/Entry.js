@@ -1,5 +1,4 @@
 import Annotation from '@/models/Annotation'
-import Category from '@/models/Category'
 import Contact from '@/models/Contact'
 import FacetItem from '@/models/FacetItem'
 import User from '@/models/User'
@@ -30,20 +29,6 @@ export default class Entry extends Model {
 
       facebook_id: DataTypes.String,
 
-      inheritance: {
-        type: DataTypes.Custom,
-        default: {},
-        value (value) {
-          const inheritance = {}
-          if (value) {
-            value.split('|').forEach(key => {
-              inheritance[key] = true
-            })
-          }
-          return inheritance
-        }
-      },
-
       active: DataTypes.Boolean,
 
       created_at: DataTypes.Date,
@@ -56,16 +41,6 @@ export default class Entry extends Model {
 
   static relations () {
     return {
-      category: {
-        type: Relation.HAS_ONE,
-        Model: Category
-      },
-
-      sub_category: {
-        type: Relation.HAS_ONE,
-        Model: Category
-      },
-
       contacts: {
         type: Relation.HAS_MANY,
         Model: Contact,
@@ -107,10 +82,6 @@ export default class Entry extends Model {
       annotations.push(annotation.serialize())
     }
 
-    const inheritance = Object.keys(this.inheritance).filter(key => {
-      return this.inheritance[key] === true
-    }).join('|') || null
-
     const data = {
       type: this.type,
       attributes: {
@@ -122,16 +93,9 @@ export default class Entry extends Model {
         support_wanted: this.support_wanted,
         support_wanted_detail: this.support_wanted_detail,
         certified_sfr: this.certified_sfr,
-        tags: this.tags,
-        inheritance: inheritance
+        tags: this.tags
       },
       relationships: {
-        category: this.category
-          ? { data: this.category.serialize() }
-          : null,
-        sub_category: this.sub_category
-          ? { data: this.sub_category.serialize() }
-          : null,
         annotations: {
           data: annotations
         }

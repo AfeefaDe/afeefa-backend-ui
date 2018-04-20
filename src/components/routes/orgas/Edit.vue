@@ -10,9 +10,6 @@
         @setCurrentTab="setCurrentTab">
 
         <section slot="generalTab">
-          <h2>Kategorien</h2>
-          <category-selector :item="item" />
-
           <h2>Titel und Beschreibung</h2>
           <title-input :item="item" />
           <description-form :item="item" />
@@ -50,15 +47,11 @@ import EntryEditApiSlotMixin from '@/components/entry/edit/mixins/EntryEditApiSl
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import OrgaRouteConfig from './OrgaRouteConfig'
 
-import Orga from '@/models/Orga'
-import OrgaType from '@/models/OrgaType'
-
 import TabBar from '@/components/TabBar'
 import PowerSelector from '@/components/PowerSelector'
 import InputField from '@/components/InputField'
 
 import EntryEdit from '@/components/entry/edit/EntryEdit'
-import CategorySelector from '@/components/entry/edit/CategorySelector'
 import AnnotationForm from '@/components/entry/edit/AnnotationForm'
 import ResourceForm from '@/components/entry/edit/ResourceForm'
 import TagSelector from '@/components/entry/edit/TagSelector'
@@ -80,10 +73,6 @@ export default {
   },
 
   computed: {
-    orgaTypes () {
-      return OrgaType.TYPES
-    },
-
     tabNames () {
       const tabNames = [
         'generalTab',
@@ -97,17 +86,6 @@ export default {
   },
 
   methods: {
-    projectInitiatorChanged () {
-      const parentOrga = this.item.project_initiators[0]
-      if (parentOrga) {
-        Orga.Query.get(parentOrga.id).then(orga => {
-          this.item.parent_orga = orga
-        })
-      } else {
-        this.item.parent_orga = null
-      }
-    },
-
     setCurrentTab (tab) {
       this.currentTab = tab
     }
@@ -121,7 +99,6 @@ export default {
     PowerSelector,
 
     TitleInput,
-    CategorySelector,
     AnnotationForm,
     ResourceForm,
     TagSelector,

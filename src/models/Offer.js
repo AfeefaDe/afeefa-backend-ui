@@ -1,3 +1,4 @@
+import OfferOwnersResource from '@/resources/relations/OfferOwners'
 import OwnerFacetItemsResource from '@/resources/relations/OwnerFacetItems'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
@@ -22,9 +23,10 @@ class Offer extends Model {
 
   static relations () {
     return {
-      actors: {
+      owners: {
         type: Relation.HAS_MANY,
-        Model: Orga
+        Model: Orga,
+        Resource: OfferOwnersResource
       },
 
       facet_items: {

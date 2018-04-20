@@ -58,8 +58,6 @@ $input-focus-color: $secondaryBlue;
 @import "~materialize/components/date_picker/default.date";
 @import "~materialize/components/date_picker/default.time";
 
-/* mixin: category colors */
-@import 'category-colors.scss';
 /* global styles and layouts */
 @import 'basic';
 /* font configuration */

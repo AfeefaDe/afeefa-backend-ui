@@ -7,8 +7,6 @@
     <div v-if="item">
       <title-input :item="item" />
 
-      <category-selector :item="item" />
-
       <date-picker
         :date-start="item.date_start"
         :date-end="item.date_end"
@@ -35,7 +33,6 @@ import EventRouteConfig from './EventRouteConfig'
 
 import EntryEdit from '@/components/entry/edit/EntryEdit'
 import TitleInput from '@/components/entry/edit/TitleInput'
-import CategorySelector from '@/components/entry/edit/CategorySelector'
 import DatePicker from '@/components/event/datepicker/DatePicker'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 
@@ -60,7 +57,6 @@ export default {
   components: {
     EntryEdit,
     TitleInput,
-    CategorySelector,
     DatePicker,
     DescriptionForm
   }

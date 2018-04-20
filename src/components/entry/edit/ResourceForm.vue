@@ -25,29 +25,6 @@ import ResourceItemModel from '@/models/ResourceItem'
 export default {
   props: ['item'],
 
-  data () {
-    return {
-      annotationCategories: [],
-      selectedAnnotation: null
-    }
-  },
-
-  created () {
-  },
-
-  computed: {
-    selectableAnnotations () {
-      return this.annotationCategories.filter(
-        (annotationCategory) => {
-          // only allow editor annotationCategories
-          if (!annotationCategory.generatedBySystem) {
-            return true
-          }
-        }
-      )
-    }
-  },
-
   methods: {
     addResourceItem () {
       let newResource = new ResourceItemModel()

@@ -32,7 +32,7 @@ export default {
     initItem (id) {
       this.loadingError = false
 
-      let relations = ['parent_orga']
+      let relations = []
       if (this.routeConfig.routeName === 'orgas') {
         relations = relations.concat(['past_events', 'upcoming_events'])
       }

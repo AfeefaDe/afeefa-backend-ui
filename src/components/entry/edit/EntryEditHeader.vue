@@ -1,5 +1,5 @@
 <template>
-  <div :class="['mainCard__header', 'mainCard__headerCategories', categoryClass]" v-if="item">
+  <div class="mainCard__header" v-if="item">
     <a href="" @click.prevent="goBack"><i class="material-icons goBack">chevron_left</i></a>
 
     <div class="mainCard__headerTitle">
@@ -27,12 +27,6 @@ export default {
   props: ['item'],
 
   computed: {
-    categoryClass () {
-      if (this.item.category && this.item.category.title) {
-        return 'cat-' + this.item.category.title
-      }
-    },
-
     defaultTitle () {
       return this.item.id
         ? 'Kein Titel'

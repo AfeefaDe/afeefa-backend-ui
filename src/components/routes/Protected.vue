@@ -20,7 +20,6 @@
 import NavigationSidebar from '@/components/navigation/NavigationSidebar'
 import NavigationMobile from '@/components/navigation/NavigationMobile'
 import Facet from '@/models/Facet'
-import Category from '@/models/Category'
 import AnnotationCategory from '@/models/AnnotationCategory'
 
 export default {
@@ -31,9 +30,8 @@ export default {
 
   created () {
     this.$store.dispatch('api/getMetaInformation')
-    // categories and annotations are used multiple times
+    // Facets and annotations are used multiple times
     Facet.Query.getAll()
-    Category.Query.getAll()
     AnnotationCategory.Query.getAll()
   }
 }

@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col s12 m12">
       <div class="mainCard">
-        <div v-bind:class="['mainCard__header', 'mainCard__headerCategories']" v-if="item">
+        <div class="mainCard__header" v-if="item">
           <div class="mainCard__headerTitle">
             <span class="mainCard__type">Kapitel</span>
             <h2 class="mainCard__headerTitle"> {{item.title || 'Kein Titel'}}</h2>

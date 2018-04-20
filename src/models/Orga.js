@@ -49,12 +49,6 @@ class Orga extends Entry {
 
   static relations () {
     return {
-      parent_orga: {
-        type: Relation.HAS_ONE,
-        Model: Orga,
-        remoteName: 'initiator'
-      },
-
       resource_items: {
         type: Relation.HAS_MANY,
         Model: ResourceItem
@@ -92,7 +86,6 @@ class Orga extends Entry {
       })
       this.count_projects = this.projects.length
       this.count_network_members = this.network_members.length
-      this.parent_orga = this.project_initiators[0] || null
     }
   }
 

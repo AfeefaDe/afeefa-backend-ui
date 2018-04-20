@@ -24,7 +24,7 @@ export default {
 
   created () {
     if (this.id) {
-      this.Model.Query.with('parent_orga').get(this.id).then(entry => {
+      this.Model.Query.with().get(this.id).then(entry => {
         if (entry) {
           this.item = entry.cloneWith('annotations', 'resource_items')
           // load orgas only for edit not for new
