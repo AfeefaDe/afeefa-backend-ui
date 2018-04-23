@@ -31,7 +31,7 @@
     </div>
 
     <div slot="content" v-else>
-      <entry-loading-message2 :messages="messages" />
+      <entry-loading-message :messages="messages" />
     </div>
 
   </afeefa-page>
@@ -39,7 +39,7 @@
 
 <script>
 import Facet from '@/models/Facet'
-import EntryLoadingMessage2 from '@/components/entry/EntryLoadingMessage2'
+import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 
 export default {
   data () {
@@ -76,7 +76,7 @@ export default {
   },
 
   components: {
-    EntryLoadingMessage2
+    EntryLoadingMessage
   }
 }
 </script>

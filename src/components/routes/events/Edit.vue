@@ -1,73 +1,84 @@
 <template>
-  <entry-edit
-    :id="id"
-    :routeConfig="routeConfig"
-    ref="form">
+  <entry-detail :component="this" :isEdit="true">
 
-      <tab-bar
-        v-if="item"
-        :tabNames="tabNames"
-        @setCurrentTab="setCurrentTab">
+    <div v-if="event">
+      <image-container v-show="!imageError"
+        :image-url="event.media_url"
+        @state="updateImageContainerState">
+      </image-container>
 
-        <section slot="generalTab">
-          <h2>Titel</h2>
+      <form @submit.prevent="save" class="entryForm" novalidate>
 
-          <title-input :item="item" />
+        <tab-bar
+          :tabNames="tabNames"
+          @setCurrentTab="setCurrentTab">
 
-          <h2>{{ $t("headlines.time") }}</h2>
+          <section slot="generalTab">
+            <h2>Titel</h2>
 
-          <date-picker
-            :date-start="item.date_start"
-            :date-end="item.date_end"
-            :has-time-start="item.has_time_start"
-            :has-time-end="item.has_time_end"
-            @input="updateDatePickerValues"
-            name="date" v-validate="'date-end-not-earlier-than-start|date-end-not-start'"
-            :class="['inputField__spacing', {'validation-error': errors.has('date') }]"
-            >
-          </date-picker>
-          <span v-show="errors.has('date')" class="validation-error">{{ errors.first('date') }}</span>
+            <title-input :item="event" />
 
-          <h2>{{ $t('headlines.organizer')}}</h2>
+            <h2>{{ $t("headlines.time") }}</h2>
 
-          <h2>Beschreibung</h2>
+            <date-picker
+              :date-start="event.date_start"
+              :date-end="event.date_end"
+              :has-time-start="event.has_time_start"
+              :has-time-end="event.has_time_end"
+              @input="updateDatePickerValues"
+              name="date" v-validate="'date-end-not-earlier-than-start|date-end-not-start'"
+              :class="['inputField__spacing', {'validation-error': errors.has('date') }]"
+              >
+            </date-picker>
+            <span v-show="errors.has('date')" class="validation-error">{{ errors.first('date') }}</span>
 
-          <description-form :item="item" />
+            <h2>{{ $t('headlines.organizer')}}</h2>
 
-          <h2>Bild</h2>
+            <h2>Beschreibung</h2>
 
-          <media-image-input :item="item" :image-error="imageError" />
+            <description-form :item="event" />
 
-          <h2>Tags</h2>
+            <h2>Bild</h2>
 
-          <tag-selector :item="item" v-if="currentUser && currentUser.area=='dresden'" />
+            <media-image-input :item="event" :image-error="imageError" />
 
-          <h2>Hilfe und Zertifikat</h2>
+            <h2>Tags</h2>
 
-          <help-wanted-form :item="item" />
-        </section>
+            <tag-selector :item="event" v-if="currentUser && currentUser.area=='dresden'" />
 
-        <section slot="annotationsTab">
-          <annotation-form :item="item">
-          </annotation-form>
-        </section>
-      </tab-bar>
+            <h2>Hilfe und Zertifikat</h2>
 
-  </entry-edit>
+            <help-wanted-form :item="event" />
+          </section>
+
+          <section slot="annotationsTab">
+            <annotation-form :item="event" />
+          </section>
+
+        </tab-bar>
+
+        <entry-edit-footer
+          :item="event"
+          :routeConfig="routeConfig"
+          @remove="remove"
+          @save="save" />
+      </form>
+
+    </div>
+
+  </entry-detail>
 </template>
 
+
 <script>
-import EntryEditApiSlotMixin from '@/components/entry/edit/mixins/EntryEditApiSlotMixin'
+import EntryEditMixin from '@/components/mixins/EntryEditMixin'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import EventRouteConfig from './EventRouteConfig'
 
-import TabBar from '@/components/TabBar'
 import ImageContainer from '@/components/ImageContainer'
 import InputField from '@/components/InputField'
+import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 
-import EntryEdit from '@/components/entry/edit/EntryEdit'
-import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
-import EntryEditHeader from '@/components/entry/edit/EntryEditHeader'
 import AnnotationForm from '@/components/entry/edit/AnnotationForm'
 import DatePicker from '@/components/event/datepicker/DatePicker'
 import TagSelector from '@/components/entry/edit/TagSelector'
@@ -77,24 +88,27 @@ import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 import MediaImageInput from '@/components/entry/edit/MediaImageInput'
 
 export default {
-  mixins: [BeforeRouteLeaveMixin, EntryEditApiSlotMixin],
+  mixins: [EntryEditMixin, BeforeRouteLeaveMixin],
 
   props: ['id'],
 
   data () {
     return {
-      currentTab: null,
+      currentTab: '',
+      imageError: false,
       routeConfig: new EventRouteConfig(this, this.id)
     }
   },
 
   computed: {
+    event () {
+      return this.item
+    },
+
     tabNames () {
       return [
         'generalTab',
-        { name: 'annotationsTab', hint: this.item.annotations.length },
-        'placeTab',
-        'contactTab'
+        { name: 'annotationsTab', hint: this.item.annotations.length }
       ]
     }
   },
@@ -109,17 +123,25 @@ export default {
 
     setCurrentTab (tab) {
       this.currentTab = tab
+    },
+
+    updateImageContainerState ({mediaImageError}) {
+      this.imageError = mediaImageError
+    },
+
+    validateCustomFields (validationErrors) {
+      if (this.imageError) {
+        validationErrors.push({
+          msg: this.$t('errors.loadingImageError')
+        })
+      }
     }
   },
 
   components: {
-    EntryEdit,
-
-    TabBar,
     InputField,
+    EntryEditFooter,
 
-    EntryLoadingMessage,
-    EntryEditHeader,
     TitleInput,
     AnnotationForm,
     TagSelector,

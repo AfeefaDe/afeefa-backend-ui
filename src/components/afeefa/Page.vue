@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col s12 m12">
-      <div class="mainCard">
+      <div class="mainCard2">
         <slot name="header" />
 
         <slot name="content" />
@@ -18,8 +18,15 @@ export default {
 
 
 <style lang="scss" scoped>
-.mainCard {
-  // border-top: 30px solid $gray50;
+.mainCard2 {
+  max-width: 1000px;
+  margin-top: 2em;
+  background-color: white;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+
+  & > * {
+    padding: 1em;
+  }
 }
 
 </style>

@@ -66,7 +66,6 @@ export default {
       this.$validator.setLocale(this.$i18n.locale)
 
       this.$validator.validateAll().then(result => {
-        console.log(this.$validator)
         let validationErrors = []
         if (!result) {
           validationErrors = this.$validator.errors.items

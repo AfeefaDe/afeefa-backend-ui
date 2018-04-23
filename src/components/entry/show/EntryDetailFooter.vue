@@ -27,16 +27,13 @@
 </div>
 </template>
 
-<script>
-import EntryDetailProperty from './EntryDetailProperty'
 
+<script>
 export default {
-  props: ['entry'],
-  components: {
-    EntryDetailProperty
-  }
+  props: ['entry']
 }
 </script>
+
 
 <style lang="scss" scoped>
 .entryDetailFooter {

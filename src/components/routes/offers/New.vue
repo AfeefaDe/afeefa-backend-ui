@@ -57,8 +57,6 @@ import OfferOwners from '@/components/entry/show/relations/OfferOwners'
 export default {
   mixins: [EntryEditMixin, BeforeRouteLeaveMixin],
 
-  props: ['id'],
-
   data () {
     return {
       routeConfig: new OfferRouteConfig(this, this.id)

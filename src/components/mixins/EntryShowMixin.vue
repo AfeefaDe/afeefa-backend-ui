@@ -9,7 +9,8 @@ export default {
       item: null,
       routeConfig: null,
       currentUser: null,
-      loadingError: false
+      loadingError: false,
+      currentTab: null
     }
   },
 
@@ -47,6 +48,10 @@ export default {
           this.loadingError = true
         }
       })
+    },
+
+    setCurrentTab (newCurrentTab) {
+      this.currentTab = newCurrentTab
     }
   }
 }

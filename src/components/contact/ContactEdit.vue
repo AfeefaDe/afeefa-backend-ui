@@ -1,20 +1,21 @@
 <template>
-<div class="row">
-    <div class="col s12 m12">
-      <div class="mainCard" v-if="owner">
-        <entry-edit-header :item="owner" :routeConfig="routeConfig" />
+<afeefa-page>
 
-        <contact-form
-          v-if="contact"
-          :owner="owner"
-          :contact="contact"
-          :routeConfig="routeConfig"
-          @save="saveContact" />
-      </div>
+  <entry-header :entry="owner" :routeConfig="routeConfig" slot="header" />
 
-      <entry-loading-message v-else :error="hasItemLoadingError" :messages="messages" />
-    </div>
+  <div slot="content" v-if="contact">
+    <contact-form
+      :owner="owner"
+      :contact="contact"
+      :routeConfig="routeConfig"
+      @save="saveContact" />
   </div>
+
+  <div slot="content" v-else>
+    <entry-loading-message :error="hasItemLoadingError" :messages="messages" />
+  </div>
+
+</afeefa-page>
 </template>
 
 
@@ -24,7 +25,6 @@ import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 import Contact from '@/models/Contact'
 
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
-import EntryEditHeader from '@/components/entry/edit/EntryEditHeader'
 
 import ContactForm from './ContactForm'
 
@@ -78,9 +78,7 @@ export default {
   },
 
   components: {
-    EntryEditHeader,
     EntryLoadingMessage,
-
     ContactForm
   }
 }

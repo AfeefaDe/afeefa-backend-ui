@@ -1,52 +1,58 @@
 <template>
-  <entry-edit
-    id=""
-    :routeConfig="routeConfig"
-    ref="form">
+  <afeefa-page>
 
-    <div v-if="item">
-      <div class="inputField__spacing">
-        <label for="orgaType">Typ</label>
-        <ul class="orgaTypeSelector">
-          <li class="orgaTypeSelector__singleType" v-for="orgaType in orgaTypes"  :key="orgaType.id">
-            <input
-              class="with-gap"
-              name="orgaType"
-              type="radio"
-              :id="orgaType.id"
-              v-bind:checked="orgaType.id === 2"
-              v-model="item.orga_type_id"
-              :value="orgaType.id"/>
-            <label :for="orgaType.id">{{$t('orgaTypes.'+orgaType.id+'.name')}}</label>
-          </li>
-        </ul>
-        <div class="orgaTypeDescription">
-          <i class="material-icons">info_outline</i>
-          <p>{{$t('orgaTypes.'+this.item.orga_type_id+'.description')}}</p>
+    <entry-header v-if="orga" :entry="orga" :isEdit="true" :routeConfig="routeConfig" slot="header" />
+
+    <div slot="content" v-if="orga">
+      <form @submit.prevent="save" class="entryForm" novalidate>
+        <div class="inputField__spacing">
+          <label for="orgaType">Typ</label>
+          <ul class="orgaTypeSelector">
+            <li class="orgaTypeSelector__singleType" v-for="orgaType in orgaTypes"  :key="orgaType.id">
+              <input
+                class="with-gap"
+                name="orgaType"
+                type="radio"
+                :id="orgaType.id"
+                v-bind:checked="orgaType.id === 2"
+                v-model="orga.orga_type_id"
+                :value="orgaType.id"/>
+              <label :for="orgaType.id">{{$t('orgaTypes.'+orgaType.id+'.name')}}</label>
+            </li>
+          </ul>
+          <div class="orgaTypeDescription">
+            <i class="material-icons">info_outline</i>
+            <p>{{$t('orgaTypes.'+this.orga.orga_type_id+'.description')}}</p>
+          </div>
         </div>
-      </div>
 
-      <title-input :item="item"/>
+        <title-input :item="orga"/>
 
-      <description-form :item="item" :options="{description: false}" />
+        <description-form :item="orga" :options="{description: false}" />
+
+        <entry-edit-footer
+          :item="orga"
+          :routeConfig="routeConfig"
+          @save="save" />
+      </form>
     </div>
 
-  </entry-edit>
+  </afeefa-page>
 </template>
 
-<script>
-import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
-import EntryEditApiSlotMixin from '@/components/entry/edit/mixins/EntryEditApiSlotMixin'
 
+<script>
+import EntryEditMixin from '@/components/mixins/EntryEditMixin'
+import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import OrgaRouteConfig from './OrgaRouteConfig'
 import OrgaType from '@/models/OrgaType'
 
-import EntryEdit from '@/components/entry/edit/EntryEdit'
 import TitleInput from '@/components/entry/edit/TitleInput'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
+import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 
 export default {
-  mixins: [BeforeRouteLeaveMixin, EntryEditApiSlotMixin],
+  mixins: [EntryEditMixin, BeforeRouteLeaveMixin],
 
   data () {
     return {
@@ -55,18 +61,24 @@ export default {
   },
 
   computed: {
+    orga () {
+      return this.item
+    },
+
     orgaTypes () {
       return OrgaType.TYPES
     }
   },
 
   components: {
-    EntryEdit,
     TitleInput,
-    DescriptionForm
+    DescriptionForm,
+    EntryEditFooter
   }
 }
 </script>
+
+
 <style lang="scss" scoped>
 .orgaTypeSelector {
   margin: 0.5em 0;
@@ -80,6 +92,7 @@ export default {
     font-weight: 600;
   }
 }
+
 .orgaTypeDescription {
   display: inline-flex;
   align-items: center;
@@ -97,5 +110,4 @@ export default {
     font-size: 1.5rem;
   }
 }
-
 </style>

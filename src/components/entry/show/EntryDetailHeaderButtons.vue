@@ -1,36 +1,20 @@
 <template>
-  <div class="mainCard__header">
-    <a href="" @click.prevent="goBack"><i class="material-icons goBack">chevron_left</i></a>
+  <span>
+    <a v-if="entryVisibleInFrontend" :href="previewLink" target="_blank" class="btn btn-medium">
+      <i class="material-icons left">link</i>
+      {{ $t('headlines.preview') }}
+    </a>
 
-    <div class="mainCard__headerTitle">
-      <span class="mainCard__type" v-if="entry.type === 'orgas'">{{ $t('orgaTypes.'+entry.orga_type_id+'.name') }}</span>
-      <span class="mainCard__type" v-if="entry.type === 'events'">{{ $tc('headlines.events', 1) }}</span>
-      <h2 class="mainCard__headerTitleHeading">{{ entry.title || 'Kein Titel' }}</h2>
-      <span v-if="entry.parent_orga" class="mainCard__headerSubtitle">
-        <router-link :to="{name: entry.parent_orga.type + '.show', params: {id: entry.parent_orga.id}}">
-          <u>{{ entry.parent_orga.title }}</u>
-        </router-link>
-      </span>
-    </div>
+    <a class="btn btn-medium" @click="togglePublishState" v-if="entry.active">
+      <i class="material-icons left">visibility_off</i>
+      {{ $t('buttons.deactivate') }}
+    </a>
 
-    <div class="mainCard__headerButtonContainer">
-      <a v-if="entryVisibleInFrontend" :href="previewLink" target="_blank" class="mainCard__headerButton">
-        {{$t('headlines.preview')}}
-        <i class="material-icons">link</i>
-      </a>
-
-      <a class="mainCard__headerButton" @click="togglePublishState">
-        {{ entry.active ? $t('buttons.deactivate') : $t('buttons.activate') }}
-        <i class="material-icons"><template v-if="entry.active">visibility</template><template v-else>visibility_off</template></i>
-      </a>
-
-      <router-link :to="{name: routeName + '.edit', params: {id: entry.id}, query:{tab: currentTab}}" class="mainCard__headerButton">
-        {{$t('buttons.edit')}}
-        <i class="material-icons">mode_edit</i>
-      </router-link>
-    </div>
-
-  </div>
+    <a class="btn btn-medium green" @click="togglePublishState" v-else>
+      <i class="material-icons left">visibility</i>
+      {{ $t('buttons.activate') }}
+    </a>
+  </span>
 </template>
 
 <script>
@@ -41,7 +25,7 @@ import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 export default {
   mixins: [GenerateFrontendLinkMixin, RouteConfigAwareMixin],
 
-  props: ['entry', 'currentTab'],
+  props: ['entry'],
 
   methods: {
     goBack () {

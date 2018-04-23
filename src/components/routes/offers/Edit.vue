@@ -1,5 +1,5 @@
 <template>
-  <entry-detail2 :component="this" :isEdit="true">
+  <entry-detail :component="this" :isEdit="true">
 
     <div v-if="offer">
       <form @submit.prevent="save" class="entryForm" novalidate>
@@ -31,7 +31,7 @@
       </form>
     </div>
 
-  </entry-detail2>
+  </entry-detail>
 </template>
 
 
@@ -42,7 +42,6 @@ import OfferRouteConfig from './OfferRouteConfig'
 
 import TitleInput from '@/components/entry/edit/TitleInput'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
-import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 
 export default {
@@ -65,7 +64,6 @@ export default {
   components: {
     TitleInput,
     DescriptionForm,
-    EntryLoadingMessage,
     EntryEditFooter
   }
 }

@@ -33,7 +33,6 @@
 import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 import Event from '@/models/Event'
-import TabBar from '@/components/TabBar'
 import EntryListMixin from '@/components/mixins/EntryListMixin'
 import EntryListItems from '@/components/entry/EntryListItems'
 import { mapState } from 'vuex'
@@ -98,8 +97,7 @@ export default {
   },
 
   components: {
-    EntryListItems,
-    TabBar
+    EntryListItems
   }
 }
 </script>

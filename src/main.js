@@ -20,15 +20,19 @@ import store from './store'
 
 import Page from '@/components/afeefa/Page'
 import Header from '@/components/afeefa/Header'
+import TabBar from '@/components/TabBar'
+
 import EntryHeader from '@/components/entry/EntryHeader'
-import EntryDetail2 from '@/components/entry/EntryDetail2'
-import EntryEdit2 from '@/components/entry/EntryEdit2'
+import EntryDetail from '@/components/entry/EntryDetail'
+import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
 
 Vue.component('AfeefaPage', Page)
 Vue.component('AfeefaHeader', Header)
+Vue.component('TabBar', TabBar)
+
 Vue.component('EntryHeader', EntryHeader)
-Vue.component('EntryDetail2', EntryDetail2)
-Vue.component('EntryEdit2', EntryEdit2)
+Vue.component('EntryDetail', EntryDetail)
+Vue.component('EntryDetailProperty', EntryDetailProperty)
 
 Vue.use(VeeValidate, {delay: 0, locale: 'de'})
 Vue.use(Filters)

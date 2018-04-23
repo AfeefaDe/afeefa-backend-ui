@@ -1,5 +1,5 @@
 <template>
-  <div v-if="imageUrl" :class="[{'imageContainer--loaded': mediaImageLoaded}, {'imageContainer--error': mediaImageError}]">
+  <div v-if="imageUrl" :class="['imageContainer', {'imageContainer--loaded': mediaImageLoaded}, {'imageContainer--error': mediaImageError}]">
     <div v-if="mediaImageLoaded">
       <div class="imageContainer__content" :style="{ 'background-image': 'url(' + imageUrl + ')' }"> </div>
     </div>
@@ -57,9 +57,12 @@ export default {
 
 <style lang="scss" scoped>
 .imageContainer {
+  margin-top: -1em;
+  margin-left: -1em;
+  margin-right: -1em;
+
   &--loaded {
     background-color: $gray20;
-    padding: 1em 0;
   }
   &--error {
     background-color: #FFEEEE;

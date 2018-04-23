@@ -12,6 +12,8 @@
     </div>
 
     <div slot="buttons" v-if="entry">
+      <slot name="buttons" />
+
       <router-link :to="{name: this.routeName + '.show', params: {id: entry.id}}" class="btn gray btn-medium" v-if="isEdit && entry.id">
         <i class="material-icons left">cancel</i>
         {{ $t('buttons.cancel') }}
@@ -22,7 +24,7 @@
         {{ $t('buttons.cancel') }}
       </router-link>
 
-      <router-link :to="{name: this.routeName + '.edit', params: {id: entry.id}}" class="btn green btn-medium" v-else>
+      <router-link :to="{name: this.routeName + '.edit', params: {id: entry.id}}" class="btn green btn-medium" v-if="!isEdit">
         <i class="material-icons left">mode_edit</i>
         {{ $t('buttons.edit') }}
       </router-link>

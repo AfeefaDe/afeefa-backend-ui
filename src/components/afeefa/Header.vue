@@ -44,7 +44,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$height: 24px;
+$height: 3em;
 
 .header {
   position: relative;
@@ -60,6 +60,11 @@ $height: 24px;
 
   &.isEdit {
     background-color: $red_dark;
+  }
+
+  &.small {
+    height: auto;
+    justify-content: flex-start;
   }
 }
 
@@ -80,15 +85,15 @@ $height: 24px;
   padding-right: 1em;
   margin: 0;
   // line-height: $height;
+
+  a {
+    color: $white;
+  }
 }
 
 .navigation {
-  // background-color: $black;
-  // margin-bottom: 3em;
-  // margin: -3em -1em 1em -1em;
-  // padding: .5em;
-  /deep/ a {
-    // color: $black !important;
+  .small & {
+    display: none;
   }
 }
 
@@ -106,6 +111,10 @@ h2 {
 .headerTitleHeading {
   margin: 0;
   font-size: 1.7em;
+  .small & {
+    margin: .2em 0;
+    font-size: 1.2em;
+  }
 }
 
 .headerSubtitle {
@@ -118,62 +127,43 @@ h2 {
     text-decoration: underline;
     color: $gray20;
   }
-}
 
-.type {
-  text-transform: uppercase;
-  color: $gray20;
-  padding-bottom: 0.5em;
-  font-size: 0.9rem;
+  .small & {
+    display: none;
+  }
 }
 
 .headerButtonContainer {
   position: absolute;
-  // top: $header_height;
-  // right: 1em;
   right: 0;
   top: 0;
   margin: 2em;
-  display: flex;
+
+  .small & {
+    margin-top: 0;
+    margin-right: 1em;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
   @media screen and (max-width: $break-medium) {
     display: block;
   }
 }
 
-.headerButtonContainer a {
-  font-size: 0.93em;
-  // border: 1px solid white;
-  // border-radius: 2px;
-  padding: 0.3em 0.5em;
-  margin-right: 1em;
+.headerButtonContainer /deep/ a {
+  margin-right: .1em;
   border: none;
 
   @media screen and (max-width: $break-medium) {
     margin-right: 0;
     margin-bottom: 0.5em;
   }
+}
 
+.headerButtonContainer a {
   &:last-child {
     margin-right: 0;
   }
-
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  &:hover {
-    // background-color: $gray80;
-  }
-
-  i {
-    font-size: 1.4em;
-    // margin-left: 0.5em;
-  }
-}
-
-.headerAction {
-  color: inherit;
-  max-height: $height;
 }
 </style>

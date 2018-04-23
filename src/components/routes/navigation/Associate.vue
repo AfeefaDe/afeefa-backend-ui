@@ -1,35 +1,26 @@
 <template>
-<div class="row">
-  <div class="col s12 m12">
-    <div class="mainCard" v-if="navigationItem">
-      <div class="mainCard__header">
-        <a href="" @click.prevent="goBack"><i class="material-icons goBack">chevron_left</i></a>
+<afeefa-page>
 
-        <div>
-          <div class="mainCard__type">{{ $tc('headlines.navigation') }}</div>
-          <span v-if="navigationItem.parent">
-            <router-link :to="{name: 'navigation.associate', params: {id: navigationItem.parent.id}}">
-              <h2 class="mainCard__headerTitle parentItemHeader">{{ navigationItem.parent.title }}</h2>
-            </router-link>
-            <i class="material-icons">chevron_left</i>
-          </span>
-          <h2 class="mainCard__headerTitle">{{ navigationItem.title }}</h2>
-        </div>
-
-      </div>
-
-      <div>
-        <h4>{{ navigationItem.title }}</h4>
-
-        <entry-facet-items :entry="navigationItem" :isEdit="true" />
-
-        <navigation-item-owner-selector :navigationItem="navigationItem" />
-      </div>
+  <afeefa-header slot="header">
+    <div slot="title" v-if="navigationItem">
+      {{ navigationItem.title }}
     </div>
+  </afeefa-header>
 
-    <entry-loading-message v-else :error="hasItemLoadingError" :messages="loadingMessages" />
+  <div slot="content" v-if="navigationItem">
+    <h4>{{ navigationItem.title }}</h4>
+
+    <entry-facet-items :entry="navigationItem" :isEdit="true" />
+
+    <navigation-item-owner-selector :navigationItem="navigationItem" />
   </div>
-</div>
+
+  <div slot="content" v-else>
+    <entry-loading-message :error="hasItemLoadingError" :messages="loadingMessages" />
+  </div>
+
+
+</afeefa-page>
 </template>
 
 

@@ -8,11 +8,10 @@
 
     <div class="col s12 m12">
       <div class="mainCard">
-        <div class="mainCard__header">
-          <h2 class="mainCard__headerTitle">
-            <router-link :to="{name: 'todos'}">{{ $t('headlines.todos') }} ({{ numTodos }})</router-link>
-          </h2>
-        </div>
+        <afeefa-header class="small">
+          <router-link :to="{name: 'todos'}" slot="title">{{ $t('headlines.todos') }} ({{ numTodos }})</router-link>
+        </afeefa-header>
+
         <div>
           <entry-list-items
             :items="todos"
@@ -27,15 +26,14 @@
 
     <div class="col s12 m6">
       <div class="mainCard">
-        <div class="mainCard__header">
-          <h2 class="mainCard__headerTitle">
-            <router-link :to="{name: 'orgas.list'}">{{ $tc('headlines.organisations', numOrgas) }} ({{ numOrgas }})</router-link>
-          </h2>
-          <router-link :to="{name: 'orgas.new'}"  class="mainCard__headerButton">
+        <afeefa-header class="small">
+          <router-link :to="{name: 'orgas.list'}" slot="title">{{ $tc('headlines.organisations', numOrgas) }} ({{ numOrgas }})</router-link>
+          <router-link :to="{name: 'orgas.new'}" slot="buttons" class="btn btn-medium green">
+            <i class="material-icons left">add</i>
             {{$t('buttons.add')}}
-            <i class="material-icons">add</i>
           </router-link>
-        </div>
+        </afeefa-header>
+
         <div>
           <entry-list-items
             :items="orgas"
@@ -50,15 +48,14 @@
 
     <div class="col s12 m6">
       <div class="mainCard">
-        <div class="mainCard__header">
-          <h2 class="mainCard__headerTitle">
-            <router-link :to="{name: 'events.list'}">{{ $tc('headlines.events', numEvents) }} ({{numEvents}})</router-link>
-          </h2>
-          <router-link :to="{name: 'events.new'}"  class="mainCard__headerButton">
+        <afeefa-header class="small">
+          <router-link :to="{name: 'events.list'}" slot="title">{{ $tc('headlines.events', numEvents) }} ({{numEvents}})</router-link>
+          <router-link :to="{name: 'events.new'}" slot="buttons" class="btn btn-medium green">
+            <i class="material-icons left">add</i>
             {{$t('buttons.add')}}
-            <i class="material-icons">add</i>
           </router-link>
-        </div>
+        </afeefa-header>
+
         <div>
           <entry-list-items
             :items="events"

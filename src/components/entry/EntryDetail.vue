@@ -1,21 +1,26 @@
 <template>
-  <afeefa-page v-if="entry">
-    <entry-header :entry="entry" :routeConfig="routeConfig" slot="header" />
+  <afeefa-page>
+    <entry-header :entry="entry" :isEdit="isEdit" :routeConfig="routeConfig" slot="header">
+      <slot name="headerButtons" slot="buttons" />
+    </entry-header>
 
     <div slot="content">
-      <slot />
+      <slot v-if="entry" />
+
+      <entry-loading-message v-else :error="loadingError" :messages="messages" />
     </div>
 
   </afeefa-page>
 
-  <entry-loading-message v-else :error="loadingError" :messages="messages" />
 </template>
 
 <script>
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 
 export default {
-  props: ['component'],
+  props: ['component', 'isEdit'],
+
+  inject: ['$validator'],
 
   data () {
     return {

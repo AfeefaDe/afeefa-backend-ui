@@ -1,110 +1,100 @@
 <template>
-<div class="row">
-  <div class="col s12 m12">
-    <div class="mainCard" v-if="facetItem">
-      <div class="mainCard__header">
-        <a href="" @click.prevent="goBack"><i class="material-icons goBack">chevron_left</i></a>
+<afeefa-page>
 
-        <div class="mainCard__headerTitle">
-          <div class="mainCard__type">{{ $tc('headlines.categories') }}Einträge</div>
-          <span v-if="facetItem.parent">
-            <router-link :to="{name: 'facetitem.associate', params: {id: facetItem.parent.facet.id, facetItemId: facetItem.parent.id}}">
-              <h2 class="mainCard__headerTitle parentItemHeader">{{ facetItem.parent.title }}</h2>
-            </router-link>
-            <i class="material-icons">chevron_left</i>
-          </span>
-          <h2 class="mainCard__headerTitle">{{ facetItem.title }}</h2>
-        </div>
-
-        <div v-if="currentTab === 'actorsTab'">
-          <facet-item-owner-selector title="Akteure hinzufügen" :facetItem="facetItem" type="orgas" @saved="loadOwners">
-            <a href="" @click.prevent class="mainCard__headerButton" slot="openButton">
-              Akteure hinzufügen
-              <i class="material-icons">add</i>
-            </a>
-          </facet-item-owner-selector>
-        </div>
-
-        <div v-if="currentTab === 'offersTab'">
-          <facet-item-owner-selector title="Angebote hinzufügen" :facetItem="facetItem" type="offers" @saved="loadOwners">
-            <a href="" @click.prevent class="mainCard__headerButton" slot="openButton">
-              Angebote hinzufügen
-              <i class="material-icons">add</i>
-            </a>
-          </facet-item-owner-selector>
-        </div>
-
-        <div v-if="currentTab === 'eventsTab'">
-          <facet-item-owner-selector title="Events hinzufügen" :facetItem="facetItem" type="events" @saved="loadOwners">
-            <a href="" @click.prevent class="mainCard__headerButton" slot="openButton">
-              Events hinzufügen
-              <i class="material-icons">add</i>
-            </a>
-          </facet-item-owner-selector>
-        </div>
-
-      </div>
-
-      <div v-if="isLoading">
-        <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Einträge ...
-      </div>
-
-      <tab-bar v-else @setCurrentTab="setCurrentTab" :tabNames="tabNames">
-        <section slot="actorsTab">
-          <entry-list-items
-            v-if="selectedActors.length"
-            :items="selectedActors"
-            :options="{filter: true, pagination: true}">
-            <div slot="actionButton" slot-scope="props">
-              <a href="" class="inlineEditLink medium" @click.prevent="remove(props.item)">
-                Entfernen
-              </a>
-            </div>
-          </entry-list-items>
-          <div v-else class="entryDetail__error">
-            Keine Akteure zugeordnet
-          </div>
-        </section>
-
-        <section slot="offersTab">
-          <entry-list-items
-            v-if="selectedOffers.length"
-            :items="selectedOffers"
-            :options="{filter: true, pagination: true}">
-            <div slot="actionButton" slot-scope="props">
-              <a href="" class="inlineEditLink medium" @click.prevent="remove(props.item)">
-                Entfernen
-              </a>
-            </div>
-          </entry-list-items>
-          <div v-else class="entryDetail__error">
-            Keine Angebote zugeordnet
-          </div>
-        </section>
-
-        <section slot="eventsTab">
-          <entry-list-items
-            v-if="selectedEvents.length"
-            :items="selectedEvents"
-            :options="{filter: true, pagination: true}">
-            <div slot="actionButton" slot-scope="props">
-              <a href="" class="inlineEditLink medium" @click.prevent="remove(props.item)">
-                Entfernen
-              </a>
-            </div>
-          </entry-list-items>
-          <div v-else class="entryDetail__error">
-            Keine Events zugeordnet
-          </div>
-        </section>
-      </tab-bar>
+  <afeefa-header slot="header">
+    <div slot="title" v-if="facetItem">
+      {{ facetItem.title }}
     </div>
 
-    <entry-loading-message v-else :error="hasItemLoadingError" :messages="loadingMessages" />
-  </div>
-</div>
-</template>
+    <div slot="buttons" v-if="facetItem">
+      <div v-if="currentTab === 'actorsTab'">
+        <facet-item-owner-selector title="Akteure hinzufügen" :facetItem="facetItem" type="orgas" @saved="loadOwners">
+          <a href="" @click.prevent class="btn green btn-medium" slot="openButton">
+            <i class="material-icons left">add</i>
+            Akteure hinzufügen
+          </a>
+        </facet-item-owner-selector>
+      </div>
 
+      <div v-if="currentTab === 'offersTab'">
+        <facet-item-owner-selector title="Angebote hinzufügen" :facetItem="facetItem" type="offers" @saved="loadOwners">
+          <a href="" @click.prevent class="btn green btn-medium" slot="openButton">
+            <i class="material-icons left">add</i>
+            Angebote hinzufügen
+          </a>
+        </facet-item-owner-selector>
+      </div>
+
+      <div v-if="currentTab === 'eventsTab'">
+        <facet-item-owner-selector title="Events hinzufügen" :facetItem="facetItem" type="events" @saved="loadOwners">
+          <a href="" @click.prevent class="btn green btn-medium" slot="openButton">
+            <i class="material-icons left">add</i>
+            Events hinzufügen
+          </a>
+        </facet-item-owner-selector>
+      </div>
+    </div>
+  </afeefa-header>
+
+  <div slot="content" v-if="facetItem">
+    <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
+      <section slot="actorsTab">
+        <entry-list-items
+          v-if="selectedActors.length"
+          :items="selectedActors"
+          :options="{filter: true, pagination: true}">
+          <div slot="actionButton" slot-scope="props">
+            <a href="" class="inlineEditLink medium" @click.prevent="remove(props.item)">
+              Entfernen
+            </a>
+          </div>
+        </entry-list-items>
+        <div v-else class="entryDetail__error">
+          Keine Akteure zugeordnet
+        </div>
+      </section>
+
+      <section slot="offersTab">
+        <entry-list-items
+          v-if="selectedOffers.length"
+          :items="selectedOffers"
+          :options="{filter: true, pagination: true}">
+          <div slot="actionButton" slot-scope="props">
+            <a href="" class="inlineEditLink medium" @click.prevent="remove(props.item)">
+              Entfernen
+            </a>
+          </div>
+        </entry-list-items>
+        <div v-else class="entryDetail__error">
+          Keine Angebote zugeordnet
+        </div>
+      </section>
+
+      <section slot="eventsTab">
+        <entry-list-items
+          v-if="selectedEvents.length"
+          :items="selectedEvents"
+          :options="{filter: true, pagination: true}">
+          <div slot="actionButton" slot-scope="props">
+            <a href="" class="inlineEditLink medium" @click.prevent="remove(props.item)">
+              Entfernen
+            </a>
+          </div>
+        </entry-list-items>
+        <div v-else class="entryDetail__error">
+          Keine Events zugeordnet
+        </div>
+      </section>
+    </tab-bar>
+  </div>
+
+  <div slot="content" v-else>
+    <entry-loading-message :error="hasItemLoadingError" :messages="loadingMessages" />
+  </div>
+
+
+</afeefa-page>
+</template>
 
 <script>
 import Facet from '@/models/Facet'
@@ -112,9 +102,7 @@ import FacetItemOwnerSelector from '@/components/facet/FacetItemOwnerSelector'
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryListItems from '@/components/entry/EntryListItems'
 import ActorSelector from '@/components/selector/ActorSelector'
-import TabBar from '@/components/TabBar'
 import sortByTitle from '@/helpers/sort-by-title'
-import Spinner from '@/components/Spinner'
 
 export default {
   props: ['id', 'facetItemId'],
@@ -230,9 +218,7 @@ export default {
     FacetItemOwnerSelector,
     EntryLoadingMessage,
     EntryListItems,
-    ActorSelector,
-    TabBar,
-    Spinner
+    ActorSelector
   }
 }
 </script>

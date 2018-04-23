@@ -1,5 +1,5 @@
 <template>
-  <entry-detail2 :component="this">
+  <entry-detail :component="this">
 
     <div v-if="offer">
       <entry-detail-property name="Träger" :iconName="'device_hub'">
@@ -27,7 +27,7 @@
       </entry-detail-property>
     </div>
 
-  </entry-detail2>
+  </entry-detail>
 </template>
 
 
@@ -35,7 +35,6 @@
 import EntryShowMixin from '@/components/mixins/EntryShowMixin'
 import OfferRouteConfig from './OfferRouteConfig'
 
-import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
 import EntryFacetItems from '@/components/entry/EntryFacetItems'
 import OfferOwners from '@/components/entry/show/relations/OfferOwners'
 
@@ -57,7 +56,6 @@ export default {
   },
 
   components: {
-    EntryDetailProperty,
     EntryFacetItems,
     OfferOwners
   }

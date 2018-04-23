@@ -44,7 +44,7 @@
     </div>
 
     <div slot="content" v-else>
-      <entry-loading-message2 :error="hasItemLoadingError" :messages="messages" />
+      <entry-loading-message :error="hasItemLoadingError" :messages="messages" />
     </div>
 
   </afeefa-page>
@@ -55,7 +55,7 @@
 import Vue from 'vue'
 import TreeItemView from './TreeItemView'
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
-import EntryLoadingMessage2 from '@/components/entry/EntryLoadingMessage2'
+import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 
 export default {
   mixins: [RouteConfigAwareMixin],
@@ -108,7 +108,7 @@ export default {
 
   components: {
     TreeItemView,
-    EntryLoadingMessage2
+    EntryLoadingMessage
   }
 }
 </script>

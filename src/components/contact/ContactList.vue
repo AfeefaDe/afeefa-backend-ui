@@ -101,7 +101,6 @@
 <script>
 import Languages from '@/helpers/iso_639_languages.js'
 
-import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
 import LocationMap from '@/components/Map'
 
 export default {
@@ -150,7 +149,6 @@ export default {
   },
 
   components: {
-    EntryDetailProperty,
     LocationMap
   }
 }

@@ -1,57 +1,70 @@
 <template>
-  <entry-edit
-    :id="id"
-    :routeConfig="routeConfig"
-    ref="form">
+  <entry-detail :component="this" :isEdit="true">
 
-      <tab-bar
-        v-if="item"
-        :tabNames="tabNames"
-        @setCurrentTab="setCurrentTab">
+    <div v-if="orga">
+      <image-container v-show="!imageError"
+        :image-url="orga.media_url"
+        @state="updateImageContainerState">
+      </image-container>
 
-        <section slot="generalTab">
-          <h2>Titel und Beschreibung</h2>
-          <title-input :item="item" />
-          <description-form :item="item" />
+      <form @submit.prevent="save" class="entryForm" novalidate>
 
-          <h2>Bild</h2>
-          <media-image-input :item="item" :image-error="imageError" />
+        <tab-bar
+          :tabNames="tabNames"
+          @setCurrentTab="setCurrentTab">
 
-          <tag-selector :item="item" v-if="currentUser && currentUser.area=='dresden'" />
+          <section slot="generalTab">
+            <h2>Titel und Beschreibung</h2>
+            <title-input :item="orga" />
+            <description-form :item="orga" />
 
-          <help-wanted-form :item="item" />
+            <h2>Bild</h2>
+            <media-image-input :item="orga" :image-error="imageError" />
 
-          <input-field
-            field-name="facebook_id"
-            v-model="item.facebook_id"
-            validate="min:15|max:64"
-            label="Facebook ID für Events">
-          </input-field>
-        </section>
+            <tag-selector :item="orga" v-if="currentUser && currentUser.area=='dresden'" />
 
-        <section slot="annotationsTab">
-          <annotation-form :item="item" />
-        </section>
+            <help-wanted-form :item="orga" />
 
-        <section slot="resourceTab" v-if="item.type === 'orgas'">
-          <resource-form :item="item" />
-        </section>
+            <input-field
+              field-name="facebook_id"
+              v-model="orga.facebook_id"
+              validate="min:15|max:64"
+              label="Facebook ID für Events">
+            </input-field>
+          </section>
 
-      </tab-bar>
+          <section slot="annotationsTab">
+            <annotation-form :item="orga" />
+          </section>
 
-  </entry-edit>
+          <section slot="resourceTab">
+            <resource-form :item="orga" />
+          </section>
+
+        </tab-bar>
+
+        <entry-edit-footer
+          :item="orga"
+          :routeConfig="routeConfig"
+          @remove="remove"
+          @save="save" />
+      </form>
+
+    </div>
+
+  </entry-detail>
 </template>
 
+
 <script>
-import EntryEditApiSlotMixin from '@/components/entry/edit/mixins/EntryEditApiSlotMixin'
+import EntryEditMixin from '@/components/mixins/EntryEditMixin'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import OrgaRouteConfig from './OrgaRouteConfig'
 
-import TabBar from '@/components/TabBar'
-import PowerSelector from '@/components/PowerSelector'
 import InputField from '@/components/InputField'
+import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 
-import EntryEdit from '@/components/entry/edit/EntryEdit'
+import ImageContainer from '@/components/ImageContainer'
 import AnnotationForm from '@/components/entry/edit/AnnotationForm'
 import ResourceForm from '@/components/entry/edit/ResourceForm'
 import TagSelector from '@/components/entry/edit/TagSelector'
@@ -61,18 +74,23 @@ import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 import MediaImageInput from '@/components/entry/edit/MediaImageInput'
 
 export default {
-  mixins: [BeforeRouteLeaveMixin, EntryEditApiSlotMixin],
+  mixins: [EntryEditMixin, BeforeRouteLeaveMixin],
 
   props: ['id'],
 
   data () {
     return {
       currentTab: '',
+      imageError: false,
       routeConfig: new OrgaRouteConfig(this, this.id)
     }
   },
 
   computed: {
+    orga () {
+      return this.item
+    },
+
     tabNames () {
       const tabNames = [
         'generalTab',
@@ -88,15 +106,25 @@ export default {
   methods: {
     setCurrentTab (tab) {
       this.currentTab = tab
+    },
+
+    updateImageContainerState ({mediaImageError}) {
+      this.imageError = mediaImageError
+    },
+
+    validateCustomFields (validationErrors) {
+      if (this.imageError) {
+        validationErrors.push({
+          msg: this.$t('errors.loadingImageError')
+        })
+      }
     }
   },
 
   components: {
-    EntryEdit,
-
-    TabBar,
+    ImageContainer,
     InputField,
-    PowerSelector,
+    EntryEditFooter,
 
     TitleInput,
     AnnotationForm,

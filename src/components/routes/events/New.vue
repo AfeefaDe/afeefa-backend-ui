@@ -1,47 +1,59 @@
 <template>
-  <entry-edit
-    id=""
-    :routeConfig="routeConfig"
-    ref="form">
+  <afeefa-page>
 
-    <div v-if="item">
-      <title-input :item="item" />
+    <entry-header :entry="event" :isEdit="true" :routeConfig="routeConfig" slot="header" />
 
-      <date-picker
-        :date-start="item.date_start"
-        :date-end="item.date_end"
-        :has-time-start="item.has_time_start"
-        :has-time-end="item.has_time_end"
-        @input="updateDatePickerValues"
-        name="date" v-validate="'date-end-not-earlier-than-start|date-end-not-start'"
-        :class="['inputField__spacing', {'validation-error': errors.has('date') }]"
-        >
-      </date-picker>
-      <span v-show="errors.has('date')" class="validation-error">{{ errors.first('date') }}</span>
+    <div slot="content">
+      <form @submit.prevent="save" class="entryForm" novalidate>
+        <title-input :item="item" />
 
-      <description-form :item="item" :options="{description: false}" />
+        <date-picker
+          :date-start="event.date_start"
+          :date-end="event.date_end"
+          :has-time-start="event.has_time_start"
+          :has-time-end="event.has_time_end"
+          @input="updateDatePickerValues"
+          name="date" v-validate="'date-end-not-earlier-than-start|date-end-not-start'"
+          :class="['inputField__spacing', {'validation-error': errors.has('date') }]"
+          >
+        </date-picker>
+        <span v-show="errors.has('date')" class="validation-error">{{ errors.first('date') }}</span>
+
+        <description-form :item="event" :options="{description: false}" />
+
+        <entry-edit-footer
+          :item="event"
+          :routeConfig="routeConfig"
+          @save="save" />
+      </form>
     </div>
 
-  </entry-edit>
+  </afeefa-page>
 </template>
 
-<script>
-import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
-import EntryEditApiSlotMixin from '@/components/entry/edit/mixins/EntryEditApiSlotMixin'
 
+<script>
+import EntryEditMixin from '@/components/mixins/EntryEditMixin'
+import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import EventRouteConfig from './EventRouteConfig'
 
-import EntryEdit from '@/components/entry/edit/EntryEdit'
 import TitleInput from '@/components/entry/edit/TitleInput'
 import DatePicker from '@/components/event/datepicker/DatePicker'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
+import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 
 export default {
-  mixins: [BeforeRouteLeaveMixin, EntryEditApiSlotMixin],
+  mixins: [EntryEditMixin, BeforeRouteLeaveMixin],
 
   data () {
     return {
       routeConfig: new EventRouteConfig(this)
+    }
+  },
+
+  computed: {
+    event () {
+      return this.item
     }
   },
 
@@ -55,10 +67,10 @@ export default {
   },
 
   components: {
-    EntryEdit,
     TitleInput,
     DatePicker,
-    DescriptionForm
+    DescriptionForm,
+    EntryEditFooter
   }
 }
 </script>
