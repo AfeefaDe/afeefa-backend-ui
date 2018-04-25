@@ -5,7 +5,6 @@
     :numItems="numItems"
     facetEntryType="Event"
     addEntryButton="events.new"
-    :options="{facetFilter: true}"
     :messages="messages">
 
     <div slot="sidebar" class="mainCard sidebar" v-if="items.length">
@@ -19,7 +18,7 @@
           :items="filteredEntries"
           :isLoading="isLoading"
           :sort-function="sortFunction"
-          :options="{filter: true, pagination: true, event_date: true}"
+          :options="{facetFilter: true, filter: true, pagination: true, event_date: true}"
           :sort-order="sortOrder">
         </entry-list-items>
 
@@ -28,7 +27,7 @@
           :items="filteredEntries"
           :isLoading="isLoading"
           :sort-function="sortFunction"
-          :options="{filter: true, pagination: true, event_date: true}"
+          :options="{facetFilter: true, filter: true, pagination: true, event_date: true}"
           :sort-order="sortOrder">
         </entry-list-items>
       </tab-bar>

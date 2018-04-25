@@ -105,9 +105,7 @@ export default {
 
 <style lang="scss" scoped>
 .tabBar {
-  margin-top: -1.5em;
-  margin-left: -1.5em;
-  margin-right: -1.5em;
+  margin: -1.5em;
   $activeBorderWidth: 3px;
   &__navItemContainer {
     margin: 0;
@@ -120,7 +118,7 @@ export default {
   }
 
   .tabContent {
-    padding: 1em;
+    padding: 1.5em;
   }
 
   &__navItem {

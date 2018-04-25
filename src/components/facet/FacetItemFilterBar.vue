@@ -183,7 +183,6 @@ export default {
   width: 14px;
   height: 14px;
   margin-right: 6px;
-  // display: none;
 }
 
 .facetTitle {

@@ -19,16 +19,12 @@
             <div class="selectorContent">
               <div v-for="facetItem in expandedFacet.facet_items" :key="facetItem.id">
                 <div @click.prevent="addFacetItem(facetItem)" class="facetTag parentItem">
-                  <input type="checkbox" class="filled-in checkboxSmall" :id="'select' + facetItem.id" :checked="selectedFacetItems.includes(facetItem)">
-                  <label :for="'select' + facetItem.id"></label>
                   <tree-item-tag :treeItem="facetItem" :x="selectedFacetItems.includes(facetItem)" />
                 </div>
 
-                <div v-for="(subItem, index) in facetItem.sub_items" :key="subItem.id">
+                <div v-for="(subItem, index) in facetItem.sub_items" :key="subItem.id" :class="{lastSubItemContainer: index === facetItem.sub_items.length - 1}">
                   <tree-sub-item :isLast="index === facetItem.sub_items.length - 1">
                     <div @click.prevent="addFacetItem(subItem)" class="facetTag">
-                      <input type="checkbox" class="filled-in checkboxSmall" :id="'select' + subItem.id" :checked="selectedFacetItems.includes(subItem)">
-                      <label :for="'select' + subItem.id"></label>
                       <tree-item-tag :treeItem="subItem" :x="selectedFacetItems.includes(subItem)" />
                     </div>
                   </tree-sub-item>
@@ -47,7 +43,7 @@
                     <div @click="removeFacetItem(facetItem)" class="facetTag parentItem">
                       <tree-item-tag :treeItem="facetItem" :x="true" />
                     </div>
-                    <div v-for="subItem in facetItem.sub_items" :key="subItem.id" v-if="selectedFacetItems.includes(subItem)">
+                    <div v-for="subItem in facetItem.sub_items" :key="subItem.id" v-if="selectedFacetItems.includes(subItem)" :class="{lastSubItemContainer: isLastSelectedItemOfParent(facetItem, subItem)}">
                       <tree-sub-item :isLast="isLastSelectedItemOfParent(facetItem, subItem)">
                         <div @click="removeFacetItem(subItem)" class="facetTag">
                           <tree-item-tag :treeItem="subItem" :x="true" />
@@ -265,6 +261,10 @@ export default {
   border-right: 1px solid $gray20;
   margin-right: 20px;
   height: 500px;
+
+  > * {
+    margin-bottom: .3em;
+  }
 }
 
 .colorIcon {
@@ -303,14 +303,19 @@ export default {
 .facetTag {
   display: inline-block;
   cursor: pointer;
+  margin-bottom: 1px;
 }
 
 .parentItem {
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+}
+
+.lastSubItemContainer {
+  margin-bottom: .5em;
 }
 
 .selectedFacetItemsContainer {
-  margin-top: 5px;
+  margin-top: .8em;
 }
 
 .selectedFacetItems {
@@ -326,13 +331,6 @@ export default {
   text-align: right;
   button {
     margin-left: .4em;
-  }
-}
-
-/* stylelint-disable selector-class-pattern */
-input[type="checkbox"].filled-in.checkboxSmall:not(:checked) + label {
-  &:after {
-    border-color: $gray30;
   }
 }
 </style>

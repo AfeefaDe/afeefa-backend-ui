@@ -57,9 +57,8 @@ export default {
 
 <style lang="scss" scoped>
 .imageContainer {
-  margin-top: -1.5em;
-  margin-left: -1.5em;
-  margin-right: -1.5em;
+  margin: -1.5em;
+  margin-bottom: 1.5em;
 
   &--loaded {
     background-color: $gray20;
@@ -70,7 +69,7 @@ export default {
   }
   &__content {
     background-repeat: no-repeat;
-    background-position: top center;
+    background-position: center center;
     background-size: cover;
     height: 50vh;
     /* matches max-height of bunner at afeefa.de */
