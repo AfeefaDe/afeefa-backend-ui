@@ -44,10 +44,10 @@
 
         <div class="entryList__content">
           <div class="entryList__attributes" v-if="has.event_date && item.type === 'events'">
-            <p class="item entryList--lightColor">
+            <div class="entryList__date entryList--lightColor">
               {{item | formatEventDate}}
               <span>({{item.date_start | formatDateRelative}})</span>
-            </p>
+            </div>
           </div>
 
           <router-link :to="routerLinkObject(item)" class="entryList__nav">
@@ -68,13 +68,13 @@
           </div>
 
           <div class="entryList__attributes" v-if="item.type !== 'chapters'">
-            <div v-if="item.facet_items">
-              <entry-facet-items :entry="item" :useFacetFilter="has.facetFilter" />
+            <div v-if="item.facet_items" class="entryList__facets">
+              <entry-facet-items :entry="item" :isEdit="true" :useFacetFilter="has.facetFilter" />
             </div>
 
             <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
 
-            <div>
+            <div class="entryList__numbers">
               <span v-if="item.count_offers">{{ item.count_offers }} {{ $tc('offers.offer', item.count_offers) }} </span>
               <span v-if="item.count_events">{{ item.count_events }} Veranstaltungen </span>
               <span v-if="item.count_resource_items">{{ item.count_resource_items }} Ressourcen </span>
@@ -82,19 +82,19 @@
               <span v-if="item.count_network_members">{{ item.count_network_members }} Mitglieder </span>
             </div>
 
-            <p class="item entryList--lightColor" v-if="has.updated_at">
+            <div class="entryList__status entryList--lightColor" v-if="has.updated_at">
               {{ $t('status.changed') }}
               {{item.updated_at | formatDateAbsolute}}
               <span>({{item.updated_at | formatDateRelative}})</span>
               <span v-if="item.last_editor"><br>von {{ item.last_editor.name }} <span v-if="item.last_editor.organization">({{ item.last_editor.organization }})</span></span>
-            </p>
+            </div>
 
-            <p class="item entryList--lightColor" v-if="has.created_at">
+            <div class="entryList__status entryList--lightColor" v-if="has.created_at">
               {{ $t('status.added') }}
               {{item.created_at | formatDateAbsolute}}
               <span>({{item.created_at | formatDateRelative}})</span>
               <span v-if="item.creator"><br>von {{ item.creator.name }} <span v-if="item.creator.organization">({{ item.creator.organization }})</span></span>
-            </p>
+            </div>
           </div>
         </div>
 
@@ -303,28 +303,32 @@ export default {
     .title {
       // flex-grow: 2;
       font-size: 1.4em;
-      margin: 0 0 0.2em;
+      margin: 0;
       font-weight: 500;
       line-height: 120%;
       display: inline-block;
     }
   }
 
-  div + &__nav .title {
-    margin-top: 0.2em;
+  &__date {
+    margin-bottom: .5em;
   }
 
   &__parentLink {
-    margin: -.1em 0 .6em;
+    margin-top: -.1em;
   }
 
-  &__actionButton {
-    align-self: center;
-    margin: 0 1em;
+  &__facets {
+    margin-top: .8em;
   }
 
-  &__content {
-    flex-grow: 2;
+  &__numbers {
+    margin-top: .6em;
+  }
+
+  &__status {
+    font-size: .9em;
+    margin-top: .4em;
   }
 
   &__icon {
@@ -353,24 +357,6 @@ export default {
     align-items: baseline;
     font-size: 1em;
     color: $gray90;
-    .category {
-      font-size: 1.1em;
-    }
-    .item {
-      margin: 0 1.5em 0 0;
-      &.category {
-        margin-bottom: .2em;
-      }
-    }
-    .item i {
-      vertical-align: middle;
-      font-size: 1.4em;
-      margin-left: -0.3em;
-      margin-right: -0.1em;
-    }
-    .meta {
-      margin-right: 0.3em;
-    }
   }
 
   &--lightColor {

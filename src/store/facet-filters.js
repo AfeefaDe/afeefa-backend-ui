@@ -8,6 +8,14 @@ const facetWithoutEntriesIsSelected = (state, facet) => {
   return state.selectedFacetsWithoutEntries.includes(facet)
 }
 
+const getFilteredEntries = state => {
+  return facetItems.getEntriesForFacetItemsAndWithoutFacets(
+    state.selectedFacetItems,
+    state.selectedFacetsWithoutEntries,
+    state.entries
+  )
+}
+
 export default {
   namespaced: true,
 
@@ -84,6 +92,16 @@ export default {
       dispatch('initFilteredEntries')
     },
 
+    entryFacetItemsChanged ({state, dispatch}) {
+      const filteredEntries = getFilteredEntries(state)
+
+      if (!filteredEntries.length) {
+        dispatch('initEntries', {type: state.type, entries: state.entries})
+      } else {
+        dispatch('initFilteredEntries')
+      }
+    },
+
     facetItemClick ({commit, dispatch}, facetItem) {
       commit('toggleFacetItemSelection', facetItem)
 
@@ -103,11 +121,7 @@ export default {
     },
 
     initFilteredEntries ({state, commit}, facet) {
-      const filteredEntries = facetItems.getEntriesForFacetItemsAndWithoutFacets(
-        state.selectedFacetItems,
-        state.selectedFacetsWithoutEntries,
-        state.entries
-      )
+      const filteredEntries = getFilteredEntries(state)
 
       commit('setFilteredEntries', filteredEntries)
     },

@@ -80,6 +80,10 @@ export default {
         this.entry.$rels.facet_items.refetch()
       ]).then(result => {
         this.loading = false
+
+        if (this.useFacetFilter) {
+          this.$store.dispatch('facetFilters/entryFacetItemsChanged')
+        }
       })
     }
   },
