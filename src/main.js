@@ -26,6 +26,8 @@ import EntryHeader from '@/components/entry/EntryHeader'
 import EntryDetail from '@/components/entry/EntryDetail'
 import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
 
+import TreeItemTag from '@/components/tree/TreeItemTag'
+
 Vue.component('AfeefaPage', Page)
 Vue.component('AfeefaHeader', Header)
 Vue.component('TabBar', TabBar)
@@ -33,6 +35,8 @@ Vue.component('TabBar', TabBar)
 Vue.component('EntryHeader', EntryHeader)
 Vue.component('EntryDetail', EntryDetail)
 Vue.component('EntryDetailProperty', EntryDetailProperty)
+
+Vue.component('TreeItemTag', TreeItemTag)
 
 Vue.use(VeeValidate, {delay: 0, locale: 'de'})
 Vue.use(Filters)

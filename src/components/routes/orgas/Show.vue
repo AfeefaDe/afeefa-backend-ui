@@ -185,6 +185,8 @@
 import EntryShowMixin from '@/components/mixins/EntryShowMixin'
 import OrgaRouteConfig from './OrgaRouteConfig'
 
+import sortByDateStart from '@/helpers/sort-by-date-start'
+import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 import EntryDetailHeaderButtons from '@/components/entry/show/EntryDetailHeaderButtons'
 import ImageContainer from '@/components/ImageContainer'
 import EntryFacetItems from '@/components/entry/EntryFacetItems'
@@ -200,7 +202,9 @@ export default {
 
   data () {
     return {
-      routeConfig: new OrgaRouteConfig(this, this.id)
+      routeConfig: new OrgaRouteConfig(this, this.id),
+      sortByDateStart,
+      sortByDateMixin
     }
   },
 
@@ -252,7 +256,6 @@ export default {
   }
   > .generalTab__splitViewChild {
     width: 50%;
-    padding: 1em;
     @media screen and (max-width: $break-medium) {
       width: 100%;
     }

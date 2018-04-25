@@ -1,3 +1,7 @@
+html {
+  overflow-y: scroll;
+}
+
 body {
 	margin: 0;
 	background-color: $white;
@@ -72,7 +76,7 @@ $sidebarWidth: 350px;
   }
   /*top level divs*/
   > div {
-    padding: 1em;
+    padding: 1.5em;
     @media screen and (max-width: $break-medium) {
       padding: 1em 0.8em;
     }

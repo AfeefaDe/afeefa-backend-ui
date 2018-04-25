@@ -2,13 +2,14 @@
   <div>
     <entry-list
       :items="items"
+      :isLoading="isLoading"
       :numItems="numTodos"
       :addEntryButton="false"
       :sort-function="sortByUpdatedAt"
       :options="{filter: true, pagination: true, updated_at: true, annotations: true, event_date: true}"
       :messages="messages">
 
-      <div v-if="items">
+      <div v-if="!isLoading">
         <select id="annotationCategory" v-model="selectedCategory" class="filterSelect">
           <option value="all" selected>Alle Anmerkungen</option>
           <option v-for="cat in categories" :key="cat.id" :value="cat.id" v-if="cat.count_entries">

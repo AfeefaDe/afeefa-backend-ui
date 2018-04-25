@@ -21,7 +21,7 @@
                 <div @click.prevent="addFacetItem(facetItem)" class="facetTag parentItem">
                   <input type="checkbox" class="filled-in checkboxSmall" :id="'select' + facetItem.id" :checked="selectedFacetItems.includes(facetItem)">
                   <label :for="'select' + facetItem.id"></label>
-                  <tree-item-tag :treeItem="facetItem" :class="{isSelected: selectedFacetItems.includes(facetItem)}"/>
+                  <tree-item-tag :treeItem="facetItem" :x="selectedFacetItems.includes(facetItem)" />
                 </div>
 
                 <div v-for="(subItem, index) in facetItem.sub_items" :key="subItem.id">
@@ -29,7 +29,7 @@
                     <div @click.prevent="addFacetItem(subItem)" class="facetTag">
                       <input type="checkbox" class="filled-in checkboxSmall" :id="'select' + subItem.id" :checked="selectedFacetItems.includes(subItem)">
                       <label :for="'select' + subItem.id"></label>
-                      <tree-item-tag :treeItem="subItem" :class="{isSelected: selectedFacetItems.includes(subItem)}"/>
+                      <tree-item-tag :treeItem="subItem" :x="selectedFacetItems.includes(subItem)" />
                     </div>
                   </tree-sub-item>
                 </div>
@@ -45,12 +45,12 @@
                 <div class="selectedFacetItemsContainer">
                   <div v-for="facetItem in facet.facet_items" :key="facetItem.id" v-if="selectedFacetItems.includes(facetItem)">
                     <div @click="removeFacetItem(facetItem)" class="facetTag parentItem">
-                      <tree-item-tag :treeItem="facetItem" />
+                      <tree-item-tag :treeItem="facetItem" :x="true" />
                     </div>
                     <div v-for="subItem in facetItem.sub_items" :key="subItem.id" v-if="selectedFacetItems.includes(subItem)">
                       <tree-sub-item :isLast="isLastSelectedItemOfParent(facetItem, subItem)">
                         <div @click="removeFacetItem(subItem)" class="facetTag">
-                          <tree-item-tag :treeItem="subItem" />
+                          <tree-item-tag :treeItem="subItem" :x="true" />
                         </div>
                       </tree-sub-item>
                     </div>

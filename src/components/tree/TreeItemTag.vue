@@ -1,24 +1,27 @@
 <template>
-  <div class="treeItemTag" :style="color ? {backgroundColor: color} : ''">
-    <span class="title" :style="hasDarkBackground() ? {color: 'white'} : ''">
+  <div class="treeItemTag"
+    :style="{borderColor: (color ? color : '')}">
+    <span class="title">
       <router-link v-if="link" :to="link">
-        {{ treeItem.title || 'Kein Titel' }} <span class="count">({{ treeItem.count_owners }})</span>
+        {{ treeItem.title || 'Kein Titel' }} <span class="count" v-if="hasCount">({{ currentCountOwners }})</span>
       </router-link>
       <span v-else>
-        {{ treeItem.title || 'Kein Titel' }} <span class="count">({{ treeItem.count_owners }})</span>
+        {{ treeItem.title || 'Kein Titel' }} <span class="count" v-if="hasCount">({{ currentCountOwners }})</span>
       </span>
     </span>
+    <i class="material-icons" :style="{coslor: (color ? color : '')}" v-if="x">cancel</i>
   </div>
 </template>
 
 
 <script>
 export default {
-  props: ['treeItem', 'link'],
+  props: ['treeItem', 'countOwners', 'x', 'link', 'count'],
 
   data () {
     return {
-      color: null
+      color: null,
+      hasCount: this.count === undefined ? true : this.count
     }
   },
 
@@ -48,6 +51,12 @@ export default {
     }
   },
 
+  computed: {
+    currentCountOwners () {
+      return this.countOwners !== undefined ? this.countOwners : this.treeItem.count_owners
+    }
+  },
+
   methods: {
     setColor () {
       this.color = null
@@ -61,21 +70,6 @@ export default {
       } else {
         this.color = this.treeItem.color || this.color
       }
-    },
-
-    hasDarkBackground () {
-      if (!this.color) {
-        return false
-      }
-      return this.getBrightness(this.color) < 120
-    },
-
-    getBrightness (color) {
-      const hexCode = color.replace('#', '')
-      const r = parseInt(hexCode.substr(0, 2), 16)
-      const g = parseInt(hexCode.substr(2, 2), 16)
-      const b = parseInt(hexCode.substr(4, 2), 16)
-      return (r * 299 + g * 587 + b * 114) / 1000
     }
   }
 }
@@ -86,17 +80,31 @@ export default {
 .treeItemTag {
   @include user-select();
 
+  border-left: 5px solid black;
+
   border-radius: .2em;
-  background-color: $gray30;
+  background-color: $white;
   display: inline-block;
   color: $black;
-  padding: 0.3em 0.5em;
+  padding: 0.4em 0.5em;
   line-height: 1em;
   font-size: .9em;
 }
 
 a {
   color: inherit;
+  position: relative;
+  top: .05em;
+}
+
+i {
+  display: inline;
+  position: relative;
+  top: 3px;
+  font-size: 1.1em;
+  line-height: 0;
+  margin-left: 3px;
+  color: $gray80;
 }
 
 .count {

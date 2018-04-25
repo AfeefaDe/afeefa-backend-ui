@@ -1,47 +1,30 @@
 <template>
-  <afeefa-page>
-
-    <afeefa-header slot="header">
-      <div slot="title">
-        Alle {{ $tc('offers.offer', 2) }} ({{ offers && offers.length || 0 }})
-      </div>
-
-      <div slot="buttons" v-if="offers">
-        <router-link :to="{name: 'offers.new'}" class="btn btn-medium green">
-          <i class="material-icons left">add</i>
-          {{$t('buttons.add')}}
-        </router-link>
-      </div>
-    </afeefa-header>
-
-    <div slot="content">
-      <entry-list-items
-        :items="offers"
-        :options="{filter: true, pagination: true, hideTypeIcon: false}" />
-    </div>
-  </afeefa-page>
+  <entry-list
+    :items="items"
+    :isLoading="isLoading"
+    :numItems="items.length"
+    facetEntryType="Offer"
+    addEntryButton="offers.new"
+    :options="{facetFilter: true, filter: true, pagination: true, created_at: false}"
+    :messages="messages">
+  </entry-list>
 </template>
 
 
 <script>
-import EntryListItems from '@/components/entry/EntryListItems'
+import EntryListMixin from '@/components/mixins/EntryListMixin'
 import Offer from '@/models/Offer'
 
 export default {
+  mixins: [EntryListMixin],
+
   data () {
     return {
-      offers: null
+      Query: Offer.Query,
+      messages: {
+        headline: () => this.$t('status.all') + ' ' + this.$tc('offers.offer', 2)
+      }
     }
-  },
-
-  created () {
-    Offer.Query.getAll().then(offers => {
-      this.offers = offers
-    })
-  },
-
-  components: {
-    EntryListItems
   }
 }
 </script>

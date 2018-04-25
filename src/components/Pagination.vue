@@ -152,6 +152,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: .8em;
+  height: 30px;
 
   @media screen and (max-width: $break-medium) {
     display: block;

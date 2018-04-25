@@ -1,11 +1,13 @@
 <template>
-  <div>
-    <div v-if="!items" class="loadingInfo">
-      <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Liste
-    </div>
+  <div v-if="isLoading" class="loadingInfo">
+    <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Liste
+  </div>
 
-    <div class="navigation" v-if="items">
-      <div v-if="items && items.length > 1 && has.filter" class="filter">
+  <div v-else>
+    <div class="navigation">
+      <entry-list-facet-filter v-if="has.facetFilter" />
+
+      <div v-if="itemsUnsorted.length > 1 && has.filter" class="filter">
         <input
           type="text"
           placeholder="Tippen zum Filtern"
@@ -16,7 +18,7 @@
         </a>
       </div>
 
-      <div v-if="items && has.pagination" class="pagination">
+      <div v-if="has.pagination" class="paginationTop">
         <pagination
           :num-items="currentNumItems"
           :page-size="currentPageSize"
@@ -26,7 +28,7 @@
       </div>
     </div>
 
-    <ul class="entryList" v-if="items">
+    <ul class="entryList">
       <li v-for="item in itemsSorted" :key="item.type + item.id">
 
         <div>
@@ -67,7 +69,7 @@
 
           <div class="entryList__attributes" v-if="item.type !== 'chapters'">
             <div v-if="item.facet_items">
-              <entry-facet-items :entry="item" />
+              <entry-facet-items :entry="item" :useFacetFilter="has.facetFilter" />
             </div>
 
             <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
@@ -103,7 +105,7 @@
       </li>
     </ul>
 
-    <div v-if="items && currentNumItems && has.pagination">
+    <div v-if="currentNumItems && has.pagination">
       <pagination
         :num-items="currentNumItems"
         :page-size="currentPageSize"
@@ -111,7 +113,6 @@
         @changed="setPage">
       </pagination>
     </div>
-
   </div>
 </template>
 
@@ -124,9 +125,11 @@ import Spinner from '@/components/Spinner'
 import moment from 'moment'
 import EntryFacetItems from '@/components/entry/EntryFacetItems'
 import EntryListItemOwners from '@/components/entry/EntryListItemOwners'
+import EntryListFacetFilter from '@/components/entry/EntryListFacetFilter'
+import { mapState } from 'vuex'
 
 export default {
-  props: {items: {}, limit: {}, sortFunction: {}, sortOrder: {}, options: {}, modifyRoute: {default: true}},
+  props: {items: {}, isLoading: {}, limit: {}, sortFunction: {}, sortOrder: {}, options: {}, modifyRoute: {default: true}},
 
   data () {
     const options = this.options || {}
@@ -137,6 +140,7 @@ export default {
       searchKeyword: '',
       selectedItems: [],
       has: {
+        facetFilter: options.facetFilter,
         filter: options.filter,
         pagination: options.pagination,
         annotations: options.annotations,
@@ -165,8 +169,16 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      filteredEntries: state => state.facetFilters.filteredEntries
+    }),
+
+    itemsUnsorted () {
+      return this.has.facetFilter ? this.filteredEntries : this.items
+    },
+
     itemsSorted () {
-      let items = this.items || []
+      let items = this.has.facetFilter ? this.filteredEntries : this.items
       items = items.filter(i => i.title.toLowerCase().includes(this.searchKeyword.toLowerCase()))
       items = this.sortFunction ? this.sortFunction(items, this.sortOrder) : items
       this.currentNumItems = items.length // eslint-disable-line vue/no-side-effects-in-computed-properties
@@ -181,14 +193,6 @@ export default {
   },
 
   methods: {
-    select (item) {
-      if (this.selectedItems.includes(item)) {
-        this.selectedItems = this.selectedItems.filter(si => si !== item)
-      } else {
-        this.selectedItems.push(item)
-      }
-    },
-
     dayOfEvent (item) {
       let day = moment(item.date_start).date()
       if (day < 10) {
@@ -234,7 +238,8 @@ export default {
     AnnotationTag,
     EntryIcon,
     EntryFacetItems,
-    EntryListItemOwners
+    EntryListItemOwners,
+    EntryListFacetFilter
   }
 }
 </script>
@@ -262,7 +267,7 @@ export default {
   }
 }
 
-.pagination:first-child {
+.paginationTop:nth-child(2) {
   margin-top: 1em;
 }
 

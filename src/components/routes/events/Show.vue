@@ -113,7 +113,6 @@ export default {
   }
   > .generalTab__splitViewChild {
     width: 50%;
-    padding: 1em;
     @media screen and (max-width: $break-medium) {
       width: 100%;
     }

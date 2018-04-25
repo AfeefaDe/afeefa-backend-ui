@@ -4,6 +4,7 @@ import auth from './auth.js'
 import api from './api.js'
 import navigation from './navigation.js'
 import messages from './messages.js'
+import facetFilters from './facet-filters.js'
 
 Vue.use(Vuex)
 
@@ -12,7 +13,8 @@ export default new Vuex.Store({
     auth,
     api,
     navigation,
-    messages
+    messages,
+    facetFilters
   },
 
   actions: {

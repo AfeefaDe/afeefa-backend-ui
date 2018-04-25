@@ -1,15 +1,23 @@
 <template>
   <entry-list
     :items="items"
+    :isLoading="isLoading"
     :numItems="numItems"
+    facetEntryType="Event"
     addEntryButton="events.new"
+    :options="{facetFilter: true}"
     :messages="messages">
+
+    <div slot="sidebar" class="mainCard sidebar" v-if="items.length">
+      <facet-item-filter-bar type="Event" :entries="items" />
+    </div>
 
     <div slot="items">
       <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
         <entry-list-items
           slot="upcomingEventsTab"
-          :items="items"
+          :items="filteredEntries"
+          :isLoading="isLoading"
           :sort-function="sortFunction"
           :options="{filter: true, pagination: true, event_date: true}"
           :sort-order="sortOrder">
@@ -17,7 +25,8 @@
 
         <entry-list-items
           slot="pastEventsTab"
-          :items="items"
+          :items="filteredEntries"
+          :isLoading="isLoading"
           :sort-function="sortFunction"
           :options="{filter: true, pagination: true, event_date: true}"
           :sort-order="sortOrder">
@@ -36,6 +45,7 @@ import Event from '@/models/Event'
 import EntryListMixin from '@/components/mixins/EntryListMixin'
 import EntryListItems from '@/components/entry/EntryListItems'
 import { mapState } from 'vuex'
+import FacetItemFilterBar from '@/components/facet/FacetItemFilterBar'
 
 export default {
   mixins: [EntryListMixin],
@@ -57,7 +67,8 @@ export default {
 
   computed: {
     ...mapState({
-      numEvents: state => state.navigation.numEvents
+      numEvents: state => state.navigation.numEvents,
+      filteredEntries: state => state.facetFilters.filteredEntries
     }),
 
     numItems () {
@@ -80,7 +91,6 @@ export default {
     setCurrentTab (tabName) {
       this.currentTab = tabName
 
-      this.items = null
       this.loadItems()
     },
 
@@ -93,11 +103,16 @@ export default {
       } else {
         return {'filter[date]': 'upcoming'}
       }
+    },
+
+    itemsLoaded (entries) {
+      this.$store.dispatch('facetFilters/initEntries', {type: 'Event', entries: this.items})
     }
   },
 
   components: {
-    EntryListItems
+    EntryListItems,
+    FacetItemFilterBar
   }
 }
 </script>

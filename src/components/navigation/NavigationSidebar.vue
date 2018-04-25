@@ -4,9 +4,6 @@
       <img class="logo" src="../../assets/images/afeefa_light_withoutLink.svg" alt="Afeefa Logo with white background">
     </div>
 
-    <div class="mainCard__header" v-if="false">
-      Afeefa Backend
-    </div>
     <div class="">
       <ul class="navigationSidebar__navContainer">
         <li :class="['navigationSidebar__navItem', 'level' + item.level]" v-for="item in items" :key="item.id" v-if="showSideBarItem(item)">
@@ -73,14 +70,18 @@ export default {
 .navigationSidebar {
   .logoContainer {
     height: $header_height;
-    padding: 1.5em;
+    padding: 2em;
+    padding-bottom: 0;
     .logo {
-      height: 80%;
+      height: 70%;
     }
   }
+
   &__navContainer {
     margin: 0;
+    margin-top: -1em;
   }
+
   &__navItem {
     padding: 0.8em 0 0.5em 0;
     border-bottom: 1px solid $gray20;

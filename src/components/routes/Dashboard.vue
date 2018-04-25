@@ -15,11 +15,12 @@
         <div>
           <entry-list-items
             :items="todos"
+            :isLoading="todosLoading"
             :limit="5"
             :sort-function="todosSort"
             :options="{updated_at: true, annotations: true}">
           </entry-list-items>
-          <router-link :to="{name: 'todos'}" v-if="todos">{{ $t('status.all') }} {{ $t('headlines.todos') }}</router-link>
+          <router-link :to="{name: 'todos'}" v-if="!todosLoading">{{ $t('status.all') }} {{ $t('headlines.todos') }}</router-link>
         </div>
       </div>
     </div>
@@ -37,11 +38,12 @@
         <div>
           <entry-list-items
             :items="orgas"
+            :isLoading="orgasLoading"
             :limit="5"
             :sort-function="orgaSort"
             :options="{created_at: true}">
           </entry-list-items>
-          <router-link :to="{name: 'orgas.list'}" v-if="orgas">{{ $t('status.all') }} {{ $tc('headlines.organisations', numOrgas) }}</router-link>
+          <router-link :to="{name: 'orgas.list'}" v-if="!orgasLoading">{{ $t('status.all') }} {{ $tc('headlines.organisations', numOrgas) }}</router-link>
         </div>
       </div>
     </div>
@@ -59,11 +61,12 @@
         <div>
           <entry-list-items
             :items="events"
+            :isLoading="eventsLoading"
             :limit="5"
             :sort-function="eventsSort"
             :options="{created_at: true, event_date: true}">
           </entry-list-items>
-          <router-link :to="{name: 'events.list'}" v-if="events">{{ $t('status.all') }} {{ $tc('headlines.events', 2) }}</router-link>
+          <router-link :to="{name: 'events.list'}" v-if="!eventsLoading">{{ $t('status.all') }} {{ $tc('headlines.events', 2) }}</router-link>
         </div>
       </div>
     </div>
@@ -85,11 +88,16 @@ import TodosQuery from '@/resources/Todos'
 export default {
   data () {
     return {
-      todos: null,
+      todos: [],
       todosSort: sortByUpdatedAt,
-      orgas: null,
+      todosLoading: true,
+
+      orgas: [],
+      orgasLoading: true,
       orgaSort: sortByCreatedAt,
-      events: null,
+
+      events: [],
+      eventsLoading: true,
       eventsSort: sortByCreatedAt
     }
   },
@@ -104,14 +112,17 @@ export default {
   created () {
     TodosQuery.getAll().then(todos => {
       this.todos = todos
+      this.todosLoading = false
     })
 
     Orga.Query.getAll().then(orgas => {
       this.orgas = orgas
+      this.orgasLoading = false
     })
 
     Event.Query.getAll().then(events => {
       this.events = events
+      this.eventsLoading = false
     })
   },
 

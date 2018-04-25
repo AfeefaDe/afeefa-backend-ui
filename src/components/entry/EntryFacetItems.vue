@@ -7,7 +7,13 @@
     <div v-else>
       <span v-for="facet in facets" :key="facet.id">
         <span v-for="facetItem in getSelectedFacetItems(facet)" :key="facetItem.id">
-          <tree-item-tag :treeItem="facetItem" />
+          <span v-if="useFacetFilter" @click="facetItemClick(facetItem)" :class="{clickable: useFacetFilter}">
+            <tree-item-tag
+              :treeItem="facetItem"
+              :countOwners="countEntriesForFacetItem(facetItem)"
+              :x="facetItemIsSelected(facetItem)" />
+          </span>
+          <tree-item-tag :treeItem="facetItem" v-else />
         </span>
       </span>
 
@@ -18,13 +24,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import TreeItemTag from '@/components/tree/TreeItemTag'
 import FacetSelector from '@/components/facet/FacetSelector'
 import Facet from '@/models/Facet'
 import Spinner from '@/components/Spinner'
+import facetItems from '@/helpers/facet-items'
 
 export default {
-  props: ['entry', 'isEdit'],
+  props: ['entry', 'isEdit', 'useFacetFilter'],
 
   data () {
     return {
@@ -39,11 +47,30 @@ export default {
     })
   },
 
+  computed: {
+    ...mapState({
+      selectedFacetItems: state => state.facetFilters.selectedFacetItems,
+      filteredEntries: state => state.facetFilters.filteredEntries
+    })
+  },
+
   methods: {
+    facetItemClick (facetItem) {
+      this.$store.dispatch('facetFilters/filteredFacetItemClick', facetItem)
+    },
+
+    countEntriesForFacetItem (facetItem) {
+      return facetItems.getEntriesForFacetItem(facetItem, this.filteredEntries).length
+    },
+
     getSelectedFacetItems (facet) {
       return facet.getAllFacetItems().filter(item => {
         return this.entry.facet_items.includes(item)
       })
+    },
+
+    facetItemIsSelected (facetItem) {
+      return this.selectedFacetItems.includes(facetItem)
     },
 
     facetsSaved () {
@@ -75,5 +102,9 @@ export default {
   display: inline-block;
   margin-right: .4em;
   margin-bottom: .4em;
+}
+
+.clickable {
+  cursor: pointer;
 }
 </style>

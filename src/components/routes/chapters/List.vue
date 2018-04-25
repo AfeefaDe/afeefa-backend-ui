@@ -1,6 +1,7 @@
 <template>
   <entry-list
     :items="items"
+    :isLoading="isLoading"
     addEntryButton="chapters.new"
     :sort-function="sortByTitle"
     :options="{filter: true, pagination: true, hideTypeIcon: true, linkToItem: 'edit'}"
