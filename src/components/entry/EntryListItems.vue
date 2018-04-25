@@ -55,20 +55,20 @@
             <span class="icon"><i v-if="false" class="material-icons">navigate_next</i></span>
           </router-link>
 
-          <div v-if="item.type === 'orgas' && item.project_initiators.length" class="entryList__parentLink">
+          <div v-if="item.type === 'orgas' && item.project_initiators.length">
             <entry-list-item-owners :items="item.project_initiators"></entry-list-item-owners>
           </div>
 
-          <div v-if="item.type === 'offers' && item.owners.length" class="entryList__parentLink">
+          <div v-if="item.type === 'offers' && item.owners.length">
             <entry-list-item-owners :items="item.owners"></entry-list-item-owners>
           </div>
 
-          <div v-if="item.type === 'events' && item.hosts.length" class="entryList__parentLink">
+          <div v-if="item.type === 'events' && item.hosts.length">
             <entry-list-item-owners :items="item.hosts"></entry-list-item-owners>
           </div>
 
-          <div class="entryList__attributes" v-if="item.type !== 'chapters'">
-            <div v-if="item.facet_items" class="entryList__facets">
+          <div class="entryList__attributes" v-if="item.facet_items">
+            <div :class="['entryList__facets', {emptyList: item.facet_items.length === 0}]">
               <entry-facet-items :entry="item" :isEdit="true" :useFacetFilter="has.facetFilter" />
             </div>
 
@@ -314,16 +314,22 @@ export default {
     margin-bottom: .5em;
   }
 
-  &__parentLink {
-    margin-top: -.1em;
-  }
-
   &__facets {
     margin-top: .8em;
+
+    &.emptyList {
+      margin-top: .3em;
+    }
   }
 
   &__numbers {
+    > * {
+      display: inline-block;
+    }
+
+    > *:first-child {
     margin-top: .6em;
+  }
   }
 
   &__status {

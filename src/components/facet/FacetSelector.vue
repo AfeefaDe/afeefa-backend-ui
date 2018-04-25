@@ -74,7 +74,7 @@
     </modal>
 
     <a href="" class="inlineEditLink" @click.prevent="showModal">
-      Kategorien ändern
+      Kategorien {{ owner.facet_items.length ? 'ändern' : 'hinzufügen' }}
     </a>
   </div>
 </template>

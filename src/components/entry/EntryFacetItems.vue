@@ -5,7 +5,7 @@
     </div>
 
     <div v-else>
-      <span v-for="facet in facets" :key="facet.id">
+      <span v-for="facet in facets" :key="facet.id" v-if="entry.facet_items.length">
         <span v-for="facetItem in getSelectedFacetItems(facet)" :key="facetItem.id">
           <span v-if="useFacetFilter" @click="facetItemClick(facetItem)" :class="{clickable: useFacetFilter}">
             <tree-item-tag
