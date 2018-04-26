@@ -101,7 +101,7 @@ export default {
 
 .entryList.sideBarVisible {
   display: flex;
-  margin-right: calc(300px + 2em);
+  margin-right: calc(300px + 1em);
 
   > *:first-child {
     flex-grow: 1;
