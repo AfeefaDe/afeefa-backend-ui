@@ -1,10 +1,18 @@
 <template>
-  <div class="row">
-    <div class="col s12 m12">
-      <div class="mainCard2">
-        <slot name="header" />
+  <div :class="['page', {sideBarVisible: sideBar}]">
+    <div class="row">
+      <div class="col s12 m12">
+        <div class="mainCard2">
+          <slot name="header" />
 
-        <slot name="content" />
+          <slot name="content" />
+        </div>
+      </div>
+    </div>
+
+    <div v-if="sideBar">
+      <div class="mainCard2 sidebar">
+        <slot name="sidebar" />
       </div>
     </div>
   </div>
@@ -12,6 +20,8 @@
 
 <script>
 export default {
+  props: ['sideBar'],
+
   inject: ['$validator']
 }
 </script>
@@ -26,6 +36,21 @@ export default {
   & > * {
     padding: 1.5em;
   }
+}
+
+.sideBarVisible {
+  display: flex;
+  margin-right: calc(300px + 1em);
+
+  > *:first-child {
+    flex-grow: 1;
+  }
+}
+
+.sidebar {
+  position: fixed;
+  width: 290px;
+  margin-left: .5em;
 }
 
 </style>

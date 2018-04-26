@@ -75,11 +75,11 @@
             <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
 
             <div class="entryList__numbers">
-              <span v-if="item.count_offers">{{ item.count_offers }} {{ $tc('offers.offer', item.count_offers) }} </span>
-              <span v-if="item.count_events">{{ item.count_events }} Veranstaltungen </span>
-              <span v-if="item.count_resource_items">{{ item.count_resource_items }} Ressourcen </span>
-              <span v-if="item.count_projects">{{ item.count_projects }} Projekte </span>
-              <span v-if="item.count_network_members">{{ item.count_network_members }} Mitglieder </span>
+              <span v-if="item.count_offers">{{ item.count_offers }} {{ $tc('offers.offer', item.count_offers) }}</span>
+              <span v-if="item.count_events">{{ item.count_events }} Veranstaltungen</span>
+              <span v-if="item.count_resource_items">{{ item.count_resource_items }} Ressourcen</span>
+              <span v-if="item.count_projects">{{ item.count_projects }} Projekte</span>
+              <span v-if="item.count_network_members">{{ item.count_network_members }} Mitglieder</span>
             </div>
 
             <div class="entryList__status entryList--lightColor" v-if="has.updated_at">
@@ -330,6 +330,10 @@ export default {
     > *:first-child {
     margin-top: .6em;
   }
+
+    > *:not(:last-child):after {
+      content: ',';
+    }
   }
 
   &__status {

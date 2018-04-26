@@ -160,14 +160,13 @@ export default {
   position: relative;
   min-width: 250px;
   line-height: 1.7em;
-  padding: 1.5em;
 }
 
 .closeIcon {
   position: absolute;
   cursor: pointer;
-  top: 12px;
-  right: 12px;
+  top: -.6em;
+  right: -.5em;
   i {
     font-size: 24px;
     color: $gray30;

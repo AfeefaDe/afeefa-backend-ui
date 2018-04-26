@@ -1,6 +1,6 @@
 <template>
-  <div :class="['entryList', {sideBarVisible}]">
-    <afeefa-page>
+  <div>
+    <afeefa-page :sideBar="sideBarVisible">
 
       <afeefa-header slot="header">
         <div slot="title">
@@ -29,13 +29,12 @@
         </slot>
       </div>
 
-    </afeefa-page>
-
-    <div v-if="showFilterBar || facetItemFilters.length">
-      <div class="mainCard sidebar">
+      <div slot="sidebar" v-if="sideBarVisible">
         <facet-item-filter-bar />
       </div>
-    </div>
+
+    </afeefa-page>
+
   </div>
 </template>
 
@@ -84,27 +83,3 @@ export default {
   }
 }
 </script>
-
-
-<style lang="scss" scoped>
-.entryList {
-  .sidebar {
-    position: fixed;
-    width: 290px;
-    // width: 100%;
-    // height: auto;
-    // margin: 2em 2em 20px 1em;
-    // margin: 2em 3em auto 1em;
-    margin-left: .5em;
-  }
-}
-
-.entryList.sideBarVisible {
-  display: flex;
-  margin-right: calc(300px + 1em);
-
-  > *:first-child {
-    flex-grow: 1;
-  }
-}
-</style>
