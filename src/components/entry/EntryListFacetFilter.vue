@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div class="facetFilterTags">
+    <div v-if="facetItemFilters.length">
       <span v-for="facetItem in facetItemFilters" :key="facetItem.id">
         <span @click.prevent="facetItemClick(facetItem)" class="facetFilterTag inline clickable">
           <tree-item-tag
@@ -60,10 +60,6 @@ export default {
   }
 }
 
-.facetFilterTags {
-  margin: .5em 0;
-}
-
 .facetFilterTag {
   font-size: 1.2em;
 
@@ -76,8 +72,9 @@ export default {
   }
 
   &.inline {
+    display: inline-block;
     margin-right: .4em;
-    padding-bottom: .4em;
+    margin-bottom: .4em;
   }
 }
 </style>
