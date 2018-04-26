@@ -83,9 +83,14 @@ class Orga extends Entry {
     if (actorRelations) {
       ActorRelations.RELATIONS.forEach(relationName => {
         this[relationName] = actorRelations[relationName]
+        // loading an orga within a list will only set project_initiators
+        // in that case we dont want reset projects or network members
+        // as they already might be loaded already beforehand
+        if (actorRelations.$rels.projects.fetched) {
+          this.count_projects = this.projects.length
+          this.count_network_members = this.network_members.length
+        }
       })
-      this.count_projects = this.projects.length
-      this.count_network_members = this.network_members.length
     }
   }
 
