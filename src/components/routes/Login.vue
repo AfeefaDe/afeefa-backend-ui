@@ -4,9 +4,10 @@
       <div class="col s12 m12 l4 push-l4">
           <img class="login__logo" src="../../assets/images/afeefa_light.svg" alt="Afeefa Logo with white background">
           <div class="mainCard">
-            <div class="mainCard__header">
-              <h2 class="mainCard__headerTitle">Login</h2>
-            </div>
+            <afeefa-header class="small">
+              <span slot="title">Login</span>
+            </afeefa-header>
+
             <div>
               <form @submit.prevent="submitLoginForm">
                 <div class="input-field">
