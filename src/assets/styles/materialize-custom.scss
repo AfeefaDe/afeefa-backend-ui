@@ -167,3 +167,9 @@ input[type="checkbox"].filled-in.checkboxSmall + label {
     height: 14px;
   }
 }
+
+input[type="checkbox"].filled-in.checkboxSmall:not(:checked) + label {
+  &:after {
+    border-color: $gray30;
+  }
+}
