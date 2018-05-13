@@ -41,29 +41,25 @@
 
 <script>
 import { mapState } from 'vuex'
-import Facet from '@/models/Facet'
 import EntryListItems from '@/components/entry/EntryListItems'
 import FacetItemFilterBar from '@/components/facet/FacetItemFilterBar'
 
 export default {
-  props: ['items', 'isLoading', 'numItems', 'facetEntryType', 'sortFunction', 'sortOrder', 'options', 'messages', 'addEntryButton'],
+  props: ['items', 'isLoading', 'numItems', 'facetOwnerType', 'sortFunction', 'sortOrder', 'options', 'messages', 'addEntryButton'],
 
   created () {
     this.$store.dispatch('facetFilters/show', false)
-
-    Facet.Query.getAll().then(facets => {
-      this.$store.dispatch('facetFilters/initFacets', facets)
-    })
   },
 
   computed: {
     ...mapState({
+      selectedFacets: state => state.facetFilters.selectedFacets,
       showFilterBar: state => state.facetFilters.show,
       facetItemFilters: state => state.facetFilters.facetItemFilters
     }),
 
     sideBarVisible () {
-      return this.showFilterBar || this.facetItemFilters.length
+      return this.showFilterBar
     },
 
     currentNumItems () {
@@ -73,7 +69,7 @@ export default {
 
   watch: {
     items () {
-      this.$store.dispatch('facetFilters/initEntries', {type: this.facetEntryType, entries: this.items})
+      this.$store.dispatch('facetFilters/initEntries', {facetOwnerType: this.facetOwnerType, entries: this.items})
     }
   },
 

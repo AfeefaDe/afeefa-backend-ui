@@ -1,14 +1,18 @@
 import facetItems from '@/helpers/facet-items'
 
-const facetItemIsSelected = (state, facetItem) => {
+function facetIsSelected (state, facet) {
+  return state.selectedFacets.includes(facet)
+}
+
+function facetItemIsSelected (state, facetItem) {
   return state.selectedFacetItems.includes(facetItem)
 }
 
-const facetWithoutEntriesIsSelected = (state, facet) => {
+function facetWithoutEntriesIsSelected (state, facet) {
   return state.selectedFacetsWithoutEntries.includes(facet)
 }
 
-const getFilteredEntries = state => {
+function getFilteredEntries (state) {
   return facetItems.getEntriesForFacetItemsAndWithoutFacets(
     state.selectedFacetItems,
     state.selectedFacetsWithoutEntries,
@@ -21,15 +25,22 @@ export default {
 
   state: {
     show: false,
-    type: null,
+    facetOwnerType: null,
     facets: [],
     entries: [],
 
+    selectedFacets: [],
     selectedFacetItems: [],
     selectedFacetsWithoutEntries: [],
     facetItemFilters: [],
 
     filteredEntries: []
+  },
+
+  getters: {
+    selectableFacets: state => {
+      return facetItems.getFacetsForOwnerType(state.facets, state.facetOwnerType)
+    }
   },
 
   mutations: {
@@ -41,13 +52,34 @@ export default {
       state.facets = facets
     },
 
-    initEntries (state, {type, entries}) {
-      state.type = type
+    initEntries (state, {facetOwnerType, entries}) {
+      state.facetOwnerType = facetOwnerType
       state.entries = entries
 
+      state.selectedFacets = []
       state.selectedFacetItems = []
       state.selectedFacetsWithoutEntries = []
       state.facetItemFilters = []
+    },
+
+    initSelectedFacets (state) {
+      const mainFacet = state.facets.find(facet => facet.main_facet_of === state.facetOwnerType)
+      if (mainFacet) {
+        state.selectedFacets = [mainFacet]
+      }
+    },
+
+    toggleFacetSelection (state, facet) {
+      if (facetIsSelected(state, facet)) {
+        state.selectedFacets = state.selectedFacets.filter(f => f !== facet)
+
+        state.selectedFacetItems = state.selectedFacetItems.filter(fi => fi.facet !== facet)
+        state.selectedFacetsWithoutEntries = state.selectedFacetsWithoutEntries.filter(i => i !== facet)
+      } else {
+        state.selectedFacets = state.facets.filter(f => {
+          return state.selectedFacets.includes(f) || facet === f
+        })
+      }
     },
 
     toggleFacetItemSelection (state, facetItem) {
@@ -70,8 +102,8 @@ export default {
       state.facetItemFilters = facetItemFilters
     },
 
-    setFilteredEntries (state, filteredEntries) {
-      state.filteredEntries = filteredEntries
+    initFilteredEntries (state) {
+      state.filteredEntries = getFilteredEntries(state)
     }
   },
 
@@ -82,30 +114,41 @@ export default {
 
     initFacets ({commit, dispatch}, facets) {
       commit('initFacets', facets)
+      commit('initSelectedFacets')
 
-      dispatch('initFilteredEntries')
+      commit('initFilteredEntries')
     },
 
-    initEntries ({commit, dispatch}, {type, entries}) {
-      commit('initEntries', {type, entries})
+    initEntries ({commit, dispatch}, {facetOwnerType, entries}) {
+      commit('initEntries', {facetOwnerType, entries})
+      commit('initSelectedFacets')
 
-      dispatch('initFilteredEntries')
+      commit('initFilteredEntries')
     },
 
-    entryFacetItemsChanged ({state, dispatch}) {
+    entryFacetItemsChanged ({state, commit, dispatch}) {
       const filteredEntries = getFilteredEntries(state)
 
       if (!filteredEntries.length) {
-        dispatch('initEntries', {type: state.type, entries: state.entries})
+        dispatch('initEntries', {facetOwnerType: state.facetOwnerType, entries: state.entries})
       } else {
-        dispatch('initFilteredEntries')
+        commit('initFilteredEntries')
       }
     },
 
     facetItemClick ({commit, dispatch}, facetItem) {
       commit('toggleFacetItemSelection', facetItem)
 
-      dispatch('initFilteredEntries')
+      commit('initFilteredEntries')
+      dispatch('computeFacetItemFilters')
+
+      window.scrollTo(0, 0)
+    },
+
+    selectOrDeselectFacet ({commit, dispatch}, facet) {
+      commit('toggleFacetSelection', facet)
+
+      commit('initFilteredEntries')
       dispatch('computeFacetItemFilters')
 
       window.scrollTo(0, 0)
@@ -114,16 +157,10 @@ export default {
     facetWithoutEntriesClick ({commit, dispatch}, facet) {
       commit('toggleFacetWithoutEntriesSelection', facet)
 
-      dispatch('initFilteredEntries')
+      commit('initFilteredEntries')
       dispatch('computeFacetItemFilters')
 
       window.scrollTo(0, 0)
-    },
-
-    initFilteredEntries ({state, commit}, facet) {
-      const filteredEntries = getFilteredEntries(state)
-
-      commit('setFilteredEntries', filteredEntries)
     },
 
     filteredFacetItemClick ({state, dispatch}, facetItem) {
@@ -132,6 +169,10 @@ export default {
       } else {
         dispatch('facetItemClick', facetItem)
       }
+    },
+
+    entryFacetItemsSaved ({commit}) {
+      commit('initFilteredEntries')
     },
 
     computeFacetItemFilters ({state, commit}, facet) {

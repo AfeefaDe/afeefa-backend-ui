@@ -2,15 +2,12 @@
   <div class="treeItemContainer">
     <div v-if="treeItem.id" :class="['treeItem', {parentItem: !treeItem.parent, subItem: treeItem.parent, editItem: isEdit}]">
       <div>
-        <tree-item-tag :treeItem="treeItem" v-if="!isEdit" :link="associateItemLink(treeItem)" />
+        <tree-item-tag :treeItem="treeItem" :chevron="routeConfig.chevron" v-if="!isEdit" />
 
         <span v-if="!isEdit">
           <a href="" @click.prevent="edit()" class="inlineEditLink">
             Ändern
           </a>
-          <router-link :to="associateItemLink(treeItem)" class="inlineEditLink">
-            Zuordnen
-          </router-link>
         </span>
 
         <tree-item-editor
@@ -46,7 +43,6 @@
 
 
 <script>
-import TreeItemTag from './TreeItemTag'
 import TreeItemEditor from './TreeItemEditor'
 
 export default {
@@ -67,10 +63,6 @@ export default {
   },
 
   methods: {
-    associateItemLink (treeItem) {
-      return this.routeConfig.associateItemLink(treeItem)
-    },
-
     checkCancel (treeItem) {
       if (treeItem !== this.treeItem) {
         this.cancel()
@@ -156,7 +148,6 @@ export default {
   },
 
   components: {
-    TreeItemTag,
     TreeItemEditor
   }
 }

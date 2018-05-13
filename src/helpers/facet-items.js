@@ -54,5 +54,57 @@ export default {
     facetItem.color = facet.color
     facetItem._isFacetWithoutEntry = true
     return facetItem
+  },
+
+  getDisplayedFacetItemsForFacets (selectedFacetItems, facets) {
+    let items = []
+    facets.forEach(facet => {
+      facet.facet_items.forEach(facetItem => {
+        const subItems = []
+        facetItem.sub_items.forEach(subItem => {
+          if (selectedFacetItems.includes(subItem)) {
+            subItems.push(subItem)
+          }
+        })
+        if (subItems.length) {
+          items = items.concat(subItems)
+        } else if (selectedFacetItems.includes(facetItem)) {
+          items.push(facetItem)
+        }
+      })
+    })
+    return items
+  },
+
+  getDisplayedFacetItemsByInsertion (selectedFacetItems, facets) {
+    let items = []
+    selectedFacetItems
+      .filter(facetItem => facets.includes(facetItem.facet))
+      .forEach(facetItem => {
+        if (facetItem.parent) {
+          items.push(facetItem)
+        } else {
+          const hasSub = facetItem.sub_items.some(subItem => selectedFacetItems.includes(subItem))
+          if (!hasSub) {
+            items.push(facetItem)
+          }
+        }
+      })
+    return items
+  },
+
+  getFacetsForOwnerType (facets, facetOwnerType) {
+    let mainFacet = null
+    facets = facets.filter(facet => {
+      if (facet.main_facet_of === facetOwnerType) {
+        mainFacet = facet
+        return false
+      }
+      return facet.owner_types.includes(facetOwnerType)
+    })
+    if (mainFacet) {
+      facets.unshift(mainFacet)
+    }
+    return facets
   }
 }

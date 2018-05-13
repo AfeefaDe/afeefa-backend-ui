@@ -40,7 +40,7 @@ export default {
 }
 
 .innerContainer > * {
-  margin-left: 14px;
+  margin-left: 16px;
 }
 
 .lastItem {

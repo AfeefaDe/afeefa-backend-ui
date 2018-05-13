@@ -12,11 +12,13 @@
         </offer-owners>
       </entry-detail-property>
 
-      <entry-detail-property
-        name="Kategorien"
-        iconName="bookmark_border">
-        <entry-facet-items :entry="offer" :isEdit="true" />
-      </entry-detail-property>
+      <div v-for="(facet, index) in facets" :key="facet.id">
+        <entry-detail-property
+          :name="facet.title"
+          :iconName="index ? '' : 'bookmark_border'">
+          <editable-entry-facets :entry="item" :facets="[facet]" :bus="bus" />
+        </entry-detail-property>
+      </div>
 
       <entry-detail-property
         v-if="offer.description"
@@ -37,6 +39,7 @@ import OfferRouteConfig from './OfferRouteConfig'
 
 import EntryFacetItems from '@/components/entry/EntryFacetItems'
 import OfferOwners from '@/components/entry/show/relations/OfferOwners'
+import EditableEntryFacets from '@/components/entry/EditableEntryFacets'
 
 export default {
   mixins: [EntryShowMixin],
@@ -45,7 +48,8 @@ export default {
 
   data () {
     return {
-      routeConfig: new OfferRouteConfig(this, this.id)
+      routeConfig: new OfferRouteConfig(this, this.id),
+      bus: this
     }
   },
 
@@ -57,7 +61,8 @@ export default {
 
   components: {
     EntryFacetItems,
-    OfferOwners
+    OfferOwners,
+    EditableEntryFacets
   }
 }
 </script>

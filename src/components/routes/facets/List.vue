@@ -23,9 +23,6 @@
           <div class="ownerTypes">
             für: <span v-for="type in facet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
           </div>
-          <div>
-            {{ countItems(facet) }} Kategorien {{ countOwners(facet) }} Einträge zugeordnet
-          </div>
         </div>
       </div>
     </div>
@@ -93,7 +90,7 @@ export default {
 .colorIcon {
   vertical-align: middle;
   display: inline-block;
-  width: 16px;
+  width: 5px;
   height: 16px;
   margin-right: 6px;
 }
@@ -128,9 +125,5 @@ export default {
 .ownerTypes {
   font-size: .9em;
   color: $gray50;
-}
-
-.facetItemTagList {
-  max-width: 800px;
 }
 </style>

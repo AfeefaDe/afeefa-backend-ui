@@ -3,7 +3,7 @@
     :items="items"
     :isLoading="isLoading"
     :numItems="items.length"
-    facetEntryType="Orga"
+    facetOwnerType="Orga"
     addEntryButton="orgas.new"
     :sort-function="sortByCreatedAt"
     :options="{facetFilter: true, filter: true, pagination: true, created_at: true}"

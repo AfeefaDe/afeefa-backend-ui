@@ -7,6 +7,7 @@ export default class Config extends RouteConfig {
 
     this.routeName = 'events'
     this.Model = Event
+    this.facetOwnerType = 'Event'
 
     this.messages = {
       // any

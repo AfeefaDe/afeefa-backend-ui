@@ -3,7 +3,7 @@
     <modal ref="modal" class="modalWindow">
       <div class="modalContent">
         <div class="ownerInfo">
-          {{ owner.title }} <i class="material-icons">chevron_right</i> Kategorien ändern
+          {{ owner.title }} <i class="material-icons">chevron_right</i> Navigation ändern
         </div>
 
         <div class="facetSelector">
@@ -18,14 +18,20 @@
           <div class="facetItems" v-if="expandedFacet">
             <div class="selectorContent">
               <div v-for="facetItem in expandedFacet.facet_items" :key="facetItem.id">
-                <div @click.prevent="addFacetItem(facetItem)" class="facetTag parentItem">
-                  <tree-item-tag :treeItem="facetItem" :x="selectedFacetItems.includes(facetItem)" />
+                <div class="facetTag parentItem">
+                  <tree-item-tag
+                    :treeItem="facetItem"
+                    :x="selectedFacetItems.includes(facetItem)"
+                    @click="addFacetItem" />
                 </div>
 
                 <div v-for="(subItem, index) in facetItem.sub_items" :key="subItem.id" :class="{lastSubItemContainer: index === facetItem.sub_items.length - 1}">
                   <tree-sub-item :isLast="index === facetItem.sub_items.length - 1">
-                    <div @click.prevent="addFacetItem(subItem)" class="facetTag">
-                      <tree-item-tag :treeItem="subItem" :x="selectedFacetItems.includes(subItem)" />
+                    <div class="facetTag">
+                      <tree-item-tag
+                        :treeItem="subItem"
+                        :x="selectedFacetItems.includes(subItem)"
+                        @click="addFacetItem" />
                     </div>
                   </tree-sub-item>
                 </div>
@@ -40,13 +46,19 @@
 
                 <div class="selectedFacetItemsContainer">
                   <div v-for="facetItem in facet.facet_items" :key="facetItem.id" v-if="selectedFacetItems.includes(facetItem)">
-                    <div @click="removeFacetItem(facetItem)" class="facetTag parentItem">
-                      <tree-item-tag :treeItem="facetItem" :x="true" />
+                    <div class="facetTag parentItem">
+                      <tree-item-tag
+                        :treeItem="facetItem"
+                        :x="true"
+                        @click="removeFacetItem(facetItem)" />
                     </div>
                     <div v-for="subItem in facetItem.sub_items" :key="subItem.id" v-if="selectedFacetItems.includes(subItem)" :class="{lastSubItemContainer: isLastSelectedItemOfParent(facetItem, subItem)}">
                       <tree-sub-item :isLast="isLastSelectedItemOfParent(facetItem, subItem)">
-                        <div @click="removeFacetItem(subItem)" class="facetTag">
-                          <tree-item-tag :treeItem="subItem" :x="true" />
+                        <div class="facetTag">
+                          <tree-item-tag
+                            :treeItem="subItem"
+                            :x="true"
+                            @click="removeFacetItem(subItem)" />
                         </div>
                       </tree-sub-item>
                     </div>
@@ -70,7 +82,7 @@
     </modal>
 
     <a href="" class="inlineEditLink" @click.prevent="showModal">
-      Kategorien {{ owner.facet_items.length ? 'ändern' : 'hinzufügen' }}
+      Navigation {{ owner.facet_items.length ? 'ändern' : 'hinzufügen' }}
     </a>
   </div>
 </template>
@@ -78,7 +90,6 @@
 <script>
 import Facet from '@/models/Facet'
 import Modal from '@/components/Modal'
-import TreeItemTag from '@/components/tree/TreeItemTag'
 import TreeSubItem from '@/components/tree/TreeSubItem'
 
 export default {
@@ -236,7 +247,6 @@ export default {
 
   components: {
     Modal,
-    TreeItemTag,
     TreeSubItem
   }
 }
@@ -301,8 +311,6 @@ export default {
 }
 
 .facetTag {
-  display: inline-block;
-  cursor: pointer;
   margin-bottom: 1px;
 }
 

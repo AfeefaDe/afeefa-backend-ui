@@ -1,5 +1,7 @@
 <script>
 import User from '@/models/User'
+import Facet from '@/models/Facet'
+import facetItems from '@/helpers/facet-items'
 
 export default {
   props: ['id'],
@@ -10,7 +12,8 @@ export default {
       routeConfig: null,
       currentUser: null,
       loadingError: false,
-      currentTab: null
+      currentTab: null,
+      facets: []
     }
   },
 
@@ -18,6 +21,10 @@ export default {
     this.initItem(this.id)
 
     this.currentUser = User.Query.getCurrentUser()
+
+    Facet.Query.getAll().then(facets => {
+      this.facets = facetItems.getFacetsForOwnerType(facets, this.routeConfig.facetOwnerType)
+    })
   },
 
   beforeRouteUpdate (to, from, next) {

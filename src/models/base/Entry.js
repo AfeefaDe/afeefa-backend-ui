@@ -1,6 +1,7 @@
 import Annotation from '@/models/Annotation'
 import Contact from '@/models/Contact'
 import FacetItem from '@/models/FacetItem'
+import NavigationItem from '@/models/NavigationItem'
 import User from '@/models/User'
 import ContactsResource from '@/resources/relations/EntryContacts'
 import OwnerFacetItemsResource from '@/resources/relations/OwnerFacetItems'
@@ -66,6 +67,11 @@ export default class Entry extends Model {
         type: Relation.HAS_MANY,
         Model: FacetItem,
         Resource: OwnerFacetItemsResource
+      },
+
+      navigation_items: {
+        type: Relation.HAS_MANY,
+        Model: NavigationItem
       }
     }
   }

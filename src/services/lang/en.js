@@ -62,7 +62,9 @@ export default {
     pastEventsTab: 'Past',
     resourceTab: 'Resources',
     actorsTab: 'Actors',
-    offersTab: 'Offers'
+    offersTab: 'Offers',
+    navigationViaCategoriesTab: 'Assigned Categories',
+    navigationViaDirectOwners: 'Assigned Entries'
   },
   orgaTypes: {
     '2': {

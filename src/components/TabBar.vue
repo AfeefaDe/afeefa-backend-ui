@@ -4,12 +4,12 @@
     <ul class="tabBar__navItemContainer">
       <li v-for="tab in tabs" :key="tab.name" :class="['tabBar__navItem', {active: activeTab === tab}]">
         <a href="#" @click.prevent="setActiveTab(tab)">
-          {{ $t('tabs.' + tab.name) }}
+          {{ $te('tabs.' + tab.name) ? $t('tabs.' + tab.name): tab.name }}
           <span v-if="tab.hint !== null">({{ tab.hint }})</span>
         </a>
       </li>
     </ul>
-    <section v-for="tab in tabs" :key="tab.name" v-show="activeTab === tab" class="tabContent">
+    <section v-for="tab in tabs" :key="tab.name" v-if="activeTab === tab" class="tabContent">
       <slot :name="tab.name"></slot>
     </section>
   </div>

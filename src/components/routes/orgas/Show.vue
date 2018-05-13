@@ -23,10 +23,18 @@
               </div>
             </entry-detail-property>
 
+            <div v-for="(facet, index) in facets" :key="facet.id">
+              <entry-detail-property
+                :name="facet.title"
+                :iconName="index ? '' : 'bookmark_border'">
+                <editable-entry-facets :entry="item" :facets="[facet]" :bus="bus" />
+              </entry-detail-property>
+            </div>
+
             <entry-detail-property
-              name="Kategorien"
+              name="Navigation"
               iconName="bookmark_border">
-              <entry-facet-items :entry="orga" :isEdit="true" />
+              <entry-navigation-items :entry="orga" :isEdit="true" />
             </entry-detail-property>
 
             <entry-detail-property name="Projektträger" :iconName="'device_hub'">
@@ -189,13 +197,14 @@ import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 import EntryDetailHeaderButtons from '@/components/entry/show/EntryDetailHeaderButtons'
 import ImageContainer from '@/components/ImageContainer'
-import EntryFacetItems from '@/components/entry/EntryFacetItems'
+import EntryNavigationItems from '@/components/entry/EntryNavigationItems'
 import ActorActors from '@/components/entry/show/relations/ActorActors'
 import ContactList from '@/components/contact/ContactList'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import ActorSelector from '@/components/selector/ActorSelector'
 import EntryListItems from '@/components/entry/EntryListItems'
 import AnnotationTag from '@/components/AnnotationTag'
+import EditableEntryFacets from '@/components/entry/EditableEntryFacets'
 
 export default {
   mixins: [EntryShowMixin],
@@ -204,7 +213,8 @@ export default {
     return {
       routeConfig: new OrgaRouteConfig(this, this.id),
       sortByDateStart,
-      sortByDateMixin
+      sortByDateMixin,
+      bus: this
     }
   },
 
@@ -234,13 +244,14 @@ export default {
   components: {
     EntryDetailHeaderButtons,
     ImageContainer,
-    EntryFacetItems,
+    EntryNavigationItems,
     ActorActors,
     ContactList,
     EntryDetailFooter,
     ActorSelector,
     EntryListItems,
-    AnnotationTag
+    AnnotationTag,
+    EditableEntryFacets
   }
 }
 </script>

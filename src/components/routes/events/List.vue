@@ -3,7 +3,7 @@
     :items="items"
     :isLoading="isLoading"
     :numItems="numItems"
-    facetEntryType="Event"
+    facetOwnerType="Event"
     addEntryButton="events.new"
     :messages="messages">
 
@@ -102,10 +102,6 @@ export default {
       } else {
         return {'filter[date]': 'upcoming'}
       }
-    },
-
-    itemsLoaded (entries) {
-      this.$store.dispatch('facetFilters/initEntries', {type: 'Event', entries: this.items})
     }
   },
 

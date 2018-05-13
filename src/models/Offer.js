@@ -6,6 +6,7 @@ import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
 
 import FacetItem from './FacetItem'
+import NavigationItem from './NavigationItem'
 import Orga from './Orga'
 
 class Offer extends Model {
@@ -33,8 +34,17 @@ class Offer extends Model {
         type: Relation.HAS_MANY,
         Model: FacetItem,
         Resource: OwnerFacetItemsResource
+      },
+
+      navigation_items: {
+        type: Relation.HAS_MANY,
+        Model: NavigationItem
       }
     }
+  }
+
+  init () {
+    this.facetOwnerType = 'Offer'
   }
 
   serialize () {

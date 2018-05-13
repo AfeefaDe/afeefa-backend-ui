@@ -16,6 +16,7 @@ export default class Config extends TreeConfig {
     this.containerName = 'navigation'
     this.relationName = 'navigation_items'
     this.canColorizeItems = true
+    this.chevron = true
   }
 
   loadTreeItems () {
@@ -28,12 +29,5 @@ export default class Config extends TreeConfig {
     const navigationItem = NavigationItem.create(navigation, parent)
     navigationItem.title = 'Neuer Menüpunkt'
     return navigationItem
-  }
-
-  associateItemLink (navigationItem) {
-    return {
-      name: 'navigation.associate',
-      params: {id: navigationItem.id}
-    }
   }
 }

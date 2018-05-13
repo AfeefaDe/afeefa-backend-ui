@@ -7,6 +7,7 @@ export default class Config extends RouteConfig {
     this.containerName = null
     this.relationName = null
     this.canColorizeItems = false
+    this.chevron = false
 
     this.messages = {
       loadingItem: () => this.$t('status.load_data'),
@@ -31,10 +32,6 @@ export default class Config extends RouteConfig {
   }
 
   createNewTreeItem (container, parent) {
-    // override
-  }
-
-  associateItemLink (treeItem) {
     // override
   }
 }

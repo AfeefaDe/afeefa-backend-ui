@@ -123,7 +123,7 @@ export default {
 .colorIcon {
   vertical-align: middle;
   display: inline-block;
-  width: 16px;
+  width: 5px;
   height: 16px;
   margin-right: 6px;
 }
@@ -162,9 +162,5 @@ export default {
 .ownerTypes {
   font-size: .9em;
   color: $gray50;
-}
-
-.facetItemTagList {
-  max-width: 800px;
 }
 </style>

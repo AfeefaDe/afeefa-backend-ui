@@ -4,75 +4,69 @@
       <i class="material-icons">cancel</i>
     </div>
 
-    <div v-for="facet in facets" :key="facet.id" class="facet" v-if="entryHasFacet(facet)">
-      <div :style="{'background-color': facet.color}" class="colorIcon"></div>
-      <a href="" class="facetTitle" @click.prevent="selectedFacet = (selectedFacet === facet ? null : facet)">{{ facet.title }} ({{ countEntriesForFacet(facet) }})</a>
+    <div class="facetSelector">
+      <facet-selector-item v-for="facet in selectableFacets" :key="'select-' + facet.id"
+        @click="selectOrDeselectFacet(facet)"
+        :item="facet"
+        :color="facet.color"
+        :checked="selectedFacets.includes(facet)"
+        :checkbox="true" />
+    </div>
 
-      <div class="facetTags" v-if="facet === selectedFacet">
-        <div v-for="facetItem in facet.facet_items" :key="facetItem.id">
+    <div class="facetItemFilters" v-if="selectedFacets.length">
+      <div v-for="facet in selectedFacets" :key="facet.id" class="facetTags">
+        <div v-for="facetItem in facet.facet_items" :key="facetItem.id" class="facetItemContainer">
           <div v-if="facetItemHasEntries(facetItem)">
-            <div @click.prevent="facetItemClick(facetItem)" class="facetTag clickable">
-              <input type="checkbox" class="filled-in checkboxSmall" :id="'select' + facetItem.id" :checked="facetItemIsSelected(facetItem)">
-              <label :for="'select' + facetItem.id"></label>
-              <tree-item-tag
-                :treeItem="facetItem"
-                :countOwners="countEntriesForFacetItem(facetItem)"
-                :x="facetItemIsSelected(facetItem)" />
+            <div
+              :class="['facetItem', {selected: facetItemIsSelected(facetItem)}]"
+              :style="{'border-left-color': facet.color}"
+              @click="facetItemClick(facetItem)">
+              {{ facetItem.title }}
+              <span class="hint">{{ countEntriesForFacetItem(facetItem) }}</span>
+              <i class="material-icons" v-if="facetItemIsSelected(facetItem)">cancel</i>
             </div>
           </div>
 
-          <div v-else class="facetTagDisabled facetTag">
-            <input type="checkbox" class="filled-in checkboxSmall" :id="'select' + facetItem.id" :checked="false">
-            <label :for="'select' + facetItem.id"></label>
-            <tree-item-tag :treeItem="facetItem" :countOwners="0" />
+          <div v-else>
+            <div
+              class="facetItem disabled"
+              :style="{'border-left-color': facet.color}">
+              {{ facetItem.title }}
+              <span class="hint">{{ countEntriesForFacetItem(facetItem) }}</span>
+            </div>
           </div>
         </div>
 
-        <div @click.prevent="entriesWithoutFacetClick(facet)" v-if="countEntriesWithoutFacet(facet)" class="facetTag clickable">
-          <input type="checkbox" class="filled-in checkboxSmall" :id="'select' + facet.id" :checked="entriesWithoutFacetIsSelected(facet)">
-          <label :for="'select' + facet.id"></label>
-          <tree-item-tag
-            :treeItem="createEmptyFacetItem(facet)"
-            :countOwners="countEntriesWithoutFacet(facet)"
-            :x="entriesWithoutFacetIsSelected(facet)" />
-        </div>
+        <div class="facetItemContainer">
+          <div v-if="countEntriesWithoutFacet(facet)">
+            <div
+              :class="['facetItem', {selected: entriesWithoutFacetIsSelected(facet)}]"
+              :style="{'border-left-color': facet.color}"
+              @click="entriesWithoutFacetClick(facet)">
+              Nicht zugeordnet
+              <span class="hint">{{ countEntriesWithoutFacet(facet) }}</span>
+              <i class="material-icons" v-if="entriesWithoutFacetIsSelected(facet)">cancel</i>
+            </div>
+          </div>
 
-        <div v-else class="facetTagDisabled facetTag">
-          <input type="checkbox" class="filled-in checkboxSmall" :id="'select' + facet.id" :checked="false">
-          <label :for="'select' + facet.id"></label>
-          <tree-item-tag :treeItem="createEmptyFacetItem(facet)" :countOwners="0" />
-        </div>
-      </div>
-
-      <div class="facetTags" v-else>
-        <div v-for="facetItem in selectedFacetItems" :key="facetItem.id" v-if="facetItem.facet === facet">
-          <div @click.prevent="facetItemClick(facetItem)" class="facetTag clickable">
-            <input type="checkbox" class="filled-in checkboxSmall" :id="'select' + facetItem.id" :checked="facetItemIsSelected(facetItem)">
-            <label :for="'select' + facetItem.id"></label>
-            <tree-item-tag
-              :treeItem="facetItem"
-              :countOwners="countEntriesForFacetItem(facetItem)"
-              :x="true" />
+          <div v-else>
+            <div
+              class="facetItem disabled"
+              :style="{'border-left-color': facet.color}">
+              Nicht zugeordnet
+              <span class="hint">0</span>
+            </div>
           </div>
         </div>
-        <div @click.prevent="entriesWithoutFacetClick(facet)" class="facetTag clickable" v-if="entriesWithoutFacetIsSelected(facet)">
-          <input type="checkbox" class="filled-in checkboxSmall" :id="'select' + facet.id" :checked="entriesWithoutFacetIsSelected(facet)">
-          <label :for="'select' + facet.id"></label>
-          <tree-item-tag
-            :treeItem="createEmptyFacetItem(facet)"
-            :countOwners="countEntriesWithoutFacet(facet)"
-            :x="true" />
-        </div>
-      </div>
 
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import TreeItemTag from '@/components/tree/TreeItemTag'
 import facetItems from '@/helpers/facet-items'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -82,17 +76,17 @@ export default {
   },
 
   created () {
-    this.selectedFacet = this.facets.find(facet => {
-      return this.entryHasFacet(facet)
-    })
+    this.selectedFacet = this.selectableFacets[0]
   },
 
   computed: {
+    ...mapGetters('facetFilters', ['selectableFacets']),
+
     ...mapState({
-      facets: state => state.facetFilters.facets,
+      selectedFacets: state => state.facetFilters.selectedFacets,
       selectedFacetItems: state => state.facetFilters.selectedFacetItems,
       selectedFacetsWithoutEntries: state => state.facetFilters.selectedFacetsWithoutEntries,
-      entryType: state => state.facetFilters.type,
+      facetOwnerType: state => state.facetFilters.facetOwnerType,
       filteredEntries: state => state.facetFilters.filteredEntries,
       facetItemFilters: state => state.facetFilters.facetItemFilters
     })
@@ -103,8 +97,8 @@ export default {
       this.$store.dispatch('facetFilters/show', false)
     },
 
-    entryHasFacet (facet) {
-      return facet.owner_types.includes(this.entryType)
+    selectOrDeselectFacet (facet) {
+      this.$store.dispatch('facetFilters/selectOrDeselectFacet', facet)
     },
 
     countEntriesForFacet (facet) {
@@ -146,10 +140,6 @@ export default {
     countEntriesWithoutFacet (facet) {
       return facetItems.getEntriesWithoutFacet(facet, this.filteredEntries).length
     }
-  },
-
-  components: {
-    TreeItemTag
   }
 }
 </script>
@@ -157,9 +147,11 @@ export default {
 
 <style lang="scss" scoped>
 .filterBar {
+  max-height: calc(100vh - 6.5em);
   position: relative;
-  min-width: 250px;
-  line-height: 1.7em;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .closeIcon {
@@ -176,6 +168,70 @@ export default {
   }
 }
 
+.facetSelectorItem {
+  margin-bottom: .2em;
+
+  /deep/ .facetItem {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.facetItemFilters {
+  flex: 8;
+  margin-top: 2em;
+  overflow-y: auto;
+}
+
+.facetTags {
+  &:not(:first-child) {
+    margin-top: 2em;
+  }
+}
+
+.facetItemContainer > * {
+  display: flex;
+}
+
+.facetItem {
+  @include user-select();
+
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  margin-right: 6px;
+  padding: .1em .3em;
+  cursor: pointer;
+  font-size: .9em;
+  border-left: 3px solid;
+  white-space: nowrap;
+  color: $gray80;
+
+  &:not(.disabled):hover {
+    background-color: $white;
+  }
+
+  &.selected, &.selected:hover {
+    background-color: $white;
+  }
+
+  &.disabled {
+    opacity: .4;
+    cursor: auto;
+  }
+
+  .hint {
+    font-size: .8em;
+    margin-left: .4em;
+  }
+
+  i {
+    font-size: 1.1em;
+    margin-left: .2em;
+    color: $gray80;
+  }
+}
+
 .colorIcon {
   vertical-align: middle;
   display: inline-block;
@@ -184,57 +240,4 @@ export default {
   margin-right: 6px;
 }
 
-.facetTitle {
-  font-size: .9em;
-  a {
-    color: inherit;
-  }
-}
-
-.facet:first-child .facetTitle {
-  margin-top: 0;
-}
-
-.facetTags {
-  margin-top: .2em;
-
-  > *:first-child {
-    margin-top: .5em;
-  }
-
-  > *:last-child {
-    margin-bottom: 1em;
-  }
-}
-
-input, label {
-  display: none !important;
-}
-
-.facetTag {
-  display: inline-block;
-  > * {
-    white-space: nowrap;
-  }
-
-  &.clickable {
-    cursor: pointer;
-  }
-
-  &.inline {
-    margin-right: .4em;
-    padding-bottom: .4em;
-  }
-}
-
-.facetTagDisabled {
-  opacity: .3;
-}
-
-/* stylelint-disable selector-class-pattern */
-input[type="checkbox"].filled-in.checkboxSmall:not(:checked) + label {
-  &:after {
-    border-color: $gray30;
-  }
-}
 </style>

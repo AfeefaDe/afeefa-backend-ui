@@ -26,6 +26,17 @@ class Navigation extends Model {
       }
     }
   }
+
+  getAllNavigationItems () {
+    const navigationItems = []
+    for (const navigationItem of this.navigation_items) {
+      navigationItems.push(navigationItem)
+      for (const subnavigationItem of navigationItem.sub_items) {
+        navigationItems.push(subnavigationItem)
+      }
+    }
+    return navigationItems
+  }
 }
 
 export default Registry.add(Navigation)

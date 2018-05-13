@@ -30,11 +30,11 @@ export default {
       // prevent background scrolling + retain scroll position and vertical scrollbar
       const element = document.documentElement || document.body
       const scroll = element.scrollTop
-      const hasScrollbar = element.scrollHeight > element.clientHeight
+      // const hasScrollbar = element.scrollHeight > element.clientHeight
       element.style.width = '100%'
       element.style.top = -scroll + 'px'
       element.style.position = 'fixed'
-      element.style.overflowY = hasScrollbar ? 'scroll' : 'hidden'
+      // element.style.overflowY = hasScrollbar ? 'scroll' : 'hidden'
 
       this.visible = true
     },
@@ -89,6 +89,7 @@ export default {
     cursor: pointer;
     top: 12px;
     right: 12px;
+    z-index: 1;
     i {
       font-size: 24px;
       color: $gray30;

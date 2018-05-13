@@ -3,7 +3,7 @@
     :items="items"
     :isLoading="isLoading"
     :numItems="items.length"
-    facetEntryType="Offer"
+    facetOwnerType="Offer"
     addEntryButton="offers.new"
     :options="{facetFilter: true, filter: true, pagination: true, created_at: false}"
     :messages="messages">

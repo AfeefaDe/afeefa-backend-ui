@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tree-item-tag :treeItem="treeItem" />
+    <tree-item-tag :treeItem="treeItem" :chevron="routeConfig.chevron" />
 
     <a href="" @click.prevent="cancel()" class="inlineEditLink">
       Abbrechen
@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import TreeItemTag from './TreeItemTag'
 import TreeItemEditorForm from './TreeItemEditorForm'
 import Swatches from 'vue-swatches'
 import 'vue-swatches/dist/vue-swatches.min.css'
@@ -122,7 +121,6 @@ export default {
   },
 
   components: {
-    TreeItemTag,
     TreeItemEditorForm,
     ColorPicker: Swatches
   }

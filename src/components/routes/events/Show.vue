@@ -11,11 +11,13 @@
       <div class="generalTab generalTab--splitView">
         <div class="entryDetail generalTab__splitViewChild">
 
-          <entry-detail-property
-            name="Kategorien"
-            iconName="bookmark_border">
-            <entry-facet-items :entry="event" :isEdit="true" />
-          </entry-detail-property>
+          <div v-for="(facet, index) in facets" :key="facet.id">
+            <entry-detail-property
+              :name="facet.title"
+              :iconName="index ? '' : 'bookmark_border'">
+              <editable-entry-facets :entry="item" :facets="[facet]" :bus="bus" />
+            </entry-detail-property>
+          </div>
 
           <entry-detail-property
             :name="$tc('entries.date')"
@@ -70,17 +72,18 @@ import EventRouteConfig from './EventRouteConfig'
 import EntryDetailHeaderButtons from '@/components/entry/show/EntryDetailHeaderButtons'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import ContactList from '@/components/contact/ContactList'
-import EntryFacetItems from '@/components/entry/EntryFacetItems'
 import EventHosts from '@/components/entry/show/relations/EventHosts'
 import AnnotationTag from '@/components/AnnotationTag'
 import ImageContainer from '@/components/ImageContainer'
+import EditableEntryFacets from '@/components/entry/EditableEntryFacets'
 
 export default {
   mixins: [EntryShowMixin],
 
   data () {
     return {
-      routeConfig: new EventRouteConfig(this, this.id)
+      routeConfig: new EventRouteConfig(this, this.id),
+      bus: this
     }
   },
 
@@ -94,10 +97,10 @@ export default {
     EntryDetailHeaderButtons,
     EntryDetailFooter,
     ContactList,
-    EntryFacetItems,
     EventHosts,
     AnnotationTag,
-    ImageContainer
+    ImageContainer,
+    EditableEntryFacets
   }
 }
 </script>

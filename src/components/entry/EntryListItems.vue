@@ -5,9 +5,9 @@
 
   <div v-else>
     <div class="navigation">
-      <entry-list-facet-filter v-if="has.facetFilter" />
+      <entry-list-facet-filter v-if="has.facetFilter" class="facetsFilter" />
 
-      <div v-if="itemsUnsorted.length > 1 && has.filter" class="filter">
+      <div v-if="itemsUnsorted.length && has.filter" class="filter">
         <input
           type="text"
           placeholder="Tippen zum Filtern"
@@ -52,7 +52,6 @@
 
           <router-link :to="routerLinkObject(item)" class="entryList__nav">
             <h4 class="title">{{ item.title || 'Kein Titel' }}</h4>
-            <span class="icon"><i v-if="false" class="material-icons">navigate_next</i></span>
           </router-link>
 
           <div v-if="item.type === 'orgas' && item.project_initiators.length">
@@ -68,9 +67,9 @@
           </div>
 
           <div class="entryList__attributes" v-if="item.facet_items">
-            <div :class="['entryList__facets', {emptyList: item.facet_items.length === 0}]">
-              <entry-facet-items :entry="item" :isEdit="true" :useFacetFilter="has.facetFilter" />
-            </div>
+            <editable-entry-facets :entry="item" :bus="bus" />
+
+            <entry-navigation-items :entry="item" :countAttributeName="navigationItemCountAttributeName" :isEdit="true" v-if="false" />
 
             <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
 
@@ -123,13 +122,23 @@ import AnnotationTag from '@/components/AnnotationTag'
 import EntryIcon from '@/components/entry/EntryIcon'
 import Spinner from '@/components/Spinner'
 import moment from 'moment'
-import EntryFacetItems from '@/components/entry/EntryFacetItems'
+import EditableEntryFacets from '@/components/entry/EditableEntryFacets'
+import EntryNavigationItems from '@/components/entry/EntryNavigationItems'
 import EntryListItemOwners from '@/components/entry/EntryListItemOwners'
 import EntryListFacetFilter from '@/components/entry/EntryListFacetFilter'
 import { mapState } from 'vuex'
 
 export default {
-  props: {items: {}, isLoading: {}, limit: {}, sortFunction: {}, sortOrder: {}, options: {}, modifyRoute: {default: true}},
+  props: {
+    items: {},
+    isLoading: {},
+    limit: {},
+    sortFunction: {},
+    sortOrder: {},
+    options: {},
+    navigationItemCountAttributeName: {},
+    modifyRoute: {default: true}
+  },
 
   data () {
     const options = this.options || {}
@@ -138,7 +147,7 @@ export default {
       currentPage: 1,
       currentNumItems: 0,
       searchKeyword: '',
-      selectedItems: [],
+      bus: this,
       has: {
         facetFilter: options.facetFilter,
         filter: options.filter,
@@ -193,6 +202,10 @@ export default {
   },
 
   methods: {
+    showNavigationItemsClick () {
+      console.log('click')
+    },
+
     dayOfEvent (item) {
       let day = moment(item.date_start).date()
       if (day < 10) {
@@ -237,9 +250,10 @@ export default {
     Spinner,
     AnnotationTag,
     EntryIcon,
-    EntryFacetItems,
+    EditableEntryFacets,
     EntryListItemOwners,
-    EntryListFacetFilter
+    EntryListFacetFilter,
+    EntryNavigationItems
   }
 }
 </script>
@@ -250,6 +264,14 @@ export default {
   input {
     height: 2.3rem;
     margin-bottom: .4em;
+  }
+}
+
+.facetsFilter {
+  margin-bottom: .5em;
+
+  &.empty {
+    margin-bottom: 0;
   }
 }
 
@@ -265,10 +287,6 @@ export default {
   i {
     font-size: 20px;
   }
-}
-
-.paginationTop:nth-child(2) {
-  margin-top: 1em;
 }
 
 .treeItemTag {
@@ -301,7 +319,6 @@ export default {
     word-break: break-word;
     hyphens: auto;
     .title {
-      // flex-grow: 2;
       font-size: 1.4em;
       margin: 0;
       font-weight: 500;
@@ -314,12 +331,19 @@ export default {
     margin-bottom: .5em;
   }
 
-  &__facets {
-    margin-top: .8em;
+  .entryListItemOwners {
+    margin-top: .2em;
+  }
 
-    &.emptyList {
+  .editableEntryFacetItems {
+    margin-top: .8em;
+    &.empty {
       margin-top: .3em;
     }
+  }
+
+  .entryNavigationItems {
+    margin-top: .5em;
   }
 
   &__numbers {
@@ -328,8 +352,8 @@ export default {
     }
 
     > *:first-child {
-    margin-top: .6em;
-  }
+      margin-top: .6em;
+    }
 
     > *:not(:last-child):after {
       content: ',';
@@ -337,8 +361,8 @@ export default {
   }
 
   &__status {
-    font-size: .9em;
     margin-top: .4em;
+    font-size: .9em;
   }
 
   &__icon {

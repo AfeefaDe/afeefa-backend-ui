@@ -20,7 +20,11 @@ class NavigationItem extends Model {
 
       color: DataTypes.String,
 
-      count_owners: DataTypes.Int
+      count_owners: DataTypes.Int,
+
+      count_owners_via_facet_items: DataTypes.Int,
+
+      count_direct_owners: DataTypes.Int
     }
   }
 

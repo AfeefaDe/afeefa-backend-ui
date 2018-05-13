@@ -104,7 +104,7 @@ const menuTree = {
       action: null,
       level: 1,
       children: [
-        { route: 'navigation.associate', title: 'headlines.facetItemAssociate', level: 3 }
+        { route: 'navigation.edit', title: 'headlines.edit', level: 3 }
       ]
     },
     {

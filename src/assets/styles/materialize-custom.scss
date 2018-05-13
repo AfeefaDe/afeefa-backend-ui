@@ -67,6 +67,19 @@ a {
   }
 }
 
+.btn-xs {
+  font-size: .7rem;
+  height: 17px;
+  line-height: 17px;
+  padding: 0 0.4rem;
+  i {
+    font-size: 1rem;
+  }
+  i.left {
+    margin-right: 2px;
+  }
+}
+
 .btn-medium {
   font-size: .9rem;
   height: 26px;
@@ -168,8 +181,22 @@ input[type="checkbox"].filled-in.checkboxSmall + label {
   }
 }
 
-input[type="checkbox"].filled-in.checkboxSmall:not(:checked) + label {
+input[type="checkbox"].filled-in.gray + label {
   &:after {
     border-color: $gray30;
+  }
+}
+
+input[type="checkbox"].filled-in.gray:checked + label {
+  &:after {
+    background-color: $gray80;
+    border-color: $gray80;
+  }
+}
+
+input[type="checkbox"].filled-in.light:checked + label {
+  &:after {
+    background-color: $gray20;
+    border-color: $gray20;
   }
 }

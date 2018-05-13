@@ -19,7 +19,9 @@ class Facet extends Model {
 
       color: DataTypes.String,
 
-      color_sub_items: DataTypes.Boolean
+      color_sub_items: DataTypes.Boolean,
+
+      main_facet_of: DataTypes.String
     }
   }
 

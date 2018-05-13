@@ -7,6 +7,7 @@ export default class Config extends RouteConfig {
 
     this.routeName = 'orgas'
     this.Model = Orga
+    this.facetOwnerType = 'Orga'
 
     this.messages = {
       // any

@@ -48,8 +48,11 @@ export default {
 }
 
 .sidebar {
+  // overflow-x: hidden;
+  // overflow-y: auto;
   position: fixed;
   width: 290px;
+  max-height: calc(100% - 3.5em);
   margin-left: .5em;
 }
 

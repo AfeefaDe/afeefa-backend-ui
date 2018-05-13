@@ -27,6 +27,7 @@ import EntryDetail from '@/components/entry/EntryDetail'
 import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
 
 import TreeItemTag from '@/components/tree/TreeItemTag'
+import FacetSelectorItem from '@/components/facet/FacetSelectorItem'
 
 Vue.component('AfeefaPage', Page)
 Vue.component('AfeefaHeader', Header)
@@ -37,6 +38,7 @@ Vue.component('EntryDetail', EntryDetail)
 Vue.component('EntryDetailProperty', EntryDetailProperty)
 
 Vue.component('TreeItemTag', TreeItemTag)
+Vue.component('FacetSelectorItem', FacetSelectorItem)
 
 Vue.use(VeeValidate, {delay: 0, locale: 'de'})
 Vue.use(Filters)

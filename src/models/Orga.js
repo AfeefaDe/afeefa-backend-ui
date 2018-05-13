@@ -79,6 +79,10 @@ class Orga extends Entry {
     }
   }
 
+  init () {
+    this.facetOwnerType = 'Orga'
+  }
+
   onActorRelations (actorRelations) {
     if (actorRelations) {
       ActorRelations.RELATIONS.forEach(relationName => {

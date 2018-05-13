@@ -42,6 +42,10 @@ class Event extends Entry {
     }
   }
 
+  init () {
+    this.facetOwnerType = 'Event'
+  }
+
   afterDeserializeAttributes () {
     if (!this.date_end) {
       this.date_end = this.date_start

@@ -16,6 +16,7 @@ export default class Config extends TreeConfig {
     this.containerName = 'facet'
     this.relationName = 'facet_items'
     this.canColorizeItems = false
+    this.chevron = false
   }
 
   loadTreeItems (facet) {
@@ -26,12 +27,5 @@ export default class Config extends TreeConfig {
     const newFacetItem = FacetItem.create(container, parent)
     newFacetItem.title = 'Neues Attribut'
     return newFacetItem
-  }
-
-  associateItemLink (facetItem) {
-    return {
-      name: 'facetitem.associate',
-      params: {facetItemId: facetItem.id}
-    }
   }
 }

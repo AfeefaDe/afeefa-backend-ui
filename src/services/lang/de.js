@@ -62,7 +62,9 @@ export default {
     pastEventsTab: 'Vergangene',
     resourceTab: 'Ressourcen',
     actorsTab: 'Akteure',
-    offersTab: 'Angebote'
+    offersTab: 'Angebote',
+    navigationViaCategoriesTab: 'Zugeordnete Kategorien',
+    navigationViaDirectOwners: 'Zugeordnete Einträge'
   },
   orgaTypes: {
     '2': {

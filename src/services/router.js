@@ -28,12 +28,10 @@ import ListChapters from '@/components/routes/chapters/List'
 import NewChapter from '@/components/routes/chapters/New'
 import EditChapter from '@/components/routes/chapters/Edit'
 
-import ListNavigationItems from '@/components/routes/navigation/Show'
-import AssociateNavigationItem from '@/components/routes/navigation/Associate'
+import ShowNavigation from '@/components/routes/navigation/Show'
 
 import ListFacets from '@/components/routes/facets/List'
 import ShowFacet from '@/components/routes/facets/Show'
-import AssociateFacetItem from '@/components/routes/facets/Associate'
 
 import Search from '@/components/routes/Search'
 import UserSettings from '@/components/routes/UserSettings'
@@ -232,12 +230,6 @@ const routes = [
             name: 'facets.show',
             component: ShowFacet,
             props: true
-          },
-          {
-            path: ':id/associate/:facetItemId',
-            name: 'facetitem.associate',
-            component: AssociateFacetItem,
-            props: true
           }
         ]
       },
@@ -258,13 +250,7 @@ const routes = [
           {
             path: '',
             name: 'navigation.show',
-            component: ListNavigationItems
-          },
-          {
-            path: 'associate/:id',
-            name: 'navigation.associate',
-            component: AssociateNavigationItem,
-            props: true
+            component: ShowNavigation
           }
         ]
       }

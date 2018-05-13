@@ -7,6 +7,10 @@
           {{ container && container.title || 'Kein Titel' }}
         </slot>
       </div>
+
+      <div slot="buttons">
+        <slot name="buttons" />
+      </div>
     </afeefa-header>
 
     <div slot="content" v-if="container">
