@@ -74,7 +74,6 @@ export default {
   data () {
     return {
       selectedFacetItems: [],
-      entryFacetItems: [],
       isEdit: false,
       facetTreeVisible: false,
       loading: false
@@ -123,7 +122,7 @@ export default {
     },
 
     displayedSavedFacetItems () {
-      return facetItems.getDisplayedFacetItemsForFacets(this.entryFacetItems, this.selectedFacets)
+      return facetItems.getDisplayedFacetItemsForFacets(this.entry.facet_items, this.selectedFacets)
     },
 
     facetsWithSelectableItems () {
@@ -141,14 +140,10 @@ export default {
       return this.entry.facetOwnerType === facet.main_facet_of ? numSelectedItems < 2 : numSelectedItems < 2
     },
 
-    initSelectedFacetItems () {
-      this.entryFacetItems = this.entry.facet_items
-    },
-
     showEditForm () {
       this.bus.$emit('openFacetItemEditor', this)
 
-      this.selectedFacetItems = this.entryFacetItems.concat()
+      this.selectedFacetItems = this.entry.facet_items.concat()
 
       if (!this.displayedSelectedFacetItems.length) {
         this.showFacetTree()
@@ -254,7 +249,9 @@ export default {
     },
 
     save () {
-      this.entry.$rels.facet_items.Query.attachMany(this.selectedFacetItems).then(result => {
+      let selectedFacetItems = this.entry.facet_items.filter(fi => !this.selectedFacets.includes(fi.facet))
+      selectedFacetItems = selectedFacetItems.concat(this.selectedFacetItems)
+      this.entry.$rels.facet_items.Query.attachMany(selectedFacetItems).then(result => {
         if (result) {
           this.$store.dispatch('messages/showAlert', {
             description: 'Die Kategorien wurden gespeichert.'
@@ -268,15 +265,15 @@ export default {
       this.loading = true
       this.isEdit = false
       Promise.all([
-        Facet.Query.getAll(),
         this.entry.$rels.facet_items.refetch()
       ]).then(() => {
-        if (!this.facets) { // using facet filters
+        if (!this.facets) { // using facet filters, todo
           this.$store.dispatch('facetFilters/entryFacetItemsSaved')
         }
-        this.initSelectedFacetItems()
         this.loading = false
       })
+
+      Facet.Query.getAll()
     }
   },
 
