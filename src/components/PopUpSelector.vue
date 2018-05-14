@@ -29,6 +29,10 @@ export default {
         let diff = popUpRect.right - window.innerWidth + marginRight
         popUp.style.left = triggerRect.left - diffTrigger - diff + 'px'
       }
+      if (popUpRect.bottom > window.innerHeight - marginRight) {
+        let diff = popUpRect.bottom - window.innerHeight + marginRight
+        popUp.style.top = triggerRect.top - diffTrigger - diff + 'px'
+      }
     })
   },
 
