@@ -40,12 +40,9 @@
 </template>
 
 <script>
-import FacetTreeMixin from '@/components/facet/mixins/FacetTreeMixin'
 import facetItems from '@/helpers/facet-items'
 
 export default {
-  mixins: [FacetTreeMixin],
-
   props: ['selectedFacetItems', 'facets'],
 
   data () {
@@ -127,6 +124,27 @@ export default {
       })
     },
 
+    positionTree (tree, rootX, rootY, diffX, diffY, alternativeRootX) {
+      tree.style.left = rootX + diffX + 'px'
+      tree.style.top = rootY + diffY + 'px'
+
+      const rect = tree.getBoundingClientRect()
+
+      if (rect.right > window.innerWidth - 20) {
+        let diff = rect.right - window.innerWidth + 20
+        if (alternativeRootX !== undefined) {
+          tree.style.left = alternativeRootX - rect.width + 'px'
+        } else {
+          tree.style.left = rootX - diff + 'px'
+        }
+      }
+
+      if (rect.bottom > window.innerHeight - 20) {
+        const diff = rect.bottom - window.innerHeight + 20
+        tree.style.top = rootY - 10 - diff + 'px'
+      }
+    },
+
     facetItemClick (facetItem) {
       if (this.facetItemIsDisabled(facetItem)) {
         return
@@ -138,15 +156,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.facetItemsTree {
-  position: absolute;
-  z-index: 2;
-  display: block;
-  background-color: white;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.2), 0 2px 10px 0 rgba(0,0,0,0.2);
-  padding: .6em;
-}
-
 .facetSelectorItem {
   font-size: .9em;
 
@@ -169,7 +178,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  padding: .6em;
+  padding: .5em;
   margin-top: -.5em;
 
   background-color: white;

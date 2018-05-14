@@ -1,10 +1,10 @@
 <template>
   <div class="filterBar">
-    <div class="closeIcon" @click="close" v-if="!facetItemFilters.length">
+    <div class="closeIcon" @click="close" v-if="false && !facetItemFilters.length">
       <i class="material-icons">cancel</i>
     </div>
 
-    <div class="facetSelector">
+    <div class="facetSelector" v-if="false">
       <facet-selector-item v-for="facet in selectableFacets" :key="'select-' + facet.id"
         @click="selectOrDeselectFacet(facet)"
         :item="facet"
@@ -69,16 +69,6 @@ import facetItems from '@/helpers/facet-items'
 import { mapState, mapGetters } from 'vuex'
 
 export default {
-  data () {
-    return {
-      selectedFacet: null
-    }
-  },
-
-  created () {
-    this.selectedFacet = this.selectableFacets[0]
-  },
-
   computed: {
     ...mapGetters('facetFilters', ['selectableFacets']),
 
@@ -86,7 +76,6 @@ export default {
       selectedFacets: state => state.facetFilters.selectedFacets,
       selectedFacetItems: state => state.facetFilters.selectedFacetItems,
       selectedFacetsWithoutEntries: state => state.facetFilters.selectedFacetsWithoutEntries,
-      facetOwnerType: state => state.facetFilters.facetOwnerType,
       filteredEntries: state => state.facetFilters.filteredEntries,
       facetItemFilters: state => state.facetFilters.facetItemFilters
     })
@@ -179,7 +168,6 @@ export default {
 
 .facetItemFilters {
   flex: 8;
-  margin-top: 2em;
   overflow-y: auto;
 }
 

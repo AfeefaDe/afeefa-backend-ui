@@ -1,0 +1,73 @@
+<template>
+  <div>
+    <a ref="trigger" href="" @click.prevent="showFacetSelector">
+      <slot />
+    </a>
+
+    <pop-up-selector :trigger="$refs.trigger" :closeIcon="false" @close="hideFacetSelector" v-if="facetSelectorVisible">
+      <div class="facetSelector">
+        <facet-selector-item v-for="facet in selectableFacets" :key="'select-' + facet.id"
+          @click="selectOrDeselectFacet(facet)"
+          :item="facet"
+          :color="facet.color"
+          :more="false"
+          :checked="selectedFacets.includes(facet)"
+          :checkbox="true" />
+      </div>
+    </pop-up-selector>
+  </div>
+</template>
+
+<script>
+import { mapState, mapGetters } from 'vuex'
+import PopUpSelector from '@/components/PopUpSelector'
+
+export default {
+  data () {
+    return {
+      facetSelectorVisible: false
+    }
+  },
+
+  computed: {
+    ...mapGetters('facetFilters', ['selectableFacets']),
+
+    ...mapState({
+      selectedFacets: state => state.facetFilters.selectedFacets
+    })
+  },
+
+  methods: {
+    showFacetSelector () {
+      this.facetSelectorVisible = true
+    },
+
+    hideFacetSelector () {
+      this.facetSelectorVisible = false
+    },
+
+    selectOrDeselectFacet (facet) {
+      this.$store.dispatch('facetFilters/selectOrDeselectFacet', facet)
+    }
+  },
+
+  components: {
+    PopUpSelector
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.facetSelectorItem {
+  margin-bottom: .2em;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  /deep/ .facetItem {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+</style>

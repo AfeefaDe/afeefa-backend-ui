@@ -7,8 +7,17 @@
     <div v-else>
       <div v-if="!isEdit">
         <entry-facet-items :items="displayedSavedFacetItems" :count="false">
-          <a href="" @click.prevent="showEditForm" class="editLink inlineEditLink" ref="addLink" slot="buttons">
-            {{ displayedSavedFacetItems.length ? 'Ändern' : 'Kategorien hinzufügen' }}
+          <facet-item-selector
+            slot="buttons"
+            v-if="!displayedSavedFacetItems.length"
+            :facets="facetsWithSelectableItems"
+            :selectedFacetItems="selectedFacetItems"
+            @click="facetItemClick">
+            <span class="inlineEditLink">Kategorien hinzufügen</span>
+          </facet-item-selector>
+
+          <a v-else href="" slot="buttons" @click.prevent="showEditForm" class="editLink inlineEditLink" ref="addLink">
+            Ändern
           </a>
         </entry-facet-items>
       </div>
@@ -20,19 +29,26 @@
           :selectable="true" :count="false"
           :sortByInsertion="true"
           @click="deselectFacteItem">
-          <a href="" @click.prevent="showFacetTree"
+
+          <facet-item-selector
+            slot="buttons"
             v-if="canAddFacetItem"
-            slot="buttons" class="plusLink" ref="addLink">
-            <i class="material-icons">add</i>
-            <span v-if="!displayedSelectedFacetItems.length">Hinzufügen</span>
-          </a>
+            :facets="facetsWithSelectableItems"
+            :selectedFacetItems="selectedFacetItems"
+            @click="facetItemClick">
+            <i class="material-icons plusLink">add</i>
+          </facet-item-selector>
         </entry-facet-items>
 
-        <a v-else href="" @click.prevent="showFacetTree"
-          class="addLink" ref="addLink">
-          <i class="material-icons">add</i>
-          <span v-if="!displayedSelectedFacetItems.length">Hinzufügen</span>
-        </a>
+        <facet-item-selector
+          v-else
+          :facets="facetsWithSelectableItems"
+          :selectedFacetItems="selectedFacetItems"
+          @click="facetItemClick">
+          <div class="addLink">
+            <i class="material-icons">add</i> Hinzufügen
+          </div>
+        </facet-item-selector>
 
         <div class="buttons">
           <a href="" class="inlineEditLink" @click.prevent="hideEditForm">
@@ -44,14 +60,6 @@
           </button>
         </div>
       </div>
-
-      <facet-items-tree
-        v-if="facetTreeVisible"
-        :facets="facetsWithSelectableItems"
-        ref="facetTree"
-        :selectedFacetItems="selectedFacetItems"
-        @close="hideFacetTree"
-        @click="facetItemClick" />
     </div>
 
   </div>
@@ -63,26 +71,20 @@ import Facet from '@/models/Facet'
 import Spinner from '@/components/Spinner'
 import facetItems from '@/helpers/facet-items'
 import EntryFacetItems from '@/components/entry/EntryFacetItems'
-import FacetItemsTree from '@/components/facet/FacetItemsTree'
-import FacetTreeMixin from '@/components/facet/mixins/FacetTreeMixin'
+import FacetItemSelector from '@/components/facet/FacetItemSelector'
 
 export default {
-  mixins: [FacetTreeMixin],
-
   props: ['entry', 'facets', 'bus'],
 
   data () {
     return {
       selectedFacetItems: [],
       isEdit: false,
-      facetTreeVisible: false,
       loading: false
     }
   },
 
   created () {
-    this.initSelectedFacetItems()
-
     this.bus.$on('openFacetItemEditor', this.checkHideFrom)
   },
 
@@ -145,49 +147,18 @@ export default {
 
       this.selectedFacetItems = this.entry.facet_items.concat()
 
-      if (!this.displayedSelectedFacetItems.length) {
-        this.showFacetTree()
-        return
-      }
-
       this.isEdit = true
     },
 
     checkHideFrom (other) {
-      console.log('check on off')
       if (this.isEdit && this !== other) {
         this.isEdit = false
       }
     },
 
     hideEditForm () {
+      this.selectedFacetItems = []
       this.isEdit = false
-    },
-
-    showFacetTree () {
-      window.addEventListener('click', this.onClickOutside)
-
-      this.facetTreeVisible = true
-
-
-      this.$nextTick(() => {
-        let link = this.$refs.addLink
-        let tree = this.$refs.facetTree
-        this.positionTree(tree.$el, link.offsetLeft, link.offsetTop, 0, -10)
-      })
-    },
-
-    onClickOutside (e) {
-      const facetTree = this.$refs.facetTree
-      if (facetTree && !facetTree.$el.contains(e.target)) {
-        this.hideFacetTree()
-      }
-    },
-
-    hideFacetTree () {
-      window.removeEventListener('click', this.onClickOutside)
-
-      this.facetTreeVisible = false
     },
 
     hasSelectedSubItem (facetItem) {
@@ -210,8 +181,6 @@ export default {
       }
 
       this.selectOrDeselectFacetItem(facetItem)
-
-      this.hideFacetTree()
     },
 
     selectOrDeselectFacetItem (facetItem) {
@@ -280,7 +249,7 @@ export default {
   components: {
     EntryFacetItems,
     Spinner,
-    FacetItemsTree
+    FacetItemSelector
   }
 }
 </script>

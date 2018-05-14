@@ -59,7 +59,8 @@ export default {
     }),
 
     sideBarVisible () {
-      return this.showFilterBar
+      return false
+      // return this.showFilterBar
     },
 
     currentNumItems () {

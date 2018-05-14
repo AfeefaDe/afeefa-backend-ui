@@ -14,7 +14,7 @@
         {{ item.title }}
         <span class="hint" v-if="hint">{{ hint }}</span>
       </div>
-      <div class="more" :style="{opacity: more ? 1 : 0}"></div>
+      <div class="more" v-if="more !== false" :style="{opacity: more ? 1 : 0}"></div>
     </div>
 
   </div>
