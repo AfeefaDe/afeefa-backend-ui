@@ -1,9 +1,5 @@
 <template>
   <div class="filterBar">
-    <div class="closeIcon" @click="close" v-if="false && !facetItemFilters.length">
-      <i class="material-icons">cancel</i>
-    </div>
-
     <div class="facetSelector" v-if="false">
       <facet-selector-item v-for="facet in selectableFacets" :key="'select-' + facet.id"
         @click="selectOrDeselectFacet(facet)"
@@ -136,25 +132,12 @@ export default {
 
 <style lang="scss" scoped>
 .filterBar {
-  max-height: calc(100vh - 6.5em);
+  padding: .5em;
+  max-height: 50vh;
   position: relative;
 
   display: flex;
   flex-direction: column;
-}
-
-.closeIcon {
-  position: absolute;
-  cursor: pointer;
-  top: -.6em;
-  right: -.5em;
-  i {
-    font-size: 24px;
-    color: $gray30;
-    &:hover {
-      color: $gray20;
-    }
-  }
 }
 
 .facetSelectorItem {
@@ -187,6 +170,7 @@ export default {
   display: inline-flex;
   align-items: center;
   margin: 0;
+  margin-bottom: .1em;
   margin-right: 6px;
   padding: .1em .3em;
   cursor: pointer;

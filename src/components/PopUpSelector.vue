@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  props: ['trigger', 'closeIcon'],
+  props: ['trigger', 'closeIcon', 'align', 'diffX'],
 
   created () {
     window.addEventListener('click', this.onClickOutside)
@@ -18,20 +18,28 @@ export default {
     this.$nextTick(() => {
       const popUp = this.$el
       const triggerRect = this.trigger.getBoundingClientRect()
-      const diffTrigger = 20
+      const diffTriggerX = this.diffX !== undefined ? this.diffX : 20
+      const diffTriggerY = 20
       const marginRight = 20
 
-      popUp.style.left = triggerRect.left - diffTrigger + 'px'
-      popUp.style.top = triggerRect.top - diffTrigger + 'px'
+      let popUpRect
 
-      const popUpRect = popUp.getBoundingClientRect()
+      if (this.align === 'left') {
+        popUpRect = popUp.getBoundingClientRect()
+        popUp.style.left = triggerRect.right - popUpRect.width + diffTriggerX + 'px'
+      } else {
+        popUp.style.left = triggerRect.left - diffTriggerX + 'px'
+      }
+      popUp.style.top = triggerRect.top - diffTriggerY + 'px'
+
+      popUpRect = popUp.getBoundingClientRect()
       if (popUpRect.right > window.innerWidth - marginRight) {
         let diff = popUpRect.right - window.innerWidth + marginRight
-        popUp.style.left = triggerRect.left - diffTrigger - diff + 'px'
+        popUp.style.left = triggerRect.left - diffTriggerX - diff + 'px'
       }
       if (popUpRect.bottom > window.innerHeight - marginRight) {
         let diff = popUpRect.bottom - window.innerHeight + marginRight
-        popUp.style.top = triggerRect.top - diffTrigger - diff + 'px'
+        popUp.style.top = triggerRect.top - diffTriggerY - diff + 'px'
       }
     })
   },

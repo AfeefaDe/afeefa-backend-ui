@@ -4,7 +4,7 @@
       <slot />
     </a>
 
-    <pop-up-selector :trigger="$refs.trigger" :closeIcon="false" @close="hideFilterBar" v-if="filterBarVisible">
+    <pop-up-selector :trigger="$refs.trigger" align="left" :closeIcon="false" @close="hideFilterBar" v-if="filterBarVisible">
       <facet-item-filter-bar />
     </pop-up-selector>
   </div>

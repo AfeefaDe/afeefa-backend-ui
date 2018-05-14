@@ -4,7 +4,7 @@
       <slot />
     </a>
 
-    <pop-up-selector :trigger="$refs.trigger" :closeIcon="false" @close="hideFacetSelector" v-if="facetSelectorVisible">
+    <pop-up-selector :trigger="$refs.trigger" align="left" :closeIcon="false" @close="hideFacetSelector" v-if="facetSelectorVisible">
       <div class="facetSelector">
         <facet-selector-item v-for="facet in selectableFacets" :key="'select-' + facet.id"
           @click="selectOrDeselectFacet(facet)"
@@ -58,6 +58,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.facetSelector {
+  padding: .5em;
+}
+
 .facetSelectorItem {
   margin-bottom: .2em;
 

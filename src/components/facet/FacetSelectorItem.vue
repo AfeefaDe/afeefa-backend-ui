@@ -16,7 +16,6 @@
       </div>
       <div class="more" v-if="more !== false" :style="{opacity: more ? 1 : 0}"></div>
     </div>
-
   </div>
 </template>
 

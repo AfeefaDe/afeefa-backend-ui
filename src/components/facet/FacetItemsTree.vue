@@ -17,7 +17,7 @@
         :color="selectedFacet.color"
         :disabled="parentItemIsDisabled(facetItem)"
         :selected="facetItem === selectedParentItem"
-        :more="facetItem.sub_items.length"
+        :more="facetHasSubItems(selectedFacet) && facetItem.sub_items.length"
         :hint="numSelectedSubItems(facetItem)" />
     </div>
 
@@ -26,7 +26,8 @@
         @click="facetItemClick(selectedParentItem)"
         :item="selectedParentItem"
         :color="selectedFacet.color"
-        :disabled="facetItemIsDisabled(selectedParentItem)" />
+        :disabled="facetItemIsDisabled(selectedParentItem)"
+        :more="false" />
 
       <div class="parentDivide" v-if="selectedParentItem.sub_items.length"></div>
 
@@ -34,7 +35,8 @@
         @click="facetItemClick(subItem)"
         :item="subItem"
         :color="selectedFacet.color"
-        :disabled="facetItemIsDisabled(subItem)" />
+        :disabled="facetItemIsDisabled(subItem)"
+        :more="false" />
     </div>
   </div>
 </template>
@@ -59,6 +61,10 @@ export default {
   },
 
   methods: {
+    facetHasSubItems (facet) {
+      return facet.facet_items.some(fi => fi.sub_items.length > 0)
+    },
+
     parentItemIsDisabled (facetItem) {
       if (facetItem.sub_items.length) {
         return false
@@ -156,6 +162,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.facetItemsTree {
+  padding: .5em;
+}
+
 .facetSelectorItem {
   font-size: .9em;
 
@@ -178,8 +188,8 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  padding: .5em;
-  margin-top: -.5em;
+  padding: 1em;
+  margin-top: -.3em;
 
   background-color: white;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3), 0 2px 10px 0 rgba(0,0,0,0.3);
@@ -187,5 +197,9 @@ export default {
 
 .parentItemSelector.isRoot {
   position: static;
+}
+
+.parentItemSelector.isRoot + .subItemSelector {
+  margin-top: -1.3em;
 }
 </style>

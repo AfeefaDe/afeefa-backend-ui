@@ -4,7 +4,7 @@
       <slot />
     </a>
 
-    <pop-up-selector :trigger="$refs.trigger" @close="hideFacetSelector" v-if="facetItemSelectorVisible">
+    <pop-up-selector :trigger="$refs.trigger" diffX="0" @close="hideFacetSelector" v-if="facetItemSelectorVisible">
       <facet-items-tree
         :facets="facets"
         :selectedFacetItems="selectedFacetItems"
