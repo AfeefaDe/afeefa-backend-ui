@@ -15,7 +15,7 @@
         </a>
 
         <pop-up-selector :trigger="$refs.trigger" diffX="0" @close="hideNavigationSelector" v-if="navigationSelectorIsOpen">
-          <navigation-items-tree @click="navigationItemSelected" />
+          <navigation-items-tree :selectedNavigationItems="entry.navigation_items" @click="navigationItemSelected" />
         </pop-up-selector>
       </div>
     </div>

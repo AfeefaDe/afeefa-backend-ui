@@ -33,10 +33,9 @@
 
 <script>
 import Navigation from '@/models/Navigation'
-import { mapState } from 'vuex'
 
 export default {
-  props: ['selectedFacetItems', 'facets', 'more'],
+  props: ['selectedNavigationItems', 'facets', 'more'],
 
   data () {
     return {
@@ -51,23 +50,22 @@ export default {
     })
   },
 
-  computed: {
-    ...mapState({
-      navigationIsSelected: state => state.facetFilters.navigationIsSelected,
-      selectedNavigationItem: state => state.facetFilters.selectedNavigationItem
-    })
-  },
-
   methods: {
     parentItemIsDisabled (navigationItem) {
       if (navigationItem.sub_items.length) {
         return false
       }
-      return this.selectedNavigationItem === navigationItem
+
+      return this.selectedNavigationItems.includes(navigationItem)
     },
 
     navigationItemIsDisabled (navigationItem) {
-      return this.selectedNavigationItem === navigationItem
+      const isSelected = this.selectedNavigationItems.includes(navigationItem)
+      if (navigationItem.sub_items.length) {
+        return isSelected && this.selectedNavigationItems.length === 1
+      } else {
+        return isSelected
+      }
     },
 
     numSelectedSubItems (navigationItem) {
@@ -75,11 +73,9 @@ export default {
         return 0
       }
 
-      if (!this.selectedNavigationItem) {
-        return 0
-      }
-
-      return this.selectedNavigationItem === navigationItem.parent ? 1 : 0
+      return this.selectedNavigationItems.some(ni => {
+        return ni.parent === navigationItem || ni === navigationItem
+      }) ? 1 : 0
     },
 
     openSubItemSelector (navigationItem) {
@@ -154,7 +150,7 @@ export default {
   border-bottom: 1px solid $gray20;
 }
 
-.parentItemSelector:not(.isRoot), .subItemSelector {
+.parentItemSelector, .subItemSelector {
   z-index: 3;
   position: absolute;
   top: 0;
@@ -164,10 +160,6 @@ export default {
 
   background-color: white;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3), 0 2px 10px 0 rgba(0,0,0,0.3);
-}
-
-.parentItemSelector {
-  position: static;
 }
 
 .parentItemSelector + .subItemSelector {
