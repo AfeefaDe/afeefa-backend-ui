@@ -7,10 +7,6 @@
     addEntryButton="events.new"
     :messages="messages">
 
-    <div slot="sidebar" class="mainCard sidebar" v-if="items.length">
-      <facet-item-filter-bar type="Event" :entries="items" />
-    </div>
-
     <div slot="items">
       <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
         <entry-list-items
@@ -44,7 +40,6 @@ import Event from '@/models/Event'
 import EntryListMixin from '@/components/mixins/EntryListMixin'
 import EntryListItems from '@/components/entry/EntryListItems'
 import { mapState } from 'vuex'
-import FacetItemFilterBar from '@/components/facet/FacetItemFilterBar'
 
 export default {
   mixins: [EntryListMixin],
@@ -106,8 +101,7 @@ export default {
   },
 
   components: {
-    EntryListItems,
-    FacetItemFilterBar
+    EntryListItems
   }
 }
 </script>

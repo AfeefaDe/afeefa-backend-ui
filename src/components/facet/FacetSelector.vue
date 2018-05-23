@@ -4,15 +4,30 @@
       <slot />
     </a>
 
-    <pop-up-selector :trigger="$refs.trigger" align="left" :closeIcon="false" @close="hideFacetSelector" v-if="facetSelectorVisible">
+    <pop-up-selector ref="popUp" :trigger="$refs.trigger" :diffX="10" :diffY="10" align="left" :closeIcon="false" @close="hideFacetSelector" v-if="facetSelectorVisible">
       <div class="facetSelector">
-        <facet-selector-item v-for="facet in selectableFacets" :key="'select-' + facet.id"
-          @click="selectOrDeselectFacet(facet)"
-          :item="facet"
-          :color="facet.color"
-          :more="false"
-          :checked="selectedFacets.includes(facet)"
-          :checkbox="true" />
+        <div class="facet" v-for="facet in selectableFacets" :key="'select-' + facet.id">
+          <div class="facetCheckbox">
+            <facet-selector-item
+              @click="selectOrDeselectFacet(facet)"
+              :item="facet"
+              :color="facet.color"
+              :more="false"
+              :checked="selectedFacets.includes(facet)"
+              :checkbox="true" />
+          </div>
+        </div>
+
+        <div class="facetCheckbox">
+          <facet-selector-item
+            @click="selectOrDeselectNavigation"
+            :item="{}"
+            title="Navigation"
+            color="#999999"
+            :more="false"
+            :checked="navigationIsSelected"
+            :checkbox="true" />
+        </div>
       </div>
     </pop-up-selector>
   </div>
@@ -33,11 +48,19 @@ export default {
     ...mapGetters('facetFilters', ['selectableFacets']),
 
     ...mapState({
-      selectedFacets: state => state.facetFilters.selectedFacets
+      selectedFacets: state => state.facetFilters.selectedFacets,
+      selectedFacetItems: state => state.facetFilters.selectedFacetItems,
+      selectedFacetsWithoutEntries: state => state.facetFilters.selectedFacetsWithoutEntries,
+      filteredEntries: state => state.facetFilters.filteredEntries,
+      navigationIsSelected: state => state.facetFilters.navigationIsSelected
     })
   },
 
   methods: {
+    selectOrDeselectNavigation () {
+      this.$store.dispatch('facetFilters/selectOrDeselectNavigation')
+    },
+
     showFacetSelector () {
       this.facetSelectorVisible = true
     },
@@ -48,6 +71,9 @@ export default {
 
     selectOrDeselectFacet (facet) {
       this.$store.dispatch('facetFilters/selectOrDeselectFacet', facet)
+      this.$nextTick(() => {
+        this.$refs.popUp.reposition()
+      })
     }
   },
 
@@ -62,9 +88,12 @@ export default {
   padding: .5em;
 }
 
+.facetCheckbox {
+  margin-bottom: .3em;
+}
+
 .facetSelectorItem {
   margin-bottom: .2em;
-
   &:last-child {
     margin-bottom: 0;
   }

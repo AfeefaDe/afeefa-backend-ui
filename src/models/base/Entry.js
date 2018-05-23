@@ -5,6 +5,7 @@ import NavigationItem from '@/models/NavigationItem'
 import User from '@/models/User'
 import ContactsResource from '@/resources/relations/EntryContacts'
 import OwnerFacetItemsResource from '@/resources/relations/OwnerFacetItems'
+import OwnerNavigationItemsResource from '@/resources/relations/OwnerNavigationItems'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Relation from 'uidata/model/Relation'
@@ -71,7 +72,8 @@ export default class Entry extends Model {
 
       navigation_items: {
         type: Relation.HAS_MANY,
-        Model: NavigationItem
+        Model: NavigationItem,
+        Resource: OwnerNavigationItemsResource
       }
     }
   }

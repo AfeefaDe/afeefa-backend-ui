@@ -1,4 +1,5 @@
 import FacetItem from '@/models/FacetItem'
+import NavigationItem from '@/models/NavigationItem'
 
 export default {
   getEntriesForFacet (facet, entries) {
@@ -12,6 +13,18 @@ export default {
   getEntriesForFacetItem (facetItem, entries) {
     return entries.filter(entry => {
       return entry.facet_items.includes(facetItem)
+    })
+  },
+
+  getEntriesForNavigationItem (navigationItem, entries) {
+    return entries.filter(entry => {
+      return entry.navigation_items.includes(navigationItem)
+    })
+  },
+
+  getEntriesWithoutNavigationItem (entries) {
+    return entries.filter(entry => {
+      return entry.navigation_items.length === 0
     })
   },
 
@@ -54,6 +67,16 @@ export default {
     facetItem.color = facet.color
     facetItem._isFacetWithoutEntry = true
     return facetItem
+  },
+
+  createNavigationItemWithoutNavigation (navigation) {
+    const navigationItem = new NavigationItem()
+    navigationItem.id = 'navigation' + navigation.id
+    navigationItem.navigation = navigation
+    navigationItem.title = 'Nicht zugeordnet'
+    navigationItem.color = '#999999'
+    navigationItem._isNavigationWithoutEntry = true
+    return navigationItem
   },
 
   getDisplayedFacetItemsForFacets (selectedFacetItems, facets) {

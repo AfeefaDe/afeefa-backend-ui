@@ -1,5 +1,6 @@
 import OfferOwnersResource from '@/resources/relations/OfferOwners'
 import OwnerFacetItemsResource from '@/resources/relations/OwnerFacetItems'
+import OwnerNavigationItemsResource from '@/resources/relations/OwnerNavigationItems'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Registry from 'uidata/model/Registry'
@@ -38,7 +39,8 @@ class Offer extends Model {
 
       navigation_items: {
         type: Relation.HAS_MANY,
-        Model: NavigationItem
+        Model: NavigationItem,
+        Resource: OwnerNavigationItemsResource
       }
     }
   }

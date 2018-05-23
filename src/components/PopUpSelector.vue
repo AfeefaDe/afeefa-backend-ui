@@ -10,48 +10,61 @@
 
 <script>
 export default {
-  props: ['trigger', 'closeIcon', 'align', 'diffX'],
+  props: ['trigger', 'closeIcon', 'align', 'diffX', 'diffY', 'marginRight'],
 
   created () {
     window.addEventListener('click', this.onClickOutside)
 
     this.$nextTick(() => {
-      const popUp = this.$el
-      const triggerRect = this.trigger.getBoundingClientRect()
-      const diffTriggerX = this.diffX !== undefined ? this.diffX : 20
-      const diffTriggerY = 20
-      const marginRight = 20
-
-      let popUpRect
-
-      if (this.align === 'left') {
-        popUpRect = popUp.getBoundingClientRect()
-        popUp.style.left = triggerRect.right - popUpRect.width + diffTriggerX + 'px'
-      } else {
-        popUp.style.left = triggerRect.left - diffTriggerX + 'px'
-      }
-      popUp.style.top = triggerRect.top - diffTriggerY + 'px'
-
-      popUpRect = popUp.getBoundingClientRect()
-      if (popUpRect.right > window.innerWidth - marginRight) {
-        let diff = popUpRect.right - window.innerWidth + marginRight
-        popUp.style.left = triggerRect.left - diffTriggerX - diff + 'px'
-      }
-      if (popUpRect.bottom > window.innerHeight - marginRight) {
-        let diff = popUpRect.bottom - window.innerHeight + marginRight
-        popUp.style.top = triggerRect.top - diffTriggerY - diff + 'px'
-      }
+      document.body.appendChild(this.$el)
+      this.reposition()
     })
   },
 
   destroyed () {
     window.removeEventListener('click', this.onClickOutside)
+    if (document.body.contains(this.$el)) {
+      document.body.removeChild(this.$el)
+    }
   },
 
   methods: {
     onClickOutside (e) {
       if (!this.$el.contains(e.target)) {
         this.close()
+      }
+    },
+
+    reposition () {
+      const popUp = this.$el
+
+      const triggerRect = this.trigger.getBoundingClientRect()
+      const triggerLeft = window.scrollX + triggerRect.left // this.trigger.offsetLeft
+      const triggerTop = window.scrollY + triggerRect.top // this.trigger.offsetTop
+      const triggerRight = triggerLeft + triggerRect.width
+
+      const diffTriggerX = this.diffX !== undefined ? this.diffX : 20
+      const diffTriggerY = this.diffY !== undefined ? this.diffY : 20
+      const marginRight = this.marginRight !== undefined ? this.marginRight : 20
+
+      let popUpRect
+
+      if (this.align === 'left') {
+        popUpRect = popUp.getBoundingClientRect()
+        popUp.style.left = triggerRight - popUpRect.width + diffTriggerX + 'px'
+      } else {
+        popUp.style.left = triggerLeft - diffTriggerX + 'px'
+      }
+      popUp.style.top = triggerTop - diffTriggerY + 'px'
+
+      popUpRect = popUp.getBoundingClientRect()
+      if (popUpRect.right > window.innerWidth - marginRight) {
+        let diff = popUpRect.right - window.innerWidth + marginRight
+        popUp.style.left = triggerLeft - diffTriggerX - diff + 'px'
+      }
+      if (popUpRect.bottom > window.innerHeight - marginRight) {
+        let diff = popUpRect.bottom - window.innerHeight + marginRight
+        popUp.style.top = triggerTop - diffTriggerY - diff + 'px'
       }
     },
 

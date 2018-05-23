@@ -44,9 +44,10 @@ export default class NavigationItemOwnersResource extends Resource {
 
     const navigationItem = this.relation.owner
 
-    if (owner.hasOwnProperty('count_owners')) {
+    if (owner.hasOwnProperty('count_owners')) { // facet item
       navigationItem.count_owners += owner.count_owners
     } else {
+      owner.$rels.navigation_items.reloadOnNextGet() // entry
       navigationItem.count_owners++
     }
   }
@@ -56,9 +57,10 @@ export default class NavigationItemOwnersResource extends Resource {
 
     const navigationItem = this.relation.owner
 
-    if (owner.hasOwnProperty('count_owners')) {
+    if (owner.hasOwnProperty('count_owners')) { // facet item
       navigationItem.count_owners -= owner.count_owners
     } else {
+      owner.$rels.navigation_items.reloadOnNextGet() // entry
       navigationItem.count_owners--
     }
   }

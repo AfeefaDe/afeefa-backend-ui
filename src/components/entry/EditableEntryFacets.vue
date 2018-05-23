@@ -236,13 +236,12 @@ export default {
       Promise.all([
         this.entry.$rels.facet_items.refetch()
       ]).then(() => {
-        if (!this.facets) { // using facet filters, todo
+        if (!this.facets) { // no facets === using facet filters, todo
           this.$store.dispatch('facetFilters/entryFacetItemsSaved')
         }
         this.loading = false
+        Facet.Query.getAll()
       })
-
-      Facet.Query.getAll()
     }
   },
 

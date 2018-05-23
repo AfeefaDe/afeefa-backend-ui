@@ -13,6 +13,20 @@ function facetWithoutEntriesIsSelected (state, facet) {
 }
 
 function getFilteredEntries (state) {
+  const entries = getFilteredEntriesWithoutNavigation(state)
+
+  if (state.selectedNavigationItem) {
+    if (state.selectedNavigationItem._isNavigationWithoutEntry) {
+      return facetItems.getEntriesWithoutNavigationItem(entries)
+    } else {
+      return facetItems.getEntriesForNavigationItem(state.selectedNavigationItem, entries)
+    }
+  } else {
+    return entries
+  }
+}
+
+function getFilteredEntriesWithoutNavigation (state) {
   return facetItems.getEntriesForFacetItemsAndWithoutFacets(
     state.selectedFacetItems,
     state.selectedFacetsWithoutEntries,
@@ -34,7 +48,11 @@ export default {
     selectedFacetsWithoutEntries: [],
     facetItemFilters: [],
 
-    filteredEntries: []
+    navigationIsSelected: false,
+    selectedNavigationItem: null,
+
+    filteredEntries: [],
+    filteredEntriesWithoutNavigation: []
   },
 
   getters: {
@@ -60,6 +78,9 @@ export default {
       state.selectedFacetItems = []
       state.selectedFacetsWithoutEntries = []
       state.facetItemFilters = []
+
+      state.navigationIsSelected = false
+      state.selectedNavigationItem = null
     },
 
     initSelectedFacets (state) {
@@ -104,6 +125,34 @@ export default {
 
     initFilteredEntries (state) {
       state.filteredEntries = getFilteredEntries(state)
+      state.filteredEntriesWithoutNavigation = getFilteredEntriesWithoutNavigation(state)
+    },
+
+    toggleNavigationSelection (state) {
+      state.navigationIsSelected = !state.navigationIsSelected
+
+      if (!state.navigationIsSelected) {
+        state.selectedNavigationItem = null
+      }
+    },
+
+    toggleNavigationItemSelection (state, navigationItem) {
+      if (state.selectedNavigationItem === navigationItem) {
+        // item deselected
+        if (navigationItem.parent) {
+          // select parent
+          state.selectedNavigationItem = navigationItem.parent
+        } else {
+          // select none
+          state.selectedNavigationItem = null
+        }
+      } else if (state.selectedNavigationItem && state.selectedNavigationItem.parent === navigationItem) {
+        // parent of selected item deselected
+        state.selectedNavigationItem = null
+      } else {
+        // any selected
+        state.selectedNavigationItem = navigationItem
+      }
     }
   },
 
@@ -124,16 +173,6 @@ export default {
       commit('initSelectedFacets')
 
       commit('initFilteredEntries')
-    },
-
-    entryFacetItemsChanged ({state, commit, dispatch}) {
-      const filteredEntries = getFilteredEntries(state)
-
-      if (!filteredEntries.length) {
-        dispatch('initEntries', {facetOwnerType: state.facetOwnerType, entries: state.entries})
-      } else {
-        commit('initFilteredEntries')
-      }
     },
 
     facetItemClick ({commit, dispatch}, facetItem) {
@@ -175,7 +214,7 @@ export default {
       commit('initFilteredEntries')
     },
 
-    computeFacetItemFilters ({state, commit}, facet) {
+    computeFacetItemFilters ({state, commit}) {
       const facetItemFilters = []
       state.facets.forEach(facet => {
         state.selectedFacetItems.forEach(facetItem => {
@@ -192,6 +231,18 @@ export default {
       })
 
       commit('setFacetItemFilters', facetItemFilters)
+    },
+
+    selectOrDeselectNavigation ({commit}) {
+      commit('toggleNavigationSelection')
+
+      commit('initFilteredEntries')
+    },
+
+    selectOrDeselectNavigationItem ({commit}, navigationItem) {
+      commit('toggleNavigationItemSelection', navigationItem)
+
+      commit('initFilteredEntries')
     }
   }
 }

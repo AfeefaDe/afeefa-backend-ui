@@ -6,19 +6,21 @@
         :item="facet"
         :color="facet.color"
         :selected="facet === selectedFacet"
-        :more="true"
+        :more="more === false ? false : true"
         :hint="numSelectedFacetItems(facet)" />
     </div>
 
     <div :class="['parentItemSelector', {isRoot: facets.length === 1}]" ref="parentItemSelector" v-if="selectedFacet">
-      <facet-selector-item v-for="facetItem in selectedFacet.facet_items" :key="facetItem.id" :ref="'parentItem' + facetItem.id"
-        @click="openSubItemSelector(facetItem)"
-        :item="facetItem"
-        :color="selectedFacet.color"
-        :disabled="parentItemIsDisabled(facetItem)"
-        :selected="facetItem === selectedParentItem"
-        :more="facetHasSubItems(selectedFacet) && facetItem.sub_items.length"
-        :hint="numSelectedSubItems(facetItem)" />
+      <slot name="parentItemSelector" :facet="selectedFacet">
+        <facet-selector-item v-for="facetItem in selectedFacet.facet_items" :key="facetItem.id" :ref="'parentItem' + facetItem.id"
+          @click="openSubItemSelector(facetItem)"
+          :item="facetItem"
+          :color="selectedFacet.color"
+          :disabled="parentItemIsDisabled(facetItem)"
+          :selected="facetItem === selectedParentItem"
+          :more="facetHasSubItems(selectedFacet) && facetItem.sub_items.length"
+          :hint="numSelectedSubItems(facetItem)" />
+      </slot>
     </div>
 
     <div class="subItemSelector" ref="subItemSelector" v-if="selectedParentItem">
@@ -45,7 +47,7 @@
 import facetItems from '@/helpers/facet-items'
 
 export default {
-  props: ['selectedFacetItems', 'facets'],
+  props: ['selectedFacetItems', 'facets', 'more'],
 
   data () {
     return {
@@ -126,7 +128,7 @@ export default {
       this.$nextTick(() => {
         const c = this.$refs['facet' + facet.id][0].$el
         const selector = this.$refs.parentItemSelector
-        this.positionTree(selector, c.offsetLeft + c.offsetWidth, c.offsetTop, 0, -10, 0)
+        this.positionTree(selector, c.offsetLeft + c.offsetWidth, c.offsetTop, 0, -10, c.offsetLeft)
       })
     },
 

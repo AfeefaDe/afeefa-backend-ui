@@ -1,101 +1,108 @@
 <template>
-  <div v-if="navigation" class="entryNavigationItems">
-    <a href="" @click.prevent="showNavigationEntry = !showNavigationEntry" v-if="!showNavigationEntry" class="inlineEditLink medium">In {{ countNavigationItems }} Navigationseinträgen</a>
-    <div v-for="navigationItem in parentItems" :key="navigationItem.id" v-if="showNavigationEntry">
-      <navigation-item-view :navigationItem="navigationItem" :countAttributeName="countAttributeName" />
-      <div v-for="subItem in subItems[navigationItem.id]" :key="subItem.id">
-        <navigation-item-view :navigationItem="subItem" :countAttributeName="countAttributeName" />
-      </div>
+  <div :class="['entryNavigationItems', {empty: isEmpty}]">
+    <div v-if="loading">
+      <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Navigation
     </div>
 
-    <navigation-item-selector :owner="entry" v-if="isEdit" class="navigationItemSelectorLink" />
+    <div v-else-if="navigation" class="items">
+      <div v-for="navigationItem in entry.navigation_items" :key="navigationItem.id" v-if="displayNavigationItem(navigationItem)">
+        <navigation-item-view :navigationItem="navigationItem" :click="false" />
+      </div>
+
+      <div class="navigationItemSelectorLink">
+        <a href="" ref="trigger" class="inlineEditLink" @click.prevent="openNavigationSelector">
+          {{ entry.navigation_items.length ? 'Ändern' : 'Navigation hinzufügen' }}
+        </a>
+
+        <pop-up-selector :trigger="$refs.trigger" diffX="0" @close="hideNavigationSelector" v-if="navigationSelectorIsOpen">
+          <navigation-items-tree @click="navigationItemSelected" />
+        </pop-up-selector>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Navigation from '@/models/Navigation'
 import NavigationItemView from '@/components/fe_navigation/FeNavigationItemView'
-import NavigationItemSelector from '@/components/fe_navigation/FeNavigationItemSelector'
+import PopUpSelector from '@/components/PopUpSelector'
+import NavigationItemsTree from '@/components/fe_navigation/FeNavigationItemsTree'
+import Spinner from '@/components/Spinner'
 
 export default {
-  props: ['entry', 'countAttributeName', 'isEdit'],
+  props: ['entry'],
 
   data () {
     return {
       navigation: null,
-
-      parentItems: [],
-      subItems: {},
-      countNavigationItems: 0,
-      showNavigationEntry: true
+      loading: false,
+      navigationSelectorIsOpen: false
     }
   },
 
   created () {
     Navigation.Query.get().then(navigation => {
       this.navigation = navigation
-
-      this.initItems()
     })
   },
 
-  methods: {
-    initItems () {
-      this.parentItems = this.getParentItems()
-      this.countNavigationItems = this.parentItems.length
+  computed: {
+    isEmpty () {
+      return !this.entry.navigation_items.length
+    }
+  },
 
-      this.parentItems.forEach(navigationItem => {
-        this.subItems[navigationItem.id] = this.getSubItems(navigationItem)
-        this.countNavigationItems += this.subItems[navigationItem.id].length
+  methods: {
+    displayNavigationItem (navigationItem) {
+      if (navigationItem.sub_items.length) {
+        return !navigationItem.sub_items.some(subItem => this.entry.navigation_items.includes(subItem))
+      }
+      return true
+    },
+
+    openNavigationSelector () {
+      this.navigationSelectorIsOpen = true
+    },
+
+    hideNavigationSelector () {
+      this.navigationSelectorIsOpen = false
+    },
+
+    navigationItemSelected (navigationItem) {
+      this.hideNavigationSelector()
+
+      this.save(navigationItem)
+    },
+
+    save (navigationItem) {
+      this.entry.$rels.navigation_items.Query.attachMany([navigationItem]).then(result => {
+        if (result) {
+          this.$store.dispatch('messages/showAlert', {
+            description: 'Die Navigation wurden gespeichert.'
+          })
+          this.navigationSaved()
+        }
       })
     },
 
-    getParentItems () {
-      if (this.countAttributeName === 'count_owners_via_facet_items') {
-        return this.navigation.navigation_items.filter(navigationItem => {
-          return navigationItem.facet_items.some(facetItem => {
-            return this.entry.facet_items.includes(facetItem)
-          })
-        })
-      } else if (this.countAttributeName === 'count_direct_owners') {
-        return this.navigation.navigation_items.filter(navigationItem => {
-          return this.entry.navigation_items.includes(navigationItem)
-        })
-      } else {
-        return this.navigation.navigation_items.filter(navigationItem => {
-          return navigationItem.facet_items.some(facetItem => {
-            return this.entry.facet_items.includes(facetItem)
-          }) ||
-          this.entry.navigation_items.includes(navigationItem)
-        })
-      }
-    },
+    navigationSaved () {
+      this.loading = true
+      Promise.all([
+        this.entry.$rels.navigation_items.refetch()
+      ]).then(() => {
+        this.$store.dispatch('facetFilters/entryFacetItemsSaved')
+        this.loading = false
+      })
 
-    getSubItems (navigationItem) {
-      if (this.countAttributeName === 'count_owners_via_facet_items') {
-        return navigationItem.sub_items.filter(subItem => {
-          return subItem.facet_items.some(facetItem => {
-            return this.entry.facet_items.includes(facetItem)
-          })
-        })
-      } else if (this.countAttributeName === 'count_direct_owners') {
-        return navigationItem.sub_items.filter(subItem => {
-          return this.entry.navigation_items.includes(subItem)
-        })
-      } else {
-        return navigationItem.sub_items.filter(subItem => {
-          return subItem.facet_items.some(facetItem => {
-            return this.entry.facet_items.includes(facetItem)
-          }) ||
-          this.entry.navigation_items.includes(subItem)
-        })
-      }
+      Navigation.Query.get()
     }
   },
 
   components: {
     NavigationItemView,
-    NavigationItemSelector
+    PopUpSelector,
+    NavigationItemsTree,
+    Spinner
   }
 }
 </script>
@@ -103,14 +110,14 @@ export default {
 
 <style lang="scss" scoped>
 .entryNavigationItems {
-  /deep/ .navigationItems {
-    width: 100%;
-    font-size: .9em;
-
-    /deep/ .treeItemTag {
-      margin-bottom: 3px;
-    }
+  .items {
+    display: flex;
+    align-items: center;
   }
+}
+
+.navigationItemSelectorLink:not(:first-child) {
+  margin-left: .7em;
 }
 
 </style>

@@ -11,7 +11,7 @@
           <input type="checkbox" :id="'facetItemTag' + item.id" class="filled-in checkboxSmall gray" :checked="checked" />
           <label :for="'facetItemTag' + item.id"></label>
         </div>
-        {{ item.title }}
+        {{ title || item.title }}
         <span class="hint" v-if="hint">{{ hint }}</span>
       </div>
       <div class="more" v-if="more !== false" :style="{opacity: more ? 1 : 0}"></div>
@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  props: ['item', 'color', 'checkbox', 'checked', 'selected', 'disabled', 'hint', 'more'],
+  props: ['item', 'title', 'color', 'checkbox', 'checked', 'selected', 'disabled', 'hint', 'more'],
 
   methods: {
     facetItemClick (item) {
@@ -91,10 +91,8 @@ export default {
     width: .7em;
     height: .7em;
     position: relative;
-    // left: -.3em;
     top: 0;
     transform: rotate(45deg) scale(.6);
-    // vertical-align: top;
   }
 }
 </style>

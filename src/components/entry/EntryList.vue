@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <afeefa-page :sideBar="sideBarVisible">
+    <afeefa-page>
 
       <afeefa-header slot="header">
         <div slot="title">
@@ -29,40 +28,17 @@
         </slot>
       </div>
 
-      <div slot="sidebar" v-if="sideBarVisible">
-        <facet-item-filter-bar />
-      </div>
-
     </afeefa-page>
-
-  </div>
 </template>
 
 
 <script>
-import { mapState } from 'vuex'
 import EntryListItems from '@/components/entry/EntryListItems'
-import FacetItemFilterBar from '@/components/facet/FacetItemFilterBar'
 
 export default {
   props: ['items', 'isLoading', 'numItems', 'facetOwnerType', 'sortFunction', 'sortOrder', 'options', 'messages', 'addEntryButton'],
 
-  created () {
-    this.$store.dispatch('facetFilters/show', false)
-  },
-
   computed: {
-    ...mapState({
-      selectedFacets: state => state.facetFilters.selectedFacets,
-      showFilterBar: state => state.facetFilters.show,
-      facetItemFilters: state => state.facetFilters.facetItemFilters
-    }),
-
-    sideBarVisible () {
-      return false
-      // return this.showFilterBar
-    },
-
     currentNumItems () {
       return this.numItems || this.items.length
     }
@@ -75,8 +51,7 @@ export default {
   },
 
   components: {
-    EntryListItems,
-    FacetItemFilterBar
+    EntryListItems
   }
 }
 </script>

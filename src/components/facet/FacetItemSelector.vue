@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
 import PopUpSelector from '@/components/PopUpSelector'
 import FacetItemsTree from '@/components/facet/FacetItemsTree'
 
@@ -27,14 +26,6 @@ export default {
     return {
       facetItemSelectorVisible: false
     }
-  },
-
-  computed: {
-    ...mapGetters('facetFilters', ['selectableFacets']),
-
-    ...mapState({
-      selectedFacets: state => state.facetFilters.selectedFacets
-    })
   },
 
   methods: {
@@ -49,10 +40,6 @@ export default {
 
     hideFacetSelector () {
       this.facetItemSelectorVisible = false
-    },
-
-    selectOrDeselectFacet (facet) {
-      this.$store.dispatch('facetFilters/selectOrDeselectFacet', facet)
     }
   },
 
@@ -63,13 +50,3 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.facetSelectorItem {
-  margin-bottom: .2em;
-
-  /deep/ .facetItem {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-}
-</style>

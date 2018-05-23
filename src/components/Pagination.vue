@@ -20,13 +20,6 @@
 
       <div>{{ $t('pagination.page') }} {{ currentPage }} {{ $t('pagination.of') }} {{ currentNumPages }}</div>
 
-      <div class="listPagination__navigationPages" v-if="false">
-        <a v-for="pageNumber in currentNumPages" :key="pageNumber"
-          href="" @click.prevent="goto(pageNumber)"
-          :class="[(pageNumber == currentPage ? 'active' : 'inactive')]">
-          {{ pageNumber }}
-        </a>
-      </div>
       <a
         :class="[(currentPage < currentNumPages ? 'enabled' : 'disabled')]"
         class="listPagination--arrowButton"
@@ -151,7 +144,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: .8em;
   height: 30px;
 
   @media screen and (max-width: $break-medium) {

@@ -4,28 +4,32 @@
   </div>
 
   <div v-else>
-    <div class="navigation">
-      <entry-list-facet-filter v-if="has.facetFilter" class="facetsFilter" />
+    <div class="navigation" v-if="has.filter || has.facetFilter || has.pagination">
+      <entry-list-facet-filter v-if="has.facetFilter" :showFilters="true" class="facetsFilter" />
 
-      <div v-if="itemsUnsorted.length && has.filter" class="filter">
-        <input
-          type="text"
-          placeholder="Tippen zum Filtern"
-          v-model="searchKeyword"
-          @keydown.esc.prevent="searchKeyword = ''" />
-        <a v-if="searchKeyword" @click.prevent="searchKeyword = ''" href="">
-          <i class="material-icons">cancel</i>
-        </a>
+      <div v-if="itemsUnsorted.length && has.filter" class="searchFilter">
+        <div class="inputContainer">
+          <input
+            type="text"
+            placeholder="Tippen zum Filtern"
+            v-model="searchKeyword"
+            @keydown.esc.prevent="searchKeyword = ''" />
+          <a v-if="searchKeyword" @click.prevent="searchKeyword = ''" href="">
+            <i class="material-icons">cancel</i>
+          </a>
+        </div>
       </div>
 
-      <div v-if="has.pagination" class="paginationTop">
-        <pagination
-          :num-items="currentNumItems"
-          :page-size="currentPageSize"
-          :page="currentPage"
-          @changed="setPage">
-        </pagination>
-      </div>
+      <entry-list-facet-filter v-if="has.facetFilter" :showFilterIcons="true" class="facetsFilterIcons" />
+    </div>
+
+    <div v-if="has.pagination" class="paginationTop">
+      <pagination
+        :num-items="currentNumItems"
+        :page-size="currentPageSize"
+        :page="currentPage"
+        @changed="setPage">
+      </pagination>
     </div>
 
     <ul class="entryList">
@@ -69,7 +73,7 @@
           <div class="entryList__attributes" v-if="item.facet_items">
             <editable-entry-facets :entry="item" :bus="bus" />
 
-            <entry-navigation-items :entry="item" :countAttributeName="navigationItemCountAttributeName" :isEdit="true" v-if="false" />
+            <entry-navigation-items :entry="item" :countAttributeName="navigationItemCountAttributeName" :isEdit="true" v-if="navigationIsSelected" />
 
             <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
 
@@ -174,12 +178,21 @@ export default {
 
     'items' () {
       this.searchKeyword = ''
+    },
+
+    'filteredEntries' () {
+      this.searchKeyword = ''
+      this.setPage({
+        page: 1,
+        pageSize: 15
+      })
     }
   },
 
   computed: {
     ...mapState({
-      filteredEntries: state => state.facetFilters.filteredEntries
+      filteredEntries: state => state.facetFilters.filteredEntries,
+      navigationIsSelected: state => state.facetFilters.navigationIsSelected
     }),
 
     itemsUnsorted () {
@@ -261,38 +274,57 @@ export default {
 <style lang="scss" scoped>
 
 .navigation {
-  input {
-    height: 2.3rem;
-    margin-bottom: .4em;
-  }
+  position: relative;
+  margin-bottom: .4em;
+  padding-bottom: .8em;
+  border-bottom: 1px solid $gray20;
 }
 
 .facetsFilter {
-  margin-bottom: .5em;
-
+  flex-grow: 2;
+  margin-bottom: .4em;
   &.empty {
     margin-bottom: 0;
   }
 }
 
-.filter {
-  position: relative;
+.facetsFilterIcons {
+  position: absolute;
+  top: .2em;
+  right: 0;
+}
+
+.searchFilter {
+  .inputContainer {
+    display: inline-block;
+    position: relative;
+  }
+
+  input {
+    margin: 0;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: $white;
+    padding: .4em;
+    padding-right: 2em;
+    width: 150px;
+    height: auto;
+  }
 
   a {
     position: absolute;
     top: .5em;
-    right: 0;
+    right: .5em;
   }
 
   i {
-    font-size: 20px;
+    color: $gray80;
+    font-size: 18px;
   }
 }
 
-.treeItemTag {
-  display: inline-block;
-  margin-right: .4em;
-  margin-bottom: .4em;
+.paginationTop {
+  margin-bottom: 1.5em;
 }
 
 .entryList {
@@ -344,6 +376,9 @@ export default {
 
   .entryNavigationItems {
     margin-top: .5em;
+    &.empty {
+      margin-top: .3em;
+    }
   }
 
   &__numbers {

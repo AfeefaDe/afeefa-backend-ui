@@ -1,7 +1,7 @@
 <template>
   <div :class="['treeItemTag', {selected, clickable: hasClickListener, withChevron: chevron}]"
     :style="{borderColor: (color ? color : '')}"
-    @click="click">
+    @click="onClick">
     <div class="content">
       <div class="chevron" v-if="chevron" :style="{color}"></div>
 
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  props: ['treeItem', 'countOwners', 'chevron', 'x', 'selected', 'link', 'count', 'more'],
+  props: ['treeItem', 'countOwners', 'chevron', 'x', 'click', 'selected', 'link', 'count', 'more'],
 
   data () {
     return {
@@ -60,12 +60,15 @@ export default {
     },
 
     hasClickListener () {
+      if (this.click === false) {
+        return false
+      }
       return this.$listeners && this.$listeners.click
     }
   },
 
   methods: {
-    click () {
+    onClick () {
       if (this.hasClickListener) {
         this.$emit('click', this.treeItem)
       }
@@ -124,9 +127,9 @@ export default {
   }
 
   &.withChevron {
+    background-color: $gray10;
     padding-left: .3em;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    border-radius: 0;
 
     + .withChevron {
       border-left: none;
@@ -139,10 +142,8 @@ export default {
         position: absolute;
         top: 0;
         left: -.4em;
-        // border-top: .9em solid $black;
-        // border-bottom: .9em solid $black;
-        border-top: .9em solid $white;
-        border-bottom: .9em solid $white;
+        border-top: .9em solid $gray10;
+        border-bottom: .9em solid $gray10;
         border-left: .4em solid transparent;
         width: .4em;
         height: 1.8em;
@@ -156,7 +157,7 @@ export default {
       right: -.4em;
       border-top: .9em solid transparent;
       border-bottom: .9em solid transparent;
-      border-left: .4em solid $white;
+      border-left: .4em solid $gray10;
       width: .4em;
       height: 1.8em;
     }
@@ -164,22 +165,24 @@ export default {
 
   &.withChevron.clickable {
     &:hover {
+      background-color: darken($gray10, 3);
+
       &:before {
-        border-top-color: darken($white, 3);
-        border-bottom-color: darken($white, 3);
+        border-top-color: darken($gray10, 3);
+        border-bottom-color: darken($gray10, 3);
       }
       &:after {
-        border-left-color: darken($white, 3);
+        border-left-color: darken($gray10, 3);
       }
     }
 
     &.selected, &.selected:hover {
       &:before {
-        border-top-color: darken($white, 10);
-        border-bottom-color: darken($white, 10);
+        border-top-color: darken($gray10, 10);
+        border-bottom-color: darken($gray10, 10);
       }
       &:after {
-        border-left-color: darken($white, 10);
+        border-left-color: darken($gray10, 10);
       }
     }
   }
