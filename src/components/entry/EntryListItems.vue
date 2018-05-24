@@ -71,9 +71,10 @@
           </div>
 
           <div class="entryList__attributes" v-if="item.facet_items">
-            <editable-entry-facets :entry="item" :bus="bus" />
+            <editable-entry-facets v-if="has.facetFilter" :entry="item" :bus="bus" />
+            <entry-main-facet-items :entry="item" v-else />
 
-            <entry-navigation-items :entry="item" :countAttributeName="navigationItemCountAttributeName" :isEdit="true" v-if="navigationIsSelected" />
+            <entry-navigation-items :entry="item" v-if="has.facetFilter && navigationIsSelected" />
 
             <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
 
@@ -127,6 +128,7 @@ import EntryIcon from '@/components/entry/EntryIcon'
 import Spinner from '@/components/Spinner'
 import moment from 'moment'
 import EditableEntryFacets from '@/components/entry/EditableEntryFacets'
+import EntryMainFacetItems from '@/components/entry/EntryMainFacetItems'
 import EntryNavigationItems from '@/components/entry/EntryNavigationItems'
 import EntryListItemOwners from '@/components/entry/EntryListItemOwners'
 import EntryListFacetFilter from '@/components/entry/EntryListFacetFilter'
@@ -266,7 +268,8 @@ export default {
     EditableEntryFacets,
     EntryListItemOwners,
     EntryListFacetFilter,
-    EntryNavigationItems
+    EntryNavigationItems,
+    EntryMainFacetItems
   }
 }
 </script>

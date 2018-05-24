@@ -16,24 +16,10 @@
 </template>
 
 <script>
-import Facet from '@/models/Facet'
 import Spinner from '@/components/Spinner'
 
 export default {
   props: ['items', 'selectable', 'count', 'sortByInsertion'],
-
-  data () {
-    return {
-      facets: [],
-      filteredFacetItems: []
-    }
-  },
-
-  created () {
-    Facet.Query.getAll().then(facets => {
-      this.facets = facets
-    })
-  },
 
   methods: {
     facetItemClick (facetItem) {
