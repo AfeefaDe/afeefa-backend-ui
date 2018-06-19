@@ -2,7 +2,7 @@
   <div class="treeItemContainer">
     <div v-if="treeItem.id" :class="['treeItem', {parentItem: !treeItem.parent, subItem: treeItem.parent, editItem: isEdit}]">
       <div>
-        <tree-item-tag :treeItem="treeItem" :chevron="routeConfig.chevron" v-if="!isEdit" />
+        <tree-item-tag :treeItem="treeItem" :chevron="routeConfig.chevron" :count="false" v-if="!isEdit" />
 
         <span v-if="!isEdit">
           <a href="" @click.prevent="edit()" class="inlineEditLink">

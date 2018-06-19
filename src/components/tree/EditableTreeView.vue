@@ -1,19 +1,6 @@
 <template>
-  <afeefa-page>
-
-    <afeefa-header slot="header">
-      <div slot="title">
-        <slot name="header">
-          {{ container && container.title || 'Kein Titel' }}
-        </slot>
-      </div>
-
-      <div slot="buttons">
-        <slot name="buttons" />
-      </div>
-    </afeefa-header>
-
-    <div slot="content" v-if="container">
+  <div slot="content" v-if="container">
+    <div>
       <slot name="content"></slot>
 
       <div v-for="treeItem in this.treeItems" :key="treeItem.id">
@@ -46,12 +33,11 @@
         :bus="bus"
         @update="loadTreeItems" />
     </div>
+  </div>
 
-    <div slot="content" v-else>
-      <entry-loading-message :error="hasItemLoadingError" :messages="messages" />
-    </div>
-
-  </afeefa-page>
+  <div slot="content" v-else>
+    <entry-loading-message :error="hasItemLoadingError" :messages="messages" />
+  </div>
 </template>
 
 
@@ -77,6 +63,12 @@ export default {
 
   created () {
     this.loadContainer()
+  },
+
+  watch: {
+    containerId () {
+      this.loadContainer()
+    }
   },
 
   methods: {

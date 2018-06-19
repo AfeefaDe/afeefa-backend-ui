@@ -102,26 +102,13 @@ const menuTree = {
       route: 'navigation.show',
       title: 'headlines.navigation',
       action: null,
-      level: 1,
-      children: [
-        { route: 'navigation.edit', title: 'headlines.edit', level: 3 }
-      ]
+      level: 1
     },
     {
       route: 'facets.list',
       title: 'headlines.categories',
       action: null,
-      level: 1,
-      children: [
-        {
-          route: 'facets.show',
-          title: 'headlines.show',
-          level: 3,
-          children: [
-            { route: 'facetitem.associate', title: 'headlines.facetItemAssociate', level: 3 }
-          ]
-        }
-      ]
+      level: 1
     },
     {
       route: 'search',

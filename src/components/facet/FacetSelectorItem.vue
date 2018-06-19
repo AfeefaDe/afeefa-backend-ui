@@ -25,6 +25,9 @@ export default {
 
   methods: {
     facetItemClick (item) {
+      if (this.disabled) {
+        return
+      }
       this.$emit('click', item)
     }
   }
@@ -64,6 +67,10 @@ export default {
   &.disabled {
     opacity: .4;
     cursor: auto;
+
+    label {
+      cursor: auto;
+    }
   }
 
   .content {

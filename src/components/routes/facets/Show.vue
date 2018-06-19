@@ -1,35 +1,62 @@
 <template>
-  <div>
-    <editable-tree-view
-      :containerId="id"
-      :routeConfig="treeConfig">
-
-      <div class="facetAttributes" slot="content" v-if="facet">
-        <div class="facetAttributesView">
-          <div :style="{'background-color': editableFacet ? editableFacet.color : facet.color}" class="colorIcon"></div>
-          <router-link :to="{name: 'facets.show', params: {id: facet.id}}" class="title">
-            <h4>{{ facet.title }}</h4>
-          </router-link>
-          <a href="" @click.prevent="editFacet(facet)" class="inlineEditLink" v-if="!isEditable(facet)">
-            Ändern
-          </a>
-          <a href="" @click.prevent="cancelEditFacet()" class="inlineEditLink" v-if="isEditable(facet)">
-            Abbrechen
-          </a>
-        </div>
-
-        <div v-if="isEditable(facet)">
-          <tree-item-editor-form
-            :item="editableFacet"
-            :hasAttributes="true"
-            :hasColor="true"
-            @update="updateFacet"
-            @cancel="cancelEditFacet" />
-        </div>
+  <afeefa-page>
+    <afeefa-header slot="header">
+      <div slot="title">
+        Kategorien
       </div>
+    </afeefa-header>
 
-    </editable-tree-view>
-  </div>
+    <div slot="content">
+      <div class="treeViewContent">
+        <div class="treeNavigation">
+          <div v-for="facet in facets" :key="facet.id" @click="selectFacet(facet)">
+            <facet-selector-item
+              :item="facet"
+              :color="facet.color"
+              :more="false"
+              :selected="facet === selectedFacet"
+              />
+            <div class="ownerTypes" v-if="false">
+              für: <span v-for="type in facet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <editable-tree-view
+          v-if="selectedFacet"
+          :containerId="selectedFacet.id"
+          :routeConfig="treeConfig">
+
+          <div class="facetAttributes" slot="content">
+            <div class="facetAttributesView">
+              <h4>{{ selectedFacet.title }}</h4>
+              <a href="" @click.prevent="editFacet(selectedFacet)" class="inlineEditLink" v-if="!isEditable(selectedFacet)">
+                Ändern
+              </a>
+              <a href="" @click.prevent="cancelEditFacet()" class="inlineEditLink" v-if="isEditable(selectedFacet)">
+                Abbrechen
+              </a>
+            </div>
+
+            <div class="ownerTypes">
+              für: <span v-for="type in selectedFacet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
+            </div>
+
+            <div v-if="isEditable(selectedFacet)">
+              <tree-item-editor-form
+                :item="editableFacet"
+                :hasAttributes="true"
+                :hasColor="true"
+                @update="updateFacet"
+                @cancel="cancelEditFacet" />
+            </div>
+          </div>
+
+        </editable-tree-view>
+      </div>
+    </div>
+
+  </afeefa-page>
 </template>
 
 
@@ -40,11 +67,10 @@ import EditableTreeView from '@/components/tree/EditableTreeView'
 import TreeItemEditorForm from '@/components/tree/TreeItemEditorForm'
 
 export default {
-  props: ['id'],
-
   data () {
     return {
-      facet: null,
+      selectedFacet: null,
+      facets: [],
       treeConfig: new FacetTreeConfig(this, this.id),
       editableFacet: null,
       editableFacetOriginal: null
@@ -52,7 +78,7 @@ export default {
   },
 
   created () {
-    this.loadFacet()
+    this.loadFacets()
   },
 
   watch: {
@@ -64,6 +90,10 @@ export default {
   },
 
   methods: {
+    selectFacet (facet) {
+      this.selectedFacet = facet
+    },
+
     editFacet (facet) {
       this.editableFacetOriginal = facet
       this.editableFacet = facet.clone()
@@ -80,9 +110,11 @@ export default {
       return this.editableFacet && this.editableFacet.id === facet.id
     },
 
-    loadFacet () {
-      Facet.Query.get(this.id).then(facet => {
-        this.facet = facet
+    loadFacets () {
+      Facet.Query.getAll().then(facets => {
+        this.facets = facets
+
+        this.selectedFacet = this.facets[0]
         this.facetsLoaded = true
       })
     },
@@ -108,24 +140,21 @@ export default {
 
 
 <style lang="scss" scoped>
-.loadingInfo {
-  margin-top: .8em;
+.treeViewContent {
+  width: 100%;
+  display: flex;
 }
 
-.facet {
-  padding: 1em 0;
+.treeNavigation {
+  padding-right: 4em;
+}
 
-  &:not(:last-child) {
-    border-bottom: 1px solid $gray20;
+.facetSelectorItem /deep/ .facetItem {
+  width: 100%;
+  margin-bottom: .5em;
+  > * {
+    padding-right: 2em;
   }
-}
-
-.colorIcon {
-  vertical-align: middle;
-  display: inline-block;
-  width: 5px;
-  height: 16px;
-  margin-right: 6px;
 }
 
 .facetAttributes {
@@ -155,12 +184,12 @@ export default {
   }
 }
 
-.inlineEditLink {
-  margin-left: 10px;
-}
-
 .ownerTypes {
   font-size: .9em;
   color: $gray50;
+}
+
+.inlineEditLink {
+  margin-left: 10px;
 }
 </style>

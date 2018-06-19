@@ -49,41 +49,25 @@
 
         <div class="filters" v-if="selectedFacet">
           <div v-for="facetItem in selectedFacet.facet_items" :key="facetItem.id">
-            <facet-selector-item v-if="facetItemHasEntries(facetItem)"
+            <facet-selector-item
               @click="facetItemClick(facetItem)"
               :item="facetItem"
               :color="selectedFacet.color"
               :more="false"
               :hint="countEntriesForFacetItem(facetItem)"
+              :disabled="!countEntriesForFacetItem(facetItem)"
               :checked="facetItemIsSelected(facetItem)"
-              :checkbox="true" />
-
-            <facet-selector-item v-else
-              :item="facetItem"
-              :color="selectedFacet.color"
-              :more="false"
-              :hint="countEntriesForFacetItem(facetItem)"
-              :disabled="true"
               :checkbox="true" />
           </div>
 
-          <facet-selector-item v-if="countEntriesWithoutFacet(selectedFacet)"
+          <facet-selector-item
             @click="entriesWithoutFacetClick(selectedFacet)"
             :item="selectedFacet"
             title="Nicht zugeordnet"
             :color="selectedFacet.color"
             :more="false"
             :hint="countEntriesWithoutFacet(selectedFacet)"
-            :checked="entriesWithoutFacetIsSelected(selectedFacet)"
-            :checkbox="true" />
-
-          <facet-selector-item v-else
-            :item="selectedFacet"
-            title="Nicht zugeordnet"
-            :color="selectedFacet.color"
-            :more="false"
-            :hint="0"
-            :disabled="true"
+            :disabled="!countEntriesWithoutFacet(selectedFacet)"
             :checked="entriesWithoutFacetIsSelected(selectedFacet)"
             :checkbox="true" />
         </div>
@@ -106,8 +90,8 @@
                     :item="subItem"
                     :color="navigationItem.color"
                     :more="false"
-                    :disabled="!countEntriesForNavigationItem(subItem)"
                     :hint="countEntriesForNavigationItem(subItem)"
+                    :disabled="!countEntriesForNavigationItem(subItem)"
                     :checked="subItem === selectedNavigationItem"
                     :checkbox="true" />
                 </tree-sub-item>
@@ -121,6 +105,7 @@
             color="#999999"
             :more="false"
             :hint="countEntriesWithoutNavigation"
+            :disabled="!countEntriesWithoutNavigation"
             :checked="navigationItemWithoutNavigation === selectedNavigationItem"
             :checkbox="true" />
         </div>
@@ -294,12 +279,6 @@ export default {
 
     facetItemIsSelected (facetItem) {
       return this.selectedFacetItems.includes(facetItem)
-    },
-
-    facetItemHasEntries (facetItem) {
-      return this.filteredEntries.some(entry => {
-        return entry.facet_items.includes(facetItem)
-      })
     },
 
     entriesWithoutFacetIsSelected (facet) {

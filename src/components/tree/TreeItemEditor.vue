@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tree-item-tag :treeItem="treeItem" :chevron="routeConfig.chevron" />
+    <tree-item-tag :treeItem="treeItem" :chevron="routeConfig.chevron" :count="false" />
 
     <a href="" @click.prevent="cancel()" class="inlineEditLink">
       Abbrechen
