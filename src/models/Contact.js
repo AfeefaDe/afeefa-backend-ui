@@ -12,8 +12,6 @@ class Contact extends Model {
     return {
       title: DataTypes.String,
 
-      fax: DataTypes.String,
-
       openingHours: {
         type: DataTypes.String,
         remoteName: 'opening_hours'
@@ -50,7 +48,6 @@ class Contact extends Model {
   serialize () {
     const data = {
       title: this.title,
-      fax: this.fax,
       opening_hours: this.openingHours,
       web: this.web,
       social_media: this.socialMedia,
@@ -80,7 +77,7 @@ class Contact extends Model {
 
   isEmpty () {
     const hasPerson = this.persons.some(cp => !cp.isEmpty())
-    return !this.fax && !this.openingHours && !this.web && !this.socialMedia && !this.spokenLanguages && !hasPerson
+    return !this.openingHours && !this.web && !this.socialMedia && !this.spokenLanguages && !hasPerson
   }
 
   get info () {

@@ -96,13 +96,6 @@
 
     <h2>Rest</h2>
 
-    <input-field
-      field-name="fax"
-      v-model="contact.fax"
-      validate="max:255"
-      label="Fax">
-    </input-field>
-
     <div class="inputField__spacing input-field" v-if="owner.type === 'orgas'">
       <label for="openingHours" :class="{active: contact.openingHours}">
         {{ $t('entries.openingHours') }}

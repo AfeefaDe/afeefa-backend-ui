@@ -63,14 +63,6 @@
           </entry-detail-property>
 
           <entry-detail-property
-            v-if="contact.fax"
-            :name="$t('entries.fax')"
-            :iconName="'filter_none'"
-            :isMultiline="true">
-            <div v-if="contact.fax">{{ contact.fax }}</div>
-          </entry-detail-property>
-
-          <entry-detail-property
             v-if="contact.spokenLanguages"
             :name="$tc('headlines.spokenLanguages', contact.spokenLanguages.split(',').length)"
             :iconName="'translate'">
