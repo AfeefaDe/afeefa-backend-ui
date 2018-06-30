@@ -16,6 +16,7 @@ export default class Config extends TreeConfig {
     this.containerName = 'navigation'
     this.relationName = 'navigation_items'
     this.canColorizeItems = true
+    this.canSelectIcon = true
     this.chevron = true
   }
 

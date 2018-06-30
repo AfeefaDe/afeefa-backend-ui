@@ -23,6 +23,7 @@
         :item="treeItem"
         :hasAttributes="true"
         :hasColor="canColorize"
+        :hasIcon="canSelectIcon"
         @update="update"
         @cancel="cancel" />
 
@@ -79,6 +80,10 @@ export default {
 
     canColorize () {
       return this.routeConfig.canColorizeItems && !this.treeItem.parent
+    },
+
+    canSelectIcon () {
+      return this.routeConfig.canSelectIcon
     }
   },
 

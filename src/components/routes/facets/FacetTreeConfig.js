@@ -16,6 +16,7 @@ export default class Config extends TreeConfig {
     this.containerName = 'facet'
     this.relationName = 'facet_items'
     this.canColorizeItems = false
+    this.canSelectIcon = false
     this.chevron = false
   }
 

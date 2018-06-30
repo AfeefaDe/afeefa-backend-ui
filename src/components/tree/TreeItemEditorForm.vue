@@ -25,6 +25,13 @@
         @keyup.enter="update()"
         @keyup.esc="cancel()">
 
+      <div v-if="hasIcon">
+        <select class="browser-default" v-model="item.icon">
+          <option :value="null">Icon auswählen</option>
+          <option :value="icon" v-for="icon in icons" :key="icon">{{ icon }}</option>
+        </select>
+      </div>
+
       <button type="button" class="btn btn-small" @click="update()">
         <i class="material-icons left">done</i>
       </button>
@@ -41,7 +48,98 @@ import Swatches from 'vue-swatches'
 import 'vue-swatches/dist/vue-swatches.min.css'
 
 export default {
-  props: ['item', 'hasAttributes', 'hasColor', 'hasMove'],
+  props: ['item', 'hasAttributes', 'hasColor', 'hasMove', 'hasIcon'],
+
+  data () {
+    return {
+      icons: [
+        'general',
+        'language',
+        'medic',
+        'jobs',
+        'consultation',
+        'leisure',
+        'community',
+        'donation',
+        'external-event',
+
+        /* Sub categories */
+
+        'wifi',
+        'jewish',
+        'christian',
+        'islam',
+        'religious-other',
+        'shop',
+        'nature',
+        'authority',
+        'hospital',
+        'police',
+        'public-transport',
+
+        'german-course',
+        'german-course-state',
+        'meet-and-speak',
+        'learning-place',
+        'interpreter',
+        'foreign-language',
+
+        'medical-counselling',
+        'psychological-counselling',
+
+        'job-counselling',
+        'education-counselling',
+        'political-education',
+        'library',
+
+        'asylum-counselling',
+        'legal-advice',
+        'social-counselling',
+        'family-counselling',
+        'volunteer-coordination',
+
+        'youth-club',
+        'sports',
+        'museum',
+        'music',
+        'stage',
+        'craft-art',
+        'workspace',
+        'gardening',
+        'cooking',
+        'festival',
+        'lecture',
+        'film',
+        'congress',
+
+        'welcome-network',
+        'meeting-place',
+        'childcare',
+        'workshop',
+        'sponsorship',
+        'lgbt',
+        'housing-project',
+
+        'food',
+        'clothes',
+        'furniture',
+
+        'iwgr',
+        'fb-event',
+
+        /* LEIPZIG */
+
+        'hotspots',
+        'advice-and-support',
+        'living-in-leipzig',
+        'work-and-education'
+      ]
+    }
+  },
+
+  created () {
+    console.log(this.item)
+  },
 
   methods: {
     cancel () {

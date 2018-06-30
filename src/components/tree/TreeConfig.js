@@ -7,6 +7,7 @@ export default class Config extends RouteConfig {
     this.containerName = null
     this.relationName = null
     this.canColorizeItems = false
+    this.canSelectIcon = false
     this.chevron = false
 
     this.messages = {

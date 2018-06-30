@@ -20,6 +20,11 @@ class NavigationItem extends Model {
 
       color: DataTypes.String,
 
+      icon: {
+        type: DataTypes.String,
+        value: value => value || null
+      },
+
       count_owners: DataTypes.Int,
 
       count_owners_via_facet_items: DataTypes.Int,
@@ -93,6 +98,7 @@ class NavigationItem extends Model {
     const data = {
       title: this.title,
       color: this.color,
+      icon: this.icon,
       parent_id: this.parent ? this.parent.id : null
     }
 
