@@ -1,7 +1,10 @@
-// import materialize js
+// import global styles before entering router
+// and reading component styles
 import 'materialize-css'
-// import vue multiselect style
 import 'vue-multiselect/dist/vue-multiselect.min.css'
+import 'flatpickr/dist/themes/material_green.css'
+import 'leaflet/dist/leaflet.css'
+import '@/assets/styles/app.scss'
 
 import './services/validation'
 import './services/leaflet'

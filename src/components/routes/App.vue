@@ -14,11 +14,6 @@ import Alert from '@/components/Alert'
 import DialogWindow from '@/components/Dialog'
 import SpinnerModal from '@/components/SpinnerModal'
 
-import 'flatpickr/dist/themes/material_green.css'
-import 'leaflet/dist/leaflet.css'
-import '@/assets/styles/app.scss'
-
-
 export default {
   components: {
     DialogWindow,
