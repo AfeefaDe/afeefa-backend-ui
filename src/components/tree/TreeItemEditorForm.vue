@@ -137,10 +137,6 @@ export default {
     }
   },
 
-  created () {
-    console.log(this.item)
-  },
-
   methods: {
     cancel () {
       this.$emit('cancel', this.item)

@@ -34,15 +34,16 @@ import Vue from 'vue'
 import Spinner from '@/components/Spinner'
 
 export default {
-  props: ['items', 'hasFilter', 'title', 'messages', 'isLoading'],
+  props: ['items', 'hasFilter', 'title', 'messages', 'isLoading', 'searchFields'],
 
   data () {
     const has = { filter: this.hasFilter === undefined || this.hasFilter }
+    const searchFields = this.searchFields || ['title']
     return {
       selectableItems: [],
       keyword: '',
       selectedItemIndex: null,
-      searchFields: ['title'],
+      searchInFields: searchFields,
       has
     }
   },
@@ -63,7 +64,7 @@ export default {
         const keywords = this.keyword.split(' ')
         let findCount = 0
         for (let keyword of keywords) {
-          const hasFound = this.searchFields.some(field => {
+          const hasFound = this.searchInFields.some(field => {
             let value = a[field]
             if (!value) {
               if (!keyword) {

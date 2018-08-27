@@ -6,10 +6,4 @@ export default class OwnerNavigationItemsResource extends Resource {
       navigation_items: models.map(model => model.id)
     }
   }
-
-  itemsAttached (owner) {
-    super.itemsAttached(owner)
-
-    this.cachePurgeItem('fe_navigations', 'app')
-  }
 }

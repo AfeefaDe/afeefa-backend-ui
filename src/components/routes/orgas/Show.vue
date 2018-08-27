@@ -133,7 +133,7 @@
         </section>
 
         <section slot="networkMembersTab">
-          <actor-selector title="Netzwerkmitglieder ändern" :actor="orga" relationName="network_members" @saved="actorRelationSaved" />
+          <actor-selector title="Netzwerkmitglieder ändern" :actor="orga" relationName="network_members" @saved="actorRelationSaved('network_members')" />
 
           <entry-list-items
             :items="orga.network_members"
@@ -143,11 +143,11 @@
             Keine Mitglieder zugeordnet
           </div>
 
-          <actor-selector title="Netzwerkmitglieder ändern" :actor="orga" relationName="network_members" @saved="actorRelationSaved" />
+          <actor-selector title="Netzwerkmitglieder ändern" :actor="orga" relationName="network_members" @saved="actorRelationSaved('network_members')" />
         </section>
 
         <section slot="projectsTab">
-          <actor-selector title="Projekte ändern" :actor="orga" relationName="projects" @saved="actorRelationSaved" />
+          <actor-selector title="Projekte ändern" :actor="orga" relationName="projects" @saved="actorRelationSaved('projects')" />
 
           <entry-list-items
             :items="orga.projects"
@@ -157,7 +157,7 @@
             Keine Projekte zugeordnet
           </div>
 
-          <actor-selector title="Projekte ändern" :actor="orga" relationName="projects" @saved="actorRelationSaved" />
+          <actor-selector title="Projekte ändern" :actor="orga" relationName="projects" @saved="actorRelationSaved('projects')" />
         </section>
 
         <section slot="eventsTab">
@@ -236,8 +236,8 @@ export default {
   },
 
   methods: {
-    actorRelationSaved () {
-      this.orga.$rels.actor_relations.refetch()
+    actorRelationSaved (relationName) {
+      this.orga.$rels[relationName].refetch()
     }
   },
 

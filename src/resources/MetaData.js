@@ -7,4 +7,8 @@ export default class MetaDataResource extends Resource {
     json.id = 'app'
     return json
   }
+
+  get () {
+    return super.get('app')
+  }
 }

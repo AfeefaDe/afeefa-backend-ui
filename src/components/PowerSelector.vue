@@ -9,6 +9,7 @@
         <selectable-list
           :items="filteredItems"
           :messages="{}"
+          :searchFields="searchFields"
           @cancel="hideModal"
           @select="submitItem">
           <div slot="item" slot-scope="props">

@@ -137,7 +137,7 @@ export default {
     },
 
     saveSelectedActors () {
-      return this.actor.actor_relations.$rels[this.relationName].Query.attachMany(this.selectedActors).then(result => {
+      return this.actor.$rels[this.relationName].Query.attachMany(this.selectedActors).then(result => {
         if (result) {
           this.$store.dispatch('messages/showAlert', {
             description: 'Die Netzwerke wurden gespeichert.'

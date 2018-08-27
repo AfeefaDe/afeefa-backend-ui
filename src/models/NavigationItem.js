@@ -1,6 +1,5 @@
 import NavigationItemsResource from '@/resources/NavigationItems'
 import NavigationItemFacetItemsResource from '@/resources/relations/NavigationItemFacetItems'
-import NavigationItemOwnersResource from '@/resources/relations/NavigationItemOwners'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Registry from 'uidata/model/Registry'
@@ -54,11 +53,6 @@ class NavigationItem extends Model {
         type: Relation.HAS_MANY,
         Model: FacetItem,
         Resource: NavigationItemFacetItemsResource
-      },
-
-      owners: {
-        type: Relation.HAS_MANY,
-        Resource: NavigationItemOwnersResource
       }
     }
   }
@@ -74,24 +68,12 @@ class NavigationItem extends Model {
     return menuItem
   }
 
-  constructor () {
-    super()
-
-    // Todo: find a solution to mark item loaded in lists to be fully loaded
-    this._loadingState = 1
+  init () {
     this.previewColor = null
   }
 
   get container () {
     return this.navigation
-  }
-
-  beforeDeserialize (json) {
-    json.relationships = json.relationships || {}
-    json.relationships.navigation = {
-      id: 'app'
-    }
-    return json
   }
 
   serialize () {

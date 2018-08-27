@@ -2,11 +2,16 @@ import Resource from 'uidata/resource/Resource'
 
 export default class ActorRelationsResource extends Resource {
   getUrl () {
-    return 'orgas{/id}/actor_relations'
+    return `orgas/${this.relation.owner.id}/${this.relation.name}{/id}`
   }
 
-  getItemJson (json) {
-    json.id = this.relation.owner.id
-    return json
+  serializeAttachOrDetach (model) {
+    return model.id
+  }
+
+  serializeAttachOrDetachMany (models) {
+    return {
+      actors: models.map(model => model.id)
+    }
   }
 }

@@ -1,39 +1,37 @@
+import App from 'uidata/model/App'
+
 import EntriesResource from './base/Entries'
 
 export default class EventsResource extends EntriesResource {
   url = 'events{/id}'
 
+  ensureReverseRelations (event) {
+    const reverseRelations = super.ensureReverseRelations(event)
+
+    // host.events
+    event.hosts.forEach(actor => {
+      if (event.isUpcoming) {
+        reverseRelations.add(actor.$rels.upcoming_events)
+      } else {
+        reverseRelations.add(actor.$rels.past_events)
+      }
+    })
+
+    // app.events
+    if (event.isUpcoming) {
+      reverseRelations.add(App.getRelationByType('events'), 'upcoming')
+    } else {
+      reverseRelations.add(App.getRelationByType('events'), 'past')
+    }
+
+    return reverseRelations
+  }
+
   itemDeleted (event) {
     super.itemDeleted(event)
 
-    if (event.parent_orga) {
-      event.parent_orga.count_events--
-    }
-  }
-
-  itemSaved (eventOld, event) {
-    super.itemSaved(eventOld, event)
-
-    // upcoming changed
-    if (eventOld.isUpcoming !== event.isUpcoming) {
-      this.cachePurgeList('events')
-
-      event.parent_orga.$rels.upcoming_events.reloadOnNextGet()
-      event.parent_orga.$rels.past_events.reloadOnNextGet()
-    }
-
-    // parent orga changed
-    if (eventOld.parent_orga !== event.parent_orga) {
-      if (eventOld.parent_orga) {
-        eventOld.parent_orga.count_events--
-        eventOld.parent_orga.$rels.upcoming_events.reloadOnNextGet()
-        eventOld.parent_orga.$rels.past_events.reloadOnNextGet()
-      }
-      if (event.parent_orga) {
-        // current parent_orga.count_events loaded in event save payload
-        event.parent_orga.$rels.upcoming_events.reloadOnNextGet()
-        event.parent_orga.$rels.past_events.reloadOnNextGet()
-      }
-    }
+    event.hosts.forEach(host => {
+      host.count_events--
+    })
   }
 }

@@ -11,4 +11,14 @@ export default class OfferOwnersResource extends Resource {
       actors: models.map(model => model.id)
     }
   }
+
+  itemAttached (owner) {
+    super.itemAttached(owner)
+    owner.count_offers++
+  }
+
+  itemDetached (owner) {
+    super.itemDetached(owner)
+    owner.count_offers--
+  }
 }

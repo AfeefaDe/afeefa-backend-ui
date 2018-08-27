@@ -9,6 +9,7 @@ class SearchResource extends Resource {
     return 'search'
   }
 
+  // entry is nested in search response relationships
   getItemJson (json) {
     return json.relationships.entry.data
   }

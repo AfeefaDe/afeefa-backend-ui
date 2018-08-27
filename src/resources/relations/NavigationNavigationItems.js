@@ -7,26 +7,9 @@ export default class NavigationNavigationItemsResource extends Resource {
     return `fe_navigation/fe_navigation_items{/id}`
   }
 
-  itemAdded (navigationItem) {
-    super.itemAdded(navigationItem)
-
-    this.reloadNavigation()
-  }
-
-  itemSaved (oldNavigationItem, navigationItem) {
-    super.itemSaved(oldNavigationItem, navigationItem)
-
-    this.reloadNavigation()
-  }
-
-  itemDeleted (navigationItem) {
-    super.itemDeleted(navigationItem)
-
-    this.reloadNavigation()
-  }
-
-  reloadNavigation () {
-    const relation = App.getRelationByModel(Navigation)
-    relation.reloadOnNextGet()
+  ensureReverseRelations (host) {
+    const reverseRelations = super.ensureReverseRelations(host)
+    reverseRelations.reloadAlways(App.getRelationByModel(Navigation))
+    return reverseRelations
   }
 }

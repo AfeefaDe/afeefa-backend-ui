@@ -67,7 +67,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import Facet from '@/models/Facet'
 import Spinner from '@/components/Spinner'
 import facetItems from '@/helpers/facet-items'
 import EntryFacetItems from '@/components/entry/EntryFacetItems'
@@ -240,7 +239,6 @@ export default {
           this.$store.dispatch('facetFilters/entryFacetItemsSaved')
         }
         this.loading = false
-        Facet.Query.getAll()
       })
     }
   },

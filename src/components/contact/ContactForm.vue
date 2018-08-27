@@ -17,7 +17,7 @@
       v-if="showLocationSelector"
       :items="locations"
       :selected-items="selectedLocations"
-      :search-fields="['title', 'street', 'ownerTitle']"
+      :search-fields="['title', 'city', 'street', 'ownerTitle']"
       @select="locationChanged"
       @remove="locationRemoved"
       :messages="{

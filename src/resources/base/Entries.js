@@ -1,12 +1,12 @@
+import App from 'uidata/model/App'
 import Resource from 'uidata/resource/Resource'
 
 export default class EntriesResource extends Resource {
-  itemSaved (entryOld, entry) {
-    super.itemSaved(entryOld, entry)
-
-    // has now annotations or does not have annotations any longer
-    if (entry.annotations.length === entryOld.annotations.length + entry.annotations.length) {
-      this.cachePurgeList('todos')
+  ensureReverseRelations (entry) {
+    const reverseRelations = super.ensureReverseRelations(event)
+    if (entry.annotations.length) {
+      reverseRelations.add(App.getRelationByType('todos'))
     }
+    return reverseRelations
   }
 }

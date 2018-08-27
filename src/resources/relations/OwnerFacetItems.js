@@ -6,10 +6,4 @@ export default class OwnerFacetItemsResource extends Resource {
       facet_items: models.map(model => model.id)
     }
   }
-
-  itemsAttached (owner) {
-    super.itemsAttached(owner)
-
-    this.cachePurgeList('facets')
-  }
 }

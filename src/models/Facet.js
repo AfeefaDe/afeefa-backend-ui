@@ -40,9 +40,7 @@ class Facet extends Model {
     }
   }
 
-  constructor () {
-    super()
-
+  init () {
     this.previewColor = null
   }
 

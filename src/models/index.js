@@ -1,6 +1,5 @@
 import Registry from 'uidata/model/Registry'
 
-import './ActorRelations'
 import './Annotation'
 import './AnnotationCategory'
 import './Chapter'

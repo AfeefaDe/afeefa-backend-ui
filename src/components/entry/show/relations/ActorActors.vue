@@ -7,7 +7,7 @@
       <div v-for="actor in items" :key="actor.id">
         <slot name="actor" :actor="actor" />
       </div>
-      <div v-if="!owner[this.relationName].length" class="entryDetail__error">Keine {{ title }} angegeben</div>
+      <div v-if="!items.length" class="entryDetail__error">Keine {{ title }} angegeben</div>
 
       <component :is="selector" :actor="owner" :relationName="relationName" title="Ändern" @saved="actorRelationSaved" />
     </div>
@@ -23,14 +23,15 @@ export default {
 
   data () {
     return {
-      items: [],
       isLoading: 0,
       selector: ActorSelector
     }
   },
 
-  created () {
-    this.items = this.owner[this.relationName]
+  computed: {
+    items () {
+      return this.owner[this.relationName]
+    }
   },
 
   methods: {
@@ -58,12 +59,11 @@ export default {
     setItemsAfterLoading () {
       if (this.isLoading > 2) {
         this.isLoading = false
-        this.items = this.owner[this.relationName]
       }
     },
 
     reloadActors () {
-      return this.owner.$rels.actor_relations.refetch()
+      return this.owner.$rels[this.relationName].refetch()
     }
   },
 

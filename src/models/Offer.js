@@ -28,7 +28,8 @@ class Offer extends Model {
       owners: {
         type: Relation.HAS_MANY,
         Model: Orga,
-        Resource: OfferOwnersResource
+        Resource: OfferOwnersResource,
+        reverseName: 'offers'
       },
 
       facet_items: {

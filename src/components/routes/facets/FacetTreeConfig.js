@@ -21,7 +21,9 @@ export default class Config extends TreeConfig {
   }
 
   loadTreeItems (facet) {
-    return facet.$rels.facet_items.Query.getAll()
+    return facet.$rels.facet_items.refetch().then(() => {
+      return facet.facet_items
+    })
   }
 
   createNewTreeItem (container, parent) {

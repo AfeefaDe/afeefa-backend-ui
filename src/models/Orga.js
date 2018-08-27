@@ -6,7 +6,6 @@ import DataTypes from 'uidata/model/DataTypes'
 import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
 
-import ActorRelations from './ActorRelations'
 import Event from './Event' // import before entry important (cyclic imports)!
 import Entry from './base/Entry'
 import Offer from './Offer'
@@ -54,12 +53,6 @@ class Orga extends Entry {
         Model: ResourceItem
       },
 
-      actor_relations: {
-        type: Relation.HAS_ONE,
-        Model: ActorRelations,
-        Resource: ActorRelationsResource
-      },
-
       past_events: {
         type: Relation.HAS_MANY,
         Model: Event,
@@ -75,6 +68,41 @@ class Orga extends Entry {
       offers: {
         type: Relation.HAS_MANY,
         Model: Offer
+      },
+
+      projects: {
+        type: Relation.HAS_MANY,
+        Model: Orga,
+        Resource: ActorRelationsResource,
+        reverseName: 'project_initiators'
+      },
+
+      project_initiators: {
+        type: Relation.HAS_MANY,
+        Model: Orga,
+        Resource: ActorRelationsResource,
+        reverseName: 'projects'
+      },
+
+      networks: {
+        type: Relation.HAS_MANY,
+        Model: Orga,
+        Resource: ActorRelationsResource,
+        reverseName: 'network_members'
+      },
+
+      network_members: {
+        type: Relation.HAS_MANY,
+        Model: Orga,
+        Resource: ActorRelationsResource,
+        reverseName: 'networks'
+      },
+
+      partners: {
+        type: Relation.HAS_MANY,
+        Model: Orga,
+        Resource: ActorRelationsResource,
+        reverseName: 'partners'
       }
     }
   }
@@ -83,46 +111,12 @@ class Orga extends Entry {
     this.facetOwnerType = 'Orga'
   }
 
-  onActorRelations (actorRelations) {
-    if (actorRelations) {
-      ActorRelations.RELATIONS.forEach(relationName => {
-        this[relationName] = actorRelations[relationName]
-        // loading an orga within a list will only set project_initiators
-        // in that case we dont want reset projects or network members
-        // as they already might be loaded already beforehand
-        if (actorRelations.$rels.projects.fetched) {
-          this.count_projects = this.projects.length
-          this.count_network_members = this.network_members.length
-        }
-      })
-    }
+  onNetworkMembers (networkMembers) {
+    this.count_network_members = networkMembers.length
   }
 
-  beforeDeserialize (json) {
-    const relationships = json.relationships
-
-    // move all actor relations into container object
-    if (relationships) {
-      const actorRelationsJson = {}
-      ActorRelations.RELATIONS.forEach(relationName => {
-        if (relationships[relationName]) {
-          actorRelationsJson[relationName] = relationships[relationName].data
-          delete json.relationships[relationName]
-        }
-      })
-      if (Object.keys(actorRelationsJson).length) {
-        // inject id of orga as actorRelations id
-        // also see ActorRelationsResource#itemJsonLoaded
-        actorRelationsJson.id = this.id
-        relationships.actor_relations = actorRelationsJson
-      }
-    }
-
-    return {
-      id: json.id,
-      attributes: json.attributes,
-      relationships
-    }
+  onProjects (projects) {
+    this.count_projects = projects.length
   }
 
   serialize () {

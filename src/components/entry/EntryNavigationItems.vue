@@ -4,7 +4,7 @@
       <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Navigation
     </div>
 
-    <div v-else-if="navigation" class="items">
+    <div v-else class="items">
       <div v-for="navigationItem in entry.navigation_items" :key="navigationItem.id" v-if="displayNavigationItem(navigationItem)">
         <navigation-item-view :navigationItem="navigationItem" :click="false" />
       </div>
@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import Navigation from '@/models/Navigation'
 import NavigationItemView from '@/components/fe_navigation/FeNavigationItemView'
 import PopUpSelector from '@/components/PopUpSelector'
 import NavigationItemsTree from '@/components/fe_navigation/FeNavigationItemsTree'
@@ -38,12 +37,6 @@ export default {
       loading: false,
       navigationSelectorIsOpen: false
     }
-  },
-
-  created () {
-    Navigation.Query.get().then(navigation => {
-      this.navigation = navigation
-    })
   },
 
   computed: {
@@ -93,8 +86,6 @@ export default {
         this.$store.dispatch('facetFilters/entryFacetItemsSaved')
         this.loading = false
       })
-
-      Navigation.Query.get()
     }
   },
 

@@ -1,5 +1,4 @@
 import Facet from '@/models/Facet'
-import FacetItemOwnersResource from '@/resources/relations/FacetItemOwners'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Registry from 'uidata/model/Registry'
@@ -33,11 +32,6 @@ class FacetItem extends Model {
       facet: {
         type: Relation.HAS_ONE,
         Model: Facet
-      },
-
-      owners: {
-        type: Relation.HAS_MANY,
-        Resource: FacetItemOwnersResource
       }
     }
   }
@@ -53,9 +47,7 @@ class FacetItem extends Model {
     return facetItem
   }
 
-  constructor () {
-    super()
-
+  init () {
     this.new_facet_id = null
     this.previewColor = null
   }
