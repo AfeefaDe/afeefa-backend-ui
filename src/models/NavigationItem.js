@@ -1,17 +1,12 @@
-import NavigationItemsResource from '@/resources/NavigationItems'
-import NavigationItemFacetItemsResource from '@/resources/relations/NavigationItemFacetItems'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
 
-import FacetItem from './FacetItem'
 import Navigation from './Navigation'
 
 class NavigationItem extends Model {
   static type = 'fe_navigation_items'
-
-  static Resource = NavigationItemsResource
 
   static attributes () {
     return {
@@ -22,13 +17,7 @@ class NavigationItem extends Model {
       icon: {
         type: DataTypes.String,
         value: value => value || null
-      },
-
-      count_owners: DataTypes.Int,
-
-      count_owners_via_facet_items: DataTypes.Int,
-
-      count_direct_owners: DataTypes.Int
+      }
     }
   }
 
@@ -47,12 +36,6 @@ class NavigationItem extends Model {
       parent: {
         type: Relation.HAS_ONE,
         Model: NavigationItem
-      },
-
-      facet_items: {
-        type: Relation.HAS_MANY,
-        Model: FacetItem,
-        Resource: NavigationItemFacetItemsResource
       }
     }
   }

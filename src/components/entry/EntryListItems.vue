@@ -217,10 +217,6 @@ export default {
   },
 
   methods: {
-    showNavigationItemsClick () {
-      console.log('click')
-    },
-
     dayOfEvent (item) {
       let day = moment(item.date_start).date()
       if (day < 10) {

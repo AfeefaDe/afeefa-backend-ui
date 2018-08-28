@@ -6,7 +6,7 @@
 
     <div v-else>
       <div v-if="!isEdit">
-        <entry-facet-items :items="displayedSavedFacetItems" :count="false">
+        <entry-facet-items :items="displayedSavedFacetItems">
           <facet-item-selector
             slot="buttons"
             v-if="!displayedSavedFacetItems.length"
@@ -26,7 +26,7 @@
         <entry-facet-items
           v-if="displayedSelectedFacetItems.length"
           :items="displayedSelectedFacetItems"
-          :selectable="true" :count="false"
+          :selectable="true"
           :sortByInsertion="true"
           @click="deselectFacteItem">
 

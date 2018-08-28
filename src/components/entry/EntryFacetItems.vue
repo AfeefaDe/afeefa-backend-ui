@@ -5,10 +5,9 @@
         v-if="selectable"
         :treeItem="facetItem"
         :x="true"
-        :count="count"
         @click="facetItemClick" />
 
-      <tree-item-tag v-else :treeItem="facetItem" :count="count" />
+      <tree-item-tag v-else :treeItem="facetItem" />
     </div>
 
     <slot name="buttons" />
@@ -19,7 +18,7 @@
 import Spinner from '@/components/Spinner'
 
 export default {
-  props: ['items', 'selectable', 'count', 'sortByInsertion'],
+  props: ['items', 'selectable', 'sortByInsertion'],
 
   methods: {
     facetItemClick (facetItem) {

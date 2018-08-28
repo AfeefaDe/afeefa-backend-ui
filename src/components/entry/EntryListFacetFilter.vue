@@ -4,7 +4,6 @@
       <tree-item-tag v-for="facetItem in facetItemFilters" :key="facetItem.id"
         class="facetFilterTag"
         :treeItem="facetItem"
-        :count="false"
         :x="true"
         @click="facetItemClick(facetItem)" />
 

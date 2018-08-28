@@ -1,3 +1,4 @@
+import OffersResource from '@/resources/Offers'
 import OfferOwnersResource from '@/resources/relations/OfferOwners'
 import OwnerFacetItemsResource from '@/resources/relations/OwnerFacetItems'
 import OwnerNavigationItemsResource from '@/resources/relations/OwnerNavigationItems'
@@ -13,7 +14,7 @@ import Orga from './Orga'
 class Offer extends Model {
   static type = 'offers'
 
-  static ResourceUrl = 'offers{/id}'
+  static Resource = OffersResource
 
   static attributes () {
     return {

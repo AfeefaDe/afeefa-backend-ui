@@ -7,9 +7,9 @@ export default class NavigationNavigationItemsResource extends Resource {
     return `fe_navigation/fe_navigation_items{/id}`
   }
 
-  ensureReverseRelations (host) {
-    const reverseRelations = super.ensureReverseRelations(host)
-    reverseRelations.reloadAlways(App.getRelationByModel(Navigation))
-    return reverseRelations
+  ensureReverseRelationsAfterAddOrSave (host) {
+    const ensure = super.ensureReverseRelationsAfterAddOrSave(host)
+    ensure.reloadAlways(App.getRelationByModel(Navigation))
+    return ensure
   }
 }

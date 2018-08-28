@@ -3,7 +3,6 @@
     <tree-item-tag v-if="navigationItem.parent"
       :treeItem="navigationItem.parent"
       :x="x"
-      :count="false"
       :chevron="true"
       :click="click"
       @click="onClick" />
@@ -11,7 +10,6 @@
     <tree-item-tag
       :treeItem="navigationItem"
       :x="x"
-      :count="false"
       :chevron="true"
       :click="click"
       @click="onClick" />

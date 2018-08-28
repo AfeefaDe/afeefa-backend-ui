@@ -1,6 +1,6 @@
 <template>
   <div :class="['editableEntryFacetItems', {empty: !facetItems.length}]">
-    <entry-facet-items :items="facetItems" :count="false" v-if="facetItems.length" />
+    <entry-facet-items :items="facetItems" v-if="facetItems.length" />
   </div>
 </template>
 

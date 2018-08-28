@@ -11,9 +11,7 @@ class FacetItem extends Model {
     return {
       title: DataTypes.String,
 
-      color: DataTypes.String,
-
-      count_owners: DataTypes.Int
+      color: DataTypes.String
     }
   }
 

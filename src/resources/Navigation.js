@@ -1,4 +1,3 @@
-// import LoadingState from 'afeefa-ui-data/lib/api/LoadingState'
 import Resource from 'uidata/resource/Resource'
 
 export default class NavigationResource extends Resource {

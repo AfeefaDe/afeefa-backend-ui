@@ -2,11 +2,11 @@ import App from 'uidata/model/App'
 import Resource from 'uidata/resource/Resource'
 
 export default class EntriesResource extends Resource {
-  ensureReverseRelations (entry) {
-    const reverseRelations = super.ensureReverseRelations(event)
+  ensureReverseRelationsAfterAddOrSave (entry) {
+    const ensure = super.ensureReverseRelationsAfterAddOrSave(entry)
     if (entry.annotations.length) {
-      reverseRelations.add(App.getRelationByType('todos'))
+      ensure.add(App.getRelationByType('todos'))
     }
-    return reverseRelations
+    return ensure
   }
 }

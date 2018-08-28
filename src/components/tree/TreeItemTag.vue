@@ -9,8 +9,6 @@
 
       <div class="more" v-if="more"></div>
 
-      <span class="count" v-if="hasCount">{{ currentCountOwners }}</span>
-
       <i class="material-icons" v-if="x">cancel</i>
     </div>
   </div>
@@ -19,7 +17,7 @@
 
 <script>
 export default {
-  props: ['treeItem', 'countOwners', 'chevron', 'x', 'click', 'selected', 'link', 'count', 'more'],
+  props: ['treeItem', 'chevron', 'x', 'click', 'selected', 'link', 'more'],
 
   data () {
     return {
@@ -55,10 +53,6 @@ export default {
   },
 
   computed: {
-    currentCountOwners () {
-      return this.countOwners !== undefined ? this.countOwners : this.treeItem.count_owners
-    },
-
     hasClickListener () {
       if (this.click === false) {
         return false

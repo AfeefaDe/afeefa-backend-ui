@@ -11,26 +11,4 @@ export default class EventHostsResource extends Resource {
       actors: models.map(model => model.id)
     }
   }
-
-  ensureReverseRelations (host) {
-    const reverseRelations = super.ensureReverseRelations(host)
-
-    const event = this.relation.owner
-    if (event.isUpcoming) {
-      reverseRelations.add(host.$rels.upcoming_events)
-    } else {
-      reverseRelations.add(host.$rels.past_events)
-    }
-    return reverseRelations
-  }
-
-  itemAttached (host) {
-    super.itemAttached(host)
-    host.count_events++
-  }
-
-  itemDetached (host) {
-    super.itemDetached(host)
-    host.count_events--
-  }
 }

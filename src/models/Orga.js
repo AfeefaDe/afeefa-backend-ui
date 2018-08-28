@@ -1,7 +1,6 @@
 import OrgasResource from '@/resources/Orgas'
 import ActorRelationsResource from '@/resources/relations/ActorRelations'
-import OrgaPastEventsResource from '@/resources/relations/OrgaPastEvents'
-import OrgaUpcomingEventsResource from '@/resources/relations/OrgaUpcomingEvents'
+import OrgaEventsResource from '@/resources/relations/OrgaEvents'
 import DataTypes from 'uidata/model/DataTypes'
 import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
@@ -56,18 +55,21 @@ class Orga extends Entry {
       past_events: {
         type: Relation.HAS_MANY,
         Model: Event,
-        Resource: OrgaPastEventsResource
+        Resource: OrgaEventsResource,
+        reverseName: 'hosts'
       },
 
       upcoming_events: {
         type: Relation.HAS_MANY,
         Model: Event,
-        Resource: OrgaUpcomingEventsResource
+        Resource: OrgaEventsResource,
+        reverseName: 'hosts'
       },
 
       offers: {
         type: Relation.HAS_MANY,
-        Model: Offer
+        Model: Offer,
+        reverseName: 'owners'
       },
 
       projects: {
@@ -109,14 +111,6 @@ class Orga extends Entry {
 
   init () {
     this.facetOwnerType = 'Orga'
-  }
-
-  onNetworkMembers (networkMembers) {
-    this.count_network_members = networkMembers.length
-  }
-
-  onProjects (projects) {
-    this.count_projects = projects.length
   }
 
   serialize () {

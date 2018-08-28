@@ -1,10 +1,9 @@
 import Resource from 'uidata/resource/Resource'
 
 export default class FacetFacetItemsResource extends Resource {
-  // item might be moved
-  itemSaved (oldFacetItem, facetItem) {
-    super.itemSaved(oldFacetItem, facetItem)
-
-    this.relation.reloadOnNextGet()
+  ensureReverseRelationsAfterAddOrSave (facetItem) {
+    const ensure = super.ensureReverseRelationsAfterAddOrSave(facetItem)
+    ensure.reloadAlways(facetItem.facet.$rels.facet_items)
+    return ensure
   }
 }

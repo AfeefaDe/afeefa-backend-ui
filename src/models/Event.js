@@ -31,13 +31,15 @@ class Event extends Entry {
     }
   }
 
-
   static relations () {
     return {
       hosts: {
         type: Relation.HAS_MANY,
         Model: Orga,
-        Resource: EventHostsResource
+        Resource: EventHostsResource,
+        reverseName: event => {
+          return event.isUpcoming ? 'upcoming_events' : 'past_events'
+        }
       }
     }
   }

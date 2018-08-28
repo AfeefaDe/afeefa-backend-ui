@@ -1,4 +1,3 @@
-import AnnotationCategoriesResource from '@/resources/AnnotationCategories'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Registry from 'uidata/model/Registry'
@@ -6,8 +5,7 @@ import Registry from 'uidata/model/Registry'
 class AnnotationCategory extends Model {
   static type = 'annotation_categories'
 
-  static Resource = AnnotationCategoriesResource
-
+  static ResourceUrl = 'annotation_categories{/id}'
   static attributes () {
     return {
       title: DataTypes.String,
