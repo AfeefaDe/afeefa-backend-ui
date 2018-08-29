@@ -12,6 +12,7 @@
         <entry-list-items
           slot="upcomingEventsTab"
           :items="filteredEntries"
+          :lazyLoad="true"
           :isLoading="isLoading"
           :sort-function="sortFunction"
           :options="{facetFilter: true, filter: true, pagination: true, event_date: true}"
@@ -21,6 +22,7 @@
         <entry-list-items
           slot="pastEventsTab"
           :items="filteredEntries"
+          :lazyLoad="true"
           :isLoading="isLoading"
           :sort-function="sortFunction"
           :options="{facetFilter: true, filter: true, pagination: true, event_date: true}"
@@ -83,9 +85,10 @@ export default {
     },
 
     setCurrentTab (tabName) {
-      this.currentTab = tabName
-
-      this.loadItems()
+      if (this.currentTab !== tabName) {
+        this.currentTab = tabName
+        this.loadItems()
+      }
     },
 
     getQueryParams () {

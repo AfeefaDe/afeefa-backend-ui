@@ -33,12 +33,11 @@
     </div>
 
     <ul class="entryList">
-      <li v-for="item in itemsSorted" :key="item.type + item.id">
-
+      <li v-for="item in sortedItems" :key="item.type + item.id" :style="{opacity: item.hasListData ? 1 : .2}">
         <div>
           <div v-if="has.typeIcon" class="entryList__icon">
             <entry-icon :item="item" />
-            <div class="eventDate" v-if="item.type === 'events'">
+            <div class="eventDate" v-if="item.hasListData && item.type === 'events'">
               <div class="day">{{ dayOfEvent(item) }}</div>
               <div class="month">{{ monthOfEvent(item) }}</div>
               <div class="year" v-if="yearOfEvent(item)">{{ yearOfEvent(item) }}</div>
@@ -47,7 +46,7 @@
         </div>
 
         <div class="entryList__content">
-          <div class="entryList__attributes" v-if="has.event_date && item.type === 'events'">
+          <div class="entryList__attributes" v-if="item.hasListData && has.event_date && item.type === 'events'">
             <div class="entryList__date entryList--lightColor">
               {{item | formatEventDate}}
               <span>({{item.date_start | formatDateRelative}})</span>
@@ -58,48 +57,51 @@
             <h4 class="title">{{ item.title || 'Kein Titel' }}</h4>
           </router-link>
 
-          <div v-if="item.type === 'orgas' && item.project_initiators.length">
-            <entry-list-item-owners :items="item.project_initiators"></entry-list-item-owners>
-          </div>
-
-          <div v-if="item.type === 'offers' && item.owners.length">
-            <entry-list-item-owners :items="item.owners"></entry-list-item-owners>
-          </div>
-
-          <div v-if="item.type === 'events' && item.hosts.length">
-            <entry-list-item-owners :items="item.hosts"></entry-list-item-owners>
-          </div>
-
-          <div class="entryList__attributes" v-if="item.facet_items">
-            <editable-entry-facets v-if="has.facetFilter" :entry="item" :bus="bus" />
-            <entry-main-facet-items :entry="item" v-else />
-
-            <entry-navigation-items :entry="item" v-if="has.facetFilter && navigationIsSelected" />
-
-            <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
-
-            <div class="entryList__numbers">
-              <span v-if="item.count_offers">{{ item.count_offers }} {{ $tc('offers.offer', item.count_offers) }}</span>
-              <span v-if="item.count_events">{{ item.count_events }} Veranstaltungen</span>
-              <span v-if="item.count_resource_items">{{ item.count_resource_items }} Ressourcen</span>
-              <span v-if="item.count_projects">{{ item.count_projects }} Projekte</span>
-              <span v-if="item.count_network_members">{{ item.count_network_members }} Mitglieder</span>
+          <div v-if="item.hasListData">
+            <div v-if="item.type === 'orgas' && item.project_initiators.length">
+              <entry-list-item-owners :items="item.project_initiators"></entry-list-item-owners>
             </div>
 
-            <div class="entryList__status entryList--lightColor" v-if="has.updated_at">
-              {{ $t('status.changed') }}
-              {{item.updated_at | formatDateAbsolute}}
-              <span>({{item.updated_at | formatDateRelative}})</span>
-              <span v-if="item.last_editor"><br>von {{ item.last_editor.name }} <span v-if="item.last_editor.organization">({{ item.last_editor.organization }})</span></span>
+            <div v-if="item.type === 'offers' && item.owners.length">
+              <entry-list-item-owners :items="item.owners"></entry-list-item-owners>
             </div>
 
-            <div class="entryList__status entryList--lightColor" v-if="has.created_at">
-              {{ $t('status.added') }}
-              {{item.created_at | formatDateAbsolute}}
-              <span>({{item.created_at | formatDateRelative}})</span>
-              <span v-if="item.creator"><br>von {{ item.creator.name }} <span v-if="item.creator.organization">({{ item.creator.organization }})</span></span>
+            <div v-if="item.type === 'events' && item.hosts.length">
+              <entry-list-item-owners :items="item.hosts"></entry-list-item-owners>
+            </div>
+
+            <div class="entryList__attributes" v-if="item.facet_items">
+              <editable-entry-facets v-if="has.facetFilter" :entry="item" :bus="bus" />
+              <entry-main-facet-items :entry="item" v-else />
+
+              <entry-navigation-items :entry="item" v-if="has.facetFilter && navigationIsSelected" />
+
+              <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
+
+              <div class="entryList__numbers">
+                <span v-if="item.count_offers">{{ item.count_offers }} {{ $tc('offers.offer', item.count_offers) }}</span>
+                <span v-if="item.count_events">{{ item.count_events }} Veranstaltungen</span>
+                <span v-if="item.count_resource_items">{{ item.count_resource_items }} Ressourcen</span>
+                <span v-if="item.count_projects">{{ item.count_projects }} Projekte</span>
+                <span v-if="item.count_network_members">{{ item.count_network_members }} Mitglieder</span>
+              </div>
+
+              <div class="entryList__status entryList--lightColor" v-if="has.updated_at">
+                {{ $t('status.changed') }}
+                {{item.updated_at | formatDateAbsolute}}
+                <span>({{item.updated_at | formatDateRelative}})</span>
+                <span v-if="item.last_editor"><br>von {{ item.last_editor.name }} <span v-if="item.last_editor.organization">({{ item.last_editor.organization }})</span></span>
+              </div>
+
+              <div class="entryList__status entryList--lightColor" v-if="has.created_at">
+                {{ $t('status.added') }}
+                {{item.created_at | formatDateAbsolute}}
+                <span>({{item.created_at | formatDateRelative}})</span>
+                <span v-if="item.creator"><br>von {{ item.creator.name }} <span v-if="item.creator.organization">({{ item.creator.organization }})</span></span>
+              </div>
             </div>
           </div>
+
         </div>
 
         <div class="entryList__actionButton">
@@ -137,18 +139,20 @@ import { mapState } from 'vuex'
 export default {
   props: {
     items: {},
+    lazyLoad: {default: false},
     isLoading: {},
     limit: {},
     sortFunction: {},
     sortOrder: {},
     options: {},
-    navigationItemCountAttributeName: {},
     modifyRoute: {default: true}
   },
 
   data () {
     const options = this.options || {}
     return {
+      sortedItems: [],
+      initSortedItemsNext: false,
       currentPageSize: 15,
       currentPage: 1,
       currentNumItems: 0,
@@ -174,20 +178,32 @@ export default {
   },
 
   watch: {
-    '$route' () {
+    '$route' (newItems, oldItems) {
+      console.log('route changed', oldItems, newItems)
       this.initPageProperties()
     },
 
-    'items' () {
+    'items' (newItems, oldItems) {
+      console.log('items changed', oldItems.length, newItems.length)
       this.searchKeyword = ''
+      this.initSortedItems()
     },
 
-    'filteredEntries' () {
-      this.searchKeyword = ''
-      this.setPage({
-        page: 1,
-        pageSize: 15
-      })
+    'searchKeyword' () {
+      console.log('keyword changed')
+      this.initSortedItems()
+    },
+
+    'filteredEntries' (newItems, oldItems) {
+      if (oldItems.length) {
+        console.log('filtered entries changed', oldItems.length, newItems.length)
+        this.searchKeyword = ''
+        this.setPage({
+          page: 1,
+          pageSize: 15
+        })
+        this.initSortedItems()
+      }
     }
   },
 
@@ -199,24 +215,58 @@ export default {
 
     itemsUnsorted () {
       return this.has.facetFilter ? this.filteredEntries : this.items
-    },
-
-    itemsSorted () {
-      let items = this.has.facetFilter ? this.filteredEntries : this.items
-      items = items.filter(i => i.title.toLowerCase().includes(this.searchKeyword.toLowerCase()))
-      items = this.sortFunction ? this.sortFunction(items, this.sortOrder) : items
-      this.currentNumItems = items.length // eslint-disable-line vue/no-side-effects-in-computed-properties
-      if (this.limit) {
-        items = items.slice(0, this.limit)
-      }
-      const pageNumber = Math.min(Math.max(1, this.currentPage), Math.ceil(items.length / this.currentPageSize))
-      const index = (pageNumber - 1) * this.currentPageSize
-      items = items.slice(index, index + this.currentPageSize)
-      return items
     }
   },
 
   methods: {
+    initSortedItems () {
+      if (this.initSortedItemsNext) {
+        return
+      }
+      this.initSortedItemsNext = true
+
+      this.$nextTick(() => {
+        let items = this.has.facetFilter ? this.filteredEntries : this.items
+        items = items.filter(i => i.title.toLowerCase().includes(this.searchKeyword.toLowerCase()))
+        items = this.sortFunction ? this.sortFunction(items, this.sortOrder) : items
+        this.currentNumItems = items.length // eslint-disable-line vue/no-side-effects-in-computed-properties
+        if (this.limit) {
+          items = items.slice(0, this.limit)
+        }
+        const pageNumber = Math.min(Math.max(1, this.currentPage), Math.ceil(items.length / this.currentPageSize))
+        const index = (pageNumber - 1) * this.currentPageSize
+        items = items.slice(index, index + this.currentPageSize)
+        console.log('---initSortedItems', items.length)
+        this.sortedItems = items
+        this.loadVisibleEntries()
+
+        this.initSortedItemsNext = false
+      })
+    },
+
+    loadVisibleEntries () {
+      if (!this.lazyLoad) {
+        return
+      }
+
+      const idsByType = {}
+      this.sortedItems.forEach(item => {
+        if (!idsByType[item.type]) {
+          idsByType[item.type] = {
+            Query: item.class.Query,
+            ids: []
+          }
+        }
+        idsByType[item.type].ids.push(item.id)
+      })
+
+      Object.keys(idsByType).forEach(type => {
+        const Query = idsByType[type].Query
+        console.log('---loadVisibleEntries', type, idsByType[type].ids)
+        Query.getAll({ids: idsByType[type].ids})
+      })
+    },
+
     dayOfEvent (item) {
       let day = moment(item.date_start).date()
       if (day < 10) {
@@ -238,9 +288,12 @@ export default {
     initPageProperties () {
       this.currentPage = this.$route.query.page || 1
       this.currentPageSize = this.$route.query.pageSize || 15
+      console.log('initpageproperties', this.$route.query, this.currentPage, this.currentPageSize)
+      this.initSortedItems()
     },
 
     setPage (config) {
+      console.log('setpage', config, this.$route.query)
       this.currentPage = config.page
       this.currentPageSize = config.pageSize
       if (this.modifyRoute) {
@@ -249,6 +302,9 @@ export default {
         query.pageSize = config.pageSize === 15 ? undefined : config.pageSize
         this.$router.push({query: query})
       }
+      console.log('---setpage', config, this.$route.query)
+
+      this.initSortedItems()
     },
 
     routerLinkObject (item) {

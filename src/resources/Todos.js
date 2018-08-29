@@ -3,7 +3,9 @@ import Orga from '@/models/Orga'
 import Resource from 'uidata/resource/Resource'
 
 class TodosResource extends Resource {
-  url = 'todos'
+  url = 'todos{?ids}'
+
+  lazyLoadList = true
 
   getListType () {
     return 'todos'

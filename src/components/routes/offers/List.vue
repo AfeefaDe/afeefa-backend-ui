@@ -1,6 +1,7 @@
 <template>
   <entry-list
     :items="items"
+    :lazyLoad="true"
     :isLoading="isLoading"
     :numItems="items.length"
     facetOwnerType="Offer"

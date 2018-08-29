@@ -2,6 +2,7 @@
   <div>
     <entry-list
       :items="items"
+      :lazyLoad="true"
       :isLoading="isLoading"
       :numItems="numTodos"
       :addEntryButton="false"

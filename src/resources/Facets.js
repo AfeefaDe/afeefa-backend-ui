@@ -17,7 +17,7 @@ export default class FacetsResource extends Resource {
     // facet lists loads all facets with complete data
     // getting a facet by id should not reload facet from server
     facets.forEach(facet => {
-      facet._loadingState = LoadingState.FULLY_LOADED
+      facet.loadingState = LoadingState.FULLY_LOADED
     })
   }
 }

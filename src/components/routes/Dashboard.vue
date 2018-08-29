@@ -15,6 +15,7 @@
         <div>
           <entry-list-items
             :items="todos"
+            :lazyLoad="true"
             :isLoading="todosLoading"
             :limit="5"
             :sort-function="todosSort"
@@ -38,6 +39,7 @@
         <div>
           <entry-list-items
             :items="orgas"
+            :lazyLoad="true"
             :isLoading="orgasLoading"
             :limit="5"
             :sort-function="orgaSort"
@@ -61,6 +63,7 @@
         <div>
           <entry-list-items
             :items="events"
+            :lazyLoad="true"
             :isLoading="eventsLoading"
             :limit="5"
             :sort-function="eventsSort"

@@ -20,6 +20,7 @@
         <slot name="items">
           <entry-list-items
             :items="items"
+            :lazyLoad="lazyLoad"
             :isLoading="isLoading"
             :sort-function="sortFunction"
             :sort-order="sortOrder"
@@ -36,7 +37,7 @@
 import EntryListItems from '@/components/entry/EntryListItems'
 
 export default {
-  props: ['items', 'isLoading', 'numItems', 'facetOwnerType', 'sortFunction', 'sortOrder', 'options', 'messages', 'addEntryButton'],
+  props: ['items', 'lazyLoad', 'isLoading', 'numItems', 'facetOwnerType', 'sortFunction', 'sortOrder', 'options', 'messages', 'addEntryButton'],
 
   computed: {
     currentNumItems () {
@@ -45,7 +46,7 @@ export default {
   },
 
   watch: {
-    items () {
+    items (neu, alt) {
       this.$store.dispatch('facetFilters/initEntries', {facetOwnerType: this.facetOwnerType, entries: this.items})
     }
   },

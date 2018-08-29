@@ -79,25 +79,23 @@ export default {
     initPageProperties () {
       const activeTab = this.tabs.find(tab => {
         return tab.name === this.$route.query.tab
-      })
+      }) || this.tabs[0]
 
-      if (activeTab) {
+      if (activeTab !== this.activeTab) {
         this.activeTab = activeTab
-      } else {
-        this.activeTab = this.tabs[0]
+        this.$emit('setCurrentTab', this.activeTab.name)
       }
-
-      this.$emit('setCurrentTab', this.activeTab.name)
     },
 
     setActiveTab (tab) {
       this.activeTab = tab
-      // set active tab to parent (used to switch between edit/view mode consistently)
-      this.$emit('setCurrentTab', this.activeTab.name)
 
       const query = {...this.$route.query}
       query.tab = tab === this.tabs[0] ? undefined : tab.name
       this.$router.replace({query: query})
+
+      // set active tab to parent (used to switch between edit/view mode consistently)
+      this.$emit('setCurrentTab', this.activeTab.name)
     }
   }
 }
