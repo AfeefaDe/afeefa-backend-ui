@@ -5,14 +5,17 @@ export default {
   computed: {
     /*
      * generates the frontend link from the current user context
+     *
+     * afeefa.de -> leipzig.afeefa.de
+     * dev.afeefa.da -> dev.leipzig.afeefa.de
      */
     frontendURL () {
-      let url = '//'
+      let url = '//' + process.env.FRONTEND_URL
       const currentUser = User.Query.getCurrentUser()
       if (currentUser && currentUser.area && currentUser.area.toLowerCase() !== 'dresden') {
-        url += currentUser.area + '.'
+        url = url.replace(/afeefa/, currentUser.area + '.afeefa')
       }
-      return url + process.env.FRONTEND_URL
+      return url
     }
   }
 }
