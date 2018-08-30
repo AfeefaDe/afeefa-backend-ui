@@ -21,6 +21,12 @@
       </div>
 
       <entry-detail-property
+        name="Navigation"
+        iconName="bookmark_border">
+        <entry-navigation-items :entry="item" :isEdit="true" />
+      </entry-detail-property>
+
+      <entry-detail-property
         v-if="offer.description"
         :name="$t('entries.description')"
         iconName="more_horiz"
@@ -40,6 +46,7 @@ import OfferRouteConfig from './OfferRouteConfig'
 import EntryFacetItems from '@/components/entry/EntryFacetItems'
 import OfferOwners from '@/components/entry/show/relations/OfferOwners'
 import EditableEntryFacets from '@/components/entry/EditableEntryFacets'
+import EntryNavigationItems from '@/components/entry/EntryNavigationItems'
 
 export default {
   mixins: [EntryShowMixin],
@@ -62,7 +69,8 @@ export default {
   components: {
     EntryFacetItems,
     OfferOwners,
-    EditableEntryFacets
+    EditableEntryFacets,
+    EntryNavigationItems
   }
 }
 </script>
