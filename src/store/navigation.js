@@ -91,7 +91,7 @@ const menuTree = {
         icon: 'add_circle_outline',
         route: 'chapters.new'
       },
-      level: 2,
+      level: 1,
       hint: state => { return state.numChapters },
       children: [
         { route: 'chapters.edit', title: 'headlines.edit', level: 3 },

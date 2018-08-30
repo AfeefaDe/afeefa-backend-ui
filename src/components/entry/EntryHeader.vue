@@ -1,10 +1,10 @@
 <template>
   <afeefa-header :isEdit="isEdit">
     <div slot="title" v-if="entry">
-      {{ entry.title || $t('offers.newOffer') }}
+      {{ entry.title || messages.newItem() }}
     </div>
     <div slot="title" v-else>
-      {{ routeConfig.messages.loadingItem() }}
+      {{ messages.loadingItem() }}
     </div>
 
     <div slot="subTitle" class="owners" v-if="entry && owners.length">

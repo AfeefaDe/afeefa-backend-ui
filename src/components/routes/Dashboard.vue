@@ -6,7 +6,7 @@
       </div>
     </div>
 
-    <div class="col s12 m12">
+    <div class="col s12 m6">
       <div class="mainCard">
         <afeefa-header class="small">
           <router-link :to="{name: 'todos'}" slot="title">{{ $t('headlines.todos') }} ({{ numTodos }})</router-link>
@@ -17,7 +17,7 @@
             :items="todos"
             :lazyLoad="true"
             :isLoading="todosLoading"
-            :limit="5"
+            :limit="10"
             :sort-function="todosSort"
             :options="{updated_at: true, annotations: true}">
           </entry-list-items>
@@ -27,6 +27,28 @@
     </div>
 
     <div class="col s12 m6">
+      <div class="mainCard">
+        <afeefa-header class="small">
+          <router-link :to="{name: 'offers.list'}" slot="title">{{ $tc('offers.offer', numOffers) }} ({{ numOffers }})</router-link>
+          <router-link :to="{name: 'offers.new'}" slot="buttons" class="btn btn-medium green">
+            <i class="material-icons left">add</i>
+            {{$t('buttons.add')}}
+          </router-link>
+        </afeefa-header>
+
+        <div>
+          <entry-list-items
+            :items="offers"
+            :lazyLoad="true"
+            :isLoading="offersLoading"
+            :limit="5"
+            :sort-function="offerSort"
+            :options="{created_at: true}">
+          </entry-list-items>
+          <router-link :to="{name: 'offers.list'}" v-if="!offersLoading">{{ $t('status.all') }} {{ $tc('offers.offer', numOffers) }}</router-link>
+        </div>
+      </div>
+
       <div class="mainCard">
         <afeefa-header class="small">
           <router-link :to="{name: 'orgas.list'}" slot="title">{{ $tc('headlines.organisations', numOrgas) }} ({{ numOrgas }})</router-link>
@@ -48,9 +70,7 @@
           <router-link :to="{name: 'orgas.list'}" v-if="!orgasLoading">{{ $t('status.all') }} {{ $tc('headlines.organisations', numOrgas) }}</router-link>
         </div>
       </div>
-    </div>
 
-    <div class="col s12 m6">
       <div class="mainCard">
         <afeefa-header class="small">
           <router-link :to="{name: 'events.list'}" slot="title">{{ $tc('headlines.events', numEvents) }} ({{numEvents}})</router-link>
@@ -86,14 +106,15 @@ import sortByCreatedAt from '@/helpers/sort-by-created-at'
 import { mapState } from 'vuex'
 import Event from '@/models/Event'
 import Orga from '@/models/Orga'
+import Offer from '@/models/Offer'
 import TodosQuery from '@/resources/Todos'
 
 export default {
   data () {
     return {
       todos: [],
-      todosSort: sortByUpdatedAt,
       todosLoading: true,
+      todosSort: sortByUpdatedAt,
 
       orgas: [],
       orgasLoading: true,
@@ -101,7 +122,11 @@ export default {
 
       events: [],
       eventsLoading: true,
-      eventsSort: sortByCreatedAt
+      eventsSort: sortByCreatedAt,
+
+      offers: [],
+      offersLoading: true,
+      offerSort: sortByCreatedAt
     }
   },
 
@@ -126,6 +151,11 @@ export default {
     Event.Query.getAll().then(events => {
       this.events = events
       this.eventsLoading = false
+    })
+
+    Offer.Query.getAll().then(offers => {
+      this.offers = offers
+      this.offersLoading = false
     })
   },
 

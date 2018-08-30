@@ -24,6 +24,9 @@ export default class Config extends RouteConfig {
         return `Das Event ${item.active ? 'wurde veröffentlicht' : ' ist nun nicht mehr öffentlich sichtbar'}.`
       },
       // new
+      newItem: () => {
+        return `Neue Veranstaltung`
+      },
       addItemSuccess: () => {
         return `Das Event wurde hinzugefügt.`
       },

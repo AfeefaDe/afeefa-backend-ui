@@ -2,7 +2,7 @@ export default {
   headlines: {
     dashboard: 'Dashboard',
     todos: 'Todos',
-    organisations: 'Organization | Organizations',
+    organisations: 'Actor | Actors',
     events: 'Event | Events',
     location: 'Location',
     contact: 'Contact Info',
@@ -209,10 +209,10 @@ export default {
     selectChapter: 'Please select a chapter'
   },
   tinymce: {
-    insertOrga: 'Add Orga link',
+    insertOrga: 'Add Actor link',
     insertChapter: 'Add Chapter link',
-    insertOrgaTooltip: 'This button makes the current text selection to an actual link to the Organization',
-    noSelectionTitle: 'Error while adding Orga',
+    insertOrgaTooltip: 'This button makes the current text selection to an actual link to the Actor',
+    noSelectionTitle: 'Error while adding Actor',
     noSelectionDescription: 'There is no text selected.'
   },
   categories: {

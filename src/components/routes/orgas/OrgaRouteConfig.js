@@ -15,30 +15,33 @@ export default class Config extends RouteConfig {
       loadingItemError: () => this.$t('errors.loadingEntryError') + ' ' + this.itemId,
       // show
       activateItemDialogTitle: item => {
-        return `Orga ${item.active ? 'verbergen' : 'veröffentlichen'}`
+        return `Akteur ${item.active ? 'verbergen' : 'veröffentlichen'}`
       },
       activateItemDialogMessage: item => {
-        return `Soll die Orga "${item.title}" ${item.active ? 'verborgen' : 'veröffentlicht'} werden?`
+        return `Soll der Akteur "${item.title}" ${item.active ? 'verborgen' : 'veröffentlicht'} werden?`
       },
       activateItemSuccess: item => {
-        return `Die Orga ${item.active ? 'wurde veröffentlicht' : 'ist nun nicht mehr öffentlich sichtbar'}.`
+        return `Der Akteur ${item.active ? 'wurde veröffentlicht' : 'ist nun nicht mehr öffentlich sichtbar'}.`
       },
       // new
+      newItem: () => {
+        return `Neuer Akteur`
+      },
       addItemSuccess: () => {
-        return `Die Orga wurde hinzugefügt.`
+        return `Der Akteur wurde hinzugefügt.`
       },
       // edit
       deleteItemDialogTitle: () => {
-        return `Orga löschen`
+        return `Akteur löschen`
       },
       deleteItemDialogMessage: item => {
-        return `Soll die Orga "${item.title}" gelöscht werden?`
+        return `Soll der Akteur "${item.title}" gelöscht werden?`
       },
       deleteItemSuccess: () => {
-        return `Die Orga wurde gelöscht.`
+        return `Der Akteur wurde gelöscht.`
       },
       saveItemSuccess: () => {
-        return `Die Orga wurde gespeichert.`
+        return `Der Akteur wurde gespeichert.`
       }
     }
   }

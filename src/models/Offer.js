@@ -20,7 +20,11 @@ class Offer extends Model {
     return {
       title: DataTypes.String,
 
-      description: DataTypes.String
+      description: DataTypes.String,
+
+      created_at: DataTypes.Date,
+
+      updated_at: DataTypes.Date
     }
   }
 

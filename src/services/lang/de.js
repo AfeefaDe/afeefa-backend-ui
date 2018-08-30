@@ -2,7 +2,7 @@ export default {
   headlines: {
     dashboard: 'Übersicht',
     todos: 'Aufgaben',
-    organisations: 'Organisation | Organisationen',
+    organisations: 'Akteur | Akteure',
     events: 'Veranstaltung | Veranstaltungen',
     location: 'Ort',
     contact: 'Kontakt',
@@ -147,7 +147,7 @@ export default {
   },
   status: {
     load_event: 'Lade Event',
-    load_orga: 'Lade Orga',
+    load_orga: 'Lade Akteur',
     load_offer: 'Lade Angebot',
     load_data: 'Lade Daten',
     load_navigation: 'Lade Navigation',
@@ -209,9 +209,9 @@ export default {
     selectChapter: 'Bitte wähle ein Kapitel aus'
   },
   tinymce: {
-    insertOrga: 'Orga verknüpfen',
+    insertOrga: 'Akteur verknüpfen',
     insertChapter: 'Kaptiel verknüpfen',
-    insertOrgaTooltip: 'Der ausgewählte Text wird in einen entsprechenden Link zur Orga umgewandelt.',
+    insertOrgaTooltip: 'Der ausgewählte Text wird in einen entsprechenden Link zum Akteur umgewandelt.',
     noSelectionTitle: 'Fehler beim Einfügen',
     noSelectionDescription: 'Du hast keinen Text ausgewählt.'
   },
