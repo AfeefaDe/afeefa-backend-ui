@@ -1,4 +1,6 @@
+import Contact from '@/models/Contact'
 import OffersResource from '@/resources/Offers'
+import ContactsResource from '@/resources/relations/EntryContacts'
 import OfferOwnersResource from '@/resources/relations/OfferOwners'
 import OwnerFacetItemsResource from '@/resources/relations/OwnerFacetItems'
 import OwnerNavigationItemsResource from '@/resources/relations/OwnerNavigationItems'
@@ -35,6 +37,12 @@ class Offer extends Model {
         Model: Orga,
         Resource: OfferOwnersResource,
         reverseName: 'offers'
+      },
+
+      contacts: {
+        type: Relation.HAS_MANY,
+        Model: Contact,
+        Resource: ContactsResource
       },
 
       facet_items: {

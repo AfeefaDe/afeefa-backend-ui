@@ -10,6 +10,7 @@
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import OrgaRouteConfig from '@/components/routes/orgas/OrgaRouteConfig'
 import EventRouteConfig from '@/components/routes/events/EventRouteConfig'
+import OfferRouteConfig from '@/components/routes/offers/OfferRouteConfig'
 
 import ContactEdit from '@/components/contact/ContactEdit'
 
@@ -19,10 +20,17 @@ export default {
   props: ['id'],
 
   data () {
+    let routeConfig = null
+    if (this.$route.name.startsWith('events')) {
+      routeConfig = new EventRouteConfig(this, this.id)
+    } else if (this.$route.name.startsWith('orgas')) {
+      routeConfig = new OrgaRouteConfig(this, this.id)
+    } else if (this.$route.name.startsWith('offers')) {
+      routeConfig = new OfferRouteConfig(this, this.id)
+    }
+
     return {
-      routeConfig: this.$route.name.startsWith('events')
-        ? new EventRouteConfig(this, this.id)
-        : new OrgaRouteConfig(this, this.id)
+      routeConfig
     }
   },
 

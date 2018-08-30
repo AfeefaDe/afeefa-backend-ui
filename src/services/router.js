@@ -77,6 +77,18 @@ const routes = [
                 name: 'offers.show',
                 component: ShowOffer,
                 props: true
+              },
+              {
+                path: 'contacts/:contactId/edit',
+                name: 'offers.contactedit',
+                component: EditContact,
+                props: true
+              },
+              {
+                path: 'contacts/new',
+                name: 'offers.contactnew',
+                component: NewContact,
+                props: true
               }
             ]
           },

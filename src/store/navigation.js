@@ -53,7 +53,9 @@ const menuTree = {
           title: 'headlines.show',
           level: 3,
           children: [
-            { route: 'offers.edit', title: 'headlines.edit', level: 4 }
+            { route: 'offers.edit', title: 'headlines.edit', level: 4 },
+            { route: 'offers.contactedit', title: 'headlines.contactEdit', level: 4 },
+            { route: 'offers.contactnew', title: 'headlines.contactNew', level: 4 }
           ]
         },
         { route: 'offers.new', title: 'headlines.new', level: 3 }
