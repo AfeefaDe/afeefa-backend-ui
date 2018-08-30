@@ -34,6 +34,12 @@ class User extends Model {
     return this.first_name + ' ' + this.last_name
   }
 
+  attributesToJson (attributes) {
+    return {
+      data: super.attributesToJson(attributes)
+    }
+  }
+
   toJson () {
     return {
       data: this.serialize()

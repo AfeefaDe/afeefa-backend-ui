@@ -78,6 +78,12 @@ export default class Entry extends Model {
     }
   }
 
+  attributesToJson (attributes) {
+    return {
+      data: super.attributesToJson(attributes)
+    }
+  }
+
   toJson () {
     return {
       data: this.serialize()

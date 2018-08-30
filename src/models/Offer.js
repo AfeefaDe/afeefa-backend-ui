@@ -27,6 +27,8 @@ class Offer extends Model {
 
       image_url: DataTypes.String,
 
+      active: DataTypes.Boolean,
+
       created_at: DataTypes.Date,
 
       updated_at: DataTypes.Date
@@ -74,6 +76,10 @@ class Offer extends Model {
 
   init () {
     this.facetOwnerType = 'Offer'
+  }
+
+  attributesToJson (attributes) {
+    return attributes
   }
 
   serialize () {

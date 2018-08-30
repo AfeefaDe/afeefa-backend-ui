@@ -1,5 +1,5 @@
 <template>
-  <div :class="['entryIcon', {inactive: !item.active && item.type !== 'offers'}]">
+  <div :class="['entryIcon', {inactive: !item.active}]">
     <i v-if="item.type === 'orgas'" class="material-icons">group</i>
     <i v-if="item.type === 'offers'" class="material-icons offers">message</i>
     <i v-if="item.type === 'events'" class="material-icons">date_range</i>

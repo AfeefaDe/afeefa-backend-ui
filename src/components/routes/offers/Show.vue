@@ -1,6 +1,8 @@
 <template>
   <entry-detail :component="this">
 
+    <entry-detail-header-buttons :entry="offer" :routeConfig="routeConfig" slot="headerButtons" v-if="offer" />
+
     <image-container v-if="offer"
       :image-url="offer.image_url">
     </image-container>
@@ -60,6 +62,7 @@ import EntryNavigationItems from '@/components/entry/EntryNavigationItems'
 import ContactList from '@/components/contact/ContactList'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import ImageContainer from '@/components/ImageContainer'
+import EntryDetailHeaderButtons from '@/components/entry/show/EntryDetailHeaderButtons'
 
 export default {
   mixins: [EntryShowMixin],
@@ -86,7 +89,8 @@ export default {
     EntryNavigationItems,
     ContactList,
     EntryDetailFooter,
-    ImageContainer
+    ImageContainer,
+    EntryDetailHeaderButtons
   }
 }
 </script>
