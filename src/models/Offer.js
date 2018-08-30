@@ -1,4 +1,3 @@
-import Contact from '@/models/Contact'
 import OffersResource from '@/resources/Offers'
 import ContactsResource from '@/resources/relations/EntryContacts'
 import OfferOwnersResource from '@/resources/relations/OfferOwners'
@@ -9,9 +8,11 @@ import Model from 'uidata/model/Model'
 import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
 
+import Contact from './Contact'
 import FacetItem from './FacetItem'
 import NavigationItem from './NavigationItem'
 import Orga from './Orga'
+import User from './User'
 
 class Offer extends Model {
   static type = 'offers'
@@ -23,6 +24,8 @@ class Offer extends Model {
       title: DataTypes.String,
 
       description: DataTypes.String,
+
+      image_url: DataTypes.String,
 
       created_at: DataTypes.Date,
 
@@ -43,6 +46,16 @@ class Offer extends Model {
         type: Relation.HAS_MANY,
         Model: Contact,
         Resource: ContactsResource
+      },
+
+      creator: {
+        type: Relation.HAS_ONE,
+        Model: User
+      },
+
+      last_editor: {
+        type: Relation.HAS_ONE,
+        Model: User
       },
 
       facet_items: {
@@ -66,7 +79,8 @@ class Offer extends Model {
   serialize () {
     const data = {
       title: this.title,
-      description: this.description
+      description: this.description,
+      image_url: this.image_url
     }
 
     if (!this.id && this.owners.length) {

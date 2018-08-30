@@ -2,6 +2,11 @@
   <entry-detail :component="this" :isEdit="true">
 
     <div v-if="offer">
+      <image-container v-show="!imageError"
+        :imageUrl="offer.image_url"
+        @state="updateImageContainerState">
+      </image-container>
+
       <form @submit.prevent="save" class="entryForm" novalidate>
         <title-input :item="item" />
 
@@ -21,6 +26,9 @@
             v-autosize>
           </textarea>
           <span v-show="errors.has('description')" class="validation-error">{{ errors.first('description') }}</span>
+
+          <h2>Bild</h2>
+          <media-image-input :item="item" propertyName="image_url" :imageError="imageError" />
         </div>
 
         <entry-edit-footer
@@ -40,9 +48,11 @@ import EntryEditMixin from '@/components/mixins/EntryEditMixin'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import OfferRouteConfig from './OfferRouteConfig'
 
+import ImageContainer from '@/components/ImageContainer'
 import TitleInput from '@/components/entry/edit/TitleInput'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
+import MediaImageInput from '@/components/entry/edit/MediaImageInput'
 
 export default {
   mixins: [EntryEditMixin, BeforeRouteLeaveMixin],
@@ -51,6 +61,7 @@ export default {
 
   data () {
     return {
+      imageError: false,
       routeConfig: new OfferRouteConfig(this, this.id)
     }
   },
@@ -61,10 +72,26 @@ export default {
     }
   },
 
+  methods: {
+    updateImageContainerState ({mediaImageError}) {
+      this.imageError = mediaImageError
+    },
+
+    validateCustomFields (validationErrors) {
+      if (this.imageError) {
+        validationErrors.push({
+          msg: this.$t('errors.loadingImageError')
+        })
+      }
+    }
+  },
+
   components: {
     TitleInput,
     DescriptionForm,
-    EntryEditFooter
+    EntryEditFooter,
+    ImageContainer,
+    MediaImageInput
   }
 }
 </script>

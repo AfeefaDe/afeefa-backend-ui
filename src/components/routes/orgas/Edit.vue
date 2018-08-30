@@ -19,7 +19,7 @@
             <description-form :item="orga" />
 
             <h2>Bild</h2>
-            <media-image-input :item="orga" :image-error="imageError" />
+            <media-image-input :item="orga" propertyName="media_url" :image-error="imageError" />
 
             <tag-selector :item="orga" v-if="currentUser && currentUser.area=='dresden'" />
 

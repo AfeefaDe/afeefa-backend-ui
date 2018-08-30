@@ -1,6 +1,10 @@
 <template>
   <entry-detail :component="this">
 
+    <image-container v-if="offer"
+      :image-url="offer.image_url">
+    </image-container>
+
     <div v-if="offer" class="splitView">
       <div class="entryDetail splitView__splitViewChild">
         <entry-detail-property name="Träger" :iconName="'device_hub'">
@@ -55,6 +59,7 @@ import EditableEntryFacets from '@/components/entry/EditableEntryFacets'
 import EntryNavigationItems from '@/components/entry/EntryNavigationItems'
 import ContactList from '@/components/contact/ContactList'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
+import ImageContainer from '@/components/ImageContainer'
 
 export default {
   mixins: [EntryShowMixin],
@@ -80,7 +85,8 @@ export default {
     EditableEntryFacets,
     EntryNavigationItems,
     ContactList,
-    EntryDetailFooter
+    EntryDetailFooter,
+    ImageContainer
   }
 }
 </script>

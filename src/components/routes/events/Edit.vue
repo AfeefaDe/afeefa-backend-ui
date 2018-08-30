@@ -40,7 +40,7 @@
 
             <h2>Bild</h2>
 
-            <media-image-input :item="event" :image-error="imageError" />
+            <media-image-input :item="event" propertyName="media_url" :image-error="imageError" />
 
             <h2>Tags</h2>
 
