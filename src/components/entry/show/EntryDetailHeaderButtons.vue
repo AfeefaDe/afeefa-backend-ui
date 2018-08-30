@@ -73,6 +73,8 @@ export default {
         return `${this.frontendURL}/project/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
       } else if (this.entry.type === 'events') {
         return `${this.frontendURL}/event/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
+      } else if (this.entry.type === 'offers') {
+        return `${this.frontendURL}/offers/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
       }
     }
   }
