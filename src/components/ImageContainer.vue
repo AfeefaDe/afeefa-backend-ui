@@ -4,7 +4,8 @@
       <div class="imageContainer__content" :style="{ 'background-image': 'url(' + imageUrl + ')' }"> </div>
     </div>
     <div v-else-if="mediaImageError">
-      {{$t('errors.loadingImageError')}}
+      {{$t('errors.loadingImageError')}}<br>
+      <a :href="imageUrl" target="_blank">{{ imageUrl }}</a>
     </div>
   </div>
 </template>
@@ -64,8 +65,9 @@ export default {
     background-color: $gray20;
   }
   &--error {
-    background-color: #FFEEEE;
     color: $red;
+    padding: 1.5em 0;
+    text-align: center;
   }
   &__content {
     background-repeat: no-repeat;
