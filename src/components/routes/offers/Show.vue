@@ -9,14 +9,22 @@
 
     <div v-if="offer" class="splitView">
       <div class="entryDetail splitView__splitViewChild">
-        <entry-detail-property name="Träger" :iconName="'device_hub'">
-          <offer-owners :owner="offer" relationName="owners" title="Träger">
+        <entry-detail-property name="Träger" iconName="group">
+          <offer-owners :owner="offer" relationName="owners" title="Träger" :showActors="true">
             <div slot="actor" slot-scope="props">
               <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
                 {{ props.actor.title }}
               </router-link>
             </div>
           </offer-owners>
+        </entry-detail-property>
+
+        <entry-detail-property
+          v-if="offer.description"
+          :name="$t('entries.description')"
+          iconName="format_align_left"
+          :isMultiline="true">
+          <span>{{ offer.description }}</span>
         </entry-detail-property>
 
         <div v-for="(facet, index) in facets" :key="facet.id">
@@ -28,8 +36,7 @@
         </div>
 
         <entry-detail-property
-          name="Navigation"
-          iconName="bookmark_border">
+          name="Navigation">
           <entry-navigation-items :entry="offer" :isEdit="true" />
         </entry-detail-property>
 

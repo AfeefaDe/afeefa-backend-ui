@@ -8,16 +8,8 @@
         :image-url="event.media_url">
       </image-container>
 
-      <div class="generalTab generalTab--splitView">
-        <div class="entryDetail generalTab__splitViewChild">
-
-          <div v-for="(facet, index) in facets" :key="facet.id">
-            <entry-detail-property
-              :name="facet.title"
-              :iconName="index ? '' : 'bookmark_border'">
-              <editable-entry-facets :entry="item" :facets="[facet]" :bus="bus" />
-            </entry-detail-property>
-          </div>
+      <div class="splitView">
+        <div class="entryDetail splitView__splitViewChild">
 
           <entry-detail-property
             :name="$tc('entries.date')"
@@ -26,8 +18,8 @@
               <span>({{event.date_start | formatDateRelative}})</span>
           </entry-detail-property>
 
-          <entry-detail-property name="Veranstalter" :iconName="'device_hub'">
-            <event-hosts :owner="event" relationName="hosts" title="Veranstalter">
+          <entry-detail-property name="Veranstalter" iconName="group">
+            <event-hosts :owner="event" relationName="hosts" title="Veranstalter" :showActors="true">
               <div slot="actor" slot-scope="props">
                 <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
                   {{ props.actor.title }}
@@ -38,10 +30,18 @@
 
           <entry-detail-property
             :name="$t('entries.description')"
-            :iconName="'more_horiz'"
+            iconName="format_align_left"
             :isMultiline="true">
             <div v-if="event.short_description">{{event.short_description}}</div>
           </entry-detail-property>
+
+          <div v-for="(facet, index) in facets" :key="facet.id">
+            <entry-detail-property
+              :name="facet.title"
+              :iconName="index ? '' : 'bookmark_border'">
+              <editable-entry-facets :entry="item" :facets="[facet]" :bus="bus" />
+            </entry-detail-property>
+          </div>
 
           <entry-detail-property
             :name="$tc('headlines.annotations', event.annotations.length)"
@@ -54,7 +54,7 @@
 
         </div>
 
-        <contact-list :item="event" class="generalTab__splitViewChild"/>
+        <contact-list :item="event" class="splitView__splitViewChild"/>
 
         <entry-detail-footer :entry="event"/>
 
@@ -107,14 +107,14 @@ export default {
 
 
 <style lang="scss" scoped>
-.generalTab--splitView {
+.splitView {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   > * {
     width: 100%;
   }
-  > .generalTab__splitViewChild {
+  & > &__splitViewChild {
     width: 50%;
     @media screen and (max-width: $break-medium) {
       width: 100%;

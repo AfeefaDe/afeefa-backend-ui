@@ -4,7 +4,7 @@
   </div>
 
   <div v-else>
-    <div class="navigation" v-if="has.filter || has.facetFilter || has.pagination">
+    <div class="navigation" v-if="items.length && (has.filter || has.facetFilter)">
       <entry-list-facet-filter v-if="has.facetFilter" :showFilters="true" class="facetsFilter" />
 
       <div v-if="itemsUnsorted.length && has.filter" class="searchFilter">

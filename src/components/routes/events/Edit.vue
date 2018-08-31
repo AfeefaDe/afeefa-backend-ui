@@ -13,7 +13,7 @@
           :tabNames="tabNames"
           @setCurrentTab="setCurrentTab">
 
-          <section slot="generalTab">
+          <section slot="general">
             <h2>Titel</h2>
 
             <title-input :item="event" />
@@ -51,7 +51,7 @@
             <help-wanted-form :item="event" />
           </section>
 
-          <section slot="annotationsTab">
+          <section slot="annotations">
             <annotation-form :item="event" />
           </section>
 
@@ -107,8 +107,8 @@ export default {
 
     tabNames () {
       return [
-        'generalTab',
-        { name: 'annotationsTab', hint: this.item.annotations.length }
+        'general',
+        { name: 'annotations', hint: this.item.annotations.length }
       ]
     }
   },

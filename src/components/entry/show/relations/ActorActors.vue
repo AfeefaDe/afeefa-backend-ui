@@ -4,12 +4,22 @@
       <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade {{ title }}
     </div>
     <div v-else>
-      <div v-for="actor in items" :key="actor.id">
-        <slot name="actor" :actor="actor" />
+      <div v-if="showActors">
+        <div v-for="actor in items" :key="actor.id">
+          <slot name="actor" :actor="actor" />
+        </div>
+        <div v-if="!items.length" class="entryDetail__error">Keine {{ title }} angegeben</div>
       </div>
-      <div v-if="!items.length" class="entryDetail__error">Keine {{ title }} angegeben</div>
 
-      <component :is="selector" :actor="owner" :relationName="relationName" title="Ändern" @saved="actorRelationSaved" />
+      <component :is="selector" :actor="owner" :relationName="relationName" title="Ändern" @saved="actorRelationSaved">
+        <slot slot="triggerButton">
+          <slot name="triggerButton">
+            <a href="" class="inlineEditLink" @click.prevent>
+              {{ title }}
+            </a>
+          </slot>
+        </slot>
+      </component>
     </div>
   </div>
 </template>
@@ -19,7 +29,7 @@ import Spinner from '@/components/Spinner'
 import ActorSelector from '@/components/selector/ActorSelector'
 
 export default {
-  props: ['owner', 'relationName', 'title'],
+  props: ['owner', 'relationName', 'title', 'showActors'],
 
   data () {
     return {

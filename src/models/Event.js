@@ -72,6 +72,10 @@ class Event extends Entry {
       has_time_end: this.has_time_end
     }
 
+    if (!this.id && this.hosts.length) {
+      data.relationships.hosts = this.hosts.map(h => h.id)
+    }
+
     return data
   }
 

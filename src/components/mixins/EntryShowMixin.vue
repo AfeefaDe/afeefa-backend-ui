@@ -13,6 +13,7 @@ export default {
       currentUser: null,
       loadingError: false,
       currentTab: null,
+      currentSubTab: null,
       facets: []
     }
   },
@@ -59,6 +60,10 @@ export default {
 
     setCurrentTab (newCurrentTab) {
       this.currentTab = newCurrentTab
+    },
+
+    setCurrentSubTab (newCurrentSubTab) {
+      this.currentTab = newCurrentSubTab
     }
   }
 }

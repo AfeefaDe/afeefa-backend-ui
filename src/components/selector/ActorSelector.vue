@@ -45,9 +45,14 @@
       </div>
     </modal>
 
-    <a href="" class="inlineEditLink" @click.prevent="showModal">
-      {{ title }}
-    </a>
+    <div @click="showModal">
+      <slot name="triggerButton">
+        <a href="" class="inlineEditLink" @click.prevent>
+          {{ title }}
+        </a>
+      </slot>
+    </div>
+
   </div>
 </template>
 

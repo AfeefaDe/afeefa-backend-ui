@@ -13,15 +13,13 @@
           :tabNames="tabNames"
           @setCurrentTab="setCurrentTab">
 
-          <section slot="generalTab">
+          <section slot="general">
             <h2>Titel und Beschreibung</h2>
             <title-input :item="orga" />
             <description-form :item="orga" />
 
             <h2>Bild</h2>
             <media-image-input :item="orga" propertyName="media_url" :image-error="imageError" />
-
-            <tag-selector :item="orga" v-if="currentUser && currentUser.area=='dresden'" />
 
             <help-wanted-form :item="orga" />
 
@@ -33,11 +31,11 @@
             </input-field>
           </section>
 
-          <section slot="annotationsTab">
+          <section slot="annotations">
             <annotation-form :item="orga" />
           </section>
 
-          <section slot="resourceTab">
+          <section slot="resources">
             <resource-form :item="orga" />
           </section>
 
@@ -93,11 +91,11 @@ export default {
 
     tabNames () {
       const tabNames = [
-        'generalTab',
-        {name: 'annotationsTab', hint: this.item.annotations.length}
+        'general',
+        {name: 'annotations', hint: this.item.annotations.length}
       ]
       if (this.currentUser && this.currentUser.area === 'dresden') {
-        tabNames.push({name: 'resourceTab', hint: this.item.resource_items.length})
+        tabNames.push({name: 'resources', hint: this.item.resource_items.length})
       }
       return tabNames
     }

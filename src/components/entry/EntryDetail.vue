@@ -2,6 +2,7 @@
   <afeefa-page>
     <entry-header :entry="entry" :isEdit="isEdit" :routeConfig="routeConfig" slot="header">
       <slot name="headerButtons" slot="buttons" />
+      <slot name="secondaryHeaderButtons" slot="secondaryButtons" />
     </entry-header>
 
     <div slot="content">

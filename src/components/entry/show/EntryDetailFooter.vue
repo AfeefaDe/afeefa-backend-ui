@@ -48,7 +48,7 @@ export default {
     display: flex;
     .label {
       color: $gray50;
-      margin-right: 0.5em;
+      margin-right: 0.2em;
     }
     .editor {
       display: block;

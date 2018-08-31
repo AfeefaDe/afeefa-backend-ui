@@ -7,53 +7,56 @@
     </afeefa-header>
 
     <div slot="content">
-      <div class="treeViewContent">
-        <div class="treeNavigation">
-          <div v-for="facet in facets" :key="facet.id" @click="selectFacet(facet)">
-            <facet-selector-item
-              :item="facet"
-              :color="facet.color"
-              :more="false"
-              :selected="facet === selectedFacet"
-              />
-            <div class="ownerTypes" v-if="false">
-              für: <span v-for="type in facet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
+      <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames" v-if="facets.length">
+        <div class="treeViewContent" slot="default">
+          <div class="treeNavigation" v-if="false">
+            <div v-for="facet in facets" :key="facet.id" @click="selectFacet(facet)">
+              <facet-selector-item
+                :item="facet"
+                :color="facet.color"
+                :more="false"
+                :selected="facet === selectedFacet"
+                />
+              <div class="ownerTypes" v-if="false">
+                für: <span v-for="type in facet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
+              </div>
             </div>
           </div>
+
+          <editable-tree-view
+            v-if="selectedFacet"
+            :containerId="selectedFacet.id"
+            :routeConfig="treeConfig">
+
+            <div class="facetAttributes" slot="content">
+              <div class="facetAttributesView">
+                <h4>{{ selectedFacet.title }}</h4>
+                <a href="" @click.prevent="editFacet(selectedFacet)" class="inlineEditLink" v-if="!isEditable(selectedFacet)">
+                  Ändern
+                </a>
+                <a href="" @click.prevent="cancelEditFacet()" class="inlineEditLink" v-if="isEditable(selectedFacet)">
+                  Abbrechen
+                </a>
+              </div>
+
+              <div class="ownerTypes">
+                für: <span v-for="type in selectedFacet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
+              </div>
+
+              <div v-if="isEditable(selectedFacet)">
+                <tree-item-editor-form
+                  :item="editableFacet"
+                  :hasAttributes="true"
+                  :hasColor="true"
+                  @update="updateFacet"
+                  @cancel="cancelEditFacet" />
+              </div>
+            </div>
+
+          </editable-tree-view>
         </div>
+      </tab-bar>
 
-        <editable-tree-view
-          v-if="selectedFacet"
-          :containerId="selectedFacet.id"
-          :routeConfig="treeConfig">
-
-          <div class="facetAttributes" slot="content">
-            <div class="facetAttributesView">
-              <h4>{{ selectedFacet.title }}</h4>
-              <a href="" @click.prevent="editFacet(selectedFacet)" class="inlineEditLink" v-if="!isEditable(selectedFacet)">
-                Ändern
-              </a>
-              <a href="" @click.prevent="cancelEditFacet()" class="inlineEditLink" v-if="isEditable(selectedFacet)">
-                Abbrechen
-              </a>
-            </div>
-
-            <div class="ownerTypes">
-              für: <span v-for="type in selectedFacet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
-            </div>
-
-            <div v-if="isEditable(selectedFacet)">
-              <tree-item-editor-form
-                :item="editableFacet"
-                :hasAttributes="true"
-                :hasColor="true"
-                @update="updateFacet"
-                @cancel="cancelEditFacet" />
-            </div>
-          </div>
-
-        </editable-tree-view>
-      </div>
     </div>
 
   </afeefa-page>
@@ -89,7 +92,23 @@ export default {
     }
   },
 
+  computed: {
+    tabNames () {
+      return this.facets.map(facet => {
+        return {
+          name: facet.title,
+          hint: facet.getAllFacetItems().length,
+          color: facet.previewColor || facet.color
+        }
+      })
+    }
+  },
+
   methods: {
+    setCurrentTab (tabName) {
+      this.selectedFacet = this.facets.find(facet => facet.title === tabName)
+    },
+
     selectFacet (facet) {
       this.selectedFacet = facet
     },

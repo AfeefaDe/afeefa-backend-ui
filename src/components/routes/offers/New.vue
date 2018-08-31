@@ -5,7 +5,7 @@
 
     <div slot="content" v-if="offer">
       <form @submit.prevent="save" class="entryForm" novalidate>
-        <offer-owners :owner="offer" relationName="owners" title="Träger">
+        <offer-owners :owner="offer" relationName="owners" title="Träger" showActors="true">
           <div slot="actor" slot-scope="props">
             <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
               {{ props.actor.title }}
@@ -45,6 +45,7 @@
 
 
 <script>
+import Orga from '@/models/Orga'
 import EntryEditMixin from '@/components/mixins/EntryEditMixin'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import OfferRouteConfig from './OfferRouteConfig'
@@ -57,15 +58,52 @@ import OfferOwners from '@/components/entry/show/relations/OfferOwners'
 export default {
   mixins: [EntryEditMixin, BeforeRouteLeaveMixin],
 
+  props: ['actorId'],
+
   data () {
     return {
       routeConfig: new OfferRouteConfig(this, this.id)
     }
   },
 
+  created () {
+    this.initActor()
+  },
+
+  watch: {
+    '$route.query' () {
+      this.initActor()
+    }
+  },
+
   computed: {
     offer () {
       return this.item
+    }
+  },
+
+  methods: {
+    setActor (actor) {
+      const hasChanges = this.offer.hasChanges()
+      if (actor) {
+        this.offer.owners = [actor]
+      } else {
+        this.offer.owners = []
+      }
+      if (!hasChanges) {
+        // prevent raising a dirty form dialog on leaving without changing data
+        this.offer.markSaved()
+      }
+    },
+
+    initActor () {
+      if (this.$route.query.actorId) {
+        Orga.Query.get(this.$route.query.actorId).then(actor => {
+          this.setActor(actor)
+        })
+      } else {
+        this.setActor(null)
+      }
     }
   },
 

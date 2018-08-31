@@ -29,6 +29,10 @@
         {{ $t('buttons.edit') }}
       </router-link>
     </div>
+
+    <div slot="secondaryButtons" v-if="entry">
+      <slot name="secondaryButtons" />
+    </div>
   </afeefa-header>
 </template>
 

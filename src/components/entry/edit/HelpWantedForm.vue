@@ -28,7 +28,7 @@
 
     <!-- this v-if condition is a hotfix for #339 and should be implemented in the api as well -->
     <div class="input-field">
-      <h2>{{ $t("headlines.certified_sfr") }}</h2>
+      <h2>{{ $t("entries.certified_sfr") }}</h2>
       <input type="checkbox" id="certified_sfr" class="filled-in" v-model="item.certified_sfr"/>
       <label for="certified_sfr">{{$t("entries.certified_sfr_yes")}}</label>
     </div>

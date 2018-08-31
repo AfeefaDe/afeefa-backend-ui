@@ -96,7 +96,7 @@ class Offer extends Model {
     }
 
     if (!this.id && this.owners.length) {
-      data.actors = this.owners.map(o => o.id)
+      data.owners = this.owners.map(o => o.id)
     }
     return data
   }

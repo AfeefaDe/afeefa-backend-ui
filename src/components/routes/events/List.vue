@@ -10,7 +10,7 @@
     <div slot="items">
       <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
         <entry-list-items
-          slot="upcomingEventsTab"
+          slot="upcomingEvents"
           :items="filteredEntries"
           :lazyLoad="true"
           :isLoading="isLoading"
@@ -20,7 +20,7 @@
         </entry-list-items>
 
         <entry-list-items
-          slot="pastEventsTab"
+          slot="pastEvents"
           :items="filteredEntries"
           :lazyLoad="true"
           :isLoading="isLoading"
@@ -73,15 +73,15 @@ export default {
 
     tabNames () {
       return [
-        { name: 'upcomingEventsTab', hint: this.numEvents.upcoming },
-        { name: 'pastEventsTab', hint: this.numEvents.past }
+        { name: 'upcomingEvents', hint: this.numEvents.upcoming },
+        { name: 'pastEvents', hint: this.numEvents.past }
       ]
     }
   },
 
   methods: {
     beforeCreated () {
-      this.currentTab = this.$route.query.tab || 'upcomingEventsTab'
+      this.currentTab = this.$route.query.tab || 'upcomingEvents'
     },
 
     setCurrentTab (tabName) {
@@ -92,10 +92,10 @@ export default {
     },
 
     getQueryParams () {
-      this.sortOrder = this.currentTab === 'upcomingEventsTab' ? 'ASC' : 'DESC'
-      this.sortFunction = this.currentTab === 'pastEventsTab' ? sortByDateStart : sortByDateMixin
+      this.sortOrder = this.currentTab === 'upcomingEvents' ? 'ASC' : 'DESC'
+      this.sortFunction = this.currentTab === 'pastEvents' ? sortByDateStart : sortByDateMixin
 
-      if (this.currentTab === 'pastEventsTab') {
+      if (this.currentTab === 'pastEvents') {
         return {'filter[date]': 'past'}
       } else {
         return {'filter[date]': 'upcoming'}

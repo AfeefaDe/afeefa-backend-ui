@@ -84,7 +84,7 @@
       </ul>
     </div>
 
-    <router-link :to="{name: item.type + '.contactnew'}">
+    <router-link :to="{name: item.type + '.contactnew'}" v-if="!item.contacts.length">
       Weiteren Kontakt hinzufügen
     </router-link>
   </div>
