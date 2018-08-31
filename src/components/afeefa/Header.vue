@@ -24,6 +24,10 @@
     <div class="headerButtonContainer">
       <slot name="buttons" />
     </div>
+
+    <div class="headerSecondaryButtonContainer">
+      <slot name="secondaryButtons" />
+    </div>
   </div>
 </template>
 
@@ -52,7 +56,7 @@ $height: 3em;
   background-color: $gray90;
   color: $white;
 
-  padding: .8em 1em;
+  padding: 1em 1em;
 
   display: flex;
   flex-direction: column;
@@ -84,7 +88,6 @@ $height: 3em;
   overflow: hidden;
   padding-right: 1em;
   margin: 0;
-  // line-height: $height;
 
   a {
     color: $white;
@@ -118,10 +121,13 @@ h2 {
 }
 
 .headerSubtitle {
-  margin-top: .5em;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: normal;
   display: block;
+
+  > * {
+    margin-top: .6em;
+  }
 
   /deep/ a {
     text-decoration: underline;
@@ -164,6 +170,17 @@ h2 {
 .headerButtonContainer a {
   &:last-child {
     margin-right: 0;
+  }
+}
+
+.headerSecondaryButtonContainer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 1em 2em;
+
+  a:not(:last-child) {
+    margin-right: .1em;
   }
 }
 </style>
