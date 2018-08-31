@@ -8,6 +8,7 @@ import Model from 'uidata/model/Model'
 import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
 
+import Annotation from './Annotation'
 import Contact from './Contact'
 import FacetItem from './FacetItem'
 import NavigationItem from './NavigationItem'
@@ -42,6 +43,11 @@ class Offer extends Model {
         Model: Orga,
         Resource: OfferOwnersResource,
         reverseName: 'offers'
+      },
+
+      annotations: {
+        type: Relation.HAS_MANY,
+        Model: Annotation
       },
 
       contacts: {

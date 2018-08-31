@@ -34,11 +34,12 @@
         </entry-detail-property>
 
         <entry-detail-property
-          v-if="offer.description"
-          :name="$t('entries.description')"
-          iconName="more_horiz"
-          :isMultiline="true">
-          <span>{{ offer.description }}</span>
+          :name="$tc('headlines.annotations', offer.annotations.length)"
+          :iconName="'label_outline'"
+          v-if="offer.annotations.length">
+          <div>
+            <annotation-tag v-for="annotation in offer.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
+          </div>
         </entry-detail-property>
       </div>
 
@@ -63,6 +64,7 @@ import ContactList from '@/components/contact/ContactList'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import ImageContainer from '@/components/ImageContainer'
 import EntryDetailHeaderButtons from '@/components/entry/show/EntryDetailHeaderButtons'
+import AnnotationTag from '@/components/AnnotationTag'
 
 export default {
   mixins: [EntryShowMixin],
@@ -90,7 +92,8 @@ export default {
     ContactList,
     EntryDetailFooter,
     ImageContainer,
-    EntryDetailHeaderButtons
+    EntryDetailHeaderButtons,
+    AnnotationTag
   }
 }
 </script>
