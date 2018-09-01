@@ -1,7 +1,7 @@
 <template>
 <afeefa-page>
 
-  <entry-header :entry="owner" :routeConfig="routeConfig" slot="header" />
+  <entry-header :entry="owner" :routeConfig="routeConfig" slot="header" :isEdit="true" />
 
   <div slot="content" v-if="contact">
     <contact-form
