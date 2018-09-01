@@ -40,7 +40,7 @@ import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 import Event from '@/models/Event'
 import EntryListMixin from '@/components/mixins/EntryListMixin'
-import EntryListItems from '@/components/entry/EntryListItems'
+import EntryListItems from '@/components/entry/list/EntryListItems'
 import { mapState } from 'vuex'
 
 export default {

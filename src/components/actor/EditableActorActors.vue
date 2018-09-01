@@ -22,7 +22,7 @@
 
 <script>
 import Spinner from '@/components/Spinner'
-import ActorSelector from '@/components/selector/ActorSelector'
+import ActorSelector from '@/components/actor/ActorSelector'
 
 export default {
   props: ['owner', 'relationName', 'title', 'showActors'],

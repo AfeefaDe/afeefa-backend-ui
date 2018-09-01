@@ -69,7 +69,7 @@
 import { mapState } from 'vuex'
 import Spinner from '@/components/Spinner'
 import facetItems from '@/helpers/facet-items'
-import EntryFacetItems from '@/components/entry/EntryFacetItems'
+import EntryFacetItems from '@/components/entry/facets/EntryFacetItems'
 import FacetItemSelector from '@/components/facet/FacetItemSelector'
 
 export default {

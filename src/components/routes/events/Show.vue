@@ -19,13 +19,13 @@
           </entry-detail-property>
 
           <entry-detail-property name="Veranstalter" iconName="group">
-            <event-hosts :owner="event" relationName="hosts" title="Veranstalter" :showActors="true">
+            <editable-event-hosts :owner="event" relationName="hosts" title="Veranstalter" :showActors="true">
               <div slot="actor" slot-scope="props">
                 <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
                   {{ props.actor.title }}
                 </router-link>
               </div>
-            </event-hosts>
+            </editable-event-hosts>
           </entry-detail-property>
 
           <entry-detail-property
@@ -39,7 +39,7 @@
             <entry-detail-property
               :name="facet.title"
               :iconName="index ? '' : 'bookmark_border'">
-              <editable-entry-facets :entry="item" :facets="[facet]" :bus="bus" />
+              <editable-entry-facet-items :entry="item" :facets="[facet]" :bus="bus" />
             </entry-detail-property>
           </div>
 
@@ -72,10 +72,10 @@ import EventRouteConfig from './EventRouteConfig'
 import EntryDetailHeaderButtons from '@/components/entry/show/EntryDetailHeaderButtons'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import ContactList from '@/components/contact/ContactList'
-import EventHosts from '@/components/entry/show/relations/EventHosts'
+import EditableEventHosts from '@/components/actor/EditableEventHosts'
 import AnnotationTag from '@/components/AnnotationTag'
 import ImageContainer from '@/components/ImageContainer'
-import EditableEntryFacets from '@/components/entry/EditableEntryFacets'
+import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
 
 export default {
   mixins: [EntryShowMixin],
@@ -97,10 +97,10 @@ export default {
     EntryDetailHeaderButtons,
     EntryDetailFooter,
     ContactList,
-    EventHosts,
+    EditableEventHosts,
     AnnotationTag,
     ImageContainer,
-    EditableEntryFacets
+    EditableEntryFacetItems
   }
 }
 </script>

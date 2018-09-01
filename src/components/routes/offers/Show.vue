@@ -10,13 +10,13 @@
     <div v-if="offer" class="splitView">
       <div class="entryDetail splitView__splitViewChild">
         <entry-detail-property name="Träger" iconName="group">
-          <offer-owners :owner="offer" relationName="owners" title="Träger" :showActors="true">
+          <editable-offer-owners :owner="offer" relationName="owners" title="Träger" :showActors="true">
             <div slot="actor" slot-scope="props">
               <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
                 {{ props.actor.title }}
               </router-link>
             </div>
-          </offer-owners>
+          </editable-offer-owners>
         </entry-detail-property>
 
         <entry-detail-property
@@ -31,13 +31,13 @@
           <entry-detail-property
             :name="facet.title"
             :iconName="index ? '' : 'bookmark_border'">
-            <editable-entry-facets :entry="item" :facets="[facet]" :bus="bus" />
+            <editable-entry-facet-items :entry="item" :facets="[facet]" :bus="bus" />
           </entry-detail-property>
         </div>
 
         <entry-detail-property
           name="Navigation">
-          <entry-navigation-items :entry="offer" :isEdit="true" />
+          <editable-entry-navigation-items :entry="offer" :isEdit="true" />
         </entry-detail-property>
 
         <entry-detail-property
@@ -63,10 +63,10 @@
 import EntryShowMixin from '@/components/mixins/EntryShowMixin'
 import OfferRouteConfig from './OfferRouteConfig'
 
-import EntryFacetItems from '@/components/entry/EntryFacetItems'
-import OfferOwners from '@/components/entry/show/relations/OfferOwners'
-import EditableEntryFacets from '@/components/entry/EditableEntryFacets'
-import EntryNavigationItems from '@/components/entry/EntryNavigationItems'
+import EntryFacetItems from '@/components/entry/facets/EntryFacetItems'
+import EditableOfferOwners from '@/components/actor/EditableOfferOwners'
+import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
+import EditableEntryNavigationItems from '@/components/entry/facets/EditableEntryNavigationItems'
 import ContactList from '@/components/contact/ContactList'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import ImageContainer from '@/components/ImageContainer'
@@ -93,9 +93,9 @@ export default {
 
   components: {
     EntryFacetItems,
-    OfferOwners,
-    EditableEntryFacets,
-    EntryNavigationItems,
+    EditableOfferOwners,
+    EditableEntryFacetItems,
+    EditableEntryNavigationItems,
     ContactList,
     EntryDetailFooter,
     ImageContainer,

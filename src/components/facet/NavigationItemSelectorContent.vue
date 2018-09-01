@@ -1,7 +1,7 @@
 <template>
   <div class="navigationItemsTree" v-if="navigation">
     <div class="parentItemSelector" ref="parentItemSelector">
-      <facet-selector-item v-for="navigationItem in navigation.navigation_items" :key="navigationItem.id" :ref="'parentItem' + navigationItem.id"
+      <facet-item-tag v-for="navigationItem in navigation.navigation_items" :key="navigationItem.id" :ref="'parentItem' + navigationItem.id"
         @click="openSubItemSelector(navigationItem)"
         :item="navigationItem"
         :color="navigationItem.color"
@@ -12,7 +12,7 @@
     </div>
 
     <div class="subItemSelector" ref="subItemSelector" v-if="selectedParentItem">
-      <facet-selector-item
+      <facet-item-tag
         @click="navigationItemClick(selectedParentItem)"
         :item="selectedParentItem"
         :color="selectedParentItem.color"
@@ -21,7 +21,7 @@
 
       <div class="parentDivide" v-if="selectedParentItem.sub_items.length"></div>
 
-      <facet-selector-item v-for="subItem in selectedParentItem.sub_items" :key="subItem.id"
+      <facet-item-tag v-for="subItem in selectedParentItem.sub_items" :key="subItem.id"
         @click="navigationItemClick(subItem)"
         :item="subItem"
         :color="selectedParentItem.color"
@@ -133,7 +133,7 @@ export default {
   padding: .5em;
 }
 
-.facetSelectorItem {
+.facetItemTag {
   font-size: .9em;
 
   /deep/ .facetItem {

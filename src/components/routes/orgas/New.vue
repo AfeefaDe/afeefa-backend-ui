@@ -1,9 +1,9 @@
 <template>
   <afeefa-page>
 
-    <entry-header v-if="orga" :entry="orga" :isEdit="true" :routeConfig="routeConfig" slot="header" />
+    <entry-header :entry="orga" :isEdit="true" :routeConfig="routeConfig" slot="header" />
 
-    <div slot="content" v-if="orga">
+    <div slot="content">
       <form @submit.prevent="save" class="entryForm" novalidate>
         <div class="inputField__spacing">
           <label for="orgaType">Typ</label>

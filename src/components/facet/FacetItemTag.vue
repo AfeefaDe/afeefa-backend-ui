@@ -1,6 +1,6 @@
 <template>
   <div
-    class="facetSelectorItem"
+    class="facetItemTag"
     @click.prevent="facetItemClick(item)">
 
     <div
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.facetSelectorItem {
+.facetItemTag {
   display: flex;
   align-items: center;
 }

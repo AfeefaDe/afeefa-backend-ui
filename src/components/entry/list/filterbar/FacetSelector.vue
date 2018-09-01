@@ -8,7 +8,7 @@
       <div class="facetSelector">
         <div class="facet" v-for="facet in selectableFacets" :key="'select-' + facet.id">
           <div class="facetCheckbox">
-            <facet-selector-item
+            <facet-item-tag
               @click="selectOrDeselectFacet(facet)"
               :item="facet"
               :color="facet.color"
@@ -19,7 +19,7 @@
         </div>
 
         <div class="facetCheckbox">
-          <facet-selector-item
+          <facet-item-tag
             @click="selectOrDeselectNavigation"
             :item="{}"
             title="Navigation"
@@ -49,9 +49,6 @@ export default {
 
     ...mapState({
       selectedFacets: state => state.facetFilters.selectedFacets,
-      selectedFacetItems: state => state.facetFilters.selectedFacetItems,
-      selectedFacetsWithoutEntries: state => state.facetFilters.selectedFacetsWithoutEntries,
-      filteredEntries: state => state.facetFilters.filteredEntries,
       navigationIsSelected: state => state.facetFilters.navigationIsSelected
     })
   },
@@ -92,7 +89,7 @@ export default {
   margin-bottom: .3em;
 }
 
-.facetSelectorItem {
+.facetItemTag {
   margin-bottom: .2em;
   &:last-child {
     margin-bottom: 0;

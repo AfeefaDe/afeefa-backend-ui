@@ -1,9 +1,9 @@
 <script>
-import ActorActors from './ActorActors'
-import OfferOwnersSelector from '@/components/selector/OfferOwnersSelector'
+import EditableActorActors from './EditableActorActors'
+import OfferOwnersSelector from '@/components/actor/OfferOwnersSelector'
 
 export default {
-  extends: ActorActors,
+  extends: EditableActorActors,
 
   data () {
     return {

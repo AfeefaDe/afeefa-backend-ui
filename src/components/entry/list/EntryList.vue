@@ -34,7 +34,7 @@
 
 
 <script>
-import EntryListItems from '@/components/entry/EntryListItems'
+import EntryListItems from '@/components/entry/list/EntryListItems'
 
 export default {
   props: ['items', 'lazyLoad', 'isLoading', 'numItems', 'facetOwnerType', 'sortFunction', 'sortOrder', 'options', 'messages', 'addEntryButton'],

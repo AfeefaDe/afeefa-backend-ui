@@ -6,7 +6,7 @@
 
     <div v-else class="items">
       <div v-for="navigationItem in entry.navigation_items" :key="navigationItem.id" v-if="displayNavigationItem(navigationItem)">
-        <navigation-item-view :navigationItem="navigationItem" :click="false" />
+        <entry-navigation-item :navigationItem="navigationItem" :click="false" />
       </div>
 
       <div class="navigationItemSelectorLink">
@@ -15,7 +15,7 @@
         </a>
 
         <pop-up-selector :trigger="$refs.trigger" diffX="0" @close="hideNavigationSelector" v-if="navigationSelectorIsOpen">
-          <navigation-items-tree :selectedNavigationItems="entry.navigation_items" @click="navigationItemSelected" />
+          <fe-navigation-item-selector-content :selectedNavigationItems="entry.navigation_items" @click="navigationItemSelected" />
         </pop-up-selector>
       </div>
     </div>
@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import NavigationItemView from '@/components/fe_navigation/FeNavigationItemView'
+import EntryNavigationItem from '@/components/entry/facets/EntryNavigationItem'
 import PopUpSelector from '@/components/PopUpSelector'
-import NavigationItemsTree from '@/components/fe_navigation/FeNavigationItemsTree'
+import NavigationItemSelectorContent from '@/components/facet/NavigationItemSelectorContent'
 import Spinner from '@/components/Spinner'
 
 export default {
@@ -90,9 +90,9 @@ export default {
   },
 
   components: {
-    NavigationItemView,
+    EntryNavigationItem,
     PopUpSelector,
-    NavigationItemsTree,
+    NavigationItemSelectorContent,
     Spinner
   }
 }

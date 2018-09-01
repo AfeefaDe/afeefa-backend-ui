@@ -7,7 +7,7 @@
     <pop-up-selector ref="popUp" :trigger="$refs.trigger" :diffX="10" :diffY="10" align="left" @close="hideFilterSelector" v-if="facetFilterIsOpen">
       <div class="filterSelector">
         <div v-if="showFacetChooser">
-          <facet-selector-item v-if="selectedFacet"
+          <facet-item-tag v-if="selectedFacet"
             class="selectedFacet"
             @click="openFacetChooser"
             :item="selectedFacet"
@@ -15,7 +15,7 @@
             :more="true"
             :checkbox="false" />
 
-          <facet-selector-item v-else
+          <facet-item-tag v-else
             class="selectedFacet"
             @click="openFacetChooser"
             :item="{}"
@@ -25,7 +25,7 @@
             :checkbox="false" />
 
           <div class="facetChooser" v-if="facetSelectorIsOpen">
-            <facet-selector-item
+            <facet-item-tag
               v-for="facet in selectedFacets" :key="'select-' + facet.id"
               @click="selectFacet(facet)"
               :item="facet"
@@ -35,7 +35,7 @@
               :selected="facet === selectedFacet"
               :checkbox="false" />
 
-            <facet-selector-item
+            <facet-item-tag
               v-if="navigationIsSelected"
               @click="selectNavigation"
               :item="{}"
@@ -49,7 +49,7 @@
 
         <div class="filters" v-if="selectedFacet">
           <div v-for="facetItem in selectedFacet.facet_items" :key="facetItem.id">
-            <facet-selector-item
+            <facet-item-tag
               @click="facetItemClick(facetItem)"
               :item="facetItem"
               :color="selectedFacet.color"
@@ -60,7 +60,7 @@
               :checkbox="true" />
           </div>
 
-          <facet-selector-item
+          <facet-item-tag
             @click="entriesWithoutFacetClick(selectedFacet)"
             :item="selectedFacet"
             title="Nicht zugeordnet"
@@ -74,18 +74,19 @@
 
         <div class="filters" v-if="navigationFilterIsSelected">
           <div class="navigationItem" v-for="navigationItem in navigation.navigation_items" :key="navigationItem.id">
-            <facet-selector-item
+            <facet-item-tag
               @click="selectOrDeselectNavigationItem(navigationItem)"
               :item="navigationItem"
               :color="navigationItem.color"
               :more="navigationItem.sub_items.length && !navigationItemIsChecked(navigationItem)"
               :hint="countEntriesForNavigationItem(navigationItem)"
+              :disabled="!countEntriesForNavigationItem(navigationItem)"
               :checked="navigationItemIsChecked(navigationItem)"
               :checkbox="true" />
 
               <div class="navigationSubItem" v-for="(subItem, index) in navigationItem.sub_items" :key="subItem.id" v-if="navigationSubItemIsVisible(subItem)">
                 <tree-sub-item :isLast="index === navigationItem.sub_items.length - 1">
-                  <facet-selector-item
+                  <facet-item-tag
                     @click="selectOrDeselectNavigationItem(subItem)"
                     :item="subItem"
                     :color="navigationItem.color"
@@ -98,7 +99,7 @@
               </div>
           </div>
 
-          <facet-selector-item
+          <facet-item-tag
             @click="selectOrDeselectNavigationItem(navigationItemWithoutNavigation)"
             :item="navigationItemWithoutNavigation"
             title="Nicht zugeordnet"
@@ -118,7 +119,6 @@
 
 <script>
 import PopUpSelector from '@/components/PopUpSelector'
-import FacetItemsTree from '@/components/facet/FacetItemsTree'
 import facetItems from '@/helpers/facet-items'
 import { mapState, mapGetters } from 'vuex'
 import Navigation from '@/models/Navigation'
@@ -300,7 +300,6 @@ export default {
 
   components: {
     PopUpSelector,
-    FacetItemsTree,
     TreeSubItem
   }
 }

@@ -6,7 +6,7 @@
 
 <script>
 import Facet from '@/models/Facet'
-import EntryFacetItems from '@/components/entry/EntryFacetItems'
+import EntryFacetItems from '@/components/entry/facets/EntryFacetItems'
 import facetItems from '@/helpers/facet-items'
 
 export default {

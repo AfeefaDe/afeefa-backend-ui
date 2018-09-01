@@ -1,17 +1,17 @@
 <template>
   <afeefa-page>
 
-    <entry-header v-if="offer" :entry="offer" :isEdit="true" :routeConfig="routeConfig" slot="header" />
+    <entry-header :entry="offer" :isEdit="true" :routeConfig="routeConfig" slot="header" />
 
-    <div slot="content" v-if="offer">
+    <div slot="content">
       <form @submit.prevent="save" class="entryForm" novalidate>
-        <offer-owners :owner="offer" relationName="owners" title="Träger" showActors="true">
+        <editable-offer-owners :owner="offer" relationName="owners" title="Träger" showActors="true">
           <div slot="actor" slot-scope="props">
             <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
               {{ props.actor.title }}
             </router-link>
           </div>
-        </offer-owners>
+        </editable-offer-owners>
 
         <title-input :item="offer" />
 
@@ -53,7 +53,7 @@ import OfferRouteConfig from './OfferRouteConfig'
 import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 import TitleInput from '@/components/entry/edit/TitleInput'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
-import OfferOwners from '@/components/entry/show/relations/OfferOwners'
+import EditableOfferOwners from '@/components/actor/EditableOfferOwners'
 
 export default {
   mixins: [EntryEditMixin, BeforeRouteLeaveMixin],
@@ -111,7 +111,7 @@ export default {
     EntryEditFooter,
     TitleInput,
     DescriptionForm,
-    OfferOwners
+    EditableOfferOwners
   }
 }
 </script>

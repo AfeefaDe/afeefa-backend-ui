@@ -1,7 +1,7 @@
 <template>
   <div class="facetItemsTree">
     <div class="facetSelector" ref="facetSelector" v-if="facets.length > 1">
-      <facet-selector-item v-for="facet in facets" :key="facet.id" :ref="'facet' + facet.id"
+      <facet-item-tag v-for="facet in facets" :key="facet.id" :ref="'facet' + facet.id"
         @click="openParentItemSelector(facet)"
         :item="facet"
         :color="facet.color"
@@ -12,7 +12,7 @@
 
     <div :class="['parentItemSelector', {isRoot: facets.length === 1}]" ref="parentItemSelector" v-if="selectedFacet">
       <slot name="parentItemSelector" :facet="selectedFacet">
-        <facet-selector-item v-for="facetItem in selectedFacet.facet_items" :key="facetItem.id" :ref="'parentItem' + facetItem.id"
+        <facet-item-tag v-for="facetItem in selectedFacet.facet_items" :key="facetItem.id" :ref="'parentItem' + facetItem.id"
           @click="openSubItemSelector(facetItem)"
           :item="facetItem"
           :color="selectedFacet.color"
@@ -24,7 +24,7 @@
     </div>
 
     <div class="subItemSelector" ref="subItemSelector" v-if="selectedParentItem">
-      <facet-selector-item
+      <facet-item-tag
         @click="facetItemClick(selectedParentItem)"
         :item="selectedParentItem"
         :color="selectedFacet.color"
@@ -33,7 +33,7 @@
 
       <div class="parentDivide" v-if="selectedParentItem.sub_items.length"></div>
 
-      <facet-selector-item v-for="subItem in selectedParentItem.sub_items" :key="subItem.id"
+      <facet-item-tag v-for="subItem in selectedParentItem.sub_items" :key="subItem.id"
         @click="facetItemClick(subItem)"
         :item="subItem"
         :color="selectedFacet.color"
@@ -168,7 +168,7 @@ export default {
   padding: .5em;
 }
 
-.facetSelectorItem {
+.facetItemTag {
   font-size: .9em;
 
   /deep/ .facetItem {

@@ -5,7 +5,7 @@
     </a>
 
     <pop-up-selector :trigger="$refs.trigger" diffX="0" @close="hideFacetSelector" v-if="facetItemSelectorVisible">
-      <facet-items-tree
+      <facet-item-selector-content
         :facets="facets"
         :selectedFacetItems="selectedFacetItems"
         @close="hideFacetSelector"
@@ -17,7 +17,7 @@
 
 <script>
 import PopUpSelector from '@/components/PopUpSelector'
-import FacetItemsTree from '@/components/facet/FacetItemsTree'
+import FacetItemSelectorContent from '@/components/facet/FacetItemSelectorContent'
 
 export default {
   props: ['facets', 'selectedFacetItems'],
@@ -45,7 +45,7 @@ export default {
 
   components: {
     PopUpSelector,
-    FacetItemsTree
+    FacetItemSelectorContent
   }
 }
 </script>

@@ -5,13 +5,13 @@
 
     <div slot="content">
       <form @submit.prevent="save" class="entryForm" novalidate>
-        <event-hosts :owner="event" relationName="hosts" title="Veranstalter" showActors="true">
+        <editable-event-hosts :owner="event" relationName="hosts" title="Veranstalter" showActors="true">
           <div slot="actor" slot-scope="props">
             <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
               {{ props.actor.title }}
             </router-link>
           </div>
-        </event-hosts>
+        </editable-event-hosts>
 
         <title-input :item="item" />
 
@@ -50,7 +50,7 @@ import TitleInput from '@/components/entry/edit/TitleInput'
 import DatePicker from '@/components/event/datepicker/DatePicker'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
-import EventHosts from '@/components/entry/show/relations/EventHosts'
+import EditableEventHosts from '@/components/actor/EditableEventHosts'
 
 export default {
   mixins: [EntryEditMixin, BeforeRouteLeaveMixin],
@@ -114,7 +114,7 @@ export default {
     DatePicker,
     DescriptionForm,
     EntryEditFooter,
-    EventHosts
+    EditableEventHosts
   }
 }
 </script>

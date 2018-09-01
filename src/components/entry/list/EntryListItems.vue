@@ -5,7 +5,7 @@
 
   <div v-else>
     <div class="navigation" v-if="items.length && (has.filter || has.facetFilter)">
-      <entry-list-facet-filter v-if="has.facetFilter" :showFilters="true" class="facetsFilter" />
+      <selected-filters v-if="has.facetFilter" class="facetsFilter" />
 
       <div v-if="itemsUnsorted.length && has.filter" class="searchFilter">
         <div class="inputContainer">
@@ -20,7 +20,7 @@
         </div>
       </div>
 
-      <entry-list-facet-filter v-if="has.facetFilter" :showFilterIcons="true" class="facetsFilterIcons" />
+      <filter-icons v-if="has.facetFilter" class="facetsFilterIcons" />
     </div>
 
     <div v-if="has.pagination" class="paginationTop">
@@ -59,22 +59,22 @@
 
           <div v-if="item.hasListData">
             <div v-if="item.type === 'orgas' && item.project_initiators.length">
-              <entry-list-item-owners :items="item.project_initiators"></entry-list-item-owners>
+              <entry-owners :items="item.project_initiators"></entry-owners>
             </div>
 
             <div v-if="item.type === 'offers' && item.owners.length">
-              <entry-list-item-owners :items="item.owners"></entry-list-item-owners>
+              <entry-owners :items="item.owners"></entry-owners>
             </div>
 
             <div v-if="item.type === 'events' && item.hosts.length">
-              <entry-list-item-owners :items="item.hosts"></entry-list-item-owners>
+              <entry-owners :items="item.hosts"></entry-owners>
             </div>
 
             <div class="entryList__attributes" v-if="item.facet_items">
-              <editable-entry-facets v-if="has.facetFilter" :entry="item" :bus="bus" />
+              <editable-entry-facet-items v-if="has.facetFilter" :entry="item" :bus="bus" />
               <entry-main-facet-items :entry="item" v-else />
 
-              <entry-navigation-items :entry="item" v-if="has.facetFilter && navigationIsSelected" />
+              <editable-entry-navigation-items :entry="item" v-if="has.facetFilter && navigationIsSelected" />
 
               <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
 
@@ -129,11 +129,12 @@ import AnnotationTag from '@/components/AnnotationTag'
 import EntryIcon from '@/components/entry/EntryIcon'
 import Spinner from '@/components/Spinner'
 import moment from 'moment'
-import EditableEntryFacets from '@/components/entry/EditableEntryFacets'
-import EntryMainFacetItems from '@/components/entry/EntryMainFacetItems'
-import EntryNavigationItems from '@/components/entry/EntryNavigationItems'
-import EntryListItemOwners from '@/components/entry/EntryListItemOwners'
-import EntryListFacetFilter from '@/components/entry/EntryListFacetFilter'
+import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
+import EntryMainFacetItems from '@/components/entry/facets/EntryMainFacetItems'
+import EditableEntryNavigationItems from '@/components/entry/facets/EditableEntryNavigationItems'
+import EntryOwners from '@/components/actor/EntryOwners'
+import SelectedFilters from '@/components/entry/list/filterbar/SelectedFilters'
+import FilterIcons from '@/components/entry/list/filterbar/FilterIcons'
 import { mapState } from 'vuex'
 
 export default {
@@ -179,24 +180,20 @@ export default {
 
   watch: {
     '$route' (newItems, oldItems) {
-      console.log('route changed', oldItems, newItems)
       this.initPageProperties()
     },
 
     'items' (newItems, oldItems) {
-      console.log('items changed', oldItems.length, newItems.length)
       this.searchKeyword = ''
       this.initSortedItems()
     },
 
     'searchKeyword' () {
-      console.log('keyword changed')
       this.initSortedItems()
     },
 
     'filteredEntries' (newItems, oldItems) {
       if (oldItems.length) {
-        console.log('filtered entries changed', oldItems.length, newItems.length)
         this.searchKeyword = ''
         this.setPage({
           page: 1,
@@ -236,7 +233,6 @@ export default {
         const pageNumber = Math.min(Math.max(1, this.currentPage), Math.ceil(items.length / this.currentPageSize))
         const index = (pageNumber - 1) * this.currentPageSize
         items = items.slice(index, index + this.currentPageSize)
-        console.log('---initSortedItems', items.length)
         this.sortedItems = items
         this.loadVisibleEntries()
 
@@ -262,7 +258,6 @@ export default {
 
       Object.keys(idsByType).forEach(type => {
         const Query = idsByType[type].Query
-        console.log('---loadVisibleEntries', type, idsByType[type].ids)
         Query.getAll({ids: idsByType[type].ids})
       })
     },
@@ -288,12 +283,10 @@ export default {
     initPageProperties () {
       this.currentPage = this.$route.query.page || 1
       this.currentPageSize = this.$route.query.pageSize || 15
-      console.log('initpageproperties', this.$route.query, this.currentPage, this.currentPageSize)
       this.initSortedItems()
     },
 
     setPage (config) {
-      console.log('setpage', config, this.$route.query)
       this.currentPage = config.page
       this.currentPageSize = config.pageSize
       if (this.modifyRoute) {
@@ -302,8 +295,6 @@ export default {
         query.pageSize = config.pageSize === 15 ? undefined : config.pageSize
         this.$router.push({query: query})
       }
-      console.log('---setpage', config, this.$route.query)
-
       this.initSortedItems()
     },
 
@@ -317,11 +308,12 @@ export default {
     Spinner,
     AnnotationTag,
     EntryIcon,
-    EditableEntryFacets,
-    EntryListItemOwners,
-    EntryListFacetFilter,
-    EntryNavigationItems,
-    EntryMainFacetItems
+    EditableEntryFacetItems,
+    EntryOwners,
+    SelectedFilters,
+    EditableEntryNavigationItems,
+    EntryMainFacetItems,
+    FilterIcons
   }
 }
 </script>

@@ -8,7 +8,7 @@
     </div>
 
     <div slot="subTitle" class="owners" v-if="entry && owners.length">
-      <entry-list-item-owners :items="owners"></entry-list-item-owners>
+      <entry-owners :items="owners"></entry-owners>
     </div>
 
     <div slot="buttons" v-if="entry">
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import EntryListItemOwners from '@/components/entry/EntryListItemOwners'
+import EntryOwners from '@/components/actor/EntryOwners'
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 
 export default {
@@ -60,7 +60,7 @@ export default {
   },
 
   components: {
-    EntryListItemOwners
+    EntryOwners
   }
 }
 </script>

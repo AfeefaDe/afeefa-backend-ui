@@ -8,21 +8,7 @@
 
     <div slot="content">
       <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames" v-if="facets.length">
-        <div class="treeViewContent" slot="default">
-          <div class="treeNavigation" v-if="false">
-            <div v-for="facet in facets" :key="facet.id" @click="selectFacet(facet)">
-              <facet-selector-item
-                :item="facet"
-                :color="facet.color"
-                :more="false"
-                :selected="facet === selectedFacet"
-                />
-              <div class="ownerTypes" v-if="false">
-                für: <span v-for="type in facet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
-              </div>
-            </div>
-          </div>
-
+        <div slot="default">
           <editable-tree-view
             v-if="selectedFacet"
             :containerId="selectedFacet.id"
@@ -159,16 +145,7 @@ export default {
 
 
 <style lang="scss" scoped>
-.treeViewContent {
-  width: 100%;
-  display: flex;
-}
-
-.treeNavigation {
-  padding-right: 4em;
-}
-
-.facetSelectorItem /deep/ .facetItem {
+.facetItemTag /deep/ .facetItem {
   width: 100%;
   margin-bottom: .5em;
   > * {

@@ -27,31 +27,31 @@
           <tab-bar @setCurrentTab="setCurrentSubTab" :tabNames="generalTabNames" :isSubBar="true">
             <div slot="overview" class="overview splitView">
 
-              <div class="actionButtons">
-                <actor-actors :owner="orga" relationName="projects" title="Projekt hinzufügen" slot="triggerButton">
+              <div class="actionButtons" v-if="false">
+                <editable-actor-actors :owner="orga" relationName="projects" title="Projekt hinzufügen" slot="triggerButton">
                   <span class="btn btn-small gray">
                     <i class="material-icons left">add</i>
                     Projekt
                   </span>
-                </actor-actors>
+                </editable-actor-actors>
 
-                <actor-actors :owner="orga" relationName="network_members" title="Netzwerkmitglied hinzufügen" slot="triggerButton">
+                <editable-actor-actors :owner="orga" relationName="network_members" title="Netzwerkmitglied hinzufügen" slot="triggerButton">
                   <span class="btn btn-small gray">
                     <i class="material-icons left">add</i>
                     Netzwerkmitglied
                   </span>
-                </actor-actors>
+                </editable-actor-actors>
               </div>
 
               <div class="entryDetail splitView__splitViewChild">
                 <entry-detail-property name="Projektträger" iconName="group">
-                  <actor-actors :owner="orga" relationName="project_initiators" title="Projektträger" :showActors="true">
+                  <editable-actor-actors :owner="orga" relationName="project_initiators" title="Projektträger" :showActors="true">
                     <div slot="actor" slot-scope="props">
                       <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
                         {{ props.actor.title }}
                       </router-link>
                     </div>
-                  </actor-actors>
+                  </editable-actor-actors>
                 </entry-detail-property>
 
                 <entry-detail-property
@@ -65,33 +65,33 @@
                   <entry-detail-property
                     :name="facet.title"
                     :iconName="index ? '' : 'bookmark_border'">
-                    <editable-entry-facets :entry="item" :facets="[facet]" :bus="bus" />
+                    <editable-entry-facet-items :entry="item" :facets="[facet]" :bus="bus" />
                   </entry-detail-property>
                 </div>
 
                 <entry-detail-property
                   name="Navigation">
-                  <entry-navigation-items :entry="orga" :isEdit="true" />
+                  <editable-entry-navigation-items :entry="orga" :isEdit="true" />
                 </entry-detail-property>
 
                 <entry-detail-property name="Netzwerke" iconName="group">
-                  <actor-actors :owner="orga" relationName="networks" title="Netzwerke" :showActors="true">
+                  <editable-actor-actors :owner="orga" relationName="networks" title="Netzwerke" :showActors="true">
                     <div slot="actor" slot-scope="props">
                       <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
                         {{ props.actor.title }}
                       </router-link>
                     </div>
-                  </actor-actors>
+                  </editable-actor-actors>
                 </entry-detail-property>
 
                 <entry-detail-property name="Partner">
-                  <actor-actors :owner="orga" relationName="partners" title="Partner" :showActors="true">
+                  <editable-actor-actors :owner="orga" relationName="partners" title="Partner" :showActors="true">
                     <div slot="actor" slot-scope="props">
                       <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
                         {{ props.actor.title }}
                       </router-link>
                     </div>
-                  </actor-actors>
+                  </editable-actor-actors>
                 </entry-detail-property>
               </div>
 
@@ -231,14 +231,14 @@ import sortByDateStart from '@/helpers/sort-by-date-start'
 import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 import EntryDetailHeaderButtons from '@/components/entry/show/EntryDetailHeaderButtons'
 import ImageContainer from '@/components/ImageContainer'
-import EntryNavigationItems from '@/components/entry/EntryNavigationItems'
-import ActorActors from '@/components/entry/show/relations/ActorActors'
+import EditableEntryNavigationItems from '@/components/entry/facets/EditableEntryNavigationItems'
 import ContactList from '@/components/contact/ContactList'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
-import ActorSelector from '@/components/selector/ActorSelector'
-import EntryListItems from '@/components/entry/EntryListItems'
+import EditableActorActors from '@/components/actor/EditableActorActors'
+import ActorSelector from '@/components/actor/ActorSelector'
+import EntryListItems from '@/components/entry/list/EntryListItems'
 import AnnotationTag from '@/components/AnnotationTag'
-import EditableEntryFacets from '@/components/entry/EditableEntryFacets'
+import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
 
 export default {
   mixins: [EntryShowMixin],
@@ -303,14 +303,14 @@ export default {
   components: {
     EntryDetailHeaderButtons,
     ImageContainer,
-    EntryNavigationItems,
-    ActorActors,
+    EditableEntryNavigationItems,
+    EditableActorActors,
     ContactList,
     EntryDetailFooter,
     ActorSelector,
     EntryListItems,
     AnnotationTag,
-    EditableEntryFacets
+    EditableEntryFacetItems
   }
 }
 </script>

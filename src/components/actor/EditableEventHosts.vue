@@ -1,9 +1,9 @@
 <script>
-import ActorActors from './ActorActors'
-import EventHostsSelector from '@/components/selector/EventHostsSelector'
+import EditableActorActors from './EditableActorActors'
+import EventHostsSelector from '@/components/actor/EventHostsSelector'
 
 export default {
-  extends: ActorActors,
+  extends: EditableActorActors,
 
   data () {
     return {
