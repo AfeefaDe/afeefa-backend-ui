@@ -48,7 +48,7 @@
     <div @click="showModal">
       <slot name="triggerButton">
         <a href="" class="inlineEditLink" @click.prevent>
-          {{ title }}
+          {{ actor[relationName].length ? 'Ändern' : 'Hinzufügen' }}
         </a>
       </slot>
     </div>

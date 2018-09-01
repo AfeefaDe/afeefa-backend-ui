@@ -13,11 +13,7 @@
 
       <component :is="selector" :actor="owner" :relationName="relationName" title="Ändern" @saved="actorRelationSaved">
         <slot slot="triggerButton">
-          <slot name="triggerButton">
-            <a href="" class="inlineEditLink" @click.prevent>
-              {{ title }}
-            </a>
-          </slot>
+          <slot name="triggerButton" />
         </slot>
       </component>
     </div>
