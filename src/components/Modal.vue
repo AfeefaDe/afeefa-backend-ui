@@ -72,7 +72,7 @@ export default {
 
   .modal__window {
     position: fixed;
-    top: ($header-height*1.1);
+    top: ($header-height*.7);
     left: 50%;
     min-width: 200px;
     z-index: $z-index-overlay + 1;
