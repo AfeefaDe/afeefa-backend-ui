@@ -14,8 +14,7 @@
       <slot name="triggerButton">
         <button class="btn gray btn-small">
           <i class="material-icons left">add</i>
-          <i class="material-icons left">assignment</i>
-          Anmerkung
+          Aufgabe
         </button>
       </slot>
     </div>

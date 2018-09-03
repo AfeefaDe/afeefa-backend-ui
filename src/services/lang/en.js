@@ -15,6 +15,7 @@ export default {
     categoriesBautzen: 'Bautzen',
     logout: 'Logout',
     new: 'New',
+    newest: 'New',
     edit: 'Edit',
     show: 'Show',
     contactNew: 'Add Contact',
@@ -139,6 +140,11 @@ export default {
     additionally_informations: 'Additionally informations from parent entry',
     media_url: 'url to image',
     id: 'ID'
+  },
+  type: {
+    orgas: 'Actor',
+    offers: 'Offer',
+    events: 'Event'
   },
   usersettings: {
     first_name: 'First name',

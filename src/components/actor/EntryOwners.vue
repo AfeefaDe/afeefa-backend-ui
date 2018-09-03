@@ -1,7 +1,7 @@
 <template>
   <div class="entryListItemOwners">
     <router-link :to="{name: 'orgas.show', params: {id: items[0].id}}">{{ items[0].title }}</router-link>
-    <span v-if="items.length > 1">
+    <span v-if="items.length > 1" class="more">
       und {{ items.length - 1 }} weitere
     </span>
   </div>
@@ -20,6 +20,10 @@ export default {
 
   a:hover {
     text-decoration: underline;
+  }
+
+  .more {
+    white-space: nowrap;
   }
 }
 </style>

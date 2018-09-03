@@ -35,7 +35,7 @@
 
     <ul class="entryList">
       <li v-for="item in sortedItems" :key="item.type + item.id" :style="{opacity: item.hasListData ? 1 : .2}">
-        <div>
+        <div class="entryList__visual">
           <div v-if="has.typeIcon" class="entryList__icon">
             <entry-icon :item="item" />
             <div class="eventDate" v-if="item.hasListData && item.type === 'events'">
@@ -79,13 +79,14 @@
             </div>
 
             <div v-if="has.annotations" class="annotations">
-              <div v-for="annotation in item.annotations.slice(0, 3)" :key="annotation.id" class="annotation">
-                <div class="icon">
-                  <i class="material-icons left">assignment</i>
-                </div>
-                <div class="detail">
-                  <strong>{{ annotation.annotationCategory.title}}</strong><br>
-                  {{ annotation.detail}}
+              <div v-for="annotation in item.annotations.slice(0, 1)" :key="annotation.id" class="annotation">
+                <!-- <entry-icon :item="annotation" /> -->
+                <div class="details">
+                  <span class="category">{{ annotation.annotationCategory.title}}:</span>
+                  <span class="detail">{{ annotation.detail}}</span>
+                  <span v-if="item.annotations.length > 1" class="moreAnnotations">
+                    und {{ item.annotations.length - 1 }} weitere
+                  </span>
                 </div>
               </div>
 
@@ -103,14 +104,15 @@
               {{ $t('status.changed') }}
               {{item.updated_at | formatDateAbsolute}}
               <span>({{item.updated_at | formatDateRelative}})</span>
-              <span v-if="item.last_editor"><br>von {{ item.last_editor.name }} <span v-if="item.last_editor.organization">({{ item.last_editor.organization }})</span></span>
+              <span v-if="item.last_editor"> von {{ item.last_editor.name }} <span v-if="item.last_editor.organization">({{ item.last_editor.organization }})</span></span>
             </div>
 
             <div class="entryList__status entryList--lightColor" v-if="has.created_at">
               {{ $t('status.added') }}
-              {{item.created_at | formatDateAbsolute}}
-              <span>({{item.created_at | formatDateRelative}})</span>
-              <span v-if="item.creator"><br>von {{ item.creator.name }} <span v-if="item.creator.organization">({{ item.creator.organization }})</span></span>
+              <!-- {{item.created_at | formatDateAbsolute}} -->
+              <!-- <span>({{item.created_at | formatDateRelative}})</span> -->
+              <span>{{item.created_at | formatDateRelative}}</span>
+              <span v-if="item.creator"> von {{ item.creator.name }} <span v-if="item.creator.organization">({{ item.creator.organization }})</span></span>
             </div>
           </div>
 
@@ -138,7 +140,6 @@
 <script>
 import Pagination from '@/components/Pagination'
 import AnnotationTag from '@/components/AnnotationTag'
-import EntryIcon from '@/components/entry/EntryIcon'
 import Spinner from '@/components/Spinner'
 import moment from 'moment'
 import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
@@ -327,7 +328,6 @@ export default {
     Pagination,
     Spinner,
     AnnotationTag,
-    EntryIcon,
     EditableEntryFacetItems,
     EntryOwners,
     SelectedFilters,
@@ -395,9 +395,13 @@ export default {
 
   li {
     border-bottom: 1px solid $gray20;
-    padding: 1em 0;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    &:not(:first-child) {
+      padding-top: 1em;
+    }
+    padding-bottom: 1em;
+    padding-right: 1em;
   }
 
   li:last-child {
@@ -407,7 +411,7 @@ export default {
   &__nav {
     cursor: pointer;
     color: inherit;
-    // display: flex;
+    display: flex;
     align-items: flex-end;
     word-break: break-word;
     hyphens: auto;
@@ -425,19 +429,41 @@ export default {
   }
 
   .annotations {
-    max-width: 80%;
-    margin: 1.2em 0;
+    margin-top: .4em;
     .annotation {
-      margin-top: .5em;
       display: flex;
+      align-items: top;
 
-      .icon {
-        width: 34px;
-        color: $blueHightlight;
+      &:not(:first-child) {
+        margin-top: .2em;
+      }
+      &:not(:last-child) {
+        margin-bottom: .2em;
+      }
+
+      .entryIcon {
+        margin-left: -8px;
+        flex: 0 0 10px;
+      }
+
+      .details {
+        flex-grow: 2;
+        margin-top: .2em;
+      }
+
+      .category {
+        font-size: .9em;
       }
 
       .detail {
-        flex-grow: 1;
+        font-size: .9em;
+      }
+
+      .moreAnnotations {
+        font-size: .9em;
+        color: $gray30;
+        white-space: nowrap;
+        margin-left: .1em;
       }
     }
   }
@@ -479,10 +505,20 @@ export default {
     font-size: .9em;
   }
 
+  &__visual {
+    flex: 0 0 80px;
+    margin-right: 20px;
+  }
+
+  .entryType {
+    display: none;
+    font-size: .8em;
+    text-transform: uppercase;
+    margin-top: .2em;
+    margin-bottom: 1em;
+  }
+
   &__icon {
-    margin-right: 2em;
-    margin-top: 0.3em;
-    line-height: 100%;
     text-align: center;
     .eventDate {
       text-align: center;

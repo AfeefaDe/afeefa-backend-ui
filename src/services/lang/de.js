@@ -15,6 +15,7 @@ export default {
     categoriesBautzen: 'Bautzen',
     logout: 'Logout',
     new: 'Neu',
+    newest: 'Neue',
     edit: 'Ändern',
     show: 'Anzeigen',
     contactNew: 'Kontakt hinzufügen',
@@ -140,6 +141,11 @@ export default {
     media_url: 'Link zum Bild',
     id: 'ID'
   },
+  type: {
+    orgas: 'Akteur',
+    offers: 'Angebot',
+    events: 'Veranstaltung'
+  },
   usersettings: {
     first_name: 'Vorname',
     last_name: 'Nachname',
@@ -157,8 +163,8 @@ export default {
     no: 'Keine',
     all: 'Alle',
     any: 'Alles',
-    added: 'Hinzugefügt am',
-    changed: 'Zuletzt geändert am',
+    added: 'Hinzugefügt',
+    changed: 'Zuletzt geändert',
     time: 'Zeitpunkt',
     searching: 'Suche Einträge',
     noResults: '0 Einträge'

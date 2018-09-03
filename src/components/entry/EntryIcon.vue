@@ -1,8 +1,9 @@
 <template>
-  <div :class="['entryIcon', {inactive: !item.active}]">
-    <i v-if="item.type === 'orgas'" class="material-icons">group</i>
+  <div :class="['entryIcon', {inactive: item.hasOwnProperty('active') && !item.active}]">
+    <i v-if="item.type === 'orgas'" class="material-icons orgas">group</i>
     <i v-if="item.type === 'offers'" class="material-icons offers">message</i>
-    <i v-if="item.type === 'events'" class="material-icons">date_range</i>
+    <i v-if="item.type === 'events'" class="material-icons events">date_range</i>
+    <i v-if="item.type === 'annotations'" class="material-icons annotations">chevron_right</i>
   </div>
 </template>
 
@@ -18,7 +19,12 @@ export default {
 }
 
 i {
-  color: $black;
+  font-size: 2em;
+  color: #993333;
+}
+
+.annotations {
+  color: $gray50;
 }
 
 .offers {

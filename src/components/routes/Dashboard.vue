@@ -9,7 +9,7 @@
     <div class="col s12 m6">
       <div class="mainCard">
         <afeefa-header class="small">
-          <router-link :to="{name: 'todos'}" slot="title">{{ $t('headlines.todos') }} ({{ numTodos }})</router-link>
+          <router-link :to="{name: 'todos'}" slot="title">{{ $tc('headlines.newest') }} {{ $t('headlines.todos') }}</router-link>
         </afeefa-header>
 
         <div>
@@ -17,11 +17,11 @@
             :items="todos"
             :lazyLoad="true"
             :isLoading="todosLoading"
-            :limit="10"
+            :limit="15"
             :sort-function="todosSort"
             :options="{annotations: true}">
           </entry-list-items>
-          <router-link :to="{name: 'todos'}" v-if="!todosLoading">{{ $t('status.all') }} {{ $t('headlines.todos') }}</router-link>
+          <router-link :to="{name: 'todos'}" v-if="!todosLoading">{{ $t('status.all') }} {{ $t('headlines.todos') }} ({{ numTodos }})</router-link>
         </div>
       </div>
     </div>
@@ -29,7 +29,7 @@
     <div class="col s12 m6">
       <div class="mainCard">
         <afeefa-header class="small">
-          <router-link :to="{name: 'offers.list'}" slot="title">{{ $tc('offers.offer', numOffers) }} ({{ numOffers }})</router-link>
+          <router-link :to="{name: 'offers.list'}" slot="title">{{ $tc('headlines.newest') }} {{ $tc('offers.offer', numOffers) }}</router-link>
           <router-link :to="{name: 'offers.new'}" slot="buttons" class="btn btn-medium green">
             <i class="material-icons left">add</i>
             {{$t('buttons.add')}}
@@ -45,13 +45,13 @@
             :sort-function="offerSort"
             :options="{created_at: true}">
           </entry-list-items>
-          <router-link :to="{name: 'offers.list'}" v-if="!offersLoading">{{ $t('status.all') }} {{ $tc('offers.offer', numOffers) }}</router-link>
+          <router-link :to="{name: 'offers.list'}" v-if="!offersLoading">{{ $t('status.all') }} {{ $tc('offers.offer', numOffers) }} ({{ numOffers }})</router-link>
         </div>
       </div>
 
       <div class="mainCard">
         <afeefa-header class="small">
-          <router-link :to="{name: 'orgas.list'}" slot="title">{{ $tc('headlines.organisations', numOrgas) }} ({{ numOrgas }})</router-link>
+          <router-link :to="{name: 'orgas.list'}" slot="title">{{ $tc('headlines.newest') }} {{ $tc('headlines.organisations', numOrgas) }}</router-link>
           <router-link :to="{name: 'orgas.new'}" slot="buttons" class="btn btn-medium green">
             <i class="material-icons left">add</i>
             {{$t('buttons.add')}}
@@ -67,13 +67,13 @@
             :sort-function="orgaSort"
             :options="{created_at: true}">
           </entry-list-items>
-          <router-link :to="{name: 'orgas.list'}" v-if="!orgasLoading">{{ $t('status.all') }} {{ $tc('headlines.organisations', numOrgas) }}</router-link>
+          <router-link :to="{name: 'orgas.list'}" v-if="!orgasLoading">{{ $t('status.all') }} {{ $tc('headlines.organisations', numOrgas) }} ({{ numOrgas }})</router-link>
         </div>
       </div>
 
       <div class="mainCard">
         <afeefa-header class="small">
-          <router-link :to="{name: 'events.list'}" slot="title">{{ $tc('headlines.events', numEvents) }} ({{numEvents}})</router-link>
+          <router-link :to="{name: 'events.list'}" slot="title">{{ $tc('headlines.newest') }} {{ $tc('headlines.events', numEvents) }}</router-link>
           <router-link :to="{name: 'events.new'}" slot="buttons" class="btn btn-medium green">
             <i class="material-icons left">add</i>
             {{$t('buttons.add')}}
@@ -89,7 +89,7 @@
             :sort-function="eventsSort"
             :options="{created_at: true, event_date: true}">
           </entry-list-items>
-          <router-link :to="{name: 'events.list'}" v-if="!eventsLoading">{{ $t('status.all') }} {{ $tc('headlines.events', 2) }}</router-link>
+          <router-link :to="{name: 'events.list'}" v-if="!eventsLoading">{{ $t('status.all') }} {{ $tc('headlines.events', 2) }} ({{numEvents}})</router-link>
         </div>
       </div>
     </div>

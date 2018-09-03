@@ -73,7 +73,9 @@ class Event extends Entry {
     }
 
     if (!this.id && this.hosts.length) {
-      data.relationships.hosts = this.hosts.map(h => h.id)
+      data.relationships = {
+        hosts: this.hosts.map(h => h.id)
+      }
     }
 
     return data

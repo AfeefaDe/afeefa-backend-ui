@@ -2,9 +2,7 @@
   <div>
     <div v-for="annotation in entry.annotations" :key="annotation.id" class="listItem">
       <div class="annotation">
-        <div class="icon">
-          <i class="material-icons left">assignment</i>
-        </div>
+        <entry-icon :item="annotation" />
         <div class="editForm" v-if="annotationToEdit === annotation">
           <annotation-form
             :entry="entry" :annotationToEdit="annotationToEdit" :inline="true"
@@ -16,7 +14,7 @@
         </div>
         <div class="links" v-if="annotationToEdit !== annotation">
           <a href="" @click.prevent="openEditForm(annotation)" class="inlineEditLink">Ändern</a>
-          <a href="" @click.prevent="removeAnnotation(annotation)" class="inlineEditLink">Löschen</a>
+          <a href="" @click.prevent="removeAnnotation(annotation)" class="inlineEditLink">Erledigen</a>
         </div>
         <div v-else class="links">
           <a href="" @click.prevent="closeForm" class="inlineEditLink">Abbrechen</a>
@@ -113,9 +111,10 @@ select {
   padding: 1.5em 0 1.2em;
   position: relative;
   display: flex;
+  align-items: center;
 
-  .icon i {
-    margin-right: 28px;
+  .entryIcon {
+    flex: 0 0 44px;
   }
 
   .content {

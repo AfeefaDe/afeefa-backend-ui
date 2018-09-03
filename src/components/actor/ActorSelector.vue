@@ -61,7 +61,6 @@ import Orga from '@/models/Orga'
 import Modal from '@/components/Modal'
 import SelectableList from '@/components/selector/SelectableList'
 import sortByTitle from '@/helpers/sort-by-title'
-import EntryIcon from '@/components/entry/EntryIcon'
 
 export default {
   props: ['title', 'actor', 'relationName'],
@@ -154,8 +153,7 @@ export default {
 
   components: {
     Modal,
-    SelectableList,
-    EntryIcon
+    SelectableList
   }
 }
 </script>
