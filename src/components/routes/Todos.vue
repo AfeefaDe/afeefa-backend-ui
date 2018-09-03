@@ -54,7 +54,6 @@ export default {
 
   watch: {
     'selectedCategory': function (selectedCategory) {
-      this.items = null
       this.loadItems()
     }
   },

@@ -76,8 +76,8 @@ export default {
         // but not initially to support hot linking and history.back
         const query = {...this.$route.query, keyword: this.keyword}
         if (this.resetPageQueryParams) {
-          query.page = undefined
-          query.pageSize = undefined
+          delete query.page
+          delete query.pageSize
         }
         if (this.modifyRoute) {
           this.$router.push({query})

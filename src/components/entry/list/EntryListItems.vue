@@ -291,8 +291,16 @@ export default {
       this.currentPageSize = config.pageSize
       if (this.modifyRoute) {
         const query = {...this.$route.query}
-        query.page = config.page === 1 ? undefined : config.page
-        query.pageSize = config.pageSize === 15 ? undefined : config.pageSize
+        if (config.page === 1) {
+          delete query.page
+        } else {
+          query.page = config.page
+        }
+        if (config.pageSize === 15) {
+          delete query.pageSize
+        } else {
+          query.pageSize = config.pageSize
+        }
         this.$router.push({query: query})
       }
       this.initSortedItems()

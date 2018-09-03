@@ -4,7 +4,7 @@
       <i class="material-icons left">delete</i>
       Löschen
     </button>
-    <div v-else></div>
+
     <div>
       <router-link :to="{name: this.routeName + '.show', params: {id: item.id}}" class="btn waves-effect waves-light gray" v-if="has.cancel && item.id">
         <i class="material-icons left">cancel</i>

@@ -34,7 +34,8 @@ export default {
       const currentRouteQuery = this.$route.query
       this.Query.getAll(queryParams).then(entries => {
         // protect loading items into already left view
-        if (currentRouteQuery === this.$route.query) {
+        // TODO refactor events.list into proper tabs
+        if (currentRouteQuery.tab === this.$route.query.tab && currentRouteQuery.subTab === this.$route.query.subTab) {
           this.items = entries
           this.itemsLoaded(entries)
           this.isLoading = false
