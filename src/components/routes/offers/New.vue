@@ -13,25 +13,15 @@
           </div>
         </editable-offer-owners>
 
-        <title-input :item="offer" />
+        <title-input :item="offer" class="formElement marginTop" />
 
-        <div class=" input-field">
-          <label for="description" :class="{active: offer.description}">
-            {{ $t('entries.short_description') }}
-            <span class="labelCharacterCount" v-if="offer.description.length">{{offer.description.length}}/350</span>
-          </label>
-
-          <textarea
-            v-model="offer.description"
-            id="description"
-            name="description"
-            :data-vv-as="$t('entries.description')"
-            v-validate.initial="'required|max: 350'"
-            :class="['materialize-textarea', {'validation-error': errors.has('description') }]"
-            v-autosize>
-          </textarea>
-          <span v-show="errors.has('description')" class="validation-error">{{ errors.first('description') }}</span>
-        </div>
+        <text-input
+          class="formElement marginTop"
+          v-model="offer.description"
+          fieldName="description"
+          :label="$t('entries.description')"
+          :placeholder="$t('entries.description')"
+          validate="required|max:350" />
 
         <entry-edit-footer
           :item="offer"

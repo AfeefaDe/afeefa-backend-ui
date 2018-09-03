@@ -13,7 +13,7 @@
           </div>
         </editable-event-hosts>
 
-        <title-input :item="item" />
+        <title-input :item="item" class="formElement marginTop" />
 
         <date-picker
           :date-start="event.date_start"

@@ -14,11 +14,7 @@
           @setCurrentTab="setCurrentTab">
 
           <section slot="general">
-            <h2>Titel</h2>
-
             <title-input :item="event" />
-
-            <h2>{{ $t("headlines.time") }}</h2>
 
             <date-picker
               :date-start="event.date_start"
@@ -32,27 +28,11 @@
             </date-picker>
             <span v-show="errors.has('date')" class="validation-error">{{ errors.first('date') }}</span>
 
-            <h2>{{ $t('headlines.organizer')}}</h2>
-
-            <h2>Beschreibung</h2>
-
             <description-form :item="event" />
 
-            <h2>Bild</h2>
+            <media-image-input :item="event" propertyName="media_url" :image-error="imageError" class="formElement marginTop" />
 
-            <media-image-input :item="event" propertyName="media_url" :image-error="imageError" />
-
-            <h2>Tags</h2>
-
-            <tag-selector :item="event" v-if="currentUser && currentUser.area=='dresden'" />
-
-            <h2>Hilfe und Zertifikat</h2>
-
-            <help-wanted-form :item="event" />
-          </section>
-
-          <section slot="annotations">
-            <annotation-form :item="event" />
+            <help-wanted-form :item="event" class="formElement marginTop" />
           </section>
 
         </tab-bar>
@@ -76,10 +56,8 @@ import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import EventRouteConfig from './EventRouteConfig'
 
 import ImageContainer from '@/components/ImageContainer'
-import InputField from '@/components/InputField'
 import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 
-import AnnotationForm from '@/components/entry/edit/AnnotationForm'
 import DatePicker from '@/components/event/datepicker/DatePicker'
 import TagSelector from '@/components/entry/edit/TagSelector'
 import HelpWantedForm from '@/components/entry/edit/HelpWantedForm'
@@ -106,10 +84,7 @@ export default {
     },
 
     tabNames () {
-      return [
-        'general',
-        { name: 'annotations', hint: this.item.annotations.length }
-      ]
+      return ['general']
     }
   },
 
@@ -139,11 +114,9 @@ export default {
   },
 
   components: {
-    InputField,
     EntryEditFooter,
 
     TitleInput,
-    AnnotationForm,
     TagSelector,
     HelpWantedForm,
     DescriptionForm,

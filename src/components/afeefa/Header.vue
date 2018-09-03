@@ -178,9 +178,8 @@ h2 {
   right: 0;
   bottom: 0;
   margin: 1em 2em;
-
   a:not(:last-child) {
-    margin-right: .1em;
+    margin-right: .4em;
   }
 }
 </style>

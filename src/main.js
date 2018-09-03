@@ -1,6 +1,5 @@
 // import global styles before entering router
 // and reading component styles
-import 'materialize-css'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 import 'flatpickr/dist/themes/material_green.css'
 import 'leaflet/dist/leaflet.css'
@@ -24,6 +23,8 @@ import store from './store'
 import Page from '@/components/afeefa/Page'
 import Header from '@/components/afeefa/Header'
 import TabBar from '@/components/TabBar'
+import TextInput from '@/components/TextInput'
+import InputField from '@/components/InputField'
 
 import EntryHeader from '@/components/entry/EntryHeader'
 import EntryDetail from '@/components/entry/EntryDetail'
@@ -35,6 +36,8 @@ import FacetItemTag from '@/components/facet/FacetItemTag'
 Vue.component('AfeefaPage', Page)
 Vue.component('AfeefaHeader', Header)
 Vue.component('TabBar', TabBar)
+Vue.component('TextInput', TextInput)
+Vue.component('InputField', InputField)
 
 Vue.component('EntryHeader', EntryHeader)
 Vue.component('EntryDetail', EntryDetail)

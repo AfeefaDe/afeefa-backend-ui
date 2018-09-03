@@ -9,7 +9,8 @@
 }
 
 [type="checkbox"] + label {
-  margin-bottom: 1.3em;
+  padding-left: 28px;
+  display: table;
 }
 
 a {
@@ -120,31 +121,31 @@ textarea.materialize-textarea:focus.valid {
   box-shadow: 0 1px 0 0 $secondaryBlue;
 }
 
-select.validation-error,
-textarea.validation-error,
-input.validation-error,
-input:not(.browser-default).validation-error,
-div.validation-error {
-  background-color: #FFEEEE;
-  border-bottom-color: red;
-  box-shadow: 0 1px 0 0 red;
-  &:focus {
-    background-color: #FFEEEE;
-    border-bottom-color: red;
-    box-shadow: 0 1px 0 0 red;
-  }
-}
+// select.validation-error,
+// textarea.validation-error,
+// input.validation-error,
+// input:not(.browser-default).validation-error,
+// div.validation-error {
+//   background-color: #FFEEEE;
+//   border-bottom-color: red;
+//   box-shadow: 0 1px 0 0 red;
+//   &:focus {
+//     background-color: #FFEEEE;
+//     border-bottom-color: red;
+//     box-shadow: 0 1px 0 0 red;
+//   }
+// }
 
-textarea.validation-error,
-input.validation-error,
-input:not(.browser-default).validation-error {
-  margin-bottom: 0;
-}
+// textarea.validation-error,
+// input.validation-error,
+// input:not(.browser-default).validation-error {
+//   margin-bottom: 0;
+// }
 
-input + .validation-error,
-textarea + .validation-error {
-  padding-bottom: 20px;
-}
+// input + .validation-error,
+// textarea + .validation-error {
+//   padding-bottom: 20px;
+// }
 
 // fix for https://github.com/Dogfalo/materialize/pull/5061
 // should be removed after the official fix is released

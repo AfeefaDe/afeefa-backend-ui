@@ -15,7 +15,7 @@ export default {
     if (this.id) {
       this.Model.Query.with().get(this.id).then(entry => {
         if (entry) {
-          this.item = this.cloneEntry(entry)
+          this.item = entry.clone()
         } else {
           this.loadingError = true
         }
@@ -42,11 +42,6 @@ export default {
   },
 
   methods: {
-    cloneEntry (entry) {
-      // override to add relations to clone additionally
-      return entry.clone()
-    },
-
     /*
      * called by the BeforeRouteLeaveMixin
      * to raise a alert in case of unsaved changes

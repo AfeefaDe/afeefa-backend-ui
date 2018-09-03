@@ -16,6 +16,7 @@
         </input-field>
 
         <input-field
+          class="formElement marginTop"
           field-name="last_name"
           v-model="user.last_name"
           validate="required|max:20"
@@ -23,6 +24,7 @@
         </input-field>
 
         <input-field
+          class="formElement marginTop"
           field-name="organization"
           v-model="user.organization"
           validate="required|max:20"
@@ -31,9 +33,11 @@
 
         <h2>Passwort ändern (optional)</h2>
 
-        Um das Passwort zu ändern, bitte beide Felder ausfüllen. Andernfalls einfach leer lassen.
+        Um das Passwort zu ändern, bitte beide Felder ausfüllen.<br>
+        Andernfalls einfach leer lassen.
 
         <input-field
+          class="formElement marginTop"
           field-name="password"
           type="password"
           v-model="user.password"
@@ -42,6 +46,7 @@
         </input-field>
 
         <input-field
+          class="passwordConfirm"
           field-name="password_confirm"
           type="password"
           v-model="passwordConfirm"
@@ -62,7 +67,6 @@
 
 
 <script>
-import InputField from '@/components/InputField'
 import User from '@/models/User'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
@@ -135,7 +139,6 @@ export default {
   },
 
   components: {
-    InputField,
     EntryEditFooter
   }
 }
@@ -143,4 +146,15 @@ export default {
 
 
 <style scoped>
+.passwordConfirm {
+  margin-top: .5em;
+}
+
+.formElement.marginTop {
+  margin-top: 1em;
+}
+
+* /deep/ input {
+  width: 300px;
+}
 </style>

@@ -108,11 +108,6 @@ export default class Entry extends Model {
         support_wanted_detail: this.support_wanted_detail,
         certified_sfr: this.certified_sfr,
         tags: this.tags
-      },
-      relationships: {
-        annotations: {
-          data: annotations
-        }
       }
     }
     if (this.id) {

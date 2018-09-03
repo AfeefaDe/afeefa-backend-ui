@@ -10,26 +10,15 @@
       <form @submit.prevent="save" class="entryForm" novalidate>
         <title-input :item="item" />
 
-        <div class="input-field">
-          <label for="description" :class="{active: item.description}">
-            {{ $t('entries.short_description') }}
-            <span class="labelCharacterCount" v-if="item.description.length">{{item.description.length}}/350</span>
-          </label>
+        <text-input
+          class="formElement marginTop"
+          v-model="offer.description"
+          fieldName="description"
+          :label="$t('entries.description')"
+          :placeholder="$t('entries.description')"
+          validate="required|max:350" />
 
-          <textarea
-            v-model="item.description"
-            id="description"
-            name="description"
-            :data-vv-as="$t('entries.description')"
-            v-validate.initial="'required|max: 350'"
-            :class="['materialize-textarea', {'validation-error': errors.has('description') }]"
-            v-autosize>
-          </textarea>
-          <span v-show="errors.has('description')" class="validation-error">{{ errors.first('description') }}</span>
-
-          <h2>Bild</h2>
-          <media-image-input :item="item" propertyName="image_url" :imageError="imageError" />
-        </div>
+        <media-image-input :item="item" propertyName="image_url" :imageError="imageError" class="formElement marginTop" />
 
         <entry-edit-footer
           :item="item"

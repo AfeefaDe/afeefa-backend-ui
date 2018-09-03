@@ -1,3 +1,9 @@
+.formElement {
+  &.marginTop {
+    margin-top: 2.5em;
+  }
+}
+
 .entryForm {
   h2 {
     margin-top: 2em;
@@ -21,10 +27,7 @@
 }
 
 span.validation-error {
-  margin-top: 2px;
-  display: block;
-  color: #CC6666;
-  font-size: .9em;
+  color: #DD6666;
 
   &.geodata-not-found {
     margin-bottom: 0;

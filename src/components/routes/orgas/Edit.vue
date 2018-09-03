@@ -14,25 +14,20 @@
           @setCurrentTab="setCurrentTab">
 
           <section slot="general">
-            <h2>Titel und Beschreibung</h2>
             <title-input :item="orga" />
-            <description-form :item="orga" />
+            <description-form :item="orga" class="formElement marginTop" />
 
-            <h2>Bild</h2>
-            <media-image-input :item="orga" propertyName="media_url" :image-error="imageError" />
+            <media-image-input :item="orga" propertyName="media_url" :image-error="imageError" class="formElement marginTop" />
 
-            <help-wanted-form :item="orga" />
+            <help-wanted-form :item="orga" class="formElement marginTop" />
 
             <input-field
+              class="formElement marginTop"
               field-name="facebook_id"
               v-model="orga.facebook_id"
               validate="min:15|max:64"
               label="Facebook ID für Events">
             </input-field>
-          </section>
-
-          <section slot="annotations">
-            <annotation-form :item="orga" />
           </section>
 
           <section slot="resources">
@@ -59,11 +54,9 @@ import EntryEditMixin from '@/components/mixins/EntryEditMixin'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import OrgaRouteConfig from './OrgaRouteConfig'
 
-import InputField from '@/components/InputField'
 import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 
 import ImageContainer from '@/components/ImageContainer'
-import AnnotationForm from '@/components/entry/edit/AnnotationForm'
 import ResourceForm from '@/components/entry/edit/ResourceForm'
 import TagSelector from '@/components/entry/edit/TagSelector'
 import HelpWantedForm from '@/components/entry/edit/HelpWantedForm'
@@ -90,10 +83,7 @@ export default {
     },
 
     tabNames () {
-      const tabNames = [
-        'general',
-        {name: 'annotations', hint: this.item.annotations.length}
-      ]
+      const tabNames = ['general']
       if (this.currentUser && this.currentUser.area === 'dresden') {
         tabNames.push({name: 'resources', hint: this.item.resource_items.length})
       }
@@ -121,11 +111,9 @@ export default {
 
   components: {
     ImageContainer,
-    InputField,
     EntryEditFooter,
 
     TitleInput,
-    AnnotationForm,
     ResourceForm,
     TagSelector,
     HelpWantedForm,

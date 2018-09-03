@@ -77,9 +77,8 @@ export default {
     min-width: 200px;
     z-index: $z-index-overlay + 1;
     background-color: white;
-    padding: 20px;
+    padding: 2em;
     transform: translateX(-50%);
-    // border-radius: 1px;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
     color: $black;
   }
@@ -87,8 +86,8 @@ export default {
   .modal__closeIcon {
     position: absolute;
     cursor: pointer;
-    top: 12px;
-    right: 12px;
+    top: 1em;
+    right: 1em;
     i {
       font-size: 24px;
       color: $gray30;

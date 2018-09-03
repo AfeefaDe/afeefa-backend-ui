@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="row">
-      <div class="col s12 m12 l4 push-l4">
+      <div class="col s12 m6 l3 push-m3">
           <img class="login__logo" src="../../assets/images/afeefa_light.svg" alt="Afeefa Logo with white background">
           <div class="mainCard">
             <afeefa-header class="small">
@@ -10,13 +10,13 @@
 
             <div>
               <form @submit.prevent="submitLoginForm">
-                <div class="input-field">
-                  <input type="email" v-model="email" id="email" class="validate" required="required">
+                <div>
                   <label for="email">E-Mail</label>
+                  <input type="email" v-model="email" id="email" class="validate browser-default" required="required">
                 </div>
-                <div class="input-field">
-                  <input type="password" v-model="password" id="password" class="validate" required="required">
+                <div class="formElement marginTop">
                   <label for="password">Passwort</label>
+                  <input type="password" v-model="password" id="password" class="validate browser-default" required="required">
                 </div>
                 <div class="submit-btn-container">
                   <button class="login__submit btn waves-effect waves-light z-depth-1" type="submit">Login
@@ -53,6 +53,14 @@ export default {
 
 <style lang="scss" scoped>
 .login {
+  @media only screen and (min-width: 993px) {
+    .col.l3 {
+      margin-left: calc(75% / 2);
+    }
+  }
+  .formElement.marginTop {
+    margin-top: 1em;
+  }
   &__logo {
     height: 40vh;
     display: block;
@@ -60,7 +68,7 @@ export default {
   }
   &__submit {
     display: block;
-    margin: 0 auto;
+    margin: 1.5em auto 0;
   }
 }
 </style>

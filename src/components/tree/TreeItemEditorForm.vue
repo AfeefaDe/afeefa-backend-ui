@@ -178,4 +178,9 @@ export default {
 .colorInput {
   width: 80px;
 }
+
+select {
+  padding: 2px 0;
+  line-height: 1em;
+}
 </style>

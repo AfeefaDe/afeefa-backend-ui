@@ -3,7 +3,7 @@
 
     <entry-detail-header-buttons :entry="orga" :routeConfig="routeConfig" slot="headerButtons" v-if="orga" />
 
-    <div slot="secondaryHeaderButtons" v-if="orga">
+    <div slot="secondaryHeaderButtons" class="secondaryHeaderButtons" v-if="orga">
       <router-link :to="{name: 'offers.new', query: {actorId: orga.id}}" class="btn gray btn-small">
         <i class="material-icons left">add</i>
         <i class="material-icons left">message</i>
@@ -18,9 +18,7 @@
     </div>
 
     <div v-if="orga">
-      <image-container
-        :image-url="orga.media_url">
-      </image-container>
+      <image-container :image-url="orga.media_url" />
 
       <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
         <section slot="general">
@@ -104,14 +102,7 @@
             </div>
 
             <div slot="todos">
-              <entry-detail-property
-                :name="$tc('headlines.annotations', orga.annotations.length)"
-                :iconName="'label_outline'"
-                v-if="orga.annotations.length">
-                <div>
-                  <annotation-tag v-for="annotation in orga.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
-                </div>
-              </entry-detail-property>
+              <annotation-view :entry="orga" />
             </div>
 
             <div slot="attributes">
@@ -237,7 +228,7 @@ import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import EditableActorActors from '@/components/actor/EditableActorActors'
 import ActorSelector from '@/components/actor/ActorSelector'
 import EntryListItems from '@/components/entry/list/EntryListItems'
-import AnnotationTag from '@/components/AnnotationTag'
+import AnnotationView from '@/components/annotation/AnnotationView'
 import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
 
 export default {
@@ -309,7 +300,7 @@ export default {
     EntryDetailFooter,
     ActorSelector,
     EntryListItems,
-    AnnotationTag,
+    AnnotationView,
     EditableEntryFacetItems
   }
 }
@@ -317,6 +308,10 @@ export default {
 
 
 <style lang="scss" scoped>
+.secondaryHeaderButtons {
+  display: flex;
+}
+
 .actionButtons {
   position: absolute;
   right: 0;

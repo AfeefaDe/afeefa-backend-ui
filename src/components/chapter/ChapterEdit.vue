@@ -22,7 +22,7 @@
             <div class="inputField__spacing input-field">
               <label for="title" :class="{active: item.title}">
                 {{ $t('entries.title') }}
-                <span class="labelCharacterCount" v-if="item.title.length">{{item.title.length}}/150</span>
+                <span class="hint" v-if="item.title.length">{{item.title.length}}/150</span>
               </label>
               <input v-model="item.title" id="title" type="text"
                 name="title" :data-vv-as="$t('entries.title')" v-validate.initial="'required|max: 150'"

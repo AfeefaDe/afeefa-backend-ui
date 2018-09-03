@@ -5,7 +5,7 @@
 
     <div slot="content">
       <form @submit.prevent="save" class="entryForm" novalidate>
-        <div class="inputField__spacing">
+        <div v-if="false">
           <label for="orgaType">Typ</label>
           <ul class="orgaTypeSelector">
             <li class="orgaTypeSelector__singleType" v-for="orgaType in orgaTypes"  :key="orgaType.id">
@@ -26,9 +26,9 @@
           </div>
         </div>
 
-        <title-input :item="orga"/>
+        <title-input :item="orga" />
 
-        <description-form :item="orga" :options="{description: false}" />
+        <description-form :item="orga" :options="{description: false}" class="formElement marginTop" />
 
         <entry-edit-footer
           :item="orga"

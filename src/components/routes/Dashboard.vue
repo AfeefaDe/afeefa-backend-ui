@@ -19,7 +19,7 @@
             :isLoading="todosLoading"
             :limit="10"
             :sort-function="todosSort"
-            :options="{updated_at: true, annotations: true}">
+            :options="{annotations: true}">
           </entry-list-items>
           <router-link :to="{name: 'todos'}" v-if="!todosLoading">{{ $t('status.all') }} {{ $t('headlines.todos') }}</router-link>
         </div>

@@ -5,22 +5,22 @@
       :maxChars="maxChars" :chars="chars"
       :validationErrors="errors" />
 
-    <input
-      :type="inputType"
+    <textarea
+      v-model="currentValue"
       :id="fieldName"
       :name="fieldName"
-      :value="value"
       :placeholder="placeholder"
-
-      :data-vv-validate-on="validateOn"
-      v-validate.initial="validate"
+      v-validate.initial="validate || ''"
       :data-vv-as="label"
 
       @focus="onFocus"
       @blur="onBlur"
 
       :class="['browser-default', {'validation-error': errors.has(fieldName)}]"
-      @input="updateValue($event.target.value)"/>
+      @input="updateValue($event.target.value)"
+
+      v-autosize>
+    </textarea>
   </div>
 </template>
 
@@ -28,14 +28,24 @@
 import InputLabel from '@/components/InputLabel'
 
 export default {
-  props: ['type', 'fieldName', 'value', 'placeholder', 'validate', 'validateOnBlur', 'label'],
+  props: ['fieldName', 'value', 'placeholder', 'validate', 'label'],
 
   inject: ['$validator'],
 
   data () {
     return {
-      validateOn: this.validateOnBlur ? 'blur' : 'input',
+      currentValue: null,
       focus: false
+    }
+  },
+
+  created () {
+    this.currentValue = this.value
+  },
+
+  watch: {
+    value (value) {
+      this.currentValue = value
     }
   },
 
@@ -54,10 +64,6 @@ export default {
 
     chars () {
       return (this.value && this.value.length) || 0
-    },
-
-    inputType () {
-      return this.type || 'text'
     }
   },
 

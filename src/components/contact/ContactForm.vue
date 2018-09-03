@@ -140,7 +140,6 @@ import ContactPerson from '@/models/ContactPerson'
 import Location from '@/models/Location'
 
 import PowerSelector from '@/components/PowerSelector'
-import InputField from '@/components/InputField'
 
 import LocationForm from './LocationForm'
 import LangSelectInput from './LangSelectInput'
@@ -223,7 +222,6 @@ export default {
   components: {
     LangSelectInput,
     LocationForm,
-    InputField,
     PowerSelector
   }
 }

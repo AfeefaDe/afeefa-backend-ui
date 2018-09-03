@@ -55,6 +55,7 @@ export default {
   },
 
   created () {
+    console.log('treeItem', this.treeItem)
     this.bus.$on('edit', this.checkCancel)
   },
 

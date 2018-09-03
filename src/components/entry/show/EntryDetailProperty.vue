@@ -73,13 +73,13 @@ export default {
   }
 
   &__propertyContent {
-      margin-top: 0.5em;
-      margin-bottom: 0;
-      line-height: 160%;
-      white-space: normal;
-      overflow-wrap: break-word;
-      word-wrap: break-word;
-      hyphens: auto;
+    margin-top: 0.5em;
+    margin-bottom: 0;
+    line-height: 160%;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
   }
 
   &__propertyContainer {
@@ -87,7 +87,7 @@ export default {
   }
 
   .multiline * { /* '*' means: ignore v-if=false comments that force empty lines */
-      white-space: pre-wrap;
+    white-space: pre-wrap;
   }
 }
 

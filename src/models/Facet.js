@@ -1,5 +1,6 @@
 import FacetsResource from '@/resources/Facets'
 import FacetFacetItemsResource from '@/resources/relations/FacetFacetItems'
+import LoadingState from 'uidata/api/LoadingState'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import PlainJson from 'uidata/model/PlainJson'
@@ -42,6 +43,9 @@ class Facet extends Model {
 
   init () {
     this.previewColor = null
+
+    // always full data loaded
+    this.loadingState = LoadingState.FULLY_LOADED
   }
 
   serialize () {

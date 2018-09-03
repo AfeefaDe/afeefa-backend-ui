@@ -12,7 +12,7 @@
     <p v-if="loading">
       <spinner :show="true" :width="1" :radius="5" :length="3" /> Suche Einträge
     </p>
-    <div v-else>
+    <div v-else :class="{searchResult: items && items.length}">
       <span v-if="status">{{ status }}</span>
       <entry-list-items
         :items="items"
@@ -107,3 +107,10 @@ export default {
 
 
 </script>
+
+<style lang="scss" scoped>
+.searchResult {
+  padding-top: .4em;
+  border-top: 1px solid $gray20;
+}
+</style>

@@ -36,17 +36,10 @@ class Annotation extends Model {
   }
 
   serialize () {
-    let data = {
-      type: this.type,
-      attributes: {
-        detail: this.detail,
-        annotation_category_id: this.annotationCategory.id
-      }
+    return {
+      detail: this.detail,
+      annotation_category_id: this.annotationCategory.id
     }
-    if (this.id) {
-      data['id'] = this.id
-    }
-    return data
   }
 
   get info () {

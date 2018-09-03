@@ -1,9 +1,11 @@
 <template>
   <section class="footer">
-    <button class="btn waves-effect waves-light red" @click.prevent="remove" v-if="item.id && has.remove">
-      <i class="material-icons left">delete</i>
-      Löschen
-    </button>
+    <div>
+      <button class="btn waves-effect waves-light red" @click.prevent="remove" v-if="item.id && has.remove">
+        <i class="material-icons left">delete</i>
+        Löschen
+      </button>
+    </div>
 
     <div>
       <router-link :to="{name: this.routeName + '.show', params: {id: item.id}}" class="btn waves-effect waves-light gray" v-if="has.cancel && item.id">
@@ -56,7 +58,7 @@ export default {
 
 <style lang="scss" scoped>
 .footer {
-  margin-top: 1.2em;
+  margin-top: 3em;
   display: flex;
   justify-content: space-between;
   .btn + .btn {

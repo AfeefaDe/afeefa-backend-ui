@@ -48,14 +48,7 @@ export default {
 
   computed: {
     selectableAnnotations () {
-      return this.annotationCategories.filter(
-        (annotationCategory) => {
-          // only allow editor annotationCategories
-          if (!annotationCategory.generatedBySystem) {
-            return true
-          }
-        }
-      )
+      return this.annotationCategories.filter(annotationCategory => !annotationCategory.generatedBySystem)
     }
   },
 

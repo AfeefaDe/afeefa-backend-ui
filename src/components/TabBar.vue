@@ -176,12 +176,12 @@ export default {
   }
 
   &.subBar {
-    .tabBar__navItemContainer {
-      justify-content: center;
-    }
-    .tabBar__navItem {
-      margin-top: .3em;
-    }
+    // .tabBar__navItemContainer {
+    //   justify-content: center;
+    // }
+    // .tabBar__navItem {
+    //   margin-top: .3em;
+    // }
     .tabBar__navItem a {
       font-size: .9em;
       padding: .6em 1.5em;

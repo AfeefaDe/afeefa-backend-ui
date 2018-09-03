@@ -1,12 +1,13 @@
 import OrgasResource from '@/resources/Orgas'
 import ActorRelationsResource from '@/resources/relations/ActorRelations'
 import OrgaEventsResource from '@/resources/relations/OrgaEvents'
+import LoadingState from 'uidata/api/LoadingState'
 import DataTypes from 'uidata/model/DataTypes'
 import Registry from 'uidata/model/Registry'
 import Relation from 'uidata/model/Relation'
 
-import Event from './Event' // import before entry important (cyclic imports)!
 import Entry from './base/Entry'
+import Event from './Event' // import before entry important (cyclic imports)!
 import Offer from './Offer'
 import OrgaType from './OrgaType'
 import ResourceItem from './ResourceItem'
@@ -113,6 +114,21 @@ class Orga extends Entry {
     this.facetOwnerType = 'Orga'
   }
 
+  /**
+   * For actors there is an intermediate loading state where just the
+   * title is delivered in order to show the owner/host/initiator link
+   * in entry lists.
+   */
+  calculateLoadingState () {
+    if (this.$rels.contacts.fetched) {
+      return LoadingState.FULLY_LOADED
+    } else if (this.$rels.creator.fetched) {
+      return LoadingState.LIST_DATA_LOADED
+    } else {
+      return LoadingState.ATTRIBUTES_LOADED
+    }
+  }
+
   serialize () {
     const data = super.serialize()
 
@@ -123,8 +139,9 @@ class Orga extends Entry {
     for (let resourceItem of this.resource_items) {
       resourceItemsSerialized.push(resourceItem.serialize())
     }
-    data.relationships.resource_items = { data: resourceItemsSerialized }
-
+    data.relationships = {
+      resource_items: { data: resourceItemsSerialized }
+    }
     return data
   }
 }

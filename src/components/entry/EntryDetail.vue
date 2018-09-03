@@ -2,7 +2,11 @@
   <afeefa-page>
     <entry-header :entry="entry" :isEdit="isEdit" :routeConfig="routeConfig" slot="header">
       <slot name="headerButtons" slot="buttons" />
-      <slot name="secondaryHeaderButtons" slot="secondaryButtons" />
+      <div slot="secondaryButtons" class="secondaryButtons">
+        <slot name="secondaryHeaderButtons" />
+
+        <annotation-form-pop-up :entry="entry" />
+      </div>
     </entry-header>
 
     <div slot="content">
@@ -17,6 +21,7 @@
 
 <script>
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
+import AnnotationFormPopUp from '../annotation/AnnotationFormPopUp'
 
 export default {
   props: ['component', 'isEdit'],
@@ -48,7 +53,17 @@ export default {
   },
 
   components: {
-    EntryLoadingMessage
+    EntryLoadingMessage,
+    AnnotationFormPopUp
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.secondaryButtons {
+  display: flex;
+  > *:last-child {
+    margin-left: .4em;
+  }
+}
+</style>

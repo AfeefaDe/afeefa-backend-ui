@@ -10,6 +10,7 @@
       <div v-if="itemsUnsorted.length && has.filter" class="searchFilter">
         <div class="inputContainer">
           <input
+            class="browser-default"
             type="text"
             placeholder="Tippen zum Filtern"
             v-model="searchKeyword"
@@ -70,35 +71,46 @@
               <entry-owners :items="item.hosts"></entry-owners>
             </div>
 
-            <div class="entryList__attributes" v-if="item.facet_items">
+            <div class="entryList__attributes" v-if="!has.annotations && item.facet_items">
               <editable-entry-facet-items v-if="has.facetFilter" :entry="item" :bus="bus" />
               <entry-main-facet-items :entry="item" v-else />
 
               <editable-entry-navigation-items :entry="item" v-if="has.facetFilter && navigationIsSelected" />
+            </div>
 
-              <annotation-tag v-if="has.annotations" v-for="annotation in item.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
-
-              <div class="entryList__numbers">
-                <span v-if="item.count_offers">{{ item.count_offers }} {{ $tc('offers.offer', item.count_offers) }}</span>
-                <span v-if="item.count_events">{{ item.count_events }} Veranstaltungen</span>
-                <span v-if="item.count_resource_items">{{ item.count_resource_items }} Ressourcen</span>
-                <span v-if="item.count_projects">{{ item.count_projects }} Projekte</span>
-                <span v-if="item.count_network_members">{{ item.count_network_members }} Mitglieder</span>
+            <div v-if="has.annotations" class="annotations">
+              <div v-for="annotation in item.annotations.slice(0, 3)" :key="annotation.id" class="annotation">
+                <div class="icon">
+                  <i class="material-icons left">assignment</i>
+                </div>
+                <div class="detail">
+                  <strong>{{ annotation.annotationCategory.title}}</strong><br>
+                  {{ annotation.detail}}
+                </div>
               </div>
 
-              <div class="entryList__status entryList--lightColor" v-if="has.updated_at">
-                {{ $t('status.changed') }}
-                {{item.updated_at | formatDateAbsolute}}
-                <span>({{item.updated_at | formatDateRelative}})</span>
-                <span v-if="item.last_editor"><br>von {{ item.last_editor.name }} <span v-if="item.last_editor.organization">({{ item.last_editor.organization }})</span></span>
-              </div>
+            </div>
 
-              <div class="entryList__status entryList--lightColor" v-if="has.created_at">
-                {{ $t('status.added') }}
-                {{item.created_at | formatDateAbsolute}}
-                <span>({{item.created_at | formatDateRelative}})</span>
-                <span v-if="item.creator"><br>von {{ item.creator.name }} <span v-if="item.creator.organization">({{ item.creator.organization }})</span></span>
-              </div>
+            <div class="entryList__numbers" v-if="!has.annotations">
+              <span v-if="item.count_offers">{{ item.count_offers }} {{ $tc('offers.offer', item.count_offers) }}</span>
+              <span v-if="item.count_events">{{ item.count_events }} Veranstaltungen</span>
+              <span v-if="item.count_resource_items">{{ item.count_resource_items }} Ressourcen</span>
+              <span v-if="item.count_projects">{{ item.count_projects }} Projekte</span>
+              <span v-if="item.count_network_members">{{ item.count_network_members }} Mitglieder</span>
+            </div>
+
+            <div class="entryList__status entryList--lightColor" v-if="has.updated_at">
+              {{ $t('status.changed') }}
+              {{item.updated_at | formatDateAbsolute}}
+              <span>({{item.updated_at | formatDateRelative}})</span>
+              <span v-if="item.last_editor"><br>von {{ item.last_editor.name }} <span v-if="item.last_editor.organization">({{ item.last_editor.organization }})</span></span>
+            </div>
+
+            <div class="entryList__status entryList--lightColor" v-if="has.created_at">
+              {{ $t('status.added') }}
+              {{item.created_at | formatDateAbsolute}}
+              <span>({{item.created_at | formatDateRelative}})</span>
+              <span v-if="item.creator"><br>von {{ item.creator.name }} <span v-if="item.creator.organization">({{ item.creator.organization }})</span></span>
             </div>
           </div>
 
@@ -356,20 +368,14 @@ export default {
   }
 
   input {
-    margin: 0;
-    border: none !important;
-    box-shadow: none !important;
-    background-color: $white;
-    padding: .4em;
     padding-right: 2em;
-    width: 150px;
-    height: auto;
+    width: 200px;
   }
 
   a {
     position: absolute;
-    top: .5em;
-    right: .5em;
+    top: .6em;
+    right: .6em;
   }
 
   i {
@@ -416,6 +422,24 @@ export default {
 
   &__date {
     margin-bottom: .5em;
+  }
+
+  .annotations {
+    max-width: 80%;
+    margin: 1.2em 0;
+    .annotation {
+      margin-top: .5em;
+      display: flex;
+
+      .icon {
+        width: 34px;
+        color: $blueHightlight;
+      }
+
+      .detail {
+        flex-grow: 1;
+      }
+    }
   }
 
   .entryListItemOwners {

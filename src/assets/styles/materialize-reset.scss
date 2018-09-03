@@ -1,23 +1,63 @@
 /* stylelint-disable selector-class-pattern */
 
-input[type=text].browser-default {
-  border: 1px solid #DDDDDD;
-  background-color: white;
-  margin: 0;
-  padding: 3px;
-  height: auto;
-  line-height: 1em;
+select.browser-default {
+  width: auto;
+}
 
-  &:focus {
-    border: 1px solid #DDDDDD;
-    box-shadow: none;
+label.browser-default {
+  display: table; // block but not 100% width
+  font-size: .9rem;
+
+  + input,
+  + select,
+  + textarea,
+  + input[type=checkbox] + label {
+    margin-top: .5em;
+  }
+
+  .hint {
+    margin-left: .3em;
   }
 }
 
-select.browser-default {
-  padding: 2px 0;
-  height: auto;
-  line-height: 1em;
+input.browser-default,
+select.browser-default,
+textarea.browser-default {
+  width: 100%;
+  max-width: 1000px;
+  outline: none;
+  height: 2.5em;
+  line-height: 2.5em;
+  padding: 0 .8em;
+  display: block;
+
+  border: 1px solid $gray10;
+  background-color: $white;
+  border-radius: 5px;
+
+  &:focus {
+    background-color: white;
+    border: 1px solid $gray20;
+  }
+}
+
+input.browser-default,
+select.browser-default,
+textarea.browser-default {
+  &.validation-error {
+    border-color: #EECCCC;
+  }
+}
+
+textarea.browser-default {
+  min-height: 8rem;
+  max-height: 400px;
+  line-height: 1.5em;
+  padding: .8em;
+
+  &:not(:focus) {
+    overflow: hidden !important; // override autosize element prop
+  }
 }
 
 /* stylelint-enable selector-class-pattern */

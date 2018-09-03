@@ -4,61 +4,58 @@
     <entry-detail-header-buttons :entry="event" :routeConfig="routeConfig" slot="headerButtons" v-if="event" />
 
     <div v-if="event">
-      <image-container
-        :image-url="event.media_url">
-      </image-container>
+      <image-container :image-url="event.media_url" />
 
-      <div class="splitView">
-        <div class="entryDetail splitView__splitViewChild">
+      <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
+        <section slot="overview">
+          <div class="splitView">
+            <div class="entryDetail splitView__splitViewChild">
 
-          <entry-detail-property
-            :name="$tc('entries.date')"
-            :iconName="'date_range'">
-              {{ event | formatEventDate }}
-              <span>({{event.date_start | formatDateRelative}})</span>
-          </entry-detail-property>
+              <entry-detail-property
+                :name="$tc('entries.date')"
+                :iconName="'date_range'">
+                  {{ event | formatEventDate }}
+                  <span>({{event.date_start | formatDateRelative}})</span>
+              </entry-detail-property>
 
-          <entry-detail-property name="Veranstalter" iconName="group">
-            <editable-event-hosts :owner="event" relationName="hosts" title="Veranstalter" :showActors="true">
-              <div slot="actor" slot-scope="props">
-                <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
-                  {{ props.actor.title }}
-                </router-link>
+              <entry-detail-property name="Veranstalter" iconName="group">
+                <editable-event-hosts :owner="event" relationName="hosts" title="Veranstalter" :showActors="true">
+                  <div slot="actor" slot-scope="props">
+                    <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
+                      {{ props.actor.title }}
+                    </router-link>
+                  </div>
+                </editable-event-hosts>
+              </entry-detail-property>
+
+              <entry-detail-property
+                :name="$t('entries.description')"
+                iconName="format_align_left"
+                :isMultiline="true">
+                <div v-if="event.short_description">{{event.short_description}}</div>
+              </entry-detail-property>
+
+              <div v-for="(facet, index) in facets" :key="facet.id">
+                <entry-detail-property
+                  :name="facet.title"
+                  :iconName="index ? '' : 'bookmark_border'">
+                  <editable-entry-facet-items :entry="item" :facets="[facet]" :bus="bus" />
+                </entry-detail-property>
               </div>
-            </editable-event-hosts>
-          </entry-detail-property>
-
-          <entry-detail-property
-            :name="$t('entries.description')"
-            iconName="format_align_left"
-            :isMultiline="true">
-            <div v-if="event.short_description">{{event.short_description}}</div>
-          </entry-detail-property>
-
-          <div v-for="(facet, index) in facets" :key="facet.id">
-            <entry-detail-property
-              :name="facet.title"
-              :iconName="index ? '' : 'bookmark_border'">
-              <editable-entry-facet-items :entry="item" :facets="[facet]" :bus="bus" />
-            </entry-detail-property>
-          </div>
-
-          <entry-detail-property
-            :name="$tc('headlines.annotations', event.annotations.length)"
-            :iconName="'label_outline'"
-            v-if="event.annotations.length">
-            <div>
-              <annotation-tag v-for="annotation in event.annotations" :annotation="annotation" :key="annotation.id"></annotation-tag>
             </div>
-          </entry-detail-property>
 
-        </div>
+            <contact-list :item="event" class="splitView__splitViewChild"/>
 
-        <contact-list :item="event" class="splitView__splitViewChild"/>
+            <entry-detail-footer :entry="event"/>
 
-        <entry-detail-footer :entry="event"/>
+          </div>
+        </section>
 
-      </div>
+        <section slot="todos">
+          <annotation-view :entry="event" />
+        </section>
+
+      </tab-bar>
     </div>
 
   </entry-detail>
@@ -73,9 +70,9 @@ import EntryDetailHeaderButtons from '@/components/entry/show/EntryDetailHeaderB
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import ContactList from '@/components/contact/ContactList'
 import EditableEventHosts from '@/components/actor/EditableEventHosts'
-import AnnotationTag from '@/components/AnnotationTag'
 import ImageContainer from '@/components/ImageContainer'
 import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
+import AnnotationView from '@/components/annotation/AnnotationView'
 
 export default {
   mixins: [EntryShowMixin],
@@ -90,6 +87,12 @@ export default {
   computed: {
     event () {
       return this.item
+    },
+
+    tabNames () {
+      let tabNames = ['overview']
+      tabNames.push({name: 'todos', hint: this.event.annotations.length})
+      return tabNames
     }
   },
 
@@ -98,9 +101,9 @@ export default {
     EntryDetailFooter,
     ContactList,
     EditableEventHosts,
-    AnnotationTag,
     ImageContainer,
-    EditableEntryFacetItems
+    EditableEntryFacetItems,
+    AnnotationView
   }
 }
 </script>
