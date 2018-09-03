@@ -28,7 +28,7 @@ export default {
 <style lang="scss" scoped>
 .spinnerModalContainer {
   position: fixed;
-  z-index: $z-index-overlay + 10;
+  z-index: $z-index-loader;
   background-color: black;
   opacity: .5;
   top: 0;
@@ -39,7 +39,7 @@ export default {
 
 .spinnerModal {
   position: fixed;
-  z-index: $z-index-overlay + 11;
+  z-index: $z-index-loader + 1;
   left: 50%;
   top: 30%;
   transform: translateX(-50%);

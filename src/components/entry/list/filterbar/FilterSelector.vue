@@ -339,7 +339,7 @@ export default {
   width: 100%;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.2), 0 2px 10px 0 rgba(0,0,0,0.2);
   padding: .5em;
-  z-index: 2;
+  z-index: $z-index-overlay;
 }
 
 .filters {

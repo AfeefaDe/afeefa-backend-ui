@@ -86,7 +86,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: $z-index-dialog;
   width: 100%;
   height: 100%;
   background-color: black;
@@ -105,7 +105,7 @@ export default {
 .dialog {
   $dialogPaddingTop: 20px;
   position: fixed;
-  z-index: $z-index-overlay;
+  z-index: $z-index-dialog + 1;
   left: 50%;
   top: 1em;
   transform: translate(-50%, 0);

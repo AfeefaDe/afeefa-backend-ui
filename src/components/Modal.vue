@@ -89,7 +89,6 @@ export default {
     cursor: pointer;
     top: 12px;
     right: 12px;
-    z-index: 1;
     i {
       font-size: 24px;
       color: $gray30;

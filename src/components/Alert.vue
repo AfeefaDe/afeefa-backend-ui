@@ -72,7 +72,7 @@ export default {
 <style lang="scss" scoped>
 .alertContainer {
   position: fixed;
-  z-index: $z-index-overlay;
+  z-index: $z-index-alert;
   top: 1em;
   left: 50%;
   transform: translate(-50%, 0);
