@@ -2,7 +2,7 @@
   <div>
     <modal ref="modal" class="modalWindow">
       <div class="modalContent">
-        <h3>Anmerkung hinzufügen</h3>
+        <h3>Aufgabe hinzufügen</h3>
         {{ entry.title }}
         <annotation-form :entry="entry" :annotationToEdit="annotation"
           @save="saved" @close="hideModal"

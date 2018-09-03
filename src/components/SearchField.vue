@@ -64,7 +64,6 @@ export default {
       }, 400)
     },
     filterChanged () {
-      console.log(this.filterCriterion)
       this.updateSearchItems()
     },
     search () {

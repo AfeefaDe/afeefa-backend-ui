@@ -6,13 +6,13 @@
       :isLoading="isLoading"
       :numItems="numTodos"
       :addEntryButton="false"
-      :sort-function="sortByUpdatedAt"
+      :sort-function="sortByAnnotationsUpdatedAt"
       :options="{filter: true, pagination: true, annotations: true, event_date: true}"
       :messages="messages">
 
       <div v-if="!isLoading">
         <select id="annotationCategory" v-model="selectedCategory" class="filterSelect">
-          <option value="all" selected>Alle Anmerkungen</option>
+          <option value="all" selected>Alle Aufgaben</option>
           <option v-for="cat in categories" :key="cat.id" :value="cat.id" v-if="cat.count_entries">
             {{ cat.title }} ({{ cat.count_entries }})
           </option>
@@ -26,7 +26,7 @@
 
 <script>
 import EntryListMixin from '@/components/mixins/EntryListMixin'
-import sortByUpdatedAt from '@/helpers/sort-by-updated-at'
+import { sortByAnnotationsUpdatedAt } from '@/helpers/sort-by-updated-at'
 import TodosQuery from '@/resources/Todos'
 import AnnotationCategory from '@/models/AnnotationCategory'
 import { mapState } from 'vuex'
@@ -38,7 +38,7 @@ export default {
     return {
       Query: TodosQuery,
       categories: [],
-      sortByUpdatedAt,
+      sortByAnnotationsUpdatedAt,
       selectedCategory: 'all',
       messages: {
         headline: () => this.$t('status.all') + ' ' + this.$t('headlines.todos')

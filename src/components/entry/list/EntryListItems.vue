@@ -80,13 +80,18 @@
 
             <div v-if="has.annotations" class="annotations">
               <div v-for="annotation in item.annotations.slice(0, 1)" :key="annotation.id" class="annotation">
-                <!-- <entry-icon :item="annotation" /> -->
                 <div class="details">
                   <span class="category">{{ annotation.annotationCategory.title}}:</span>
                   <span class="detail">{{ annotation.detail}}</span>
                   <span v-if="item.annotations.length > 1" class="moreAnnotations">
                     und {{ item.annotations.length - 1 }} weitere
                   </span>
+                </div>
+
+                <div class="entryList__status entryList--lightColor">
+                  {{ $t('status.changed') }}
+                  <span>{{annotation.updated_at | formatDateRelative}}</span>
+                  <span v-if="annotation.last_editor"> von {{ annotation.last_editor.name }} <span v-if="annotation.last_editor.organization">({{ annotation.last_editor.organization }})</span></span>
                 </div>
               </div>
 
@@ -429,16 +434,10 @@ export default {
   }
 
   .annotations {
-    margin-top: .4em;
+    margin-top: .5em;
     .annotation {
-      display: flex;
-      align-items: top;
-
       &:not(:first-child) {
         margin-top: .2em;
-      }
-      &:not(:last-child) {
-        margin-bottom: .2em;
       }
 
       .entryIcon {
@@ -464,6 +463,10 @@ export default {
         color: $gray30;
         white-space: nowrap;
         margin-left: .1em;
+      }
+
+      .entryList__status {
+        margin-top: .5em;
       }
     }
   }

@@ -91,7 +91,7 @@ export default {
           this.$emit('save')
 
           this.$store.dispatch('messages/showAlert', {
-            description: `Die Anmerkung wurde ${this.annotation.id ? 'geändert' : 'hinzugefügt'}.`
+            description: `Die Aufgabe wurde ${this.annotation.id ? 'geändert' : 'hinzugefügt'}.`
           })
         })
       })

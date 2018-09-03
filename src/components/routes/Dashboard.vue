@@ -101,7 +101,7 @@
 <script>
 import EntryListItems from '@/components/entry/list/EntryListItems'
 import SearchItems from '@/components/SearchItems'
-import sortByUpdatedAt from '@/helpers/sort-by-updated-at'
+import { sortByAnnotationsUpdatedAt } from '@/helpers/sort-by-updated-at'
 import sortByCreatedAt from '@/helpers/sort-by-created-at'
 import { mapState } from 'vuex'
 import Event from '@/models/Event'
@@ -114,7 +114,7 @@ export default {
     return {
       todos: [],
       todosLoading: true,
-      todosSort: sortByUpdatedAt,
+      todosSort: sortByAnnotationsUpdatedAt,
 
       orgas: [],
       orgasLoading: true,

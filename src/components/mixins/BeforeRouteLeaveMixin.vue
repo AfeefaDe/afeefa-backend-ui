@@ -5,7 +5,6 @@ export default {
 
     if (form.$canLeaveRoute) {
       // goto login form after api/logout click
-      console.log('before route leave', to)
       if (to.name === 'login') {
         next()
         return

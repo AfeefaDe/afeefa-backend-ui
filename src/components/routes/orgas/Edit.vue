@@ -8,33 +8,20 @@
       </image-container>
 
       <form @submit.prevent="save" class="entryForm" novalidate>
+        <title-input :item="orga" />
+        <description-form :item="orga" class="formElement marginTop" />
 
-        <tab-bar
-          :tabNames="tabNames"
-          @setCurrentTab="setCurrentTab">
+        <media-image-input :item="orga" propertyName="media_url" :image-error="imageError" class="formElement marginTop" />
 
-          <section slot="general">
-            <title-input :item="orga" />
-            <description-form :item="orga" class="formElement marginTop" />
+        <help-wanted-form :item="orga" class="formElement marginTop" />
 
-            <media-image-input :item="orga" propertyName="media_url" :image-error="imageError" class="formElement marginTop" />
-
-            <help-wanted-form :item="orga" class="formElement marginTop" />
-
-            <input-field
-              class="formElement marginTop"
-              field-name="facebook_id"
-              v-model="orga.facebook_id"
-              validate="min:15|max:64"
-              label="Facebook ID für Events">
-            </input-field>
-          </section>
-
-          <section slot="resources">
-            <resource-form :item="orga" />
-          </section>
-
-        </tab-bar>
+        <input-field
+          class="formElement marginTop"
+          field-name="facebook_id"
+          v-model="orga.facebook_id"
+          validate="min:15|max:64"
+          label="Facebook ID für Events">
+        </input-field>
 
         <entry-edit-footer
           :item="orga"
@@ -57,7 +44,6 @@ import OrgaRouteConfig from './OrgaRouteConfig'
 import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 
 import ImageContainer from '@/components/ImageContainer'
-import ResourceForm from '@/components/entry/edit/ResourceForm'
 import TagSelector from '@/components/entry/edit/TagSelector'
 import HelpWantedForm from '@/components/entry/edit/HelpWantedForm'
 import TitleInput from '@/components/entry/edit/TitleInput'
@@ -80,14 +66,6 @@ export default {
   computed: {
     orga () {
       return this.item
-    },
-
-    tabNames () {
-      const tabNames = ['general']
-      if (this.currentUser && this.currentUser.area === 'dresden') {
-        tabNames.push({name: 'resources', hint: this.item.resource_items.length})
-      }
-      return tabNames
     }
   },
 
@@ -114,7 +92,6 @@ export default {
     EntryEditFooter,
 
     TitleInput,
-    ResourceForm,
     TagSelector,
     HelpWantedForm,
     DescriptionForm,
