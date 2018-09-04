@@ -29,6 +29,7 @@ import InputField from '@/components/InputField'
 import EntryHeader from '@/components/entry/EntryHeader'
 import EntryDetail from '@/components/entry/EntryDetail'
 import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
+import EntryDetailSection from '@/components/entry/show/EntryDetailSection'
 import EntryIcon from '@/components/entry/EntryIcon'
 
 import TreeItemTag from '@/components/tree/TreeItemTag'
@@ -43,6 +44,7 @@ Vue.component('InputField', InputField)
 Vue.component('EntryHeader', EntryHeader)
 Vue.component('EntryDetail', EntryDetail)
 Vue.component('EntryDetailProperty', EntryDetailProperty)
+Vue.component('EntryDetailSection', EntryDetailSection)
 Vue.component('EntryIcon', EntryIcon)
 
 Vue.component('TreeItemTag', TreeItemTag)
