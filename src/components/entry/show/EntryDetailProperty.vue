@@ -1,5 +1,5 @@
 <template>
-  <li class="detailProperty">
+  <div class="detailProperty">
     <span class="detailProperty__propertyIcon">
       <i class="material-icons" v-if="iconName">{{ iconName }}</i>
       <slot name="icon" v-else>
@@ -18,7 +18,7 @@
         <slot />
       </p>
     </div>
-  </li>
+  </div>
 </template>
 
 <script>
@@ -34,7 +34,7 @@ export default {
   margin: 2em 0;
 
   &:first-child {
-    margin-top: 1em;
+    margin-top: 0;
   }
 
   &__propertyIcon {

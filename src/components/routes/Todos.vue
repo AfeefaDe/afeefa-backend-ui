@@ -6,12 +6,12 @@
       :isLoading="isLoading"
       :numItems="numTodos"
       :addEntryButton="false"
-      :sort-function="sortByAnnotationsUpdatedAt"
+      :customSortOrders="[{ sort: sortByAnnotationsUpdatedAt }]"
       :options="{filter: true, pagination: true, annotations: true, event_date: true}"
       :messages="messages">
 
       <div v-if="!isLoading">
-        <select id="annotationCategory" v-model="selectedCategory" class="filterSelect">
+        <select id="annotationCategory" v-model="selectedCategory" class="browser-default filterSelect">
           <option value="all" selected>Alle Aufgaben</option>
           <option v-for="cat in categories" :key="cat.id" :value="cat.id" v-if="cat.count_entries">
             {{ cat.title }} ({{ cat.count_entries }})
@@ -78,7 +78,6 @@ export default {
 <style lang="scss" scoped>
 .filterSelect {
   display: block;
-  margin-bottom: .5em;
   width: auto;
   height: auto;
 }

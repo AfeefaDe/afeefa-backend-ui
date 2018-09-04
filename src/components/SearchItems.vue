@@ -16,7 +16,7 @@
       <span v-if="status">{{ status }}</span>
       <entry-list-items
         :items="items"
-        :sort-function="sortByTitle"
+        :customSortOrders="[{ sort: sortByTitle }]"
         :options="{pagination: true}"
         v-else-if="items"
         :modifyRoute="modifyRoute">

@@ -8,6 +8,12 @@
       <selected-filters v-if="has.facetFilter" class="facetsFilter" />
 
       <div v-if="itemsUnsorted.length && has.filter" class="searchFilter">
+        <active-state-selector v-if="has.facetFilter" />
+
+        <sort-order-selector v-if="has.sort" :customSortOrders="customSortOrders" @change="sortOrderChanged" />
+
+        <slot name="navigation" />
+
         <div class="inputContainer">
           <input
             class="browser-default"
@@ -91,7 +97,7 @@
                 <div class="entryList__status entryList--lightColor">
                   {{ $t('status.changed') }}
                   <span>{{annotation.updated_at | formatDateRelative}}</span>
-                  <span v-if="annotation.last_editor"> von {{ annotation.last_editor.name }} <span v-if="annotation.last_editor.organization">({{ annotation.last_editor.organization }})</span></span>
+                  <!-- <span v-if="annotation.last_editor"> von {{ annotation.last_editor.name }} <span v-if="annotation.last_editor.organization">({{ annotation.last_editor.organization }})</span></span> -->
                 </div>
               </div>
 
@@ -105,19 +111,20 @@
               <span v-if="item.count_network_members">{{ item.count_network_members }} Mitglieder</span>
             </div>
 
-            <div class="entryList__status entryList--lightColor" v-if="has.updated_at">
+            <div class="entryList__status entryList--lightColor" v-if="showUpdatedAt">
               {{ $t('status.changed') }}
-              {{item.updated_at | formatDateAbsolute}}
-              <span>({{item.updated_at | formatDateRelative}})</span>
-              <span v-if="item.last_editor"> von {{ item.last_editor.name }} <span v-if="item.last_editor.organization">({{ item.last_editor.organization }})</span></span>
+              <span>{{item.updated_at | formatDateRelative}}</span>
+              <!-- {{item.updated_at | formatDateAbsolute}} -->
+              <!-- <span>{{item.updated_at | formatDateRelative}} ({{item.updated_at | formatDateAbsolute}})</span> -->
+              <!-- <span v-if="item.last_editor"> von {{ item.last_editor.name }} <span v-if="item.last_editor.organization">({{ item.last_editor.organization }})</span></span> -->
             </div>
 
-            <div class="entryList__status entryList--lightColor" v-if="has.created_at">
+            <div class="entryList__status entryList--lightColor" v-if="showCreatedAt">
               {{ $t('status.added') }}
               <!-- {{item.created_at | formatDateAbsolute}} -->
               <!-- <span>({{item.created_at | formatDateRelative}})</span> -->
               <span>{{item.created_at | formatDateRelative}}</span>
-              <span v-if="item.creator"> von {{ item.creator.name }} <span v-if="item.creator.organization">({{ item.creator.organization }})</span></span>
+              <!-- <span v-if="item.creator"> von {{ item.creator.name }} <span v-if="item.creator.organization">({{ item.creator.organization }})</span></span> -->
             </div>
           </div>
 
@@ -153,6 +160,8 @@ import EditableEntryNavigationItems from '@/components/entry/facets/EditableEntr
 import EntryOwners from '@/components/actor/EntryOwners'
 import SelectedFilters from '@/components/entry/list/filterbar/SelectedFilters'
 import FilterIcons from '@/components/entry/list/filterbar/FilterIcons'
+import SortOrderSelector from '@/components/entry/list/filterbar/SortOrderSelector'
+import ActiveStateSelector from '@/components/entry/list/filterbar/ActiveStateSelector'
 import { mapState } from 'vuex'
 
 export default {
@@ -161,8 +170,7 @@ export default {
     lazyLoad: {default: false},
     isLoading: {},
     limit: {},
-    sortFunction: {},
-    sortOrder: {},
+    customSortOrders: {},
     options: {},
     modifyRoute: {default: true}
   },
@@ -176,10 +184,17 @@ export default {
       currentPage: 1,
       currentNumItems: 0,
       searchKeyword: '',
+
+      currentSortFunction: null,
+      currentSortOrder: null,
+      currentSortField: null,
+
       bus: this,
+
       has: {
         facetFilter: options.facetFilter,
         filter: options.filter,
+        sort: options.sort,
         pagination: options.pagination,
         annotations: options.annotations,
         updated_at: options.updated_at,
@@ -194,6 +209,12 @@ export default {
 
   created () {
     this.initPageProperties()
+
+    if (!this.has.sort && this.customSortOrders) {
+      this.currentSortFunction = this.customSortOrders[0].sort
+      this.currentSortOrder = this.customSortOrders[0].order
+      this.currentSortField = this.customSortOrders[0].field
+    }
   },
 
   watch: {
@@ -230,10 +251,34 @@ export default {
 
     itemsUnsorted () {
       return this.has.facetFilter ? this.filteredEntries : this.items
+    },
+
+    showCreatedAt () {
+      return this.has.created_at && this.currentSortField === 'created_at'
+    },
+
+    showUpdatedAt () {
+      return this.has.updated_at && this.currentSortField === 'updated_at'
     }
   },
 
   methods: {
+    sortOrderChanged (sortOrder) {
+      this.currentSortFunction = sortOrder.sortFunction
+      this.currentSortOrder = sortOrder.sortOrder
+      this.currentSortField = sortOrder.sortField
+
+      if (this.currentSortField === 'active') {
+        if (this.items.length) {
+          const items = this.items.filter(i => i.active === (this.currentSortOrder === 'DESC'))
+          this.$store.dispatch('facetFilters/initEntries', {facetOwnerType: items[0].facetOwnerType, entries: items})
+          return
+        }
+      }
+
+      this.initSortedItems()
+    },
+
     initSortedItems () {
       if (this.initSortedItemsNext) {
         return
@@ -243,7 +288,8 @@ export default {
       this.$nextTick(() => {
         let items = this.has.facetFilter ? this.filteredEntries : this.items
         items = items.filter(i => i.title.toLowerCase().includes(this.searchKeyword.toLowerCase()))
-        items = this.sortFunction ? this.sortFunction(items, this.sortOrder) : items
+        items = this.currentSortFunction ? this.currentSortFunction(items, this.currentSortOrder) : items
+
         this.currentNumItems = items.length // eslint-disable-line vue/no-side-effects-in-computed-properties
         if (this.limit) {
           items = items.slice(0, this.limit)
@@ -338,7 +384,9 @@ export default {
     SelectedFilters,
     EditableEntryNavigationItems,
     EntryMainFacetItems,
-    FilterIcons
+    FilterIcons,
+    SortOrderSelector,
+    ActiveStateSelector
   }
 }
 </script>
@@ -367,8 +415,13 @@ export default {
 }
 
 .searchFilter {
+  display: inline-flex;
+  align-items: center;
+
   .inputContainer {
-    display: inline-block;
+    &:not(:first-child) {
+      margin-left: .5em;
+    }
     position: relative;
   }
 
@@ -377,15 +430,24 @@ export default {
     width: 200px;
   }
 
+  input, /deep/ select {
+    height: 2em;
+    padding: 0 .4em;
+  }
+
   a {
     position: absolute;
-    top: .6em;
-    right: .6em;
+    top: .35em;
+    right: .35em;
   }
 
   i {
     color: $gray80;
     font-size: 18px;
+  }
+
+  .sortOrderSelector {
+    margin-left: .5em;
   }
 }
 

@@ -15,16 +15,14 @@
       </afeefa-header>
 
       <div slot="content">
-        <slot></slot>
-
         <slot name="items">
           <entry-list-items
             :items="items"
             :lazyLoad="lazyLoad"
             :isLoading="isLoading"
-            :sort-function="sortFunction"
-            :sort-order="sortOrder"
+            :customSortOrders="customSortOrders"
             :options="options">
+            <slot slot="navigation"></slot>
           </entry-list-items>
         </slot>
       </div>
@@ -37,7 +35,7 @@
 import EntryListItems from '@/components/entry/list/EntryListItems'
 
 export default {
-  props: ['items', 'lazyLoad', 'isLoading', 'numItems', 'facetOwnerType', 'sortFunction', 'sortOrder', 'options', 'messages', 'addEntryButton'],
+  props: ['items', 'lazyLoad', 'isLoading', 'numItems', 'facetOwnerType', 'customSortOrders', 'options', 'messages', 'addEntryButton'],
 
   computed: {
     currentNumItems () {
@@ -46,7 +44,7 @@ export default {
   },
 
   watch: {
-    items (neu, alt) {
+    items () {
       this.$store.dispatch('facetFilters/initEntries', {facetOwnerType: this.facetOwnerType, entries: this.items})
     }
   },

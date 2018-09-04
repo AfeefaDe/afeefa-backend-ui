@@ -6,7 +6,7 @@
     :numItems="items.length"
     facetOwnerType="Offer"
     addEntryButton="offers.new"
-    :options="{facetFilter: true, filter: true, pagination: true, created_at: true}"
+    :options="{facetFilter: true, filter: true, sort: true, pagination: true, created_at: true, updated_at: true}"
     :messages="messages">
   </entry-list>
 </template>

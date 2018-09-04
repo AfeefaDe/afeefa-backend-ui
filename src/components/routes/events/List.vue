@@ -14,9 +14,8 @@
           :items="filteredEntries"
           :lazyLoad="true"
           :isLoading="isLoading"
-          :sort-function="sortFunction"
-          :options="{facetFilter: true, filter: true, pagination: true, event_date: true}"
-          :sort-order="sortOrder">
+          :customSortOrders="customSortOrders"
+          :options="{facetFilter: true, filter: true, sort: true, pagination: true, event_date: true, created_at: true, updated_at: true}">
         </entry-list-items>
 
         <entry-list-items
@@ -24,9 +23,8 @@
           :items="filteredEntries"
           :lazyLoad="true"
           :isLoading="isLoading"
-          :sort-function="sortFunction"
-          :options="{facetFilter: true, filter: true, pagination: true, event_date: true}"
-          :sort-order="sortOrder">
+          :customSortOrders="customSortOrders"
+          :options="{facetFilter: true, filter: true, sort: true, pagination: true, event_date: true, created_at: true, updated_at: true}">
         </entry-list-items>
       </tab-bar>
     </div>
@@ -75,6 +73,12 @@ export default {
       return [
         { name: 'upcomingEvents', hint: this.numEvents.upcoming },
         { name: 'pastEvents', hint: this.numEvents.past }
+      ]
+    },
+
+    customSortOrders () {
+      return [
+        { name: 'Datum', sort: this.sortFunction, order: this.sortOrder }
       ]
     }
   },

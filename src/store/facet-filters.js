@@ -12,9 +12,11 @@ function facetWithoutEntriesIsSelected (state, facet) {
   return state.selectedFacetsWithoutEntries.includes(facet)
 }
 
-function getFilteredEntries (state) {
-  const entries = getFilteredEntriesWithoutNavigation(state)
+function getFilteredEntriesWithNavigation (state) {
+  // apply facet filters
+  const entries = state.filteredEntriesWithoutNavigation
 
+  // apply navigation filter
   if (state.selectedNavigationItem) {
     if (state.selectedNavigationItem._isNavigationWithoutEntry) {
       return facetItems.getEntriesWithoutNavigationItem(entries)
@@ -27,12 +29,18 @@ function getFilteredEntries (state) {
 }
 
 function getFilteredEntriesWithoutNavigation (state) {
+  let entries = state.entries
+  if (state.selectedActiveState.value !== 'all') {
+    entries = entries.filter(e => e.active === (state.selectedActiveState.value === 'active'))
+  }
   return facetItems.getEntriesForFacetItemsAndWithoutFacets(
     state.selectedFacetItems,
     state.selectedFacetsWithoutEntries,
-    state.entries
+    entries
   )
 }
+
+let initScheduled = false
 
 export default {
   namespaced: true,
@@ -50,6 +58,13 @@ export default {
 
     navigationIsSelected: false,
     selectedNavigationItem: null,
+
+    activeStates: [
+      { name: 'Alle', value: 'all' },
+      { name: 'Aktive', value: 'active' },
+      { name: 'Inaktive', value: 'inactive' }
+    ],
+    selectedActiveState: null,
 
     filteredEntries: [],
     filteredEntriesWithoutNavigation: []
@@ -81,6 +96,8 @@ export default {
 
       state.navigationIsSelected = false
       state.selectedNavigationItem = null
+
+      state.selectedActiveState = state.activeStates[0]
     },
 
     initSelectedFacets (state) {
@@ -124,8 +141,17 @@ export default {
     },
 
     initFilteredEntries (state) {
-      state.filteredEntries = getFilteredEntries(state)
-      state.filteredEntriesWithoutNavigation = getFilteredEntriesWithoutNavigation(state)
+      if (initScheduled) {
+        return
+      }
+
+      initScheduled = true
+
+      setTimeout(() => {
+        state.filteredEntriesWithoutNavigation = getFilteredEntriesWithoutNavigation(state)
+        state.filteredEntries = getFilteredEntriesWithNavigation(state)
+        initScheduled = false
+      })
     },
 
     toggleNavigationSelection (state) {
@@ -153,6 +179,10 @@ export default {
         // any selected
         state.selectedNavigationItem = navigationItem
       }
+    },
+
+    setActiveState (state, activeState) {
+      state.selectedActiveState = activeState
     }
   },
 
@@ -241,6 +271,19 @@ export default {
 
     selectOrDeselectNavigationItem ({commit}, navigationItem) {
       commit('toggleNavigationItemSelection', navigationItem)
+
+      commit('initFilteredEntries')
+    },
+
+    setActiveState ({state, commit}, activeState) {
+      // reset all filters
+      commit('initEntries', {
+        facetOwnerType: state.facetOwnerType,
+        entries: state.entries
+      })
+      commit('initSelectedFacets')
+
+      commit('setActiveState', activeState)
 
       commit('initFilteredEntries')
     }

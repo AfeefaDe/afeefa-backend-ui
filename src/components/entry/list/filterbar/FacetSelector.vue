@@ -82,7 +82,7 @@ export default {
 
 <style lang="scss" scoped>
 .facetSelector {
-  padding: .5em;
+  padding: 1em;
 }
 
 .facetCheckbox {

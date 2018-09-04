@@ -18,7 +18,7 @@
             :lazyLoad="true"
             :isLoading="todosLoading"
             :limit="15"
-            :sort-function="todosSort"
+            :customSortOrders="[{ sort: todosSort }]"
             :options="{annotations: true}">
           </entry-list-items>
           <router-link :to="{name: 'todos'}" v-if="!todosLoading">{{ $t('status.all') }} {{ $t('headlines.todos') }} ({{ numTodos }})</router-link>
@@ -42,7 +42,7 @@
             :lazyLoad="true"
             :isLoading="offersLoading"
             :limit="5"
-            :sort-function="offerSort"
+            :customSortOrders="[{ sort: offerSort, field: 'created_at' }]"
             :options="{created_at: true}">
           </entry-list-items>
           <router-link :to="{name: 'offers.list'}" v-if="!offersLoading">{{ $t('status.all') }} {{ $tc('offers.offer', numOffers) }} ({{ numOffers }})</router-link>
@@ -64,7 +64,7 @@
             :lazyLoad="true"
             :isLoading="orgasLoading"
             :limit="5"
-            :sort-function="orgaSort"
+            :customSortOrders="[{ sort: orgaSort, field: 'created_at' }]"
             :options="{created_at: true}">
           </entry-list-items>
           <router-link :to="{name: 'orgas.list'}" v-if="!orgasLoading">{{ $t('status.all') }} {{ $tc('headlines.organisations', numOrgas) }} ({{ numOrgas }})</router-link>
@@ -86,7 +86,7 @@
             :lazyLoad="true"
             :isLoading="eventsLoading"
             :limit="5"
-            :sort-function="eventsSort"
+            :customSortOrders="[{ sort: eventsSort, field: 'created_at' }]"
             :options="{created_at: true, event_date: true}">
           </entry-list-items>
           <router-link :to="{name: 'events.list'}" v-if="!eventsLoading">{{ $t('status.all') }} {{ $tc('headlines.events', 2) }} ({{numEvents}})</router-link>

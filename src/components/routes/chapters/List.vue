@@ -3,7 +3,7 @@
     :items="items"
     :isLoading="isLoading"
     addEntryButton="chapters.new"
-    :sort-function="sortByTitle"
+    :customSortOrders="[{ sort: sortByTitle }]"
     :options="{filter: true, pagination: true, hideTypeIcon: true, linkToItem: 'edit'}"
     :messages="messages">
   </entry-list>

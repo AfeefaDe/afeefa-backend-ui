@@ -43,6 +43,7 @@
               color="#999999"
               :more="false"
               :hint="selectedNavigationItem ? 1 : 0"
+              :selected="navigationFilterIsSelected"
               :checkbox="false" />
           </div>
         </div>
@@ -247,6 +248,9 @@ export default {
 
     selectOrDeselectNavigationItem (navigationItem) {
       this.$store.dispatch('facetFilters/selectOrDeselectNavigationItem', navigationItem)
+      this.$nextTick(() => {
+        this.$refs.popUp.reposition()
+      })
     },
 
     countEntriesForNavigationItem (navigationItem) {
@@ -307,19 +311,18 @@ export default {
 
 <style lang="scss" scoped>
 .filterSelector {
-  padding: .5em;
-  width: 250px;
+  padding: 1em;
+  width: auto;
 }
 
 .selectedFacet {
   width: 100%;
   background-color: $white;
   margin-bottom: .8em;
+  line-height: 2em;
 
   /deep/ .facetItem {
     width: 100%;
-    // border: none;
-
     .more:before {
       top: -.1em;
       transform: rotate(135deg) scale(.7);
@@ -328,6 +331,7 @@ export default {
 }
 
 .facetChooser {
+  line-height: 2em;
   /deep/ .facetItem {
     margin-bottom: .2em;
     width: 100%;
@@ -338,12 +342,21 @@ export default {
   background-color: white;
   width: 100%;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.2), 0 2px 10px 0 rgba(0,0,0,0.2);
-  padding: .5em;
+  padding: 1.5em;
   z-index: $z-index-overlay;
 }
 
 .filters {
-  font-size: .9em;
+  font-size: 14px;
+
+  /deep/ .facetItem {
+    border-left-width: 0;
+    padding: 0 0 .1em;
+
+    .checkbox {
+      margin-left: 0;
+    }
+  }
 }
 
 .navigationItem {
@@ -352,13 +365,12 @@ export default {
   }
 }
 
+.facetItemTag + .navigationSubItem {
+  margin-top: .1em;
+}
+
 .navigationSubItem {
-  /deep/ .facetItem {
-    padding-left: 0;
-    border-left-width: 0;
-  }
-  font-size: .9em;
-  margin-left: 1em;
+  margin-left: -.1em;
 }
 </style>
 

@@ -175,8 +175,7 @@
               <entry-list-items
                 :items="orga.upcoming_events"
                 v-if="orga.upcoming_events.length"
-                :sort-function="sortByDateMixin"
-                sort-order="ASC"
+                :customSortOrders="[{ sort: sortByDateMixin, order: 'ASC' }]"
                 :options="{pagination: true, event_date: true}">
               </entry-list-items>
             </div>
@@ -184,8 +183,7 @@
               <entry-list-items
                 :items="orga.past_events"
                 v-if="orga.past_events.length"
-                :sort-function="sortByDateStart"
-                sort-order="DESC"
+                :customSortOrders="[{ sort: sortByDateStart, order: 'DESC' }]"
                 :options="{pagination: true, event_date: true}">
               </entry-list-items>
             </div>
@@ -255,14 +253,14 @@ export default {
       //   }
       // if (this.orga.network_members.length) {
       //   }
-      // if (this.currentUser.area === 'dresden' && this.orga.resource_items.length) {
-      //   }
       tabNames.push({name: 'todos', hint: this.orga.annotations.length})
       tabNames.push({name: 'offers', hint: this.orga.offers.length})
       tabNames.push({name: 'events', hint: this.orga.upcoming_events.length + this.orga.past_events.length})
-      tabNames.push({name: 'projects', hint: this.orga.projects.length})
-      tabNames.push({name: 'networkMembers', hint: this.orga.network_members.length})
-      tabNames.push({name: 'resources', hint: this.orga.resource_items.length})
+      // tabNames.push({name: 'projects', hint: this.orga.projects.length})
+      // tabNames.push({name: 'networkMembers', hint: this.orga.network_members.length})
+      if (this.currentUser.area === 'dresden') {
+        // tabNames.push({name: 'resources', hint: this.orga.resource_items.length})
+      }
       return tabNames
     }
   },

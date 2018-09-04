@@ -11,7 +11,9 @@
           <input type="checkbox" :id="'facetItemTag' + item.id" class="filled-in checkboxSmall gray" :checked="checked" />
           <label :for="'facetItemTag' + item.id"></label>
         </div>
-        {{ title || item.title }}
+        <div class="title">
+          {{ title || item.title }}
+        </div>
         <span class="hint" v-if="hint">{{ hint }}</span>
       </div>
       <div class="more" v-if="more !== false" :style="{opacity: more ? 1 : 0}"></div>
@@ -41,8 +43,9 @@ export default {
 }
 
 .checkbox {
+  margin-top: -.3em;
   margin-left: .2em;
-  margin-right: .3em;
+  margin-right: .4em;
 }
 
 .facetItem {
@@ -75,6 +78,7 @@ export default {
 
   .content {
     display: flex;
+    align-items: center;
   }
 
   .hint {
