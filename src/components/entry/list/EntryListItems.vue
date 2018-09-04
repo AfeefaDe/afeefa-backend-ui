@@ -465,10 +465,10 @@ export default {
     display: flex;
     align-items: center;
     &:not(:first-child) {
-      padding-top: 1em;
+      padding-top: 1.5em;
     }
-    padding-bottom: 1em;
-    padding-right: 1em;
+    padding-bottom: 1.5em;
+    padding-right: 4em;
   }
 
   li:last-child {
