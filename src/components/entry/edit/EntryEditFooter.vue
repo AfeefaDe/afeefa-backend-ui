@@ -13,7 +13,7 @@
         {{ $t('buttons.cancel') }}
       </router-link>
 
-      <router-link :to="{name: this.routeName + '.list'}" class="btn waves-effect waves-light gray" v-else-if="has.cancel && !item.id">
+      <router-link :to="cancelAddUrl" class="btn waves-effect waves-light gray" v-else-if="has.cancel && !item.id">
         <i class="material-icons left">cancel</i>
         {{ $t('buttons.cancel') }}
       </router-link>
@@ -40,6 +40,16 @@ export default {
       has: {
         cancel: this.hasCancel === undefined ? true : this.hasCancel,
         remove: this.hasRemove === undefined ? true : this.hasRemove
+      }
+    }
+  },
+
+  computed: {
+    cancelAddUrl () {
+      if (this.$route.query.actorId) {
+        return {name: 'orgas.show', params: {id: this.$route.query.actorId}}
+      } else {
+        return {name: this.routeName + '.list'}
       }
     }
   },

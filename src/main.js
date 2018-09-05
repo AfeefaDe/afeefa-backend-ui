@@ -26,6 +26,7 @@ import TabBar from '@/components/TabBar'
 import TextInput from '@/components/TextInput'
 import InputField from '@/components/InputField'
 
+import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryHeader from '@/components/entry/EntryHeader'
 import EntryDetail from '@/components/entry/EntryDetail'
 import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
@@ -41,6 +42,7 @@ Vue.component('TabBar', TabBar)
 Vue.component('TextInput', TextInput)
 Vue.component('InputField', InputField)
 
+Vue.component('EntryLoadingMessage', EntryLoadingMessage)
 Vue.component('EntryHeader', EntryHeader)
 Vue.component('EntryDetail', EntryDetail)
 Vue.component('EntryDetailProperty', EntryDetailProperty)

@@ -45,7 +45,6 @@
 import Vue from 'vue'
 import TreeItemView from './TreeItemView'
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
-import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 
 export default {
   mixins: [RouteConfigAwareMixin],
@@ -103,8 +102,7 @@ export default {
   },
 
   components: {
-    TreeItemView,
-    EntryLoadingMessage
+    TreeItemView
   }
 }
 </script>

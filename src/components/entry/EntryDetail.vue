@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import AnnotationFormPopUp from '../annotation/AnnotationFormPopUp'
 
 export default {
@@ -53,7 +52,6 @@ export default {
   },
 
   components: {
-    EntryLoadingMessage,
     AnnotationFormPopUp
   }
 }

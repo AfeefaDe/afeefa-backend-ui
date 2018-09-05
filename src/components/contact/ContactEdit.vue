@@ -24,8 +24,6 @@ import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 
 import Contact from '@/models/Contact'
 
-import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
-
 import ContactForm from './ContactForm'
 
 export default {
@@ -78,7 +76,6 @@ export default {
   },
 
   components: {
-    EntryLoadingMessage,
     ContactForm
   }
 }

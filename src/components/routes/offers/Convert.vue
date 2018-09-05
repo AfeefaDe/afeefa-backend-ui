@@ -3,7 +3,7 @@
 
     <entry-header :entry="offer" :isEdit="true" :routeConfig="routeConfig" slot="header" />
 
-    <div slot="content">
+    <div slot="content" v-if="actor">
       <div class="info">
         <h2>Akteur in Angebot umwandeln</h2>
         <ul class="browser-default">
@@ -48,43 +48,29 @@
       </form>
     </div>
 
+    <div slot="content" v-else>
+      <entry-loading-message :error="loadingError" :messages="actorMessages" />
+    </div>
+
   </afeefa-page>
 </template>
 
 
 <script>
-import App from 'uidata/model/App'
 import Orga from '@/models/Orga'
-import Offer from '@/models/Offer'
+import ConvertActorToOfferResource from '@/resources/custom/ConvertActorToOffer'
+
 import EntryEditMixin from '@/components/mixins/EntryEditMixin'
 import BeforeRouteLeaveMixin from '@/components/mixins/BeforeRouteLeaveMixin'
 import OfferRouteConfig from './OfferRouteConfig'
+import OrgaRouteConfig from '@/components/routes/orgas/OrgaRouteConfig'
 
 import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 import TitleInput from '@/components/entry/edit/TitleInput'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 import EditableOfferOwners from '@/components/actor/EditableOfferOwners'
 import ContactList from '@/components/contact/ContactList'
-import Resource from 'uidata/resource/Resource'
 
-class ConvertResource extends Resource {
-  url = 'offers/convert_from_actor{/id}'
-
-  getListType () {
-    return 'offers_convert'
-  }
-
-  getItemModel () {
-    return Offer
-  }
-
-  ensureReverseRelationsAfterAddOrSave (offer) {
-    const ensure = super.ensureReverseRelationsAfterAddOrSave(offer)
-    ensure.reloadAlways(App.getRelationByModel(Orga))
-    return ensure
-  }
-}
-const Query = new ConvertResource()
 
 export default {
   mixins: [EntryEditMixin, BeforeRouteLeaveMixin],
@@ -94,17 +80,20 @@ export default {
   data () {
     return {
       actor: null,
-      routeConfig: new OfferRouteConfig(this, this.id)
+      ConvertQuery: null,
+      routeConfig: new OfferRouteConfig(this, this.id),
+      actorMessages: new OrgaRouteConfig(this, this.$route.query.actorId).messages
     }
   },
 
   created () {
+    this.ConvertQuery = new ConvertActorToOfferResource(this.$route.query.actorId)
     this.initActor()
   },
 
   computed: {
     Query () {
-      return Query
+      return this.ConvertQuery
     },
 
     offer () {
@@ -114,7 +103,6 @@ export default {
 
   methods: {
     setActor (actor) {
-      const hasChanges = this.offer.hasChanges()
       if (actor) {
         this.offer.convertFromActorId = actor.id
         this.offer.owners = actor.project_initiators
@@ -125,20 +113,21 @@ export default {
       } else {
         this.offer.owners = []
       }
-      if (!hasChanges) {
-        // prevent raising a dirty form dialog on leaving without changing data
-        this.offer.markSaved()
-      }
+      this.offer.markSaved()
       this.actor = actor
     },
 
     initActor () {
       if (this.$route.query.actorId) {
         Orga.Query.get(this.$route.query.actorId).then(actor => {
-          this.setActor(actor)
+          if (actor) {
+            this.setActor(actor)
+          } else {
+            this.loadingError = true
+          }
         })
       } else {
-        this.setActor(null)
+        this.loadingError = true
       }
     },
 
