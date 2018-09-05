@@ -322,7 +322,13 @@ export default {
 
       Object.keys(idsByType).forEach(type => {
         const Query = idsByType[type].Query
-        Query.getAll({ids: idsByType[type].ids})
+        const ids = idsByType[type].ids
+        while (ids.length) {
+          const currentIds = ids.splice(0, 15)
+          setTimeout(() => {
+            Query.getAll({ids: currentIds})
+          }, 100)
+        }
       })
     },
 
