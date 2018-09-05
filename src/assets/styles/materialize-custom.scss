@@ -19,20 +19,40 @@ a {
 
 .btn, .btn-large {
   background-color: $secondaryBlue;
+  transition: none;
+
+  &:hover {
+    background-color: lighten($secondaryBlue, 8%) !important;
+  }
+
+  &:active {
+    background-color: lighten($secondaryBlue, 15%) !important;
+  }
 }
 
 .btn.red {
   background-color: #F44336 !important;
+
   &:hover {
     background-color: lighten(#F44336, 10%) !important;
+  }
+
+  &:active {
+    background-color: lighten(#F44336, 20%) !important;
   }
 }
 
 .btn.green {
   background-color: $green !important;
+
   &:hover {
     background-color: lighten($green, 10%) !important;
   }
+
+  &:active {
+    background-color: lighten($green, 20%) !important;
+  }
+
   &[disabled] {
     background-color: lighten($green, 30%) !important;
     color: white !important;
@@ -44,7 +64,11 @@ a {
   color: $gray80;
 
   &:hover {
-    background-color: lighten($gray20, 5%);
+    background-color: lighten($gray20, 5%) !important;
+  }
+
+  &:active {
+    background-color: lighten($gray20, 15%) !important;
   }
 }
 
