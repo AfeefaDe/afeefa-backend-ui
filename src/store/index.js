@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import auth from './auth.js'
-import api from './api.js'
-import navigation from './navigation.js'
-import messages from './messages.js'
-import facetFilters from './facet-filters.js'
+import auth from './auth'
+import api from './api'
+import navigation from './navigation'
+import messages from './messages'
+import entryListFilters from './entry-list-filters'
 
 Vue.use(Vuex)
 
@@ -14,7 +14,7 @@ export default new Vuex.Store({
     api,
     navigation,
     messages,
-    facetFilters
+    entryListFilters
   },
 
   actions: {

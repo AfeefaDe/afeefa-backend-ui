@@ -1,7 +1,7 @@
 <script>
 import User from '@/models/User'
 import Facet from '@/models/Facet'
-import facetItems from '@/helpers/facet-items'
+import entryListFilters from '@/helpers/entry-list-filters'
 
 export default {
   props: ['id'],
@@ -24,7 +24,7 @@ export default {
     this.currentUser = User.Query.getCurrentUser()
 
     Facet.Query.getAll().then(facets => {
-      this.facets = facetItems.getFacetsForOwnerType(facets, this.routeConfig.facetOwnerType)
+      this.facets = entryListFilters.getFacetsForOwnerType(facets, this.routeConfig.facetOwnerType)
     })
   },
 

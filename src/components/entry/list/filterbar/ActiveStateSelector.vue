@@ -25,12 +25,12 @@ export default {
 
   computed: {
     ...mapState({
-      activeStates: state => state.facetFilters.activeStates
+      activeStates: state => state.entryListFilters.activeStates
     }),
 
     selectedActiveState: {
-      get () { return this.$store.state.facetFilters.selectedActiveState },
-      set (state) { this.$store.dispatch('facetFilters/setActiveState', state) }
+      get () { return this.$store.state.entryListFilters.selectedActiveState },
+      set (state) { this.$store.dispatch('entryListFilters/setActiveState', state) }
     }
   }
 }

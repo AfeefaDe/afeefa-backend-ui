@@ -45,17 +45,17 @@ export default {
   },
 
   computed: {
-    ...mapGetters('facetFilters', ['selectableFacets']),
+    ...mapGetters('entryListFilters', ['selectableFacets']),
 
     ...mapState({
-      selectedFacets: state => state.facetFilters.selectedFacets,
-      navigationIsSelected: state => state.facetFilters.navigationIsSelected
+      selectedFacets: state => state.entryListFilters.selectedFacets,
+      navigationIsSelected: state => state.entryListFilters.navigationIsSelected
     })
   },
 
   methods: {
     selectOrDeselectNavigation () {
-      this.$store.dispatch('facetFilters/selectOrDeselectNavigation')
+      this.$store.dispatch('entryListFilters/selectOrDeselectNavigation')
     },
 
     showFacetSelector () {
@@ -67,7 +67,7 @@ export default {
     },
 
     selectOrDeselectFacet (facet) {
-      this.$store.dispatch('facetFilters/selectOrDeselectFacet', facet)
+      this.$store.dispatch('entryListFilters/selectOrDeselectFacet', facet)
       this.$nextTick(() => {
         this.$refs.popUp.reposition()
       })

@@ -120,7 +120,7 @@
 
 <script>
 import PopUpSelector from '@/components/PopUpSelector'
-import facetItems from '@/helpers/facet-items'
+import entryListFilters from '@/helpers/entry-list-filters'
 import { mapState, mapGetters } from 'vuex'
 import Navigation from '@/models/Navigation'
 import TreeSubItem from '@/components/tree/TreeSubItem'
@@ -139,19 +139,19 @@ export default {
   },
 
   computed: {
-    ...mapGetters('facetFilters', ['selectableFacets']),
+    ...mapGetters('entryListFilters', ['selectableFacets']),
 
     ...mapState({
-      selectedFacets: state => state.facetFilters.selectedFacets,
-      selectedFacetItems: state => state.facetFilters.selectedFacetItems,
-      selectedFacetsWithoutEntries: state => state.facetFilters.selectedFacetsWithoutEntries,
-      facetItemFilters: state => state.facetFilters.facetItemFilters,
+      selectedFacets: state => state.entryListFilters.selectedFacets,
+      selectedFacetItems: state => state.entryListFilters.selectedFacetItems,
+      selectedFacetsWithoutEntries: state => state.entryListFilters.selectedFacetsWithoutEntries,
+      facetItemFilters: state => state.entryListFilters.facetItemFilters,
 
-      navigationIsSelected: state => state.facetFilters.navigationIsSelected,
-      selectedNavigationItem: state => state.facetFilters.selectedNavigationItem,
+      navigationIsSelected: state => state.entryListFilters.navigationIsSelected,
+      selectedNavigationItem: state => state.entryListFilters.selectedNavigationItem,
 
-      filteredEntries: state => state.facetFilters.filteredEntries,
-      filteredEntriesWithoutNavigation: state => state.facetFilters.filteredEntriesWithoutNavigation
+      filteredEntries: state => state.entryListFilters.filteredEntries,
+      filteredEntriesWithoutNavigation: state => state.entryListFilters.filteredEntriesWithoutNavigation
     }),
 
     showFacetChooser () {
@@ -160,7 +160,7 @@ export default {
     },
 
     countEntriesWithoutNavigation () {
-      return facetItems.getEntriesWithoutNavigationItem(this.filteredEntriesWithoutNavigation).length
+      return entryListFilters.getEntriesWithoutNavigationItem(this.filteredEntriesWithoutNavigation).length
     }
   },
 
@@ -170,7 +170,7 @@ export default {
     Navigation.Query.get().then(navigation => {
       this.navigation = navigation
 
-      this.navigationItemWithoutNavigation = facetItems.createNavigationItemWithoutNavigation(navigation)
+      this.navigationItemWithoutNavigation = entryListFilters.createNavigationItemWithoutNavigation(navigation)
     })
   },
 
@@ -247,14 +247,14 @@ export default {
     },
 
     selectOrDeselectNavigationItem (navigationItem) {
-      this.$store.dispatch('facetFilters/selectOrDeselectNavigationItem', navigationItem)
+      this.$store.dispatch('entryListFilters/selectOrDeselectNavigationItem', navigationItem)
       this.$nextTick(() => {
         this.$refs.popUp.reposition()
       })
     },
 
     countEntriesForNavigationItem (navigationItem) {
-      return facetItems.getEntriesForNavigationItem(navigationItem, this.filteredEntriesWithoutNavigation).length
+      return entryListFilters.getEntriesForNavigationItem(navigationItem, this.filteredEntriesWithoutNavigation).length
     },
 
     navigationSubItemIsVisible (navigationItem) {
@@ -274,11 +274,11 @@ export default {
     },
 
     facetItemClick (facetItem) {
-      this.$store.dispatch('facetFilters/facetItemClick', facetItem)
+      this.$store.dispatch('entryListFilters/facetItemClick', facetItem)
     },
 
     countEntriesForFacetItem (facetItem) {
-      return facetItems.getEntriesForFacetItem(facetItem, this.filteredEntries).length
+      return entryListFilters.getEntriesForFacetItem(facetItem, this.filteredEntries).length
     },
 
     facetItemIsSelected (facetItem) {
@@ -290,15 +290,15 @@ export default {
     },
 
     createEmptyFacetItem (facet) {
-      return facetItems.createFacetItemEntriesWithoutFacet(facet)
+      return entryListFilters.createFacetItemEntriesWithoutFacet(facet)
     },
 
     entriesWithoutFacetClick (facet) {
-      this.$store.dispatch('facetFilters/facetWithoutEntriesClick', facet)
+      this.$store.dispatch('entryListFilters/facetWithoutEntriesClick', facet)
     },
 
     countEntriesWithoutFacet (facet) {
-      return facetItems.getEntriesWithoutFacet(facet, this.filteredEntries).length
+      return entryListFilters.getEntriesWithoutFacet(facet, this.filteredEntries).length
     }
   },
 

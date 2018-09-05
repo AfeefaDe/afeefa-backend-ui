@@ -45,7 +45,7 @@ export default {
 
   watch: {
     items () {
-      this.$store.dispatch('facetFilters/initEntries', {facetOwnerType: this.facetOwnerType, entries: this.items})
+      this.$store.dispatch('entryListFilters/initEntries', {facetOwnerType: this.facetOwnerType, entries: this.items})
     }
   },
 

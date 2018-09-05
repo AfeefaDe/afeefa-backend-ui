@@ -24,25 +24,25 @@ import EntryNavigationItem from '@/components/entry/facets/EntryNavigationItem'
 export default {
   created () {
     Facet.Query.getAll().then(facets => {
-      this.$store.dispatch('facetFilters/initFacets', facets)
+      this.$store.dispatch('entryListFilters/initFacets', facets)
     })
   },
 
   computed: {
     ...mapState({
-      selectedNavigationItem: state => state.facetFilters.selectedNavigationItem,
+      selectedNavigationItem: state => state.entryListFilters.selectedNavigationItem,
 
-      facetItemFilters: state => state.facetFilters.facetItemFilters
+      facetItemFilters: state => state.entryListFilters.facetItemFilters
     })
   },
 
   methods: {
     facetItemClick (facetItem) {
-      this.$store.dispatch('facetFilters/filteredFacetItemClick', facetItem)
+      this.$store.dispatch('entryListFilters/filteredFacetItemClick', facetItem)
     },
 
     navigationItemClick (navigationItem) {
-      this.$store.dispatch('facetFilters/selectOrDeselectNavigationItem', navigationItem)
+      this.$store.dispatch('entryListFilters/selectOrDeselectNavigationItem', navigationItem)
     }
   },
 

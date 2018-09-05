@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import facetItems from '@/helpers/facet-items'
+import entryListFilters from '@/helpers/entry-list-filters'
 
 export default {
   props: ['selectedFacetItems', 'facets', 'more'],
@@ -82,7 +82,7 @@ export default {
     },
 
     numSelectedFacetItems (facet) {
-      return facetItems.getDisplayedFacetItemsByInsertion(this.selectedFacetItems, [facet]).length
+      return entryListFilters.getDisplayedFacetItemsByInsertion(this.selectedFacetItems, [facet]).length
     },
 
     numSelectedSubItems (facetItem) {

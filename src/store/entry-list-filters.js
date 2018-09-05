@@ -1,4 +1,4 @@
-import facetItems from '@/helpers/facet-items'
+import entryListFilters from '@/helpers/entry-list-filters'
 
 function facetIsSelected (state, facet) {
   return state.selectedFacets.includes(facet)
@@ -19,9 +19,9 @@ function getFilteredEntriesWithNavigation (state) {
   // apply navigation filter
   if (state.selectedNavigationItem) {
     if (state.selectedNavigationItem._isNavigationWithoutEntry) {
-      return facetItems.getEntriesWithoutNavigationItem(entries)
+      return entryListFilters.getEntriesWithoutNavigationItem(entries)
     } else {
-      return facetItems.getEntriesForNavigationItem(state.selectedNavigationItem, entries)
+      return entryListFilters.getEntriesForNavigationItem(state.selectedNavigationItem, entries)
     }
   } else {
     return entries
@@ -33,7 +33,7 @@ function getFilteredEntriesWithoutNavigation (state) {
   if (state.selectedActiveState.value !== 'all') {
     entries = entries.filter(e => e.active === (state.selectedActiveState.value === 'active'))
   }
-  return facetItems.getEntriesForFacetItemsAndWithoutFacets(
+  return entryListFilters.getEntriesForFacetItemsAndWithoutFacets(
     state.selectedFacetItems,
     state.selectedFacetsWithoutEntries,
     entries
@@ -72,7 +72,7 @@ export default {
 
   getters: {
     selectableFacets: state => {
-      return facetItems.getFacetsForOwnerType(state.facets, state.facetOwnerType)
+      return entryListFilters.getFacetsForOwnerType(state.facets, state.facetOwnerType)
     }
   },
 
@@ -254,7 +254,7 @@ export default {
         })
         state.selectedFacetsWithoutEntries.forEach(emptyFacet => {
           if (emptyFacet === facet) {
-            const facetItem = facetItems.createFacetItemEntriesWithoutFacet(facet)
+            const facetItem = entryListFilters.createFacetItemEntriesWithoutFacet(facet)
             facetItemFilters.push(facetItem)
           }
         })

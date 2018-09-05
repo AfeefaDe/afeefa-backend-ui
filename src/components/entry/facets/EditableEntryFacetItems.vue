@@ -68,7 +68,7 @@
 <script>
 import { mapState } from 'vuex'
 import Spinner from '@/components/Spinner'
-import facetItems from '@/helpers/facet-items'
+import entryListFilters from '@/helpers/entry-list-filters'
 import EntryFacetItems from '@/components/entry/facets/EntryFacetItems'
 import FacetItemSelector from '@/components/facet/FacetItemSelector'
 
@@ -99,7 +99,7 @@ export default {
 
   computed: {
     ...mapState({
-      selectedFacetsFromFilter: state => state.facetFilters.selectedFacets
+      selectedFacetsFromFilter: state => state.entryListFilters.selectedFacets
     }),
 
     selectedFacets () {
@@ -119,11 +119,11 @@ export default {
     },
 
     displayedSelectedFacetItems () {
-      return facetItems.getDisplayedFacetItemsByInsertion(this.selectedFacetItems, this.selectedFacets)
+      return entryListFilters.getDisplayedFacetItemsByInsertion(this.selectedFacetItems, this.selectedFacets)
     },
 
     displayedSavedFacetItems () {
-      return facetItems.getDisplayedFacetItemsForFacets(this.entry.facet_items, this.selectedFacets)
+      return entryListFilters.getDisplayedFacetItemsForFacets(this.entry.facet_items, this.selectedFacets)
     },
 
     facetsWithSelectableItems () {
@@ -236,7 +236,7 @@ export default {
         this.entry.$rels.facet_items.refetch()
       ]).then(() => {
         if (!this.facets) { // no facets === using facet filters, todo
-          this.$store.dispatch('facetFilters/entryFacetItemsSaved')
+          this.$store.dispatch('entryListFilters/entryFacetItemsSaved')
         }
         this.loading = false
       })

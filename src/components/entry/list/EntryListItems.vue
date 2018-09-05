@@ -245,8 +245,8 @@ export default {
 
   computed: {
     ...mapState({
-      filteredEntries: state => state.facetFilters.filteredEntries,
-      navigationIsSelected: state => state.facetFilters.navigationIsSelected
+      filteredEntries: state => state.entryListFilters.filteredEntries,
+      navigationIsSelected: state => state.entryListFilters.navigationIsSelected
     }),
 
     itemsUnsorted () {
@@ -271,7 +271,7 @@ export default {
       if (this.currentSortField === 'active') {
         if (this.items.length) {
           const items = this.items.filter(i => i.active === (this.currentSortOrder === 'DESC'))
-          this.$store.dispatch('facetFilters/initEntries', {facetOwnerType: items[0].facetOwnerType, entries: items})
+          this.$store.dispatch('entryListFilters/initEntries', {facetOwnerType: items[0].facetOwnerType, entries: items})
           return
         }
       }

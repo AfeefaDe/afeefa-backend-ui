@@ -8,6 +8,7 @@
         <h2>Akteur in Angebot umwandeln</h2>
         <ul class="browser-default">
           <li>Titel und Beschreibung,</li>
+          <li>Bild,</li>
           <li>Kontaktdaten,</li>
           <li>Navigationseinträge und</li>
           <li>Anmerkungen werden übernommen.</li>

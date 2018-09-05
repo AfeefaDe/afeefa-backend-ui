@@ -83,7 +83,7 @@ export default {
       Promise.all([
         this.entry.$rels.navigation_items.refetch()
       ]).then(() => {
-        this.$store.dispatch('facetFilters/entryFacetItemsSaved')
+        this.$store.dispatch('entryListFilters/entryFacetItemsSaved')
         this.loading = false
       })
     }

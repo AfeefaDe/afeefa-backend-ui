@@ -29,18 +29,18 @@ import FilterSelector from '@/components/entry/list/filterbar/FilterSelector'
 export default {
   created () {
     Facet.Query.getAll().then(facets => {
-      this.$store.dispatch('facetFilters/initFacets', facets)
+      this.$store.dispatch('entryListFilters/initFacets', facets)
     })
   },
 
   computed: {
     ...mapState({
-      selectedFacets: state => state.facetFilters.selectedFacets,
+      selectedFacets: state => state.entryListFilters.selectedFacets,
 
-      navigationIsSelected: state => state.facetFilters.navigationIsSelected,
-      selectedNavigationItem: state => state.facetFilters.selectedNavigationItem,
+      navigationIsSelected: state => state.entryListFilters.navigationIsSelected,
+      selectedNavigationItem: state => state.entryListFilters.selectedNavigationItem,
 
-      facetItemFilters: state => state.facetFilters.facetItemFilters
+      facetItemFilters: state => state.entryListFilters.facetItemFilters
     }),
 
     countSelectedFilters () {

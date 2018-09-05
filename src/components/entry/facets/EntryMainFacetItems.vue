@@ -7,7 +7,7 @@
 <script>
 import Facet from '@/models/Facet'
 import EntryFacetItems from '@/components/entry/facets/EntryFacetItems'
-import facetItems from '@/helpers/facet-items'
+import entryListFilters from '@/helpers/entry-list-filters'
 
 export default {
   props: ['entry'],
@@ -30,7 +30,7 @@ export default {
 
   computed: {
     displayedSavedFacetItems () {
-      return facetItems.getDisplayedFacetItemsForFacets(this.entry.facet_items, [this.mainFacet])
+      return entryListFilters.getDisplayedFacetItemsForFacets(this.entry.facet_items, [this.mainFacet])
     }
   },
 

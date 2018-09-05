@@ -62,7 +62,7 @@ export default {
   computed: {
     ...mapState({
       numEvents: state => state.navigation.numEvents,
-      filteredEntries: state => state.facetFilters.filteredEntries
+      filteredEntries: state => state.entryListFilters.filteredEntries
     }),
 
     numItems () {
