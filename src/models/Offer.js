@@ -82,6 +82,7 @@ class Offer extends Model {
 
   init () {
     this.facetOwnerType = 'Offer'
+    this.convertFromActorId = null
   }
 
   attributesToJson (attributes) {
@@ -97,6 +98,10 @@ class Offer extends Model {
 
     if (!this.id && this.owners.length) {
       data.owners = this.owners.map(o => o.id)
+    }
+
+    if (!this.id && this.convertFromActorId) {
+      data.actorId = this.convertFromActorId
     }
     return data
   }

@@ -58,7 +58,8 @@ const menuTree = {
             { route: 'offers.contactnew', title: 'headlines.contactNew', level: 4 }
           ]
         },
-        { route: 'offers.new', title: 'headlines.new', level: 3 }
+        { route: 'offers.new', title: 'headlines.new', level: 3 },
+        { route: 'offers.convert', title: 'headlines.newFromActor', level: 3 }
       ]
     },
     {

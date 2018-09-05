@@ -9,7 +9,7 @@
       :type="inputType"
       :id="fieldName"
       :name="fieldName"
-      :value="value"
+      v-model="currentValue"
       :placeholder="placeholder"
 
       :data-vv-validate-on="validateOn"
@@ -34,8 +34,19 @@ export default {
 
   data () {
     return {
+      currentValue: null,
       validateOn: this.validateOnBlur ? 'blur' : 'input',
       focus: false
+    }
+  },
+
+  created () {
+    this.currentValue = this.value
+  },
+
+  watch: {
+    value (value) {
+      this.currentValue = value
     }
   },
 
@@ -62,8 +73,8 @@ export default {
   },
 
   methods: {
-    updateValue (value) {
-      this.$emit('input', value)
+    updateValue () {
+      this.$emit('input', this.currentValue)
     },
 
     onFocus () {

@@ -39,7 +39,8 @@ export default {
     chapters: 'Wissensportal',
     singleChapter: 'Kapitel',
     facetItemAssociate: 'Zuordnen',
-    navigation: 'Navigation'
+    navigation: 'Navigation',
+    newFromActor: 'Akteur in Angebot umwandeln'
   },
   facets: {
     ownerTypeOrga: 'Akteur',

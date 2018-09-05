@@ -39,7 +39,8 @@ export default {
     chapters: 'Wiki',
     singleChapter: 'Chapter',
     facetItemAssociate: 'Associate',
-    navigation: 'Navigation'
+    navigation: 'Navigation',
+    newFromActor: 'Convert Actor to Offer'
   },
   facets: {
     ownerTypeOrga: 'Actor',

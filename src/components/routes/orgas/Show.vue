@@ -112,6 +112,11 @@
           </div>
 
           <div class="splitView__splitViewChild">
+            <router-link :to="{name: 'offers.convert', query: {actorId: orga.id}}" class="btn green btn-small">
+              <i class="material-icons left">add</i>
+              In Angebot umwandeln
+            </router-link>
+
             <contact-list :item="orga" />
           </div>
 
@@ -256,8 +261,8 @@ export default {
       tabNames.push({name: 'todos', hint: this.orga.annotations.length})
       tabNames.push({name: 'offers', hint: this.orga.offers.length})
       tabNames.push({name: 'events', hint: this.orga.upcoming_events.length + this.orga.past_events.length})
-      // tabNames.push({name: 'projects', hint: this.orga.projects.length})
-      // tabNames.push({name: 'networkMembers', hint: this.orga.network_members.length})
+      tabNames.push({name: 'projects', hint: this.orga.projects.length})
+      tabNames.push({name: 'networkMembers', hint: this.orga.network_members.length})
       if (this.currentUser.area === 'dresden') {
         // tabNames.push({name: 'resources', hint: this.orga.resource_items.length})
       }

@@ -10,6 +10,7 @@ import ListOffers from '@/components/routes/offers/List'
 import NewOffer from '@/components/routes/offers/New'
 import ShowOffer from '@/components/routes/offers/Show'
 import EditOffer from '@/components/routes/offers/Edit'
+import ConvertFromActor from '@/components/routes/offers/Convert'
 
 import ListOrgas from '@/components/routes/orgas/List'
 import NewOrga from '@/components/routes/orgas/New'
@@ -67,6 +68,11 @@ const routes = [
             path: 'new',
             name: 'offers.new',
             component: NewOffer
+          },
+          {
+            path: 'convert',
+            name: 'offers.convert',
+            component: ConvertFromActor
           },
           {
             path: ':id',

@@ -32,6 +32,10 @@ export default {
       return this.routeConfig.Model
     },
 
+    Query () {
+      return this.routeConfig.Model.Query
+    },
+
     routeName () {
       return this.routeConfig.routeName
     },
@@ -82,7 +86,7 @@ export default {
           })
         } else {
           // actual save routine on the resource
-          this.Model.Query.save(this.item).then(entry => {
+          this.Query.save(this.item).then(entry => {
             if (entry) {
               this.$store.dispatch('messages/showAlert', {
                 description: this.item.id ? this.messages.saveItemSuccess() : this.messages.addItemSuccess()
@@ -100,7 +104,7 @@ export default {
         message: this.messages.deleteItemDialogMessage(this.item)
       }).then(result => {
         if (result === 'yes') {
-          this.Model.Query.delete(this.item).then(result => {
+          this.Query.delete(this.item).then(result => {
             if (result) {
               this.$store.dispatch('messages/showAlert', {
                 description: this.messages.deleteItemSuccess()
