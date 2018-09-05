@@ -26,7 +26,9 @@ class Orga extends Entry {
 
       count_offers: DataTypes.Int,
 
-      count_events: DataTypes.Int,
+      count_upcoming_events: DataTypes.Int,
+
+      count_past_events: DataTypes.Int,
 
       count_resource_items: DataTypes.Int,
 
@@ -112,6 +114,11 @@ class Orga extends Entry {
 
   init () {
     this.facetOwnerType = 'Orga'
+  }
+
+  // eslint-disable-next-line camelcase
+  get count_events () {
+    return this.count_upcoming_events + this.count_past_events
   }
 
   /**
