@@ -126,14 +126,16 @@ class Orga extends Entry {
    * title is delivered in order to show the owner/host/initiator link
    * in entry lists.
    */
-  calculateLoadingState () {
-    if (this.$rels.contacts.fetched) {
-      return LoadingState.FULLY_LOADED
-    } else if (this.$rels.creator.fetched) {
-      return LoadingState.LIST_DATA_LOADED
-    } else {
-      return LoadingState.ATTRIBUTES_LOADED
+  calculateLoadingState (json) {
+    let loadingState = LoadingState.ATTRIBUTES_LOADED
+    if (json.relationships) {
+      if (json.relationships.contacts) {
+        loadingState = LoadingState.FULLY_LOADED
+      } else {
+        loadingState = LoadingState.LIST_DATA_LOADED
+      }
     }
+    return loadingState
   }
 
   serialize () {

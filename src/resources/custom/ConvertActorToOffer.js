@@ -22,7 +22,7 @@ export default class ConvertActorToOfferResource extends Resource {
 
   ensureReverseRelationsAfterAddOrSave (offer) {
     const ensure = super.ensureReverseRelationsAfterAddOrSave(offer)
-    // invalidate offer list
+    // invalidate offer list since we only invalidated 'offers_convert'
     ensure.reloadAlways(App.getRelationByModel(Offer))
 
     // remove orga references
@@ -30,6 +30,16 @@ export default class ConvertActorToOfferResource extends Resource {
     if (actor) {
       Orga.Query.itemDeleted(actor)
     }
+
+    // invalidate already loaded relations
+    offer.owners.forEach(actor => {
+      actor.$rels.offers.reloadOnNextGet()
+      actor.$rels.projects.reloadOnNextGet()
+      actor.$rels.past_events.reloadOnNextGet()
+      actor.$rels.upcoming_events.reloadOnNextGet()
+    })
+    // reload new owners to receive new counts for not yet loaded relations
+    Orga.Query.reloadAll({ids: offer.owners.map(actor => actor.id)})
 
     return ensure
   }
