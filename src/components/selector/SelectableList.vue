@@ -1,10 +1,12 @@
 <template>
   <div class="selectableList">
-    <div class="title">
+    <div class="title" v-if="false">
       {{ messages.title }} ({{ selectableItems.length }})
     </div>
 
-    <input v-if="has.filter" type="text" v-model="keyword" v-focus ref="keywordInput"
+    <text-input />
+
+    <input v-if="has.filter" type="text" class="browser-default" v-model="keyword" v-focus ref="keywordInput"
       placeholder="Tippen, um zu filtern"
       @input="keywordChanged"
       @keydown.up.prevent="selectPrevious"
@@ -190,9 +192,10 @@ export default {
 
 <style lang="scss" scoped>
 .selectableList {
+  width: 100%;
   input {
     height: 2.3rem;
-    margin-bottom: .4em;
+    margin: 1em 0;
 
     &.transparent {
       opacity: 0;

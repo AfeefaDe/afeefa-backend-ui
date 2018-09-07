@@ -6,12 +6,21 @@
     <div v-else>
       <div v-if="showActors">
         <div v-for="actor in items" :key="actor.id">
-          <slot name="actor" :actor="actor" />
+          <router-link v-if="!isEdit" :to="{name: 'orgas.show', params: {id: actor.id}}">
+            {{ actor.title }}
+          </router-link>
+          <span v-else>
+            {{ actor.title }}
+            <div class="removeIcon">
+              <i class="material-icons">cancel</i>
+            </div>
+          </span>
+
         </div>
         <div v-if="!items.length" class="entryDetail__error">Keine {{ title }} angegeben</div>
       </div>
 
-      <component :is="selector" :actor="owner" :relationName="relationName" title="Ändern" @saved="actorRelationSaved">
+      <component v-if="isEdit" :is="selector" :actor="owner" :relationName="relationName" title="Hinzufügen" @saved="actorRelationSaved">
         <slot slot="triggerButton" name="triggerButton" />
       </component>
     </div>
@@ -20,21 +29,27 @@
 
 <script>
 import Spinner from '@/components/Spinner'
-import ActorSelector from '@/components/actor/ActorSelector'
+import SingleActorSelector from '@/components/actor/SingleActorSelector'
 
 export default {
-  props: ['owner', 'relationName', 'title', 'showActors'],
+  props: ['owner', 'relationName', 'title', 'showActors', 'isEdit'],
 
   data () {
     return {
       isLoading: 0,
-      selector: ActorSelector
+      selector: SingleActorSelector
     }
   },
 
   computed: {
     items () {
       return this.owner[this.relationName]
+    }
+  },
+
+  watch: {
+    isEdit () {
+      // just watch
     }
   },
 
@@ -76,3 +91,14 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.removeIcon {
+  display: inline;
+  i {
+    font-size: 1.1em;
+    margin-left: .1em;
+    color: $gray80;
+  }
+}
+</style>
