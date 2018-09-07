@@ -1,5 +1,11 @@
 <template>
-  <div class="facetItems">
+  <div class="selectedListFilters">
+    <tree-item-tag v-if="selectedActiveState.value !== 'all'"
+      class="facetFilterTag"
+      :treeItem="{title: selectedActiveState.name, color: '#F2F2F2'}"
+      :x="true"
+      @click="activeStateClick" />
+
     <tree-item-tag v-for="facetItem in facetItemFilters" :key="facetItem.id"
       class="facetFilterTag"
       :treeItem="facetItem"
@@ -17,21 +23,14 @@
 
 
 <script>
-import Facet from '@/models/Facet'
 import { mapState } from 'vuex'
 import EntryNavigationItem from '@/components/entry/facets/EntryNavigationItem'
 
 export default {
-  created () {
-    Facet.Query.getAll().then(facets => {
-      this.$store.dispatch('entryListFilters/initFacets', facets)
-    })
-  },
-
   computed: {
     ...mapState({
+      selectedActiveState: state => state.entryListFilters.selectedActiveState,
       selectedNavigationItem: state => state.entryListFilters.selectedNavigationItem,
-
       facetItemFilters: state => state.entryListFilters.facetItemFilters
     })
   },
@@ -43,6 +42,10 @@ export default {
 
     navigationItemClick (navigationItem) {
       this.$store.dispatch('entryListFilters/selectOrDeselectNavigationItem', navigationItem)
+    },
+
+    activeStateClick () {
+      this.$store.dispatch('entryListFilters/unsetActiveState')
     }
   },
 
@@ -54,19 +57,19 @@ export default {
 
 
 <style lang="scss" scoped>
-.facetItems {
+.selectedListFilters {
   display: flex;
 }
 
 .treeItemTag.facetFilterTag {
-  font-size: 1.1em;
+  font-size: .9em;
   margin-right: .5em;
   margin-bottom: .4em;
 }
 
 .navigationItems {
   /deep/ .treeItemTag {
-    font-size: 1.1em;
+    font-size: .9em;
     margin-bottom: .4em;
   }
 }

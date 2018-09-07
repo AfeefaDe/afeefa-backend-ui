@@ -91,9 +91,8 @@ export default {
         const c2 = this.$refs['parentItem' + navigationItem.id][0].$el
         const selector = this.$refs.subItemSelector
 
-        const selectorX = c.offsetLeft
-        const rootX = selectorX + c2.offsetLeft + c2.offsetWidth
-        this.positionTree(selector, rootX, c.offsetTop + c2.offsetTop, 0, -10, c.offsetLeft)
+        const rootX = c.offsetLeft + c2.offsetWidth + c.offsetLeft // 2 x padding
+        this.positionTree(selector, rootX, c.offsetTop + c2.offsetTop, -8, -10, c.offsetLeft)
       })
     },
 
@@ -129,10 +128,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.navigationItemsTree {
-  padding: .5em;
-}
-
 .facetItemTag {
   font-size: .9em;
 
@@ -150,16 +145,20 @@ export default {
   border-bottom: 1px solid $gray20;
 }
 
-.parentItemSelector, .subItemSelector {
+.subItemSelector {
   z-index: 3;
   position: absolute;
   top: 0;
   left: 0;
-  padding: 1em;
+  padding: .5em;
   margin-top: -.3em;
 
   background-color: white;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3), 0 2px 10px 0 rgba(0,0,0,0.3);
+}
+
+.parentItemSelector {
+  position: static;
 }
 
 .parentItemSelector + .subItemSelector {

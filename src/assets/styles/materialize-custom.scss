@@ -184,6 +184,45 @@ textarea.materialize-textarea:focus.valid {
 // small checkbox
 
 /* stylelint-disable selector-class-pattern */
+input[type="radio"].filled-in.radioSmall + label {
+  margin: 0;
+  padding-left: 16px;
+  height: 11px;
+  line-height: 1em;
+  font-size: .9em;
+
+  &:before {
+    top: 1px;
+    margin: 0;
+    border-width: 1px;
+    left: 0;
+    width: 14px;
+    height: 14px;
+  }
+
+  &:after {
+    margin: 0;
+    top: 1px;
+    background-color: white;
+    border-width: 1px;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+input[type="radio"].filled-in.gray + label {
+  &:after {
+    border-color: $gray30;
+  }
+}
+
+input[type="radio"].filled-in.gray:checked + label {
+  &:after {
+    background-color: $gray80;
+    border-color: $gray80;
+  }
+}
+
 input[type="checkbox"].filled-in.checkboxSmall + label {
   margin: 0;
   padding-left: 16px;

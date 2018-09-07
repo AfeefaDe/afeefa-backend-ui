@@ -1,30 +1,41 @@
 <template>
-  <div :class="['popUp', {withCloseIcon: closeIcon}]">
-    <div class="closeIcon" v-if="closeIcon" @click="close">
-      <i class="material-icons">cancel</i>
+  <transition name="popup">
+    <div :class="['popUp', {withCloseIcon: closeIcon, fixed: position === 'fixed'}]">
+      <div class="closeIcon" v-if="closeIcon" @click="close">
+        <i class="material-icons">cancel</i>
+      </div>
+      <slot :popUp="instance" />
     </div>
-    <slot />
-  </div>
+  </transition>
 </template>
 
 
 <script>
 export default {
-  props: ['trigger', 'closeIcon', 'align', 'diffX', 'diffY', 'marginRight'],
+  props: ['trigger', 'closeIcon', 'align', 'diffX', 'diffY', 'marginRight', 'position'],
 
   created () {
     window.addEventListener('click', this.onClickOutside)
+  },
 
-    this.$nextTick(() => {
-      document.body.appendChild(this.$el)
-      this.reposition()
-    })
+  mounted () {
+    document.body.appendChild(this.$el)
+    this.reposition()
   },
 
   destroyed () {
     window.removeEventListener('click', this.onClickOutside)
-    if (document.body.contains(this.$el)) {
-      document.body.removeChild(this.$el)
+    // remove after fade out transition completess
+    setTimeout(() => {
+      if (document.body.contains(this.$el)) {
+        document.body.removeChild(this.$el)
+      }
+    }, 100)
+  },
+
+  computed: {
+    instance () {
+      return this
     }
   },
 
@@ -33,6 +44,12 @@ export default {
       if (!this.$el.contains(e.target)) {
         this.close()
       }
+    },
+
+    repositionLater () {
+      setTimeout(() => {
+        this.reposition()
+      })
     },
 
     reposition () {
@@ -47,25 +64,30 @@ export default {
       const diffTriggerY = this.diffY !== undefined ? this.diffY : 20
       const marginRight = this.marginRight !== undefined ? this.marginRight : 20
 
-      let popUpRect
+      let popUpRect = popUp.getBoundingClientRect()
 
+      let left
       if (this.align === 'left') {
-        popUpRect = popUp.getBoundingClientRect()
-        popUp.style.left = triggerRight - popUpRect.width + diffTriggerX + 'px'
+        left = triggerRight - popUpRect.width + diffTriggerX
       } else {
-        popUp.style.left = triggerLeft - diffTriggerX + 'px'
+        left = triggerLeft - diffTriggerX
       }
-      popUp.style.top = triggerTop - diffTriggerY + 'px'
 
-      popUpRect = popUp.getBoundingClientRect()
-      if (popUpRect.right > window.innerWidth - marginRight) {
-        let diff = popUpRect.right - window.innerWidth + marginRight
-        popUp.style.left = triggerLeft - diffTriggerX - diff + 'px'
+      const popUpRight = left + popUpRect.width
+      if (popUpRight > window.innerWidth - marginRight) {
+        let diff = popUpRight - window.innerWidth + marginRight
+        left -= diff
       }
-      if (popUpRect.bottom > window.innerHeight - marginRight) {
-        let diff = popUpRect.bottom - window.innerHeight + marginRight
-        popUp.style.top = triggerTop - diffTriggerY - diff + 'px'
+
+      let top = triggerTop - diffTriggerY
+      const popUpBottom = top + popUpRect.height
+      if (popUpBottom > (window.scrollY + window.innerHeight - marginRight)) {
+        let diff = popUpBottom - window.scrollY - window.innerHeight + marginRight
+        top = triggerTop - diffTriggerY - diff
       }
+
+      popUp.style.left = left + 'px'
+      popUp.style.top = top + 'px'
     },
 
     close () {
@@ -78,16 +100,30 @@ export default {
 <style lang="scss" scoped>
 .popUp {
   position: absolute;
+
+  &.fixed {
+    position: fixed;
+  }
   z-index: $z-index-overlay;
   display: block;
   background-color: white;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.2), 0 2px 10px 0 rgba(0,0,0,0.2);
   padding: .5em;
+  transition: left .2s;
 
   &.withCloseIcon {
-    padding-right: 3em;
+    padding-right: 2em;
   }
 }
+
+/* stylelint-disable selector-class-pattern */
+.popup-enter, .popup-leave-to {
+  opacity: 0;
+}
+.popup-enter-active, .popup-leave-active {
+  transition: all .1s;
+}
+/* stylelint-enable */
 
 .closeIcon {
   position: absolute;

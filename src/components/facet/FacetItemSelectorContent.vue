@@ -115,9 +115,11 @@ export default {
         const c2 = this.$refs['parentItem' + facetItem.id][0].$el
         const selector = this.$refs.subItemSelector
 
-        const selectorX = this.facets.length === 1 ? 0 : c.offsetLeft
-        const rootX = selectorX + c2.offsetLeft + c2.offsetWidth
-        this.positionTree(selector, rootX, c.offsetTop + c2.offsetTop, 0, -10, c.offsetLeft)
+        // if facets.length = 1, we are the sub of a static pos div (not absolute) and
+        // hence start with c.offsetLeft (popup padding) and not with zero (popup 0)
+        const selectorX = this.facets.length === 1 ? c.offsetLeft : 0
+        const rootX = selectorX + c.offsetWidth + c.offsetLeft
+        this.positionTree(selector, rootX, c.offsetTop + c2.offsetTop, -8, -10, c.offsetLeft)
       })
     },
 
@@ -126,9 +128,10 @@ export default {
       this.selectedParentItem = null
 
       this.$nextTick(() => {
-        const c = this.$refs['facet' + facet.id][0].$el
+        const c = this.$refs.facetSelector
         const selector = this.$refs.parentItemSelector
-        this.positionTree(selector, c.offsetLeft + c.offsetWidth, c.offsetTop, 0, -10, c.offsetLeft)
+        const rootX = c.offsetLeft + c.offsetWidth + c.offsetLeft // 2 x padding
+        this.positionTree(selector, rootX, c.offsetTop, -8, +10, c.offsetLeft)
       })
     },
 
@@ -164,10 +167,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.facetItemsTree {
-  padding: .5em;
-}
-
 .facetItemTag {
   font-size: .9em;
 
@@ -190,7 +189,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  padding: 1em;
+  padding: .5em;
   margin-top: -.3em;
 
   background-color: white;

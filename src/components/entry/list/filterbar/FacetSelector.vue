@@ -4,7 +4,10 @@
       <slot />
     </a>
 
-    <pop-up-selector ref="popUp" :trigger="$refs.trigger" :diffX="10" :diffY="10" align="left" :closeIcon="false" @close="hideFacetSelector" v-if="facetSelectorVisible">
+    <pop-up-selector ref="popUp" :trigger="$refs.trigger"
+      :diffX="40" :diffY="20" align="right" :closeIcon="true"
+      @close="hideFacetSelector"
+      v-if="facetSelectorVisible">
       <div class="facetSelector">
         <div class="facet" v-for="facet in selectableFacets" :key="'select-' + facet.id">
           <div class="facetCheckbox">
@@ -68,9 +71,6 @@ export default {
 
     selectOrDeselectFacet (facet) {
       this.$store.dispatch('entryListFilters/selectOrDeselectFacet', facet)
-      this.$nextTick(() => {
-        this.$refs.popUp.reposition()
-      })
     }
   },
 
@@ -82,11 +82,11 @@ export default {
 
 <style lang="scss" scoped>
 .facetSelector {
-  padding: 1em;
+  padding: .5em;
 }
 
-.facetCheckbox {
-  margin-bottom: .3em;
+.facet .facetCheckbox {
+  margin-bottom: .1em;
 }
 
 .facetItemTag {
@@ -95,9 +95,17 @@ export default {
     margin-bottom: 0;
   }
 
+  &:hover {
+    background-color: $white;
+  }
+
   /deep/ .facetItem {
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0 .1em;
+
+    .checkbox {
+      margin-left: .3em;
+      margin-right: .2em;
+    }
   }
 }
 </style>

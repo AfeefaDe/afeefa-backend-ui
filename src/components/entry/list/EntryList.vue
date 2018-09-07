@@ -14,6 +14,7 @@
         </div>
       </afeefa-header>
 
+
       <div slot="content">
         <slot name="items">
           <entry-list-items
@@ -22,7 +23,7 @@
             :isLoading="isLoading"
             :customSortOrders="customSortOrders"
             :options="options">
-            <slot slot="navigation"></slot>
+            <slot slot="customFilter"></slot>
           </entry-list-items>
         </slot>
       </div>
@@ -41,6 +42,10 @@ export default {
     currentNumItems () {
       return this.numItems || this.items.length
     }
+  },
+
+  created () {
+    this.$store.dispatch('entryListFilters/initEntries', {facetOwnerType: this.facetOwnerType, entries: []})
   },
 
   watch: {

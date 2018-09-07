@@ -1,36 +1,25 @@
 <template>
-  <div v-if="isLoading" class="loadingInfo">
+  <div v-if="isLoading" class="entryListItems">
     <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Liste
   </div>
 
-  <div v-else>
-    <div class="navigation" v-if="items.length && (has.filter || has.facetFilter)">
-      <selected-filters v-if="has.facetFilter" class="facetsFilter" />
+  <div v-else class="entryListItems">
+    <filter-bar
+      v-if="has.filter && items.length"
+      :entries="items"
+      :customSortOrders="customSortOrders"
+      :options="{
+        active: has.facetFilter,
+        facets: has.facetFilter,
+        sort: has.sort
+      }"
+      @filter="filterChanged"
+      @sortOrder="sortOrderChanged"
+      @keyword="keywordChanged">
+      <slot name="customFilter" slot="customFilter" />
+    </filter-bar>
 
-      <div v-if="itemsUnsorted.length && has.filter" class="searchFilter">
-        <active-state-selector v-if="has.facetFilter" />
-
-        <sort-order-selector v-if="has.sort" :customSortOrders="customSortOrders" @change="sortOrderChanged" />
-
-        <slot name="navigation" />
-
-        <div class="inputContainer">
-          <input
-            class="browser-default"
-            type="text"
-            placeholder="Tippen zum Filtern"
-            v-model="searchKeyword"
-            @keydown.esc.prevent="searchKeyword = ''" />
-          <a v-if="searchKeyword" @click.prevent="searchKeyword = ''" href="">
-            <i class="material-icons">cancel</i>
-          </a>
-        </div>
-      </div>
-
-      <filter-icons v-if="has.facetFilter" class="facetsFilterIcons" />
-    </div>
-
-    <div v-if="has.pagination" class="paginationTop">
+    <div v-if="has.pagination" :class="['paginationTop', {empty: !currentNumItems}]">
       <pagination
         :num-items="currentNumItems"
         :page-size="currentPageSize"
@@ -77,7 +66,7 @@
               <entry-owners :items="item.hosts"></entry-owners>
             </div>
 
-            <div class="entryList__attributes" v-if="!has.annotations && item.facet_items">
+            <div class="entryList__attributes" v-if="!has.annotations">
               <editable-entry-facet-items v-if="has.facetFilter" :entry="item" :bus="bus" />
               <entry-main-facet-items :entry="item" v-else />
 
@@ -158,10 +147,7 @@ import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFace
 import EntryMainFacetItems from '@/components/entry/facets/EntryMainFacetItems'
 import EditableEntryNavigationItems from '@/components/entry/facets/EditableEntryNavigationItems'
 import EntryOwners from '@/components/actor/EntryOwners'
-import SelectedFilters from '@/components/entry/list/filterbar/SelectedFilters'
-import FilterIcons from '@/components/entry/list/filterbar/FilterIcons'
-import SortOrderSelector from '@/components/entry/list/filterbar/SortOrderSelector'
-import ActiveStateSelector from '@/components/entry/list/filterbar/ActiveStateSelector'
+import FilterBar from '@/components/entry/list/filterbar/FilterBar'
 import { mapState } from 'vuex'
 
 export default {
@@ -223,21 +209,8 @@ export default {
     },
 
     'items' (newItems, oldItems) {
-      this.searchKeyword = ''
-      this.initSortedItems()
-    },
-
-    'searchKeyword' () {
-      this.initSortedItems()
-    },
-
-    'filteredEntries' (newItems, oldItems) {
-      if (oldItems.length) {
+      if (!this.has.filter) {
         this.searchKeyword = ''
-        this.setPage({
-          page: 1,
-          pageSize: 15
-        })
         this.initSortedItems()
       }
     }
@@ -248,10 +221,6 @@ export default {
       filteredEntries: state => state.entryListFilters.filteredEntries,
       navigationIsSelected: state => state.entryListFilters.navigationIsSelected
     }),
-
-    itemsUnsorted () {
-      return this.has.facetFilter ? this.filteredEntries : this.items
-    },
 
     showCreatedAt () {
       return this.has.created_at && this.currentSortField === 'created_at'
@@ -267,26 +236,34 @@ export default {
       this.currentSortFunction = sortOrder.sortFunction
       this.currentSortOrder = sortOrder.sortOrder
       this.currentSortField = sortOrder.sortField
+      this.initSortedItems()
+    },
 
-      if (this.currentSortField === 'active') {
-        if (this.items.length) {
-          const items = this.items.filter(i => i.active === (this.currentSortOrder === 'DESC'))
-          this.$store.dispatch('entryListFilters/initEntries', {facetOwnerType: items[0].facetOwnerType, entries: items})
-          return
-        }
-      }
+    keywordChanged (keyword) {
+      this.searchKeyword = keyword
+      this.initSortedItems()
+    },
 
+    filterChanged () {
       this.initSortedItems()
     },
 
     initSortedItems () {
+      let items = this.has.facetFilter ? this.filteredEntries : this.items
+
+      if (!items.length && !this.sortedItems.length) {
+        return
+      }
+
       if (this.initSortedItemsNext) {
         return
       }
+
       this.initSortedItemsNext = true
 
       this.$nextTick(() => {
-        let items = this.has.facetFilter ? this.filteredEntries : this.items
+        items = this.has.facetFilter ? this.filteredEntries : this.items
+        console.log('################### FILTER ALL', this.has.facetFilter, this.filteredEntries.length, this.items.length, items.length)
         items = items.filter(i => i.title.toLowerCase().includes(this.searchKeyword.toLowerCase()))
         items = this.currentSortFunction ? this.currentSortFunction(items, this.currentSortOrder) : items
 
@@ -387,83 +364,30 @@ export default {
     AnnotationTag,
     EditableEntryFacetItems,
     EntryOwners,
-    SelectedFilters,
     EditableEntryNavigationItems,
     EntryMainFacetItems,
-    FilterIcons,
-    SortOrderSelector,
-    ActiveStateSelector
+    FilterBar
   }
 }
 </script>
 
 <style lang="scss" scoped>
 
-.navigation {
-  position: relative;
+.filterBar {
   margin-bottom: .4em;
   padding-bottom: .8em;
   border-bottom: 1px solid $gray20;
 }
 
-.facetsFilter {
-  flex-grow: 2;
-  margin-bottom: .4em;
-  &.empty {
-    margin-bottom: 0;
-  }
-}
-
-.facetsFilterIcons {
-  position: absolute;
-  top: .2em;
-  right: 0;
-}
-
-.searchFilter {
-  display: inline-flex;
-  align-items: center;
-
-  .inputContainer {
-    &:not(:first-child) {
-      margin-left: .5em;
-    }
-    position: relative;
-  }
-
-  input {
-    padding-right: 2em;
-    width: 200px;
-  }
-
-  input, /deep/ select {
-    height: 2em;
-    padding: 0 .4em;
-  }
-
-  a {
-    position: absolute;
-    top: .35em;
-    right: .35em;
-  }
-
-  i {
-    color: $gray80;
-    font-size: 18px;
-  }
-
-  .sortOrderSelector {
-    margin-left: .5em;
-  }
-}
-
 .paginationTop {
-  margin-bottom: 1.5em;
+  &:not(.empty) {
+    margin-bottom: 1.5em;
+  }
 }
 
 .entryList {
   padding-left: 0;
-  margin-top: 0;
+  margin: 0;
   list-style: none;
 
   li {

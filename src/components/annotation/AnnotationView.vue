@@ -81,7 +81,7 @@ export default {
               this.$store.dispatch('messages/showAlert', {
                 description: 'Die Aufgabe wurde gelöscht'
               })
-              this.annotationSaved()
+              this.entry.$rels.annotations.refetch()
             }
           })
         }

@@ -22,6 +22,15 @@ export default {
     })
   },
 
+  getEntriesForActiveState (state, entries) {
+    if (state.value === 'all') {
+      return entries
+    }
+    return entries.filter(entry => {
+      return entry.active === (state.value === 'active')
+    })
+  },
+
   getEntriesWithoutNavigationItem (entries) {
     return entries.filter(entry => {
       return entry.navigation_items.length === 0

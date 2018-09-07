@@ -6,7 +6,7 @@
       </option>
     </select>
     <div class="orderIcon" @click="reverseSort">
-      <i class="material-icons">{{ currentOrder === 'ASC' ? 'arrow_downward' : 'arrow_upward' }}</i>
+      <i class="material-icons">{{ currentOrderDirection === 'ASC' ? 'arrow_downward' : 'arrow_upward' }}</i>
     </div>
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       selectedSortOrder: null,
-      currentOrder: 'ASC',
+      currentOrderDirection: 'ASC',
       sortOrders: [],
       defaultSortOrders: [
         { name: 'Erstellt', sort: sortByCreatedAt, order: 'DESC', field: 'created_at' },
@@ -36,25 +36,25 @@ export default {
     const customOrders = this.customSortOrders || []
     this.sortOrders = customOrders.concat(this.defaultSortOrders)
     this.selectedSortOrder = this.sortOrders[0]
-    this.currentOrder = this.selectedSortOrder.order
+    this.currentOrderDirection = this.selectedSortOrder.order
     this.emitChange()
   },
 
   methods: {
     reverseSort () {
-      this.currentOrder = this.currentOrder === 'ASC' ? 'DESC' : 'ASC'
+      this.currentOrderDirection = this.currentOrderDirection === 'ASC' ? 'DESC' : 'ASC'
       this.emitChange()
     },
 
     change () {
-      this.currentOrder = this.selectedSortOrder.order
+      this.currentOrderDirection = this.selectedSortOrder.order
       this.emitChange()
     },
 
     emitChange () {
       this.$emit('change', {
         sortFunction: this.selectedSortOrder.sort,
-        sortOrder: this.currentOrder,
+        sortOrder: this.currentOrderDirection,
         sortField: this.selectedSortOrder.field
       })
     }
@@ -85,7 +85,7 @@ export default {
     top: 50%;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -60%);
   }
 }
 

@@ -91,6 +91,7 @@ export default {
     setCurrentTab (tabName) {
       if (this.currentTab !== tabName) {
         this.currentTab = tabName
+        this.$store.dispatch('entryListFilters/initEntries', {facetOwnerType: 'Event', entries: []})
         this.loadItems()
       }
     },

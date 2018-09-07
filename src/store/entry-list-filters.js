@@ -12,11 +12,7 @@ function facetWithoutEntriesIsSelected (state, facet) {
   return state.selectedFacetsWithoutEntries.includes(facet)
 }
 
-function getFilteredEntriesWithNavigation (state) {
-  // apply facet filters
-  const entries = state.filteredEntriesWithoutNavigation
-
-  // apply navigation filter
+function filterNavigationItems (state, entries) {
   if (state.selectedNavigationItem) {
     if (state.selectedNavigationItem._isNavigationWithoutEntry) {
       return entryListFilters.getEntriesWithoutNavigationItem(entries)
@@ -28,11 +24,14 @@ function getFilteredEntriesWithNavigation (state) {
   }
 }
 
-function getFilteredEntriesWithoutNavigation (state) {
-  let entries = state.entries
+function filterActiveState (state, entries) {
   if (state.selectedActiveState.value !== 'all') {
     entries = entries.filter(e => e.active === (state.selectedActiveState.value === 'active'))
   }
+  return entries
+}
+
+function filterFacets (state, entries) {
   return entryListFilters.getEntriesForFacetItemsAndWithoutFacets(
     state.selectedFacetItems,
     state.selectedFacetsWithoutEntries,
@@ -61,13 +60,14 @@ export default {
 
     activeStates: [
       { name: 'Alle', value: 'all' },
-      { name: 'Aktive', value: 'active' },
-      { name: 'Inaktive', value: 'inactive' }
+      { name: 'Aktiv', value: 'active' },
+      { name: 'Inaktiv', value: 'inactive' }
     ],
     selectedActiveState: null,
 
     filteredEntries: [],
-    filteredEntriesWithoutNavigation: []
+    filteredEntriesWithoutNavigation: [],
+    filteredEntriesWithoutActive: []
   },
 
   getters: {
@@ -77,12 +77,31 @@ export default {
   },
 
   mutations: {
-    show (state, show) {
-      state.show = show
-    },
-
     initFacets (state, facets) {
       state.facets = facets
+    },
+
+    initFilteredEntries (state) {
+      if (!state.entries.length) {
+        state.filteredEntriesWithoutNavigation = []
+        state.filteredEntries = []
+        state.filteredEntriesWithoutActive = []
+        return
+      }
+
+      if (initScheduled) {
+        return
+      }
+
+      initScheduled = true
+
+      setTimeout(() => {
+        const entriesFilteredByFacetItems = filterFacets(state, state.entries)
+        state.filteredEntriesWithoutActive = filterNavigationItems(state, entriesFilteredByFacetItems)
+        state.filteredEntriesWithoutNavigation = filterActiveState(state, entriesFilteredByFacetItems)
+        state.filteredEntries = state.filteredEntriesWithoutActive.filter(entry => state.filteredEntriesWithoutNavigation.includes(entry))
+        initScheduled = false
+      })
     },
 
     initEntries (state, {facetOwnerType, entries}) {
@@ -111,8 +130,8 @@ export default {
       if (facetIsSelected(state, facet)) {
         state.selectedFacets = state.selectedFacets.filter(f => f !== facet)
 
-        state.selectedFacetItems = state.selectedFacetItems.filter(fi => fi.facet !== facet)
-        state.selectedFacetsWithoutEntries = state.selectedFacetsWithoutEntries.filter(i => i !== facet)
+        // state.selectedFacetItems = state.selectedFacetItems.filter(fi => fi.facet !== facet)
+        // state.selectedFacetsWithoutEntries = state.selectedFacetsWithoutEntries.filter(i => i !== facet)
       } else {
         state.selectedFacets = state.facets.filter(f => {
           return state.selectedFacets.includes(f) || facet === f
@@ -121,6 +140,10 @@ export default {
     },
 
     toggleFacetItemSelection (state, facetItem) {
+      if (!facetIsSelected(state, facetItem.facet)) {
+        state.selectedFacets.push(facetItem.facet)
+      }
+
       if (facetItemIsSelected(state, facetItem)) {
         state.selectedFacetItems = state.selectedFacetItems.filter(fi => fi !== facetItem)
       } else {
@@ -129,6 +152,10 @@ export default {
     },
 
     toggleFacetWithoutEntriesSelection (state, facet) {
+      if (!facetIsSelected(state, facet)) {
+        state.selectedFacets.push(facet)
+      }
+
       if (facetWithoutEntriesIsSelected(state, facet)) {
         state.selectedFacetsWithoutEntries = state.selectedFacetsWithoutEntries.filter(i => i !== facet)
       } else {
@@ -140,29 +167,17 @@ export default {
       state.facetItemFilters = facetItemFilters
     },
 
-    initFilteredEntries (state) {
-      if (initScheduled) {
-        return
-      }
-
-      initScheduled = true
-
-      setTimeout(() => {
-        state.filteredEntriesWithoutNavigation = getFilteredEntriesWithoutNavigation(state)
-        state.filteredEntries = getFilteredEntriesWithNavigation(state)
-        initScheduled = false
-      })
-    },
-
     toggleNavigationSelection (state) {
       state.navigationIsSelected = !state.navigationIsSelected
 
-      if (!state.navigationIsSelected) {
-        state.selectedNavigationItem = null
-      }
+      // if (!state.navigationIsSelected) {
+      //   state.selectedNavigationItem = null
+      // }
     },
 
     toggleNavigationItemSelection (state, navigationItem) {
+      state.navigationIsSelected = true
+
       if (state.selectedNavigationItem === navigationItem) {
         // item deselected
         if (navigationItem.parent) {
@@ -187,18 +202,16 @@ export default {
   },
 
   actions: {
-    show ({commit}, show) {
-      commit('show', show)
-    },
-
-    initFacets ({commit, dispatch}, facets) {
+    initFacets ({state, commit}, facets) {
+      if (state.facets.length) {
+        return
+      }
       commit('initFacets', facets)
       commit('initSelectedFacets')
-
       commit('initFilteredEntries')
     },
 
-    initEntries ({commit, dispatch}, {facetOwnerType, entries}) {
+    initEntries ({commit}, {facetOwnerType, entries}) {
       commit('initEntries', {facetOwnerType, entries})
       commit('initSelectedFacets')
 
@@ -232,7 +245,7 @@ export default {
       window.scrollTo(0, 0)
     },
 
-    filteredFacetItemClick ({state, dispatch}, facetItem) {
+    filteredFacetItemClick ({dispatch}, facetItem) {
       if (facetItem._isFacetWithoutEntry) {
         dispatch('facetWithoutEntriesClick', facetItem.facet)
       } else {
@@ -276,16 +289,13 @@ export default {
     },
 
     setActiveState ({state, commit}, activeState) {
-      // reset all filters
-      commit('initEntries', {
-        facetOwnerType: state.facetOwnerType,
-        entries: state.entries
-      })
-      commit('initSelectedFacets')
-
       commit('setActiveState', activeState)
 
       commit('initFilteredEntries')
+    },
+
+    unsetActiveState ({state, dispatch}) {
+      dispatch('setActiveState', state.activeStates[0])
     }
   }
 }

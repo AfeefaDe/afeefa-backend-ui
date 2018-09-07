@@ -164,3 +164,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.entryListItems {
+  margin: .5em 0;
+}
+</style>

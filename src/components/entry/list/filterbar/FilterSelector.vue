@@ -1,140 +1,141 @@
 <template>
-  <div>
-    <a ref="trigger" href="" @click.prevent="openFilterSelector">
-      <slot />
-    </a>
+  <div class="filterSelector">
+    <div class="facetChooser">
+      <facet-item-tag
+        @click="selectActiveFilter"
+        :item="{}"
+        title="Status"
+        color="#999999"
+        :more="false"
+        :hint="selectedActiveState.value !== 'all' ? 1 : 0"
+        :selected="activeStateFilterIsSelected"
+        :checkbox="false" />
 
-    <pop-up-selector ref="popUp" :trigger="$refs.trigger" :diffX="10" :diffY="10" align="left" @close="hideFilterSelector" v-if="facetFilterIsOpen">
-      <div class="filterSelector">
-        <div v-if="showFacetChooser">
-          <facet-item-tag v-if="selectedFacet"
-            class="selectedFacet"
-            @click="openFacetChooser"
-            :item="selectedFacet"
-            :color="selectedFacet.color"
-            :more="true"
-            :checkbox="false" />
-
-          <facet-item-tag v-else
-            class="selectedFacet"
-            @click="openFacetChooser"
-            :item="{}"
-            title="Navigation"
-            color="#999999"
-            :more="true"
-            :checkbox="false" />
-
-          <div class="facetChooser" v-if="facetSelectorIsOpen">
-            <facet-item-tag
-              v-for="facet in selectedFacets" :key="'select-' + facet.id"
-              @click="selectFacet(facet)"
-              :item="facet"
-              :color="facet.color"
-              :more="false"
-              :hint="countFiltersForFacet(facet)"
-              :selected="facet === selectedFacet"
-              :checkbox="false" />
-
-            <facet-item-tag
-              v-if="navigationIsSelected"
-              @click="selectNavigation"
-              :item="{}"
-              title="Navigation"
-              color="#999999"
-              :more="false"
-              :hint="selectedNavigationItem ? 1 : 0"
-              :selected="navigationFilterIsSelected"
-              :checkbox="false" />
-          </div>
-        </div>
-
-        <div class="filters" v-if="selectedFacet">
-          <div v-for="facetItem in selectedFacet.facet_items" :key="facetItem.id">
-            <facet-item-tag
-              @click="facetItemClick(facetItem)"
-              :item="facetItem"
-              :color="selectedFacet.color"
-              :more="false"
-              :hint="countEntriesForFacetItem(facetItem)"
-              :disabled="!countEntriesForFacetItem(facetItem)"
-              :checked="facetItemIsSelected(facetItem)"
-              :checkbox="true" />
-          </div>
-
-          <facet-item-tag
-            @click="entriesWithoutFacetClick(selectedFacet)"
-            :item="selectedFacet"
-            title="Nicht zugeordnet"
-            :color="selectedFacet.color"
-            :more="false"
-            :hint="countEntriesWithoutFacet(selectedFacet)"
-            :disabled="!countEntriesWithoutFacet(selectedFacet)"
-            :checked="entriesWithoutFacetIsSelected(selectedFacet)"
-            :checkbox="true" />
-        </div>
-
-        <div class="filters" v-if="navigationFilterIsSelected">
-          <div class="navigationItem" v-for="navigationItem in navigation.navigation_items" :key="navigationItem.id">
-            <facet-item-tag
-              @click="selectOrDeselectNavigationItem(navigationItem)"
-              :item="navigationItem"
-              :color="navigationItem.color"
-              :more="navigationItem.sub_items.length && !navigationItemIsChecked(navigationItem)"
-              :hint="countEntriesForNavigationItem(navigationItem)"
-              :disabled="!countEntriesForNavigationItem(navigationItem)"
-              :checked="navigationItemIsChecked(navigationItem)"
-              :checkbox="true" />
-
-              <div class="navigationSubItem" v-for="(subItem, index) in navigationItem.sub_items" :key="subItem.id" v-if="navigationSubItemIsVisible(subItem)">
-                <tree-sub-item :isLast="index === navigationItem.sub_items.length - 1">
-                  <facet-item-tag
-                    @click="selectOrDeselectNavigationItem(subItem)"
-                    :item="subItem"
-                    :color="navigationItem.color"
-                    :more="false"
-                    :hint="countEntriesForNavigationItem(subItem)"
-                    :disabled="!countEntriesForNavigationItem(subItem)"
-                    :checked="subItem === selectedNavigationItem"
-                    :checkbox="true" />
-                </tree-sub-item>
-              </div>
-          </div>
-
-          <facet-item-tag
-            @click="selectOrDeselectNavigationItem(navigationItemWithoutNavigation)"
-            :item="navigationItemWithoutNavigation"
-            title="Nicht zugeordnet"
-            color="#999999"
-            :more="false"
-            :hint="countEntriesWithoutNavigation"
-            :disabled="!countEntriesWithoutNavigation"
-            :checked="navigationItemWithoutNavigation === selectedNavigationItem"
-            :checkbox="true" />
-        </div>
-
+      <div v-for="facet in selectableFacets" :key="'select-' + facet.id">
+        <facet-item-tag
+          @click="selectFacet(facet)"
+          :item="facet"
+          :color="facet.color"
+          :more="false"
+          :hint="countFiltersForFacet(facet)"
+          :selected="facet === selectedFacet"
+          :checkbox="false" />
       </div>
-    </pop-up-selector>
+
+      <div>
+        <facet-item-tag
+          v-if="navigationIsSelected"
+          @click="selectNavigation"
+          :item="{}"
+          title="Navigation"
+          color="#999999"
+          :more="false"
+          :hint="selectedNavigationItem ? 1 : 0"
+          :selected="navigationFilterIsSelected"
+          :checkbox="false" />
+      </div>
+    </div>
+
+    <div class="filters">
+      <div v-if="activeStateFilterIsSelected">
+        <div v-for="state in activeStates" :key="state.id">
+          <facet-item-tag
+            @click="selectActiveState(state)"
+            :item="{title: state.name}"
+            color="#999999"
+            :more="false"
+            :hint="countEntriesForActiveState(state)"
+            :disabled="!countEntriesForActiveState(state)"
+            :checked="state === selectedActiveState"
+            :radio="true" />
+        </div>
+      </div>
+
+      <div v-if="selectedFacet">
+        <div v-for="facetItem in selectedFacet.facet_items" :key="facetItem.id">
+          <facet-item-tag
+            @click="facetItemClick(facetItem)"
+            :item="facetItem"
+            :color="selectedFacet.color"
+            :more="false"
+            :hint="countEntriesForFacetItem(facetItem)"
+            :disabled="!countEntriesForFacetItem(facetItem)"
+            :checked="facetItemIsSelected(facetItem)"
+            :checkbox="true" />
+        </div>
+
+        <facet-item-tag
+          @click="entriesWithoutFacetClick(selectedFacet)"
+          :item="selectedFacet"
+          title="Nicht zugeordnet"
+          :color="selectedFacet.color"
+          :more="false"
+          :hint="countEntriesWithoutFacet(selectedFacet)"
+          :disabled="!countEntriesWithoutFacet(selectedFacet)"
+          :checked="entriesWithoutFacetIsSelected(selectedFacet)"
+          :checkbox="true" />
+      </div>
+
+      <div v-if="navigationFilterIsSelected">
+        <div class="navigationItem" v-for="navigationItem in navigation.navigation_items" :key="navigationItem.id">
+          <facet-item-tag
+            @click="selectOrDeselectNavigationItem(navigationItem)"
+            :item="navigationItem"
+            :color="navigationItem.color"
+            :more="false"
+            :hint="countEntriesForNavigationItem(navigationItem)"
+            :disabled="!countEntriesForNavigationItem(navigationItem)"
+            :checked="navigationItemIsChecked(navigationItem)"
+            :radio="true" />
+
+          <div class="subItems" v-if="navigationItemIsChecked(navigationItem)">
+            <div class="navigationSubItem" v-for="subItem in navigationItem.sub_items" :key="subItem.id"
+              v-if="navigationSubItemIsVisible(subItem)">
+              <facet-item-tag
+                @click="selectOrDeselectNavigationItem(subItem)"
+                :item="subItem"
+                :color="selectedNavigationItem.color"
+                :more="false"
+                :hint="countEntriesForNavigationItem(subItem)"
+                :disabled="!countEntriesForNavigationItem(subItem)"
+                :checked="subItem === selectedNavigationItem"
+                :radio="true" />
+            </div>
+          </div>
+        </div>
+
+        <facet-item-tag
+          @click="selectOrDeselectNavigationItem(navigationItemWithoutNavigation)"
+          :item="navigationItemWithoutNavigation"
+          title="Nicht zugeordnet"
+          color="#999999"
+          :more="false"
+          :hint="countEntriesWithoutNavigation"
+          :disabled="!countEntriesWithoutNavigation"
+          :checked="navigationItemWithoutNavigation === selectedNavigationItem"
+          :radio="true" />
+      </div>
+    </div>
   </div>
 
 </template>
 
 <script>
-import PopUpSelector from '@/components/PopUpSelector'
 import entryListFilters from '@/helpers/entry-list-filters'
 import { mapState, mapGetters } from 'vuex'
 import Navigation from '@/models/Navigation'
-import TreeSubItem from '@/components/tree/TreeSubItem'
 
 export default {
+  props: ['popUp'],
+
   data () {
     return {
-      facetFilterIsOpen: false,
-      facetSelectorIsOpen: false,
       selectedFacet: null,
+      navigationFilterIsSelected: false,
+      activeStateFilterIsSelected: true,
 
       navigation: null,
-      navigationItemWithoutNavigation: null,
-      navigationFilterIsSelected: false
+      navigationItemWithoutNavigation: null
     }
   },
 
@@ -142,31 +143,36 @@ export default {
     ...mapGetters('entryListFilters', ['selectableFacets']),
 
     ...mapState({
-      selectedFacets: state => state.entryListFilters.selectedFacets,
       selectedFacetItems: state => state.entryListFilters.selectedFacetItems,
       selectedFacetsWithoutEntries: state => state.entryListFilters.selectedFacetsWithoutEntries,
       facetItemFilters: state => state.entryListFilters.facetItemFilters,
 
-      navigationIsSelected: state => state.entryListFilters.navigationIsSelected,
+      // navigationIsSelected: state => state.entryListFilters.navigationIsSelected,
       selectedNavigationItem: state => state.entryListFilters.selectedNavigationItem,
 
       filteredEntries: state => state.entryListFilters.filteredEntries,
-      filteredEntriesWithoutNavigation: state => state.entryListFilters.filteredEntriesWithoutNavigation
+      filteredEntriesWithoutNavigation: state => state.entryListFilters.filteredEntriesWithoutNavigation,
+      filteredEntriesWithoutActive: state => state.entryListFilters.filteredEntriesWithoutActive,
+
+      activeStates: state => state.entryListFilters.activeStates,
+      selectedActiveState: state => state.entryListFilters.selectedActiveState
     }),
 
-    showFacetChooser () {
-      return this.selectedFacets.length > 1 ||
-        (this.selectedFacets.length === 1 && this.navigationIsSelected)
+    navigationIsSelected () {
+      return true
     },
 
     countEntriesWithoutNavigation () {
       return entryListFilters.getEntriesWithoutNavigationItem(this.filteredEntriesWithoutNavigation).length
+    },
+
+    selectedNavigationSubItems () {
+      const parent = this.selectedNavigationItem.parent || this.selectedNavigationItem
+      return parent.sub_items
     }
   },
 
   created () {
-    this.computeSelectedFilter()
-
     Navigation.Query.get().then(navigation => {
       this.navigation = navigation
 
@@ -174,54 +180,21 @@ export default {
     })
   },
 
-  watch: {
-    selectedFacets () {
-      this.computeSelectedFilter()
-    },
-    navigationIsSelected () {
-      this.computeSelectedFilter()
-    }
-  },
-
   methods: {
-    openFilterSelector () {
-      this.facetFilterIsOpen = true
+    countEntriesForActiveState (state) {
+      return entryListFilters.getEntriesForActiveState(state, this.filteredEntriesWithoutActive).length
     },
 
-    hideFilterSelector () {
-      this.facetFilterIsOpen = false
-      this.hideFacetChooser()
-    },
-
-    computeSelectedFilter () {
-      // facet was selected
-      if (this.selectedFacet && this.selectedFacets.includes(this.selectedFacet)) {
-        return
-      } else if (this.selectedFacet) {
-        this.selectedFacet = null
+    selectActiveState (state) {
+      // set all state if deselect
+      if (state === this.selectedActiveState) {
+        if (state.value === 'all') {
+          return
+        }
+        state = this.activeStates[0]
       }
-
-      // navigation filter was selected
-      if (this.navigationFilterIsSelected && this.navigationIsSelected) {
-        return
-      } else if (this.navigationFilterIsSelected) {
-        this.navigationFilterIsSelected = false
-      }
-
-      // nothing selected
-      if (!this.selectedFacet && this.selectedFacets.length) {
-        this.selectedFacet = this.selectedFacets[0]
-      } else if (this.navigationIsSelected) {
-        this.navigationFilterIsSelected = true
-      }
-    },
-
-    openFacetChooser () {
-      this.facetSelectorIsOpen = true
-    },
-
-    hideFacetChooser () {
-      this.facetSelectorIsOpen = false
+      this.$store.dispatch('entryListFilters/setActiveState', state)
+      this.popUp.repositionLater()
     },
 
     countFiltersForFacet (facet) {
@@ -229,28 +202,29 @@ export default {
     },
 
     selectFacet (facet) {
-      this.navigationFilterIsSelected = false
+      this.activeStateFilterIsSelected = false
       this.selectedFacet = facet
-      this.hideFacetChooser()
-      this.$nextTick(() => {
-        this.$refs.popUp.reposition()
-      })
+      this.navigationFilterIsSelected = false
+      this.popUp.repositionLater()
     },
 
     selectNavigation () {
+      this.activeStateFilterIsSelected = false
       this.selectedFacet = null
       this.navigationFilterIsSelected = true
-      this.hideFacetChooser()
-      this.$nextTick(() => {
-        this.$refs.popUp.reposition()
-      })
+      this.popUp.repositionLater()
+    },
+
+    selectActiveFilter () {
+      this.activeStateFilterIsSelected = true
+      this.selectedFacet = null
+      this.navigationFilterIsSelected = false
+      this.popUp.repositionLater()
     },
 
     selectOrDeselectNavigationItem (navigationItem) {
       this.$store.dispatch('entryListFilters/selectOrDeselectNavigationItem', navigationItem)
-      this.$nextTick(() => {
-        this.$refs.popUp.reposition()
-      })
+      this.popUp.repositionLater()
     },
 
     countEntriesForNavigationItem (navigationItem) {
@@ -275,6 +249,7 @@ export default {
 
     facetItemClick (facetItem) {
       this.$store.dispatch('entryListFilters/facetItemClick', facetItem)
+      this.popUp.repositionLater()
     },
 
     countEntriesForFacetItem (facetItem) {
@@ -289,10 +264,6 @@ export default {
       return this.selectedFacetsWithoutEntries.includes(facet)
     },
 
-    createEmptyFacetItem (facet) {
-      return entryListFilters.createFacetItemEntriesWithoutFacet(facet)
-    },
-
     entriesWithoutFacetClick (facet) {
       this.$store.dispatch('entryListFilters/facetWithoutEntriesClick', facet)
     },
@@ -300,77 +271,51 @@ export default {
     countEntriesWithoutFacet (facet) {
       return entryListFilters.getEntriesWithoutFacet(facet, this.filteredEntries).length
     }
-  },
-
-  components: {
-    PopUpSelector,
-    TreeSubItem
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .filterSelector {
-  padding: 1em;
-  width: auto;
-}
-
-.selectedFacet {
-  width: 100%;
-  background-color: $white;
-  margin-bottom: .8em;
-  line-height: 2em;
-
-  /deep/ .facetItem {
-    width: 100%;
-    .more:before {
-      top: -.1em;
-      transform: rotate(135deg) scale(.7);
-    }
-  }
+  width: 320px;
+  padding: .5em;
+  display: inline-flex;
+  font-size: .9em;
 }
 
 .facetChooser {
-  line-height: 2em;
-  /deep/ .facetItem {
-    margin-bottom: .2em;
-    width: 100%;
+  > * {
+    margin-bottom: 2px;
   }
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: white;
-  width: 100%;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.2), 0 2px 10px 0 rgba(0,0,0,0.2);
-  padding: 1.5em;
-  z-index: $z-index-overlay;
-}
-
-.filters {
-  font-size: 14px;
-
   /deep/ .facetItem {
-    border-left-width: 0;
-    padding: 0 0 .1em;
-
-    .checkbox {
-      margin-left: 0;
+    width: 100%;
+    &.selected {
+      background-color: $white;
     }
   }
 }
 
-.navigationItem {
-  /deep/ .facetItem {
-    width: 100%;
+.filters {
+  padding: .2em 0 .2em 2em;
+
+  .subItems {
+    font-size: .9em;
+    display: flex;
+    flex-wrap: wrap;
+    margin: .2em 0 .4em 2em;
   }
-}
 
-.facetItemTag + .navigationSubItem {
-  margin-top: .1em;
-}
+  /deep/ .facetItem {
+    border-left-width: 0;
+    padding: 0;
+    margin-right: .5em;
+    margin-bottom: .2em;
 
-.navigationSubItem {
-  margin-left: -.1em;
+    .checkbox {
+      margin-left: 0;
+      // margin-right: .2em;
+    }
+  }
 }
 </style>
 
