@@ -37,20 +37,39 @@
           </div>
 
           <div class="entryDetail splitView__splitViewChild">
-            <entry-detail-property name="Projektträger" iconName="group">
-              <editable-actor-actors :owner="orga" relationName="project_initiators" title="Projektträger" :showActors="true">
-                <div slot="actor" slot-scope="props">
-                  <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
-                    {{ props.actor.title }}
-                  </router-link>
-                </div>
-              </editable-actor-actors>
-            </entry-detail-property>
+            <entry-detail-section
+              title="Projektträger"
+              icon="group"
+              :inlineEditing="true">
+              <div slot-scope="props">
+                <editable-actor-actors2 :isEdit="props.isEdit" :owner="orga" relationName="project_initiators"
+                  title="Projektträger" :showActors="true">
+                </editable-actor-actors2>
+              </div>
+            </entry-detail-section>
+
+            <entry-detail-section
+              :title="$t('entries.description')"
+              icon="format_align_left"
+              :editLink="{name: 'orgas.edit', params: {id: orga.id}}">
+
+              <div v-if="orga.short_description">{{orga.short_description}}</div>
+            </entry-detail-section>
+
+            <entry-detail-section
+              title="Test"
+              icon="format_align_left"
+              :inlineEditing="true">
+              <div slot-scope="props">
+                {{ props }}
+              </div>
+            </entry-detail-section>
 
             <entry-detail-property
               :name="$t('entries.description')"
               iconName="format_align_left"
               :isMultiline="true">
+              <a href="" ></a>
               <div v-if="orga.short_description">{{orga.short_description}}</div>
             </entry-detail-property>
 
@@ -218,6 +237,7 @@ import ImageContainer from '@/components/ImageContainer'
 import EditableEntryNavigationItems from '@/components/entry/facets/EditableEntryNavigationItems'
 import ContactList from '@/components/contact/ContactList'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
+import EditableActorActors2 from '@/components/actor/EditableActorActors2'
 import EditableActorActors from '@/components/actor/EditableActorActors'
 import ActorSelector from '@/components/actor/ActorSelector'
 import EntryListItems from '@/components/entry/list/EntryListItems'
@@ -281,6 +301,7 @@ export default {
     ImageContainer,
     EditableEntryNavigationItems,
     EditableActorActors,
+    EditableActorActors2,
     ContactList,
     EntryDetailFooter,
     ActorSelector,
@@ -328,5 +349,9 @@ export default {
   &.overview {
     position: relative;
   }
+}
+
+.entryDetailSection:not(:first-child) {
+  margin-top: 2em;
 }
 </style>
