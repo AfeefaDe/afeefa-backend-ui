@@ -24,6 +24,8 @@ class Offer extends Model {
     return {
       title: DataTypes.String,
 
+      short_description: DataTypes.String,
+
       description: DataTypes.String,
 
       image_url: DataTypes.String,
@@ -92,6 +94,7 @@ class Offer extends Model {
   serialize () {
     const data = {
       title: this.title,
+      short_description: this.short_description,
       description: this.description,
       image_url: this.image_url
     }

@@ -17,11 +17,18 @@
 
         <text-input
           class="formElement marginTop"
+          v-model="offer.short_description"
+          fieldName="short_description"
+          :label="$t('entries.short_description')"
+          :placeholder="$t('entries.short_description')"
+          validate="required|max:350" />
+
+        <text-input
+          class="formElement marginTop"
           v-model="offer.description"
           fieldName="description"
           :label="$t('entries.description')"
-          :placeholder="$t('entries.description')"
-          validate="required|max:350" />
+          :placeholder="$t('entries.description')" />
 
         <entry-edit-footer
           :item="offer"

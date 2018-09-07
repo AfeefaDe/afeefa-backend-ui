@@ -17,6 +17,10 @@ a {
   color: $secondaryBlue;
 }
 
+.btn {
+  @include user-select();
+}
+
 .btn, .btn-large {
   background-color: $secondaryBlue;
   transition: none;
