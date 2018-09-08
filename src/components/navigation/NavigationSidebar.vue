@@ -1,5 +1,5 @@
 <template>
-  <div class="navigationSidebar mainCard">
+  <div class="navigationSidebar mainCard" :class="userClass">
     <div class="logoContainer">
       <img class="logo" src="../../assets/images/afeefa_light_withoutLink.svg" alt="Afeefa Logo with white background">
     </div>
@@ -53,6 +53,13 @@ import NavigationMixin from '@/components/navigation/mixins/NavigationMixin'
 
 export default {
   mixins: [NavigationMixin],
+
+  computed: {
+    userClass () {
+      return this.currentUser.first_name.toLowerCase()
+    }
+  },
+
   methods: {
     /* hacky way to hide chapter feature in bautzen */
     showSideBarItem (item) {
@@ -75,6 +82,11 @@ export default {
     .logo {
       height: 70%;
     }
+  }
+
+  &.felix {
+    background-color: inherit;
+    box-shadow: none;
   }
 
   &__navContainer {
