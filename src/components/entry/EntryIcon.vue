@@ -1,7 +1,7 @@
 <template>
   <div :class="['entryIcon', {inactive: item.hasOwnProperty('active') && !item.active}]">
     <i v-if="item.type === 'orgas'" class="material-icons orgas">group</i>
-    <i v-if="item.type === 'offers'" class="material-icons offers">message</i>
+    <i v-if="item.type === 'offers'" class="material-icons offers">favorite</i>
     <i v-if="item.type === 'events'" class="material-icons events">date_range</i>
     <i v-if="item.type === 'annotations'" class="material-icons annotations">chevron_right</i>
   </div>
