@@ -6,7 +6,9 @@ export default class ActorRelationsResource extends Resource {
   }
 
   serializeAttachOrDetach (model) {
-    return model.id
+    return {
+      actor: model.id
+    }
   }
 
   serializeAttachOrDetachMany (models) {

@@ -34,11 +34,18 @@
 
         <text-input
           class="formElement marginTop"
+          v-model="offer.short_description"
+          fieldName="short_description"
+          :label="$t('entries.short_description')"
+          :placeholder="$t('entries.short_description')"
+          validate="required|max:350" />
+
+        <text-input
+          class="formElement marginTop"
           v-model="offer.description"
           fieldName="description"
           :label="$t('entries.description')"
-          :placeholder="$t('entries.description')"
-          validate="required|max:350" />
+          :placeholder="$t('entries.description')" />
 
         <contact-list :item="offer" v-if="false" />
 
@@ -108,7 +115,8 @@ export default {
         this.offer.convertFromActorId = actor.id
         this.offer.owners = actor.project_initiators
         this.offer.title = actor.title
-        this.offer.description = actor.short_description || actor.description
+        this.offer.short_description = actor.short_description
+        this.offer.description = actor.description
         this.offer.image_url = actor.media_url
         this.offer.contacts = actor.contacts
       } else {

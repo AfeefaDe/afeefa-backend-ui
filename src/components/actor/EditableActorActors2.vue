@@ -5,22 +5,27 @@
     </div>
     <div v-else>
       <div v-if="showActors">
-        <div v-for="actor in items" :key="actor.id">
-          <router-link v-if="!isEdit" :to="{name: 'orgas.show', params: {id: actor.id}}">
-            {{ actor.title }}
-          </router-link>
-          <span v-else>
-            {{ actor.title }}
-            <div class="removeIcon">
-              <i class="material-icons">cancel</i>
-            </div>
-          </span>
+        <div v-for="actor in items" :key="actor.id" class="actor">
+          <div class="actorIcon" v-if="false">
+            <i class="material-icons">group</i>
+          </div>
+          <div class="actorTitle">
+            <router-link v-if="!isEdit" :to="{name: 'orgas.show', params: {id: actor.id}}">
+              {{ actor.title }}
+            </router-link>
+            <span v-else>
+              <a href="" @click.prevent="removeActor(actor)">{{ actor.title }}</a>
+              <div class="removeIcon" @click="removeActor(actor)">
+                <i class="material-icons">cancel</i>
+              </div>
+            </span>
+         </div>
 
         </div>
         <div v-if="!items.length" class="entryDetail__error">Keine {{ title }} angegeben</div>
       </div>
 
-      <component v-if="isEdit" :is="selector" :actor="owner" :relationName="relationName" title="Hinzufügen" @saved="actorRelationSaved">
+      <component v-if="isEdit && owner[relationName].length < 3" :is="selector" :actor="owner" :relationName="relationName" title="Hinzufügen" @added="actorRelationAdded">
         <slot slot="triggerButton" name="triggerButton" />
       </component>
     </div>
@@ -54,7 +59,11 @@ export default {
   },
 
   methods: {
-    actorRelationSaved (actors) {
+    actorRelationAdded (actor) {
+      this.actorRelationSaved(actor, 'add')
+    },
+
+    actorRelationSaved (actor, operation) {
       if (this.owner.id) {
         this.isLoading = 1
 
@@ -69,7 +78,11 @@ export default {
           this.setItemsAfterLoading()
         })
       } else { // new items add directly
-        this.owner[this.relationName] = actors
+        if (operation === 'add') {
+          this.owner[this.relationName].push(actor)
+        } else {
+          this.owner[this.relationName] = this.owner[this.relationName].filter(a => a !== actor)
+        }
         this.isLoading = 3
         this.setItemsAfterLoading()
       }
@@ -83,6 +96,24 @@ export default {
 
     reloadActors () {
       return this.owner.$rels[this.relationName].refetch()
+    },
+
+    removeActor (actor) {
+      this.$store.dispatch('messages/showDialog', {
+        title: 'Akteur entfernen',
+        message: `Soll der Akteur "${actor.title}" aus der Liste entfernt werden?`
+      }).then(result => {
+        if (result === 'yes') {
+          return this.owner.$rels[this.relationName].Query.detach(actor).then(result => {
+            if (result) {
+              this.$store.dispatch('messages/showAlert', {
+                description: 'Der Akteur wurde entfernt.'
+              })
+              this.actorRelationSaved(actor, 'del')
+            }
+          })
+        }
+      })
     }
   },
 
@@ -93,7 +124,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.actor {
+  display: flex;
+  &:not(:last-child) {
+    margin-bottom: .5em;
+  }
+}
+
+.actorIcon {
+  flex: 0 0 24px;
+  i {
+    font-size: 14px;
+  }
+}
+
 .removeIcon {
+  cursor: pointer;
   display: inline;
   i {
     font-size: 1.1em;

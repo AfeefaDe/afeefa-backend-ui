@@ -21,11 +21,11 @@
               </entry-detail-property>
 
               <entry-detail-property
-                v-if="offer.description"
-                :name="$t('entries.description')"
+                v-if="offer.short_description"
+                :name="$t('entries.short_description')"
                 iconName="format_align_left"
                 :isMultiline="true">
-                <span>{{ offer.description }}</span>
+                <span>{{ offer.short_description }}</span>
               </entry-detail-property>
 
               <div v-for="(facet, index) in facets" :key="facet.id">

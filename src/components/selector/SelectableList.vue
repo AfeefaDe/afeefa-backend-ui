@@ -4,8 +4,6 @@
       {{ messages.title }} ({{ selectableItems.length }})
     </div>
 
-    <text-input />
-
     <input v-if="has.filter" type="text" class="browser-default" v-model="keyword" v-focus ref="keywordInput"
       placeholder="Tippen, um zu filtern"
       @input="keywordChanged"

@@ -16,14 +16,6 @@
           </selectable-list>
         </div>
       </div>
-      <div class="footer">
-        <button type="button" class="btn btn-medium gray waves-effect waves-light" @click="hideModal">
-          Abbrechen
-        </button>
-        <button type="button" class="btn btn-medium green waves-effect waves-light" @click="save">
-          Speichern
-        </button>
-      </div>
     </modal>
 
     <div @click="showModal">
@@ -99,10 +91,10 @@ export default {
 
       if (this.actor.id) {
         this.saveActor(actor).then(() => {
-          this.$emit('saved', actor)
+          this.$emit('added', actor)
         })
       } else {
-        this.$emit('saved', actor)
+        this.$emit('added', actor)
       }
     },
 
