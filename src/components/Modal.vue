@@ -6,7 +6,7 @@
 
     <transition name="fade">
       <div v-if="visible" class="modal__window">
-        <div class="modal__closeIcon" @click="close">
+        <div class="modal__closeIcon" @click="close" v-if="hasClose">
           <i class="material-icons">cancel</i>
         </div>
 
@@ -19,6 +19,8 @@
 
 <script>
 export default {
+  props: ['hasClose'],
+
   data () {
     return {
       visible: false

@@ -10,21 +10,31 @@
       <div class="header">
         <div class="title">{{ title}}</div>
 
-        <router-link :to="editLink" v-if="editLink" class="editLink inlineEditLink">
-          Ändern
-        </router-link>
+        <div class="editLink" v-if="editLink">
+          <router-link :to="editLink" class="inlineEditLink">
+            Ändern
+          </router-link>
+        </div>
 
-        <a href="" @click.prevent="isEdit = true" v-if="inlineEditing && !isEdit" class="editLink inlineEditLink">
-          Ändern
-        </a>
+        <div class="editLink" v-if="dispatchEdit">
+          <a href="" @click.prevent="dispatchEditClick" class="inlineEditLink">
+            Ändern
+          </a>
+        </div>
 
-        <a href="" @click.prevent="isEdit = false" v-if="inlineEditing && isEdit" class="editLink inlineEditLink">
-          Abbrechen
-        </a>
+        <div class="editLink" v-if="inlineEditing">
+          <a href="" @click.prevent="isEdit = true" v-if="!isEdit" class="inlineEditLink">
+            Ändern
+          </a>
+          <a href="" @click.prevent="isEdit = false" v-if="isEdit" class="inlineEditLink">
+            Abbrechen
+          </a>
+        </div>
+
       </div>
 
       <div class="content">
-        <slot :isEdit="isEdit" />
+        <slot :isEdit="isEdit" ref="content" />
       </div>
     </div>
   </div>
@@ -32,11 +42,19 @@
 
 <script>
 export default {
-  props: ['title', 'icon', 'editLink', 'inlineEditing'],
+  props: ['title', 'icon', 'editLink', 'inlineEditing', 'dispatchEdit'],
 
   data () {
     return {
       isEdit: false
+    }
+  },
+
+  methods: {
+    dispatchEditClick () {
+      this.$children.forEach(vue => {
+        vue.$emit('edit')
+      })
     }
   }
 }
@@ -70,8 +88,8 @@ export default {
   }
 
   .editLink {
-    margin-top: -.1em;
-    margin-left: .5em;
+    margin-top: -.3em;
+    margin-left: .4em;
   }
   .content {
     margin-top: .5em;

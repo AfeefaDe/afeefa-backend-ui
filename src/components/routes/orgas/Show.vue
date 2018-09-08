@@ -40,14 +40,11 @@
             <entry-detail-section
               title="Projektträger"
               icon="group"
-              :inlineEditing="true">
-              <div slot-scope="props">
-                <editable-actor-actors2 :isEdit="props.isEdit" :owner="orga" relationName="project_initiators"
-                  title="Projektträger" :showActors="true">
-                </editable-actor-actors2>
-              </div>
+              :dispatchEdit="true">
+              <editable-actor-actors2 :actor="orga" relationName="project_initiators"
+                title="Projektträger" :showActors="true">
+              </editable-actor-actors2>
             </entry-detail-section>
-
             <entry-detail-section
               :title="$t('entries.description')"
               icon="format_align_left"

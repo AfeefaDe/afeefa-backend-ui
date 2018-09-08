@@ -1,6 +1,7 @@
 <template>
   <div>
-    <modal ref="modal" class="modalWindow">
+    SELECTOR
+    <modal ref="modal" class="modalWindow" v-if="false">
       <div class="modalContent">
         <div class="actorSelector">
           <selectable-list
@@ -18,7 +19,7 @@
       </div>
     </modal>
 
-    <div @click="showModal">
+    <div @click="showModal" v-if="trigger">
       <slot name="triggerButton">
         <a href="" class="inlineEditLink" @click.prevent>
           Hinzufügen
@@ -36,7 +37,7 @@ import SelectableList from '@/components/selector/SelectableList'
 import sortByTitle from '@/helpers/sort-by-title'
 
 export default {
-  props: ['title', 'actor', 'relationName'],
+  props: ['title', 'actor', 'relationName', 'trigger'],
 
   data () {
     return {
@@ -54,6 +55,10 @@ export default {
         notFound: 'Nichts ausgewählt'
       }
     }
+  },
+
+  mounted () {
+    // this.showModal()
   },
 
   methods: {
