@@ -1,140 +1,225 @@
 <template>
   <div>
-    <div v-if="isLoading">
+
+    <modal ref="modal" class="modalWindow" :hasClose="false">
+      <div class="modalContent">
+        <div class="actorSelector">
+          <selectable-list
+            :items="selectableActors"
+            :selectedItems="selectedActors"
+            :messages="messagesSelectable"
+            :isLoading="isLoading"
+            :maxSelectableItems="3"
+            @select="addActor"
+            @deselect="removeActor"
+            @cancel="hideModal"
+            @save="saveSelectedActors">
+
+            <div slot="item" slot-scope="props" class="listEntry">
+              <entry-icon :item="props.item" />
+              <div>{{ props.item.title }}</div>
+            </div>
+
+            <div slot="selectedItem" slot-scope="props" class="selectedActorListItem">
+              <div class="selectedActor">
+                <div class="actorIcon">
+                  <i class="material-icons">group</i>
+                </div>
+                <div class="actorTitle">
+                  <span>{{ props.item.title }}</span>
+                  <i class="material-icons">cancel</i>
+                </div>
+              </div>
+            </div>
+
+          </selectable-list>
+        </div>
+      </div>
+    </modal>
+
+    <div v-if="isReloading">
       <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade {{ title }}
     </div>
+
     <div v-else>
-      <div v-if="showActors">
-        <div v-for="actor in items" :key="actor.id" class="actor">
-          <div class="actorIcon" v-if="false">
-            <i class="material-icons">group</i>
-          </div>
-          <div class="actorTitle">
-            <router-link v-if="!isEdit" :to="{name: 'orgas.show', params: {id: actor.id}}">
-              {{ actor.title }}
-            </router-link>
-            <span v-else>
-              <a href="" @click.prevent="removeActor(actor)">{{ actor.title }}</a>
-              <div class="removeIcon" @click="removeActor(actor)">
-                <i class="material-icons">cancel</i>
-              </div>
-            </span>
-         </div>
-
+      <div v-for="actor in initialSelectedActors" :key="actor.id" class="selectedActorListItem selectedActor">
+        <div class="actorIcon" v-if="false">
+          <i class="material-icons">group</i>
         </div>
-        <div v-if="!items.length" class="entryDetail__error">Keine {{ title }} angegeben</div>
-      </div>
+        <div class="actorTitle">
+          <router-link :to="{name: 'orgas.show', params: {id: actor.id}}">
+            {{ actor.title }}
+          </router-link>
+        </div>
 
-      <component v-if="isEdit && owner[relationName].length < 3" :is="selector" :actor="owner" :relationName="relationName" title="Hinzufügen" @added="actorRelationAdded">
-        <slot slot="triggerButton" name="triggerButton" />
-      </component>
+      </div>
+      <div v-if="!items.length" class="entryDetail__error">Keine {{ title }} angegeben</div>
     </div>
+
   </div>
 </template>
 
 <script>
 import Spinner from '@/components/Spinner'
 import SingleActorSelector from '@/components/actor/SingleActorSelector'
+import ActorSelectorMixin from './mixins/ActorSelectorMixin'
+import Modal from '@/components/Modal'
+import SelectableList from '@/components/selector/SelectableList'
 
 export default {
-  props: ['owner', 'relationName', 'title', 'showActors', 'isEdit'],
+  mixins: [ActorSelectorMixin],
+
+  props: ['title', 'trigger'],
 
   data () {
     return {
-      isLoading: 0,
-      selector: SingleActorSelector
+      isReloading: 0,
+      selector: SingleActorSelector,
+
+      messagesSelectable: {
+        title: 'Alle',
+        notFound: 'Nichts gefunden'
+      },
+      messagesSelected: {
+        title: 'Ausgewählt',
+        notFound: 'Nichts ausgewählt'
+      }
+    }
+  },
+
+  created () {
+    if (!this.trigger) {
+      this.$on('edit', this.onEdit)
+    }
+  },
+
+  destroyed () {
+    if (!this.trigger) {
+      this.$off('edit', this.onEdit)
     }
   },
 
   computed: {
     items () {
-      return this.owner[this.relationName]
-    }
-  },
-
-  watch: {
-    isEdit () {
-      // just watch
+      return this.actor[this.relationName]
     }
   },
 
   methods: {
-    actorRelationAdded (actor) {
-      this.actorRelationSaved(actor, 'add')
+    onEdit () {
+      this.showModal()
+    },
+
+    showModal () {
+      this.$refs.modal.show()
+      this.initSelectedActors()
+      this.loadSelectableActors()
+    },
+
+    hideModal () {
+      this.$refs.modal.close()
+    },
+
+    startActorRelationSave () {
+      this.hideModal()
     },
 
     actorRelationSaved (actor, operation) {
-      if (this.owner.id) {
-        this.isLoading = 1
+      if (this.actor.id) {
+        this.isReloading = 1
 
         // show loading spinner min 500 ms for good ux
         setTimeout(() => {
-          this.isLoading++
+          this.isReloading++
           this.setItemsAfterLoading()
         }, 500)
 
         this.reloadActors().then(() => {
-          this.isLoading++
+          this.isReloading++
           this.setItemsAfterLoading()
         })
       } else { // new items add directly
         if (operation === 'add') {
-          this.owner[this.relationName].push(actor)
+          this.actor[this.relationName].push(actor)
         } else {
-          this.owner[this.relationName] = this.owner[this.relationName].filter(a => a !== actor)
+          this.actor[this.relationName] = this.actor[this.relationName].filter(a => a !== actor)
         }
-        this.isLoading = 3
+        this.isReloading = 3
         this.setItemsAfterLoading()
       }
     },
 
     setItemsAfterLoading () {
-      if (this.isLoading > 2) {
-        this.isLoading = false
+      if (this.isReloading > 2) {
+        this.isReloading = false
+        this.initSelectedActors()
       }
-    },
-
-    reloadActors () {
-      return this.owner.$rels[this.relationName].refetch()
-    },
-
-    removeActor (actor) {
-      this.$store.dispatch('messages/showDialog', {
-        title: 'Akteur entfernen',
-        message: `Soll der Akteur "${actor.title}" aus der Liste entfernt werden?`
-      }).then(result => {
-        if (result === 'yes') {
-          return this.owner.$rels[this.relationName].Query.detach(actor).then(result => {
-            if (result) {
-              this.$store.dispatch('messages/showAlert', {
-                description: 'Der Akteur wurde entfernt.'
-              })
-              this.actorRelationSaved(actor, 'del')
-            }
-          })
-        }
-      })
     }
   },
 
   components: {
-    Spinner
+    Spinner,
+    Modal,
+    SelectableList
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.actor {
+.modalWindow /deep/ .modal__window {
+  width: 600px;
+  padding: 2em 1.5em 1.7em;
+}
+
+.listEntry {
   display: flex;
-  &:not(:last-child) {
-    margin-bottom: .5em;
+  align-items: center;
+  line-height: 2em;
+  padding: 0 .5em;
+
+  .entryIcon /deep/ i {
+    font-size: 1.1em;
+    margin-right: .6em;
   }
 }
 
+.selectableList {
+  /deep/ .selectableItems, /deep/ .hint {
+    height: auto;
+  }
+}
+
+.selectedActorListItem {
+  display: inline;
+  &:not(:last-child) {
+    margin-bottom: .6em;
+  }
+}
+
+.selectedActor {
+  display: inline-block;
+  flex-basis: 0;
+}
+
 .actorIcon {
+  display: inline-block;
+  width: 24px;
   flex: 0 0 24px;
   i {
     font-size: 14px;
+  }
+}
+
+.actorTitle {
+  display: inline-block;
+  cursor: pointer;
+  line-height: 1.2;
+  > i {
+    position: relative;
+    top: .2em;
+    left: .1em;
+    font-size: 1.1em;
+    color: $gray50;
   }
 }
 
@@ -144,7 +229,7 @@ export default {
   i {
     font-size: 1.1em;
     margin-left: .1em;
-    color: $gray80;
+    color: $gray50;
   }
 }
 </style>
