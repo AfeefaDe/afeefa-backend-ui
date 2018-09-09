@@ -63,7 +63,7 @@ export default {
 <style lang="scss" scoped>
 .entryDetailSection {
   display: flex;
-  align-items: center;
+  align-items: top;
 
   .left {
     flex: 0 0 60px;
@@ -83,6 +83,8 @@ export default {
   }
 
   .title {
+    font-size: 1.2em;
+    letter-spacing: 1px;
     text-transform: uppercase;
     color: $gray50;
   }
@@ -91,8 +93,9 @@ export default {
     margin-top: -.3em;
     margin-left: .4em;
   }
+
   .content {
-    margin-top: .5em;
+    margin-top: 1em;
   }
 }
 </style>
