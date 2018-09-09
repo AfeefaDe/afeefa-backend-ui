@@ -11,7 +11,6 @@
             :isLoading="isLoading"
             :maxSelectableItems="3"
             @select="addActor"
-            @deselect="removeActor"
             @cancel="hideModal"
             @save="saveSelectedActors">
 
@@ -24,7 +23,7 @@
               <div class="actorIcon">
                 <i class="material-icons">group</i>
               </div>
-              <div class="actorTitle">
+              <div class="selectedItemTitle" @click.capture.prevent="removeActor(props.item)">
                 <span>{{ props.item.title }}</span>
                 <i class="material-icons">cancel</i>
               </div>
@@ -41,9 +40,6 @@
 
     <div v-else>
       <div v-for="actor in initialSelectedActors" :key="actor.id" class="selectedActor">
-        <div class="actorIcon" v-if="false">
-          <i class="material-icons">group</i>
-        </div>
         <div class="actorTitle">
           <router-link :to="{name: 'orgas.show', params: {id: actor.id}}">
             {{ actor.title }}
@@ -51,7 +47,8 @@
         </div>
 
       </div>
-      <div v-if="!items.length" class="entryDetail__error">Keine {{ title }} angegeben</div>
+
+      <div v-if="!items.length" class="entryDetail__error">Keine {{ title }} angegeben.</div>
     </div>
 
   </div>
@@ -194,30 +191,36 @@ export default {
 }
 
 .selectedItem {
-  display: inline-block;
-  flex-basis: 0;
+  display: flex;
+  align-items: center;
 }
 
 .actorIcon {
-  display: inline-block;
-  width: 24px;
-  flex: 0 0 24px;
+  flex: 0 0 28px;
   i {
     font-size: 14px;
   }
 }
 
-.actorTitle {
-  display: inline-block;
+.selectedItemTitle {
   cursor: pointer;
-  line-height: 1.2;
   > i {
+    display: inline;
     position: relative;
-    top: .2em;
-    left: .1em;
+    top: .1em;
     font-size: 1.1em;
     color: $gray50;
   }
+  &:hover {
+    color: $gray50;
+    i {
+      color: $gray30;
+    }
+  }
+}
+
+.actorTitle {
+  line-height: 1.3;
 }
 
 .removeIcon {

@@ -11,9 +11,7 @@
     <div v-else>
       <div class="selectedItems" v-if="selectedItems.length">
         <div v-for="item in selectedItems" :key="item.id">
-          <div class="selectedItem" @click.capture.prevent="deselect(item)">
-            <slot name="selectedItem" :item="item"></slot>
-          </div>
+          <slot name="selectedItem" :item="item"></slot>
         </div>
       </div>
 
@@ -195,6 +193,7 @@ export default {
 
     onBlur () {
       this.focus = false
+      this.keyword = ''
     },
 
     onFocus () {
@@ -219,10 +218,6 @@ export default {
       this.selectedItemIndex = index
       this.$emit('select', item)
       this.focusInput()
-    },
-
-    deselect (item) {
-      this.$emit('deselect', item)
     },
 
     focusInput () {
@@ -276,16 +271,15 @@ export default {
 }
 
 .selectableItems {
-  // background-color: $gray10;
   width: 100%;
-  max-height: 20vh;
+  max-height: 30vh;
   overflow-y: auto;
   position: absolute;
   box-shadow: 0 7px 20px 0 rgba(0,0,0,0.3);
 }
 
 .selectedItems {
-  max-height: 20vh;
+  max-height: 30vh;
   overflow-x: hidden;
   overflow-y: auto;
   margin-bottom: 1.5em;
@@ -293,11 +287,6 @@ export default {
   > :not(:last-child) {
     margin-bottom: .6em;
   }
-}
-
-.selectedItem {
-  display: inline-block;
-  width: auto;
 }
 
 .item {
@@ -322,10 +311,6 @@ export default {
     background-color: lighten($blueHightlight, 10);
     color: white;
   }
-}
-
-.selectedItem {
-  //  background-color: yellow;
 }
 
 .footer {

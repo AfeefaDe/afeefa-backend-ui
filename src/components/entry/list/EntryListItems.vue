@@ -102,7 +102,7 @@
 
             <div class="entryList__status entryList--lightColor" v-if="showUpdatedAt">
               {{ $t('status.changed') }}
-              <span>{{item.updated_at | formatDateRelative}}</span>
+              <span>{{ item.updated_at | formatDateRelative }}</span>
               <!-- {{item.updated_at | formatDateAbsolute}} -->
               <!-- <span>{{item.updated_at | formatDateRelative}} ({{item.updated_at | formatDateAbsolute}})</span> -->
               <!-- <span v-if="item.last_editor"> von {{ item.last_editor.name }} <span v-if="item.last_editor.organization">({{ item.last_editor.organization }})</span></span> -->
@@ -394,9 +394,7 @@ export default {
     border-bottom: 1px solid $gray20;
     display: flex;
     align-items: center;
-    &:not(:first-child) {
-      padding-top: 1.5em;
-    }
+    padding-top: 1.5em;
     padding-bottom: 1.5em;
     padding-right: 4em;
   }
