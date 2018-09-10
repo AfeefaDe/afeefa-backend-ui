@@ -2,6 +2,12 @@ import FacetItem from '@/models/FacetItem'
 import NavigationItem from '@/models/NavigationItem'
 
 export default {
+  entryHasFacetItemForFacet (entry, facet) {
+    return entry.facet_items.some(facetItem => {
+      return facetItem.facet === facet
+    })
+  },
+
   getEntriesForFacet (facet, entries) {
     return entries.filter(entry => {
       return entry.facet_items.find(facetItem => {

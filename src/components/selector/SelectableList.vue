@@ -1,31 +1,35 @@
 <template>
   <div class="selectableList">
-    <div class="title" v-if="false">
-      {{ messages.title }} ({{ selectableItems.length }})
+    <div v-if="selectedItems.length" class="disabledLabel">
+      <input-label :title="labelHint" />
+    </div>
+
+    <div class="selectedItems" v-if="selectedItems.length">
+      <div v-for="item in selectedItems" :key="item.id">
+        <slot name="selectedItem" :item="item"></slot>
+      </div>
+    </div>
+
+    <div class="noSelectedItems" v-else>
+      <slot name="noSelectedItems" />
     </div>
 
     <div v-if="isLoading">
-      <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Einträge ...
+      <spinner :show="true" :width="1" :radius="5" :length="3" /> {{ messages.loading }}...
     </div>
 
     <div v-else>
-      <div class="selectedItems" v-if="selectedItems.length">
-        <div v-for="item in selectedItems" :key="item.id">
-          <slot name="selectedItem" :item="item"></slot>
-        </div>
-      </div>
-
-      <slot name="selectedItems" />
-
       <div class="list" v-if="selectEnabled">
+        <input-label :title="`Tippen, um ${title} auszuwählen`" />
+
         <input type="text" class="browser-default" v-model="keyword" ref="keywordInput"
-          placeholder="Tippen, um zu suchen"
+          placeholder="Suchbegriff"
           @input="keywordChanged"
           @blur="onBlur"
           @focus="onFocus"
           @keydown.up.prevent="selectPrevious"
           @keydown.down.prevent="selectNext"
-          @keydown.esc.prevent="keyword = ''"
+          @keydown.esc.prevent="onEscape"
           @keydown.enter.prevent="enter">
 
         <div class="selectableItems" v-if="focus && selectableItems.length && keyword.length">
@@ -35,17 +39,13 @@
             <slot name="item" :item="item"></slot>
           </div>
         </div>
-
-        <div v-else-if="false" class="hint">
-          {{ messages.notFound }}
-        </div>
       </div>
 
       <div class="footer">
-        <button type="button" class="btn btn-medium gray waves-effect waves-light" @click="cancel">
+        <button type="button" class="btn btn-small gray waves-effect waves-light" @click="cancel">
           Abbrechen
         </button>
-        <button type="button" class="btn btn-medium green waves-effect waves-light" @click="save">
+        <button v-if="hasChanges" type="button" class="btn btn-small green waves-effect waves-light" @click="save">
           Speichern
         </button>
       </div>
@@ -57,6 +57,8 @@
 <script>
 import Vue from 'vue'
 import Spinner from '@/components/Spinner'
+import sortByKeyword from '@/helpers/sort-by-keyword'
+import InputLabel from '@/components/InputLabel'
 
 export default {
   props: ['items', 'selectedItems', 'title', 'messages', 'isLoading', 'searchFields', 'maxSelectableItems'],
@@ -64,7 +66,7 @@ export default {
   data () {
     const searchFields = this.searchFields || ['title']
     return {
-      foundItems: [],
+      initialSelectedItems: [],
       selectableItems: [],
       keyword: '',
       selectedItemIndex: null,
@@ -74,6 +76,7 @@ export default {
   },
 
   created () {
+    this.initialSelectedItems = this.selectedItems.concat()
     this.initSelectableItems()
   },
 
@@ -97,13 +100,22 @@ export default {
         return this.selectedItems.length < this.maxSelectableItems
       }
       return true
+    },
+
+    hasChanges () {
+      return this.initialSelectedItems.length !== this.selectedItems.length ||
+        this.initialSelectedItems.some((item, index) => item !== this.selectedItems[index])
+    },
+
+    labelHint () {
+      return `${this.selectedItems.length} von ${this.maxSelectableItems} ausgewählt`
     }
   },
 
   methods: {
     initSelectableItems () {
       this.selectableItems = []
-      this.selectableItems = this.items.filter(a => {
+      const selectableItems = this.items.filter(a => {
         const keywords = this.keyword.split(' ')
         let findCount = 0
         for (let keyword of keywords) {
@@ -128,7 +140,7 @@ export default {
         return findCount === keywords.length
       })
 
-      this.foundItems = this.selectableItems
+      this.selectableItems = sortByKeyword(selectableItems, this.keyword)
 
       if (this.selectableItems.length) {
         this.selectedItemIndex = Math.max(this.selectedItemIndex, 0)
@@ -193,11 +205,18 @@ export default {
 
     onBlur () {
       this.focus = false
-      this.keyword = ''
     },
 
     onFocus () {
       this.focus = true
+    },
+
+    onEscape () {
+      if (this.keyword) {
+        this.keyword = ''
+      } else {
+        this.cancel()
+      }
     },
 
     keywordChanged () {
@@ -217,7 +236,8 @@ export default {
       const index = this.selectableItems.indexOf(item)
       this.selectedItemIndex = index
       this.$emit('select', item)
-      this.focusInput()
+      // this.focusInput()
+      this.blurInput()
     },
 
     focusInput () {
@@ -226,6 +246,16 @@ export default {
         if (this.$refs.keywordInput) {
           this.$refs.keywordInput.focus()
           this.focus = true
+        }
+      })
+    },
+
+    blurInput () {
+      Vue.nextTick(() => {
+        // component might be destroyed in the meantime
+        if (this.$refs.keywordInput) {
+          this.$refs.keywordInput.blur()
+          this.focus = false
         }
       })
     },
@@ -240,7 +270,8 @@ export default {
   },
 
   components: {
-    Spinner
+    Spinner,
+    InputLabel
   }
 }
 </script>
@@ -270,6 +301,10 @@ export default {
   position: relative;
 }
 
+.disabledLabel {
+  margin-bottom: 1.5em;
+}
+
 .selectableItems {
   width: 100%;
   max-height: 30vh;
@@ -287,6 +322,10 @@ export default {
   > :not(:last-child) {
     margin-bottom: .6em;
   }
+}
+
+.noSelectedItems {
+  margin-bottom: 1.5em;
 }
 
 .item {

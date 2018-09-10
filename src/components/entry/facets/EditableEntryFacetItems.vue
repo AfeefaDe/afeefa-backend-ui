@@ -1,6 +1,6 @@
 <template>
-  <div :class="['editableEntryFacetItems', {empty: isEmpty}]" v-if="selectedFacets.length">
-    <div v-if="loading" >
+  <div :class="['editableEntryFacetItems', {empty: isEmpty, hideAddLink}]" v-if="selectedFacets.length">
+    <div v-if="isReloading" >
       <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Kategorien
     </div>
 
@@ -8,15 +8,17 @@
       <div v-if="!isEdit">
         <entry-facet-items :items="displayedSavedFacetItems">
           <facet-item-selector
+            ref="initialFacetItemSelector"
             slot="buttons"
             v-if="!displayedSavedFacetItems.length"
             :facets="facetsWithSelectableItems"
             :selectedFacetItems="selectedFacetItems"
+            :hideAddLink="hideAddLink"
             @click="facetItemClick">
             <span class="inlineEditLink">Kategorien hinzufügen</span>
           </facet-item-selector>
 
-          <a v-else href="" slot="buttons" @click.prevent="showEditForm" class="editLink inlineEditLink" ref="addLink">
+          <a v-else href="" slot="buttons" @click.prevent="showEditForm" class="editLink inlineEditLink">
             Ändern
           </a>
         </entry-facet-items>
@@ -73,13 +75,14 @@ import EntryFacetItems from '@/components/entry/facets/EntryFacetItems'
 import FacetItemSelector from '@/components/facet/FacetItemSelector'
 
 export default {
-  props: ['entry', 'facets', 'bus'],
+  props: ['entry', 'facets', 'bus', 'hideAddLink'],
 
   data () {
     return {
       selectedFacetItems: [],
       isEdit: false,
-      loading: false
+      isReloading: 0,
+      isEntryDetailSectionContent: true
     }
   },
 
@@ -107,7 +110,7 @@ export default {
     },
 
     isEmpty () {
-      if (this.loading) {
+      if (this.isReloading) {
         return false
       }
 
@@ -132,10 +135,25 @@ export default {
 
     canAddFacetItem () {
       return this.facetsWithSelectableItems.length > 0
+    },
+
+    editLinkTitle () {
+      if (this.isEdit) {
+        return null
+      }
+      return this.displayedSavedFacetItems.length ? null : 'Hinzufügen'
     }
   },
 
   methods: {
+    editLinkClick (triggerButton) {
+      if (this.displayedSavedFacetItems.length) {
+        this.showEditForm()
+      } else {
+        this.$refs.initialFacetItemSelector.showFacetSelector(triggerButton)
+      }
+    },
+
     selectableItemsLeftForFacet (facet) {
       const numSelectedItems = this.displayedSelectedFacetItems.filter(facetItem => facetItem.facet === facet).length
       return this.entry.facetOwnerType === facet.main_facet_of ? numSelectedItems < 2 : numSelectedItems < 2
@@ -151,7 +169,7 @@ export default {
 
     checkHideFrom (other) {
       if (this.isEdit && this !== other) {
-        this.isEdit = false
+        this.hideEditForm()
       }
     },
 
@@ -230,16 +248,30 @@ export default {
     },
 
     facetsSaved () {
-      this.loading = true
-      this.isEdit = false
+      this.isReloading = 1
+      this.hideEditForm()
+
+      // show isReloading spinner min 500 ms for good ux
+      setTimeout(() => {
+        this.isReloading++
+        this.setItemsAfterLoading()
+      }, 200)
+
       Promise.all([
         this.entry.$rels.facet_items.refetch()
       ]).then(() => {
+        this.isReloading++
+        this.setItemsAfterLoading()
+      })
+    },
+
+    setItemsAfterLoading () {
+      if (this.isReloading > 2) {
+        this.isReloading = false
         if (!this.facets) { // no facets === using facet filters, todo
           this.$store.dispatch('entryListFilters/entryFacetItemsSaved')
         }
-        this.loading = false
-      })
+      }
     }
   },
 
@@ -253,6 +285,14 @@ export default {
 
 
 <style lang="scss" scoped>
+.empty {
+  &.hideAddLink {
+    > * {
+      display: none;
+    }
+  }
+}
+
 .editLink {
   position: relative;
   top: -.1em;
@@ -264,7 +304,7 @@ export default {
   display: inline-block;
 
   .buttons {
-    margin-top: .8em;
+    margin-top: .5em;
     display: flex;
     align-items: baseline;
   }
@@ -282,13 +322,12 @@ export default {
   }
 
   .plusLink {
-    i {
-      margin-left: -.1em;
-    }
+    line-height: .95;
+    margin-left: -.1em;
   }
 
   .addLink {
-    height: 2.2em;
+    // height: 2.2em;
     color: $gray50;
     font-size: .9em;
     display: flex;

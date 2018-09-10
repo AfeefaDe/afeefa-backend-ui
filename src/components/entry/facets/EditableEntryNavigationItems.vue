@@ -1,6 +1,6 @@
 <template>
   <div :class="['entryNavigationItems', {empty: isEmpty}]">
-    <div v-if="loading">
+    <div v-if="isReloading">
       <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Navigation
     </div>
 
@@ -10,11 +10,11 @@
       </div>
 
       <div class="navigationItemSelectorLink">
-        <a href="" ref="trigger" class="inlineEditLink" @click.prevent="openNavigationSelector">
-          {{ entry.navigation_items.length ? 'Ändern' : 'Navigation hinzufügen' }}
+        <a href="" ref="trigger" class="inlineEditLink" @click.prevent="openNavigationSelector($event.target)" v-if="!isEmpty || !hideAddLink">
+          {{ !isEmpty ? 'Ändern' : 'Navigation hinzufügen' }}
         </a>
 
-        <pop-up-selector :trigger="$refs.trigger" diffX="0" @close="hideNavigationSelector" v-if="navigationSelectorIsOpen">
+        <pop-up-selector :trigger="customTrigger || $refs.trigger" diffX="0" @close="hideNavigationSelector" v-if="navigationSelectorIsOpen">
           <navigation-item-selector-content :selectedNavigationItems="entry.navigation_items" @click="navigationItemSelected" />
         </pop-up-selector>
       </div>
@@ -29,23 +29,36 @@ import NavigationItemSelectorContent from '@/components/facet/NavigationItemSele
 import Spinner from '@/components/Spinner'
 
 export default {
-  props: ['entry'],
+  props: ['entry', 'hideAddLink'],
 
   data () {
     return {
       navigation: null,
-      loading: false,
-      navigationSelectorIsOpen: false
+      isReloading: 0,
+      navigationSelectorIsOpen: false,
+      isEntryDetailSectionContent: true,
+      customTrigger: null
     }
   },
 
   computed: {
     isEmpty () {
       return !this.entry.navigation_items.length
+    },
+
+    editLinkTitle () {
+      if (this.isEdit) {
+        return null
+      }
+      return this.isEmpty ? 'Hinzufügen' : null
     }
   },
 
   methods: {
+    editLinkClick (triggerButton) {
+      this.openNavigationSelector(triggerButton)
+    },
+
     displayNavigationItem (navigationItem) {
       if (navigationItem.sub_items.length) {
         return !navigationItem.sub_items.some(subItem => this.entry.navigation_items.includes(subItem))
@@ -53,7 +66,8 @@ export default {
       return true
     },
 
-    openNavigationSelector () {
+    openNavigationSelector (customTrigger) {
+      this.customTrigger = customTrigger
       this.navigationSelectorIsOpen = true
     },
 
@@ -79,13 +93,29 @@ export default {
     },
 
     navigationSaved () {
-      this.loading = true
+      this.isReloading = 1
+
+      // show isReloading spinner min 500 ms for good ux
+      setTimeout(() => {
+        this.isReloading++
+        this.setItemsAfterLoading()
+      }, 200)
+
       Promise.all([
         this.entry.$rels.navigation_items.refetch()
       ]).then(() => {
-        this.$store.dispatch('entryListFilters/entryFacetItemsSaved')
-        this.loading = false
+        this.isReloading++
+        this.setItemsAfterLoading()
       })
+    },
+
+    setItemsAfterLoading () {
+      if (this.isReloading > 2) {
+        this.isReloading = false
+        if (!this.facets) { // no facets === using facet filters, todo
+          this.$store.dispatch('entryListFilters/entryFacetItemsSaved')
+        }
+      }
     }
   },
 

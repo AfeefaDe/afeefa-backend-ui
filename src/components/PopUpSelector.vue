@@ -20,7 +20,7 @@ export default {
 
   mounted () {
     document.body.appendChild(this.$el)
-    this.reposition()
+    this.repositionLater()
   },
 
   destroyed () {

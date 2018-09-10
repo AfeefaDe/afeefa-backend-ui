@@ -5,13 +5,9 @@
 
     <div slot="content">
       <form @submit.prevent="save" class="entryForm" novalidate>
-        <editable-offer-owners :owner="offer" relationName="owners" title="Träger" showActors="true">
-          <div slot="actor" slot-scope="props">
-            <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
-              {{ props.actor.title }}
-            </router-link>
-          </div>
-        </editable-offer-owners>
+        <entry-detail-property2 title="Träger" icon="group" class="projectInitiators">
+          <actor-selector :actor="offer" relationName="owners" title="Träger" />
+        </entry-detail-property2>
 
         <title-input :item="offer" class="formElement marginTop" />
 
@@ -43,7 +39,7 @@ import OfferRouteConfig from './OfferRouteConfig'
 import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 import TitleInput from '@/components/entry/edit/TitleInput'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
-import EditableOfferOwners from '@/components/actor/EditableOfferOwners'
+import ActorSelector from '@/components/actor/ActorSelector'
 
 export default {
   mixins: [EntryEditMixin, BeforeRouteLeaveMixin],
@@ -101,7 +97,23 @@ export default {
     EntryEditFooter,
     TitleInput,
     DescriptionForm,
-    EditableOfferOwners
+    ActorSelector
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.entryDetailProperty.projectInitiators {
+  /deep/ .title {
+    font-size: .9rem;
+  }
+  /deep/ .editLink {
+    top: 0;
+    left: .5em;
+  }
+}
+
+.editableActors {
+  margin-top: .8em;
+}
+</style>

@@ -5,13 +5,9 @@
 
     <div slot="content">
       <form @submit.prevent="save" class="entryForm" novalidate>
-        <editable-event-hosts :owner="event" relationName="hosts" title="Veranstalter" showActors="true">
-          <div slot="actor" slot-scope="props">
-            <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
-              {{ props.actor.title }}
-            </router-link>
-          </div>
-        </editable-event-hosts>
+        <entry-detail-property2 title="Veranstalter" icon="group" class="hosts">
+          <actor-selector :actor="event" relationName="hosts" title="Veranstalter" />
+        </entry-detail-property2>
 
         <title-input :item="item" class="formElement marginTop" />
 
@@ -50,7 +46,7 @@ import TitleInput from '@/components/entry/edit/TitleInput'
 import DatePicker from '@/components/event/datepicker/DatePicker'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
-import EditableEventHosts from '@/components/actor/EditableEventHosts'
+import ActorSelector from '@/components/actor/ActorSelector'
 
 export default {
   mixins: [EntryEditMixin, BeforeRouteLeaveMixin],
@@ -114,7 +110,23 @@ export default {
     DatePicker,
     DescriptionForm,
     EntryEditFooter,
-    EditableEventHosts
+    ActorSelector
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.entryDetailProperty.hosts {
+  /deep/ .title {
+    font-size: .9rem;
+  }
+  /deep/ .editLink {
+    top: 0;
+    left: .5em;
+  }
+}
+
+.editableActors {
+  margin-top: .8em;
+}
+</style>

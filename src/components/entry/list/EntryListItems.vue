@@ -149,6 +149,8 @@ import EditableEntryNavigationItems from '@/components/entry/facets/EditableEntr
 import EntryOwners from '@/components/actor/EntryOwners'
 import FilterBar from '@/components/entry/list/filterbar/FilterBar'
 import { mapState } from 'vuex'
+import sortByKeyword from '@/helpers/sort-by-keyword'
+import sortByTitle from '@/helpers/sort-by-title'
 
 export default {
   props: {
@@ -265,7 +267,15 @@ export default {
         items = this.has.facetFilter ? this.filteredEntries : this.items
         console.log('################### FILTER ALL', this.has.facetFilter, this.filteredEntries.length, this.items.length, items.length)
         items = items.filter(i => i.title.toLowerCase().includes(this.searchKeyword.toLowerCase()))
-        items = this.currentSortFunction ? this.currentSortFunction(items, this.currentSortOrder) : items
+
+        if (this.currentSortFunction) {
+          items = this.currentSortFunction(items, this.currentSortOrder)
+          if (this.currentSortFunction === sortByTitle) {
+            if (this.searchKeyword) {
+              items = sortByKeyword(items, this.searchKeyword)
+            }
+          }
+        }
 
         this.currentNumItems = items.length // eslint-disable-line vue/no-side-effects-in-computed-properties
         if (this.limit) {

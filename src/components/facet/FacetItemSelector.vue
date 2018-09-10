@@ -1,10 +1,10 @@
 <template>
   <div>
-    <a ref="trigger" href="" @click.prevent="showFacetSelector">
+    <a ref="trigger" href="" @click.prevent="showFacetSelector($event.currentTarget)" v-if="!hideAddLink">
       <slot />
     </a>
 
-    <pop-up-selector :trigger="$refs.trigger" diffX="0" @close="hideFacetSelector" v-if="facetItemSelectorVisible">
+    <pop-up-selector :trigger="customTrigger || $refs.trigger" diffX="0" @close="hideFacetSelector" v-if="facetItemSelectorVisible">
       <facet-item-selector-content
         :facets="facets"
         :selectedFacetItems="selectedFacetItems"
@@ -20,16 +20,18 @@ import PopUpSelector from '@/components/PopUpSelector'
 import FacetItemSelectorContent from '@/components/facet/FacetItemSelectorContent'
 
 export default {
-  props: ['facets', 'selectedFacetItems'],
+  props: ['facets', 'selectedFacetItems', 'hideAddLink'],
 
   data () {
     return {
-      facetItemSelectorVisible: false
+      facetItemSelectorVisible: false,
+      customTrigger: null
     }
   },
 
   methods: {
-    showFacetSelector () {
+    showFacetSelector (customTrigger) {
+      this.customTrigger = customTrigger
       this.facetItemSelectorVisible = true
     },
 

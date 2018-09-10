@@ -53,7 +53,7 @@ export default {
   methods: {
     dispatchEditClick () {
       this.$children.forEach(vue => {
-        vue.$emit('edit')
+        vue.editLinkClick(this.$refs.trigger)
       })
     }
   }

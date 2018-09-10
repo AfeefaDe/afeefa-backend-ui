@@ -11,7 +11,8 @@ export default {
       selectableActors: [],
       initialSelectedActors: [],
       selectedActors: [],
-      isLoading: false
+      isLoading: false,
+      isEntryDetailSectionContent: true
     }
   },
 
@@ -62,14 +63,18 @@ export default {
     saveSelectedActors () {
       this.startActorRelationSave()
 
-      return this.actor.$rels[this.relationName].Query.attachMany(this.selectedActors).then(result => {
-        if (result) {
-          this.$store.dispatch('messages/showAlert', {
-            description: 'Die Akteure wurden gespeichert.'
-          })
-          this.actorRelationSaved()
-        }
-      })
+      if (this.actor.id) {
+        return this.actor.$rels[this.relationName].Query.attachMany(this.selectedActors).then(result => {
+          if (result) {
+            this.$store.dispatch('messages/showAlert', {
+              description: 'Die Akteure wurden gespeichert.'
+            })
+            this.actorRelationSaved()
+          }
+        })
+      } else {
+        this.actorRelationSaved()
+      }
     },
 
     reloadActors () {

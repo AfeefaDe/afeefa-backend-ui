@@ -1,157 +1,147 @@
 <template>
-  <div>
-    <modal ref="modal" class="modalWindow">
-      <div class="modalContent">
-        <div class="ownerInfo">
-          {{ actor.title }} <i class="material-icons">chevron_right</i> {{ title }}
-        </div>
+  <div class="editableActors">
 
+    <modal ref="modal" class="modalWindow" :hasClose="false">
+      <div class="modalContent">
         <div class="actorSelector">
           <selectable-list
+            :title="title"
             :items="selectableActors"
+            :selectedItems="selectedActors"
             :messages="messagesSelectable"
             :isLoading="isLoading"
+            :maxSelectableItems="3"
+            @select="addActor"
             @cancel="hideModal"
-            @select="addActor">
-            <div slot="item" slot-scope="props" class="listEntry">
+            @save="saveSelectedActors">
+
+            <div slot="item" slot-scope="props" class="selectableItem">
               <entry-icon :item="props.item" />
               <div>{{ props.item.title }}</div>
             </div>
-          </selectable-list>
 
-          <i class="material-icons selectorIcon">chevron_right</i>
-
-          <selectable-list
-            class="list2"
-            :items="selectedActors"
-            :messages="messagesSelected"
-            :hasFilter="false"
-            @cancel="hideModal"
-            @select="removeActor">
-            <div slot="item" slot-scope="props" class="listEntry">
-              <entry-icon :item="props.item" />
-              <div>{{ props.item.title }}</div>
+            <div class="selectedItem" slot="selectedItem" slot-scope="props">
+              <div class="actorIcon">
+                <i class="material-icons">group</i>
+              </div>
+              <div class="selectedItemTitle" @click.capture.prevent="removeActor(props.item)">
+                <span>{{ props.item.title }}</span>
+                <i class="material-icons">cancel</i>
+              </div>
             </div>
+
+            <div class="noSelectedItems" slot="noSelectedItems">
+              Keine {{ title }} ausgewählt.
+            </div>
+
           </selectable-list>
         </div>
-      </div>
-      <div class="footer">
-        <button type="button" class="btn btn-medium gray waves-effect waves-light" @click="hideModal">
-          Abbrechen
-        </button>
-        <button type="button" class="btn btn-medium green waves-effect waves-light" @click="save">
-          Speichern
-        </button>
       </div>
     </modal>
 
-    <div @click="showModal">
-      <slot name="triggerButton">
-        <a href="" class="inlineEditLink" @click.prevent>
-          {{ actor[relationName].length ? 'Ändern' : 'Hinzufügen' }}
-        </a>
-      </slot>
+    <div v-if="isReloading">
+      <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade {{ title }}
+    </div>
+
+    <div v-else>
+      <div v-for="actor in initialSelectedActors" :key="actor.id" class="selectedActor">
+        <div class="actorTitle">
+          <router-link :to="{name: 'orgas.show', params: {id: actor.id}}">
+            {{ actor.title }}
+          </router-link>
+        </div>
+
+      </div>
+
+      <div v-if="!items.length" class="entryDetail__error">Keine {{ title }} angegeben.</div>
     </div>
 
   </div>
 </template>
 
 <script>
-import Orga from '@/models/Orga'
+import Spinner from '@/components/Spinner'
+import ActorSelectorMixin from './mixins/ActorSelectorMixin'
 import Modal from '@/components/Modal'
 import SelectableList from '@/components/selector/SelectableList'
-import sortByTitle from '@/helpers/sort-by-title'
 
 export default {
-  props: ['title', 'actor', 'relationName'],
+  mixins: [ActorSelectorMixin],
+
+  props: ['title'],
 
   data () {
     return {
-      actors: [],
-      selectableActors: [],
-      selectedActors: [],
-      isLoading: false,
+      isReloading: 0,
 
       messagesSelectable: {
+        loading: 'Lade Akteure',
         title: 'Alle',
         notFound: 'Nichts gefunden'
-      },
-      messagesSelected: {
-        title: 'Ausgewählt',
-        notFound: 'Nichts ausgewählt'
       }
     }
   },
 
-  methods: {
-    initSelectableActors () {
-      this.selectableActors = this.actors.filter(a => !this.selectedActors.includes(a))
+  computed: {
+    items () {
+      return this.actor[this.relationName]
     },
 
-    initSelectedActors () {
-      this.selectedActors = []
-      this.actor[this.relationName].forEach(actor => {
-        this.selectedActors.push(actor)
-      })
+    editLinkTitle () {
+      return this.selectedActors.length ? 'Ändern' : 'Hinzufügen'
+    }
+  },
+
+  methods: {
+    editLinkClick (triggerButton) {
+      this.showModal()
     },
 
     showModal () {
       this.$refs.modal.show()
-
       this.initSelectedActors()
-
-      this.isLoading = true
-      Orga.Query.getAll().then(actors => {
-        this.actors = sortByTitle(actors)
-        this.initSelectedActors()
-        this.initSelectableActors()
-        this.isLoading = false
-      })
+      this.loadSelectableActors()
     },
 
     hideModal () {
       this.$refs.modal.close()
     },
 
-    addActor (actor) {
-      if (!this.selectedActors.includes(actor)) {
-        this.selectedActors.push(actor)
-        this.selectedActors = sortByTitle(this.selectedActors)
-        this.initSelectableActors()
-      }
-    },
-
-    removeActor (actor) {
-      if (this.selectedActors.includes(actor)) {
-        this.selectedActors = this.selectedActors.filter(a => a !== actor)
-        this.initSelectableActors()
-      }
-    },
-
-    save () {
+    startActorRelationSave () {
       this.hideModal()
+    },
 
+    actorRelationSaved (actor) {
       if (this.actor.id) {
-        this.saveSelectedActors().then(() => {
-          this.$emit('saved', this.selectedActors)
+        this.isReloading = 1
+
+        // show loading spinner min 500 ms for good ux
+        setTimeout(() => {
+          this.isReloading++
+          this.setItemsAfterLoading()
+        }, 200)
+
+        this.reloadActors().then(() => {
+          this.isReloading++
+          this.setItemsAfterLoading()
         })
-      } else {
-        this.$emit('saved', this.selectedActors)
+      } else { // new items add directly
+        this.actor[this.relationName] = this.selectedActors
+        this.isReloading = 3
+        this.setItemsAfterLoading()
       }
     },
 
-    saveSelectedActors () {
-      return this.actor.$rels[this.relationName].Query.attachMany(this.selectedActors).then(result => {
-        if (result) {
-          this.$store.dispatch('messages/showAlert', {
-            description: 'Die Netzwerke wurden gespeichert.'
-          })
-        }
-      })
+    setItemsAfterLoading () {
+      if (this.isReloading > 2) {
+        this.isReloading = false
+        this.initSelectedActors()
+      }
     }
   },
 
   components: {
+    Spinner,
     Modal,
     SelectableList
   }
@@ -160,59 +150,78 @@ export default {
 
 <style lang="scss" scoped>
 .modalWindow /deep/ .modal__window {
-  width: 80%;
-  max-width: 1000px;
+  width: 600px;
+  padding: 2em 1.5em 1.7em;
 }
 
-.ownerInfo {
-  margin-bottom: 20px;
-
-  i {
-    vertical-align: middle;
-    font-size: 1.2em;
-  }
-}
-
-.actorSelector {
-  width: 100%;
+.selectableItem {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  line-height: 2em;
+  padding: 0 .5em;
 
-  > * {
-    width: 50%;
+  .entryIcon /deep/ i {
+    font-size: 1.1em;
+    margin-right: .6em;
   }
+}
 
-  .selectorIcon {
-    width: auto;
-    margin: 0 10px;
-    align-self: center;
+.selectableList {
+  /deep/ .selectableItems, /deep/ .hint {
+    height: auto;
   }
+}
 
-  .list2 {
-    align-self: flex-end;
+.selectedActor {
+  &:not(:last-child) {
+    margin-bottom: .4em;
+  }
+}
 
-    /deep/ .title {
-      margin-bottom: 2.8em;
+.selectedItem {
+  display: flex;
+  align-items: center;
+}
+
+.noSelectedItems {
+  margin-bottom: .4em;
+}
+
+.actorIcon {
+  flex: 0 0 28px;
+  i {
+    font-size: 14px;
+  }
+}
+
+.selectedItemTitle {
+  cursor: pointer;
+  > i {
+    display: inline;
+    position: relative;
+    top: .1em;
+    font-size: 1.1em;
+    color: $gray50;
+  }
+  &:hover {
+    color: $gray50;
+    i {
+      color: $gray30;
     }
   }
 }
 
-.listEntry {
-  display: flex;
-  align-items: center;
-  line-height: 1.4em;
-
-  .entryIcon /deep/ i {
-    font-size: 1.1em;
-    margin-right: 8px;
-  }
+.actorTitle {
+  line-height: 1.3;
 }
 
-.footer {
-  margin-top: 2em;
-  text-align: right;
-  button {
-    margin-left: .4em;
+.removeIcon {
+  cursor: pointer;
+  display: inline;
+  i {
+    font-size: 1.1em;
+    margin-left: .1em;
+    color: $gray50;
   }
 }
 </style>

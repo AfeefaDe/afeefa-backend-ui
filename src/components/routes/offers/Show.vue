@@ -10,42 +10,35 @@
         <section slot="overview">
           <div class="splitView">
             <div class="entryDetail splitView__splitViewChild">
-              <entry-detail-property name="Träger" iconName="group">
-                <editable-offer-owners :owner="offer" relationName="owners" title="Träger" :showActors="true">
-                  <div slot="actor" slot-scope="props">
-                    <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
-                      {{ props.actor.title }}
-                    </router-link>
-                  </div>
-                </editable-offer-owners>
-              </entry-detail-property>
+              <entry-detail-section title="Träger" icon="group" :dispatchEdit="true">
+                <actor-selector :actor="offer" relationName="owners" title="Träger" />
+              </entry-detail-section>
 
-              <entry-detail-property
-                v-if="offer.short_description"
-                :name="$t('entries.short_description')"
-                iconName="format_align_left"
-                :isMultiline="true">
-                <span>{{ offer.short_description }}</span>
-              </entry-detail-property>
+              <entry-detail-section
+                :title="$t('entries.description')"
+                icon="format_align_left"
+                :editLink="{name: 'offers.edit', params: {id: offer.id}}">
 
-              <div v-for="(facet, index) in facets" :key="facet.id">
-                <entry-detail-property
-                  :name="facet.title"
-                  :iconName="index ? '' : 'bookmark_border'">
-                  <editable-entry-facet-items :entry="item" :facets="[facet]" :bus="bus" />
-                </entry-detail-property>
-              </div>
+                <div v-if="offer.short_description">{{ offer.short_description }}</div>
+              </entry-detail-section>
 
-              <entry-detail-property
-                name="Navigation">
-                <editable-entry-navigation-items :entry="offer" :isEdit="true" />
-              </entry-detail-property>
+              <entry-detail-section title="Kategorien" icon="label">
+                <div v-for="facet in facets" :key="facet.id">
+                  <entry-detail-property2 :title="facet.title">
+                    <editable-entry-facet-items :entry="offer" :facets="[facet]" :bus="bus" :hideAddLink="true" />
+                  </entry-detail-property2>
+                </div>
+
+                <entry-detail-property2 title="Navigation">
+                  <editable-entry-navigation-items :entry="offer" :isEdit="true" :customTrigger="true" :hideAddLink="true"  />
+                </entry-detail-property2>
+              </entry-detail-section>
             </div>
 
             <contact-list :item="offer" class="splitView__splitViewChild"/>
-
-            <entry-detail-footer :entry="offer"/>
           </div>
+
+          <entry-detail-footer :entry="offer"/>
         </section>
 
         <section slot="todos">
@@ -64,7 +57,6 @@ import EntryShowMixin from '@/components/mixins/EntryShowMixin'
 import OfferRouteConfig from './OfferRouteConfig'
 
 import EntryFacetItems from '@/components/entry/facets/EntryFacetItems'
-import EditableOfferOwners from '@/components/actor/EditableOfferOwners'
 import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
 import EditableEntryNavigationItems from '@/components/entry/facets/EditableEntryNavigationItems'
 import ContactList from '@/components/contact/ContactList'
@@ -72,6 +64,7 @@ import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import ImageContainer from '@/components/ImageContainer'
 import EntryDetailHeaderButtons from '@/components/entry/show/EntryDetailHeaderButtons'
 import AnnotationView from '@/components/annotation/AnnotationView'
+import ActorSelector from '@/components/actor/ActorSelector'
 
 export default {
   mixins: [EntryShowMixin],
@@ -99,31 +92,54 @@ export default {
 
   components: {
     EntryFacetItems,
-    EditableOfferOwners,
     EditableEntryFacetItems,
     EditableEntryNavigationItems,
     ContactList,
     EntryDetailFooter,
     ImageContainer,
     EntryDetailHeaderButtons,
-    AnnotationView
+    AnnotationView,
+    ActorSelector
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .splitView {
+  padding-top: 1em;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   > * {
     width: 100%;
   }
-  & > &__splitViewChild {
+  &__splitViewChild {
     width: 50%;
     @media screen and (max-width: $break-medium) {
       width: 100%;
     }
+    &:first-child {
+      padding-right: 2em;
+    }
+    &:last-child {
+      padding-left: 2em;
+    }
   }
+}
+
+.entryDetailSection:not(:first-child) {
+  margin-top: 5em;
+}
+
+.entryDetailProperty {
+  margin-top: 1em;
+}
+
+.editableEntryFacetItems {
+  margin-top: .5em;
+}
+
+.entryNavigationItems {
+  margin-top: .5em;
 }
 </style>

@@ -19,7 +19,7 @@
       <image-container :image-url="orga.media_url" />
 
       <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
-        <section slot="overview" class="overview splitView">
+        <section slot="overview">
           <div class="actionButtons" v-if="false">
             <editable-actor-actors :owner="orga" relationName="projects" title="Projekt hinzufügen" slot="triggerButton">
               <span class="btn btn-small gray">
@@ -36,104 +36,81 @@
             </editable-actor-actors>
           </div>
 
-          <div class="entryDetail splitView__splitViewChild">
-            <entry-detail-section
-              title="Projektträger"
-              icon="group"
-              :dispatchEdit="true">
-              <editable-actor-actors2 :actor="orga" relationName="project_initiators"
-                title="Projektträger" :showActors="true">
-              </editable-actor-actors2>
-            </entry-detail-section>
-            <entry-detail-section
-              :title="$t('entries.description')"
-              icon="format_align_left"
-              :editLink="{name: 'orgas.edit', params: {id: orga.id}}">
+          <div class="overview splitView">
+            <div class="entryDetail splitView__splitViewChild">
+              <entry-detail-section title="Projektträger" icon="group" :dispatchEdit="true">
+                <actor-selector :actor="orga" relationName="project_initiators" title="Projektträger" />
+              </entry-detail-section>
 
-              <div v-if="orga.short_description">{{orga.short_description}}</div>
-            </entry-detail-section>
+              <entry-detail-section
+                :title="$t('entries.description')"
+                icon="format_align_left"
+                :editLink="{name: 'orgas.edit', params: {id: orga.id}}">
 
-            <entry-detail-section
-              title="Test"
-              icon="format_align_left"
-              :inlineEditing="true">
-              <div slot-scope="props">
-                {{ props }}
-              </div>
-            </entry-detail-section>
+                <div v-if="orga.short_description">{{ orga.short_description }}</div>
+              </entry-detail-section>
 
-            <entry-detail-property
-              :name="$t('entries.description')"
-              iconName="format_align_left"
-              :isMultiline="true">
-              <a href="" ></a>
-              <div v-if="orga.short_description">{{orga.short_description}}</div>
-            </entry-detail-property>
+              <entry-detail-section v-if="false"
+                title="Test"
+                icon="format_align_left"
+                :inlineEditing="true">
+                <div slot-scope="props">
+                  {{ props }}
+                </div>
+              </entry-detail-section>
 
-            <div v-for="(facet, index) in facets" :key="facet.id">
-              <entry-detail-property
-                :name="facet.title"
-                :iconName="index ? '' : 'bookmark_border'">
-                <editable-entry-facet-items :entry="item" :facets="[facet]" :bus="bus" />
-              </entry-detail-property>
+              <entry-detail-section title="Kategorien" icon="label">
+                <div v-for="facet in facets" :key="facet.id">
+                  <entry-detail-property2 :title="facet.title">
+                    <editable-entry-facet-items :entry="item" :facets="[facet]" :bus="bus" :hideAddLink="true" />
+                  </entry-detail-property2>
+                </div>
+
+                <entry-detail-property2 title="Navigation">
+                  <editable-entry-navigation-items :entry="orga" :isEdit="true" :customTrigger="true" :hideAddLink="true"  />
+                </entry-detail-property2>
+              </entry-detail-section>
+
+              <entry-detail-section title="Netzwerke" icon="group" :dispatchEdit="true" v-if="false">
+                <actor-selector :actor="orga" relationName="networks" title="Netzwerke" />
+              </entry-detail-section>
+
+              <entry-detail-section title="Partner" icon="group" :dispatchEdit="true" v-if="false">
+                <actor-selector :actor="orga" relationName="partners" title="Partner" />
+              </entry-detail-section>
+
+              <entry-detail-section
+                title="Attribute"
+                icon="settings"
+                :editLink="{name: 'orgas.edit', params: {id: orga.id}}">
+
+                <entry-detail-property2 :title="$t('entries.certified_sfr')">
+                    {{orga.certified_sfr ? $t('entries.certified_sfr_yes') : $t('entries.certified_sfr_no')}}
+                </entry-detail-property2>
+
+                <entry-detail-property2 :title="$t('entries.support_wanted')">
+                  <span v-if="orga.support_wanted_detail">
+                    {{orga.support_wanted_detail}}
+                  </span>
+                  <span v-else>
+                    {{orga.support_wanted ? $t('entries.support_wanted_yes') : $t('entries.support_wanted_no')}}
+                  </span>
+                </entry-detail-property2>
+
+                <entry-detail-property2 title="Facebook ID für Events">
+                  {{ orga.facebook_id || 'Keine ID angegeben'}}
+                </entry-detail-property2>
+              </entry-detail-section>
             </div>
 
-            <entry-detail-property
-              name="Navigation">
-              <editable-entry-navigation-items :entry="orga" :isEdit="true" />
-            </entry-detail-property>
+            <div class="splitView__splitViewChild">
+              <router-link :to="{name: 'offers.convert', query: {actorId: orga.id}}" class="btn green btn-small">
+                <i class="material-icons left">add</i>
+                In Angebot umwandeln
+              </router-link>
 
-            <entry-detail-property name="Netzwerke" iconName="group">
-              <editable-actor-actors :owner="orga" relationName="networks" title="Netzwerke" :showActors="true">
-                <div slot="actor" slot-scope="props">
-                  <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
-                    {{ props.actor.title }}
-                  </router-link>
-                </div>
-              </editable-actor-actors>
-            </entry-detail-property>
-
-            <entry-detail-property name="Partner">
-              <editable-actor-actors :owner="orga" relationName="partners" title="Partner" :showActors="true">
-                <div slot="actor" slot-scope="props">
-                  <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
-                    {{ props.actor.title }}
-                  </router-link>
-                </div>
-              </editable-actor-actors>
-            </entry-detail-property>
-
-            <entry-detail-property
-              name="Facebook ID für Events"
-              iconName="share">
-              {{ orga.facebook_id || 'Keine ID angegeben'}}
-            </entry-detail-property>
-
-            <entry-detail-property
-              :name="$t('entries.certified_sfr')"
-              :iconName="'check_circle'">
-                {{orga.certified_sfr ? $t('entries.certified_sfr_yes') : $t('entries.certified_sfr_no')}}
-            </entry-detail-property>
-
-            <entry-detail-property
-              :name="$t('entries.support_wanted')"
-              :iconName="'pan_tool'">
-                <template v-if="orga.support_wanted_detail">
-                  {{orga.support_wanted_detail}}
-                </template>
-                <template v-else>
-                  {{orga.support_wanted ? $t('entries.support_wanted_yes') : $t('entries.support_wanted_no')}}
-                </template>
-            </entry-detail-property>
-          </div>
-
-          <div class="splitView__splitViewChild">
-            <router-link :to="{name: 'offers.convert', query: {actorId: orga.id}}" class="btn green btn-small">
-              <i class="material-icons left">add</i>
-              In Angebot umwandeln
-            </router-link>
-
-            <contact-list :item="orga" />
+              <contact-list :item="orga" />
+            </div>
           </div>
 
           <entry-detail-footer :entry="orga"/>
@@ -150,7 +127,7 @@
         </section>
 
         <section slot="networkMembers">
-          <actor-selector title="Netzwerkmitglieder ändern" :actor="orga" relationName="network_members" @saved="actorRelationSaved('network_members')" />
+          <actor-selector :actor="orga" relationName="network_members" title="Mitglieder" />
 
           <entry-list-items
             :items="orga.network_members"
@@ -160,7 +137,7 @@
             Keine Mitglieder zugeordnet
           </div>
 
-          <actor-selector title="Netzwerkmitglieder ändern" :actor="orga" relationName="network_members" @saved="actorRelationSaved('network_members')" />
+          <actor-selector :actor="orga" relationName="network_members" title="Mitglieder" />
         </section>
 
         <section slot="offers">
@@ -171,13 +148,9 @@
           <div v-else class="entryDetail__error">
             Keine Angebote zugeordnet
           </div>
-
-          <actor-selector title="Netzwerkmitglieder ändern" :actor="orga" relationName="network_members" @saved="actorRelationSaved('network_members')" />
         </section>
 
         <section slot="projects">
-          <actor-selector title="Projekte ändern" :actor="orga" relationName="projects" @saved="actorRelationSaved('projects')" />
-
           <entry-list-items
             :items="orga.projects"
             v-if="orga.projects.length">
@@ -185,8 +158,6 @@
           <div v-else class="entryDetail__error">
             Keine Projekte zugeordnet
           </div>
-
-          <actor-selector title="Projekte ändern" :actor="orga" relationName="projects" @saved="actorRelationSaved('projects')" />
         </section>
 
         <section slot="events">
@@ -234,12 +205,11 @@ import ImageContainer from '@/components/ImageContainer'
 import EditableEntryNavigationItems from '@/components/entry/facets/EditableEntryNavigationItems'
 import ContactList from '@/components/contact/ContactList'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
-import EditableActorActors2 from '@/components/actor/EditableActorActors2'
-import EditableActorActors from '@/components/actor/EditableActorActors'
 import ActorSelector from '@/components/actor/ActorSelector'
 import EntryListItems from '@/components/entry/list/EntryListItems'
 import AnnotationView from '@/components/annotation/AnnotationView'
 import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
+import entryListFilters from '@/helpers/entry-list-filters'
 
 export default {
   mixins: [EntryShowMixin],
@@ -279,7 +249,7 @@ export default {
       tabNames.push({name: 'offers', hint: this.orga.offers.length})
       tabNames.push({name: 'events', hint: this.orga.upcoming_events.length + this.orga.past_events.length})
       tabNames.push({name: 'projects', hint: this.orga.projects.length})
-      tabNames.push({name: 'networkMembers', hint: this.orga.network_members.length})
+      // tabNames.push({name: 'networkMembers', hint: this.orga.network_members.length})
       if (this.currentUser.area === 'dresden') {
         // tabNames.push({name: 'resources', hint: this.orga.resource_items.length})
       }
@@ -290,6 +260,10 @@ export default {
   methods: {
     actorRelationSaved (relationName) {
       this.orga.$rels[relationName].refetch()
+    },
+
+    hasFacetItemForFacet (facet) {
+      return entryListFilters.entryHasFacetItemForFacet(this.orga, facet)
     }
   },
 
@@ -297,11 +271,9 @@ export default {
     EntryDetailHeaderButtons,
     ImageContainer,
     EditableEntryNavigationItems,
-    EditableActorActors,
-    EditableActorActors2,
+    ActorSelector,
     ContactList,
     EntryDetailFooter,
-    ActorSelector,
     EntryListItems,
     AnnotationView,
     EditableEntryFacetItems
@@ -336,19 +308,38 @@ export default {
   > * {
     width: 100%;
   }
-  & > &__splitViewChild {
+  &__splitViewChild {
     width: 50%;
     @media screen and (max-width: $break-medium) {
       width: 100%;
     }
+    &:first-child {
+      padding-right: 2em;
+    }
+    &:last-child {
+      padding-left: 2em;
+    }
   }
 
   &.overview {
-    position: relative;
+    padding-top: 1em;
+    // position: relative;
   }
 }
 
 .entryDetailSection:not(:first-child) {
-  margin-top: 2em;
+  margin-top: 5em;
+}
+
+.entryDetailProperty {
+  margin-top: 1em;
+}
+
+.editableEntryFacetItems {
+  margin-top: .5em;
+}
+
+.entryNavigationItems {
+  margin-top: .5em;
 }
 </style>

@@ -18,37 +18,36 @@
                   <span>({{event.date_start | formatDateRelative}})</span>
               </entry-detail-property>
 
-              <entry-detail-property name="Veranstalter" iconName="group">
-                <editable-event-hosts :owner="event" relationName="hosts" title="Veranstalter" :showActors="true">
-                  <div slot="actor" slot-scope="props">
-                    <router-link :to="{name: 'orgas.show', params: {id: props.actor.id}}">
-                      {{ props.actor.title }}
-                    </router-link>
-                  </div>
-                </editable-event-hosts>
-              </entry-detail-property>
+              <entry-detail-section title="Veranstalter" icon="group" :dispatchEdit="true">
+                <actor-selector :actor="event" relationName="hosts" title="Veranstalter" />
+              </entry-detail-section>
 
-              <entry-detail-property
-                :name="$t('entries.description')"
-                iconName="format_align_left"
-                :isMultiline="true">
-                <div v-if="event.short_description">{{event.short_description}}</div>
-              </entry-detail-property>
+              <entry-detail-section
+                :title="$t('entries.description')"
+                icon="format_align_left"
+                :editLink="{name: 'events.edit', params: {id: event.id}}">
 
-              <div v-for="(facet, index) in facets" :key="facet.id">
-                <entry-detail-property
-                  :name="facet.title"
-                  :iconName="index ? '' : 'bookmark_border'">
-                  <editable-entry-facet-items :entry="item" :facets="[facet]" :bus="bus" />
-                </entry-detail-property>
-              </div>
+                <div v-if="event.short_description">{{ event.short_description }}</div>
+              </entry-detail-section>
+
+              <entry-detail-section title="Kategorien" icon="label">
+                <div v-for="facet in facets" :key="facet.id">
+                  <entry-detail-property2 :title="facet.title">
+                    <editable-entry-facet-items :entry="event" :facets="[facet]" :bus="bus" :hideAddLink="true" />
+                  </entry-detail-property2>
+                </div>
+
+                <entry-detail-property2 title="Navigation">
+                  <editable-entry-navigation-items :entry="event" :isEdit="true" :customTrigger="true" :hideAddLink="true"  />
+                </entry-detail-property2>
+              </entry-detail-section>
             </div>
 
             <contact-list :item="event" class="splitView__splitViewChild"/>
 
-            <entry-detail-footer :entry="event"/>
-
           </div>
+
+          <entry-detail-footer :entry="event"/>
         </section>
 
         <section slot="todos">
@@ -69,10 +68,11 @@ import EventRouteConfig from './EventRouteConfig'
 import EntryDetailHeaderButtons from '@/components/entry/show/EntryDetailHeaderButtons'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import ContactList from '@/components/contact/ContactList'
-import EditableEventHosts from '@/components/actor/EditableEventHosts'
 import ImageContainer from '@/components/ImageContainer'
 import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
 import AnnotationView from '@/components/annotation/AnnotationView'
+import ActorSelector from '@/components/actor/ActorSelector'
+import EditableEntryNavigationItems from '@/components/entry/facets/EditableEntryNavigationItems'
 
 export default {
   mixins: [EntryShowMixin],
@@ -100,10 +100,11 @@ export default {
     EntryDetailHeaderButtons,
     EntryDetailFooter,
     ContactList,
-    EditableEventHosts,
     ImageContainer,
     EditableEntryFacetItems,
-    AnnotationView
+    AnnotationView,
+    ActorSelector,
+    EditableEntryNavigationItems
   }
 }
 </script>
@@ -111,17 +112,40 @@ export default {
 
 <style lang="scss" scoped>
 .splitView {
+  padding-top: 1em;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   > * {
     width: 100%;
   }
-  & > &__splitViewChild {
+  &__splitViewChild {
     width: 50%;
     @media screen and (max-width: $break-medium) {
       width: 100%;
     }
+    &:first-child {
+      padding-right: 2em;
+    }
+    &:last-child {
+      padding-left: 2em;
+    }
   }
+}
+
+.entryDetailSection:not(:first-child) {
+  margin-top: 5em;
+}
+
+.entryDetailProperty {
+  margin-top: 1em;
+}
+
+.editableEntryFacetItems {
+  margin-top: .5em;
+}
+
+.entryNavigationItems {
+  margin-top: .5em;
 }
 </style>
