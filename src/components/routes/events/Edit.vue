@@ -31,8 +31,6 @@
             <description-form :item="event" />
 
             <media-image-input :item="event" propertyName="media_url" :image-error="imageError" class="formElement marginTop" />
-
-            <help-wanted-form :item="event" class="formElement marginTop" />
           </section>
 
         </tab-bar>

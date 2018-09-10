@@ -11,12 +11,10 @@
           <div class="splitView">
             <div class="entryDetail splitView__splitViewChild">
 
-              <entry-detail-property
-                :name="$tc('entries.date')"
-                :iconName="'date_range'">
-                  {{ event | formatEventDate }}
-                  <span>({{event.date_start | formatDateRelative}})</span>
-              </entry-detail-property>
+              <entry-detail-section :title="$tc('entries.date')" icon="date_range" :editLink="{name: 'events.edit', params: {id: event.id}}">
+                {{ event | formatEventDate }}
+                <span>({{event.date_start | formatDateRelative}})</span>
+              </entry-detail-section>
 
               <entry-detail-section title="Veranstalter" icon="group" :dispatchEdit="true">
                 <actor-selector :actor="event" relationName="hosts" title="Veranstalter" />
