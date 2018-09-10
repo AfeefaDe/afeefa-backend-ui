@@ -22,13 +22,7 @@
                 <actor-selector :actor="event" relationName="hosts" title="Veranstalter" />
               </entry-detail-section>
 
-              <entry-detail-section
-                :title="$t('entries.description')"
-                icon="format_align_left"
-                :editLink="{name: 'events.edit', params: {id: event.id}}">
-
-                <div v-if="event.short_description">{{ event.short_description }}</div>
-              </entry-detail-section>
+              <entry-description :entry="event" />
 
               <entry-detail-section title="Kategorien" icon="label">
                 <div v-for="facet in facets" :key="facet.id">
@@ -66,6 +60,7 @@ import EntryShowMixin from '@/components/mixins/EntryShowMixin'
 import EventRouteConfig from './EventRouteConfig'
 
 import EntryDetailHeaderButtons from '@/components/entry/show/EntryDetailHeaderButtons'
+import EntryDescription from '@/components/entry/show/EntryDescription'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import ContactList from '@/components/contact/ContactList'
 import ImageContainer from '@/components/ImageContainer'
@@ -98,6 +93,7 @@ export default {
 
   components: {
     EntryDetailHeaderButtons,
+    EntryDescription,
     EntryDetailFooter,
     ContactList,
     ImageContainer,

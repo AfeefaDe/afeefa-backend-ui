@@ -96,6 +96,9 @@ export default {
 
   .content {
     margin-top: 1em;
+    p {
+      white-space: pre-wrap;
+    }
   }
 }
 </style>

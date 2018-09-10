@@ -14,13 +14,7 @@
                 <actor-selector :actor="offer" relationName="owners" title="Träger" />
               </entry-detail-section>
 
-              <entry-detail-section
-                :title="$t('entries.description')"
-                icon="format_align_left"
-                :editLink="{name: 'offers.edit', params: {id: offer.id}}">
-
-                <div v-if="offer.short_description">{{ offer.short_description }}</div>
-              </entry-detail-section>
+              <entry-description :entry="offer" />
 
               <entry-detail-section title="Kategorien" icon="label">
                 <div v-for="facet in facets" :key="facet.id">
@@ -60,6 +54,7 @@ import EntryFacetItems from '@/components/entry/facets/EntryFacetItems'
 import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
 import EditableEntryNavigationItems from '@/components/entry/facets/EditableEntryNavigationItems'
 import ContactList from '@/components/contact/ContactList'
+import EntryDescription from '@/components/entry/show/EntryDescription'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import ImageContainer from '@/components/ImageContainer'
 import EntryDetailHeaderButtons from '@/components/entry/show/EntryDetailHeaderButtons'
@@ -95,6 +90,7 @@ export default {
     EditableEntryFacetItems,
     EditableEntryNavigationItems,
     ContactList,
+    EntryDescription,
     EntryDetailFooter,
     ImageContainer,
     EntryDetailHeaderButtons,

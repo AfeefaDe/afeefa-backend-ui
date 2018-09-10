@@ -8,21 +8,40 @@
           {{ content.editLinkTitle }}
         </a>
       </div>
+
+      <div class="editLink" v-if="inlineEditing">
+        <a href="" @click.prevent="isEdit = true" v-if="!isEdit" class="inlineEditLink">
+          {{ startEditingLink}}
+        </a>
+        <a href="" @click.prevent="isEdit = false" v-if="isEdit" class="inlineEditLink">
+          {{ stopEditingLink }}
+        </a>
+      </div>
     </div>
 
     <div class="content">
-      <slot />
+      <slot :isEdit="isEdit" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['title'],
+  props: ['title', 'inlineEditing', 'multiline'],
 
   data () {
     return {
-      content: null
+      content: null,
+      isEdit: false,
+      startEditingLink: 'Ändern',
+      stopEditingLink: 'Ändern'
+    }
+  },
+
+  created () {
+    if (this.inlineEditing && Array.isArray(this.inlineEditing)) {
+      this.startEditingLink = this.inlineEditing[0] || this.startEditingLink
+      this.stopEditingLink = this.inlineEditing[1] || this.stopEditingLink
     }
   },
 
@@ -64,6 +83,9 @@ export default {
 
   .content {
     margin-top: .3em;
+    p {
+      white-space: pre-wrap;
+    }
   }
 }
 </style>

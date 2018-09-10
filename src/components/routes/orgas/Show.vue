@@ -42,13 +42,7 @@
                 <actor-selector :actor="orga" relationName="project_initiators" title="Projektträger" />
               </entry-detail-section>
 
-              <entry-detail-section
-                :title="$t('entries.description')"
-                icon="format_align_left"
-                :editLink="{name: 'orgas.edit', params: {id: orga.id}}">
-
-                <div v-if="orga.short_description">{{ orga.short_description }}</div>
-              </entry-detail-section>
+              <entry-description :entry="orga" />
 
               <entry-detail-section v-if="false"
                 title="Test"
@@ -205,6 +199,7 @@ import ImageContainer from '@/components/ImageContainer'
 import EditableEntryNavigationItems from '@/components/entry/facets/EditableEntryNavigationItems'
 import ContactList from '@/components/contact/ContactList'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
+import EntryDescription from '@/components/entry/show/EntryDescription'
 import ActorSelector from '@/components/actor/ActorSelector'
 import EntryListItems from '@/components/entry/list/EntryListItems'
 import AnnotationView from '@/components/annotation/AnnotationView'
@@ -219,7 +214,8 @@ export default {
       routeConfig: new OrgaRouteConfig(this, this.id),
       sortByDateStart,
       sortByDateMixin,
-      bus: this
+      bus: this,
+      showDescription: false
     }
   },
 
@@ -274,6 +270,7 @@ export default {
     ActorSelector,
     ContactList,
     EntryDetailFooter,
+    EntryDescription,
     EntryListItems,
     AnnotationView,
     EditableEntryFacetItems
