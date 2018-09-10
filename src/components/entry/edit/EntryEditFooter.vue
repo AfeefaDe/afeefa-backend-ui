@@ -1,7 +1,7 @@
 <template>
   <section class="footer">
     <div>
-      <button class="btn waves-effect waves-light red" @click.prevent="remove" v-if="item.id && has.remove">
+      <button type="button" class="btn waves-effect waves-light red" @click.prevent="remove" v-if="item.id && has.remove">
         <i class="material-icons left">delete</i>
         Löschen
       </button>
