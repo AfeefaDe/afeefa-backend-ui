@@ -25,6 +25,10 @@ a {
   background-color: $secondaryBlue;
   transition: none;
 
+  &:focus {
+    background-color: $secondaryBlue;
+  }
+
   &:hover {
     background-color: lighten($secondaryBlue, 8%) !important;
   }
@@ -227,6 +231,19 @@ input[type="radio"].filled-in.gray:checked + label {
   }
 }
 
+input[type="radio"].filled-in.blue + label {
+  &:after {
+    border-color: $secondaryBlue;
+  }
+}
+
+input[type="radio"].filled-in.blue:checked + label {
+  &:after {
+    background-color: $secondaryBlue;
+    border-color: $secondaryBlue;
+  }
+}
+
 input[type="checkbox"].filled-in.checkboxSmall + label {
   margin: 0;
   padding-left: 16px;
@@ -252,6 +269,8 @@ input[type="checkbox"].filled-in.checkboxSmall + label {
 input[type="checkbox"].filled-in.gray + label {
   &:after {
     border-color: $gray30;
+    border-width: 1px;
+    border-radius: 0;
   }
 }
 
@@ -259,6 +278,21 @@ input[type="checkbox"].filled-in.gray:checked + label {
   &:after {
     background-color: $gray80;
     border-color: $gray80;
+  }
+}
+
+input[type="checkbox"].filled-in.blue + label {
+  &:after {
+    border-color: $gray30;
+    border-width: 1px;
+    border-radius: 0;
+  }
+}
+
+input[type="checkbox"].filled-in.blue:checked + label {
+  &:after {
+    background-color: $secondaryBlue;
+    border-color: $secondaryBlue;
   }
 }
 

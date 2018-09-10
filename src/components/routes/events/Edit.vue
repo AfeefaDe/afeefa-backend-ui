@@ -16,6 +16,11 @@
           <section slot="general">
             <title-input :item="event" />
 
+            <input-label
+              class="formElement marginTop"
+              name="date" :title="eventDate"
+              :validationErrors="errors" />
+
             <date-picker
               :date-start="event.date_start"
               :date-end="event.date_end"
@@ -23,12 +28,11 @@
               :has-time-end="event.has_time_end"
               @input="updateDatePickerValues"
               name="date" v-validate="'date-end-not-earlier-than-start|date-end-not-start'"
-              :class="['inputField__spacing', {'validation-error': errors.has('date') }]"
+              :validationErrors="errors"
               >
             </date-picker>
-            <span v-show="errors.has('date')" class="validation-error">{{ errors.first('date') }}</span>
 
-            <description-form :item="event" />
+            <description-form class="formElement marginTop" :item="event" />
 
             <media-image-input :item="event" propertyName="media_url" :image-error="imageError" class="formElement marginTop" />
           </section>
@@ -62,6 +66,9 @@ import HelpWantedForm from '@/components/entry/edit/HelpWantedForm'
 import TitleInput from '@/components/entry/edit/TitleInput'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 import MediaImageInput from '@/components/entry/edit/MediaImageInput'
+import InputLabel from '@/components/InputLabel'
+import formatDateRelative from '@/filters/format-date-relative'
+import formatEventDate from '@/filters/format-event-date'
 
 export default {
   mixins: [EntryEditMixin, BeforeRouteLeaveMixin],
@@ -83,6 +90,10 @@ export default {
 
     tabNames () {
       return ['general']
+    },
+
+    eventDate () {
+      return `${formatEventDate(this.event)} (${formatDateRelative(this.event.date_start)})`
     }
   },
 
@@ -121,7 +132,21 @@ export default {
     MediaImageInput,
 
     ImageContainer,
-    DatePicker
+    DatePicker,
+    InputLabel
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.eventDate {
+  margin-top: .6em;
+}
+
+.datePicker {
+  margin-top: 1.5em;
+  &.timePickerOpen {
+    margin-top: .5em;
+  }
+}
+</style>

@@ -265,7 +265,7 @@ export default {
 
       this.$nextTick(() => {
         items = this.has.facetFilter ? this.filteredEntries : this.items
-        console.log('################### FILTER ALL', this.has.facetFilter, this.filteredEntries.length, this.items.length, items.length)
+        // console.log('################### FILTER ALL', this.has.facetFilter, this.filteredEntries.length, this.items.length, items.length)
         items = items.filter(i => i.title.toLowerCase().includes(this.searchKeyword.toLowerCase()))
 
         if (this.currentSortFunction) {

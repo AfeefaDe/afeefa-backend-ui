@@ -11,6 +11,11 @@
 
         <title-input :item="item" class="formElement marginTop" />
 
+        <input-label
+          class="formElement marginTop"
+          name="date" :title="eventDate"
+          :validationErrors="errors" />
+
         <date-picker
           :date-start="event.date_start"
           :date-end="event.date_end"
@@ -18,12 +23,11 @@
           :has-time-end="event.has_time_end"
           @input="updateDatePickerValues"
           name="date" v-validate="'date-end-not-earlier-than-start|date-end-not-start'"
-          :class="['inputField__spacing', {'validation-error': errors.has('date') }]"
+          :validationErrors="errors"
           >
         </date-picker>
-        <span v-show="errors.has('date')" class="validation-error">{{ errors.first('date') }}</span>
 
-        <description-form :item="event" :options="{description: false}" />
+        <description-form class="formElement marginTop" :item="event" :options="{description: false}" />
 
         <entry-edit-footer
           :item="event"
@@ -47,6 +51,9 @@ import DatePicker from '@/components/event/datepicker/DatePicker'
 import DescriptionForm from '@/components/entry/edit/DescriptionForm'
 import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 import ActorSelector from '@/components/actor/ActorSelector'
+import InputLabel from '@/components/InputLabel'
+import formatDateRelative from '@/filters/format-date-relative'
+import formatEventDate from '@/filters/format-event-date'
 
 export default {
   mixins: [EntryEditMixin, BeforeRouteLeaveMixin],
@@ -70,6 +77,10 @@ export default {
   computed: {
     event () {
       return this.item
+    },
+
+    eventDate () {
+      return `${formatEventDate(this.event)} (${formatDateRelative(this.event.date_start)})`
     }
   },
 
@@ -110,7 +121,8 @@ export default {
     DatePicker,
     DescriptionForm,
     EntryEditFooter,
-    ActorSelector
+    ActorSelector,
+    InputLabel
   }
 }
 </script>
@@ -128,5 +140,16 @@ export default {
 
 .editableActors {
   margin-top: .8em;
+}
+
+.eventDate {
+  margin-top: .6em;
+}
+
+.datePicker {
+  margin-top: 1.5em;
+  &.timePickerOpen {
+    margin-top: .5em;
+  }
 }
 </style>

@@ -1,7 +1,7 @@
 // import global styles before entering router
 // and reading component styles
 import 'vue-multiselect/dist/vue-multiselect.min.css'
-import 'flatpickr/dist/themes/material_green.css'
+import 'flatpickr/dist/flatpickr.css'
 import 'leaflet/dist/leaflet.css'
 import '@/assets/styles/app.scss'
 

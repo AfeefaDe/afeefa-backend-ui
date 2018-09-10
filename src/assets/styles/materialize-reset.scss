@@ -1,5 +1,13 @@
 /* stylelint-disable selector-class-pattern */
 
+/* Text inputs */
+input[type=text]:not(.browser-default) {
+  height: auto;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
 select.browser-default {
   width: auto;
 }

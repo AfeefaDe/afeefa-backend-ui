@@ -1,60 +1,42 @@
 <template>
-  <div class="datePicker">
+  <div :class="['datePicker', {timePickerOpen: hasStartTime}]">
 
     <!-- start date and start time  -->
-    <div class="rowDateAndTime">
-      <button @click.prevent.stop="toggleStartDatePicker" class="showDateButton btn waves-effect waves-light">
-        <i class="material-icons center">event</i>
-      </button>
-
-      <div @click.prevent.stop="toggleStartDatePicker" class="dateField start-dateField inputField__spacing input-field">
-        <label for="startDate" :class="['clickableElement', {active: currentDateStart}]">{{ $t("entries.date_start") }} <span class="mandatoryField">({{ $t('infos.mandatory_field') }})</span></label>
-        <day-picker ref="startDatePickerRef" id="startDate" :options="dateOptions"/>
+    <div class="rowDate">
+      <div>
+        <button type="button" @click.prevent.stop="toggleStartDatePicker" class="showDateButton btn waves-effect waves-light">
+          <i class="material-icons center">event</i>
+        </button>
       </div>
 
-      <template v-if="hasStartTime">
-        <button @click.prevent.stop="toggleStartTimeButton" class="red showTimeButton btn waves-effect waves-light">
-          <i class="material-icons center">delete_forever</i>
-        </button>
-        <div @click.prevent.stop="toggleStartTimePicker" class="dateField start-time-field inputField__spacing input-field">
-          <label for="startTime" :class="['clickableElement', {active: currentTimeStart}]">{{ $t("entries.time_start") }}</label>
-          <time-picker id="startTime" :options="timeOptions" @FlatpickrRef="setStartTimeRef"/>
-        </div>
-      </template>
-      <template v-else>
-        <button @click.prevent.stop="toggleStartTimeButton" class="showTimeButton btn waves-effect waves-light">
-          <i class="material-icons center">alarm</i>
-        </button>
-      </template>
+      <day-picker class="dayPicker" ref="startDatePickerRef" :options="dateOptions" @update="dateStartChanged" />
+
+      <div @click.prevent.stop="toggleStartDatePicker" class="dateField">
+        {{ formattedDateStart }}
+      </div>
+
+      <div>
+        <time-picker :date="currentDateStart" :isAllDay="!hasStartTime" @update="timeStartChanged" />
+      </div>
     </div>
 
     <!-- end Date and end time  -->
-    <div class="rowDateAndTime">
-      <button @click.prevent.stop="toggleEndDatePicker" class="showDateButton btn waves-effect waves-light">
-        <i class="material-icons center">event</i>
-      </button>
-
-      <div @click.prevent.stop="toggleEndDatePicker" class="dateField end-dateField inputField__spacing input-field">
-        <label for="endDate" :class="['clickableElement', {active: currentDateEnd}]">{{ $t("entries.date_end") }}</label>
-        <span :class="['clickableElement', 'isSameDayLabel', {'hideSpan': !isSameDay}]"> Gleicher Tag </span>
-        <day-picker :class="{'hidePicker': isSameDay}" ref="endDatePickerRef" id="endDate" :options="dateOptions"/>
+    <div :class="['rowDate', {timePickerOpen: hasEndTime}]">
+      <div>
+        <button type="button" @click.prevent.stop="toggleEndDatePicker" class="showDateButton btn waves-effect waves-light">
+          <i class="material-icons center">event</i>
+        </button>
       </div>
 
-      <template v-if="hasEndTime">
-        <button @click.prevent.stop="toggleEndTimeButton" class="red showTimeButton btn waves-effect waves-light">
-          <i class="material-icons center">delete_forever</i>
-        </button>
+      <day-picker class="dayPicker" ref="endDatePickerRef" :options="dateOptions" @update="dateEndChanged"/>
 
-        <div @click.prevent.stop="toggleEndTimePicker" class="dateField end-time-field inputField__spacing input-field">
-          <label for="endTime" :class="['clickableElement', {active: currentTimeEnd}]">{{ $t("entries.time_end") }}</label>
-          <time-picker id="endTime" :options="timeOptions" @FlatpickrRef="setEndTimeRef"/>
-        </div>
-      </template>
-      <template v-else>
-        <button @click.prevent.stop="toggleEndTimeButton" class="showTimeButton btn waves-effect waves-light">
-          <i class="material-icons center">alarm</i>
-        </button>
-      </template>
+      <div @click.prevent.stop="toggleEndDatePicker" class="dateField">
+        {{ formattedDateEnd }}
+      </div>
+
+      <div>
+        <time-picker :date="currentDateEnd" :isAllDay="!hasEndTime" @update="timeEndChanged" />
+      </div>
     </div>
   </div>
 </template>
@@ -63,6 +45,8 @@
 import TimePicker from './TimePicker'
 import DayPicker from './DayPicker'
 import moment from 'moment'
+import InputLabel from '@/components/InputLabel'
+import formatDay from '@/filters/format-day'
 
 export default {
   props: ['dateStart', 'dateEnd', 'hasTimeStart', 'hasTimeEnd'],
@@ -73,29 +57,15 @@ export default {
       currentDateEnd: null,
       hasStartTime: null,
       hasEndTime: null,
-      isSameDay: null,
 
       dateOptions: {
         clickOpens: false,
         enableTime: false,
-        dateFormat: 'd.m.Y',
-        onClose: this.pickerClosed
-      },
-
-      timeOptions: {
-        clickOpens: false,
-        noCalendar: true,
-        enableTime: true,
-        minuteIncrement: 5,
-        time_24hr: true,
-        dateFormat: 'H:i',
-        onClose: this.pickerClosed
+        dateFormat: 'd.m.Y'
       },
 
       startDateRef: null,
-      endDateRef: null,
-      startTimeRef: null,
-      endTimeRef: null
+      endDateRef: null
     }
   },
 
@@ -106,28 +76,14 @@ export default {
     this.currentTimeEnd = this.dateEnd ? new Date(this.dateEnd) : new Date()
     this.hasStartTime = this.hasTimeStart
     this.hasEndTime = this.hasTimeEnd
-    this.checkSameDay()
 
     // set new start date if not existing
     if (this.dateStart === null) {
-      this.$emit('input', {dateStart: this.currentDateStart, dateEnd: this.dateEnd, hasTimeStart: this.hasTimeStart, hasTimeEnd: this.hasTimeEnd})
+      this.$emit('input', this.value)
     }
   },
 
   mounted () {
-    /*
-     * Fix Materialize always setting our Label to active,
-     * even if picker has been closed via ESC.
-     * Override event listener from:
-     * https://github.com/Dogfalo/materialize/blob/master/js/forms.js#L23
-     */
-    const inputs = this.$el.querySelectorAll('input')
-    inputs.forEach(input => {
-      input.addEventListener('change', () => {
-        event.stopPropagation()
-      })
-    })
-
     this.startDateRef = this.$refs.startDatePickerRef.fp
     const startDay = moment(this.currentDateStart).startOf('day').toDate()
     this.startDateRef.setDate(startDay)
@@ -137,64 +93,85 @@ export default {
     this.endDateRef.setDate(endDay)
   },
 
-  methods: {
-    setStartTimeRef (fp) {
-      this.startTimeRef = fp
-      const startTimeDate = this.roundMinutes(moment(this.currentTimeStart)).toDate()
-      this.startTimeRef.setDate(startTimeDate)
+  computed: {
+    // used by vee-validator to validate current date
+    value () {
+      return {
+        dateStart: new Date(this.currentDateStart.setSeconds(0)),
+        dateEnd: new Date(this.currentDateEnd.setSeconds(0)),
+        hasTimeStart: this.hasStartTime,
+        hasTimeEnd: this.hasEndTime
+      }
     },
 
-    setEndTimeRef (fp) {
-      this.endTimeRef = fp
-      const endTimeDate = this.roundMinutes(moment(this.currentTimeEnd)).toDate()
-      this.endTimeRef.setDate(endTimeDate)
+    formattedDateStart () {
+      return formatDay(this.currentDateStart)
     },
 
-    roundMinutes (mDate) {
-      const minutes = mDate.minutes()
-      mDate.minutes(minutes - minutes % 5)
-      return mDate
+    formattedDateEnd () {
+      return this.isSameDay ? 'Gleicher Tag' : formatDay(this.currentDateEnd)
     },
 
-    checkSameDay () {
+    isSameDay () {
       const sD = moment(this.currentDateStart).startOf('day')
       const eD = moment(this.currentDateEnd).startOf('day')
-      this.isSameDay = sD.isSame(eD)
-    },
+      return sD.isSame(eD)
+    }
+  },
 
-    toggleStartTimeButton () {
-      this.closeAllRef()
-      if (this.startTimeRef) {
-        this.startTimeRef.destroy()
-        this.startTimeRef = null
-      } else {
-        this.currentTimeStart = new Date()
+  methods: {
+    dateStartChanged (dateStart) {
+      const wasSameDay = this.isSameDay
+
+      const m = moment(dateStart)
+      this.currentDateStart = moment(this.currentDateStart)
+        .date(m.date())
+        .month(m.month())
+        .year(m.year())
+        .toDate()
+
+      if (wasSameDay) {
+        this.dateEndChanged(dateStart)
       }
-      this.hasStartTime = !this.hasStartTime
-      this.updateDatesLater()
+
+      this.updateDates()
     },
 
-    toggleEndTimeButton () {
-      this.closeAllRef()
-      if (this.endTimeRef) {
-        this.endTimeRef.destroy()
-        this.endTimeRef = null
-      } else {
+    dateEndChanged (dateEnd) {
+      const m = moment(dateEnd)
+      this.currentDateEnd = moment(this.currentDateEnd)
+        .date(m.date())
+        .month(m.month())
+        .year(m.year())
+        .toDate()
+
+      this.updateDates()
+    },
+
+    timeStartChanged ({date, isAllDay}) {
+      this.currentDateStart = date
+      this.hasStartTime = !isAllDay
+
+      this.updateDates()
+    },
+
+    timeEndChanged ({date, isAllDay}) {
+      this.currentDateEnd = date
+
+      // has time end activated, add 1 hour to date start
+      if (!this.hasEndTime && !isAllDay) {
         if (this.hasStartTime) {
-          const mDateStart = moment(this.currentDateStart)
-          this.currentTimeEnd = moment(new Date())
-            .hours(mDateStart.hours()).minutes(mDateStart.minutes())
-            .add(1, 'hour').toDate()
-        } else {
-          this.currentTimeEnd = moment(new Date()).add(1, 'hour').toDate()
+          const hours = moment(this.currentDateStart).hours()
+          this.currentDateEnd = moment(this.currentDateEnd).hours(hours).add(1, 'hours').toDate()
         }
       }
-      this.hasEndTime = !this.hasEndTime
-      this.updateDatesLater()
+      this.hasEndTime = !isAllDay
+
+      this.updateDates()
     },
 
     closeAllRef (butNotRef) {
-      const allRefs = [this.startDateRef, this.endDateRef, this.startTimeRef, this.endTimeRef]
+      const allRefs = [this.startDateRef, this.endDateRef]
       for (let i in allRefs) {
         const ref = allRefs[i]
         if (ref !== null && ref !== butNotRef) {
@@ -218,130 +195,80 @@ export default {
       this.toggleRef(this.endDateRef)
     },
 
-    toggleStartTimePicker () {
-      this.toggleRef(this.startTimeRef)
-    },
-
-    toggleEndTimePicker () {
-      this.toggleRef(this.endTimeRef)
-    },
-
-    pickerClosed () {
-      this.updateDatesLater()
-    },
-
-    // needs rendering prior calculating updates dates
-    updateDatesLater () {
-      this.$nextTick(this.updateDates)
-    },
-
     updateDates () {
-      const dayStart = this.startDateRef.selectedDates[0]
-      const timeStart = this.startTimeRef && this.startTimeRef.selectedDates.length ? this.startTimeRef.selectedDates[0] : dayStart
+      const startDay = moment(this.currentDateStart).startOf('day').toDate()
+      this.startDateRef.setDate(startDay)
 
-      const dateStart = new Date(
-        dayStart.getFullYear(), dayStart.getMonth(), dayStart.getDate(),
-        timeStart.getHours(), timeStart.getMinutes()
-      )
-
-      const dayEnd = this.endDateRef.selectedDates[0] || dayStart
-      const timeEnd = this.endTimeRef && this.endTimeRef.selectedDates.length ? this.endTimeRef.selectedDates[0] : dayEnd
-
-      let dateEnd = new Date(
-        dayEnd.getFullYear(), dayEnd.getMonth(), dayEnd.getDate(),
-        timeEnd.getHours(), timeEnd.getMinutes()
-      )
-
-      // end date = start day if same day and start day is changed
-      const dateStartDidChange = !moment(dateStart).startOf('day').isSame(moment(this.currentDateStart).startOf('day'))
-      if (this.isSameDay && dateStartDidChange) {
-        dateEnd = dateStart
-        this.endDateRef.setDate(dateEnd)
-      }
-
-      this.currentDateStart = dateStart
-      this.currentDateEnd = dateEnd
-      this.checkSameDay()
+      const endDay = moment(this.currentDateEnd).startOf('day').toDate()
+      this.endDateRef.setDate(endDay)
 
       this.$emit('input', this.value)
     }
   },
 
-  computed: {
-    // used by vee-validator to validate current date
-    value () {
-      return {
-        dateStart: this.currentDateStart,
-        dateEnd: this.currentDateEnd,
-        hasTimeStart: this.hasStartTime,
-        hasTimeEnd: this.hasEndTime
-      }
-    }
-  },
-
   components: {
-    TimePicker,
-    DayPicker
+    DayPicker,
+    InputLabel,
+    TimePicker
   }
 }
 </script>
 
-<style lang="scss">
-  label.clickableElement {
-    pointer-events:none;
+<style lang="scss" scoped>
+  .datePicker {
+    display: table;
   }
-  span.hideSpan {
-    display: none;
+
+  .rowDate {
+    display: table-row;
+    > * {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    &:last-child > * {
+      padding-top: 1.5em;
+    }
+    &.timePickerOpen {
+      &:last-child > * {
+        padding-top: 0;
+      }
+    }
   }
-  span.isSameDayLabel {
-    position: absolute;
-    height: 3rem;
-    line-height: 3rem;
-    color: grey;
+
+  .dayPicker {
+    border: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background-color: red !important;
+    visibility: hidden;
+    position: relative;
+    top: -1em;
+    left: -1em;
   }
-  .hidePicker {
-    opacity: 0;
-  }
-  .rowDateAndTime {
-    display: flex;
-    align-items: baseline;
-  }
+
   .dateField {
-    width: 30%;
+    padding-left: .7em;
+    padding-right: 1.5em;
+    cursor: pointer;
   }
+
   .showDateButton {
     padding-left: 0.5em;
     padding-right: 0.45em;
-    margin: 0 1em 0 0;
   }
-  .showTimeButton {
-    padding-left: 0.5em;
-    padding-right: 0.45em;
-    margin: 0 1em 0 2em;
+</style>
+
+<style lang="scss">
+/* stylelint-disable selector-class-pattern */
+.flatpickr-calendar {
+  /deep/ input {
+    padding: 0 0 0 0.5ch !important;
+    border: none;
+    box-shadow: none;
   }
-  /* stylelint-disable selector-class-pattern */
-  div.flatpickr-calendar {
-    background-color: inherit;
+  /deep/ .numInputWrapper {
+    margin-left: .1em;
   }
+}
 /* stylelint-enable */
-  #startDate {
-    cursor: hand;
-    border-bottom: none;
-    color: black;
-  }
-  #startTime {
-    cursor: hand;
-    border-bottom: none;
-    color: black;
-  }
-  #endDate {
-    cursor: hand;
-    border-bottom: none;
-    color: black;
-  }
-  #endTime {
-    cursor: hand;
-    border-bottom: none;
-    color: black;
-  }
 </style>

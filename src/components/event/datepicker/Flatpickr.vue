@@ -1,5 +1,5 @@
 <template>
-  <input type="text">
+  <input type="text" @input="flatpickerChanges($event.target.value)">
 </template>
 
 <script>
@@ -22,6 +22,13 @@ export default {
   destroyed () {
     this.fp.destroy()
     this.fp = null
+  },
+
+  methods: {
+    flatpickerChanges (value) {
+      const date = this.fp.parseDate(value)
+      this.$emit('update', date)
+    }
   }
 }
 </script>
