@@ -25,7 +25,7 @@ class Location extends Model {
 
       ownerTitle: DataTypes.String,
 
-      creatingContactId: DataTypes.String
+      contact_id: DataTypes.String
     }
   }
 
@@ -34,9 +34,6 @@ class Location extends Model {
     const rels = json.relationships || {}
     if (rels.owner && rels.owner.data) {
       attributes.ownerTitle = rels.owner.data.attributes.title
-    }
-    if (rels.contact && rels.contact.data) {
-      attributes.creatingContactId = rels.contact.data.id
     }
     return {
       id: json.id,

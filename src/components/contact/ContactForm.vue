@@ -172,7 +172,7 @@ export default {
       if (!this.contact.location) {
         return false
       }
-      return this.contact.location.creatingContactId !== this.contact.id
+      return this.contact.location.contact_id !== this.contact.id
     }
   },
 
@@ -189,7 +189,7 @@ export default {
 
     createLocation () {
       const location = new Location()
-      location.creatingContactId = this.contact.id
+      location.contact_id = this.contact.id
       this.contact.location = location
     },
 

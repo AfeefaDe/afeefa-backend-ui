@@ -55,7 +55,7 @@ class Contact extends Model {
     }
 
     if (this.location) {
-      if (this.location.creatingContactId === this.id) {
+      if (this.location.contact_id === this.id) {
         // post own location data
         data.location = this.location.serialize()
       } else {

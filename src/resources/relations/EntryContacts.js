@@ -6,7 +6,7 @@ export default class EntryContactsResource extends Resource {
   ensureReverseRelationsAfterAddOrSave (contact) {
     const ensure = super.ensureReverseRelationsAfterAddOrSave(contact)
 
-    if (contact.location && contact.location.creatingContactId === contact.id) {
+    if (contact.location && contact.location.contact_id === contact.id) {
       contact.location.getParentRelations().forEach(relation => {
         const contactOfLocation = relation.owner
         contactOfLocation.getParentRelations().forEach(ownerContactRelation => {
