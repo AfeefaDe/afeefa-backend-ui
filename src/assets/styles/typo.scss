@@ -1,0 +1,12 @@
+h3 {
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #999999;
+  font-weight: normal;
+  margin: 3em 0 1em;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}

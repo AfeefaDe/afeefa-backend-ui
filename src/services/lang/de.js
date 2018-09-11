@@ -5,7 +5,7 @@ export default {
     organisations: 'Akteur | Akteure',
     events: 'Veranstaltung | Veranstaltungen',
     location: 'Ort',
-    contact: 'Kontakt',
+    contact: 'Erreichbarkeit',
     annotations: 'Anmerkung | Anmerkungen',
     search: 'Suche',
     searchPlaceholder: 'Suche nach',
