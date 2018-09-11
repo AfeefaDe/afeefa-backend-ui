@@ -1,30 +1,23 @@
 <template>
   <div>
+
     <div class="cols--2">
       <section>
-        <h3>Kontaktbezeichnung</h3>
-
         <input-field
           field-name="title"
           v-model="contact.title"
-          validate="max:255">
+          validate="max:255"
+          label="Kontaktbezeichnung">
         </input-field>
 
-        <h3>Allgemein</h3>
-
-        <div class="inputField__spacing input-field" v-if="owner.type === 'orgas'">
-          <label for="openingHours" :class="{active: contact.openingHours}">
-            {{ $t('entries.openingHours') }}
-          </label>
-          <textarea
-            v-model="contact.openingHours"
-            id="openingHours"
-            class="materialize-textarea"
-            v-autosize>
-          </textarea>
-        </div>
+        <text-input v-if="owner.type === 'orgas'"
+          class="formElement marginTop"
+          v-model="contact.openingHours"
+          fieldName="openingHours"
+          :label="$t('entries.openingHours')" />
 
         <input-field
+          class="formElement marginTop"
           field-name="web"
           v-model="contact.web"
           validate="url-with-protocol"
@@ -33,6 +26,7 @@
         </input-field>
 
         <input-field
+          class="socialMedia"
           field-name="socialMedia"
           v-model="contact.socialMedia"
           validate="url-with-protocol"
@@ -40,7 +34,10 @@
           label="Social Media">
         </input-field>
 
+        <br>
+
         <lang-select-input
+          style="border: 1px solid #CCCCCC;"
           @input="updateSpokenLanguages"
           :entryValue="contact.spokenLanguages">
         </lang-select-input>
@@ -82,9 +79,16 @@
         </div>
 
         <div v-if="contact.location && !locationIsLinked">
-          <button type="button" class="btn btn-small" @click="removeLocation">Ort löschen</button>
           <location-form :location="contact.location" />
-          <button type="button" class="btn btn-small" @click="removeLocation">Ort löschen</button>
+
+          <input-field
+            field-name="location_spec"
+            v-model="contact.location_spec"
+            validate="max:255"
+            label="Ortsbezeichnung">
+          </input-field>
+
+          <button type="button" class="btn btn-small personButton" @click="removeLocation">Ort löschen</button>
         </div>
       </section>
 
@@ -101,6 +105,7 @@
             <p v-for="mail in directContacts.mail" :key="mail">{{mail}}</p>
           </div>
         </div>
+
         <input-field
           class="inputField__spacing"
           field-name="phone-mail"
@@ -108,14 +113,10 @@
           v-model="directContact"
           label="Telefon oder E-Mail">
         </input-field>
-        <button type="button" @click="detectContactType()">Kontakt hinzufügen</button>
 
-        <!-- TODO new persons do not have an id and result in 'Duplicate keys detected: ''. This may cause an update error.' -->
-        <div v-for="person in contact.contact_persons" :key="person.id"> // wrong
-          <h3>{{ person.role }}</h3>
+        <button type="button" class="btn btn-small personButton" @click="detectContactType()">Kontakt hinzufügen</button>
 
-          <a href="" @click.prevent="removeContactPerson(person)">Person löschen</a>
-
+        <div v-for="(person, index) in contact.contact_persons" :key="index" class="person">
           <input-field
             class="inputField__spacing"
             field-name="role"
@@ -145,13 +146,14 @@
             validate="max:255"
             label="Telefon">
           </input-field>
+          <a href="" class="inlineEditLink" @click.prevent="removeContactPerson(person)">Person löschen</a>
         </div>
 
-        <!-- <button type="button" @click="addContactPerson()">Kontaktperson hinzufügen</button> -->
+        <button type="button" class="btn btn-small personButton" @click="addContactPerson()">Kontaktperson hinzufügen</button>
       </section>
     </div>
 
-    <button type="button" @click="saveContact">Kontakt Speichern</button>
+
   </div>
 </template>
 
@@ -179,6 +181,7 @@ export default {
 
   data () {
     return {
+      directContact: '',
       locations: [],
       directContacts: {
         phone: [],
@@ -277,5 +280,32 @@ export default {
 
 .addressDetail {
   font-size: .8em;
+}
+
+h2 {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.person {
+  margin-top: 3em;
+  max-width: 400px;
+  a {
+    display: block;
+    margin-top: 1em;
+  }
+}
+
+.personButton {
+  margin-top: 1.5em;
+}
+
+.socialMedia {
+  margin-top: .8em;
 }
 </style>

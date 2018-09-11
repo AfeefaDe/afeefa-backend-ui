@@ -8,7 +8,13 @@
       :owner="owner"
       :contact="contact"
       :routeConfig="routeConfig"
-      @save="saveContact" />
+      @save="save" />
+
+    <entry-edit-footer
+      :item="owner"
+      :routeConfig="routeConfig"
+      @remove="remove"
+      @save="save" />
   </div>
 
   <div slot="content" v-else>
@@ -21,10 +27,9 @@
 
 <script>
 import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
-
 import Contact from '@/models/Contact'
-
 import ContactForm from './ContactForm'
+import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 
 export default {
   mixins: [RouteConfigAwareMixin],
@@ -63,7 +68,7 @@ export default {
       return true
     },
 
-    saveContact () {
+    save () {
       this.owner.$rels.contacts.Query.save(this.contact).then(contact => {
         if (contact) {
           this.$store.dispatch('messages/showAlert', {
@@ -72,11 +77,30 @@ export default {
           this.$router.push({name: this.routeName + '.show', params: {id: this.owner.id}})
         }
       })
+    },
+
+    remove () {
+      this.$store.dispatch('messages/showDialog', {
+        title: 'Kontakt entfernen',
+        message: 'Soll der Kontakt gelöscht werden?'
+      }).then(result => {
+        if (result === 'yes') {
+          this.owner.$rels.contacts.Query.delete(this.contact).then(result => {
+            if (result) {
+              this.$store.dispatch('messages/showAlert', {
+                description: 'Der Kontakt wurde gelöscht.'
+              })
+              this.$router.push({name: this.routeName + '.show', params: {id: this.owner.id}})
+            }
+          })
+        }
+      })
     }
   },
 
   components: {
-    ContactForm
+    ContactForm,
+    EntryEditFooter
   }
 }
 </script>

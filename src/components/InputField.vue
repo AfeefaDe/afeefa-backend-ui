@@ -79,10 +79,12 @@ export default {
 
     onFocus () {
       this.focus = true
+      this.$emit('focus')
     },
 
     onBlur () {
       this.focus = false
+      this.$emit('blur')
     }
   },
 

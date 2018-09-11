@@ -150,7 +150,7 @@ import EntryOwners from '@/components/actor/EntryOwners'
 import FilterBar from '@/components/entry/list/filterbar/FilterBar'
 import { mapState } from 'vuex'
 import sortByKeyword from '@/helpers/sort-by-keyword'
-import sortByTitle from '@/helpers/sort-by-title'
+import sortByTitle, { replaceUmlauts } from '@/helpers/sort-by-title'
 
 export default {
   props: {
@@ -266,7 +266,11 @@ export default {
       this.$nextTick(() => {
         items = this.has.facetFilter ? this.filteredEntries : this.items
         // console.log('################### FILTER ALL', this.has.facetFilter, this.filteredEntries.length, this.items.length, items.length)
-        items = items.filter(i => i.title.toLowerCase().includes(this.searchKeyword.toLowerCase()))
+        items = items.filter(i => {
+          const title = replaceUmlauts(i.title.toLowerCase())
+          const keyword = replaceUmlauts(this.searchKeyword.toLowerCase())
+          return title.includes(keyword)
+        })
 
         if (this.currentSortFunction) {
           items = this.currentSortFunction(items, this.currentSortOrder)

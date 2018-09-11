@@ -97,8 +97,8 @@
               </entry-detail-section>
             </div>
 
-            <div class="splitView__splitViewChild">
-              <router-link :to="{name: 'offers.convert', query: {actorId: orga.id}}" class="btn green btn-small">
+            <div class="entryDetail splitView__splitViewChild">
+              <router-link :to="{name: 'offers.convert', query: {actorId: orga.id}}" class="btn btn-small convertButton">
                 <i class="material-icons left">add</i>
                 In Angebot umwandeln
               </router-link>
@@ -320,8 +320,11 @@ export default {
 
   &.overview {
     padding-top: 1em;
-    // position: relative;
   }
+}
+
+.convertButton {
+  margin-bottom: 4em;
 }
 
 .entryDetailSection:not(:first-child) {

@@ -35,7 +35,7 @@
               </entry-detail-section>
             </div>
 
-            <contact-list :item="event" class="splitView__splitViewChild"/>
+            <contact-list :item="event" class="entryDetail splitView__splitViewChild"/>
 
           </div>
 

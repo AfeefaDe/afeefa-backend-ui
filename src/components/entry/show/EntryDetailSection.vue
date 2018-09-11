@@ -22,6 +22,12 @@
           </a>
         </div>
 
+        <div class="editLink" v-if="clickLink">
+          <a href="" @click.prevent="$emit('click')" class="inlineEditLink">
+            {{ clickLink }}
+          </a>
+        </div>
+
         <div class="editLink" v-if="inlineEditing">
           <a href="" @click.prevent="isEdit = true" v-if="!isEdit" class="inlineEditLink">
             Ändern
@@ -42,7 +48,7 @@
 
 <script>
 export default {
-  props: ['title', 'icon', 'editLink', 'inlineEditing', 'dispatchEdit'],
+  props: ['title', 'icon', 'editLink', 'inlineEditing', 'dispatchEdit', 'clickLink'],
 
   data () {
     return {

@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <div class="noSelectedItems" v-else>
+    <div class="noSelectedItems" v-else-if="maxSelectableItems > 1">
       <slot name="noSelectedItems" />
     </div>
 
@@ -36,7 +36,7 @@
           <div v-for="(item, index) in selectableItems" :key="item.id"
             :class="['item', {'item--selected': index === selectedItemIndex}]"
             @mousedown.prevent @click.prevent="select(item)">
-            <slot name="item" :item="item"></slot>
+            <slot name="item" :item="item" :selected="index === selectedItemIndex"></slot>
           </div>
         </div>
       </div>
@@ -59,6 +59,7 @@ import Vue from 'vue'
 import Spinner from '@/components/Spinner'
 import sortByKeyword from '@/helpers/sort-by-keyword'
 import InputLabel from '@/components/InputLabel'
+import { replaceUmlauts } from '@/helpers/sort-by-title'
 
 export default {
   props: ['items', 'selectedItems', 'title', 'messages', 'isLoading', 'searchFields', 'maxSelectableItems'],
@@ -126,7 +127,9 @@ export default {
                 return true
               }
             } else {
-              if (value.toLowerCase().includes(keyword.toLowerCase())) {
+              const testValue = replaceUmlauts(value.toLowerCase())
+              const testKeyword = replaceUmlauts(keyword.toLowerCase())
+              if (testValue.includes(testKeyword)) {
                 return true
               }
             }
@@ -286,15 +289,6 @@ export default {
       opacity: 0;
     }
   }
-}
-
-.title + div {
-  margin-top: 1em;
-}
-
-.hint {
-  height: 500px;
-  color: $gray50;
 }
 
 .list {

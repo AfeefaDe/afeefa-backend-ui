@@ -29,7 +29,7 @@
               </entry-detail-section>
             </div>
 
-            <contact-list :item="offer" class="splitView__splitViewChild"/>
+            <contact-list :item="offer" class="entryDetail splitView__splitViewChild"/>
           </div>
 
           <entry-detail-footer :entry="offer"/>

@@ -31,6 +31,8 @@ export default class Entry extends Model {
 
       facebook_id: DataTypes.String,
 
+      contact_spec: DataTypes.String,
+
       active: DataTypes.Boolean,
 
       created_at: DataTypes.Date,
@@ -107,7 +109,8 @@ export default class Entry extends Model {
         support_wanted: this.support_wanted,
         support_wanted_detail: this.support_wanted_detail,
         certified_sfr: this.certified_sfr,
-        tags: this.tags
+        tags: this.tags,
+        contact_spec: this.contact_spec
       }
     }
     if (this.id) {

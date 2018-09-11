@@ -4,6 +4,7 @@
     <i v-if="item.type === 'offers'" class="material-icons offers">favorite</i>
     <i v-if="item.type === 'events'" class="material-icons events">date_range</i>
     <i v-if="item.type === 'annotations'" class="material-icons annotations">chevron_right</i>
+    <i v-if="item.type === 'contacts'" class="material-icons contacts">mail_outline</i>
   </div>
 </template>
 

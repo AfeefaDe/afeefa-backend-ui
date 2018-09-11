@@ -3,6 +3,12 @@ import App from 'uidata/model/App'
 import Resource from 'uidata/resource/Resource'
 
 export default class EntryContactsResource extends Resource {
+  serializeAttachOrDetach (model) {
+    return {
+      id: model.id
+    }
+  }
+
   ensureReverseRelationsAfterAddOrSave (contact) {
     const ensure = super.ensureReverseRelationsAfterAddOrSave(contact)
 

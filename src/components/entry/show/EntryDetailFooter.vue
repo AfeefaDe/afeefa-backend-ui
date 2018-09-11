@@ -1,5 +1,4 @@
 <template>
-  <div>
   <div class="entryDetailFooter">
     <div class="entryDetailFooter__item">
       <span class="label">{{ $t('entries.updated_at') }}:</span>
@@ -24,7 +23,6 @@
      </div>
     </div>
   </div>
-</div>
 </template>
 
 

@@ -20,10 +20,10 @@ export function compareTitles (a, b, order) {
   return result
 }
 
-function replaceUmlauts (value) {
-  value = value.replace(/ä/g, 'a')
-  value = value.replace(/ö/g, 'o')
-  value = value.replace(/ü/g, 'u')
+export function replaceUmlauts (value) {
+  value = value.replace(/ä/g, 'ae')
+  value = value.replace(/ö/g, 'oe')
+  value = value.replace(/ü/g, 'ue')
   value = value.replace(/ß/g, 'ss')
   return value
 }

@@ -38,12 +38,10 @@ export default {
         message: this.messages.activateItemDialogMessage(this.entry)
       }).then(result => {
         if (result === 'yes') {
-          this.currentlyPublishing = true
           const attributes = {
             active: !this.entry.active
           }
           this.Model.Query.updateAttributes(this.entry, attributes).then(attributes => {
-            this.currentlyPublishing = false
             if (attributes) {
               this.$store.dispatch('messages/showAlert', {
                 description: this.messages.activateItemSuccess(this.entry)

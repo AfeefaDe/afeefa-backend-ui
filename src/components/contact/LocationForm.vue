@@ -1,50 +1,60 @@
 <template>
-  <div>
-    <div class="inputField__spacing" v-if="location">
-      <div class="input-field">
-        <label for="title" :class="{active: (location.title)}">Ortsbezeichnung (z.B. Hinterhof)</label>
-        <input  v-model="location.title" id="title" type="text" />
-      </div>
+  <div v-if="location">
+    <input-field
+      field-name="street"
+      v-model="location.street"
+      validate="max:255"
+      label="Straße"
+      @blur="getGeocode(true)">
+    </input-field>
 
-      <div class="input-field">
-        <label for="street" :class="{active: location.street}">Straße</label>
-        <input v-model="location.street" id="street" type="text" @change="getGeocode(true)" />
-      </div>
+    <input-field
+      class="formElement marginTop"
+      field-name="title"
+      v-model="location.title"
+      validate="max:255"
+      label="Ortsbezeichnung (z.B. Hinterhof)">
+    </input-field>
 
-      <div class="input-field">
-        <label for="zip" :class="{active: location.zip}">Postleitzahl</label>
-        <input v-model="location.zip" id="zip" type="text" @change="getGeocode(true)" />
-      </div>
+    <input-field
+      class="formElement marginTop"
+      field-name="zip"
+      v-model="location.zip"
+      validate="max:255"
+      label="Postleitzahl"
+      @blur="getGeocode(true)">
+    </input-field>
 
-      <div class="input-field">
-        <label for="city" :class="{active: location.city}">Stadt</label>
-        <input v-model="location.city" id="city" type="text" @change="getGeocode(true)" />
-      </div>
+    <input-field
+      class="formElement marginTop"
+      field-name="city"
+      v-model="location.city"
+      validate="max:255"
+      label="Stadt"
+      @blur="getGeocode(true)">
+    </input-field>
 
-      <div class="input-field">
-        <div v-if="geodataLoading">
-          <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Geodaten
-        </div>
-        <span v-else-if="geocodeError" class="geodata-not-found validation-error">
-          {{ geocodeError }}
-        </span>
-        <span v-if="bippelMoved" class="validation-hint">
-          <i class="material-icons">error_outline</i>
-          Der Bippel wurde manuell verschoben und zeigt nicht mehr genau auf die Adresse.<br />
-          Falls das nicht beabsichtigt ist: <a href="" @click.prevent="resetToGeodateOfAddress">Zurücksetzen auf Adresse.</a>
-        </span>
+    <div class="formElement marginTop">
+      <div v-if="geodataLoading">
+        <spinner :show="true" :width="1" :radius="5" :length="3" /> Lade Geodaten
       </div>
-
-      <location-map :map-center="mapCenter" :location="location" :draggable="true" @bibbelDrag="bibbelDrag" :currentTab="currentTab"></location-map>
-
-      <div class="inputField__spacing input-field">
-        <label for="directions" :class="{active: location.directions}">
-          {{ $t('entries.directions') }}
-        </label>
-        <textarea v-model="location.directions" id="directions"
-          class="materialize-textarea" v-autosize></textarea>
-      </div>
+      <span v-else-if="geocodeError" class="geodata-not-found validation-error">
+        {{ geocodeError }}
+      </span>
+      <span v-if="0 && bippelMoved" class="validation-hint">
+        <i class="material-icons">error_outline</i>
+        Der Bippel wurde manuell verschoben und zeigt nicht mehr genau auf die Adresse.<br />
+        Falls das nicht beabsichtigt ist: <a href="" @click.prevent="resetToGeodateOfAddress">Zurücksetzen auf Adresse.</a>
+      </span>
     </div>
+
+    <location-map :map-center="mapCenter" :location="location" :draggable="true" @bibbelDrag="bibbelDrag" :currentTab="currentTab"></location-map>
+
+    <text-input
+      class="formElement marginTop"
+      v-model="location.directions"
+      fieldName="directions"
+      :label="$t('entries.directions')" />
   </div>
 </template>
 
@@ -61,7 +71,8 @@ export default {
     return {
       geodataLoading: false,
       geodataOfAddress: null,
-      geocodeError: false
+      geocodeError: false,
+      lastGeocodedAdress: null
     }
   },
 
@@ -86,6 +97,10 @@ export default {
         return
       }
 
+      if (address === this.lastGeocodedAdress) {
+        return
+      }
+
       this.geodataLoading = true
 
       let url = BASE + 'geocoding'
@@ -101,6 +116,7 @@ export default {
             this.location.lat = '' + result.body.latitude
             this.location.lon = '' + result.body.longitude
           }
+          this.lastGeocodedAdress = address
         }).catch(error => {
           this.geocodeError = 'Geodaten nicht gefunden. Bitte Adresse anpassen.'
           this.geodataOfAddress = null

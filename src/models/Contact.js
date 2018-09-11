@@ -1,5 +1,6 @@
 import ContactPerson from '@/models/ContactPerson'
 import Location from '@/models/Location'
+import ContactOwnerResource from '@/resources/relations/ContactOwner'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Registry from 'uidata/model/Registry'
@@ -7,6 +8,8 @@ import Relation from 'uidata/model/Relation'
 
 class Contact extends Model {
   static type = 'contacts'
+
+  static ResourceUrl = 'contacts{/id}'
 
   static attributes () {
     return {
@@ -27,12 +30,19 @@ class Contact extends Model {
       spokenLanguages: {
         type: DataTypes.String,
         remoteName: 'spoken_languages'
-      }
+      },
+
+      location_spec: DataTypes.String
     }
   }
 
   static relations () {
     return {
+      owner: {
+        type: Relation.HAS_ONE,
+        Resource: ContactOwnerResource
+      },
+
       location: {
         type: Relation.HAS_ONE,
         Model: Location
@@ -51,7 +61,8 @@ class Contact extends Model {
       opening_hours: this.openingHours,
       web: this.web,
       social_media: this.socialMedia,
-      spoken_languages: this.spokenLanguages
+      spoken_languages: this.spokenLanguages,
+      location_spec: this.location_spec
     }
 
     if (this.location) {

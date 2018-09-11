@@ -166,12 +166,6 @@ export default {
   }
 }
 
-.selectableList {
-  /deep/ .selectableItems, /deep/ .hint {
-    height: auto;
-  }
-}
-
 .selectedActor {
   &:not(:last-child) {
     margin-bottom: .4em;

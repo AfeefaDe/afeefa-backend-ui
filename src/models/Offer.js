@@ -30,6 +30,8 @@ class Offer extends Model {
 
       image_url: DataTypes.String,
 
+      contact_spec: DataTypes.String,
+
       active: DataTypes.Boolean,
 
       created_at: DataTypes.Date,
@@ -96,7 +98,8 @@ class Offer extends Model {
       title: this.title,
       short_description: this.short_description,
       description: this.description,
-      image_url: this.image_url
+      image_url: this.image_url,
+      contact_spec: this.contact_spec
     }
 
     if (!this.id && this.owners.length) {
