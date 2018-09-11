@@ -27,6 +27,13 @@ class Navigation extends Model {
     }
   }
 
+  onNavigationItems () {
+    const items = this.getAllNavigationItems()
+    items.forEach(item => {
+      item.navigation = this
+    })
+  }
+
   getAllNavigationItems () {
     const navigationItems = []
     for (const navigationItem of this.navigation_items) {
