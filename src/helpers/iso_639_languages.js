@@ -2,7 +2,7 @@ export default {
   getLanguageFromCode: function (isoCode) {
     let obj = this.data.find(x => x.iso639v1 === isoCode)
     if (!obj) {
-      throw new Error(`Unknown ISO 639 Code: ${isoCode}`)
+      console.error(`Unknown ISO 639 Code: ${isoCode}`)
     }
     return obj
   },
