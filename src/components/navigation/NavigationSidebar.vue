@@ -135,7 +135,7 @@ export default {
     vertical-align: middle;
   }
   &__footer {
-    margin-top: 8rem;
+    margin-top: 2rem;
   }
   &__footerSeperator {
     border-top: 1px solid $gray20;
