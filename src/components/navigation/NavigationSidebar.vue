@@ -82,7 +82,7 @@ export default {
     }
   }
 
-  &.felix {
+  &.felix, &.anna {
     background-color: inherit;
     box-shadow: none;
   }
@@ -135,7 +135,7 @@ export default {
     vertical-align: middle;
   }
   &__footer {
-    margin-top: 2rem;
+    margin-top: 4rem;
   }
   &__footerSeperator {
     border-top: 1px solid $gray20;
