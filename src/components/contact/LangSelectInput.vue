@@ -11,12 +11,12 @@
       @input="chosenLanguagesChanged"
 
       :label="$i18n.locale"
-      :selectLabel="$t('multiselect.selectLabel')"
-      :selectedLabel="$t('multiselect.selectedLabel')"
-      :deselectLabel="$t('multiselect.deselectLabel')"
+      :selectLabel="''"
+      :selectedLabel="''"
+      :deselectLabel="''"
       :placeholder="placeholder"
       >
-      <span slot="noResult">{{$t('multiselect.noResult')}}</span>
+      <span slot="noResult" v-if="false">{{$t('multiselect.noResult')}}</span>
     </multiselect>
   </div>
 </template>

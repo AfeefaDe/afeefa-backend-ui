@@ -1,10 +1,27 @@
 .customMultiselect {
+  .multiselect__input {
+    border: none !important;
+    box-shadow: none !important;
+    padding: .3em !important;
+  }
+
   .multiselect__tags {
-    border: 0;
-    padding-left: 0;
+    border: 1px solid $gray10;
+    background-color: $white;
+    border-radius: 2px;
+    padding-left: 8px;
+  }
+  .multiselect__option {
+    padding: .6em .8em;
+    height: auto;
+    min-height: 1em;
+    border-bottom: 1px solid $gray10;
   }
   .multiselect__option--highlight, .multiselect__option--highlight:after {
     background: $secondaryBlue;
+  }
+  .multiselect__option--selected {
+    font-weight: normal;
   }
   .multiselect__tag {
     background: $secondaryBlue;
@@ -23,19 +40,23 @@
     z-index: 10;
   }
   .multiselect--active .multiselect__content {
-    background: $gray20;
+    background: white;
     z-index: 10000;
+  }
+  .multiselect--active .multiselect__tags {
+    background-color: white;
+    border: 1px solid $gray20;
+  }
+  .multiselect__single {
+    display: none;
   }
 }
 /* another variant of the custom sytle with borders and a background color — used for tag input*/
 .customMultiselect--border {
   .multiselect__tags {
     border: 1px solid #E8E8E8;
-    background: $gray20;
+    background: $gray10;
     padding: 8px 40px 0 8px;
-  }
-  .multiselect__single {
-    background: $gray20;
   }
 }
 /*
@@ -49,3 +70,4 @@
     display: none;
   }
 }
+
