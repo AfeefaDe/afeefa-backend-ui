@@ -3,6 +3,7 @@ import Contact from '@/models/Contact'
 import FacetItem from '@/models/FacetItem'
 import NavigationItem from '@/models/NavigationItem'
 import User from '@/models/User'
+import EntryAnnotationsResource from '@/resources/relations/EntryAnnotations'
 import ContactsResource from '@/resources/relations/EntryContacts'
 import OwnerFacetItemsResource from '@/resources/relations/OwnerFacetItems'
 import OwnerNavigationItemsResource from '@/resources/relations/OwnerNavigationItems'
@@ -53,7 +54,8 @@ export default class Entry extends Model {
 
       annotations: {
         type: Relation.HAS_MANY,
-        Model: Annotation
+        Model: Annotation,
+        Resource: EntryAnnotationsResource
       },
 
       creator: {

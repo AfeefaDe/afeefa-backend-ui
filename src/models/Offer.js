@@ -1,4 +1,5 @@
 import OffersResource from '@/resources/Offers'
+import EntryAnnotationsResource from '@/resources/relations/EntryAnnotations'
 import ContactsResource from '@/resources/relations/EntryContacts'
 import OfferOwnersResource from '@/resources/relations/OfferOwners'
 import OwnerFacetItemsResource from '@/resources/relations/OwnerFacetItems'
@@ -51,7 +52,8 @@ class Offer extends Model {
 
       annotations: {
         type: Relation.HAS_MANY,
-        Model: Annotation
+        Model: Annotation,
+        Resource: EntryAnnotationsResource
       },
 
       contacts: {
