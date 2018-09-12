@@ -5,3 +5,220 @@
 @mixin user-select() {
   user-select: none;
 }
+
+/* category icons from afeefa frontend */
+/* stylelint-disable selector-class-pattern */
+@mixin categorySymbols {
+  background-size: 72%;
+  background-repeat: no-repeat;
+  background-position: center center;
+ /* Main categories */
+  &.cat-general {
+      background-image: url("https://afeefa.de/img/icon_174.svg");
+ }
+  &.cat-language {
+      background-image: url("https://afeefa.de/img/icon_06.svg");
+ }
+  &.cat-medic {
+      background-image: url("https://afeefa.de/img/icon_04.svg");
+ }
+  &.cat-jobs {
+      background-image: url("https://afeefa.de/img/icon_76.svg");
+ }
+  &.cat-consultation {
+      background-image: url("https://afeefa.de/img/icon_10.svg");
+ }
+  &.cat-leisure {
+      background-image: url("https://afeefa.de/img/icon_86.svg");
+ }
+  &.cat-community {
+      background-image: url("https://afeefa.de/img/icon_02.svg");
+      background-size: 85%;
+ }
+  &.cat-donation {
+      background-image: url("https://afeefa.de/img/icon_12.svg");
+ }
+  &.cat-external-event {
+      background-image: url("https://afeefa.de/img/icon_192.svg");
+ }
+ /* Sub categories */
+  &.cat-wifi {
+      background-image: url("https://afeefa.de/img/icon_148.svg");
+ }
+  &.cat-jewish {
+      background-image: url("https://afeefa.de/img/icon_22.svg");
+ }
+  &.cat-christian {
+      background-image: url("https://afeefa.de/img/icon_60.svg");
+ }
+  &.cat-islam {
+      background-image: url("https://afeefa.de/img/icon_62.svg");
+ }
+  &.cat-religious-other {
+      background-image: url("https://afeefa.de/img/icon_158.svg");
+ }
+  &.cat-shop {
+      background-image: url("https://afeefa.de/img/icon_66.svg");
+      background-size: 50%;
+ }
+  &.cat-nature {
+      background-image: url("https://afeefa.de/img/icon_96.svg");
+      background-size: 65%;
+ }
+  &.cat-authority {
+      background-image: url("https://afeefa.de/img/icon_70.svg");
+      background-size: 60%;
+ }
+  &.cat-hospital {
+      background-image: url("https://afeefa.de/img/icon_04.svg");
+ }
+  &.cat-police {
+      background-image: url("https://afeefa.de/img/icon_146.svg");
+ }
+  &.cat-public-transport {
+      background-image: url("https://afeefa.de/img/icon_58.svg");
+ }
+  &.cat-german-course {
+      background-image: url("https://afeefa.de/img/icon_88.svg");
+ }
+  &.cat-german-course-state {
+      background-image: url("https://afeefa.de/img/icon_180.svg");
+ }
+  &.cat-meet-and-speak {
+      background-image: url("https://afeefa.de/img/icon_100.svg");
+ }
+  &.cat-learning-place {
+      background-image: url("https://afeefa.de/img/icon_90.svg");
+ }
+  &.cat-interpreter {
+      background-image: url("https://afeefa.de/img/icon_164.svg");
+ }
+  &.cat-foreign-language {
+      background-image: url("https://afeefa.de/img/icon_178.svg");
+ }
+  &.cat-medical-counselling {
+      background-image: url("https://afeefa.de/img/icon_104.svg");
+ }
+  &.cat-psychological-counselling {
+      background-image: url("https://afeefa.de/img/icon_106.svg");
+ }
+  &.cat-job-counselling {
+      background-image: url("https://afeefa.de/img/icon_10.svg");
+ }
+  &.cat-education-counselling {
+      background-image: url("https://afeefa.de/img/icon_172.svg");
+ }
+  &.cat-political-education {
+      background-image: url("https://afeefa.de/img/icon_108.svg");
+ }
+  &.cat-library {
+      background-image: url("https://afeefa.de/img/icon_18.svg");
+ }
+  &.cat-asylum-counselling {
+      background-image: url("https://afeefa.de/img/icon_112.svg");
+ }
+  &.cat-legal-advice {
+      background-image: url("https://afeefa.de/img/icon_110.svg");
+ }
+  &.cat-social-counselling {
+      background-image: url("https://afeefa.de/img/icon_114.svg");
+ }
+  &.cat-family-counselling {
+      background-image: url("https://afeefa.de/img/icon_92.svg");
+ }
+  &.cat-volunteer-coordination {
+      background-image: url("https://afeefa.de/img/icon_56.svg");
+ }
+  &.cat-youth-club {
+      background-image: url("https://afeefa.de/img/icon_166.svg");
+ }
+  &.cat-sports {
+      background-image: url("https://afeefa.de/img/icon_08.svg");
+ }
+  &.cat-museum {
+      background-image: url("https://afeefa.de/img/icon_116.svg");
+ }
+  &.cat-music {
+      background-image: url("https://afeefa.de/img/icon_120.svg");
+ }
+  &.cat-stage {
+      background-image: url("https://afeefa.de/img/icon_154.svg");
+ }
+  &.cat-craft-art {
+      background-image: url("https://afeefa.de/img/icon_98.svg");
+      background-size: 75%;
+ }
+  &.cat-workspace {
+      background-image: url("https://afeefa.de/img/icon_188.svg");
+ }
+  &.cat-gardening {
+      background-image: url("https://afeefa.de/img/icon_118.svg");
+ }
+  &.cat-cooking {
+      background-image: url("https://afeefa.de/img/icon_126.svg");
+ }
+  &.cat-festival {
+      background-image: url("https://afeefa.de/img/icon_82.svg");
+ }
+  &.cat-lecture {
+      background-image: url("https://afeefa.de/img/icon_162.svg");
+ }
+  &.cat-film {
+      background-image: url("https://afeefa.de/img/icon_182.svg");
+ }
+  &.cat-congress {
+      background-image: url("https://afeefa.de/img/icon_186.svg");
+ }
+  &.cat-welcome-network {
+      background-image: url("https://afeefa.de/img/icon_64.svg") !important;
+ }
+  &.cat-meeting-place {
+      background-image: url("https://afeefa.de/img/icon_78.svg");
+ }
+  &.cat-childcare {
+      background-image: url("https://afeefa.de/img/icon_130.svg");
+ }
+  &.cat-workshop {
+      background-image: url("https://afeefa.de/img/icon_190.svg");
+ }
+  &.cat-sponsorship {
+      background-image: url("https://afeefa.de/img/icon_168.svg");
+ }
+  &.cat-lgbt {
+      background-image: url("https://afeefa.de/img/icon_132.svg");
+ }
+  &.cat-housing-project {
+      background-image: url("https://afeefa.de/img/icon_136.svg");
+ }
+  &.cat-food {
+      background-image: url("https://afeefa.de/img/icon_142.svg");
+ }
+  &.cat-clothes {
+      background-image: url("https://afeefa.de/img/icon_140.svg");
+ }
+  &.cat-furniture {
+      background-image: url("https://afeefa.de/img/icon_144.svg");
+ }
+  &.cat-iwgr {
+      background-image: url("https://afeefa.de/img/icon_194.svg");
+      background-size: 85%;
+ }
+  &.cat-fb-event {
+      background-image: url("https://afeefa.de/img/icon_196.svg");
+      background-size: 85%;
+ }
+ /* LEIPZIG */
+  &.cat-hotspots {
+      background-image: url("https://afeefa.de/img/icon_166.svg");
+ }
+  &.cat-advice-and-support {
+      background-image: url("https://afeefa.de/img/icon_10.svg");
+ }
+  &.cat-living-in-leipzig {
+      background-image: url("https://afeefa.de/img/icon_86.svg");
+ }
+  &.cat-work-and-education {
+      background-image: url("https://afeefa.de/img/icon_76.svg");
+ }
+}
+/* stylelint-enable selector-class-pattern */

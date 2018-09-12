@@ -1,6 +1,10 @@
 <template>
   <div>
     <div class="editorForm" v-if="hasAttributes">
+      <div v-if="hasIcon">
+        <div :class="['iconPreview', 'cat-' + item.icon]"></div>
+      </div>
+
       <input class="browser-default" type="text" placeholder="Titel"
         v-focus v-select
         v-model="item.title"
@@ -28,7 +32,7 @@
       <div v-if="hasIcon">
         <select class="browser-default" v-model="item.icon">
           <option :value="null">Icon auswählen</option>
-          <option :value="icon" v-for="icon in icons" :key="icon">{{ icon }}</option>
+          <option :class="'cat-' + icon" :value="icon" v-for="icon in icons" :key="icon">{{ icon }}</option>
         </select>
       </div>
 
@@ -133,7 +137,7 @@ export default {
         'advice-and-support',
         'living-in-leipzig',
         'work-and-education'
-      ]
+      ].sort()
     }
   },
 
@@ -177,6 +181,13 @@ export default {
 
 .colorInput {
   width: 80px;
+}
+
+.iconPreview {
+  width: 2em;
+  height: 2em;
+  @include categorySymbols;
+  filter: invert(100);
 }
 
 select {
