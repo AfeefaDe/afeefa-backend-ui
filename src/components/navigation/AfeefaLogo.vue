@@ -1,5 +1,10 @@
 <template>
-  <div class="svgLogo" v-on:click="color" v-html="svg">
+  <div class="logoControls">
+    <div class="svgLogo" v-on:click="color" v-on:dblclick="music" v-html="svg">
+    </div>
+    <audio id="audio" controls>
+      <source type="audio/mpeg">
+    </audio>
   </div>
 </template>
 
@@ -9,11 +14,43 @@
 export default {
   methods: {
     color (event) {
-      console.debug(event.srcElement.style.fill)
       let color = event.srcElement.style.fill
       color = (color.substring(0, 3) + 'a' + color.substring(3))
       color = color.substring(0, color.length - 1) + ', 0.3)'
       document.getElementsByTagName('body')[0].style.backgroundColor = color
+    },
+    pause () {
+      var audioElement = document.querySelector('audio')
+      var sourceElement = document.querySelector('source')
+
+      sourceElement.setAttribute('src', '')
+      audioElement.pause()
+      // settimeout, otherwise pause event is not raised normally
+      setTimeout(function () {
+        audioElement.load() // This stops the stream from downloading
+      })
+    },
+    play () {
+      var audioElement = document.querySelector('audio')
+      var sourceElement = document.querySelector('source')
+      if (!sourceElement.getAttribute('src')) {
+        sourceElement.setAttribute('src', 'https://dg-mdr-https-dus-dtag-cdn.sslcast.addradio.de/mdr/kultur/live/mp3/128/stream.mp3') // MDR Kultur
+        audioElement.load() // This restarts the stream download
+      }
+      audioElement.play()
+    },
+    music () {
+      let audio = document.getElementById('audio')
+      if (audio.paused) {
+        this.play()
+        // console.debug(audio.src)
+        // audio.play()
+      } else {
+        this.pause()
+        // console.debug(audio.src)
+        // audio.pause()
+        // audio.src = ''
+      }
     }
   },
   data () {
@@ -426,6 +463,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.logoControls {
+  height: 100%;
+  cursor: pointer;
+  transition: height 300ms;
+
+  &:active {
+    height: 90%;
+  }
+}
+audio {
+  display: none;
+}
 .svgLogo {
   position: relative;
   height: 100%;
