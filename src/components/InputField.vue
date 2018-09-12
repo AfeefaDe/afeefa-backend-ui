@@ -1,6 +1,7 @@
 <template>
   <div>
     <input-label
+      v-if="label"
       :name="fieldName" :title="label"
       :maxChars="maxChars" :chars="chars"
       :validationErrors="errors" />
@@ -16,8 +17,12 @@
       v-validate.initial="validate"
       :data-vv-as="label"
 
+      v-focus="autoFocus"
+
+      @keydown.esc="$emit('esc')"
       @focus="onFocus"
       @blur="onBlur"
+      @keydown.enter="checkPreventEnter"
 
       :class="['browser-default', {'validation-error': errors.has(fieldName)}]"
       @input="updateValue($event.target.value)"/>
@@ -28,7 +33,7 @@
 import InputLabel from '@/components/InputLabel'
 
 export default {
-  props: ['type', 'fieldName', 'value', 'placeholder', 'validate', 'validateOnBlur', 'label'],
+  props: ['type', 'fieldName', 'value', 'placeholder', 'validate', 'validateOnBlur', 'label', 'preventEnter', 'autoFocus'],
 
   inject: ['$validator'],
 
@@ -73,6 +78,13 @@ export default {
   },
 
   methods: {
+    checkPreventEnter (event) {
+      if (this.preventEnter) {
+        event.preventDefault()
+      }
+      this.$emit('enter')
+    },
+
     updateValue () {
       this.$emit('input', this.currentValue)
     },
