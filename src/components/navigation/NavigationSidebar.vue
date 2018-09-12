@@ -154,8 +154,8 @@ export default {
     height: 0;
   }
   &__footerRow {
-    display: flex;
-    justify-content: space-between;
+    // display: flex;
+    // justify-content: space-between;
     margin-bottom: 0.5em;
   }
   & a.active {
@@ -164,6 +164,7 @@ export default {
   &__footerItem {
     display: flex;
     align-items: center;
+    margin-top: .5em;
   }
   &__areaName {
     text-transform: capitalize;
