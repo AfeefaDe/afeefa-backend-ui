@@ -17,7 +17,7 @@
 
         <div class="createContactLink">
           <router-link :to="{name: item.type + '.contactnew'}" class="inlineEditLink">
-            neuen Kontakt erstellen
+            Neuen Kontakt erstellen
           </router-link>
         </div>
       </entry-detail-section>
@@ -38,7 +38,6 @@
         </a>
       </div>
     </div>
-
 
     <entry-detail-section
       v-if="location"

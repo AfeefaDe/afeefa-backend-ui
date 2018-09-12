@@ -17,7 +17,7 @@
       v-validate.initial="validate"
       :data-vv-as="label"
 
-      v-focus="autoFocus"
+      v-focus="autoFocus !== undefined && autoFocus"
 
       @keydown.esc="$emit('esc')"
       @focus="onFocus"

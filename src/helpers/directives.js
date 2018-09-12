@@ -11,6 +11,7 @@ Vue.directive('autosize', {
 
 Vue.directive('focus', {
   inserted: function (el, binding) {
+    console.log(binding)
     if (binding.value === false) {
       return
     }

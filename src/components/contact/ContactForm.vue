@@ -3,21 +3,21 @@
     <div class="cols--2">
       <section>
         <h2>{{ $tc('entries.address') }}</h2>
-        <location-selector v-if="showLocationSelector" @select="linkLocation">
-          <button type="button" class="btn btn-small">
-            Adresse {{ location ? 'Ändern' : 'Finden' }}
-          </button>
-        </location-selector>
 
         <div v-if="location && locationIsLinked">
           <div class="linkedContactOwner">
             <i class="material-icons">error_outline</i>
             <div>
-              Diese Adresse gehört
-              <router-link :to="{name: location.owner.type + '.show', params: {id: location.owner.id}}">
-                {{ location.owner.title }}
-              </router-link>
-              und kann dort geändert werden.
+              <div>
+                Die Adresse wurde von
+                <router-link :to="{name: location.owner.type + '.show', params: {id: location.owner.id}}">
+                  {{ location.owner.title }}
+                </router-link>
+                übernommen und kann dort geändert werden.
+              </div>
+              <a href="" @click.prevent="removeLocation" class="removeLink inlineEditLink">
+                Verlinkte Adresse wieder entfernen.
+              </a>
             </div>
           </div>
 
@@ -28,6 +28,7 @@
             <div v-if="locationTitle">{{ locationTitle }}</div>
             <i class="material-icons">mode_edit</i>
           </div>
+
           <input-field
             class="locationSpecForm"
             v-if="editLocationSpec || !locationTitle"
@@ -45,18 +46,31 @@
           <div v-if="location.zip || location.city">
             {{ location.zip }} {{ location.city }}
           </div>
+
           <location-map
             :map-center="mapCenter(location)"
             :initial-zoom="16"
             :location="location"
             style="max-width:400px; max-height: 200px;">
           </location-map>
-
-          <button type="button" class="btn btn-small personButton" @click="removeLocation">Ort löschen</button>
         </div>
 
         <div v-if="!location">
-          Oder <button type="button" class="btn btn-small" @click="createLocation">Neuen Ort anlegen</button>
+          <div>
+            <div class="noContact">Noch keine Adresse angegeben.</div>
+
+            <location-selector v-if="showLocationSelector" @select="linkLocation">
+              <button type="button" class="btn btn-small">
+                Adresse finden
+              </button>
+            </location-selector>
+          </div>
+
+          <div class="createContactLink">
+            <a href="" @click.prevent="createLocation" class="inlineEditLink">
+              Neue Adresse anlegen
+            </a>
+          </div>
         </div>
 
         <div v-if="location && !locationIsLinked">
@@ -64,6 +78,8 @@
 
           <button type="button" class="btn btn-small personButton" @click="removeLocation">Ort löschen</button>
         </div>
+
+        <h2>{{ $tc('entries.openingHours') }}</h2>
 
         <text-input v-if="owner.type === 'orgas'"
           class="formElement marginTop"
@@ -127,7 +143,8 @@
           v-for="(person, index) in contact.contact_persons" :key="index"
           :title="person.role || 'Kontaktperson'"
           clickLink="Entfernen"
-          @click="removeContactPerson(person)">
+          @click="removeContactPerson(person)"
+          class="contactPerson">
 
           <input-field
             field-name="role"
@@ -323,21 +340,34 @@ export default {
 
 .linkedContactOwner {
   font-size: .9em;
-  margin-bottom: 1.5em;
+  max-width:400px;
+  margin-bottom: 2em;
 
-  display: inline-flex;
+  display: flex;
   align-items: center;
-
-  > div {
-    display: inline-block;
-    background-color: $white;
-    padding: .2em;
-  }
+  width: 80%;
+  border: 1px solid $gray20;
+  padding: .8em;
 
   i {
     font-size: 20px;
-    margin-right: .4em;
+    margin-right: .6em;
   }
+
+  .removeLink {
+    display: block;
+    margin-top: .4em;
+    font-size: 1em;
+  }
+}
+
+.noContact {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.createContactLink {
+  margin-top: .5em;
 }
 
 .locationTitle {
@@ -366,14 +396,20 @@ h2 {
   letter-spacing: 1px;
   text-transform: uppercase;
   color: $gray50;
+  margin-top: 3em;
+  margin-bottom: 0;
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 h3 {
+  margin: 0;
   font-size: 1em;
   font-weight: bold;
 }
 
-.person {
+.contactPerson {
   &:not(:first-child) {
     margin-top: 3em;
   }
