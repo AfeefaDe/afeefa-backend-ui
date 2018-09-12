@@ -7,39 +7,9 @@ const menuTree = {
   level: 1,
   children: [
     {
-      route: 'todos',
-      title: 'headlines.todos',
-      action: null,
-      level: 2,
-      hint: state => state.numTodos
-    },
-    {
-      route: 'orgas.list',
-      title: 'headlines.organisations',
-      action: {
-        name: 'Neue Orga erstellen',
-        icon: 'add_circle_outline',
-        route: 'orgas.new'
-      },
-      level: 2,
-      hint: state => state.numOrgas,
-      children: [
-        {
-          route: 'orgas.show',
-          title: 'headlines.show',
-          level: 3,
-          children: [
-            { route: 'orgas.edit', title: 'headlines.edit', level: 4 },
-            { route: 'orgas.contactedit', title: 'headlines.contactEdit', level: 4 },
-            { route: 'orgas.contactnew', title: 'headlines.contactNew', level: 4 }
-          ]
-        },
-        { route: 'orgas.new', title: 'headlines.new', level: 3 }
-      ]
-    },
-    {
       route: 'offers.list',
       title: 'offers.offer',
+      icon: 'favorite',
       action: {
         name: 'Neues Angebot erstellen',
         icon: 'add_circle_outline',
@@ -63,15 +33,41 @@ const menuTree = {
       ]
     },
     {
+      route: 'orgas.list',
+      title: 'headlines.organisations',
+      icon: 'group',
+      action: {
+        name: 'Neue Orga erstellen',
+        icon: 'add_circle_outline',
+        route: 'orgas.new'
+      },
+      level: 2,
+      hint: state => state.numOrgas,
+      children: [
+        {
+          route: 'orgas.show',
+          title: 'headlines.show',
+          level: 3,
+          children: [
+            { route: 'orgas.edit', title: 'headlines.edit', level: 4 },
+            { route: 'orgas.contactedit', title: 'headlines.contactEdit', level: 4 },
+            { route: 'orgas.contactnew', title: 'headlines.contactNew', level: 4 }
+          ]
+        },
+        { route: 'orgas.new', title: 'headlines.new', level: 3 }
+      ]
+    },
+    {
       route: 'events.list',
       title: 'headlines.events',
+      icon: 'date_range',
       action: {
         name: 'Neues Event erstellen',
         icon: 'add_circle_outline',
         route: 'events.new'
       },
       level: 2,
-      hint: state => { return state.numEvents.upcoming + state.numEvents.past },
+      hint: state => { return state.numEvents.upcoming },
       children: [
         {
           route: 'events.show',
@@ -85,6 +81,14 @@ const menuTree = {
         },
         { route: 'events.new', title: 'headlines.new', level: 3 }
       ]
+    },
+    {
+      route: 'todos',
+      title: 'headlines.todos',
+      icon: 'done',
+      action: null,
+      level: 2,
+      hint: state => state.numTodos
     },
     {
       route: 'chapters.list',
@@ -110,12 +114,6 @@ const menuTree = {
     {
       route: 'facets.list',
       title: 'headlines.categories',
-      action: null,
-      level: 1
-    },
-    {
-      route: 'search',
-      title: 'headlines.search',
       action: null,
       level: 1
     }

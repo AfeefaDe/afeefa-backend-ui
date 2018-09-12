@@ -7,7 +7,10 @@
     <div class="">
       <ul class="navigationSidebar__navContainer">
         <li :class="['navigationSidebar__navItem', 'level' + item.level]" v-for="item in items" :key="item.id" v-if="showSideBarItem(item)">
-          <router-link :to="{name: item.route, params: item.params}" :exact="item.route==='dashboard'"> {{ translateTitle(item) }}</router-link>
+          <router-link :to="{name: item.route, params: item.params}" :exact="item.route==='dashboard'">
+            <i v-if="item.icon" class="material-icons offers">{{item.icon}}</i>
+            {{ translateTitle(item) }}
+          </router-link>
           <router-link :to="{name: item.action.route}" class="navigationSidebar__navItemAction" v-if="item.action">
             <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
           </router-link>
@@ -101,6 +104,12 @@ export default {
     }
     &:last-child {
       border: none;
+    }
+    i {
+      font-size: 1em;
+      position: relative;
+      top: 2px;
+      margin-right: 0.2em;
     }
   }
   &__navItem.level2 {

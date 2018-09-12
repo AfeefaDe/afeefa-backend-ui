@@ -29,16 +29,7 @@ export default {
       }
     },
     translateTitle (item) {
-      if (item.title === 'headlines.dashboard') {
-        const area = this.currentUser.area
-        if (area) {
-          return 'Afeefa ' + area.charAt(0).toUpperCase() + area.slice(1)
-        } else {
-          return 'Afeefa'
-        }
-      } else {
-        return this.$tc(item.title, 2)
-      }
+      return this.$tc(item.title, 2)
     },
     logout () {
       this.$store.dispatch('auth/logout').then(result => {
