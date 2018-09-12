@@ -10,7 +10,10 @@ Vue.directive('autosize', {
 })
 
 Vue.directive('focus', {
-  inserted: function (el) {
+  inserted: function (el, binding) {
+    if (binding.value === false) {
+      return
+    }
     const x = window.scrollX
     const y = window.scrollY
     el.focus()
