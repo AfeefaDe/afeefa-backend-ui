@@ -22,11 +22,13 @@ export function compareTitles (a, b, keyword) {
 
   if (keyword) {
     if (ta.indexOf(keyword) === 0) {
-      if (tb.indexOf(keyword) > 0) {
+      if (tb.indexOf(keyword) !== 0) {
         result = -1
       }
     } else if (tb.indexOf(keyword) === 0) {
-      result = 1
+      if (ta.indexOf(keyword) !== 0) {
+        result = 1
+      }
     }
   }
 
@@ -38,9 +40,9 @@ export function compareTitles (a, b, keyword) {
 }
 
 function replaceUmlauts (value) {
-  value = value.replace(/ä/g, 'a')
-  value = value.replace(/ö/g, 'o')
-  value = value.replace(/ü/g, 'u')
+  value = value.replace(/ä/g, 'ae')
+  value = value.replace(/ö/g, 'oe')
+  value = value.replace(/ü/g, 'ue')
   value = value.replace(/ß/g, 'ss')
   return value
 }
