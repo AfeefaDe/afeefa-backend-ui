@@ -1,7 +1,7 @@
 <template>
   <div class="navigationSidebar mainCard" :class="userClass">
     <div class="logoContainer">
-      <img class="logo" src="../../assets/images/afeefa_light_withoutLink.svg" alt="Afeefa Logo with white background">
+      <afeefa-logo></afeefa-logo>
     </div>
 
     <div class="">
@@ -63,11 +63,9 @@ export default {
   methods: {
     /* hacky way to hide chapter feature in bautzen */
     showSideBarItem (item) {
-      if (this.currentUser.area === 'bautzen' && item.route === 'chapters.list') {
-        return false
-      } else {
-        return true
-      }
+      if (item.route === 'navigation.show' && !this.currentUser.isAdmin()) return false
+      if (item.route === 'chapters.list' && this.currentUser.area === 'bautzen') return false
+      return true
     }
   }
 }

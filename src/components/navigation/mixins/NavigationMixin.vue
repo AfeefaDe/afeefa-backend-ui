@@ -1,5 +1,6 @@
 <script>
 import NavigationBreadcrumb from '@/components/navigation/NavigationBreadcrumb'
+import AfeefaLogo from '@/components/navigation/AfeefaLogo'
 import { mapState } from 'vuex'
 import User from '@/models/User'
 
@@ -47,7 +48,8 @@ export default {
     }
   },
   components: {
-    NavigationBreadcrumb
+    NavigationBreadcrumb,
+    AfeefaLogo
   }
 }
 </script>
