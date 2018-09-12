@@ -65,6 +65,7 @@ export default {
     showSideBarItem (item) {
       if (item.route === 'navigation.show' && !this.currentUser.isAdmin()) return false
       if (item.route === 'chapters.list' && this.currentUser.area === 'bautzen') return false
+      if (item.route === 'facets.list' && !this.currentUser.isAdmin()) return false
       return true
     }
   }
