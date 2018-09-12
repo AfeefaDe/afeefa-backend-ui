@@ -37,7 +37,7 @@
   }
   /* stylelint-enable */
   .multiselect--active {
-    z-index: 10;
+    z-index: $z-index-overlay;
   }
   .multiselect--active .multiselect__content {
     background: white;
