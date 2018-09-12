@@ -38,7 +38,7 @@
                 <i class="material-icons left">done</i>
                 Speichern
               </button>
-              <button class="btn waves-effect waves-light red" @click.prevent="remove" v-if="item.id">
+              <button type="button" class="btn waves-effect waves-light red" @click.prevent="remove" v-if="item.id">
                 <i class="material-icons left">delete</i>
                 Löschen
               </button>

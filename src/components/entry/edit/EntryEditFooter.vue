@@ -18,7 +18,7 @@
         {{ $t('buttons.cancel') }}
       </router-link>
 
-      <button class="btn waves-effect waves-light green" @click.prevent="save">
+      <button type="button" class="btn waves-effect waves-light green" @click.prevent="save">
         <i class="material-icons left">done</i>
         {{ item.id ? 'Speichern' : 'Anlegen' }}
       </button>

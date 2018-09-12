@@ -57,7 +57,7 @@
             Abbrechen
           </a>
 
-          <button class="btn btn-xs green waves-effect waves-light" @click="save">
+          <button type="button" class="btn btn-xs green waves-effect waves-light" @click="save">
             Speichern
           </button>
         </div>
