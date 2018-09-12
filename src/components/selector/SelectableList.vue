@@ -1,5 +1,5 @@
 <template>
-  <div class="selectableList">
+  <div :class="['selectableList', {singleSelect: maxSelectableItems === 1}]">
     <div v-if="selectedItems.length" class="disabledLabel">
       <input-label :title="labelHint" />
     </div>
@@ -59,7 +59,7 @@ import Vue from 'vue'
 import Spinner from '@/components/Spinner'
 import sortByKeyword from '@/helpers/sort-by-keyword'
 import InputLabel from '@/components/InputLabel'
-import { replaceUmlauts } from '@/helpers/sort-by-title'
+import sortByTitle, { replaceUmlauts } from '@/helpers/sort-by-title'
 
 export default {
   props: ['items', 'selectedItems', 'title', 'messages', 'isLoading', 'searchFields', 'maxSelectableItems'],
@@ -88,6 +88,7 @@ export default {
   watch: {
     items () {
       this.initSelectableItems()
+      this.focusInput()
     },
 
     selectedItems () {
@@ -143,7 +144,7 @@ export default {
         return findCount === keywords.length
       })
 
-      this.selectableItems = sortByKeyword(selectableItems, this.keyword)
+      this.selectableItems = sortByKeyword(sortByTitle(selectableItems), this.keyword)
 
       if (this.selectableItems.length) {
         this.selectedItemIndex = Math.max(this.selectedItemIndex, 0)
@@ -305,6 +306,10 @@ export default {
   overflow-y: auto;
   position: absolute;
   box-shadow: 0 7px 20px 0 rgba(0,0,0,0.3);
+
+  .selectableList.singleSelect & {
+    max-height: 50vh;
+  }
 }
 
 .selectedItems {
