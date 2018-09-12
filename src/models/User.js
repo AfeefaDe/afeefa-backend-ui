@@ -20,6 +20,8 @@ class User extends Model {
         remoteName: 'surname'
       },
 
+      email: DataTypes.String,
+
       area: DataTypes.String,
 
       organization: DataTypes.String
@@ -38,6 +40,9 @@ class User extends Model {
     return {
       data: super.attributesToJson(attributes)
     }
+  }
+  isAdmin () {
+    return (this.email.indexOf('@afeefa.de') > 0)
   }
 
   toJson () {
