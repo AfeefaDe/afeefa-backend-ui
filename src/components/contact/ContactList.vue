@@ -23,24 +23,28 @@
       </entry-detail-section>
     </div>
 
+    <div class="linkedContactOwner" v-if="contact && !isOwnContact">
+      <i class="material-icons">error_outline</i>
+      <div>
+        <div>
+          Der Kontakt wurde von
+          <router-link :to="{name: contact.owner.type + '.show', params: {id: contact.owner.id}}">
+            {{ contact.owner.title }}
+          </router-link>
+          übernommen und kann dort geändert werden.
+        </div>
+        <a href="" @click.prevent="unlinkContact" class="removeLink inlineEditLink">
+          Verlinkten Kontakt wieder entfernen.
+        </a>
+      </div>
+    </div>
+
+
     <entry-detail-section
       v-if="location"
       :title="$tc('entries.address')"
       icon="location_on"
-      :clickLink="!isOwnContact ? 'Entfernen' : ''"
-      :editLink="isOwnContact ? contactEditRoute : ''"
-      @click="unlinkContact">
-
-      <div class="linkedContactOwner" v-if="!isOwnContact">
-        <i class="material-icons">error_outline</i>
-        <div>
-          Der Kontakt gehört
-          <router-link :to="{name: contact.owner.type + '.show', params: {id: contact.owner.id}}">
-            {{ contact.owner.title }}
-          </router-link>
-          und kann dort geändert werden.
-        </div>
-      </div>
+      :editLink="isOwnContact ? contactEditRoute : ''">
 
       <div v-if="locationTitle">{{ locationTitle }}</div>
       <div v-if="location.street">{{ location.street }}</div>
@@ -248,6 +252,10 @@ export default {
   margin-top: 5em;
 }
 
+.linkedContactOwner + .entryDetailSection {
+  margin-top: 3em;
+}
+
 .noContact {
   margin-bottom: 1em;
 }
@@ -270,20 +278,24 @@ export default {
 
 .linkedContactOwner {
   font-size: .9em;
-  margin-bottom: 1.5em;
+  margin-left: 60px;
+  max-width:400px;
 
   display: flex;
   align-items: center;
-
-  > div {
-    display: inline-block;
-    background-color: $white;
-    padding: .2em;
-  }
+  width: 80%;
+  border: 1px solid $gray20;
+  padding: .8em;
 
   i {
     font-size: 20px;
-    margin-right: .4em;
+    margin-right: .6em;
+  }
+
+  .removeLink {
+    display: block;
+    margin-top: .4em;
+    font-size: 1em;
   }
 }
 </style>
