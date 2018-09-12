@@ -4,17 +4,19 @@
   <entry-header :entry="owner" :routeConfig="routeConfig" slot="header" :isEdit="true" />
 
   <div slot="content" v-if="contact">
-    <contact-form
-      :owner="owner"
-      :contact="contact"
-      :routeConfig="routeConfig"
-      @save="save" />
+    <form @submit.prevent="save" novalidate>
+      <contact-form
+        :owner="owner"
+        :contact="contact"
+        :routeConfig="routeConfig"
+        @save="save" />
 
-    <entry-edit-footer
-      :item="owner"
-      :routeConfig="routeConfig"
-      @remove="remove"
-      @save="save" />
+      <entry-edit-footer
+        :item="owner"
+        :routeConfig="routeConfig"
+        @remove="remove"
+        @save="save" />
+    </form>
   </div>
 
   <div slot="content" v-else>

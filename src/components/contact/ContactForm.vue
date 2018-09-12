@@ -1,20 +1,82 @@
 <template>
   <div>
-
     <div class="cols--2">
       <section>
-        <input-field
-          field-name="title"
-          v-model="contact.title"
-          validate="max:255"
-          label="Kontaktbezeichnung">
-        </input-field>
+        <h2>{{ $tc('entries.address') }}</h2>
+        <location-selector v-if="showLocationSelector" @select="linkLocation">
+          <button type="button" class="btn btn-small">
+            Adresse {{ location ? 'Ändern' : 'Finden' }}
+          </button>
+        </location-selector>
+
+        <div v-if="location && locationIsLinked">
+          <div class="linkedContactOwner">
+            <i class="material-icons">error_outline</i>
+            <div>
+              Diese Adresse gehört
+              <router-link :to="{name: location.owner.type + '.show', params: {id: location.owner.id}}">
+                {{ location.owner.title }}
+              </router-link>
+              und kann dort geändert werden.
+            </div>
+          </div>
+
+          <div
+            class="locationTitle"
+            v-if="locationTitle && !editLocationSpec"
+            @click="editLocationSpec = true">
+            <div v-if="locationTitle">{{ locationTitle }}</div>
+            <i class="material-icons">mode_edit</i>
+          </div>
+          <input-field
+            class="locationSpecForm"
+            v-if="editLocationSpec || !locationTitle"
+            field-name="location_spec"
+            v-model="contact.location_spec"
+            validate="max:255"
+            :preventEnter="true"
+            :autoFocus="true"
+            @esc="editLocationSpec = false"
+            @blur="editLocationSpec = false"
+            @enter="editLocationSpec = false">
+          </input-field>
+
+          <div v-if="location.street">{{ location.street }}</div>
+          <div v-if="location.zip || location.city">
+            {{ location.zip }} {{ location.city }}
+          </div>
+          <location-map
+            :map-center="mapCenter(location)"
+            :initial-zoom="16"
+            :location="location"
+            style="max-width:400px; max-height: 200px;">
+          </location-map>
+
+          <button type="button" class="btn btn-small personButton" @click="removeLocation">Ort löschen</button>
+        </div>
+
+        <div v-if="!location">
+          Oder <button type="button" class="btn btn-small" @click="createLocation">Neuen Ort anlegen</button>
+        </div>
+
+        <div v-if="location && !locationIsLinked">
+          <location-form :location="location" />
+
+          <button type="button" class="btn btn-small personButton" @click="removeLocation">Ort löschen</button>
+        </div>
 
         <text-input v-if="owner.type === 'orgas'"
           class="formElement marginTop"
           v-model="contact.openingHours"
           fieldName="openingHours"
           :label="$t('entries.openingHours')" />
+
+        <input-label name="langInput" title="Sprachen" class="formElement marginTop" />
+        <lang-select-input
+          id="langInput"
+          @input="updateSpokenLanguages"
+          :entryValue="contact.spokenLanguages">
+        </lang-select-input>
 
         <input-field
           class="formElement marginTop"
@@ -33,92 +95,41 @@
           validate-on-blur="true"
           label="Social Media">
         </input-field>
-
-        <br>
-
-        <lang-select-input
-          style="border: 1px solid #CCCCCC;"
-          @input="updateSpokenLanguages"
-          :entryValue="contact.spokenLanguages">
-        </lang-select-input>
-
-        <h3>Ort</h3>
-
-        <power-selector
-          v-if="showLocationSelector"
-          :items="locations"
-          :selected-items="selectedLocations"
-          :search-fields="['title', 'city', 'street', 'ownerTitle']"
-          @select="locationChanged"
-          @remove="locationRemoved"
-          :messages="{
-            addButtonTitle: 'Ort ' + (selectedLocations.length ? 'ändern' : 'auswählen'),
-            removeTitle: 'Ort entfernen?',
-            removeMessage: location => {
-              return `Soll der Ort ${location.title} entfernt werden?`
-            }
-          }">
-          <div slot="selected-item" slot-scope="props">
-            <div>
-              <div>{{ props.item.ownerTitle }}</div>
-              <div v-if="props.item.title" class="addressDetail">{{ props.item.title }}</div>
-              <div class="addressDetail">{{ props.item.street }}, {{ props.item.zip }}, {{ props.item.city }}</div>
-            </div>
-          </div>
-          <div slot="item" slot-scope="props">
-            <div>
-              <div>{{ props.item.ownerTitle }}</div>
-              <div v-if="props.item.title" class="addressDetail">{{ props.item.title }}</div>
-              <div class="addressDetail">{{ props.item.street }}, {{ props.item.zip }}, {{ props.item.city }}</div>
-            </div>
-          </div>
-        </power-selector>
-
-        <div v-if="!contact.location">
-          Oder <button type="button" class="btn btn-small" @click="createLocation">Neuen Ort anlegen</button>
-        </div>
-
-        <div v-if="contact.location && !locationIsLinked">
-          <location-form :location="contact.location" />
-
-          <input-field
-            field-name="location_spec"
-            v-model="contact.location_spec"
-            validate="max:255"
-            label="Ortsbezeichnung">
-          </input-field>
-
-          <button type="button" class="btn btn-small personButton" @click="removeLocation">Ort löschen</button>
-        </div>
       </section>
 
       <section>
-        <h3>Direktkontakte</h3>
+        <div v-if="false">
+          <h3>Direktkontakte</h3>
 
-        <div class="cols--2">
-          <div>
-            <label>Telefon</label>
-            <p v-for="phone in directContacts.phone" :key="phone">{{phone}}</p>
+          <div class="cols--2">
+            <div>
+              <label>Telefon</label>
+              <p v-for="phone in directContacts.phone" :key="phone">{{phone}}</p>
+            </div>
+            <div>
+              <label>E-Mail</label>
+              <p v-for="mail in directContacts.mail" :key="mail">{{mail}}</p>
+            </div>
           </div>
-          <div>
-            <label>E-Mail</label>
-            <p v-for="mail in directContacts.mail" :key="mail">{{mail}}</p>
-          </div>
-        </div>
 
-        <input-field
-          class="inputField__spacing"
-          field-name="phone-mail"
-          validate="max:255"
-          v-model="directContact"
-          label="Telefon oder E-Mail">
-        </input-field>
-
-        <button type="button" class="btn btn-small personButton" @click="detectContactType()">Kontakt hinzufügen</button>
-
-        <div v-for="(person, index) in contact.contact_persons" :key="index" class="person">
           <input-field
             class="inputField__spacing"
+            field-name="phone-mail"
+            validate="max:255"
+            v-model="directContact"
+            label="Telefon oder E-Mail">
+          </input-field>
+
+          <button type="button" class="btn btn-small personButton" @click="detectContactType()">Kontakt hinzufügen</button>
+        </div>
+
+        <entry-detail-property2
+          v-for="(person, index) in contact.contact_persons" :key="index"
+          :title="person.role || 'Kontaktperson'"
+          clickLink="Entfernen"
+          @click="removeContactPerson(person)">
+
+          <input-field
             field-name="role"
             v-model="person.role"
             validate="max:255"
@@ -146,13 +157,11 @@
             validate="max:255"
             label="Telefon">
           </input-field>
-          <a href="" class="inlineEditLink" @click.prevent="removeContactPerson(person)">Person löschen</a>
-        </div>
+        </entry-detail-property2>
 
         <button type="button" class="btn btn-small personButton" @click="addContactPerson()">Kontaktperson hinzufügen</button>
       </section>
     </div>
-
 
   </div>
 </template>
@@ -163,8 +172,10 @@ import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 import ContactPerson from '@/models/ContactPerson'
 import Location from '@/models/Location'
 
-import PowerSelector from '@/components/PowerSelector'
+import LocationSelector from '@/components/actor/LocationSelector'
+import InputLabel from '@/components/InputLabel'
 
+import LocationMap from '@/components/Map'
 import LocationForm from './LocationForm'
 import LangSelectInput from './LangSelectInput'
 
@@ -183,6 +194,7 @@ export default {
     return {
       directContact: '',
       locations: [],
+      editLocationSpec: false,
       directContacts: {
         phone: [],
         mail: []
@@ -192,18 +204,36 @@ export default {
 
   computed: {
     selectedLocations () {
-      return this.contact.location ? [this.contact.location] : []
+      return this.location ? [this.location] : []
     },
 
     showLocationSelector () {
-      return !this.contact.location || this.locationIsLinked
+      return !this.location
     },
 
     locationIsLinked () {
-      if (!this.contact.location) {
+      if (!this.location) {
         return false
       }
-      return this.contact.location.contact_id !== this.contact.id
+      return this.location.contact_id !== this.contact.id
+    },
+
+    location () {
+      if (!this.contact.location) {
+        return null
+      }
+
+      return this.contact.location
+    },
+
+    locationTitle () {
+      if (!this.location) {
+        return ''
+      }
+
+      return this.contact.location_spec ||
+        this.location.title ||
+        (this.location.owner ? this.location.owner.title : '')
     }
   },
 
@@ -214,8 +244,19 @@ export default {
   },
 
   methods: {
-    locationChanged (location) {
-      this.contact.location = location
+    mapCenter (location) {
+      if (location.lat) {
+        return [location.lat, location.lon]
+      } else {
+        return [51.0571904, 13.7154319]
+      }
+    },
+
+    linkLocation (location) {
+      Location.Query.get(location.id).then(location => {
+        this.contact.location = location
+        this.contact.location_spec = ''
+      })
     },
 
     createLocation () {
@@ -225,10 +266,6 @@ export default {
     },
 
     removeLocation () {
-      this.contact.location = null
-    },
-
-    locationRemoved () {
       this.contact.location = null
     },
 
@@ -263,7 +300,9 @@ export default {
   components: {
     LangSelectInput,
     LocationForm,
-    PowerSelector
+    InputLabel,
+    LocationSelector,
+    LocationMap
   }
 }
 </script>
@@ -282,9 +321,51 @@ export default {
   font-size: .8em;
 }
 
+.linkedContactOwner {
+  font-size: .9em;
+  margin-bottom: 1.5em;
+
+  display: inline-flex;
+  align-items: center;
+
+  > div {
+    display: inline-block;
+    background-color: $white;
+    padding: .2em;
+  }
+
+  i {
+    font-size: 20px;
+    margin-right: .4em;
+  }
+}
+
+.locationTitle {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+
+  i {
+    font-size: 16px;
+    position: relative;
+    left: 5px;
+    top: -2px;
+  }
+}
+
+.locationSpecForm {
+  max-width: 200px;
+}
+
+.customMultiselect {
+  margin-top: .5em;
+}
+
 h2 {
-  font-size: 1em;
-  font-weight: bold;
+  font-size: 1.2em;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $gray50;
 }
 
 h3 {
@@ -293,7 +374,9 @@ h3 {
 }
 
 .person {
-  margin-top: 3em;
+  &:not(:first-child) {
+    margin-top: 3em;
+  }
   max-width: 400px;
   a {
     display: block;

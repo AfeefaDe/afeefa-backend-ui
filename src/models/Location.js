@@ -1,6 +1,9 @@
+import Orga from '@/models/Orga'
+import ContactOwnerResource from '@/resources/relations/ContactOwner'
 import DataTypes from 'uidata/model/DataTypes'
 import Model from 'uidata/model/Model'
 import Registry from 'uidata/model/Registry'
+import Relation from 'uidata/model/Relation'
 
 class Location extends Model {
   static type = 'locations'
@@ -23,21 +26,21 @@ class Location extends Model {
 
       directions: DataTypes.String,
 
-      ownerTitle: DataTypes.String,
-
       contact_id: DataTypes.String
     }
   }
 
-  beforeDeserialize (json) {
-    const attributes = json.attributes
-    const rels = json.relationships || {}
-    if (rels.owner && rels.owner.data) {
-      attributes.ownerTitle = rels.owner.data.attributes.title
-    }
+  static relations () {
     return {
-      id: json.id,
-      attributes
+      owner: {
+        type: Relation.HAS_ONE,
+        Resource: ContactOwnerResource
+      },
+
+      linking_actors: {
+        type: Relation.HAS_MANY,
+        Model: Orga
+      }
     }
   }
 

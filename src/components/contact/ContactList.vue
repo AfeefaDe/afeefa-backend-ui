@@ -9,7 +9,7 @@
         <div>
           <div class="noContact">Noch kein Kontakt erstellt.</div>
           <contact-selector @select="linkContact">
-            <button class="btn btn-small">
+            <button type="button" class="btn btn-small">
               Kontakt finden
             </button>
           </contact-selector>
@@ -31,7 +31,18 @@
       :editLink="isOwnContact ? contactEditRoute : ''"
       @click="unlinkContact">
 
-      <div v-if="location.title">{{ location.title }}</div>
+      <div class="linkedContactOwner" v-if="!isOwnContact">
+        <i class="material-icons">error_outline</i>
+        <div>
+          Der Kontakt gehört
+          <router-link :to="{name: contact.owner.type + '.show', params: {id: contact.owner.id}}">
+            {{ contact.owner.title }}
+          </router-link>
+          und kann dort geändert werden.
+        </div>
+      </div>
+
+      <div v-if="locationTitle">{{ locationTitle }}</div>
       <div v-if="location.street">{{ location.street }}</div>
       <div v-if="contact.location.zip || location.city">
         {{ location.zip }} {{ location.city }}
@@ -109,6 +120,20 @@ export default {
 
     isOwnContact () {
       return this.contact.owner === this.item
+    },
+
+    locationTitle () {
+      if (!this.location) {
+        return ''
+      }
+
+      let title = this.location.title || (this.location.owner ? this.location.owner.title : '')
+
+      if (this.location.contact_id === this.id) {
+        return title
+      }
+
+      return this.contact.location_spec || title
     }
   },
 
@@ -141,7 +166,9 @@ export default {
         const langCodes = spokenLanguages.split(',')
         for (let langCode of langCodes) {
           const langObject = Languages.getLanguageFromCode(langCode)
-          spokenLanguagesResult.push(langObject[languageKey])
+          if (langObject) {
+            spokenLanguagesResult.push(langObject[languageKey])
+          }
         }
       }
       return spokenLanguagesResult.join(', ')
@@ -238,6 +265,25 @@ export default {
 .contact {
   &__title {
     font-size: 1.2em;
+  }
+}
+
+.linkedContactOwner {
+  font-size: .9em;
+  margin-bottom: 1.5em;
+
+  display: flex;
+  align-items: center;
+
+  > div {
+    display: inline-block;
+    background-color: $white;
+    padding: .2em;
+  }
+
+  i {
+    font-size: 20px;
+    margin-right: .4em;
   }
 }
 </style>

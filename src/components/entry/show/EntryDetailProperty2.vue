@@ -3,6 +3,12 @@
     <div class="header">
       <div class="title">{{ title}}</div>
 
+      <div class="editLink" v-if="clickLink">
+        <a href="" @click.prevent="$emit('click')" class="inlineEditLink">
+          {{ clickLink }}
+        </a>
+      </div>
+
       <div class="editLink" v-if="content">
         <a href="" @click.prevent="dispatchEditClick" class="inlineEditLink" ref="trigger">
           {{ content.editLinkTitle }}
@@ -27,7 +33,7 @@
 
 <script>
 export default {
-  props: ['title', 'inlineEditing', 'multiline'],
+  props: ['title', 'inlineEditing', 'clickLink'],
 
   data () {
     return {
