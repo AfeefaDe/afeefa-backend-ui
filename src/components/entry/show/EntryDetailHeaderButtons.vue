@@ -72,7 +72,7 @@ export default {
       } else if (this.entry.type === 'events') {
         return `${this.frontendURL}/event/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
       } else if (this.entry.type === 'offers') {
-        return `${this.frontendURL}/offers/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
+        return `${this.frontendURL}/offer/${this.entry.id}-${slugify.slugifyTitle(this.entry.title)}`
       }
     }
   }
