@@ -40,9 +40,11 @@
               </span>
             </span>
           </div>
-          <a href="" @click.prevent="logout()" class="cursor navigationSidebar__footerItem">
-            {{ $t('headlines.logout') }}<i class="material-icons spacingLeft">exit_to_app</i>
-          </a>
+          <div class="navigationSidebar__footerItem logout">
+            <a href="" @click.prevent="logout()">
+              {{ $t('headlines.logout') }}<i class="material-icons spacingLeft">exit_to_app</i>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -165,6 +167,13 @@ export default {
     display: flex;
     align-items: center;
     margin-top: .5em;
+    &.logout {
+      justify-content: flex-end;
+      a {
+        display: flex;
+        align-items: center;
+      }
+    }
   }
   &__areaName {
     text-transform: capitalize;
