@@ -5,20 +5,17 @@
 
     <div slot="content" v-if="actor">
       <div class="info">
-        <h2>Akteur in Angebot umwandeln</h2>
-        <ul class="browser-default">
-          <li>Titel und Beschreibung,</li>
-          <li>Bild,</li>
-          <li>Kontaktdaten,</li>
-          <li>Navigationseinträge und</li>
-          <li>Anmerkungen werden übernommen.</li>
-          <li>Träger des Akteurs werden zu Trägern des neuen Angebots.</li>
-          <li class="marginTop">Veranstaltungen bleiben erhalten, jedoch wird der Veranstalter entfernt.</li>
-          <li>Projekte bleiben erhalten, jedoch wird der Träger entfernt.</li>
-          <li class="marginTop">Kategorien werden nicht übernommen.</li>
-          <li>Existierende Angebote werden gelöscht.</li>
-          <li>Alle anderen Daten sowie der Akteur selbst werden gelöscht.</li>
-        </ul>
+        <i class="material-icons">error_outline</i>
+        <div>
+          <h2>Akteur in Angebot umwandeln, ganz einfach <i class="material-icons">sentiment_very_satisfied</i></h2>
+          <ul class="browser-default">
+            <li>Titel und Beschreibung, Bild, Kontaktdaten, Navigationseinträge und Anmerkungen werden übernommen.</li>
+            <li>Träger des Akteurs werden zu Trägern des neuen Angebots.</li>
+            <li class="marginTop">Existierende Angebote, Veranstaltungen oder Projekte bleiben erhalten und werden entweder den vorhandenen Trägern des Akteurs zugeordnet oder aber verlieren zunächst ihre Zugehörigkeit. Sie werden dann weiter ohne Probleme angezeigt und können später jederzeit neu zugeordnet werden.</li>
+            <li class="marginTop">Kategorien werden nicht übernommen.</li>
+            <li>Alle anderen Daten sowie der Akteur selbst werden gelöscht.</li>
+          </ul>
+        </div>
       </div>
 
       <form @submit.prevent="save" class="entryForm" novalidate>
@@ -160,14 +157,22 @@ export default {
 
 <style lang="scss" scoped>
 .info {
-  display: inline-block;
-  border: 1px solid #CC9999;
-  padding: 1em;
+  display: flex;
+  align-items: center;
+  border: 1px solid $gray20;
+  padding: .8em;
   margin-bottom: 3em;
   h2 {
+    display: flex;
+    align-items: center;
     font-size: 1em;
     font-weight: bold;
     margin: 0;
+    padding-left: 1.5em;
+
+    i {
+      margin-left: .3em;
+    }
   }
   ul {
     margin-bottom: 0;
@@ -175,6 +180,10 @@ export default {
   }
   .marginTop {
     margin-top: 1em;
+  }
+  i {
+    font-size: 20px;
+    margin-right: 1em;
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="inputField">
     <input-label
       v-if="label"
       :name="fieldName" :title="label"

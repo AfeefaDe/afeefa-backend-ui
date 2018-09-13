@@ -87,7 +87,7 @@ class Contact extends Model {
   }
 
   isEmpty () {
-    const hasPerson = this.persons.some(cp => !cp.isEmpty())
+    const hasPerson = this.contact_persons.some(cp => !cp.isEmpty())
     return !this.openingHours && !this.web && !this.socialMedia && !this.spokenLanguages && !hasPerson
   }
 

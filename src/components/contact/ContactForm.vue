@@ -1,10 +1,34 @@
 <template>
-  <div>
+  <div class="contactForm">
     <div class="cols--2">
       <section>
-        <h2>{{ $tc('entries.address') }}</h2>
 
-        <div v-if="location && locationIsLinked">
+        <entry-detail-section
+          v-if="!location"
+          :title="$tc('entries.address')"
+          icon="location_on">
+          <div>
+            <div class="noContact">Noch keine Adresse angegeben.</div>
+
+            <location-selector v-if="showLocationSelector" @select="linkLocation">
+              <button type="button" class="btn btn-small">
+                Adresse finden
+              </button>
+            </location-selector>
+          </div>
+
+          <div class="createContactLink">
+            <a href="" @click.prevent="createLocation" class="inlineEditLink">
+              Neue Adresse anlegen
+            </a>
+          </div>
+        </entry-detail-section>
+
+        <entry-detail-section
+          v-if="location && locationIsLinked"
+          :title="$tc('entries.address')"
+          icon="location_on">
+
           <div class="linkedContactOwner">
             <i class="material-icons">error_outline</i>
             <div>
@@ -51,66 +75,57 @@
             :map-center="mapCenter(location)"
             :initial-zoom="16"
             :location="location"
-            style="max-width:400px; max-height: 200px;">
+            style="width: 80%; max-width:500px; max-height: 250px;">
           </location-map>
-        </div>
+        </entry-detail-section>
 
-        <div v-if="!location">
-          <div>
-            <div class="noContact">Noch keine Adresse angegeben.</div>
-
-            <location-selector v-if="showLocationSelector" @select="linkLocation">
-              <button type="button" class="btn btn-small">
-                Adresse finden
-              </button>
-            </location-selector>
-          </div>
-
-          <div class="createContactLink">
-            <a href="" @click.prevent="createLocation" class="inlineEditLink">
-              Neue Adresse anlegen
-            </a>
-          </div>
-        </div>
-
-        <div v-if="location && !locationIsLinked">
+        <entry-detail-section
+          v-if="location && !locationIsLinked"
+          class="addressForm"
+          :title="$tc('entries.address')"
+          icon="location_on"
+          clickLink="Entfernen"
+          @click="removeLocation">
           <location-form :location="location" />
+        </entry-detail-section>
 
-          <button type="button" class="btn btn-small personButton" @click="removeLocation">Ort löschen</button>
-        </div>
+        <entry-detail-section
+          class="contactAttributes"
+          :title="$tc('headlines.contact')"
+          icon="mail_outline"
+          clickLink="Entfernen">
 
-        <h2>{{ $tc('entries.openingHours') }}</h2>
+          <text-input v-if="owner.type === 'orgas'"
+            class="formElement halfMarginTop"
+            v-model="contact.openingHours"
+            fieldName="openingHours"
+            :label="$t('entries.openingHours')" />
 
-        <text-input v-if="owner.type === 'orgas'"
-          class="formElement marginTop"
-          v-model="contact.openingHours"
-          fieldName="openingHours"
-          :label="$t('entries.openingHours')" />
+          <input-label name="langInput" title="Sprachen" class="formElement halfMarginTop" />
+          <lang-select-input
+            id="langInput"
+            @input="updateSpokenLanguages"
+            :entryValue="contact.spokenLanguages">
+          </lang-select-input>
 
-        <input-label name="langInput" title="Sprachen" class="formElement marginTop" />
-        <lang-select-input
-          id="langInput"
-          @input="updateSpokenLanguages"
-          :entryValue="contact.spokenLanguages">
-        </lang-select-input>
+          <input-field
+            class="formElement halfMarginTop"
+            field-name="web"
+            v-model="contact.web"
+            validate="url-with-protocol"
+            validate-on-blur="true"
+            label="Homepage">
+          </input-field>
 
-        <input-field
-          class="formElement marginTop"
-          field-name="web"
-          v-model="contact.web"
-          validate="url-with-protocol"
-          validate-on-blur="true"
-          label="Homepage">
-        </input-field>
-
-        <input-field
-          class="socialMedia"
-          field-name="socialMedia"
-          v-model="contact.socialMedia"
-          validate="url-with-protocol"
-          validate-on-blur="true"
-          label="Social Media">
-        </input-field>
+          <input-field
+            class="formElement halfMarginTop"
+            field-name="socialMedia"
+            v-model="contact.socialMedia"
+            validate="url-with-protocol"
+            validate-on-blur="true"
+            label="Social Media">
+          </input-field>
+        </entry-detail-section>
       </section>
 
       <section>
@@ -139,44 +154,69 @@
           <button type="button" class="btn btn-small personButton" @click="detectContactType()">Kontakt hinzufügen</button>
         </div>
 
-        <entry-detail-property2
-          v-for="(person, index) in contact.contact_persons" :key="index"
-          :title="person.role || 'Kontaktperson'"
-          clickLink="Entfernen"
-          @click="removeContactPerson(person)"
-          class="contactPerson">
+        <entry-detail-section
+          class="contactPersons"
+          title="Kontaktpersonen"
+          icon="person">
 
-          <input-field
-            field-name="role"
-            v-model="person.role"
-            validate="max:255"
-            label="Rolle">
-          </input-field>
+          <div v-if="!contact.contact_persons.length">
+            <div class="noContact">Noch keine Kontaktpersonen angegeben.</div>
 
-          <input-field
-            field-name="name"
-            v-model="person.name"
-            validate="max:255"
-            label="Name">
-          </input-field>
+            <div class="createContactLink">
+              <button type="button" class="btn btn-small" @click="addContactPerson">
+                Konktaktperson hinzufügen
+              </button>
+            </div>
+          </div>
 
-          <input-field
-            field-name="mail"
-            v-model="person.mail"
-            validate="max:255|email"
-            validate-on-blur="true"
-            label="E-Mail">
-          </input-field>
+          <entry-detail-property2
+            v-for="(person, index) in contact.contact_persons" :key="index"
+            :title="person.role || 'Kontaktperson'"
+            clickLink="Entfernen"
+            @click="removeContactPerson(person)"
+            class="contactPerson">
 
-          <input-field
-            field-name="phone"
-            v-model="person.phone"
-            validate="max:255"
-            label="Telefon">
-          </input-field>
-        </entry-detail-property2>
+            <input-field
+              field-name="role"
+              v-model="person.role"
+              validate="max:255"
+              label="Rolle">
+            </input-field>
 
-        <button type="button" class="btn btn-small personButton" @click="addContactPerson()">Kontaktperson hinzufügen</button>
+            <input-field
+              class="formElement halfMarginTop"
+              field-name="name"
+              v-model="person.name"
+              validate="max:255"
+              label="Name">
+            </input-field>
+
+            <input-field
+              class="formElement halfMarginTop"
+              field-name="mail"
+              v-model="person.mail"
+              validate="max:255|email"
+              validate-on-blur="true"
+              label="E-Mail">
+            </input-field>
+
+            <input-field
+              class="formElement halfMarginTop"
+              field-name="phone"
+              v-model="person.phone"
+              validate="max:255"
+              label="Telefon">
+            </input-field>
+
+          </entry-detail-property2>
+
+          <div v-if="contact.contact_persons.length && contact.contact_persons.length < 3" class="formElement marginTop">
+            <a href="" @click.prevent="addContactPerson" class="inlineEditLink">
+              Weitere Konktaktperson hinzufügen
+            </a>
+          </div>
+
+        </entry-detail-section>
       </section>
     </div>
 
@@ -325,6 +365,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.contactForm {
+  margin-top: 1em;
+}
+
 .cols--2 {
   display: flex;
   justify-content: space-between;
@@ -340,7 +384,7 @@ export default {
 
 .linkedContactOwner {
   font-size: .9em;
-  max-width:400px;
+  max-width: 500px;
   margin-bottom: 2em;
 
   display: flex;
@@ -383,8 +427,15 @@ export default {
   }
 }
 
+.addressForm,
+.contactAttributes {
+  width: 85%;
+  max-width: 560px;
+}
+
 .locationSpecForm {
-  max-width: 200px;
+  max-width: 500px;
+  width: 80%;
 }
 
 .customMultiselect {
@@ -414,6 +465,9 @@ h3 {
     margin-top: 3em;
   }
   max-width: 400px;
+  .inputField:first-child {
+    margin-top: 1.5em;
+  }
   a {
     display: block;
     margin-top: 1em;
@@ -426,5 +480,9 @@ h3 {
 
 .socialMedia {
   margin-top: .8em;
+}
+
+.entryDetailSection:not(:first-child) {
+  margin-top: 5em;
 }
 </style>

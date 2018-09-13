@@ -71,13 +71,41 @@ export default {
     },
 
     save () {
-      this.owner.$rels.contacts.Query.save(this.contact).then(contact => {
-        if (contact) {
-          this.$store.dispatch('messages/showAlert', {
-            description: 'Kontakt erfolgreich gespeichert.'
-          })
-          this.$router.push({name: this.routeName + '.show', params: {id: this.owner.id}})
+      this.$validator.setLocale(this.$i18n.locale)
+      this.$validator.validateAll().then(result => {
+        let validationErrors = []
+        if (!result) {
+          validationErrors = this.$validator.errors.items
         }
+
+        if (this.contact.isEmpty() && !this.contact.location) {
+          validationErrors.push({
+            msg: 'Keine Kontaktdaten angegeben.'
+          })
+        }
+
+        // prepare errorString from all validationErrors
+        let errorString = '\n\n'
+        for (let validationError of validationErrors) {
+          errorString += validationError.msg + '\n'
+        }
+
+        if (validationErrors.length) {
+          this.$store.dispatch('messages/showAlert', {
+            isError: true,
+            autoHide: false,
+            description: 'Es sind leider noch Fehler im Formular!' + errorString
+          })
+          return
+        }
+        this.owner.$rels.contacts.Query.save(this.contact).then(contact => {
+          if (contact) {
+            this.$store.dispatch('messages/showAlert', {
+              description: 'Kontakt erfolgreich gespeichert.'
+            })
+            this.$router.push({name: this.routeName + '.show', params: {id: this.owner.id}})
+          }
+        })
       })
     },
 

@@ -114,7 +114,6 @@ select {
   }
 
   .entryIcon {
-    display: none;
     flex: 0 0 44px;
   }
 

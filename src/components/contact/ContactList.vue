@@ -59,7 +59,7 @@
     </entry-detail-section>
 
     <entry-detail-section
-      v-if="contact"
+      v-if="contact && hasContactAttributes"
       class="contactSection"
       :title="$t('headlines.contact')"
       icon="mail_outline"
@@ -85,7 +85,7 @@
     </entry-detail-section>
 
     <entry-detail-section
-      v-if="contact && (contact.web || contact.socialMedia)"
+      v-if="contact && hasLinks"
       title="Links"
       icon="link"
       :editLink="isOwnContact ? contactEditRoute : ''">
@@ -137,6 +137,15 @@ export default {
       }
 
       return this.contact.location_spec || title
+    },
+
+    hasContactAttributes () {
+      const hasPerson = this.contact.contact_persons.some(cp => !cp.isEmpty())
+      return this.contact.openingHours || this.contact.spokenLanguages || hasPerson
+    },
+
+    hasLinks () {
+      return this.contact.web || this.contact.socialMedia
     }
   },
 

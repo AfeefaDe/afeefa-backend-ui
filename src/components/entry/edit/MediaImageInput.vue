@@ -1,16 +1,33 @@
 <template>
   <div>
-    <label for="url" class="browser-default">{{ $t('entries.image_link') }}</label>
+    <input-label
+      name="url" :title="$t('entries.image_link')"
+      :validationErrors="validationErrors" />
+
     <input id="url" type="text" v-model="item[propertyName]"
       :class="['browser-default', {'validation-error': imageError}]"/>
-    <span v-if="imageError" class="validation-error">Die Bild-URL ist fehlerhaft.</span>
   </div>
 </template>
 
 <script>
+import InputLabel from '@/components/InputLabel'
+
 export default {
   props: ['item', 'propertyName', 'imageError'],
 
-  inject: ['$validator']
+  inject: ['$validator'],
+
+  computed: {
+    validationErrors () {
+      return {
+        has: () => this.imageError,
+        first: () => this.$t('errors.loadingImageError')
+      }
+    }
+  },
+
+  components: {
+    InputLabel
+  }
 }
 </script>

@@ -1,6 +1,7 @@
 <template>
   <div v-if="location">
     <input-field
+      class="formElement halfMarginTop"
       field-name="street"
       v-model="location.street"
       validate="max:255"
@@ -9,7 +10,7 @@
     </input-field>
 
     <input-field
-      class="formElement marginTop"
+      class="formElement halfMarginTop"
       field-name="title"
       v-model="location.title"
       validate="max:255"
@@ -17,7 +18,7 @@
     </input-field>
 
     <input-field
-      class="formElement marginTop"
+      class="formElement halfMarginTop"
       field-name="zip"
       v-model="location.zip"
       validate="max:255"
@@ -26,7 +27,7 @@
     </input-field>
 
     <input-field
-      class="formElement marginTop"
+      class="formElement halfMarginTop"
       field-name="city"
       v-model="location.city"
       validate="max:255"
@@ -51,7 +52,7 @@
     <location-map :map-center="mapCenter" :location="location" :draggable="true" @bibbelDrag="bibbelDrag" :currentTab="currentTab"></location-map>
 
     <text-input
-      class="formElement marginTop"
+      class="formElement halfMarginTop"
       v-model="location.directions"
       fieldName="directions"
       :label="$t('entries.directions')" />

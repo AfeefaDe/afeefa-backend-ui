@@ -4,6 +4,11 @@
     <entry-detail-header-buttons :entry="orga" :routeConfig="routeConfig" slot="headerButtons" v-if="orga" />
 
     <div slot="secondaryHeaderButtons" class="secondaryHeaderButtons" v-if="orga">
+      <router-link :to="{name: 'offers.convert', query: {actorId: orga.id}}" class="btn btn-small">
+        <i class="material-icons left">call_made</i>
+        In Angebot umwandeln
+      </router-link>
+
       <router-link :to="{name: 'offers.new', query: {actorId: orga.id}}" class="btn gray btn-small">
         <i class="material-icons left">add</i>
         Angebot
@@ -98,11 +103,6 @@
             </div>
 
             <div class="entryDetail splitView__splitViewChild">
-              <router-link :to="{name: 'offers.convert', query: {actorId: orga.id}}" class="btn btn-small convertButton">
-                <i class="material-icons left">add</i>
-                In Angebot umwandeln
-              </router-link>
-
               <contact-list :item="orga" />
             </div>
           </div>
@@ -112,7 +112,9 @@
         </section>
 
         <section slot="todos">
-          <annotation-view :entry="orga" />
+          <annotation-view :entry="orga" v-if="orga.annotations.length" />
+
+          <annotation-form-pop-up :entry="orga" v-else />
         </section>
 
         <section slot="resources" v-if="orga.resource_items.length">
@@ -205,6 +207,7 @@ import EntryListItems from '@/components/entry/list/EntryListItems'
 import AnnotationView from '@/components/annotation/AnnotationView'
 import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
 import entryListFilters from '@/helpers/entry-list-filters'
+import AnnotationFormPopUp from '@/components/annotation/AnnotationFormPopUp'
 
 export default {
   mixins: [EntryShowMixin],
@@ -273,7 +276,8 @@ export default {
     EntryDescription,
     EntryListItems,
     AnnotationView,
-    EditableEntryFacetItems
+    EditableEntryFacetItems,
+    AnnotationFormPopUp
   }
 }
 </script>
@@ -321,10 +325,6 @@ export default {
   &.overview {
     padding-top: 1em;
   }
-}
-
-.convertButton {
-  margin-bottom: 4em;
 }
 
 .entryDetailSection:not(:first-child) {
