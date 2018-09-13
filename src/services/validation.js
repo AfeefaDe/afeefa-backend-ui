@@ -90,3 +90,23 @@ rule = {
   }
 }
 Validator.extend('password-confirm', rule)
+
+
+rule = {
+  messages: {
+    en: (field, args) => {
+      return `Either Phone or Mail must be given.`
+    },
+    de: (field, args) => {
+      return `Telefonnummer oder Email muss angegeben werden.`
+    }
+  },
+  validate (value, args) {
+    if (!document.querySelector(args[0])) {
+      return value.length
+    }
+    const otherValue = document.querySelector(args[0]).value
+    return value || otherValue
+  }
+}
+Validator.extend('contact-person-phone-or-mail', rule)

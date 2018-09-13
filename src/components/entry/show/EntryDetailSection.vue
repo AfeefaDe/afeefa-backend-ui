@@ -50,6 +50,8 @@
 export default {
   props: ['title', 'icon', 'editLink', 'inlineEditing', 'dispatchEdit', 'clickLink'],
 
+  inject: ['$validator'],
+
   data () {
     return {
       isEdit: false

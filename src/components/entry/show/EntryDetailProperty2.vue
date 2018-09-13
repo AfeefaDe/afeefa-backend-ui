@@ -35,6 +35,8 @@
 export default {
   props: ['title', 'inlineEditing', 'clickLink'],
 
+  inject: ['$validator'],
+
   data () {
     return {
       content: null,

@@ -18,6 +18,7 @@ label.browser-default {
   display: table; // block but not 100% width
   font-size: .9rem;
 
+  + .formElement,
   + input,
   + select,
   + textarea,

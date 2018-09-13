@@ -14,6 +14,7 @@
       <entry-edit-footer
         :item="owner"
         :routeConfig="routeConfig"
+        :hasRemove="contactId"
         @remove="remove"
         @save="save" />
     </form>
@@ -78,17 +79,17 @@ export default {
           validationErrors = this.$validator.errors.items
         }
 
-        if (this.contact.isEmpty() && !this.contact.location) {
-          validationErrors.push({
-            msg: 'Keine Kontaktdaten angegeben.'
-          })
+        if (!validationErrors.length) {
+          if (this.contact.isEmpty() && !this.contact.location) {
+            validationErrors.push({
+              msg: 'Keine Kontaktdaten angegeben.'
+            })
+          }
         }
 
-        // prepare errorString from all validationErrors
-        let errorString = '\n\n'
-        for (let validationError of validationErrors) {
-          errorString += validationError.msg + '\n'
-        }
+
+        const errorStrings = [ ...new Set(validationErrors.map(e => e.msg)) ] // make unique
+        const errorString = '\n\n' + errorStrings.join('\n')
 
         if (validationErrors.length) {
           this.$store.dispatch('messages/showAlert', {

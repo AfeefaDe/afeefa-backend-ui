@@ -32,7 +32,7 @@
           <div class="linkedContactOwner">
             <i class="material-icons">error_outline</i>
             <div>
-              <div>
+              <div v-if="location.owner">
                 Die Adresse wurde von
                 <router-link :to="{name: location.owner.type + '.show', params: {id: location.owner.id}}">
                   {{ location.owner.title }}
@@ -92,8 +92,7 @@
         <entry-detail-section
           class="contactAttributes"
           :title="$tc('headlines.contact')"
-          icon="mail_outline"
-          clickLink="Entfernen">
+          icon="mail_outline">
 
           <text-input v-if="owner.type === 'orgas'"
             class="formElement halfMarginTop"
@@ -193,18 +192,18 @@
 
             <input-field
               class="formElement halfMarginTop"
-              field-name="mail"
+              :field-name="'mail-' + index"
               v-model="person.mail"
-              validate="max:255|email"
+              :validate="`contact-person-phone-or-mail:#phone-${index}|${phoneRequired(person) ? 'required|' : ''}max:255|email`"
               validate-on-blur="true"
               label="E-Mail">
             </input-field>
 
             <input-field
               class="formElement halfMarginTop"
-              field-name="phone"
+              :field-name="'phone-' + index"
               v-model="person.phone"
-              validate="max:255"
+              :validate="`contact-person-phone-or-mail:#mail-${index}|${phoneRequired(person) ? 'required|' : ''}max:255`"
               label="Telefon">
             </input-field>
 
@@ -301,6 +300,10 @@ export default {
   },
 
   methods: {
+    phoneRequired (person) {
+      return !person.phone && !person.mail
+    },
+
     mapCenter (location) {
       if (location.lat) {
         return [location.lat, location.lon]
@@ -347,10 +350,6 @@ export default {
 
     updateSpokenLanguages (spokenLanguages) {
       this.contact.spokenLanguages = spokenLanguages
-    },
-
-    saveContact () {
-      this.$emit('save')
     }
   },
 

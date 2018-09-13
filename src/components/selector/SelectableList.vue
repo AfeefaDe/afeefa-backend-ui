@@ -22,21 +22,28 @@
       <div class="list" v-if="selectEnabled">
         <input-label :title="`Tippen, um ${title} auszuwählen`" />
 
-        <input type="text" class="browser-default" v-model="keyword" ref="keywordInput"
-          placeholder="Suchbegriff"
-          @input="keywordChanged"
-          @blur="onBlur"
-          @focus="onFocus"
-          @keydown.up.prevent="selectPrevious"
-          @keydown.down.prevent="selectNext"
-          @keydown.esc.prevent="onEscape"
-          @keydown.enter.prevent="enter">
+        <div class="inputContainer formElement">
+          <input type="text" class="browser-default" v-model="keyword" ref="keywordInput"
+            placeholder="Suchbegriff"
+            @input="keywordChanged"
+            @blur="onBlur"
+            @focus="onFocus"
+            @keydown.up.prevent="selectPrevious"
+            @keydown.down.prevent="selectNext"
+            @keydown.esc.prevent="onEscape"
+            @keydown.enter.prevent="enter">
 
-        <div class="selectableItems" v-if="focus && selectableItems.length && keyword.length">
+          <i class="material-icons selectIcon" v-if="!focus">arrow_drop_down</i>
+        </div>
+
+        <div class="selectableItems" v-if="focus && selectableItems.length">
           <div v-for="(item, index) in selectableItems" :key="item.id"
             :class="['item', {'item--selected': index === selectedItemIndex}]"
             @mousedown.prevent @click.prevent="select(item)">
             <slot name="item" :item="item" :selected="index === selectedItemIndex"></slot>
+          </div>
+          <div v-if="selectableItems.length < numFilteredSelectedItems" class="item foundMore">
+            Weitere {{ numFilteredSelectedItems - selectableItems.length }} Einträge gefunden. Bitte Suche verfeinern.
           </div>
         </div>
       </div>
@@ -68,6 +75,7 @@ export default {
     const searchFields = this.searchFields || ['title']
     return {
       initialSelectedItems: [],
+      numFilteredSelectedItems: [],
       selectableItems: [],
       keyword: '',
       selectedItemIndex: null,
@@ -81,14 +89,9 @@ export default {
     this.initSelectableItems()
   },
 
-  mounted () {
-    this.focusInput()
-  },
-
   watch: {
     items () {
       this.initSelectableItems()
-      this.focusInput()
     },
 
     selectedItems () {
@@ -145,6 +148,8 @@ export default {
       })
 
       this.selectableItems = sortByKeyword(sortByTitle(selectableItems), this.keyword)
+      this.numFilteredSelectedItems = this.selectableItems.length
+      this.selectableItems = this.selectableItems.slice(0, 50)
 
       if (this.selectableItems.length) {
         this.selectedItemIndex = Math.max(this.selectedItemIndex, 0)
@@ -292,6 +297,16 @@ export default {
   }
 }
 
+.inputContainer {
+  position: relative;
+
+  .selectIcon {
+    position: absolute;
+    top: .2em;
+    right: .2em;
+  }
+}
+
 .list {
   position: relative;
 }
@@ -348,6 +363,11 @@ export default {
   &--selected:nth-child(2n), &--selected:nth-child(2n):hover {
     background-color: lighten($blueHightlight, 10);
     color: white;
+  }
+
+  &.foundMore {
+    padding: 8px;
+    color: $gray50;
   }
 }
 
