@@ -15,6 +15,7 @@
           v-model="treeItem.color"
           colors="material-basic"
           :trigger-style="{width: '22px', height: '22px', borderRadius: '0px'}"
+          :swatch-style="{width: '22px', height: '22px', borderRadius: '0px'}"
           row-length="10"
           swatch-size="20"
         />
@@ -157,6 +158,11 @@ export default {
   border: 1px solid $gray20;
   position: relative;
   /* stylelint-disable selector-class-pattern */
+  /deep/ .vue-swatches__container {
+    background-color: white;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.2), 0 2px 10px 0 rgba(0,0,0,0.2);
+    border-radius: 0;
+  }
   /deep/ .vue-swatches__trigger {
     width: 1.8em;
     height: 1.8em;
