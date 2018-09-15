@@ -2,12 +2,39 @@
   <div class="treeItemContainer">
     <div v-if="treeItem.id" :class="['treeItem', {parentItem: !treeItem.parent, subItem: treeItem.parent, editItem: isEdit}]">
       <div>
-        <tree-item-tag :treeItem="treeItem" :chevron="routeConfig.chevron" v-if="!isEdit" />
+        <tree-item-tag
+          :treeItem="treeItem"
+          :chevron="routeConfig.chevron"
+          :selected="treeItem.selectedForMoval"
+          :icon="treeItem.icon"
+          v-if="!isEdit" />
 
         <span v-if="!isEdit">
           <a href="" @click.prevent="edit()" class="inlineEditLink">
             Ändern
           </a>
+
+          <a href="" @click.prevent="openNavigationSelector()"
+            v-if="treeItem.parent || routeConfig.hasOrderItems"
+            class="inlineEditLink" ref="moveTrigger">
+            Verschieben
+          </a>
+
+          <pop-up-selector :trigger="$refs.moveTrigger" diffX="0" @close="hideNavigationSelector" v-if="navigationSelectorIsOpen">
+            <navigation-item-selector-content
+              v-if="routeConfig.containerName === 'navigation'"
+              :selectedNavigationItems="[treeItem]"
+              :customParentItem="treeItem.parent ? convertToParentItem : null"
+              :hideSubItems="!treeItem.parent"
+              @click="navigationItemSelected" />
+
+            <facet-item-selector-content
+              :facets="[treeItem.container]"
+              :selectedFacetItems="[treeItem.parent, treeItem]"
+              :customParentItem="treeItem.parent ? convertToParentItem : null"
+              :hideSubItems="true"
+              @click="navigationItemSelected" />
+          </pop-up-selector>
         </span>
 
         <tree-item-editor
@@ -44,29 +71,89 @@
 
 <script>
 import TreeItemEditor from './TreeItemEditor'
+import PopUpSelector from '@/components/PopUpSelector'
+import NavigationItemSelectorContent from '@/components/facet/NavigationItemSelectorContent'
+import FacetItemSelectorContent from '@/components/facet/FacetItemSelectorContent'
 
 export default {
   props: ['treeItem', 'routeConfig', 'bus'],
 
   data () {
     return {
-      isEdit: false
+      isEdit: false,
+      navigationSelectorIsOpen: false,
+      orderAndParentChanged: false,
+      convertToParentItem: null,
+      selectedForMoval: false
     }
   },
 
   created () {
+    this.convertToParentItem = this.routeConfig.createNewTreeItem(this.treeItem.container)
+
     this.bus.$on('edit', this.checkCancel)
+    this.bus.$on('select', this.checkSelect)
   },
 
   destroyed () {
     this.bus.$off('edit', this.checkCancel)
+    this.bus.$off('select', this.checkSelect)
   },
 
   methods: {
+    navigationItemSelected (navigationItem) {
+      this.hideNavigationSelector()
+
+      const itemClone = this.routeConfig.cloneTreeItem(this.treeItem)
+      itemClone.oldParent = this.treeItem.parent
+      this.orderAndParentChanged = true
+
+      // i can be a sub item and replace another sub items position or add myself at last of the parent
+      if (!this.treeItem.sub_items.length) {
+        // make me a parent item
+        if (navigationItem === this.convertToParentItem) {
+          itemClone.parent = null
+          itemClone.order = this.getContainerTreeItems()[0].order
+
+        // move me to another parent
+        } else {
+          if (navigationItem.parent) { // replace subitem of parent
+            itemClone.parent = navigationItem.parent
+            itemClone.order = navigationItem.order
+          } else {
+            itemClone.parent = navigationItem
+            if (navigationItem.sub_items.length) { // set as last of parent
+              const [lastItem] = navigationItem.sub_items.slice(-1)
+              itemClone.order = lastItem.order + 1
+            }
+          }
+        }
+      // i am a parent item and can only replace other parent's order
+      } else {
+        itemClone.order = navigationItem.order
+      }
+
+      this.update(itemClone)
+    },
+
+    openNavigationSelector (customTrigger) {
+      this.navigationSelectorIsOpen = true
+
+      this.bus.$emit('select', this.treeItem)
+    },
+
+    hideNavigationSelector () {
+      this.navigationSelectorIsOpen = false
+    },
+
     checkCancel (treeItem) {
       if (treeItem !== this.treeItem) {
         this.cancel()
       }
+    },
+
+    checkSelect (treeItem) {
+      this.treeItem.selectedForMoval = treeItem === this.treeItem
     },
 
     edit () {
@@ -100,18 +187,36 @@ export default {
     update (treeItemToSave) {
       this.getContainerTreeItemsRelation().Query.save(treeItemToSave).then(savedTreeItem => {
         if (savedTreeItem) {
-          // tmp add item to parent in order to fill the
+          // tmp remove/add item to parent in order to fill the
           // delay/gap until the container items are reloaded again
           if (!treeItemToSave.id) {
-            if (treeItemToSave.parent) {
-              treeItemToSave.parent.sub_items.push(savedTreeItem)
-            } else {
-              this.getContainerTreeItems().push(savedTreeItem)
+            const list = treeItemToSave.parent
+              ? treeItemToSave.parent.sub_items
+              : this.getContainerTreeItems()
+            list.push(savedTreeItem)
+          } else {
+            if (this.orderAndParentChanged) {
+              const oldList = treeItemToSave.oldParent // parent of original item
+                ? treeItemToSave.oldParent.sub_items
+                : this.getContainerTreeItems()
+              var index = oldList.indexOf(this.treeItem) // remove original item
+              if (index !== -1) {
+                oldList.splice(index, 1)
+              }
+
+              const newList = savedTreeItem.parent
+                ? savedTreeItem.parent.sub_items
+                : this.getContainerTreeItems()
+              newList.push(savedTreeItem)
+              savedTreeItem.order -= 0.1 // fake order to sort item at the right place until reloaded
+              this.routeConfig.sortTreeItems(newList)
+
+              this.orderAndParentChanged = false
             }
           }
 
           this.$store.dispatch('messages/showAlert', {
-            description: 'Das Attribut wurde geändert.'
+            description: 'Die Kategorie wurde geändert.'
           })
 
           this.cancel()
@@ -122,8 +227,8 @@ export default {
 
     remove () {
       this.$store.dispatch('messages/showDialog', {
-        title: `Attribut ${this.treeItem.title} löschen`,
-        message: 'Soll das Attribut gelöscht werden?\n\nAlle Akteure verlieren dieses Attribut.'
+        title: `Kategorie ${this.treeItem.title} löschen`,
+        message: 'Soll die Kategorie gelöscht werden?\n\nAlle Akteure verlieren diese Kategorie.'
       }).then(result => {
         if (result === 'yes') {
           this.getContainerTreeItemsRelation().Query.delete(this.treeItem).then(deleted => {
@@ -135,7 +240,7 @@ export default {
               items.splice(index, 1)
 
               this.$store.dispatch('messages/showAlert', {
-                description: 'Das Attribut wurde gelöscht'
+                description: 'Die Kategorie wurde gelöscht'
               })
 
               this.cancel()
@@ -148,7 +253,10 @@ export default {
   },
 
   components: {
-    TreeItemEditor
+    TreeItemEditor,
+    PopUpSelector,
+    NavigationItemSelectorContent,
+    FacetItemSelectorContent
   }
 }
 </script>

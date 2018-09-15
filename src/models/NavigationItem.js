@@ -17,7 +17,9 @@ class NavigationItem extends Model {
       icon: {
         type: DataTypes.String,
         value: value => value || null
-      }
+      },
+
+      order: DataTypes.Int
     }
   }
 
@@ -47,12 +49,23 @@ class NavigationItem extends Model {
     if (parent) {
       menuItem.parent = parent
       menuItem.$rels.parent.id = parent.id
+
+      if (parent.sub_items.length) {
+        const [lastItem] = parent.sub_items.slice(-1)
+        menuItem.order = lastItem.order + 1
+      }
+    } else {
+      if (navigation.navigation_items.length) {
+        const [lastItem] = navigation.navigation_items.slice(-1)
+        menuItem.order = lastItem.order + 1
+      }
     }
     return menuItem
   }
 
   init () {
     this.previewColor = null
+    this.selectedForMoval = false
   }
 
   get container () {
@@ -64,6 +77,7 @@ class NavigationItem extends Model {
       title: this.title,
       color: this.color,
       icon: this.icon,
+      order: this.order,
       parent_id: this.parent ? this.parent.id : null
     }
 

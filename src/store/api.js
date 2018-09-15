@@ -55,7 +55,7 @@ export default {
                   commit('savingFinished')
                   resolve(response)
                 }
-              }, 500)
+              }, 300)
             })
           }
         })

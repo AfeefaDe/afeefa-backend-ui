@@ -17,11 +17,8 @@
             <div class="facetAttributes" slot="content">
               <div class="facetAttributesView">
                 <h4>{{ selectedFacet.title }}</h4>
-                <a href="" @click.prevent="editFacet(selectedFacet)" class="inlineEditLink" v-if="!isEditable(selectedFacet)">
+                <a href="" @click.prevent="editFacet()" class="inlineEditLink" v-if="!isEditable()">
                   Ändern
-                </a>
-                <a href="" @click.prevent="cancelEditFacet()" class="inlineEditLink" v-if="isEditable(selectedFacet)">
-                  Abbrechen
                 </a>
               </div>
 
@@ -29,11 +26,10 @@
                 für: <span v-for="type in selectedFacet.owner_types" :key="type" class="ownerType">{{ $t('facets.ownerType' + type) }}</span>
               </div>
 
-              <div v-if="isEditable(selectedFacet)">
-                <tree-item-editor-form
-                  :item="editableFacet"
-                  :hasAttributes="true"
-                  :hasColor="true"
+              <div v-if="isEditable()">
+                <tree-item-editor
+                  :item="selectedFacet"
+                  :routeConfig="{canColorizeItems: true}"
                   @update="updateFacet"
                   @cancel="cancelEditFacet" />
               </div>
@@ -53,7 +49,7 @@
 import Facet from '@/models/Facet'
 import FacetTreeConfig from './FacetTreeConfig'
 import EditableTreeView from '@/components/tree/EditableTreeView'
-import TreeItemEditorForm from '@/components/tree/TreeItemEditorForm'
+import TreeItemEditor from '@/components/tree/TreeItemEditor'
 
 export default {
   data () {
@@ -61,21 +57,12 @@ export default {
       selectedFacet: null,
       facets: [],
       treeConfig: new FacetTreeConfig(this, this.id),
-      editableFacet: null,
-      editableFacetOriginal: null
+      editableFacet: null
     }
   },
 
   created () {
     this.loadFacets()
-  },
-
-  watch: {
-    'editableFacet.color' (color) {
-      if (this.editableFacetOriginal) {
-        this.editableFacetOriginal.previewColor = color || null
-      }
-    }
   },
 
   computed: {
@@ -95,24 +82,16 @@ export default {
       this.selectedFacet = this.facets.find(facet => facet.title === tabName)
     },
 
-    selectFacet (facet) {
-      this.selectedFacet = facet
-    },
-
-    editFacet (facet) {
-      this.editableFacetOriginal = facet
-      this.editableFacet = facet.clone()
+    editFacet () {
+      this.editableFacet = this.selectedFacet
     },
 
     cancelEditFacet () {
-      this.editableFacetOriginal.previewColor = null
-      this.editableFacetOriginal = null
-
       this.editableFacet = null
     },
 
-    isEditable (facet) {
-      return this.editableFacet && this.editableFacet.id === facet.id
+    isEditable () {
+      return this.editableFacet === this.selectedFacet
     },
 
     loadFacets () {
@@ -138,7 +117,7 @@ export default {
 
   components: {
     EditableTreeView,
-    TreeItemEditorForm
+    TreeItemEditor
   }
 }
 </script>

@@ -1,9 +1,11 @@
 <template>
-  <div :class="['treeItemTag', {selected, clickable: hasClickListener, withChevron: chevron}]"
+  <div :class="['treeItemTag', {selected, clickable: hasClickListener, withChevron: chevron, withIcon: icon}]"
     :style="{borderColor: (color ? color : '')}"
     @click="onClick">
     <div class="content">
       <div class="chevron" v-if="chevron" :style="{color}"></div>
+
+      <div v-if="icon" :class="['iconPreview', 'cat-' + treeItem.icon]"></div>
 
       <span class="tagName">{{ treeItem.title || 'Kein Titel' }}</span>
 
@@ -17,7 +19,7 @@
 
 <script>
 export default {
-  props: ['treeItem', 'chevron', 'x', 'click', 'selected', 'link', 'more'],
+  props: ['treeItem', 'chevron', 'x', 'click', 'selected', 'link', 'more', 'icon'],
 
   data () {
     return {
@@ -116,6 +118,20 @@ export default {
     background-color: darken($white, 10);
   }
 
+  &.withIcon {
+    padding: 1em;
+  }
+
+  .iconPreview {
+    display: block;
+    width: 1.8em;
+    height: 1.8em;
+    line-height: 1;
+    @include categorySymbols;
+    filter: invert(100);
+    margin-right: .2em;
+  }
+
   &:not(.withChevron) {
     border-left: 5px solid;
   }
@@ -154,6 +170,17 @@ export default {
       border-left: .4em solid $gray10;
       width: .4em;
       height: 1.8em;
+    }
+
+    &.selected, &.selected:hover {
+      background-color: darken($gray10, 10);
+      &:before {
+        border-top-color: darken($gray10, 10);
+        border-bottom-color: darken($gray10, 10);
+      }
+      &:after {
+        border-left-color: darken($gray10, 10);
+      }
     }
   }
 

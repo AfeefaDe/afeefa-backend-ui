@@ -18,6 +18,7 @@ export default class Config extends TreeConfig {
     this.canColorizeItems = false
     this.canSelectIcon = false
     this.chevron = false
+    this.hasOrderItems = false
   }
 
   loadTreeItems (facet) {
@@ -28,7 +29,17 @@ export default class Config extends TreeConfig {
 
   createNewTreeItem (container, parent) {
     const newFacetItem = FacetItem.create(container, parent)
-    newFacetItem.title = 'Neues Attribut'
+    newFacetItem.title = 'Neue Kategorie'
     return newFacetItem
+  }
+
+  cloneTreeItem (facetItem) {
+    const clone = facetItem.clone()
+    clone.facet = facetItem.facet
+    return clone
+  }
+
+  sortTreeItems (treeItems) {
+    treeItems.sort((i1, i2) => i1.id - i2.id)
   }
 }

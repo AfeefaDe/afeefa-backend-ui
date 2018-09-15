@@ -9,6 +9,7 @@ export default class Config extends RouteConfig {
     this.canColorizeItems = false
     this.canSelectIcon = false
     this.chevron = false
+    this.hasOrderItems = false
 
     this.messages = {
       loadingItem: () => this.$t('status.load_data'),
@@ -33,6 +34,14 @@ export default class Config extends RouteConfig {
   }
 
   createNewTreeItem (container, parent) {
+    // override
+  }
+
+  cloneTreeItem (treeItem) {
+    // override
+  }
+
+  sortTreeItems (treeItems) {
     // override
   }
 }

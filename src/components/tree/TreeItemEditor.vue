@@ -1,70 +1,80 @@
 <template>
-  <div>
-    <tree-item-tag :treeItem="treeItem" :chevron="routeConfig.chevron" />
+  <div class="editorForm">
+    <div class="controls">
+      <icon-selector v-if="canSelectIcon" :selectedIcon="treeItem.icon" @select="selectIcon" />
 
-    <a href="" @click.prevent="cancel()" class="inlineEditLink">
-      Abbrechen
-    </a>
+      <input class="browser-default" type="text" placeholder="Titel"
+        v-focus v-select
+        v-model="treeItem.title"
+        @keyup.enter="update()"
+        @keyup.esc="cancel()">
 
-    <a href="" @click.prevent="move()" v-if="item.id && canMove && !isMove" class="inlineEditLink">
-      Verschieben
-    </a>
-    <a href="" @click.prevent="edit()" v-if="isMove" class="inlineEditLink">
-      Ändern
-    </a>
+      <div class="colorPicker" v-if="canColorize">
+        <color-picker
+          class="colorPickerIcon"
+          v-model="treeItem.color"
+          colors="material-basic"
+          :trigger-style="{width: '22px', height: '22px', borderRadius: '0px'}"
+          row-length="10"
+          swatch-size="20"
+        />
 
-    <a href="" @click.prevent="remove()" class="inlineEditLink">
-      Löschen
-    </a>
-
-    <div class="editorForm">
-      <tree-item-editor-form
-        v-if="!isMove"
-        :item="treeItem"
-        :hasAttributes="true"
-        :hasColor="canColorize"
-        :hasIcon="canSelectIcon"
-        @update="update"
-        @cancel="cancel" />
-
-      <tree-item-editor-form
-        v-else
-        :item="treeItem"
-        :hasMove="true"
-        @update="update"
-        @cancel="cancel">
-        <select class="browser-default" v-model="treeItem.parent" v-if="canSelectSubItems()">
-          <option :value="null">Attribut auswählen</option>
-          <option :value="parentItem" v-for="parentItem in parentItems" :key="parentItem.id">{{ parentItem.title }}</option>
-        </select>
-
-        <button type="button" class="btn btn-small" @click="update()">
-          <i class="material-icons left">done</i>
-        </button>
-      </tree-item-editor-form>
+        <input
+          class="browser-default colorInput"
+          type="text"
+          maxlength="7"
+          placeholder="Farbe"
+          v-model="treeItem.color"
+          @keyup.enter="update()"
+          @keyup.esc="cancel()">
+      </div>
     </div>
+
+    <div class="buttons">
+      <a href="" @click.prevent="cancel()" class="inlineEditLink">
+        Abbrechen
+      </a>
+
+      <a href="" @click.prevent="remove()" class="inlineEditLink">
+        Löschen
+      </a>
+
+      <button type="button" class="btn btn-xs green" @click="update()">
+        Speichern
+      </button>
+    </div>
+
+    <tree-item-editor-form
+      v-if="false"
+      :item="treeItem"
+      :hasColor="canColorize"
+      :hasIcon="canSelectIcon"
+      @update="update"
+      @remove="remove"
+      @cancel="cancel" />
   </div>
 </template>
 
 <script>
-import TreeItemEditorForm from './TreeItemEditorForm'
 import Swatches from 'vue-swatches'
 import 'vue-swatches/dist/vue-swatches.min.css'
+import IconSelector from '@/components/selector/IconSelector'
 
 export default {
   props: ['item', 'routeConfig'],
 
   data () {
     return {
-      treeItem: null,
-      parentItems: [],
-      isMove: false
+      treeItem: null
     }
   },
 
   created () {
     this.treeItem = this.item.clone()
-    this.parentItems = this.getContainerTreeItems()
+  },
+
+  destroyed () {
+    this.item.previewColor = null
   },
 
   watch: {
@@ -74,10 +84,6 @@ export default {
   },
 
   computed: {
-    canMove () {
-      return !this.item.sub_items.length
-    },
-
     canColorize () {
       return this.routeConfig.canColorizeItems && !this.treeItem.parent
     },
@@ -88,27 +94,8 @@ export default {
   },
 
   methods: {
-    getContainerTreeItems () {
-      const container = this.item.container
-      return this.routeConfig.getTreeItems(container)
-    },
-
-    edit () {
-      this.treeItem = this.item.clone()
-      this.isMove = false
-    },
-
-    move () {
-      this.treeItem = this.item.clone()
-      this.isMove = true
-    },
-
-    canSelectSubItems () {
-      if (this.treeItem.sub_items.length) {
-        return false
-      }
-
-      return true
+    selectIcon (icon) {
+      this.treeItem.icon = icon
     },
 
     cancel () {
@@ -126,15 +113,86 @@ export default {
   },
 
   components: {
-    TreeItemEditorForm,
-    ColorPicker: Swatches
+    ColorPicker: Swatches,
+    IconSelector
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .editorForm {
-  margin-top: 2px;
+  display: inline-block;
+  margin-top: .2em;
+  margin-bottom: .4em;
+  background-color: white;
+  border: 1px solid $gray20;
+  padding: 1em;
+
+  input, select {
+    width: auto;
+    line-height: 1.5;
+    height: 2em;
+    padding: 0 .4em;
+    border-left: none;
+  }
+
+  .colorInput {
+    width: 80px;
+  }
+}
+
+.editorForm > * {
+  line-height: 1em;
+  margin-right: .4em !important;
+}
+
+.colorPicker {
+  display: flex;
+  align-items: center;
+}
+
+.colorPickerIcon {
+  width: 2em;
+  height: 2em;
+  border: 1px solid $gray20;
+  position: relative;
+  /* stylelint-disable selector-class-pattern */
+  /deep/ .vue-swatches__trigger {
+    width: 1.8em;
+    height: 1.8em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  /* stylelint-enable selector-class-pattern */
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+
+  .colorPicker {
+    margin-left: .8em;
+  }
+}
+
+.buttons {
+  margin-top: 1em;
+  display: flex;
+  align-items: baseline;
+}
+
+.btn {
+  margin-top: -1px;
+  padding: 0 4px;
+  i {
+    font-size: 1rem;
+  }
+}
+
+a + button, a + a {
+  margin-left: .7em;
 }
 
 .inlineEditLink {

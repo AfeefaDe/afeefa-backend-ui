@@ -1,6 +1,7 @@
 <template>
   <div class="facetItemsTree">
     <div class="facetSelector" ref="facetSelector" v-if="facets.length > 1">
+      <facet-item-tag v-if="customParentItem" :item="customParentItem" @click="facetItemClick(customParentItem)" />
       <facet-item-tag v-for="facet in facets" :key="facet.id" :ref="'facet' + facet.id"
         @click="openParentItemSelector(facet)"
         :item="facet"
@@ -18,12 +19,12 @@
           :color="selectedFacet.color"
           :disabled="parentItemIsDisabled(facetItem)"
           :selected="facetItem === selectedParentItem"
-          :more="facetHasSubItems(selectedFacet) && facetItem.sub_items.length"
+          :more="!hideSubItems && facetHasSubItems(selectedFacet) && facetItem.sub_items.length"
           :hint="numSelectedSubItems(facetItem)" />
       </slot>
     </div>
 
-    <div class="subItemSelector" ref="subItemSelector" v-if="selectedParentItem">
+    <div class="subItemSelector" ref="subItemSelector" v-if="!hideSubItems && selectedParentItem">
       <facet-item-tag
         @click="facetItemClick(selectedParentItem)"
         :item="selectedParentItem"
@@ -47,7 +48,7 @@
 import entryListFilters from '@/helpers/entry-list-filters'
 
 export default {
-  props: ['selectedFacetItems', 'facets', 'more'],
+  props: ['selectedFacetItems', 'facets', 'more', 'hideSubItems', 'customParentItem'],
 
   data () {
     return {
@@ -68,7 +69,7 @@ export default {
     },
 
     parentItemIsDisabled (facetItem) {
-      if (facetItem.sub_items.length) {
+      if (!this.hideSubItems && facetItem.sub_items.length) {
         return false
       }
       return this.selectedFacetItems.includes(facetItem)
@@ -103,6 +104,11 @@ export default {
     },
 
     openSubItemSelector (facetItem) {
+      if (this.hideSubItems) {
+        this.facetItemClick(facetItem)
+        return
+      }
+
       if (!facetItem.sub_items.length) {
         this.facetItemClick(facetItem)
         return

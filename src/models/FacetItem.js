@@ -46,8 +46,8 @@ class FacetItem extends Model {
   }
 
   init () {
-    this.new_facet_id = null
     this.previewColor = null
+    this.selectedForMoval = false
   }
 
   get container () {
@@ -55,19 +55,11 @@ class FacetItem extends Model {
   }
 
   serialize () {
-    const data = {
+    return {
       title: this.title,
       color: this.color,
       parent_id: this.parent ? this.parent.id : null
     }
-
-    if (this.id) {
-      // move around, need to prefix facet_id since
-      // it's already used as api controller param
-      data.new_facet_id = this.facet.id
-    }
-
-    return data
   }
 
   get info () {

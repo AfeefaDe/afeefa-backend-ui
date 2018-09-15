@@ -1,17 +1,18 @@
 <template>
   <div class="navigationItemsTree" v-if="navigation">
     <div class="parentItemSelector" ref="parentItemSelector">
+      <facet-item-tag v-if="customParentItem" :item="customParentItem" @click="navigationItemClick(customParentItem)" />
       <facet-item-tag v-for="navigationItem in navigation.navigation_items" :key="navigationItem.id" :ref="'parentItem' + navigationItem.id"
         @click="openSubItemSelector(navigationItem)"
         :item="navigationItem"
         :color="navigationItem.color"
         :disabled="parentItemIsDisabled(navigationItem)"
         :selected="navigationItem === selectedParentItem"
-        :more="navigationItem.sub_items.length"
+        :more="!hideSubItems && navigationItem.sub_items.length"
         :hint="numSelectedSubItems(navigationItem)" />
     </div>
 
-    <div class="subItemSelector" ref="subItemSelector" v-if="selectedParentItem">
+    <div class="subItemSelector" ref="subItemSelector" v-if="!hideSubItems && selectedParentItem">
       <facet-item-tag
         @click="navigationItemClick(selectedParentItem)"
         :item="selectedParentItem"
@@ -35,7 +36,7 @@
 import Navigation from '@/models/Navigation'
 
 export default {
-  props: ['selectedNavigationItems', 'facets', 'more'],
+  props: ['selectedNavigationItems', 'facets', 'more', 'hideSubItems', 'customParentItem'],
 
   data () {
     return {
@@ -52,7 +53,7 @@ export default {
 
   methods: {
     parentItemIsDisabled (navigationItem) {
-      if (navigationItem.sub_items.length) {
+      if (!this.hideSubItems && navigationItem.sub_items.length) {
         return false
       }
 
@@ -79,6 +80,11 @@ export default {
     },
 
     openSubItemSelector (navigationItem) {
+      if (this.hideSubItems) {
+        this.navigationItemClick(navigationItem)
+        return
+      }
+
       if (!navigationItem.sub_items.length) {
         this.navigationItemClick(navigationItem)
         return
@@ -117,11 +123,11 @@ export default {
       }
     },
 
-    navigationItemClick (facetItem) {
-      if (this.navigationItemIsDisabled(facetItem)) {
+    navigationItemClick (navigationItem) {
+      if (this.navigationItemIsDisabled(navigationItem)) {
         return
       }
-      this.$emit('click', facetItem)
+      this.$emit('click', navigationItem)
     }
   }
 }

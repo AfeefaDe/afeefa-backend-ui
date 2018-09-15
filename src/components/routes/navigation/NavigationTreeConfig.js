@@ -18,6 +18,7 @@ export default class Config extends TreeConfig {
     this.canColorizeItems = true
     this.canSelectIcon = true
     this.chevron = true
+    this.hasOrderItems = true
   }
 
   loadTreeItems () {
@@ -30,5 +31,13 @@ export default class Config extends TreeConfig {
     const navigationItem = NavigationItem.create(navigation, parent)
     navigationItem.title = 'Neuer Menüpunkt'
     return navigationItem
+  }
+
+  cloneTreeItem (navigationItem) {
+    return navigationItem.clone()
+  }
+
+  sortTreeItems (treeItems) {
+    treeItems.sort((i1, i2) => i1.order - i2.order)
   }
 }
