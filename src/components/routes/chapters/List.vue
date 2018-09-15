@@ -4,7 +4,7 @@
     :isLoading="isLoading"
     addEntryButton="chapters.new"
     :customSortOrders="[{ sort: sortByTitle }]"
-    :options="{filter: true, pagination: true, hideTypeIcon: true, linkToItem: 'edit'}"
+    :options="{filter: true, pagination: true, linkToItem: 'edit'}"
     :messages="messages">
   </entry-list>
 </template>

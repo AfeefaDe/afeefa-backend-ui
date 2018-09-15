@@ -1,85 +1,92 @@
 <template>
-  <div class="row">
-    <div class="col s12 m12">
-      <div class="mainCard">
-        <div class="mainCard__header" v-if="item">
-          <div class="mainCard__headerTitle">
-            <span class="mainCard__type">Kapitel</span>
-            <h2 class="mainCard__headerTitle"> {{item.title || 'Kein Titel'}}</h2>
-          </div>
-          <div class="mainCard__headerButtonContainer">
-            <a v-if="item.id" :href="previewLink" target="_blank" class="mainCard__headerButton">
-              {{$t('headlines.preview')}}
-              <i class="material-icons">link</i>
-            </a>
-            <a href="" @click.prevent="cancel" class="mainCard__headerAction"><i class="material-icons">cancel</i></a>
-          </div>
-        </div>
+  <afeefa-page>
 
-        <div v-if="item">
-          <form @submit.prevent="save" class="entryForm" novalidate>
+    <afeefa-header slot="header">
+      <div slot="title">
+        Kapitel
+      </div>
 
-            <div class="inputField__spacing input-field">
-              <label for="title" :class="{active: item.title}">
-                {{ $t('entries.title') }}
-                <span class="hint" v-if="item.title.length">{{item.title.length}}/150</span>
-              </label>
-              <input v-model="item.title" id="title" type="text"
-                name="title" :data-vv-as="$t('entries.title')" v-validate.initial="'required|max: 150'"
-                :class="{'validation-error': errors.has('title') }"/>
-              <span v-show="errors.has('title')" class="validation-error">{{ errors.first('title') }}</span>
-            </div>
+      <div slot="buttons" v-if="item">
+        <a v-if="item.id" :href="previewLink" target="_blank" class="btn btn-medium">
+          <i class="material-icons left">link</i>
+          {{$t('headlines.preview')}}
+        </a>
+        <router-link :to="{name: 'chapters.list'}" class="btn gray btn-medium">
+          <i class="material-icons left">cancel</i>
+          {{ $t('buttons.cancel') }}
+        </router-link>
+      </div>
+    </afeefa-header>
 
-            <chapter-editor :value="item.content" @input="updateContent"></chapter-editor>
+    <div slot="content" v-if="item">
+      <form @submit.prevent="save" class="entryForm" novalidate>
+        <input-field
+          field-name="title"
+          v-model="item.title"
+          validate="max:150"
+          :label="$t('entries.title')" />
 
-            <br>
-            <section class="entryForm__actionFooter">
-              <button class="btn waves-effect waves-light green" type="submit">
-                <i class="material-icons left">done</i>
-                Speichern
-              </button>
-              <button type="button" class="btn waves-effect waves-light red" @click.prevent="remove" v-if="item.id">
-                <i class="material-icons left">delete</i>
-                Löschen
-              </button>
-            </section>
-          </form>
-        </div>
+        <chapter-editor :value="item.content" @input="updateContent"></chapter-editor>
 
-        <div v-else class="mainCard">
-          <div class="mainCard__header mainCard__headerLight">
-            <span v-if="loadingError">Das Kapitel konnte nicht geladen werden.</span>
-            <span v-else>Lade Kapitel ...</span>
-          </div>
-        </div>
 
+        <entry-edit-footer
+          :item="item"
+          :routeConfig="routeConfig"
+          :urls="{cancel: {name: 'chapters.list'}}"
+          @remove="remove"
+          @save="save" />
+
+
+        <br>
+        <section class="entryForm__actionFooter">
+          <button class="btn waves-effect waves-light green" type="submit">
+            <i class="material-icons left">done</i>
+            Speichern
+          </button>
+          <button type="button" class="btn waves-effect waves-light red" @click.prevent="remove" v-if="item.id">
+            <i class="material-icons left">delete</i>
+            Löschen
+          </button>
+        </section>
+      </form>
+    </div>
+
+    <div slot="content" v-else>
+      <div class="mainCard__header mainCard__headerLight">
+        <span v-if="loadingError">Das Kapitel konnte nicht geladen werden.</span>
+        <span v-else>Lade Kapitel ...</span>
       </div>
     </div>
-  </div>
+
+  </afeefa-page>
 </template>
 
 <script>
 import ChapterEditor from './ChapterEditor'
+import ChapterRouteConfig from './ChapterRouteConfig'
 import GenerateFrontendLinkMixin from '@/components/mixins/GenerateFrontendLinkMixin'
 import Chapter from '@/models/Chapter'
+import EntryEditFooter from '@/components/entry/edit/EntryEditFooter'
 
 export default {
   props: ['id'],
+
   mixins: [GenerateFrontendLinkMixin],
-  components: {
-    ChapterEditor
-  },
+
   data () {
     return {
       item: null,
-      loadingError: false
+      loadingError: false,
+      routeConfig: new ChapterRouteConfig(this, this.id)
     }
   },
+
   computed: {
     previewLink () {
       return `${this.frontendURL}/chapter/${this.item.id}`
     }
   },
+
   created () {
     this.loadChapter()
   },
@@ -110,10 +117,6 @@ export default {
         // create a cloned chapter to later detect changes
         this.item = new Chapter().clone()
       }
-    },
-
-    cancel () {
-      this.$router.push({name: 'chapters.list'})
     },
 
     save () {
@@ -160,7 +163,11 @@ export default {
         }
       })
     }
-  }
+  },
 
+  components: {
+    ChapterEditor,
+    EntryEditFooter
+  }
 }
 </script>

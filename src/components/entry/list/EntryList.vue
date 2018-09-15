@@ -14,7 +14,6 @@
         </div>
       </afeefa-header>
 
-
       <div slot="content">
         <slot name="items">
           <entry-list-items

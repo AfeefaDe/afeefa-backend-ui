@@ -6,6 +6,7 @@
     <i v-if="item.type === 'annotations'" class="material-icons annotations">done</i>
     <i v-if="item.type === 'contacts'" class="material-icons contacts">mail_outline</i>
     <i v-if="item.type === 'locations'" class="material-icons locations">location_on</i>
+    <i v-if="item.type === 'chapters'" class="material-icons locations">school</i>
   </div>
 </template>
 

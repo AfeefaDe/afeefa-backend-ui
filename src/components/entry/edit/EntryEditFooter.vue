@@ -8,7 +8,7 @@
     </div>
 
     <div>
-      <router-link :to="{name: this.routeName + '.show', params: {id: item.id}}" class="btn waves-effect waves-light gray" v-if="has.cancel && item.id">
+      <router-link :to="customCancelUrl || {name: this.routeName + '.show', params: {id: item.id}}" class="btn waves-effect waves-light gray" v-if="has.cancel && item.id">
         <i class="material-icons left">cancel</i>
         {{ $t('buttons.cancel') }}
       </router-link>
@@ -33,14 +33,16 @@ import RouteConfigAwareMixin from '@/components/mixins/RouteConfigAwareMixin'
 export default {
   mixins: [RouteConfigAwareMixin],
 
-  props: ['item', 'hasCancel', 'hasRemove'],
+  props: ['item', 'hasCancel', 'hasRemove', 'urls'],
 
   data () {
+    const urls = this.urls || {}
     return {
       has: {
         cancel: this.hasCancel === undefined ? true : this.hasCancel,
         remove: this.hasRemove === undefined ? true : this.hasRemove
-      }
+      },
+      customCancelUrl: urls.cancel
     }
   },
 
