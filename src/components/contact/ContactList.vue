@@ -23,7 +23,7 @@
       </entry-detail-section>
     </div>
 
-    <info-box>
+    <info-box v-if="contact && !isOwnContact">
       <div>
         Der Kontakt wurde von
         <router-link :to="{name: contact.owner.type + '.show', params: {id: contact.owner.id}}">
