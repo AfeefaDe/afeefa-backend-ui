@@ -25,6 +25,7 @@ import Header from '@/components/afeefa/Header'
 import TabBar from '@/components/TabBar'
 import TextInput from '@/components/TextInput'
 import InputField from '@/components/InputField'
+import InfoBox from '@/components/InfoBox'
 
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryHeader from '@/components/entry/EntryHeader'
@@ -42,6 +43,7 @@ Vue.component('AfeefaHeader', Header)
 Vue.component('TabBar', TabBar)
 Vue.component('TextInput', TextInput)
 Vue.component('InputField', InputField)
+Vue.component('InfoBox', InfoBox)
 
 Vue.component('EntryLoadingMessage', EntryLoadingMessage)
 Vue.component('EntryHeader', EntryHeader)

@@ -29,21 +29,18 @@
           :title="$tc('entries.address')"
           icon="location_on">
 
-          <div class="linkedContactOwner">
-            <i class="material-icons">error_outline</i>
-            <div>
-              <div v-if="location.owner">
-                Die Adresse wurde von
-                <router-link :to="{name: location.owner.type + '.show', params: {id: location.owner.id}}">
-                  {{ location.owner.title }}
-                </router-link>
-                übernommen und kann dort geändert werden.
-              </div>
-              <a href="" @click.prevent="removeLocation" class="removeLink inlineEditLink">
-                Verlinkte Adresse wieder entfernen.
-              </a>
+          <info-box>
+            <div v-if="location.owner">
+              Die Adresse wurde von
+              <router-link :to="{name: location.owner.type + '.show', params: {id: location.owner.id}}">
+                {{ location.owner.title }}
+              </router-link>
+              übernommen und kann dort geändert werden.
             </div>
-          </div>
+            <a href="" @click.prevent="removeLocation" class="removeLink inlineEditLink">
+              Verlinkte Adresse wieder entfernen.
+            </a>
+          </info-box>
 
           <div
             class="locationTitle"
@@ -379,29 +376,6 @@ export default {
 
 .addressDetail {
   font-size: .8em;
-}
-
-.linkedContactOwner {
-  font-size: .9em;
-  max-width: 500px;
-  margin-bottom: 2em;
-
-  display: flex;
-  align-items: center;
-  width: 80%;
-  border: 1px solid $gray20;
-  padding: .8em;
-
-  i {
-    font-size: 20px;
-    margin-right: .6em;
-  }
-
-  .removeLink {
-    display: block;
-    margin-top: .4em;
-    font-size: 1em;
-  }
 }
 
 .noContact {

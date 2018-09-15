@@ -4,19 +4,16 @@
     <entry-header :entry="offer" :isEdit="true" :routeConfig="routeConfig" slot="header" />
 
     <div slot="content" v-if="actor">
-      <div class="info">
-        <i class="material-icons">error_outline</i>
-        <div>
-          <h2>Akteur in Angebot umwandeln, ganz einfach <i class="material-icons">sentiment_very_satisfied</i></h2>
-          <ul class="browser-default">
-            <li>Titel und Beschreibung, Bild, Kontaktdaten, Navigationseinträge und Anmerkungen werden übernommen.</li>
-            <li>Träger des Akteurs werden zu Trägern des neuen Angebots.</li>
-            <li class="marginTop">Existierende Angebote, Veranstaltungen oder Projekte bleiben erhalten und werden entweder den vorhandenen Trägern des Akteurs zugeordnet oder aber verlieren zunächst ihre Zugehörigkeit. Sie werden dann weiter ohne Probleme angezeigt und können später jederzeit neu zugeordnet werden.</li>
-            <li class="marginTop">Kategorien werden nicht übernommen.</li>
-            <li>Alle anderen Daten sowie der Akteur selbst werden gelöscht.</li>
-          </ul>
-        </div>
-      </div>
+      <info-box>
+        <h2>Akteur in Angebot umwandeln, ganz einfach <i class="material-icons">sentiment_very_satisfied</i></h2>
+        <ul class="browser-default">
+          <li>Titel und Beschreibung, Bild, Kontaktdaten, Navigationseinträge und Anmerkungen werden übernommen.</li>
+          <li>Träger des Akteurs werden zu Trägern des neuen Angebots.</li>
+          <li class="marginTop">Existierende Angebote, Veranstaltungen oder Projekte bleiben erhalten und werden entweder den vorhandenen Trägern des Akteurs zugeordnet oder aber verlieren zunächst ihre Zugehörigkeit. Sie werden dann weiter ohne Probleme angezeigt und können später jederzeit neu zugeordnet werden.</li>
+          <li class="marginTop">Kategorien werden nicht übernommen.</li>
+          <li>Alle anderen Daten sowie der Akteur selbst werden gelöscht.</li>
+        </ul>
+      </info-box>
 
       <form @submit.prevent="save" class="entryForm" novalidate>
         <entry-detail-property2 title="Träger" icon="group" class="projectInitiators">
@@ -156,11 +153,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.info {
-  display: flex;
-  align-items: center;
-  border: 1px solid $gray20;
-  padding: .8em;
+.infoBox {
   margin-bottom: 3em;
   h2 {
     display: flex;
@@ -180,10 +173,6 @@ export default {
   }
   .marginTop {
     margin-top: 1em;
-  }
-  i {
-    font-size: 20px;
-    margin-right: 1em;
   }
 }
 

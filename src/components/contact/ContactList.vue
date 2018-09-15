@@ -23,21 +23,18 @@
       </entry-detail-section>
     </div>
 
-    <div class="linkedContactOwner" v-if="contact && !isOwnContact">
-      <i class="material-icons">error_outline</i>
+    <info-box>
       <div>
-        <div>
-          Der Kontakt wurde von
-          <router-link :to="{name: contact.owner.type + '.show', params: {id: contact.owner.id}}">
-            {{ contact.owner.title }}
-          </router-link>
-          übernommen und kann dort geändert werden.
-        </div>
-        <a href="" @click.prevent="unlinkContact" class="removeLink inlineEditLink">
-          Verlinkten Kontakt wieder entfernen.
-        </a>
+        Der Kontakt wurde von
+        <router-link :to="{name: contact.owner.type + '.show', params: {id: contact.owner.id}}">
+          {{ contact.owner.title }}
+        </router-link>
+        übernommen und kann dort geändert werden.
       </div>
-    </div>
+      <a href="" @click.prevent="unlinkContact" class="removeLink inlineEditLink">
+        Verlinkten Kontakt wieder entfernen.
+      </a>
+    </info-box>
 
     <entry-detail-section
       v-if="location"
@@ -281,29 +278,6 @@ export default {
 .contact {
   &__title {
     font-size: 1.2em;
-  }
-}
-
-.linkedContactOwner {
-  font-size: .9em;
-  margin-left: 60px;
-  max-width:400px;
-
-  display: flex;
-  align-items: center;
-  width: 80%;
-  border: 1px solid $gray20;
-  padding: .8em;
-
-  i {
-    font-size: 20px;
-    margin-right: .6em;
-  }
-
-  .removeLink {
-    display: block;
-    margin-top: .4em;
-    font-size: 1em;
   }
 }
 </style>
