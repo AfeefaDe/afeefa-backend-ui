@@ -28,7 +28,7 @@
       </div>
     </modal>
 
-    <div @click="showModal">
+    <div class="trigger" @click="showModal">
       <slot />
     </div>
 
@@ -110,6 +110,10 @@ export default {
 .modalWindow /deep/ .modal__window {
   width: 600px;
   padding: 2em 1.5em 1.7em;
+}
+
+.trigger {
+  display: inline-block;
 }
 
 .selectableItem {
