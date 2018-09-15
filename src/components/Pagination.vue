@@ -146,8 +146,8 @@ export default {
   align-items: center;
   height: 30px;
 
-  @media screen and (max-width: $break-medium) {
-    display: block;
+  @media screen and (max-width: $break-small) {
+    flex-wrap: wrap;
   }
 
   &__infoText {

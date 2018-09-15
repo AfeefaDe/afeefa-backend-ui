@@ -1,48 +1,47 @@
 <template>
   <div class="navigationMobile">
-    <div class="navigationMobile__header">
-      <navigation-breadcrumb :translate-title="translateTitle"></navigation-breadcrumb>
-
-      <div id="navigationMobile__sandwichButton" @click="toggleMenu()">
-        <i class="material-icons" v-if="visible">close</i>
-        <i class="material-icons" v-else>menu</i>
-      </div>
+    <div @click="toggleMenu()">
+      <i class="material-icons menuButton">menu</i>
     </div>
 
-    <div class="navigationMobile__menu" v-if="visible">
-      <div v-for="item in items" :class="['navigationMobile__item', 'level' + item.level]" :key="item.title">
-        <router-link :to="{name: item.route, params: item.params}">
-          {{ translateTitle(item) }}
-          <template v-if="item.hint || item.hint === 0">({{item.hint}})</template>
-        </router-link>
+    <div class="navigationMobile__content" v-if="visible">
+      <i class="material-icons menuButton closeButton" @click="toggleMenu()">close</i>
+      <div class="navigationMobile__menu">
+        <div v-for="item in items" :class="['navigationMobile__item', 'level' + item.level]" :key="item.title" v-if="showSideBarItem(item)">
+          <router-link :to="{name: item.route, params: item.params}">
+            {{ translateTitle(item) }}
+            <template v-if="item.hint || item.hint === 0">({{item.hint}})</template>
+          </router-link>
 
-        <router-link :to="{name: item.action.route}" class="navigationMobile__itemAction" v-if="item.action">
-          <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
-        </router-link>
-      </div>
-    </div>
-
-    <div class="navigationMobile__footerContainer" v-if="visible">
-      <div class="navigationMobile__footerSeperator"></div>
-      <section class="navigationMobile__footer">
-        <span>
-          <i class="material-icons spacingRight">account_circle</i> {{currentUser.name}} <span v-if="currentUser.organization">({{ currentUser.organization }})</span>
-        </span>
-      </section>
-      <section class="navigationMobile__footer">
-        <div>
-          <router-link :to="{name: 'usersettings'}">Meine Einstellungen</router-link><br>
-          <div>
-            {{ $t('headlines.systemLanguage') }}:
-            <span v-for="lang in ['de', 'en']" :key="lang">
-              <span v-if="lang === $i18n.locale"><strong class="spacingLeft">{{ $t('languages.'+lang) }}</strong></span>
-              <span v-else><a href="#" class="spacingLeft" @click="changeLanguage()">{{ $t('languages.'+lang) }}</a></span>
-            </span>
-          </div>
+          <router-link :to="{name: item.action.route}" class="navigationMobile__itemAction" v-if="item.action">
+            <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
+          </router-link>
         </div>
-        <a href="" @click.prevent="logout()"> {{ $t('headlines.logout') }}<i class="material-icons spacingLeft">exit_to_app</i></a>
-      </section>
+        <router-link class="navigationMobile__item level1" :to="{name: 'usersettings'}">Einstellungen</router-link>
+      </div>
+
+      <div class="navigationMobile__footerContainer">
+        <div class="navigationMobile__footerSeperator"></div>
+        <section class="navigationMobile__footer">
+          <span>
+            <i class="material-icons spacingRight">account_circle</i> {{currentUser.name}} <span v-if="currentUser.organization">({{ currentUser.organization }})</span>
+          </span>
+        </section>
+        <section class="navigationMobile__footer">
+          <div>
+            <div>
+              {{ $t('headlines.systemLanguage') }}:
+              <span v-for="lang in ['de', 'en']" :key="lang">
+                <span v-if="lang === $i18n.locale"><strong class="spacingLeft">{{ $t('languages.'+lang) }}</strong></span>
+                <span v-else><a href="#" class="spacingLeft" @click="changeLanguage()">{{ $t('languages.'+lang) }}</a></span>
+              </span>
+            </div>
+          </div>
+          <a href="" @click.prevent="logout()"> {{ $t('headlines.logout') }}<i class="material-icons spacingLeft">exit_to_app</i></a>
+        </section>
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -80,53 +79,65 @@ export default {
 
 <style lang="scss" scoped>
 .navigationMobile {
-  display: block;
-  padding: 1em 0.8em;
-  background-color: $black_alpha;
-  color: $white;
-  /*defined in _variables.scss*/
-  height: auto;
-  z-index: 100;
-  width: 100%;
+  margin-left: .6em;
+  display: inline-block;
+  color: $black;
+  position: relative;
+  top: 1em;
+
+  .menuButton {
+    font-size: 2.2em;
+    cursor: pointer;
+
+    &.closeButton {
+      color: $black;
+      position: absolute;
+      right: .2em;
+      top: .2em;
+    }
+  }
+
+  &__content {
+    min-width: 300px;
+    background-color: white;
+    position: absolute;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.2), 0 2px 10px 0 rgba(0,0,0,0.2);
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    padding: 1em;
+    z-index: 10;
+    padding-top: 3em;
+  }
+
+  a {
+    color: $black;
+  }
 
   &__item {
     display: flex;
     justify-content: space-between;
   }
+
   &__item.level2 {
     margin-left: 1em;
   }
+
   &__item.level3 {
     margin-left: 2em;
   }
+
   &__itemAction i {
     font-size: 1.3em;
   }
-  &__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  &__areaName {
-    text-transform: capitalize;
-  }
-
-  &__sandwichButton {
-    cursor: pointer;
-    margin-top: 0.2em;
-    i {
-      font-size: 2em;
-    }
-  }
 
   &__menu {
-    margin-top: 0.5em;
-    border-top: 1px solid $gray20;
     position: relative;
     text-align: left;
     a {
       display: block;
-      margin: 0.6em 0;
+      margin: 0.4em 0;
     }
     i {
       vertical-align: middle;
@@ -145,11 +156,13 @@ export default {
       margin-top: -3px;
     }
   }
+
   &__footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
+
   &__footerSeperator {
     border-top: 1px solid $gray20;
     padding-top: 0.8em;

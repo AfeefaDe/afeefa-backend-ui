@@ -19,6 +19,13 @@ export default {
     })
   },
   methods: {
+    /* hacky way to hide chapter feature in bautzen */
+    showSideBarItem (item) {
+      if (item.route === 'navigation.show' && !this.currentUser.isAdmin()) return false
+      if (item.route === 'chapters.list' && this.currentUser.area === 'bautzen') return false
+      if (item.route === 'facets.list' && !this.currentUser.isAdmin()) return false
+      return true
+    },
     changeLanguage () {
       if (this.$i18n.locale === 'de') {
         this.$i18n.locale = 'en'

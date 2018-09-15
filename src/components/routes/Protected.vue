@@ -1,12 +1,10 @@
 <template>
   <div>
-    <section class="header hideDesktop">
-      <navigation-mobile></navigation-mobile>
-    </section>
+    <navigation-mobile class="hideDesktop" />
 
     <section class="content">
       <section class="content__sidebar">
-        <navigation-sidebar></navigation-sidebar>
+        <navigation-sidebar />
       </section>
 
       <section class="content__main">
@@ -39,3 +37,12 @@ export default {
 }
 
 </script>
+
+
+<style lang="scss" scoped>
+.navigationMobile {
+  margin-bottom: -1em;
+  width: 100%;
+  text-align: center;
+}
+</style>
