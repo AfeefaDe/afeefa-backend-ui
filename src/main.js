@@ -30,9 +30,9 @@ import InfoBox from '@/components/InfoBox'
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryHeader from '@/components/entry/EntryHeader'
 import EntryDetail from '@/components/entry/EntryDetail'
-import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
 import EntryDetailProperty2 from '@/components/entry/show/EntryDetailProperty2'
 import EntryDetailSection from '@/components/entry/show/EntryDetailSection'
+import EntryDetailSplitView from '@/components/entry/show/EntryDetailSplitView'
 import EntryIcon from '@/components/entry/EntryIcon'
 
 import TreeItemTag from '@/components/tree/TreeItemTag'
@@ -48,9 +48,9 @@ Vue.component('InfoBox', InfoBox)
 Vue.component('EntryLoadingMessage', EntryLoadingMessage)
 Vue.component('EntryHeader', EntryHeader)
 Vue.component('EntryDetail', EntryDetail)
-Vue.component('EntryDetailProperty', EntryDetailProperty)
 Vue.component('EntryDetailProperty2', EntryDetailProperty2)
 Vue.component('EntryDetailSection', EntryDetailSection)
+Vue.component('EntryDetailSplitView', EntryDetailSplitView)
 Vue.component('EntryIcon', EntryIcon)
 
 Vue.component('TreeItemTag', TreeItemTag)
