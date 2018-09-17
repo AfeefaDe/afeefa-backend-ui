@@ -87,6 +87,7 @@
                   {{ $t('status.changed') }}
                   <span>{{annotation.updated_at | formatDateRelative}}</span>
                   <!-- <span v-if="annotation.last_editor"> von {{ annotation.last_editor.name }} <span v-if="annotation.last_editor.organization">({{ annotation.last_editor.organization }})</span></span> -->
+                  <span v-if="annotation.last_editor"> von {{ annotation.last_editor.name }}</span>
                 </div>
               </div>
 
