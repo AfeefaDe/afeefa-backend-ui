@@ -103,6 +103,7 @@
             <div class="entryList__status entryList--lightColor" v-if="showUpdatedAt">
               {{ $t('status.changed') }}
               <span>{{ item.updated_at | formatDateRelative }}</span>
+              <span v-if="item.last_editor"> von {{ item.last_editor.name }}</span>
               <!-- {{item.updated_at | formatDateAbsolute}} -->
               <!-- <span>{{item.updated_at | formatDateRelative}} ({{item.updated_at | formatDateAbsolute}})</span> -->
               <!-- <span v-if="item.last_editor"> von {{ item.last_editor.name }} <span v-if="item.last_editor.organization">({{ item.last_editor.organization }})</span></span> -->
@@ -113,6 +114,7 @@
               <!-- {{item.created_at | formatDateAbsolute}} -->
               <!-- <span>({{item.created_at | formatDateRelative}})</span> -->
               <span>{{item.created_at | formatDateRelative}}</span>
+              <span v-if="item.creator"> von {{ item.creator.name }}</span>
               <!-- <span v-if="item.creator"> von {{ item.creator.name }} <span v-if="item.creator.organization">({{ item.creator.organization }})</span></span> -->
             </div>
           </div>
