@@ -40,7 +40,8 @@ export default {
     singleChapter: 'Kapitel',
     facetItemAssociate: 'Zuordnen',
     navigation: 'Navigation',
-    newFromActor: 'Akteur in Angebot umwandeln'
+    newFromActor: 'Akteur in Angebot umwandeln',
+    network: 'Netzwerk'
   },
   facets: {
     ownerTypeOrga: 'Akteur',
