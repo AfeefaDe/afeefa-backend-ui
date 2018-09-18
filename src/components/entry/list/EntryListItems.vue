@@ -45,7 +45,7 @@
           <div class="entryList__attributes" v-if="item.hasListData && has.event_date && item.type === 'events'">
             <div class="entryList__date entryList--lightColor">
               {{item | formatEventDate}}
-              <span>({{item.date_start | formatDateRelative}})</span>
+              <span>({{item.date_start | formatDateRelative(($i18n.locale))}})</span>
             </div>
           </div>
 
@@ -73,28 +73,28 @@
               <editable-entry-navigation-items :entry="item" v-if="has.facetFilter && navigationIsSelected" />
             </div>
 
-            <div v-if="has.annotations" class="annotations">
-              <div v-for="annotation in item.annotations.slice(0, 1)" :key="annotation.id" class="annotation">
-                <div class="details">
-                  <span class="category">{{ annotation.annotationCategory.title}}:</span>
-                  <span class="detail">{{ annotation.detail}}</span>
-                  <span v-if="item.annotations.length > 1" class="moreAnnotations">
-                    und {{ item.annotations.length - 1 }} weitere
-                  </span>
-                </div>
+            <div v-if="has.annotations && item.annotations.length" class="annotations">
+              <span v-for="annotation in item.annotations" :key="annotation.id" class="annotation">
+                <span class="details">
+                  <annotation-tag :annotation="annotation" :selected="annotation === selectedAnnotation"
+                    @click="selectedAnnotation = (annotation === selectedAnnotation) ? null : annotation" />
+                </span>
+              </span>
 
-                <div class="entryList__status entryList--lightColor">
-                  {{ $t('status.changed') }}
-                  <span>{{annotation.updated_at | formatDateRelative}}</span>
-                  <!-- <span v-if="annotation.last_editor"> von {{ annotation.last_editor.name }} <span v-if="annotation.last_editor.organization">({{ annotation.last_editor.organization }})</span></span> -->
-                  <span v-if="annotation.last_editor"> von {{ annotation.last_editor.name }}</span>
-                </div>
+              <div class="annotationDetail" v-if="item.annotations.includes(selectedAnnotation)">
+                {{ selectedAnnotation.detail}}
               </div>
 
+              <div class="entryList__status entryList--lightColor" v-if="item.annotations.length">
+                {{ $t('status.changed') }}
+                <span>{{ item.annotations[0].updated_at | formatDateRelative(($i18n.locale)) }}</span>
+                <!-- <span v-if="annotation.last_editor"> von {{ annotation.last_editor.name }} <span v-if="annotation.last_editor.organization">({{ annotation.last_editor.organization }})</span></span> -->
+                <span v-if="item.annotations[0].last_editor"> von {{ item.annotations[0].last_editor.name }}</span>
+              </div>
             </div>
 
             <div class="entryList__numbers" v-if="!has.annotations">
-              <span v-if="item.count_offers">{{ item.count_offers }} {{ $tc('offers.offer', item.count_offers) }}</span>
+              <span v-if="item.count_offers">{{ item.count_offers }} {{ $tc('offers.name', item.count_offers) }}</span>
               <span v-if="item.count_events">{{ item.count_events }} Veranstaltungen</span>
               <span v-if="item.count_resource_items">{{ item.count_resource_items }} Ressourcen</span>
               <span v-if="item.count_projects">{{ item.count_projects }} Projekte</span>
@@ -103,18 +103,18 @@
 
             <div class="entryList__status entryList--lightColor" v-if="showUpdatedAt">
               {{ $t('status.changed') }}
-              <span>{{ item.updated_at | formatDateRelative }}</span>
+              <span>{{ item.updated_at | formatDateRelative(($i18n.locale)) }}</span>
               <span v-if="item.last_editor"> von {{ item.last_editor.name }}</span>
               <!-- {{item.updated_at | formatDateAbsolute}} -->
-              <!-- <span>{{item.updated_at | formatDateRelative}} ({{item.updated_at | formatDateAbsolute}})</span> -->
+              <!-- <span>{{item.updated_at | formatDateRelative(($i18n.locale))}} ({{item.updated_at | formatDateAbsolute}})</span> -->
               <!-- <span v-if="item.last_editor"> von {{ item.last_editor.name }} <span v-if="item.last_editor.organization">({{ item.last_editor.organization }})</span></span> -->
             </div>
 
             <div class="entryList__status entryList--lightColor" v-if="showCreatedAt">
               {{ $t('status.added') }}
               <!-- {{item.created_at | formatDateAbsolute}} -->
-              <!-- <span>({{item.created_at | formatDateRelative}})</span> -->
-              <span>{{item.created_at | formatDateRelative}}</span>
+              <!-- <span>({{item.created_at | formatDateRelative(($i18n.locale))}})</span> -->
+              <span>{{item.created_at | formatDateRelative(($i18n.locale))}}</span>
               <span v-if="item.creator"> von {{ item.creator.name }}</span>
               <!-- <span v-if="item.creator"> von {{ item.creator.name }} <span v-if="item.creator.organization">({{ item.creator.organization }})</span></span> -->
             </div>
@@ -143,7 +143,6 @@
 
 <script>
 import Pagination from '@/components/Pagination'
-import AnnotationTag from '@/components/AnnotationTag'
 import Spinner from '@/components/Spinner'
 import moment from 'moment'
 import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
@@ -179,6 +178,8 @@ export default {
       currentSortFunction: null,
       currentSortOrder: null,
       currentSortField: null,
+
+      selectedAnnotation: null,
 
       bus: this,
 
@@ -378,7 +379,6 @@ export default {
   components: {
     Pagination,
     Spinner,
-    AnnotationTag,
     EditableEntryFacetItems,
     EntryOwners,
     EditableEntryNavigationItems,
@@ -442,39 +442,16 @@ export default {
 
   .annotations {
     margin-top: .5em;
-    .annotation {
-      &:not(:first-child) {
-        margin-top: .2em;
-      }
-
-      .entryIcon {
-        margin-left: -8px;
-        flex: 0 0 10px;
-      }
-
-      .details {
-        flex-grow: 2;
-        margin-top: .2em;
-      }
-
-      .category {
-        font-size: .9em;
-      }
-
-      .detail {
-        font-size: .9em;
-      }
-
-      .moreAnnotations {
-        font-size: .9em;
-        color: $gray30;
-        white-space: nowrap;
-        margin-left: .1em;
-      }
-
-      .entryList__status {
-        margin-top: .5em;
-      }
+    .annotationTag {
+      margin-right: .2em;
+      font-size: .9em;
+    }
+    .annotationDetail {
+      font-size: .9em;
+      margin-top: .5em;
+    }
+    .entryList__status {
+      margin-top: .5em;
     }
   }
 

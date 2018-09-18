@@ -29,7 +29,7 @@
     <div class="col s12 m6">
       <div class="mainCard">
         <afeefa-header class="small">
-          <router-link :to="{name: 'offers.list'}" slot="title">{{ $tc('headlines.newest') }} {{ $tc('offers.offer', numOffers) }}</router-link>
+          <router-link :to="{name: 'offers.list'}" slot="title">{{ $tc('headlines.newest') }} {{ $tc('offers.name', numOffers) }}</router-link>
           <router-link :to="{name: 'offers.new'}" slot="buttons" class="btn btn-medium green">
             <i class="material-icons left">add</i>
             {{$t('buttons.add')}}
@@ -45,7 +45,7 @@
             :customSortOrders="[{ sort: offerSort, field: 'created_at' }]"
             :options="{created_at: true}">
           </entry-list-items>
-          <router-link :to="{name: 'offers.list'}" v-if="!offersLoading">{{ $t('status.all') }} {{ $tc('offers.offer', numOffers) }} ({{ numOffers }})</router-link>
+          <router-link :to="{name: 'offers.list'}" v-if="!offersLoading">{{ $t('status.all') }} {{ $tc('offers.name', numOffers) }} ({{ numOffers }})</router-link>
         </div>
       </div>
 

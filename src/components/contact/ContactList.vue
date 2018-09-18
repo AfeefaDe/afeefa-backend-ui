@@ -1,96 +1,92 @@
 <template>
-  <div class="contactList">
-
+  <div>
     <div v-if="!contact">
       <entry-detail-section
         class="contactSection"
         :title="$t('headlines.contact')"
         icon="mail_outline">
-        <div>
-          <div class="noContact">Noch kein Kontakt erstellt.</div>
-          <contact-selector @select="linkContact">
-            <button type="button" class="btn btn-small">
-              Kontakt finden
-            </button>
-          </contact-selector>
-        </div>
 
-        <div class="createContactLink">
-          <router-link :to="{name: item.type + '.contactnew'}" class="inlineEditLink">
-            Neuen Kontakt erstellen
-          </router-link>
-        </div>
+        <create-button-box
+          entryType="contacts"
+          action="selectEntry"
+          alternativeAction="createEntry"
+          :selector="ContactSelector"
+          @select="linkContact"
+          @alternativeAction="$router.push({name: item.type + '.contactnew'})" />
+
       </entry-detail-section>
     </div>
 
-    <info-box v-if="contact && !isOwnContact">
-      <div>
-        Der Kontakt wurde von
-        <router-link :to="{name: contact.owner.type + '.show', params: {id: contact.owner.id}}">
-          {{ contact.owner.title }}
-        </router-link>
-        übernommen und kann dort geändert werden.
-      </div>
-      <a href="" @click.prevent="unlinkContact" class="removeLink inlineEditLink">
-        Verlinkten Kontakt wieder entfernen.
-      </a>
-    </info-box>
-
     <entry-detail-section
-      v-if="location"
-      :title="$tc('entries.address')"
-      icon="location_on"
-      :editLink="isOwnContact ? contactEditRoute : ''">
-
-      <div v-if="locationTitle">{{ locationTitle }}</div>
-      <div v-if="location.street">{{ location.street }}</div>
-      <div v-if="contact.location.zip || location.city">
-        {{ location.zip }} {{ location.city }}
-      </div>
-      <location-map
-        :map-center="mapCenter(location)"
-        :initial-zoom="16"
-        :location="location"
-        style="max-width:400px; max-height: 200px;">
-      </location-map>
-    </entry-detail-section>
-
-    <entry-detail-section
-      v-if="contact && hasContactAttributes"
-      class="contactSection"
+      v-if="contact"
       :title="$t('headlines.contact')"
+      class="contactSection"
       icon="mail_outline"
       :editLink="isOwnContact ? contactEditRoute : ''">
 
-      <entry-detail-property2
-        v-for="person in contact.contact_persons" :key="person.id"
-        :title="person.role || 'Kontaktperson'">
-        <div v-if="person.name">{{ person.name }}</div>
-        <div v-if="person.phone">{{ person.phone }}</div>
-        <div v-if="person.mail"><a :href="'mailto: ' + person.mail">{{ person.mail }}</a></div>
-      </entry-detail-property2>
-
-      <entry-detail-property2 v-if="contact.openingHours"
-        :title="$t('entries.openingHours')">
-        {{ contact.openingHours }}
-      </entry-detail-property2>
-
-      <entry-detail-property2 v-if="contact.spokenLanguages"
-        :title="$tc('headlines.spokenLanguages', contact.spokenLanguages.split(',').length)">
-        {{ stringifySpokenLanguages(contact.spokenLanguages) }}
-      </entry-detail-property2>
-    </entry-detail-section>
-
-    <entry-detail-section
-      v-if="contact && hasLinks"
-      title="Links"
-      icon="link"
-      :editLink="isOwnContact ? contactEditRoute : ''">
-      <div v-if="contact.web">
-        <a :href="contact.web" target="_blank">{{ displayedUrl(contact.web) }}</a><br>
+      <div v-if="contact && !isOwnContact">
+        <info-box>
+          <div>
+            Der Kontakt wurde von
+            <router-link :to="{name: contact.owner.type + '.show', params: {id: contact.owner.id}}">
+              {{ contact.owner.title }}
+            </router-link>
+            übernommen und kann dort geändert werden.
+          </div>
+          <a href="" @click.prevent="unlinkContact" class="removeLink inlineEditLink">
+            Verlinkten Kontakt wieder entfernen.
+          </a>
+        </info-box>
       </div>
-      <div v-if="contact.socialMedia">
-        <a :href="contact.socialMedia" target="_blank">{{ displayedUrl(contact.socialMedia) }}</a>
+
+      <entry-detail-property
+        v-if="location"
+        :title="$tc('entries.address')"
+        icon="location_on"
+        :editLink="isOwnContact ? contactEditRoute : ''">
+
+        <div v-if="locationTitle">{{ locationTitle }}</div>
+        <div v-if="location.street">{{ location.street }}</div>
+        <div v-if="contact.location.zip || location.city">
+          {{ location.zip }} {{ location.city }}
+        </div>
+        <location-map
+          :map-center="mapCenter(location)"
+          :initial-zoom="16"
+          :location="location"
+          style="max-width:400px; max-height: 200px;">
+        </location-map>
+      </entry-detail-property>
+
+      <div
+        v-if="contact && hasContactAttributes"
+        class="contactSection">
+        <entry-detail-property
+          v-for="person in contact.contact_persons" :key="person.id"
+          :title="person.role || 'Kontaktperson'">
+          <div v-if="person.name">{{ person.name }}</div>
+          <div v-if="person.phone">{{ person.phone }}</div>
+          <div v-if="person.mail"><a :href="'mailto: ' + person.mail">{{ person.mail }}</a></div>
+        </entry-detail-property>
+
+        <entry-detail-property v-if="contact.openingHours"
+          :title="$t('entries.openingHours')">
+          {{ contact.openingHours }}
+        </entry-detail-property>
+
+        <entry-detail-property v-if="contact.spokenLanguages"
+          :title="$tc('headlines.spokenLanguages', contact.spokenLanguages.split(',').length)">
+          {{ stringifySpokenLanguages(contact.spokenLanguages) }}
+        </entry-detail-property>
+
+        <entry-detail-property v-if="hasLinks" title="Links">
+          <div v-if="contact.web" class="urlContainer">
+            <a :href="contact.web" target="_blank">{{ displayedUrl(contact.web) }}</a><br>
+          </div>
+          <div v-if="contact.socialMedia" class="urlContainer">
+            <a :href="contact.socialMedia" target="_blank">{{ displayedUrl(contact.socialMedia) }}</a>
+          </div>
+        </entry-detail-property>
       </div>
     </entry-detail-section>
   </div>
@@ -98,12 +94,18 @@
 
 <script>
 import Languages from '@/helpers/iso_639_languages.js'
-
 import LocationMap from '@/components/Map'
 import ContactSelector from '@/components/actor/ContactSelector'
+import textEllipsize from '@/filters/text-ellipsize'
 
 export default {
   props: ['item'],
+
+  data () {
+    return {
+      ContactSelector
+    }
+  },
 
   computed: {
     contact () {
@@ -148,23 +150,7 @@ export default {
 
   methods: {
     displayedUrl (url) {
-      let hostname
-      let urlParts = url.split('/')
-      let rest
-      if (url.indexOf('//') > -1) {
-        hostname = urlParts[2]
-        rest = urlParts[3]
-      } else {
-        hostname = urlParts[0]
-        rest = urlParts[1]
-      }
-      hostname = hostname.split(':')[0]
-      hostname = hostname.split('?')[0]
-
-      if (rest) {
-        hostname += ' ...'
-      }
-      return hostname
+      return textEllipsize(url, 60)
     },
 
     /* Stringify spoken languages depending on current UI langugage */
@@ -240,19 +226,12 @@ export default {
   },
 
   components: {
-    LocationMap,
-    ContactSelector
+    LocationMap
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.contactList {
-  &__title {
-    font-size: 1.6em;
-  }
-}
-
 .entryDetailSection:not(:first-child) {
   margin-top: 5em;
 }
@@ -261,8 +240,8 @@ export default {
   margin-top: 3em;
 }
 
-.noContact {
-  margin-bottom: 1em;
+.infoBox {
+  margin-top: 1.5em;
 }
 
 .createContactLink {
@@ -271,13 +250,21 @@ export default {
 
 .contactSection {
   .entryDetailProperty {
-    margin-top: 2em;
+    margin-top: 1em;
+    &:not(:first-child) {
+      margin-top: 1.5em;
+    }
   }
 }
 
-.contact {
-  &__title {
-    font-size: 1.2em;
+.urlContainer {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  word-wrap: break-word;
+
+  + .urlContainer {
+    margin-top: .4em;
   }
 }
 </style>

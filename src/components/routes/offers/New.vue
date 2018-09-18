@@ -5,9 +5,9 @@
 
     <div slot="content">
       <form @submit.prevent="save" class="entryForm" novalidate>
-        <entry-detail-property2 title="Träger" icon="group" class="projectInitiators">
+        <entry-detail-property title="Träger" icon="group" class="projectInitiators">
           <actor-selector :actor="offer" relationName="owners" title="Träger" />
-        </entry-detail-property2>
+        </entry-detail-property>
 
         <title-input :item="offer" class="formElement marginTop" />
 

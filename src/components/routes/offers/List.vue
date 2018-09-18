@@ -23,7 +23,7 @@ export default {
     return {
       Query: Offer.Query,
       messages: {
-        headline: () => this.$t('status.all') + ' ' + this.$tc('offers.offer', 2)
+        headline: () => this.$t('status.all') + ' ' + this.$tc('offers.name', 2)
       }
     }
   }

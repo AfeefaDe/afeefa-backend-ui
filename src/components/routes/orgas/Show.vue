@@ -8,181 +8,185 @@
         <i class="material-icons left">call_made</i>
         In Angebot umwandeln
       </router-link>
-
-      <router-link :to="{name: 'offers.new', query: {actorId: orga.id}}" class="btn gray btn-small">
-        <i class="material-icons left">add</i>
-        Angebot
-      </router-link>
-
-      <router-link :to="{name: 'events.new', query: {actorId: orga.id}}" class="btn gray btn-small">
-        <i class="material-icons left">add</i>
-        Veranstaltung
-      </router-link>
     </div>
-
     <div v-if="orga">
       <image-container :image-url="orga.media_url" />
 
-      <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
-        <section slot="overview">
-          <div class="actionButtons" v-if="false">
-            <editable-actor-actors :owner="orga" relationName="projects" title="Projekt hinzufügen" slot="triggerButton">
-              <span class="btn btn-small gray">
-                <i class="material-icons left">add</i>
-                Projekt
+      <div class="actionButtons" v-if="false">
+        <editable-actor-actors :owner="orga" relationName="projects" title="Projekt hinzufügen" slot="triggerButton">
+          <span class="btn btn-small gray">
+            <i class="material-icons left">add</i>
+            Projekt
+          </span>
+        </editable-actor-actors>
+
+        <editable-actor-actors :owner="orga" relationName="network_members" title="Netzwerkmitglied hinzufügen" slot="triggerButton">
+          <span class="btn btn-small gray">
+            <i class="material-icons left">add</i>
+            Netzwerkmitglied
+          </span>
+        </editable-actor-actors>
+      </div>
+
+      <!-- ACTOR -->
+
+      <entry-detail-split-view>
+        <div slot="left">
+          <entry-detail-area>
+            <entry-description :entry="orga" />
+
+            <entry-detail-section title="Kategorien" icon="local_offer">
+              <entry-detail-property title="Navigation">
+                <editable-entry-navigation-items :entry="orga" :isEdit="true" :customTrigger="true" :hideAddLink="true"  />
+              </entry-detail-property>
+
+              <div v-for="facet in facets" :key="facet.id">
+                <entry-detail-property :title="facet.title">
+                  <editable-entry-facet-items :entry="item" :facets="[facet]" :bus="bus" :hideAddLink="true" />
+                </entry-detail-property>
+              </div>
+            </entry-detail-section>
+          </entry-detail-area>
+
+          <entry-detail-area>
+            <contact-list :item="orga" />
+          </entry-detail-area>
+
+          <entry-detail-area>
+            <entry-detail-section title="Projektträger" icon="group" :dispatchEdit="orga.project_initiators.length ? 'Ändern' : 'Hinzufügen'">
+              <actor-selector :actor="orga" relationName="project_initiators" title="Projektträger" />
+            </entry-detail-section>
+          </entry-detail-area>
+
+
+          <div v-if="false">
+            <entry-detail-section title="Netzwerke" icon="group" :dispatchEdit="true" v-if="false">
+              <actor-selector :actor="orga" relationName="networks" title="Netzwerke" />
+            </entry-detail-section>
+
+            <entry-detail-section title="Partner" icon="group" :dispatchEdit="true">
+              <actor-selector :actor="orga" relationName="partners" title="Partner" />
+            </entry-detail-section>
+
+            <actor-selector :actor="orga" relationName="network_members" title="Mitglieder" />
+
+            <entry-list-items
+              :items="orga.network_members"
+              v-if="orga.network_members.length">
+            </entry-list-items>
+            <div v-else class="entryDetail__error">
+              Keine Mitglieder zugeordnet
+            </div>
+
+            <actor-selector :actor="orga" relationName="network_members" title="Mitglieder" />
+
+            <entry-list-items
+              :items="orga.projects"
+              v-if="orga.projects.length">
+            </entry-list-items>
+            <div v-else class="entryDetail__error">
+              Keine Projekte zugeordnet
+            </div>
+          </div>
+
+          <entry-detail-section
+            v-if="false"
+            title="Attribute"
+            icon="settings"
+            :editLink="{name: 'orgas.edit', params: {id: orga.id}}">
+
+            <entry-detail-property :title="$t('entries.certified_sfr')">
+                {{orga.certified_sfr ? $t('entries.certified_sfr_yes') : $t('entries.certified_sfr_no')}}
+            </entry-detail-property>
+
+            <entry-detail-property :title="$t('entries.support_wanted')">
+              <span v-if="orga.support_wanted_detail">
+                {{orga.support_wanted_detail}}
               </span>
-            </editable-actor-actors>
-
-            <editable-actor-actors :owner="orga" relationName="network_members" title="Netzwerkmitglied hinzufügen" slot="triggerButton">
-              <span class="btn btn-small gray">
-                <i class="material-icons left">add</i>
-                Netzwerkmitglied
+              <span v-else>
+                {{orga.support_wanted ? $t('entries.support_wanted_yes') : $t('entries.support_wanted_no')}}
               </span>
-            </editable-actor-actors>
+            </entry-detail-property>
+
+            <entry-detail-property title="Facebook ID für Events">
+              {{ orga.facebook_id || 'Keine ID angegeben'}}
+            </entry-detail-property>
+          </entry-detail-section>
+        </div>
+
+        <!-- STATUS & ANNOTATIONS -->
+
+        <div slot="right">
+          <div class="meta">
+            <entry-detail-section icon="error_outline">
+              <entry-detail-footer :entry="orga"/>
+            </entry-detail-section>
           </div>
 
-          <div class="overview splitView">
-            <div class="entryDetail splitView__splitViewChild">
-              <entry-detail-section title="Projektträger" icon="group" :dispatchEdit="true">
-                <actor-selector :actor="orga" relationName="project_initiators" title="Projektträger" />
-              </entry-detail-section>
+          <entry-detail-section :title="$t('tabs.offers')" :icon="orga.offers.length ? 'favorite' : 'favorite'"
+            :pullLesft="orga.offers.length"
+            :clickLink="orga.offers.length ? 'Hinzufügen' : ''"
+            @click="$router.push({name: 'offers.new', query: {actorId: orga.id}})">
+            <entry-list-items
+              :items="orga.offers"
+              v-if="0 && orga.offers.length">
+            </entry-list-items>
 
-              <entry-description :entry="orga" />
+            <compact-offer-list v-if="orga.count_offers" :entry="orga" />
 
-              <entry-detail-section v-if="false"
-                title="Test"
-                icon="format_align_left"
-                :inlineEditing="true">
-                <div slot-scope="props">
-                  {{ props }}
-                </div>
-              </entry-detail-section>
+            <create-button-box
+              v-else
+              entryType="offers"
+              action="createEntry"
+              @action="$router.push({name: 'offers.new', query: {actorId: orga.id}})" />
+          </entry-detail-section>
 
-              <entry-detail-section title="Kategorien" icon="label">
-                <div v-for="facet in facets" :key="facet.id">
-                  <entry-detail-property2 :title="facet.title">
-                    <editable-entry-facet-items :entry="item" :facets="[facet]" :bus="bus" :hideAddLink="true" />
-                  </entry-detail-property2>
-                </div>
+          <entry-detail-section :title="$t('tabs.events')" :icon="orga.count_events ? 'date_range' : 'date_range'"
+            :pullLseft="orga.count_events"
+            :clickLink="orga.count_events ? 'Hinzufügen' : ''"
+            @click="$router.push({name: 'events.new', query: {actorId: orga.id}})">
+            <tab-bar v-if="false && orga.count_events"
+              :tabNames="eventTabNames" :isSubBar="true"
+              :queryString="false"
+              @setCurrentTab="setCurrentSubTab">
+              <div slot="upcomingEvents">
+                <entry-list-items
+                  :items="orga.upcoming_events"
+                  v-if="orga.upcoming_events.length"
+                  :customSortOrders="[{ sort: sortByDateMixin, order: 'ASC' }]"
+                  :options="{pagination: true, event_date: true}"
+                  :modifyRoute="false">
+                </entry-list-items>
+              </div>
+              <div slot="pastEvents">
+                <entry-list-items
+                  :items="orga.past_events"
+                  v-if="orga.past_events.length"
+                  :customSortOrders="[{ sort: sortByDateStart, order: 'DESC' }]"
+                  :options="{pagination: true, event_date: true}"
+                  :modifyRoute="false">
+                </entry-list-items>
+              </div>
+            </tab-bar>
 
-                <entry-detail-property2 title="Navigation">
-                  <editable-entry-navigation-items :entry="orga" :isEdit="true" :customTrigger="true" :hideAddLink="true"  />
-                </entry-detail-property2>
-              </entry-detail-section>
+            <compact-event-list v-if="orga.count_events" :entry="orga" />
 
-              <entry-detail-section title="Netzwerke" icon="group" :dispatchEdit="true" v-if="false">
-                <actor-selector :actor="orga" relationName="networks" title="Netzwerke" />
-              </entry-detail-section>
+            <create-button-box
+              v-else
+              entryType="events"
+              action="createEntry"
+              @action="$router.push({name: 'events.new', query: {actorId: orga.id}})" />
+          </entry-detail-section>
 
-              <entry-detail-section title="Partner" icon="group" :dispatchEdit="true" v-if="false">
-                <actor-selector :actor="orga" relationName="partners" title="Partner" />
-              </entry-detail-section>
+          <compact-annotation-list :entry="orga" />
 
-              <entry-detail-section
-                title="Attribute"
-                icon="settings"
-                :editLink="{name: 'orgas.edit', params: {id: orga.id}}">
+        </div>
+      </entry-detail-split-view>
 
-                <entry-detail-property2 :title="$t('entries.certified_sfr')">
-                    {{orga.certified_sfr ? $t('entries.certified_sfr_yes') : $t('entries.certified_sfr_no')}}
-                </entry-detail-property2>
-
-                <entry-detail-property2 :title="$t('entries.support_wanted')">
-                  <span v-if="orga.support_wanted_detail">
-                    {{orga.support_wanted_detail}}
-                  </span>
-                  <span v-else>
-                    {{orga.support_wanted ? $t('entries.support_wanted_yes') : $t('entries.support_wanted_no')}}
-                  </span>
-                </entry-detail-property2>
-
-                <entry-detail-property2 title="Facebook ID für Events">
-                  {{ orga.facebook_id || 'Keine ID angegeben'}}
-                </entry-detail-property2>
-              </entry-detail-section>
-            </div>
-
-            <div class="entryDetail splitView__splitViewChild">
-              <contact-list :item="orga" />
-            </div>
-          </div>
-
-          <entry-detail-footer :entry="orga"/>
-
-        </section>
-
-        <section slot="todos">
-          <annotation-view :entry="orga" v-if="orga.annotations.length" />
-
-          <annotation-form-pop-up :entry="orga" v-else />
-        </section>
-
-        <section slot="resources" v-if="orga.resource_items.length">
-          <resource-item v-for="resourceItem in orga.resource_items" :key="resourceItem.id" :resourceItem="resourceItem"
-          :editEnabled="false"></resource-item>
-        </section>
-
-        <section slot="networkMembers">
-          <actor-selector :actor="orga" relationName="network_members" title="Mitglieder" />
-
-          <entry-list-items
-            :items="orga.network_members"
-            v-if="orga.network_members.length">
-          </entry-list-items>
-          <div v-else class="entryDetail__error">
-            Keine Mitglieder zugeordnet
-          </div>
-
-          <actor-selector :actor="orga" relationName="network_members" title="Mitglieder" />
-        </section>
-
-        <section slot="offers">
-          <entry-list-items
-            :items="orga.offers"
-            v-if="orga.offers.length">
-          </entry-list-items>
-          <div v-else class="entryDetail__error">
-            Keine Angebote zugeordnet
-          </div>
-        </section>
-
-        <section slot="projects">
-          <entry-list-items
-            :items="orga.projects"
-            v-if="orga.projects.length">
-          </entry-list-items>
-          <div v-else class="entryDetail__error">
-            Keine Projekte zugeordnet
-          </div>
-        </section>
-
-        <section slot="events">
-
-          <tab-bar @setCurrentTab="setCurrentSubTab" :tabNames="eventTabNames" :isSubBar="true" v-if="orga.count_events">
-            <div slot="upcomingEvents">
-              <entry-list-items
-                :items="orga.upcoming_events"
-                v-if="orga.upcoming_events.length"
-                :customSortOrders="[{ sort: sortByDateMixin, order: 'ASC' }]"
-                :options="{pagination: true, event_date: true}">
-              </entry-list-items>
-            </div>
-            <div slot="pastEvents">
-              <entry-list-items
-                :items="orga.past_events"
-                v-if="orga.past_events.length"
-                :customSortOrders="[{ sort: sortByDateStart, order: 'DESC' }]"
-                :options="{pagination: true, event_date: true}">
-              </entry-list-items>
-            </div>
-          </tab-bar>
-
-          <div v-else>
-            Keine Veranstaltungen hinzugegfügt.
-          </div>
-
-        </section>
-      </tab-bar>
+      <section slot="resources" v-if="false && orga.resource_items.length">
+        <resource-item v-for="resourceItem in orga.resource_items" :key="resourceItem.id" :resourceItem="resourceItem"
+        :editEnabled="false"></resource-item>
+      </section>
     </div>
 
   </entry-detail>
@@ -204,10 +208,11 @@ import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import EntryDescription from '@/components/entry/show/EntryDescription'
 import ActorSelector from '@/components/actor/ActorSelector'
 import EntryListItems from '@/components/entry/list/EntryListItems'
-import AnnotationView from '@/components/annotation/AnnotationView'
+import CompactAnnotationList from '@/components/entry/list/compact/CompactAnnotationList'
+import CompactEventList from '@/components/entry/list/compact/CompactEventList'
+import CompactOfferList from '@/components/entry/list/compact/CompactOfferList'
 import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
 import entryListFilters from '@/helpers/entry-list-filters'
-import AnnotationFormPopUp from '@/components/annotation/AnnotationFormPopUp'
 
 export default {
   mixins: [EntryShowMixin],
@@ -225,34 +230,6 @@ export default {
   computed: {
     orga () {
       return this.item
-    },
-
-    eventTabNames () {
-      return [
-        { name: 'upcomingEvents', hint: this.orga.upcoming_events.length },
-        { name: 'pastEvents', hint: this.orga.past_events.length }
-      ]
-    },
-
-    tabNames () {
-      let tabNames = ['overview']
-      // if (this.orga.offers.length) {
-      //   }
-      // if (this.orga.upcoming_events.length + this.orga.past_events.length) {
-      //   }
-      // if (this.orga.projects.length) {
-      //   }
-      // if (this.orga.network_members.length) {
-      //   }
-      tabNames.push({name: 'todos', hint: this.orga.annotations.length})
-      tabNames.push({name: 'offers', hint: this.orga.offers.length})
-      tabNames.push({name: 'events', hint: this.orga.upcoming_events.length + this.orga.past_events.length})
-      tabNames.push({name: 'projects', hint: this.orga.projects.length})
-      // tabNames.push({name: 'networkMembers', hint: this.orga.network_members.length})
-      if (this.currentUser.area === 'dresden') {
-        // tabNames.push({name: 'resources', hint: this.orga.resource_items.length})
-      }
-      return tabNames
     }
   },
 
@@ -275,15 +252,24 @@ export default {
     EntryDetailFooter,
     EntryDescription,
     EntryListItems,
-    AnnotationView,
     EditableEntryFacetItems,
-    AnnotationFormPopUp
+    CompactAnnotationList,
+    CompactEventList,
+    CompactOfferList
   }
 }
 </script>
 
 
 <style lang="scss" scoped>
+.meta {
+  background-color: $whiter;
+  border: 1px solid $gray10;
+  box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.05);
+  padding: 1em 1.5em;
+  font-size: .9em;
+}
+
 .secondaryHeaderButtons {
   display: flex;
 }
@@ -302,37 +288,16 @@ export default {
   }
 }
 
-.splitView {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  > * {
-    width: 100%;
-  }
-  &__splitViewChild {
-    width: 50%;
-    @media screen and (max-width: $break-medium) {
-      width: 100%;
-    }
-    &:first-child {
-      padding-right: 2em;
-    }
-    &:last-child {
-      padding-left: 2em;
-    }
-  }
-
-  &.overview {
-    padding-top: 1em;
-  }
+.entryDetailSplitView {
+  margin-bottom: 3em;
 }
 
 .entryDetailSection:not(:first-child) {
-  margin-top: 5em;
+  margin-top: 3em;
 }
 
 .entryDetailProperty {
-  margin-top: 1em;
+  margin-top: 1.5em;
 }
 
 .editableEntryFacetItems {

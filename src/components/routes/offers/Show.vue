@@ -6,40 +6,44 @@
     <div v-if="offer">
       <image-container :image-url="offer.image_url" />
 
-      <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
-        <section slot="overview">
-          <div class="splitView">
-            <div class="entryDetail splitView__splitViewChild">
-              <entry-detail-section title="Träger" icon="group" :dispatchEdit="true">
-                <actor-selector :actor="offer" relationName="owners" title="Träger" />
-              </entry-detail-section>
+      <entry-detail-split-view>
+        <div slot="left">
+          <entry-detail-area>
+            <entry-detail-section title="Träger" icon="group" :dispatchEdit="true">
+              <actor-selector :actor="offer" relationName="owners" title="Träger" />
+            </entry-detail-section>
 
-              <entry-description :entry="offer" />
+            <entry-description :entry="offer" />
 
-              <entry-detail-section title="Kategorien" icon="label">
-                <div v-for="facet in facets" :key="facet.id">
-                  <entry-detail-property2 :title="facet.title">
-                    <editable-entry-facet-items :entry="offer" :facets="[facet]" :bus="bus" :hideAddLink="true" />
-                  </entry-detail-property2>
-                </div>
+            <entry-detail-section title="Kategorien" icon="local_offer">
+              <div v-for="facet in facets" :key="facet.id">
+                <entry-detail-property :title="facet.title">
+                  <editable-entry-facet-items :entry="offer" :facets="[facet]" :bus="bus" :hideAddLink="true" />
+                </entry-detail-property>
+              </div>
 
-                <entry-detail-property2 title="Navigation">
-                  <editable-entry-navigation-items :entry="offer" :isEdit="true" :customTrigger="true" :hideAddLink="true"  />
-                </entry-detail-property2>
-              </entry-detail-section>
-            </div>
+              <entry-detail-property title="Navigation">
+                <editable-entry-navigation-items :entry="offer" :isEdit="true" :customTrigger="true" :hideAddLink="true"  />
+              </entry-detail-property>
+            </entry-detail-section>
+          </entry-detail-area>
 
-            <contact-list :item="offer" class="entryDetail splitView__splitViewChild"/>
+          <entry-detail-area>
+            <contact-list :item="offer" />
+          </entry-detail-area>
+        </div>
+
+        <div slot="right">
+          <div class="meta">
+            <entry-detail-section icon="error_outline">
+              <entry-detail-footer :entry="offer"/>
+            </entry-detail-section>
           </div>
 
-          <entry-detail-footer :entry="offer"/>
-        </section>
+          <compact-annotation-list :entry="offer" />
+        </div>
 
-        <section slot="todos">
-          <annotation-view :entry="offer" />
-        </section>
-
-      </tab-bar>
+      </entry-detail-split-view>
     </div>
 
   </entry-detail>
@@ -58,8 +62,8 @@ import EntryDescription from '@/components/entry/show/EntryDescription'
 import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import ImageContainer from '@/components/ImageContainer'
 import EntryDetailHeaderButtons from '@/components/entry/show/EntryDetailHeaderButtons'
-import AnnotationView from '@/components/annotation/AnnotationView'
 import ActorSelector from '@/components/actor/ActorSelector'
+import CompactAnnotationList from '@/components/entry/list/compact/CompactAnnotationList'
 
 export default {
   mixins: [EntryShowMixin],
@@ -94,41 +98,31 @@ export default {
     EntryDetailFooter,
     ImageContainer,
     EntryDetailHeaderButtons,
-    AnnotationView,
-    ActorSelector
+    ActorSelector,
+    CompactAnnotationList
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.splitView {
-  padding-top: 1em;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  > * {
-    width: 100%;
-  }
-  &__splitViewChild {
-    width: 50%;
-    @media screen and (max-width: $break-medium) {
-      width: 100%;
-    }
-    &:first-child {
-      padding-right: 2em;
-    }
-    &:last-child {
-      padding-left: 2em;
-    }
-  }
+.meta {
+  background-color: $whiter;
+  border: 1px solid $gray10;
+  box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.05);
+  padding: 1em 1.5em;
+  font-size: .9em;
+}
+
+.entryDetailSplitView {
+  margin-bottom: 3em;
 }
 
 .entryDetailSection:not(:first-child) {
-  margin-top: 5em;
+  margin-top: 3em;
 }
 
 .entryDetailProperty {
-  margin-top: 1em;
+  margin-top: 1.5em;
 }
 
 .editableEntryFacetItems {

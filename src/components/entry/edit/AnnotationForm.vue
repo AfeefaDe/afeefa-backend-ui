@@ -26,7 +26,6 @@
 <script>
 import AnnotationCategory from '@/models/AnnotationCategory'
 import Annotation from '@/models/Annotation'
-import AnnotationTag from '@/components/AnnotationTag'
 
 export default {
   props: ['item'],
@@ -69,10 +68,6 @@ export default {
         this.item.annotations.splice(index, 1)
       }
     }
-  },
-
-  components: {
-    AnnotationTag
   }
 }
 </script>

@@ -7,21 +7,14 @@
           v-if="!location"
           :title="$tc('entries.address')"
           icon="location_on">
-          <div>
-            <div class="noContact">Noch keine Adresse angegeben.</div>
 
-            <location-selector v-if="showLocationSelector" @select="linkLocation">
-              <button type="button" class="btn btn-small">
-                Adresse finden
-              </button>
-            </location-selector>
-          </div>
-
-          <div class="createContactLink">
-            <a href="" @click.prevent="createLocation" class="inlineEditLink">
-              Neue Adresse anlegen
-            </a>
-          </div>
+          <create-button-box
+            entryType="locations"
+            action="selectEntry"
+            alternativeAction="createEntry"
+            :selector="LocationSelector"
+            @select="linkLocation"
+            @alternativeAction="createLocation" />
         </entry-detail-section>
 
         <entry-detail-section
@@ -155,17 +148,13 @@
           title="Kontaktpersonen"
           icon="person">
 
-          <div v-if="!contact.contact_persons.length">
-            <div class="noContact">Noch keine Kontaktpersonen angegeben.</div>
+          <create-button-box
+            v-if="!contact.contact_persons.length"
+            entryType="contact_persons"
+            action="createEntry"
+            @action="addContactPerson" />
 
-            <div class="createContactLink">
-              <button type="button" class="btn btn-small" @click="addContactPerson">
-                Konktaktperson hinzufügen
-              </button>
-            </div>
-          </div>
-
-          <entry-detail-property2
+          <entry-detail-property
             v-for="(person, index) in contact.contact_persons" :key="index"
             :title="person.role || 'Kontaktperson'"
             clickLink="Entfernen"
@@ -204,7 +193,7 @@
               label="Telefon">
             </input-field>
 
-          </entry-detail-property2>
+          </entry-detail-property>
 
           <div v-if="contact.contact_persons.length && contact.contact_persons.length < 3" class="formElement marginTop">
             <a href="" @click.prevent="addContactPerson" class="inlineEditLink">
@@ -251,7 +240,8 @@ export default {
       directContacts: {
         phone: [],
         mail: []
-      }
+      },
+      LocationSelector
     }
   },
 
@@ -354,7 +344,6 @@ export default {
     LangSelectInput,
     LocationForm,
     InputLabel,
-    LocationSelector,
     LocationMap
   }
 }

@@ -1,26 +1,22 @@
 <template>
   <div class="entryDetailFooter">
-    <div class="entryDetailFooter__item">
-      <span class="label">{{ $t('entries.updated_at') }}:</span>
-      <div class="content">
-        <b>{{ entry.updated_at | formatDateRelative }}</b>
-        ({{ entry.updated_at | formatDateAbsolute }})
-        <span class="editor" v-if="entry.last_editor">
-            von {{ entry.last_editor.name }}
-            <span v-if="entry.last_editor.organization"> ({{ entry.last_editor.organization }})</span>
-        </span>
-      </div>
+    <div class="content">
+      {{ $t('status.changed') }}
+      <b>{{ entry.updated_at | formatDateRelative(($i18n.locale)) }}</b>
+      ({{ entry.updated_at | formatDateAbsolute }})
+      <span class="editor" v-if="entry.last_editor">
+          <br>von {{ entry.last_editor.name }}
+          <span v-if="entry.last_editor.organization"> ({{ entry.last_editor.organization }})</span>
+      </span>
     </div>
-    <div class="entryDetailFooter__item">
-      <span class="label">{{ $t('entries.created_at') }}:</span>
-      <div class="content">
-        <b>{{ entry.created_at | formatDateRelative }}</b>
-        ({{ entry.created_at | formatDateAbsolute }})
-        <span class="editor" v-if="entry.creator">
-          von {{ entry.creator.name }}
-          <span v-if="entry.creator.organization"> ({{ entry.creator.organization }})</span>
-        </span>
-     </div>
+    <div class="content">
+      {{ $t('status.added') }}
+      <b>{{ entry.created_at | formatDateRelative(($i18n.locale)) }}</b>
+      ({{ entry.created_at | formatDateAbsolute }})
+      <span class="editor" v-if="entry.creator">
+        <br>von {{ entry.creator.name }}
+        <span v-if="entry.creator.organization"> ({{ entry.creator.organization }})</span>
+      </span>
     </div>
   </div>
 </template>
@@ -35,22 +31,13 @@ export default {
 
 <style lang="scss" scoped>
 .entryDetailFooter {
-  display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  &__item {
-    margin: 1em 1em;
-    @media screen and (max-width: $break-medium) {
-      margin: 1em 0;
-    }
-    display: flex;
-    .label {
-      color: $gray50;
-      margin-right: 0.2em;
-    }
-    .editor {
-      display: block;
-    }
+  // background-color: white;
+  // border: 1px solid $white;
+  // box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.05);
+  // padding: .5em;
+  // display: inline-block;
+  .content:last-child {
+    margin-top: .5em;
   }
 }
 

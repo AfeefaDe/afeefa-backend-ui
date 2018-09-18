@@ -9,7 +9,7 @@
         <li :class="['navigationSidebar__navItem', 'level' + item.level]" v-for="item in items" :key="item.id" v-if="showSideBarItem(item)">
           <router-link :to="{name: item.route, params: item.params}" :exact="item.route==='dashboard'">
             <i v-if="item.icon" class="material-icons offers">{{item.icon}}</i>
-            {{ translateTitle(item) }}
+            <span class="navigationSidebar__navItemTitle">{{ translateTitle(item) }}</span>
           </router-link>
           <router-link :to="{name: item.action.route}" class="navigationSidebar__navItemAction" v-if="item.action">
             <i class="material-icons" :title="item.action.name">{{item.action.icon}}</i>
@@ -36,7 +36,7 @@
               {{ $t('headlines.systemLanguage') }}:
               <span v-for="lang in ['de', 'en']" :key="lang">
                 <span v-if="lang === $i18n.locale"><strong class="spacingLeft">{{ $t('languages.'+lang) }}</strong></span>
-                <span v-else><a href="#" class="spacingLeft" @click="changeLanguage()">{{ $t('languages.'+lang) }}</a></span>
+                <span v-else><a href="" class="spacingLeft" @click.prevent="changeLanguage()">{{ $t('languages.'+lang) }}</a></span>
               </span>
             </span>
           </div>
@@ -131,6 +131,12 @@ export default {
     display: none;
     margin-left: 0.5em;
     margin-top: -0.2em;
+  }
+  &__navItemTitle {
+    display: inline-block;
+    &:first-letter {
+      text-transform: uppercase;
+    }
   }
   &__navItemAction i {
     font-size: 1.2em;

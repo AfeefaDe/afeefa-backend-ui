@@ -9,7 +9,7 @@
       <div class="navigationMobile__menu">
         <div v-for="item in items" :class="['navigationMobile__item', 'level' + item.level]" :key="item.title" v-if="showSideBarItem(item)">
           <router-link :to="{name: item.route, params: item.params}">
-            {{ translateTitle(item) }}
+            <span class="navigationMobile__navItemTitle">{{ translateTitle(item) }}</span>
             <template v-if="item.hint || item.hint === 0">({{item.hint}})</template>
           </router-link>
 
@@ -33,7 +33,7 @@
               {{ $t('headlines.systemLanguage') }}:
               <span v-for="lang in ['de', 'en']" :key="lang">
                 <span v-if="lang === $i18n.locale"><strong class="spacingLeft">{{ $t('languages.'+lang) }}</strong></span>
-                <span v-else><a href="#" class="spacingLeft" @click="changeLanguage()">{{ $t('languages.'+lang) }}</a></span>
+                <span v-else><a href="" class="spacingLeft" @click.prevent="changeLanguage()">{{ $t('languages.'+lang) }}</a></span>
               </span>
             </div>
           </div>
@@ -79,7 +79,6 @@ export default {
 
 <style lang="scss" scoped>
 .navigationMobile {
-  margin-left: .6em;
   display: inline-block;
   color: $black;
   position: relative;
@@ -126,6 +125,13 @@ export default {
 
   &__item.level3 {
     margin-left: 2em;
+  }
+
+  &__navItemTitle {
+    display: inline-block;
+    &:first-letter {
+      text-transform: uppercase;
+    }
   }
 
   &__itemAction i {

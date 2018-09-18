@@ -6,14 +6,14 @@
     <div v-if="event">
       <image-container :image-url="event.media_url" />
 
-      <tab-bar @setCurrentTab="setCurrentTab" :tabNames="tabNames">
-        <section slot="overview">
-          <div class="splitView">
-            <div class="entryDetail splitView__splitViewChild">
+        <!-- EVENT -->
 
+        <entry-detail-split-view>
+          <div slot="left">
+            <entry-detail-area>
               <entry-detail-section :title="$tc('entries.date')" icon="date_range" :editLink="{name: 'events.edit', params: {id: event.id}}">
                 {{ event | formatEventDate }}
-                <span>({{event.date_start | formatDateRelative}})</span>
+                <span>({{event.date_start | formatDateRelative(($i18n.locale))}})</span>
               </entry-detail-section>
 
               <entry-detail-section title="Veranstalter" icon="group" :dispatchEdit="true">
@@ -22,31 +22,36 @@
 
               <entry-description :entry="event" />
 
-              <entry-detail-section title="Kategorien" icon="label">
-                <div v-for="facet in facets" :key="facet.id">
-                  <entry-detail-property2 :title="facet.title">
-                    <editable-entry-facet-items :entry="event" :facets="[facet]" :bus="bus" :hideAddLink="true" />
-                  </entry-detail-property2>
-                </div>
-
-                <entry-detail-property2 title="Navigation">
+              <entry-detail-section title="Kategorien" icon="local_offer">
+                <entry-detail-property title="Navigation">
                   <editable-entry-navigation-items :entry="event" :isEdit="true" :customTrigger="true" :hideAddLink="true"  />
-                </entry-detail-property2>
+                </entry-detail-property>
+
+                <div v-for="facet in facets" :key="facet.id">
+                  <entry-detail-property :title="facet.title">
+                    <editable-entry-facet-items :entry="event" :facets="[facet]" :bus="bus" :hideAddLink="true" />
+                  </entry-detail-property>
+                </div>
+              </entry-detail-section>
+            </entry-detail-area>
+
+            <entry-detail-area>
+              <contact-list :item="event" />
+            </entry-detail-area>
+          </div>
+
+          <!-- STATUS & ANNOTATIONS -->
+
+          <div slot="right">
+            <div class="meta">
+              <entry-detail-section icon="error_outline">
+                <entry-detail-footer :entry="event"/>
               </entry-detail-section>
             </div>
 
-            <contact-list :item="event" class="entryDetail splitView__splitViewChild"/>
-
+            <compact-annotation-list :entry="event" />
           </div>
-
-          <entry-detail-footer :entry="event"/>
-        </section>
-
-        <section slot="todos">
-          <annotation-view :entry="event" />
-        </section>
-
-      </tab-bar>
+        </entry-detail-split-view>
     </div>
 
   </entry-detail>
@@ -63,9 +68,9 @@ import EntryDetailFooter from '@/components/entry/show/EntryDetailFooter'
 import ContactList from '@/components/contact/ContactList'
 import ImageContainer from '@/components/ImageContainer'
 import EditableEntryFacetItems from '@/components/entry/facets/EditableEntryFacetItems'
-import AnnotationView from '@/components/annotation/AnnotationView'
 import ActorSelector from '@/components/actor/ActorSelector'
 import EditableEntryNavigationItems from '@/components/entry/facets/EditableEntryNavigationItems'
+import CompactAnnotationList from '@/components/entry/list/compact/CompactAnnotationList'
 
 export default {
   mixins: [EntryShowMixin],
@@ -80,12 +85,6 @@ export default {
   computed: {
     event () {
       return this.item
-    },
-
-    tabNames () {
-      let tabNames = ['overview']
-      tabNames.push({name: 'todos', hint: this.event.annotations.length})
-      return tabNames
     }
   },
 
@@ -96,43 +95,29 @@ export default {
     ContactList,
     ImageContainer,
     EditableEntryFacetItems,
-    AnnotationView,
     ActorSelector,
-    EditableEntryNavigationItems
+    EditableEntryNavigationItems,
+    CompactAnnotationList
   }
 }
 </script>
 
 
 <style lang="scss" scoped>
-.splitView {
-  padding-top: 1em;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  > * {
-    width: 100%;
-  }
-  &__splitViewChild {
-    width: 50%;
-    @media screen and (max-width: $break-medium) {
-      width: 100%;
-    }
-    &:first-child {
-      padding-right: 2em;
-    }
-    &:last-child {
-      padding-left: 2em;
-    }
-  }
+.meta {
+  background-color: $whiter;
+  border: 1px solid $gray10;
+  box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.05);
+  padding: 1em 1.5em;
+  font-size: .9em;
 }
 
 .entryDetailSection:not(:first-child) {
-  margin-top: 5em;
+  margin-top: 3em;
 }
 
 .entryDetailProperty {
-  margin-top: 1em;
+  margin-top: 1.5em;
 }
 
 .editableEntryFacetItems {

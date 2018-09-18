@@ -4,8 +4,6 @@
       <slot name="headerButtons" slot="buttons" />
       <div slot="secondaryButtons" class="secondaryButtons">
         <slot name="secondaryHeaderButtons" />
-
-        <annotation-form-pop-up :entry="entry" />
       </div>
     </entry-header>
 
@@ -20,8 +18,6 @@
 </template>
 
 <script>
-import AnnotationFormPopUp from '../annotation/AnnotationFormPopUp'
-
 export default {
   props: ['component', 'isEdit'],
 
@@ -49,10 +45,6 @@ export default {
     messages () {
       return this.component.routeConfig.messages
     }
-  },
-
-  components: {
-    AnnotationFormPopUp
   }
 }
 </script>

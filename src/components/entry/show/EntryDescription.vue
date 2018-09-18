@@ -7,9 +7,9 @@
     <p v-if="entry.short_description">{{ entry.short_description }}</p>
 
     <div v-if="entry.description">
-      <entry-detail-property2 title="Lange Beschreibung" :inlineEditing="['Anzeigen', 'Verstecken']">
-        <p slot-scope="props" v-if="props.isEdit">{{ entry.description }}</p>
-      </entry-detail-property2>
+      <entry-detail-property title="Lange Beschreibung">
+        <p>{{ entry.description }}</p>
+      </entry-detail-property>
     </div>
   </entry-detail-section>
 </template>

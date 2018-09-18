@@ -21,7 +21,7 @@
             :selectedLabel="$t('multiselect.selectedLabel')"
             :deselectLabel="$t('multiselect.deselectLabel')">
           </multiselect>
-          <br><a @click="closeOverlay" href="#">Abbrechen</a>
+          <br><a @click.prevent="closeOverlay" href="">Abbrechen</a>
         </div>
       </div>
 
@@ -42,7 +42,7 @@
             :selectedLabel="$t('multiselect.selectedLabel')"
             :deselectLabel="$t('multiselect.deselectLabel')">
           </multiselect>
-          <br><a @click="closeOverlay" href="#">Abbrechen</a>
+          <br><a @click.prevent="closeOverlay" href="">Abbrechen</a>
         </div>
       </div>
     </transition>

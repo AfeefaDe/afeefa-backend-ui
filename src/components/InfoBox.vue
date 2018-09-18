@@ -15,8 +15,9 @@
 
   display: flex;
   align-items: center;
-  border: 1px solid $gray20;
-  padding: .8em;
+  border: 1px solid $gray10;
+  padding: .4em;
+  box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.05);
 
   i {
     font-size: 20px;

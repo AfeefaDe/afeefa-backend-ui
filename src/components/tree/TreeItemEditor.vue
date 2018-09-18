@@ -130,11 +130,12 @@ export default {
   padding: 1em;
 
   input, select {
+    position: relative;
+    left: -1px;
     width: auto;
     line-height: 1.5;
     height: 2em;
     padding: 0 .4em;
-    border-left: none;
   }
 
   .colorInput {

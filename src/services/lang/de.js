@@ -5,7 +5,7 @@ export default {
     organisations: 'Akteur | Akteure',
     events: 'Veranstaltung | Veranstaltungen',
     location: 'Ort',
-    contact: 'Erreichbarkeit',
+    contact: 'Kontakt',
     annotations: 'Anmerkung | Anmerkungen',
     search: 'Suche',
     searchPlaceholder: 'Suche nach',
@@ -48,10 +48,55 @@ export default {
     ownerTypeOffer: 'Angebot',
     ownerTypeEvent: 'Veranstaltung'
   },
+
   offers: {
-    offer: 'Angebot | Angebote',
-    newOffer: 'Neues Angebot'
+    name: 'Angebot | Angebote',
+    new: 'neues Angebot',
+    no: 'kein Angebot'
   },
+
+  events: {
+    name: 'Veranstaltung | Veranstaltungen',
+    new: 'neue Veranstaltung',
+    no: 'keine Veranstaltung'
+  },
+
+  actors: {
+    name: 'Akteur | Akteure',
+    new: 'Neuer Akteur',
+    no: 'kein Akteur'
+  },
+
+  annotations: {
+    name: 'Aufgabe | Aufgaben',
+    new: 'neue Aufgabe',
+    no: 'keine Aufgabe'
+  },
+
+  contacts: {
+    name: 'Kontakt | Kontakte',
+    new: 'neuer Kontakt',
+    no: 'kein Kontakt'
+  },
+
+  locations: {
+    name: 'Adresse | Adressen',
+    new: 'neue Adresse',
+    no: 'keine Adresse'
+  },
+
+  contact_persons: {
+    name: 'Kontaktperson | Kontaktpersonen',
+    new: 'neue Kontaktperson',
+    no: 'keine Kontaktperson'
+  },
+
+  actions: {
+    findEntry: '[ENTRY] finden',
+    createEntry: '[ENTRY] erstellen',
+    selectEntry: '[ENTRY] auswählen'
+  },
+
   tabs: {
     general: 'Allgemeines',
     annotations: 'Anmerkungen',
@@ -111,8 +156,6 @@ export default {
     image_link: 'Link zum Bild',
     description: 'Beschreibung',
     active: 'Aktiv',
-    created_at: 'Erstellt',
-    updated_at: 'Geändert',
     state_changed_at: 'Aktiviert',
     category: 'Kategorie',
     sub_category: 'Unterkategorie',
@@ -159,7 +202,6 @@ export default {
     load_offer: 'Lade Angebot',
     load_data: 'Lade Daten',
     load_navigation: 'Lade Navigation',
-    load_navigation_item: 'Lade Menüpunkt',
     load_categories: 'Lade Kategorien',
     load_category: 'Lade Kategorie',
     no: 'Keine',
@@ -201,10 +243,8 @@ export default {
     edit_annotations: 'Durch das Bearbeiten des Eintrags können Anmerkungen entfernt und hinzugefügt werden.',
     annotation_detail: 'Klicken um Beschreibung anzugeben',
     user_status: 'Der Name der aktuell eingeloggten Nutzer:in.',
-    area_status: 'Zeigt dir zugeordnete Region der eingeloggten Nutzer:in.'
-  },
-  messages: {
-    loading: 'Lädt'
+    area_status: 'Zeigt dir zugeordnete Region der eingeloggten Nutzer:in.',
+    no_entry_created_yet: 'Noch [NO_ENTRY] erstellt.'
   },
   multiselect: {
     selectLabel: 'Zur Auswahl Enter drücken',
@@ -222,95 +262,5 @@ export default {
     insertOrgaTooltip: 'Der ausgewählte Text wird in einen entsprechenden Link zum Akteur umgewandelt.',
     noSelectionTitle: 'Fehler beim Einfügen',
     noSelectionDescription: 'Du hast keinen Text ausgewählt.'
-  },
-  categories: {
-    'asylum-counselling': 'Migrationsberatung',
-    'authority': 'Behörden',
-    'childcare': 'Kinderbetreuung',
-    'christian': 'Christliche Gemeinschaft',
-    'clothes': 'Kleidung',
-    'community': 'Gemeinschaft',
-    'congress': 'Kongresse + Messen',
-    'consultation': 'Beratung',
-    'cooking': 'Kochen',
-    'craft-art': 'Handwerk + Kunst',
-    'donation': 'Spenden',
-    'education-counselling': 'Bildungsberatung',
-    'education-sponsorship': 'Bildungsunterstützung',
-    'eventseries': 'Veranstaltungsreihe',
-    'external-event': 'integrierte Daten',
-    'family-counselling': 'Familienberatung',
-    'fb-event': 'facebook Event',
-    'festival': 'Fest',
-    'film': 'Film',
-    'food': 'Lebensmittel',
-    'foreign-language': 'Fremdsprachen',
-    'furniture': 'Möbel',
-    'gardening': 'Garten',
-    'general': 'Allgemeines',
-    'german-course': 'freier Deutschkurs',
-    'german-course-state': 'staatlicher Deutschkurs',
-    'hospital': 'Krankenhaus',
-    'housing-project': 'Wohnprojekte',
-    'interpreter': 'Übersetzer/ Dolmetscher',
-    'islam': 'Islamische Gemeinschaft',
-    'iwgr': 'Internationale Wochen gegen Rassismus',
-    'jewish': 'Jüdische Gemeinschaft',
-    'job-counselling': 'Berufsberatung',
-    'jobs': 'Arbeit + Bildung',
-    'language': 'Sprache',
-    'learning-place': 'Lernort',
-    'lecture': 'Vortrag',
-    'legal-advice': 'Rechtsberatung',
-    'leisure': 'Freizeit',
-    'lgbt': 'LGBT',
-    'library': 'Bibliothek',
-    'medic': 'Gesundheit',
-    'medical-care': 'Medizinische Versorgung',
-    'medical-counselling': 'Medizinische Beratung',
-    'meet-and-speak': 'Sprachtreff',
-    'meeting-place': 'Treffpunkt',
-    'museum': 'Museum',
-    'music': 'Musik',
-    'nature': 'Parks + Gärten',
-    'other': 'Sonstige',
-    'police': 'Polizei',
-    'political-education': 'Politische Bildung',
-    'psychological-counselling': 'Psychologische Beratung',
-    'public-transport': 'Haltestelle',
-    'religious-other': 'Religiöse Einrichtung',
-    'shop': 'Interkultureller Einkaufsladen',
-    'social-counselling': 'Sozialberatung',
-    'sponsorship': 'Patenschaften',
-    'sports': 'Sport',
-    'stage': 'Bühne',
-    'swimming': 'Schwimmen',
-    'tandem': 'Tandem',
-    'tram': 'Straßenbahn',
-    'volunteer-coordination': 'Ehrenamtskoordination',
-    'welcome-network': 'Willkommensbündnis',
-    'wifi': 'Kostenloses WLAN',
-    'women-counselling': 'Frauenberatung',
-    'workshop': 'Workshop',
-    'workspace': 'Räume + Werkstätten',
-    'youth-club': 'Jugendtreff',
-
-    // LEIPZIG
-    'hotspots': 'Hot Spots',
-    'social-advice': 'Sozialberatung',
-    'advice-and-support': 'Rat und Begleitung',
-    'buddy-programme': 'Patenschaften',
-    'daily-life': 'Alltag',
-    'family': 'Kinder, Familie & Co',
-    'health': 'Gesundheit',
-    'housing': 'Wohnen',
-    'kita-and-school': 'Kindergarten und Schule',
-    'learning-german': 'Deutsch lernen',
-    'living-in-leipzig': 'Leben in Leipzig',
-    'mobility': 'Mobil sein',
-    'participate': 'Mitwirken und sich einmischen',
-    'religion': 'Religion',
-    'work-and-education': 'Bildung + Arbeit',
-    'work-learn-study': 'Arbeit, Ausbildung, Studium'
   }
 }

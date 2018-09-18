@@ -1,6 +1,7 @@
 <template>
   <div>
     <input-label
+      v-if="!hideLabel"
       :name="fieldName" :title="label"
       :maxChars="maxChars" :chars="chars"
       :validationErrors="errors" />
@@ -12,6 +13,8 @@
       :placeholder="placeholder"
       v-validate.initial="validate || ''"
       :data-vv-as="label"
+
+      v-focus="autoFocus !== undefined && autoFocus"
 
       @focus="onFocus"
       @blur="onBlur"
@@ -28,7 +31,7 @@
 import InputLabel from '@/components/InputLabel'
 
 export default {
-  props: ['fieldName', 'value', 'placeholder', 'validate', 'label'],
+  props: ['fieldName', 'value', 'placeholder', 'validate', 'label', 'hideLabel', 'autoFocus'],
 
   inject: ['$validator'],
 

@@ -8,7 +8,7 @@ const menuTree = {
   children: [
     {
       route: 'offers.list',
-      title: 'offers.offer',
+      title: 'offers.name',
       icon: 'favorite',
       action: {
         name: 'Neues Angebot erstellen',

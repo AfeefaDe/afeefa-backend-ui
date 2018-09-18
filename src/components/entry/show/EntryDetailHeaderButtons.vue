@@ -5,12 +5,12 @@
       {{ $t('headlines.preview') }}
     </a>
 
-    <a class="btn btn-medium" @click="togglePublishState" v-if="entry.active">
+    <a class="btn btn-medium" href="" @click.prevent="togglePublishState" v-if="entry.active">
       <i class="material-icons left">visibility_off</i>
       {{ $t('buttons.deactivate') }}
     </a>
 
-    <a class="btn btn-medium green" @click="togglePublishState" v-else>
+    <a class="btn btn-medium green" href="" @click.prevent="togglePublishState" v-else>
       <i class="material-icons left">visibility</i>
       {{ $t('buttons.activate') }}
     </a>

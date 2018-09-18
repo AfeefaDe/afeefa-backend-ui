@@ -27,7 +27,7 @@ export default class Config extends RouteConfig {
 
       // new
       newItem: () => {
-        return this.$t('offers.newOffer')
+        return this.$t('offers.new')
       },
       addItemSuccess: () => {
         return `Das Angebot wurde hinzugefügt.`

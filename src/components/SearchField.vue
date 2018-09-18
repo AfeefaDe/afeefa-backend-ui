@@ -7,7 +7,7 @@
             <label for="searchterm" class="browser-default">{{$t('headlines.searchPlaceholder')}}</label>
             <input autofocus class="browser-default validate'" type="text" id="searchterm" ref="search" v-model="keyword" @input="livesearch">
           </div>
-          <a v-if="keyword" @click.prevent="clearSearch" href="#"><i class="material-icons searchForm__icon">cancel</i></a>
+          <a v-if="keyword" @click.prevent="clearSearch" href=""><i class="material-icons searchForm__icon">cancel</i></a>
         </form>
       </div>
       <div class="searchButtons">

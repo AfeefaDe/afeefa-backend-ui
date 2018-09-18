@@ -83,10 +83,6 @@ export default {
   },
 
   computed: {
-    items () {
-      return this.actor[this.relationName]
-    },
-
     editLinkTitle () {
       return this.selectedActors.length ? 'Ändern' : 'Hinzufügen'
     }

@@ -20,6 +20,18 @@ export default {
     this.initSelectedActors()
   },
 
+  watch: {
+    items () {
+      this.initSelectedActors()
+    }
+  },
+
+  computed: {
+    items () {
+      return this.actor[this.relationName]
+    }
+  },
+
   methods: {
     loadSelectableActors () {
       this.isLoading = true

@@ -6,6 +6,7 @@
 
     <div class="listPagination__navigation" v-if="currentNumPages > 1">
       <a
+        v-if="has.firstLastPage"
         :class="[(currentPage > 1 ? 'enabled' : 'disabled')]"
         class="listPagination--arrowButton"
         @click.prevent="goto(1)">
@@ -27,6 +28,7 @@
         <i class="material-icons">navigate_next</i>
       </a>
       <a
+        v-if="has.firstLastPage"
         :class="[(currentPage < currentNumPages ? 'enabled' : 'disabled')]"
         class="listPagination--arrowButton"
         @click.prevent="goto(currentNumPages)">
@@ -34,10 +36,10 @@
       </a>
     </div>
 
-    <select v-model="currentPageSize"
+    <select v-if="has.pageSize && currentNumItems > 15"
+      v-model="currentPageSize"
       @change="pageSizeChanged"
       class="listPagination__pagesizeSelect"
-      v-if="currentNumItems > 15"
       id="pageSizeSelect">
       <option value="15">15 {{ $t('pagination.per_page') }}</option>
       <option value="30">30 {{ $t('pagination.per_page') }}</option>
@@ -49,13 +51,17 @@
 
 <script>
 export default {
-  props: ['numItems', 'page', 'pageSize'],
+  props: ['numItems', 'page', 'pageSize', 'hasFirstLastPage', 'hasPageSize'],
 
   data () {
     return {
       currentNumItems: this.numItems,
       currentPage: this.page,
-      currentPageSize: this.pageSize
+      currentPageSize: this.pageSize,
+      has: {
+        firstLastPage: this.hasFirstLastPage === undefined || this.hasFirstLastPage,
+        pageSize: this.hasPageSize === undefined || this.hasPageSize
+      }
     }
   },
 
@@ -97,7 +103,7 @@ export default {
       const numItems = parseInt(this.numItems) || 0
       let pageSize = parseInt(this.pageSize)
       let currentPage = parseInt(this.page) || 1
-      if (![15, 30, 1000].includes(pageSize)) {
+      if (![3, 5, 10, 15, 30, 1000].includes(pageSize)) {
         pageSize = 15
         currentPage = 1
       }

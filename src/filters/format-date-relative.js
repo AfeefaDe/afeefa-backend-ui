@@ -1,12 +1,15 @@
 import Timeago from 'timeago.js'
 import moment from 'moment'
 import german from 'timeago.js/locales/de' // todo: properly import locales
-Timeago.register('german', german)
+import english from 'timeago.js/locales/en' // todo: properly import locales
 
-export default function (date) {
+Timeago.register('de', german)
+Timeago.register('en', english)
+
+export default function (date, language = 'de') {
   if (!moment(date).isValid()) {
     return 'Invalid Date'
   }
   let tago = new Timeago()
-  return tago.format(date, 'german')
+  return tago.format(date, language)
 }

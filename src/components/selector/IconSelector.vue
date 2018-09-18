@@ -4,7 +4,7 @@
       <div :class="['iconPreview', 'cat-' + selectedIcon]"></div>
     </a>
 
-    <pop-up-selector :trigger="$refs.trigger" diffX="0" @close="hideIconSelector" v-if="iconSelectorIsOpen">
+    <pop-up-selector :trigger="$refs.trigger" diffX="20" @close="hideIconSelector" v-if="iconSelectorIsOpen">
       <div class="icons">
         <span v-for="icon in icons" :key="icon" :class="['iconContainer', { selected: icon === selectedIcon }]" @click="select(icon)">
           <div :class="['iconPreview', 'cat-' + icon]"></div>

@@ -3,7 +3,7 @@
   <div v-if="tabs.length > 1">
     <ul class="tabBar__navItemContainer">
       <li v-for="tab in tabs" :key="tab.name" :class="['tabBar__navItem', {active: activeTab === tab}]">
-        <a href="#" @click.prevent="setActiveTab(tab)">
+        <a href="" @click.prevent="setActiveTab(tab)">
           <div class="colorIcon" :style="{'border-left-color': tab.color}" v-if="tab.color"></div>
           {{ $te('tabs.' + tab.name) ? $t('tabs.' + tab.name): tab.name }}
           <span v-if="tab.hint !== null" class="tabHint">({{ tab.hint }})</span>
@@ -30,7 +30,7 @@ export default {
    * the tabs should be handled as a generic identifier for the tab
    * the translation i stored in 'tabs'.tabName
    */
-  props: ['tabNames', 'isSubBar'],
+  props: ['tabNames', 'isSubBar', 'queryString'],
 
   inject: ['$validator'],
 
@@ -38,7 +38,8 @@ export default {
     return {
       tabs: [],
       urlKey: this.isSubBar ? 'subTab' : 'tab',
-      activeTab: null
+      activeTab: null,
+      modifyQueryString: this.queryString === undefined || this.queryString
     }
   },
 
@@ -93,34 +94,40 @@ export default {
     },
 
     initPageProperties () {
-      const activeTab = this.tabs.find(tab => {
-        return tab.name === this.$route.query[this.urlKey]
-      }) || this.tabs[0]
+      if (this.modifyQueryString) {
+        const activeTab = this.tabs.find(tab => {
+          return tab.name === this.$route.query[this.urlKey]
+        }) || this.tabs[0]
 
-      if (activeTab !== this.activeTab) {
-        this.activeTab = activeTab
-        this.$emit('setCurrentTab', this.activeTab.name)
+        if (activeTab !== this.activeTab) {
+          this.activeTab = activeTab
+          this.$emit('setCurrentTab', this.activeTab.name)
+        }
+      } else {
+        this.activeTab = this.tabs[0]
       }
     },
 
     setActiveTab (tab) {
       this.activeTab = tab
 
-      const query = {...this.$route.query}
+      if (this.modifyQueryString) {
+        const query = {...this.$route.query}
 
-      // main tab switched, delete sub tab
-      if (this.urlKey === 'tab') {
-        delete query.subTab
+        // main tab switched, delete sub tab
+        if (this.urlKey === 'tab') {
+          delete query.subTab
+        }
+
+        // set tab if not the first one
+        if (tab === this.tabs[0]) {
+          delete query[this.urlKey]
+        } else {
+          query[this.urlKey] = tab.name
+        }
+
+        this.$router.replace({query: query})
       }
-
-      // set tab if not the first one
-      if (tab === this.tabs[0]) {
-        delete query[this.urlKey]
-      } else {
-        query[this.urlKey] = tab.name
-      }
-
-      this.$router.replace({query: query})
 
       // set active tab to parent (used to switch between edit/view mode consistently)
       this.$emit('setCurrentTab', this.activeTab.name)

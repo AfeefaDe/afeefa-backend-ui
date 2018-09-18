@@ -39,16 +39,18 @@ textarea.browser-default {
   outline: none;
   height: 2.5em;
   line-height: 2.5em;
-  padding: 0 .8em;
+  padding: 0.5em;
   display: block;
 
+  color: $gray90;
   border: 1px solid $gray10;
-  background-color: $white;
-  border-radius: 2px;
+  background-color: $whiter;
+  border-radius: 0;
 
   &:focus {
+    color: $black;
     background-color: white;
-    border: 1px solid $gray20;
+    border: 1px solid $gray30;
   }
 }
 
@@ -56,7 +58,10 @@ input.browser-default,
 select.browser-default,
 textarea.browser-default {
   &.validation-error {
-    border-color: #EECCCC;
+    border-color: #FFCCCC;
+    &:focus {
+      border-color: #EE8888;
+    }
   }
 }
 
@@ -64,7 +69,6 @@ textarea.browser-default {
   min-height: 8rem;
   max-height: 400px;
   line-height: 1.5em;
-  padding: .8em;
 
   &:not(:focus) {
     overflow: hidden !important; // override autosize element prop

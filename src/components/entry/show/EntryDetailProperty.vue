@@ -93,6 +93,7 @@ export default {
     margin-top: .3em;
     p {
       white-space: pre-wrap;
+      margin-bottom: 0;
     }
   }
 }

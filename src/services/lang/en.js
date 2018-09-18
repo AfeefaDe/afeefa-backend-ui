@@ -48,10 +48,55 @@ export default {
     ownerTypeOffer: 'Offer',
     ownerTypeEvent: 'Event'
   },
+
   offers: {
-    offer: 'Offer | Offers',
-    newOffer: 'New Offer'
+    name: 'offer | offers',
+    new: 'new offer',
+    no: 'no offer'
   },
+
+  events: {
+    name: 'event | events',
+    new: 'new event',
+    no: 'no event'
+  },
+
+  actors: {
+    name: 'actor | actors',
+    new: 'New actor',
+    no: 'no actor'
+  },
+
+  annotations: {
+    name: 'task | tasks',
+    new: 'new task',
+    no: 'no task'
+  },
+
+  contacts: {
+    name: 'contact | contacts',
+    new: 'new contact',
+    no: 'no contact'
+  },
+
+  locations: {
+    name: 'Adresse | Adressen',
+    new: 'neue Adresse',
+    no: 'keine Adresse'
+  },
+
+  contact_persons: {
+    name: 'contact person | contact persons',
+    new: 'new contact person',
+    no: 'no contact person'
+  },
+
+  actions: {
+    findEntry: 'find [ENTRY]',
+    createEntry: 'create [ENTRY]',
+    selectEntry: 'select [ENTRY]'
+  },
+
   tabs: {
     general: 'General',
     annotations: 'Annotations',
@@ -111,8 +156,6 @@ export default {
     image_link: 'Image link',
     description: 'Description',
     active: 'Active',
-    created_at: 'Created at',
-    updated_at: 'Updated at',
     state_changed_at: 'Status Changed at',
     category: 'Category',
     sub_category: 'Subcategory',
@@ -159,14 +202,13 @@ export default {
     load_offer: 'Load offer',
     load_data: 'Load data',
     load_navigation: 'Load navigation',
-    load_navigation_item: 'Load navigation item',
     load_categories: 'Load categories',
     load_category: 'Load category',
     no: 'No',
     all: 'All',
     any: 'Any',
-    added: 'Added on',
-    changed: 'Last change on',
+    added: 'Added',
+    changed: 'Last change',
     time: 'Time',
     searching: 'Looking for Entries',
     noResults: '0 Entries'
@@ -201,10 +243,8 @@ export default {
     edit_annotations: 'You can add and delete annotations if you edit the entry.',
     annotation_detail: 'Click to enter detailed information',
     user_status: 'Shows the name of the current user.',
-    area_status: 'Shows the associated area of the current user.'
-  },
-  messages: {
-    loading: 'Loading'
+    area_status: 'Shows the associated area of the current user.',
+    no_entry_created_yet: '[NO_ENTRY] created yet.'
   },
   multiselect: {
     selectLabel: 'Press enter to select',
@@ -222,95 +262,5 @@ export default {
     insertOrgaTooltip: 'This button makes the current text selection to an actual link to the Actor',
     noSelectionTitle: 'Error while adding Actor',
     noSelectionDescription: 'There is no text selected.'
-  },
-  categories: {
-    'asylum-counselling': 'Migration counselling',
-    'authority': 'Authorities',
-    'childcare': 'Child care',
-    'christian': 'Christian Community',
-    'clothes': 'Clothes',
-    'community': 'Community',
-    'congress': 'Conferences + Fairs',
-    'consultation': 'Consultation',
-    'cooking': 'Cooking',
-    'craft-art': 'Craft + Art',
-    'donation': 'Donations',
-    'education-counselling': 'Education counselling',
-    'education-sponsorship': 'Education sponsorship',
-    'eventseries': 'Series of Events',
-    'external-event': 'integrierte Daten',
-    'family-counselling': 'Family counselling',
-    'fb-event': 'facebook Event',
-    'festival': 'Festival',
-    'film': 'Movies',
-    'food': 'Food',
-    'foreign-language': 'Foreign languages',
-    'furniture': 'Furniture',
-    'gardening': 'Gardening',
-    'general': 'General',
-    'german-course': 'Free German course (Deutschkurs)',
-    'german-course-state': 'Official German course (Deutschkurs)',
-    'hospital': 'Hospital',
-    'housing-project': 'Housing projects',
-    'interpreter': 'Interpreters + Translators',
-    'islam': 'Islamic Community',
-    'iwgr': 'The International Weeks against Racial Discrimination',
-    'jewish': 'Jewish Community',
-    'job-counselling': 'Job counselling',
-    'jobs': 'Jobs + Education',
-    'language': 'Language',
-    'learning-place': 'Learning place',
-    'lecture': 'Lecture',
-    'legal-advice': 'Legal advice',
-    'leisure': 'Leisure',
-    'lgbt': 'LGBT',
-    'library': 'Library',
-    'medic': 'Health care',
-    'medical-care': 'Medical care',
-    'medical-counselling': 'Medical counselling',
-    'meet-and-speak': 'Meet & Speak',
-    'meeting-place': 'Meeting point',
-    'museum': 'Museum',
-    'music': 'Music',
-    'nature': 'Parks + Gardens',
-    'other': 'Other',
-    'police': 'Police',
-    'political-education': 'Political education',
-    'psychological-counselling': 'Psychological counselling',
-    'public-transport': 'Public transport',
-    'religious-other': 'Religious institution',
-    'shop': 'Intercultural shop',
-    'social-counselling': 'Social counselling',
-    'sponsorship': 'Sponsorship',
-    'sports': 'Sports',
-    'stage': 'Stage',
-    'swimming': 'Swimming',
-    'tandem': 'Tandem',
-    'tram': 'Tram',
-    'volunteer-coordination': 'Volunteers\' coordination',
-    'welcome-network': 'Welcoming organisations',
-    'wifi': 'Free WIFI',
-    'women-counselling': 'Women counselling',
-    'workshop': 'Workshop',
-    'workspace': 'Rooms + Workplaces',
-    'youth-club': 'Youth club',
-
-    // LEIPZIG
-    'hotspots': 'Hotspots',
-    'social-advice': 'Social Advice',
-    'advice-and-support': 'Rat und Begleitung',
-    'buddy-programme': 'Patenschaften',
-    'daily-life': 'Daily Life',
-    'family': 'Family, Children & Co',
-    'health': 'Health',
-    'housing': 'Housing',
-    'kita-and-school': 'Kindergarden and School',
-    'learning-german': 'Learning German',
-    'living-in-leipzig': 'Living in Leipzig',
-    'mobility': 'Mobility',
-    'participate': 'Participate',
-    'religion': 'Religion',
-    'work-and-education': 'Work and Education',
-    'work-learn-study': 'Arbeit, Ausbildung, Studium'
   }
 }

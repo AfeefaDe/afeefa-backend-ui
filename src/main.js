@@ -26,13 +26,16 @@ import TabBar from '@/components/TabBar'
 import TextInput from '@/components/TextInput'
 import InputField from '@/components/InputField'
 import InfoBox from '@/components/InfoBox'
+import CreateButtonBox from '@/components/CreateButtonBox'
+import AnnotationTag from '@/components/AnnotationTag'
 
 import EntryLoadingMessage from '@/components/entry/EntryLoadingMessage'
 import EntryHeader from '@/components/entry/EntryHeader'
 import EntryDetail from '@/components/entry/EntryDetail'
-import EntryDetailProperty2 from '@/components/entry/show/EntryDetailProperty2'
+import EntryDetailProperty from '@/components/entry/show/EntryDetailProperty'
 import EntryDetailSection from '@/components/entry/show/EntryDetailSection'
 import EntryDetailSplitView from '@/components/entry/show/EntryDetailSplitView'
+import EntryDetailArea from '@/components/entry/show/EntryDetailArea'
 import EntryIcon from '@/components/entry/EntryIcon'
 
 import TreeItemTag from '@/components/tree/TreeItemTag'
@@ -44,17 +47,20 @@ Vue.component('TabBar', TabBar)
 Vue.component('TextInput', TextInput)
 Vue.component('InputField', InputField)
 Vue.component('InfoBox', InfoBox)
+Vue.component('CreateButtonBox', CreateButtonBox)
 
 Vue.component('EntryLoadingMessage', EntryLoadingMessage)
 Vue.component('EntryHeader', EntryHeader)
 Vue.component('EntryDetail', EntryDetail)
-Vue.component('EntryDetailProperty2', EntryDetailProperty2)
+Vue.component('EntryDetailProperty', EntryDetailProperty)
 Vue.component('EntryDetailSection', EntryDetailSection)
 Vue.component('EntryDetailSplitView', EntryDetailSplitView)
+Vue.component('EntryDetailArea', EntryDetailArea)
 Vue.component('EntryIcon', EntryIcon)
 
 Vue.component('TreeItemTag', TreeItemTag)
 Vue.component('FacetItemTag', FacetItemTag)
+Vue.component('AnnotationTag', AnnotationTag)
 
 Vue.use(VeeValidate, {delay: 0, locale: 'de'})
 Vue.use(Filters)

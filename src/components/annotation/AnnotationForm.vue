@@ -1,35 +1,44 @@
 <template>
   <div :class="['annotationForm', {inline}]">
     <form @submit.prevent="save" novalidate>
-      <input-label
-        name="category" :title="$t('entries.category')"
-        :validationErrors="errors" />
+      <div v-if="!annotation.id">
+        <input-label
+          name="category" :title="$t('entries.category')"
+          :validationErrors="errors" />
 
-      <select id="category" v-model="annotation.annotationCategory" v-if="annotationCategories.length"
-        :class="['browser-default', {'validation-error': errors.has('category') }]"
-        name="category" data-vv-validate-on="change" :data-vv-as="$t('entries.category')" v-validate.initial="'required'">
-        <option :value="null" v-if="!annotation.annotationCategory">Kategorie auswählen</option>
-        <option :value="category" v-for="category in annotationCategories" :key="category.id">
-          {{ category.title }}
-        </option>
-      </select>
+        <select id="category" v-model="annotation.annotationCategory" v-if="annotationCategories.length"
+          :class="['browser-default', {'validation-error': errors.has('category') }]"
+          name="category" data-vv-validate-on="change" :data-vv-as="$t('entries.category')" v-validate.initial="'required'">
+          <option :value="null" v-if="!annotation.annotationCategory">Kategorie auswählen</option>
+          <option :value="category" v-for="category in annotationCategories" :key="category.id">
+            {{ category.title }}
+          </option>
+        </select>
+      </div>
 
       <text-input
-        class="formElement marginTop"
+        :class="{formElement: !annotation.id, halfMargsinTop: !annotation.id}"
         v-model="annotation.detail"
         fieldName="detail"
         :label="$t('entries.description')"
         :placeholder="$t('entries.description')"
-        validate="required|max:350" />
+        validate="required|max:350"
+        autoFocus="true" />
 
       <div class="buttons">
-        <button :class="['btn', buttonSize, 'gray']" type="button" @click="close">
-          {{ $t('buttons.cancel') }}
-        </button>
+        <div class="buttons">
+          <a href="" @click.prevent="close" class="inlineEditLink">
+            Abbrechen
+          </a>
 
-        <button :class="['btn', buttonSize, 'green']" type="submit">
-          {{ annotation.id ? 'Speichern' : 'Anlegen' }}
-        </button>
+          <a href="" @click.prevent="remove" v-if="annotationToEdit.id" class="inlineEditLink">
+            Löschen
+          </a>
+
+          <button :class="['btn', buttonSize, 'green']" type="submit">
+            {{ annotation.id ? 'Speichern' : 'Anlegen' }}
+          </button>
+        </div>
       </div>
     </form>
   </div>
@@ -59,7 +68,7 @@ export default {
 
   computed: {
     buttonSize () {
-      return this.inline ? 'btn-small' : 'btn-medium'
+      return 'btn-xs' // this.inline ? 'btn-small' : 'btn-medium'
     }
   },
 
@@ -97,6 +106,24 @@ export default {
       })
     },
 
+    remove () {
+      this.$store.dispatch('messages/showDialog', {
+        title: 'Aufgabe löschen',
+        message: `Soll die Aufgabe ${this.annotation.annotationCategory.title} gelöscht werden?`
+      }).then(result => {
+        if (result === 'yes') {
+          this.entry.$rels.annotations.Query.delete(this.annotation).then(deleted => {
+            if (deleted) {
+              this.$store.dispatch('messages/showAlert', {
+                description: 'Die Aufgabe wurde gelöscht'
+              })
+              this.$emit('remove')
+            }
+          })
+        }
+      })
+    },
+
     close () {
       this.$emit('close')
     }
@@ -109,29 +136,45 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.annotationForm {
+  width: 100%;
+  margin-top: .2em;
+  margin-bottom: .8em;
+
+  input, select {
+    width: auto;
+    line-height: 1.5;
+    height: 2em;
+    padding: 0 .4em;
+  }
+
+  /deep/ textarea,
+  /deep/ select,
+  /deep/ label {
+    margin-top: .2em;
+    max-height: 100px;
+  }
+}
+
 .marginTop {
   margin-top: 1.5em;
 }
 
-textarea {
-  max-height: 100px;
-}
-
 .buttons {
-  text-align: right;
-  margin-top: 2em;
+  margin-top: .3em;
+  display: flex;
+  align-items: baseline;
 }
 
-.inline {
-  .marginTop {
-    margin-top: .6em;
-  }
-  .buttons {
-    margin-top: 1em;
+.btn {
+  margin-top: -1px;
+  padding: 0 4px;
+  i {
+    font-size: 1rem;
   }
 }
 
-.btn + .btn {
-  margin-left: .6em;
+a + button, a + a {
+  margin-left: .7em;
 }
 </style>

@@ -11,7 +11,7 @@
   <input v-if="editEnabled" v-model="resourceItem.category" type="text" placeholder="Kategorie"/>
   <div v-else class="resourceItem__meta">
     {{resourceItem.category}} ·
-    {{ $t('status.changed') }} {{resourceItem.updated_at | formatDateAbsolute}}<span> ({{resourceItem.updated_at | formatDateRelative}})</span>
+    {{ $t('status.changed') }} {{resourceItem.updated_at | formatDateAbsolute}}<span> ({{resourceItem.updated_at | formatDateRelative(($i18n.locale))}})</span>
   </div>
 
   <p>

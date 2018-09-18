@@ -1,14 +1,14 @@
 <template>
-  <div class="entryDetailSection">
-    <div class="left">
+  <div :class="['entryDetailSection', {pullLeft}]">
+    <div class="left" v-if="icon">
       <div v-if="icon" class="icon">
         <i class="material-icons">{{ icon }}</i>
       </div>
     </div>
 
     <div class="right">
-      <div class="header">
-        <div class="title">{{ title}}</div>
+      <div class="header" v-if="title">
+        <div class="title">{{ title }}</div>
 
         <div class="editLink" v-if="editLink">
           <router-link :to="editLink" class="inlineEditLink">
@@ -16,9 +16,9 @@
           </router-link>
         </div>
 
-        <div class="editLink" v-if="dispatchEdit">
+        <div class="editLink" v-if="content">
           <a href="" @click.prevent="dispatchEditClick" class="inlineEditLink">
-            Ändern
+            {{ content.editLinkTitle }}
           </a>
         </div>
 
@@ -39,8 +39,8 @@
 
       </div>
 
-      <div class="content">
-        <slot :isEdit="isEdit" ref="content" />
+      <div :class="['content', {pullLeft}]">
+        <slot :isEdit="isEdit" />
       </div>
     </div>
   </div>
@@ -48,20 +48,31 @@
 
 <script>
 export default {
-  props: ['title', 'icon', 'editLink', 'inlineEditing', 'dispatchEdit', 'clickLink'],
+  props: ['title', 'icon', 'pullLeft', 'editLink', 'inlineEditing', 'dispatchEdit', 'clickLink'],
 
   inject: ['$validator'],
 
   data () {
     return {
+      content: null,
       isEdit: false
     }
+  },
+
+  mounted () {
+    this.$children.forEach(vue => {
+      if (!this.content && vue.isEntryDetailSectionContent) {
+        this.content = vue
+      }
+    })
   },
 
   methods: {
     dispatchEditClick () {
       this.$children.forEach(vue => {
-        vue.editLinkClick(this.$refs.trigger)
+        if (vue.isEntryDetailSectionContent) {
+          vue.editLinkClick(this.$refs.trigger)
+        }
       })
     }
   }
@@ -73,8 +84,27 @@ export default {
   display: flex;
   align-items: top;
 
+  &.pullLseft {
+    display: block;
+    > * {
+      display: block;
+      width: 100%;
+      // .header {
+      //   justify-content: center;
+      // }
+      .icon {
+        // text-align: center;
+        margin-bottom: 2em;
+        margin-left: 2em;
+      }
+      .icon i {
+        font-size: 40px;
+      }
+    }
+  }
+
   .left {
-    flex: 0 0 60px;
+    flex: 0 0 3.5em;
   }
 
   .right {
@@ -88,10 +118,11 @@ export default {
   .header {
     display: flex;
     align-items: center;
+    margin-bottom: .5em;
   }
 
   .title {
-    font-size: 1.2em;
+    font-size: 1.3em;
     letter-spacing: 1px;
     text-transform: uppercase;
     color: $gray50;
@@ -103,7 +134,9 @@ export default {
   }
 
   .content {
-    margin-top: 1em;
+    &.pullLeft {
+      // margin-left: -3.5em;
+    }
     p {
       white-space: pre-wrap;
     }
