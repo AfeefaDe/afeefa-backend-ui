@@ -84,7 +84,7 @@
           :title="$tc('headlines.contact')"
           icon="mail_outline">
 
-          <text-input v-if="owner.type === 'orgas'"
+          <text-input v-if="owner.type === 'orgas' || owner.type === 'offers'"
             class="formElement halfMarginTop"
             v-model="contact.openingHours"
             fieldName="openingHours"
