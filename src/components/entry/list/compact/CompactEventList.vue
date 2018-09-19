@@ -1,6 +1,6 @@
 <template>
   <div>
-    <compact-entry-list :entries="entry.past_events" :pageSize="5">
+    <compact-entry-list :entries="events" :pageSize="5">
       <div slot="view" slot-scope="props" :class="['item', { first: !props.index }]">
         <div class="date">
           {{props.entry | formatEventDate}}
@@ -19,9 +19,18 @@
 
 <script>
 import CompactEntryList from '@/components/entry/list/CompactEntryList'
+import sortByDateStart from '@/helpers/sort-by-date-start'
+import sortByDateMixin from '@/helpers/sort-by-date-mixin'
 
 export default {
   props: ['entry'],
+
+  computed: {
+    events () {
+      return sortByDateMixin(this.entry.upcoming_events)
+        .concat(sortByDateStart(this.entry.past_events, 'DESC'))
+    }
+  },
 
   components: {
     CompactEntryList
