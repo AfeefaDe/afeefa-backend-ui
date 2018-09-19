@@ -25,3 +25,6 @@ ember-serve.bat
 
 # project
 local.js
+
+# IDE
+.idea
