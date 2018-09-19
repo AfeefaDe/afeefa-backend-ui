@@ -13,7 +13,7 @@
         :entry="entry" :annotationToEdit="newAnnotation"
         @close="cancel" @save="save" />
 
-      <compact-entry-list :entries="entry.annotations" :pageSize="10">
+      <compact-entry-list :entries="entry.annotations" :pageSize="10" :hideIcon="true">
         <div slot="view" slot-scope="props" :class="['item', { first: !props.index }]">
           <annotation-tag :annotation="props.entry" :selected="contentVisible(props.entry)" @click="show(props.entry)" />
 

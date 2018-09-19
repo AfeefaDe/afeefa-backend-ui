@@ -5,7 +5,6 @@
         <div class="title">
           <router-link :to="{name: 'offers.show', params: {id: props.entry.id}}" class="entryList__nav">
             {{ props.entry.title }}
-            ({{ props.entry.active ? 'aktiviert' : 'nicht aktiviert'}})
           </router-link>
         </div>
       </div>

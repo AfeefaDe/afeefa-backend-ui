@@ -13,13 +13,6 @@
       <image-container :image-url="orga.media_url" />
 
       <div class="actionButtons" v-if="false">
-        <editable-actor-actors :owner="orga" relationName="projects" title="Projekt hinzufügen" slot="triggerButton">
-          <span class="btn btn-small gray">
-            <i class="material-icons left">add</i>
-            Projekt
-          </span>
-        </editable-actor-actors>
-
         <editable-actor-actors :owner="orga" relationName="network_members" title="Netzwerkmitglied hinzufügen" slot="triggerButton">
           <span class="btn btn-small gray">
             <i class="material-icons left">add</i>
@@ -55,6 +48,13 @@
           <entry-detail-area>
             <entry-detail-section title="Projektträger" icon="group" :dispatchEdit="orga.project_initiators.length ? 'Ändern' : 'Hinzufügen'">
               <actor-selector :actor="orga" relationName="project_initiators" title="Projektträger" />
+            </entry-detail-section>
+
+            <entry-detail-section title="Projekte" icon="group" :dispatchEdit="orga.projects.length ? 'Ändern' : 'Hinzufügen'">
+              <info-box>
+                Projekte sind selbst Akteure, die dem aktuellen Akteur organisatorisch untergeordnet sind.
+              </info-box>
+              <actor-selector :actor="orga" relationName="projects" title="Projekte" />
             </entry-detail-section>
           </entry-detail-area>
 

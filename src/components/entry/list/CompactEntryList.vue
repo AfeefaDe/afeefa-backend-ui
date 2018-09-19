@@ -12,6 +12,7 @@
 
     <div class="entryContainer">
       <div v-for="(entry, index) in visibleItems" :key="entry.id" class="entry">
+        <entry-icon :item="entry" v-if="!hideIcon" />
         <div class="content">
           <div class="entryView">
             <slot name="view" :entry="entry" :index="index" />
@@ -29,7 +30,7 @@
 import Pagination from '@/components/Pagination'
 
 export default {
-  props: ['entries', 'pageSize'],
+  props: ['entries', 'pageSize', 'hideIcon'],
 
   data () {
     return {
@@ -76,7 +77,7 @@ export default {
   .entry {
     width: 100%;
     display: flex;
-    align-items: top;
+    align-items: center;
     padding: .5em 0;
     border-bottom: 1px solid $gray10;
     &:first-child {
@@ -86,7 +87,7 @@ export default {
 
   .entryIcon {
     flex: 0 0 3.5em;
-    font-size: .8em;
+    font-size: .5em;
   }
 
   .content {
