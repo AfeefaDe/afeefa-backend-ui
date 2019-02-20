@@ -41,7 +41,8 @@ export default {
     facetItemAssociate: 'Zuordnen',
     navigation: 'Navigation',
     newFromActor: 'Akteur in Angebot umwandeln',
-    network: 'Netzwerk'
+    network: 'Netzwerk',
+    area: 'Region'
   },
   facets: {
     ownerTypeOrga: 'Akteur',

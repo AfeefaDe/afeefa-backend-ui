@@ -24,7 +24,9 @@ class User extends Model {
 
       area: DataTypes.String,
 
-      organization: DataTypes.String
+      organization: DataTypes.String,
+
+      available_areas: DataTypes.Array
     }
   }
 
@@ -34,6 +36,10 @@ class User extends Model {
 
   get name () {
     return this.first_name + ' ' + this.last_name
+  }
+
+  get hasMulitpleAreas () {
+    return this.available_areas && this.available_areas.length > 1
   }
 
   attributesToJson (attributes) {
@@ -56,9 +62,11 @@ class User extends Model {
       id: this.id,
       type: this.type,
       attributes: {
+        area: this.area,
         forename: this.first_name,
         surname: this.last_name,
-        organization: this.organization
+        organization: this.organization,
+        available_areas: this.available_areas
       }
     }
     if (this.password) {

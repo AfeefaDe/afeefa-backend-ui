@@ -20,13 +20,16 @@
 
       <div class="navigationSidebar__footer">
         <div class="navigationSidebar__footerRow">
-          <span class="navigationSidebar__footerItem" :title="$t('hints.user_status')">
+          <div class="navigationSidebar__footerItem" :title="$t('hints.user_status')">
             <i class="navigationSidebar__userIcon material-icons navigationSidebar__userIcon--spacingRight">account_circle</i>
             <div>
               <strong>{{currentUser.name}}</strong><br>
-              <span v-if="currentUser.organization">{{ currentUser.organization }}</span>
+              <span class="navigationSidebar__area" v-if="currentUser.organization">
+                {{ currentUser.organization }}
+              </span>
+
             </div>
-          </span>
+          </div>
         </div>
         <div class="navigationSidebar__footerSeperator"></div>
         <div class="navigationSidebar__footerRow">
@@ -39,6 +42,23 @@
                 <span v-else><a href="" class="spacingLeft" @click.prevent="changeLanguage()">{{ $t('languages.'+lang) }}</a></span>
               </span>
             </span>
+            <div class="navigationSidebar__footerItem" v-if="currentUser.hasMulitpleAreas">
+              <div class="navigationSidebar__areaInfo">
+                <span class="description">{{ $t('headlines.area') }}:</span>
+                <div class="selector">
+                  <span v-on:click="areaSelectorVisible = !areaSelectorVisible" class="title"><strong>{{sanitize(currentUser.area)}}</strong><i class="material-icons">arrow_drop_down</i></span>
+                  <div class="navigationSidebar__areaSelector" v-if="areaSelectorVisible">
+                    <span class="info">Die Region wechseln:</span>
+                    <a href=""
+                    v-for="area in currentUser.available_areas"
+                    v-if="area != currentUser.area"
+                    :key="area"
+                    v-bind:class="{ active: area === currentUser.area }"
+                    v-on:click="switchArea(area)">{{ sanitize(area) }}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="navigationSidebar__footerItem logout">
             <a href="" @click.prevent="logout()">
@@ -55,13 +75,36 @@
 
 <script>
 import NavigationMixin from '@/components/navigation/mixins/NavigationMixin'
+import User from '@/models/User'
 
 export default {
   mixins: [NavigationMixin],
-
+  data () {
+    return {
+      areaSelectorVisible: false
+    }
+  },
   computed: {
     userClass () {
       return this.currentUser.first_name.toLowerCase()
+    }
+  },
+  methods: {
+    sanitize (string) {
+      let result = string.charAt(0).toUpperCase() + string.slice(1)
+      return result.replace('-', ' ')
+    },
+    switchArea (area) {
+      if (area === this.currentUser.area) return
+      let user = User.Query.getCurrentUser().clone()
+      user.area = area
+      User.Query.save(user).then(() => {
+        // hack to force reload data
+        window.location.reload(false)
+        // a router redirect is the better solution; but the refresh of the items is not working properly
+        // this.$router.push({name: 'dashboard'})
+        console.log('Saved')
+      })
     }
   }
 }
@@ -140,7 +183,40 @@ export default {
   }
   &__navItemAction i {
     font-size: 1.2em;
-    vertical-align: middle;
+    vertical-align: top;
+  }
+  &__areaInfo {
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+    cursor: pointer;
+    .selector {
+      flex-grow: 2;
+    }
+    .description {
+      margin-right: 0.5em;
+    }
+    .title {
+      display: flex;
+      align-items: center;
+    }
+  }
+  &__areaSelector {
+    flex: 0 0 100%;
+    background: $white;
+    margin-top: 0.5em;
+    padding: 0.5em 1em;
+    a {
+      display: block;
+      margin-left: 1em;
+    }
+    .active {
+      font-weight: bold;
+    }
+    .info {
+      font-size: 0.9em;
+      color: $gray50;
+    }
   }
   &__footer {
     margin-top: 4rem;
@@ -161,7 +237,8 @@ export default {
   }
   &__footerItem {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
     margin-top: .5em;
     &.logout {
       justify-content: flex-end;
