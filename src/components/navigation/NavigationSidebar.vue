@@ -45,7 +45,7 @@
             <div class="navigationSidebar__footerItem" v-if="currentUser.hasMulitpleAreas">
               <div class="navigationSidebar__areaInfo">
                 <span class="description">{{ $t('headlines.area') }}:</span>
-                <div class="selector">
+                <div class="select">
                   <span v-on:click="areaSelectorVisible = !areaSelectorVisible" class="title"><strong>{{sanitize(currentUser.area)}}</strong><i class="material-icons">arrow_drop_down</i></span>
                   <div class="navigationSidebar__areaSelector" v-if="areaSelectorVisible">
                     <span class="info">Die Region wechseln:</span>
@@ -190,7 +190,7 @@ export default {
     align-items: baseline;
     width: 100%;
     cursor: pointer;
-    .selector {
+    .select {
       flex-grow: 2;
     }
     .description {
