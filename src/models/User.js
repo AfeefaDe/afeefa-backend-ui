@@ -26,7 +26,7 @@ class User extends Model {
 
       organization: DataTypes.String,
 
-      available_areas: DataTypes.Array
+      available_areas: DataTypes.String
     }
   }
 
@@ -37,9 +37,18 @@ class User extends Model {
   get name () {
     return this.first_name + ' ' + this.last_name
   }
+  /*
+   * this function is connected to the commit 950ec96d69e of the backend-api: https://github.com/AfeefaDe/afeefa-backend-api/commit/950ec96d69e10191bfadc8d2e859e6a3822ca1dc
+   * cause the column type is string, I'm unable to use `DataTypes.Array`. So the parsing is done in the temporary get multipleAreas method. This getter should be removed after the right column data type is set in the api
+   */
+  get multipleAreas () {
+    let areas = JSON.parse(this.available_areas)
+    return areas
+  }
 
   get hasMulitpleAreas () {
-    return this.available_areas && this.available_areas.length > 1
+    let areas = JSON.parse(this.available_areas)
+    return areas && areas.length > 1
   }
 
   attributesToJson (attributes) {

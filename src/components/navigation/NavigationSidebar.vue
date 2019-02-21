@@ -50,7 +50,7 @@
                   <div class="navigationSidebar__areaSelector" v-if="areaSelectorVisible">
                     <span class="info">Die Region wechseln:</span>
                     <a href=""
-                    v-for="area in currentUser.available_areas"
+                    v-for="area in currentUser.multipleAreas"
                     v-if="area != currentUser.area"
                     :key="area"
                     v-bind:class="{ active: area === currentUser.area }"
