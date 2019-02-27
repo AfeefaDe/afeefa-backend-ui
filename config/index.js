@@ -19,6 +19,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
+        // change to http://localhost:18000 in case you are using the afeefa-backend-api docker images
         target: local.proxy || 'http://localhost:3000',
         secure: false,
         changeOrigin: true
