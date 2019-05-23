@@ -54,7 +54,7 @@
                     v-if="area != currentUser.area"
                     :key="area"
                     v-bind:class="{ active: area === currentUser.area }"
-                    v-on:click="switchArea(area)">{{ sanitize(area) }}</a>
+                    v-on:click.prevent="switchArea(area)">{{ sanitize(area) }}</a>
                   </div>
                 </div>
               </div>
@@ -99,11 +99,11 @@ export default {
       let user = User.Query.getCurrentUser().clone()
       user.area = area
       User.Query.save(user).then(() => {
+        console.log('Saved new area: ', user.area)
         // hack to force reload data
-        window.location.reload(false)
+        window.location.reload(true)
         // a router redirect is the better solution; but the refresh of the items is not working properly
         // this.$router.push({name: 'dashboard'})
-        console.log('Saved')
       })
     }
   }
