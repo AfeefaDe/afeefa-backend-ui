@@ -4,7 +4,7 @@ services:
   afeefa-backend:
     container_name: afeefa.backend
     hostname: afeefa_backend
-    image: node:6.1
+    image: node:8.9
     tty: true
     volumes:
     - ..:/afeefa
