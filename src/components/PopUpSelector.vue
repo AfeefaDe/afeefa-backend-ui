@@ -41,6 +41,14 @@ export default {
 
   methods: {
     onClickOutside (e) {
+      if (e.target === this.trigger) {
+        return
+      }
+
+      if (this.trigger && this.trigger.contains(e.target)) {
+        return
+      }
+
       if (!this.$el.contains(e.target)) {
         this.close()
       }
