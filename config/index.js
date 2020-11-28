@@ -20,14 +20,14 @@ module.exports = {
     proxyTable: {
       '/api': {
         // change to http://localhost:18000 in case you are using the afeefa-backend-api docker images
-        target: local.proxy || 'http://localhost:3000',
+        target: local.proxy || 'http://afeefa_backend_api:3000',
         secure: false,
         changeOrigin: true
       }
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '0.0.0.0', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
