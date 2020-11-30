@@ -1,7 +1,7 @@
 <template>
   <div :class="['map', {active: mapActive}]" @mousedown="activateMap">
     <v-map ref="map" :zoom="zoom" :center="center" @l-ready="mapLoad()" @l-blur="mapLeave" @l-dblclick="autoZoom" @l-dragend="mapDragEnd">
-      <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
+      <v-tilelayer url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
       <v-marker :lat-lng="marker" :draggable="draggable"
         @l-mousedown="bibbleDown"
         @l-dragend="bibbleDragEnd"
